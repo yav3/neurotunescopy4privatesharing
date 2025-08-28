@@ -4,22 +4,12 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePlayerStore } from '@/stores/playerStore';
-
-interface Track {
-  id: string;
-  title: string;
-  artist?: string;
-  genre?: string;
-  duration?: number;
-  audio_url?: string;
-  valence?: number;
-  energy?: number;
-  danceability?: number;
-  acousticness?: number;
-}
+import { useAudio } from '@/context/AudioContext';
+import { useNavigate } from "react-router-dom";
+import { MusicTrack } from '@/types';
 
 interface TrackCardProps {
-  track: Track;
+  track: MusicTrack;
   className?: string;
   showAddToQueue?: boolean;
   showFavorite?: boolean;
@@ -34,27 +24,27 @@ export const TrackCard = ({
   size = 'md' 
 }: TrackCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const { state, currentTrack, loadTrack, toggle } = useAudio();
   const {
-    currentTrack,
-    isPlaying,
-    setCurrentTrack,
-    togglePlay,
     addToQueue,
     toggleFavorite,
     isFavorite
   } = usePlayerStore();
 
   const isCurrentTrack = currentTrack?.id === track.id;
+  const isCurrentlyPlaying = isCurrentTrack && state.isPlaying;
   const isTrackFavorite = isFavorite(track.id);
 
-  const handlePlayPause = (e: React.MouseEvent) => {
+  const handlePlayPause = async (e: React.MouseEvent) => {
     e.stopPropagation();
     
     if (isCurrentTrack) {
-      togglePlay();
+      toggle();
     } else {
-      setCurrentTrack(track);
-      togglePlay();
+      await loadTrack(track);
+      // Navigate to full player for better experience
+      navigate('/player');
     }
   };
 
@@ -109,7 +99,11 @@ export const TrackCard = ({
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => setCurrentTrack(track)}
+      onClick={() => {
+        if (!isCurrentTrack) {
+          loadTrack(track);
+        }
+      }}
     >
       <div className="flex items-center justify-between space-x-4">
         {/* Track Info */}
@@ -122,31 +116,31 @@ export const TrackCard = ({
             {track.title}
           </h3>
           
-          {track.artist && (
+          {track.genre && (
             <p className={cn(
               'truncate mt-1',
               textSizeClasses[size].artist
             )}>
-              {track.artist}
+              {track.genre}
             </p>
           )}
           
           <div className="flex items-center gap-2 mt-2">
-            {track.genre && (
+            {track.therapeutic_applications?.[0]?.frequency_band_primary && (
               <span className={cn(
                 'px-2 py-1 bg-secondary rounded-full text-secondary-foreground',
                 textSizeClasses[size].genre
               )}>
-                {track.genre}
+                {track.therapeutic_applications[0].frequency_band_primary.toUpperCase()} Band
               </span>
             )}
             
-            {track.duration && (
+            {track.bpm && (
               <span className={cn(
                 'text-muted-foreground',
                 textSizeClasses[size].genre
               )}>
-                {formatDuration(track.duration)}
+                {Math.round(track.bpm)} BPM
               </span>
             )}
           </div>
@@ -190,12 +184,12 @@ export const TrackCard = ({
             onClick={handlePlayPause}
             className={cn(
               'h-8 w-8 rounded-full transition-all',
-              isCurrentTrack && isPlaying 
+              isCurrentTrack && state.isPlaying 
                 ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                 : 'hover:bg-primary hover:text-primary-foreground'
             )}
           >
-            {isCurrentTrack && isPlaying ? (
+            {isCurrentTrack && state.isPlaying ? (
               <Pause className="h-4 w-4" />
             ) : (
               <Play className="h-4 w-4" />
