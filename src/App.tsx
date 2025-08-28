@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { AIDJPage } from "./pages/AIDJPage";
 import { EmotionDashboard } from "./pages/EmotionDashboard";
+import MoodAnalyzerPage from "./pages/MoodAnalyzerPage";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/ai-dj" element={<AIDJPage />} />
+          <Route path="/mood-analyzer" element={<MoodAnalyzerPage />} />
           <Route path="/dashboard" element={<EmotionDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

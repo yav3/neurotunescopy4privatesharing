@@ -1,4 +1,4 @@
-import { Home, Music, User } from "lucide-react";
+import { Home, Music, User, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
@@ -10,6 +10,7 @@ export const Navigation = ({ activeTab = "home", onTabChange }: NavigationProps)
   const tabs = [
     { id: "home", label: "Home", icon: Home },
     { id: "ai-dj", label: "AI DJ", icon: Music },
+    { id: "mood-analyzer", label: "Mood Analyzer", icon: Brain },
     { id: "profile", label: "Profile", icon: User },
   ];
 
