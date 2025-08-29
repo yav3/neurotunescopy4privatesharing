@@ -92,7 +92,14 @@ All colors MUST be HSL.
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Enforce white/blue text colors */
+  /* Design System Fix - Additional color and font overrides */
+  
+  /* Global font application */
+  * {
+    font-family: var(--font-sf) !important;
+  }
+
+  /* Override all text colors to approved palette */
   h1, h2, h3, h4, h5, h6 {
     color: hsl(var(--text-white)) !important;
     font-family: var(--font-sf) !important;
@@ -103,6 +110,10 @@ All colors MUST be HSL.
   }
 
   /* Button text colors */
+  button {
+    font-family: var(--font-sf) !important;
+  }
+
   .btn-primary {
     color: hsl(var(--text-white)) !important;
   }
@@ -130,6 +141,41 @@ All colors MUST be HSL.
   input::placeholder,
   textarea::placeholder {
     color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Status indicators */
+  .text-green-500,
+  .text-green-400,
+  .text-green-300 {
+    color: hsl(var(--text-blue-400)) !important;
+  }
+
+  .text-red-500,
+  .text-red-400,
+  .text-red-300 {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .text-yellow-500,
+  .text-yellow-400,
+  .text-yellow-300 {
+    color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Purple color overrides - force to blue */
+  .text-purple-500,
+  .text-purple-400,
+  .text-purple-300,
+  .text-purple-600,
+  .text-purple-700 {
+    color: hsl(var(--text-blue-400)) !important;
+  }
+
+  .bg-purple-500,
+  .bg-purple-400,
+  .bg-purple-600 {
+    background-color: transparent !important;
+    color: hsl(var(--text-blue-400)) !important;
   }
 
   /* Override any purple colors to blue */
@@ -183,6 +229,119 @@ All colors MUST be HSL.
   .text-gray-700,
   .text-gray-800,
   .text-gray-900 {
+    color: hsl(var(--text-blue-400)) !important;
+  }
+
+  /* Component-specific fixes */
+  .mood-card {
+    color: hsl(var(--text-white)) !important;
+    font-family: var(--font-sf) !important;
+  }
+
+  .mood-card h3 {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .mood-card p {
+    color: hsl(var(--text-blue-200)) !important;
+  }
+
+  /* Track card fixes */
+  .track-card {
+    font-family: var(--font-sf) !important;
+  }
+
+  .track-card .title {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .track-card .artist,
+  .track-card .album {
+    color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Navigation fixes */
+  nav, .nav-item {
+    font-family: var(--font-sf) !important;
+    color: hsl(var(--text-white)) !important;
+  }
+
+  /* Status panel fixes */
+  .status-success {
+    color: hsl(var(--text-blue-400)) !important;
+  }
+
+  .status-error {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .status-warning {
+    color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Diagnostic panel fixes */
+  .diagnostic-item {
+    font-family: var(--font-sf) !important;
+  }
+
+  .diagnostic-item h4 {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .diagnostic-item p {
+    color: hsl(var(--text-blue-200)) !important;
+  }
+
+  /* Icon colors */
+  .icon-success {
+    color: hsl(var(--text-blue-400)) !important;
+  }
+
+  .icon-error {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .icon-warning {
+    color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Connectivity panel fixes */
+  .connectivity-panel {
+    font-family: var(--font-sf) !important;
+  }
+
+  .connectivity-panel .title {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .connectivity-panel .status {
+    color: hsl(var(--text-blue-300)) !important;
+  }
+
+  /* Audio player fixes */
+  .audio-player {
+    font-family: var(--font-sf) !important;
+  }
+
+  .audio-player .track-title {
+    color: hsl(var(--text-white)) !important;
+  }
+
+  .audio-player .track-info {
+    color: hsl(var(--text-blue-200)) !important;
+  }
+
+  /* Responsive font sizes with San Francisco */
+  @media (max-width: 768px) {
+    h1 { font-size: 1.5rem; font-family: var(--font-sf) !important; }
+    h2 { font-size: 1.25rem; font-family: var(--font-sf) !important; }
+    h3 { font-size: 1.125rem; font-family: var(--font-sf) !important; }
+  }
+
+  /* Debug - highlight any remaining purple (remove after fixing) */
+  [style*="purple"],
+  [class*="purple"] {
+    outline: 2px solid red !important;
     color: hsl(var(--text-blue-400)) !important;
   }
 
