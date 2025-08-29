@@ -13,6 +13,18 @@ import { API } from '@/lib/api'
 import { API_BASE } from '@/lib/env'
 import type { MusicTrack } from '@/types'
 
+// Debug hook for React components
+const useDebugComponent = (componentName: string, props: any, state: any) => {
+  useEffect(() => {
+    console.log(`🔧 ${componentName} MOUNTED:`, { props, state });
+    return () => console.log(`🔧 ${componentName} UNMOUNTED`);
+  }, []);
+  
+  useEffect(() => {
+    console.log(`🔧 ${componentName} UPDATED:`, { props, state });
+  });
+};
+
 // Mock data for moods and genres
 const moods = [
   {
@@ -73,6 +85,46 @@ const AIDJPage: React.FC = () => {
   const [showAudioTester, setShowAudioTester] = useState(false)
 
   const { state, currentTrack, setPlaylist, loadTrack, toggle, prev, next, setVolume } = useAudio()
+
+  // Debug this component
+  useDebugComponent('AIDJPage', {}, { 
+    selectedMood, selectedGenre, isFullscreenMode, 
+    localPlaylist: localPlaylist.length, isGenerating, showAudioTester,
+    audioState: state, currentTrack: currentTrack?.id
+  });
+
+  // Component lifecycle and API test
+  useEffect(() => {
+    console.log('🏗️ AIDJPage MOUNTED');
+    
+    // Immediate API connectivity test
+    const testAPIConnectivity = async () => {
+      console.log('🧪 Testing API connectivity on mount...');
+      const tests = [
+        { name: 'Health', test: () => API.health() },
+        { name: 'Debug Storage', test: () => fetch(`${API_BASE}/debug/storage`).then(r => r.json()) },
+        { name: 'External Test', test: () => fetch('https://httpbin.org/get').then(r => r.json()) }
+      ];
+      
+      for (const { name, test } of tests) {
+        try {
+          const result = await test();
+          console.log(`✅ ${name} test passed:`, result);
+        } catch (error) {
+          console.log(`❌ ${name} test failed:`, error);
+        }
+      }
+    };
+    
+    testAPIConnectivity();
+    
+    // Log global state
+    console.log('🌐 AIDJPage GLOBALS:', {
+      location: window.location.href,
+      API_BASE,
+      userAgent: navigator.userAgent.substring(0, 100)
+    });
+  }, []);
 
   // Replace mock function with real API calls
   const generatePlaylist = async (mood: string, genre: string = 'all') => {
