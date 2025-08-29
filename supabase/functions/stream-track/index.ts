@@ -160,9 +160,15 @@ async function resolveStorageKey(supabase: any, bucketName: string, dbPathOrTitl
 
   console.log(`Best match for "${dbPathOrTitle}": key="${bestKey}", score=${bestScore}`)
 
-  // Accept only confident matches
+  // Accept confident matches or fallback to best match if it's reasonable
   if (bestScore >= 0.62) {
     return { key: bestKey!, score: bestScore }
+  }
+  
+  // For audio files, be more lenient since we need playback to work
+  if (bestScore >= 0.3 && bestKey) {
+    console.warn(`Using lower confidence match for audio: ${bestKey} (score: ${bestScore})`)
+    return { key: bestKey, score: bestScore }
   }
   
   return { key: null, score: bestScore }
@@ -259,12 +265,27 @@ Deno.serve(async (req) => {
     
     if (!resolvedKey) {
       console.warn(`No matching audio file found for: ${candidate} (best score: ${score})`)
+      
+      // Provide more debugging info
+      console.log(`Available audio files sample:`, storageKeys.slice(0, 5))
+      console.log(`Track details:`, { 
+        id: trackId, 
+        title: track.title, 
+        file_path: track.file_path,
+        bucket: targetBucket
+      })
+      
       return new Response(
         JSON.stringify({ 
           error: 'No storage match',
           searchPath: candidate,
           bestScore: score,
-          threshold: 0.62
+          threshold: '0.62 (or 0.3 for audio)',
+          availableFilesSample: storageKeys.slice(0, 5),
+          trackDetails: {
+            title: track.title,
+            file_path: track.file_path
+          }
         }),
         { 
           status: 404, 

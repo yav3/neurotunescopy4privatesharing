@@ -166,9 +166,15 @@ async function resolveStorageKey(supabase: any, bucketName: string, dbPathOrTitl
 
   console.log(`Best match for "${dbPathOrTitle}": key="${bestKey}", score=${bestScore}`)
 
-  // Accept only confident matches
+  // Accept confident matches for artwork, be more lenient for audio
   if (bestScore >= 0.62) {
     return { key: bestKey!, score: bestScore }
+  }
+  
+  // For audio files, be more lenient since we need playback to work
+  if (fileType === 'audio' && bestScore >= 0.3 && bestKey) {
+    console.warn(`Using lower confidence match for audio: ${bestKey} (score: ${bestScore})`)
+    return { key: bestKey, score: bestScore }
   }
   
   return { key: null, score: bestScore }
@@ -244,6 +250,21 @@ Deno.serve(async (req) => {
     }
     
     console.log(`Resolving ${fileType} for track ${trackId}: "${searchPath}"`)
+    
+    // Skip artwork requests entirely - no artwork files exist in storage
+    if (fileType === 'artwork') {
+      console.log(`Artwork request skipped - no artwork files in storage`)
+      return new Response(
+        JSON.stringify({ 
+          error: 'Artwork files not available',
+          note: 'No artwork files found in storage bucket - artwork loading disabled'
+        }),
+        { 
+          status: 404, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
     
     // Find best match using advanced algorithm
     const { key: resolvedKey, score } = await resolveStorageKey(supabase, targetBucket, searchPath, fileType as 'audio' | 'artwork')

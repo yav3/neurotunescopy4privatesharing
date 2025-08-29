@@ -43,21 +43,13 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   
   const primaryApp = track.therapeutic_applications?.[0]
 
-  // Load artwork URL when component mounts
+  // Load artwork URL when component mounts (disabled until artwork files exist)
   useEffect(() => {
-    const loadArtwork = async () => {
-      setIsLoadingArtwork(true)
-      try {
-        const artworkUrl = await resolveTrackUrl(track, 'artwork')
-        setAlbumArtworkUrl(artworkUrl)
-      } catch (error) {
-        console.warn('Failed to load artwork for track:', track.title)
-      } finally {
-        setIsLoadingArtwork(false)
-      }
-    }
-
-    loadArtwork()
+    // Temporarily disable artwork loading since no artwork files exist in storage
+    // All searches are returning very low scores (0.12-0.19) indicating no matches
+    console.log('Artwork loading disabled - no artwork files found in storage for:', track.title)
+    setAlbumArtworkUrl(null)
+    setIsLoadingArtwork(false)
   }, [track.id])
 
   const handlePlayClick = async () => {
