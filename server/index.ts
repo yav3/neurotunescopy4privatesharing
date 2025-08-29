@@ -1,7 +1,9 @@
 import express from 'express'
+import path from 'path'
 import { securityMiddleware } from './middleware/security'
 import { requestLogger, errorLogger, performanceLogger } from './middleware/logging'
 import apiRoutes from './routes/api'
+import streamRoutes from './routes/stream'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -19,6 +21,7 @@ app.use(performanceLogger(2000)) // Log requests slower than 2 seconds
 
 // API routes
 app.use('/api', apiRoutes)
+app.use('/api/stream', streamRoutes)
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
