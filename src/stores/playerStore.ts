@@ -62,8 +62,9 @@ interface PlayerState {
   playPlaylist: (tracks: Track[], playlistName?: string) => void;
   
   // Favorites actions
-  toggleFavorite: (trackId: string) => void;
+  toggleFavorite: (trackId: string) => Promise<void>;
   isFavorite: (trackId: string) => boolean;
+  loadUserFavorites: () => Promise<void>;
   
   // Recent tracks
   addToRecentlyPlayed: (track: Track) => void;
@@ -185,19 +186,65 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
   
   // Favorites
-  toggleFavorite: (trackId) => {
-    const { favorites } = get();
-    const newFavorites = new Set(favorites);
-    
-    if (newFavorites.has(trackId)) {
-      newFavorites.delete(trackId);
-    } else {
-      newFavorites.add(trackId);
+  loadUserFavorites: async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_favorites')
+        .select('track_id')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading favorites:', error);
+        return;
+      }
+
+      const favoriteIds = new Set(data?.map(fav => fav.track_id.toString()) || []);
+      set({ favorites: favoriteIds });
+    } catch (error) {
+      console.error('Error loading favorites:', error);
     }
-    
-    set({ favorites: newFavorites });
   },
-  
+
+  toggleFavorite: async (trackId) => {
+    const { favorites } = get();
+    const isFavorited = favorites.has(trackId);
+    
+    try {
+      if (isFavorited) {
+        // Remove from favorites
+        const { error } = await supabase
+          .from('user_favorites')
+          .delete()
+          .eq('track_id', parseInt(trackId));
+
+        if (error) throw error;
+
+        const newFavorites = new Set(favorites);
+        newFavorites.delete(trackId);
+        set({ favorites: newFavorites });
+      } else {
+        // Add to favorites - RLS will validate user_id matches auth.uid()
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('User not authenticated');
+        
+        const { error } = await supabase
+          .from('user_favorites')
+          .insert({ 
+            track_id: parseInt(trackId),
+            user_id: user.id 
+          });
+
+        if (error) throw error;
+
+        const newFavorites = new Set(favorites);
+        newFavorites.add(trackId);
+        set({ favorites: newFavorites });
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  },
+
   isFavorite: (trackId) => {
     const { favorites } = get();
     return favorites.has(trackId);
