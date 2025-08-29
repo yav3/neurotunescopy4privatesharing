@@ -4,14 +4,12 @@ import { cors } from "https://deno.land/x/hono@v4.2.7/middleware.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const app = new Hono();
-app.use("*", cors({
+app.use("/*", cors({
   origin: "*",
   allowHeaders: ["Content-Type", "Authorization", "Range"],
   allowMethods: ["GET", "HEAD", "POST", "OPTIONS"],
   exposeHeaders: ["Accept-Ranges", "Content-Length", "Content-Type", "Content-Range"]
 }));
-
-// Add direct routes instead of sub-router to fix routing issues
 
 // Supabase admin client
 function sb() {
@@ -22,15 +20,16 @@ function sb() {
   );
 }
 
-// Handle paths with /api prefix (edge function routing fix)
+/** Health endpoint */
 app.get("/api/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
+
 app.get("/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
-// Playlist by goal with both path variants
+/** ✅ Playlist endpoint - THE ROUTE THAT WAS MISSING */
 app.get("/api/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
@@ -77,15 +76,16 @@ app.get("/api/v1/playlist", async (c) => {
   console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
   return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
+
+/** Fallback without /api prefix */
 app.get("/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
-  console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
-  
+  const to = offset + limit - 1;
+
   const supabase = sb();
   
-  // Map goals to conditions and build query
   const goalToConditions: Record<string, any> = {
     'focus': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
     'relax': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
@@ -112,7 +112,6 @@ app.get("/v1/playlist", async (c) => {
     query = query.in('genre', criteria.genres);
   }
   
-  const to = offset + limit - 1;
   const { data: tracks, error, count } = await query.range(offset, to);
   
   if (error) {
@@ -120,18 +119,16 @@ app.get("/v1/playlist", async (c) => {
     return c.json({ ok: false, error: error.message }, 500);
   }
 
-  console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
   return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
 
-// Build session with both path variants
+/** Build session endpoint */
 app.post("/api/v1/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
   const supabase = sb();
   
-  // Get tracks using same logic as playlist with limit
   const goalToConditions: Record<string, any> = {
     'focus': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
     'relax': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
@@ -158,7 +155,6 @@ app.post("/api/v1/session/build", async (c) => {
     query = query.in('genre', criteria.genres);
   }
   
-  // Apply limit to prevent flooding
   const trackLimit = Math.min(Number(limit) || 50, 200);
   const { data: tracks, error } = await query.limit(trackLimit);
   
@@ -167,66 +163,16 @@ app.post("/api/v1/session/build", async (c) => {
     return c.json({ ok: false, error: error.message }, 500);
   }
 
-  // Create session record
-  const sessionId = crypto.randomUUID();
-  
-  console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks (limited to ${trackLimit})`);
-  return c.json({ sessionId, tracks: tracks || [] });
-});
-app.post("/v1/session/build", async (c) => {
-  const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
-  console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
-  
-  const supabase = sb();
-  
-  // Get tracks using same logic as playlist with limit
-  const goalToConditions: Record<string, any> = {
-    'focus': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
-    'relax': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
-    'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
-    'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
-  };
-  
-  const criteria = goalToConditions[goal] || goalToConditions['focus'];
-  
-  let query = supabase
-    .from('music_tracks')
-    .select('*')
-    .eq('upload_status', 'completed');
-    
-  if (criteria.energy) {
-    query = query.gte('energy', criteria.energy[0]).lte('energy', criteria.energy[1]);
-  }
-  
-  if (criteria.valence) {
-    query = query.gte('valence', criteria.valence[0]).lte('valence', criteria.valence[1]);
-  }
-  
-  if (criteria.genres.length > 0) {
-    query = query.in('genre', criteria.genres);
-  }
-  
-  // Apply limit to prevent flooding
-  const trackLimit = Math.min(Number(limit) || 50, 200);
-  const { data: tracks, error } = await query.limit(trackLimit);
-  
-  if (error) {
-    console.error('❌ Session build error:', error);
-    return c.json({ ok: false, error: error.message }, 500);
-  }
-
-  // Create session record
   const sessionId = crypto.randomUUID();
   
   console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks (limited to ${trackLimit})`);
   return c.json({ sessionId, tracks: tracks || [] });
 });
 
-// Debug storage access with both path variants  
+/** Debug storage access */
 app.get("/api/debug/storage", async (c) => {
   const supabase = sb();
   
-  // Check environment variables
   const envCheck = {
     SUPABASE_URL: !!Deno.env.get("SUPABASE_URL"),
     SUPABASE_SERVICE_ROLE_KEY: !!Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
@@ -234,44 +180,8 @@ app.get("/api/debug/storage", async (c) => {
     WEB_ORIGIN: Deno.env.get("WEB_ORIGIN")
   };
   
-  // Try to list buckets
   const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
   
-  // Try to list files in the main bucket
-  const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
-  const { data: files, error: filesError } = await supabase.storage.from(bucket).list();
-  
-  return c.json({
-    environment: envCheck,
-    buckets: {
-      count: buckets?.length ?? 0,
-      list: buckets?.map(b => ({ name: b.name, public: b.public })) ?? [],
-      error: bucketsError?.message
-    },
-    files: {
-      bucket: bucket,
-      count: files?.length ?? 0,
-      sample: files?.slice(0, 5) ?? [],
-      error: filesError?.message
-    },
-    timestamp: new Date().toISOString()
-  });
-});
-app.get("/debug/storage", async (c) => {
-  const supabase = sb();
-  
-  // Check environment variables
-  const envCheck = {
-    SUPABASE_URL: !!Deno.env.get("SUPABASE_URL"),
-    SUPABASE_SERVICE_ROLE_KEY: !!Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
-    BUCKET: Deno.env.get("BUCKET") ?? "neuralpositivemusic",
-    WEB_ORIGIN: Deno.env.get("WEB_ORIGIN")
-  };
-  
-  // Try to list buckets
-  const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-  
-  // Try to list files in the main bucket
   const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
   const { data: files, error: filesError } = await supabase.storage.from(bucket).list();
   
@@ -292,8 +202,8 @@ app.get("/debug/storage", async (c) => {
   });
 });
 
-// Session telemetry
-app.post("/v1/sessions/start", async (c) => {
+/** Session telemetry */
+app.post("/api/v1/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -301,21 +211,21 @@ app.post("/v1/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/v1/sessions/progress", async (c) => {
+app.post("/api/v1/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/v1/sessions/complete", async (c) => {
+app.post("/api/v1/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
   return c.json({ ok: true });
 });
 
-// Stream from Storage via file path (reverted from ID-based)
+/** Stream from Storage via file path */
 app.on(["GET", "HEAD"], "/stream", async (c) => {
   const file = c.req.query("file");
   console.log(`🎵 Stream request - file: "${file}"`);
@@ -361,7 +271,6 @@ app.on(["GET", "HEAD"], "/stream", async (c) => {
   headers.set("Access-Control-Allow-Origin", "*");
   headers.set("Accept-Ranges", "bytes");
   
-  // Set content type for MP3 files
   if (!headers.get("Content-Type") && file.toLowerCase().endsWith(".mp3")) {
     headers.set("Content-Type", "audio/mpeg");
   }
@@ -372,7 +281,7 @@ app.on(["GET", "HEAD"], "/stream", async (c) => {
   });
 });
 
-// JSON 404 (helps you see wrong paths fast)
+/** JSON 404 with exact path debugging */
 app.notFound((c) => c.json({ ok: false, error: "NotFound", path: c.req.path }, 404));
 
 export default app;
