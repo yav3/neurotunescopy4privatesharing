@@ -35,8 +35,8 @@ export const BrainwaveFrequencyPage = () => {
       name: "Theta", 
       range: "4-8Hz",
       description: "Meditation & Creativity",
-      color: "bg-purple-500",
-      gradient: "from-purple-600 to-purple-800",
+      color: "bg-blue-500",
+      gradient: "from-blue-600 to-blue-800",
       trackCount: 0,
       icon: "🧘"
     },
@@ -161,7 +161,7 @@ export const BrainwaveFrequencyPage = () => {
             Clinical Research
           </div>
           <div className="flex items-center gap-2">
-            <Play className="w-4 h-4 text-purple-500" />
+            <Play className="w-4 h-4 text-blue-500" />
             Brainwave Entrainment
           </div>
           <div className="flex items-center gap-2">

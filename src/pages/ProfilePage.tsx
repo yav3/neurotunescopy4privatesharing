@@ -58,7 +58,7 @@ export const ProfilePage = () => {
   const dashboardStats = [
     { label: "Sessions This Week", value: "12", icon: Calendar, color: "text-blue-500" },
     { label: "Total Hours", value: "156", icon: Clock, color: "text-green-500" },
-    { label: "Favorite Frequency", value: "Alpha", icon: Brain, color: "text-purple-500" },
+    { label: "Favorite Frequency", value: "Alpha", icon: Brain, color: "text-blue-500" },
     { label: "Mood Improvement", value: "+23%", icon: TrendingUp, color: "text-orange-500" }
   ];
 
@@ -205,11 +205,11 @@ export const ProfilePage = () => {
                   <p className="text-2xl font-bold text-green-500">{moodData.energyLevel}</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-2">
                     <Moon className="w-8 h-8 text-white" />
                   </div>
                   <p className="font-medium">Calm</p>
-                  <p className="text-2xl font-bold text-purple-500">{moodData.relaxationLevel}</p>
+                  <p className="text-2xl font-bold text-blue-500">{moodData.relaxationLevel}</p>
                 </div>
               </div>
             </Card>
@@ -254,9 +254,9 @@ export const ProfilePage = () => {
                   <p className="font-medium text-green-800 dark:text-green-200">Stress Reduction</p>
                   <p className="text-sm text-green-600 dark:text-green-300">Consider a Theta wave meditation session for relaxation</p>
                 </div>
-                <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                  <p className="font-medium text-purple-800 dark:text-purple-200">Sleep Preparation</p>
-                  <p className="text-sm text-purple-600 dark:text-purple-300">Delta wave therapy can help improve sleep quality tonight</p>
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="font-medium text-blue-800 dark:text-blue-200">Sleep Preparation</p>
+                  <p className="text-sm text-blue-600 dark:text-blue-300">Delta wave therapy can help improve sleep quality tonight</p>
                 </div>
               </div>
             </Card>

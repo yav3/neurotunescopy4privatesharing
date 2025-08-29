@@ -52,8 +52,8 @@ const moods = [
     label: 'Sleep',
     description: 'Delta waves for deep, restorative sleep',
     icon: Radio,
-    gradient: 'bg-gradient-to-r from-purple-600 to-indigo-600',
-    color: 'text-purple-600'
+    gradient: 'bg-gradient-to-r from-blue-600 to-blue-800',
+    color: 'text-blue-600'
   },
   {
     id: 'energy',
