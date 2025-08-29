@@ -31,8 +31,8 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
   }
 }
 
-// Therapeutic nature artwork by frequency band with musical variations
-const getTherapeuticArtwork = (frequencyBand: string): { url: string; position: string; gradient: string } => {
+// Deterministic artwork selection to prevent race conditions
+const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
   // Musical instrument variations for different genres/moods
   const musicalArtwork = [
     '/lovable-uploads/folk-instruments-meadow.png',
@@ -42,35 +42,50 @@ const getTherapeuticArtwork = (frequencyBand: string): { url: string; position: 
     '/lovable-uploads/acoustic-sunset-field.png'
   ]
   
+  // Create deterministic seed from trackId to prevent race conditions
+  const createSeed = (str: string): number => {
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash // Convert to 32-bit integer
+    }
+    return Math.abs(hash)
+  }
+  
+  const seed = createSeed(trackId)
+  const usePrimary = (seed % 2) === 0
+  const musicalIndex = seed % musicalArtwork.length
+  
   const artworkMap = {
     delta: { 
-      url: Math.random() > 0.5 ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+      url: usePrimary ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[musicalIndex],
       position: 'object-cover', // Moonlit scenes for deep sleep & healing
       gradient: 'from-blue-900/80 via-slate-800/60 to-blue-800/80'
     },
     theta: { 
-      url: Math.random() > 0.5 ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+      url: usePrimary ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[musicalIndex],
       position: 'object-cover', // Misty forest paths for meditation
       gradient: 'from-amber-700/80 via-yellow-600/60 to-orange-700/80'
     },
     alpha: { 
-      url: Math.random() > 0.5 ? '/lovable-uploads/alpha-mountain-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+      url: usePrimary ? '/lovable-uploads/alpha-mountain-lake.png' : musicalArtwork[musicalIndex],
       position: 'object-cover', // Serene mountain lakes for focus
       gradient: 'from-blue-800/80 via-cyan-600/60 to-teal-700/80'
     },
     beta: { 
-      url: Math.random() > 0.5 ? '/lovable-uploads/beta-waterfall.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+      url: usePrimary ? '/lovable-uploads/beta-waterfall.png' : musicalArtwork[musicalIndex],
       position: 'object-cover', // Energetic waterfalls for concentration
       gradient: 'from-green-700/80 via-emerald-600/60 to-teal-700/80'
     },
     gamma: { 
-      url: Math.random() > 0.5 ? '/lovable-uploads/gamma-sunbeam-forest.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+      url: usePrimary ? '/lovable-uploads/gamma-sunbeam-forest.png' : musicalArtwork[musicalIndex],
       position: 'object-cover', // Golden sunbeam forests for peak performance
       gradient: 'from-yellow-600/80 via-orange-500/60 to-red-600/80'
     }
   }
   
-  return artworkMap[frequencyBand] || artworkMap.alpha
+  return artworkMap[frequencyBand as keyof typeof artworkMap] || artworkMap.alpha
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
@@ -83,7 +98,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
-  const artwork = getTherapeuticArtwork(frequencyBand)
+  const artwork = React.useMemo(() => getTherapeuticArtwork(frequencyBand, track.id), [frequencyBand, track.id])
 
   const handlePlayClick = async () => {
     console.log('▶️ Play button clicked for track:', track.title)

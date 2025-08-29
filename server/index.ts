@@ -175,21 +175,29 @@ app.get('/health/streaming', async (req, res) => {
   }
 })
 
-// Serve static files and SPA fallback ONLY in production and as the last middleware
-if (process.env.NODE_ENV === 'production') {
-  // Only serve static files, don't interfere with API routes
-  app.use('/assets', express.static('dist/client/assets'))
-  app.use('/lovable-uploads', express.static('public/lovable-uploads'))
-  
-  // SPA fallback - but exclude API routes
-  app.get('*', (req, res, next) => {
-    // Don't serve SPA for API routes
-    if (req.path.startsWith('/api/') || req.path.startsWith('/health')) {
-      return next()
-    }
-    res.sendFile(path.join(__dirname, '../client/index.html'))
-  })
+// Serve static files - both development and production
+app.use('/assets', express.static('dist/assets'))
+app.use('/lovable-uploads', express.static('public/lovable-uploads'))
+
+// Development static files
+if (process.env.NODE_ENV !== 'production') {
+  app.use(express.static('dist'))
 }
+
+// SPA fallback - but NEVER for API routes or health endpoints
+app.get('*', (req, res, next) => {
+  // Exclude API routes and health endpoints
+  if (req.path.startsWith('/api/') || req.path.startsWith('/health')) {
+    return res.status(404).json({ error: 'Endpoint not found' })
+  }
+  
+  // Serve SPA for all other routes
+  const indexPath = process.env.NODE_ENV === 'production' 
+    ? path.join(__dirname, '../client/index.html')
+    : path.join(__dirname, '../dist/index.html')
+  
+  res.sendFile(indexPath)
+})
 
 // Error handling middleware (must be last)
 app.use(errorLogger)
