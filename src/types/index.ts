@@ -91,5 +91,26 @@ export interface AppError {
   timestamp: string
 }
 
+// Simplified Track interface for frontend use
+export interface Track {
+  id: string;
+  title: string;
+  file_name?: string;
+  file_path?: string;
+  src?: string;
+  duration?: number;
+  goal?: string;
+  therapeutic_use?: string;
+  eeg_targets?: string;
+  genre?: string;
+  artist?: string;
+  album?: string;
+  bucket_name?: string;
+  upload_status?: string;
+  file_size?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 // Legacy interface for compatibility
-export interface Track extends MusicTrack {}
+export interface LegacyTrack extends MusicTrack {}
