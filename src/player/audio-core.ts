@@ -33,10 +33,13 @@ const loadCurrent = async () => {
     return;
   }
   
-  const url = streamUrl(t);
   console.log('🔄 Loading track via audio-core:', t.title);
+  console.log('🎵 Complete track object:', t);
+  console.log('🎵 Track file_path:', t.file_path);
+  console.log('🎵 Track storage_key:', t.storage_key);
+  
+  const url = streamUrl(t);
   console.log('🔗 Stream URL:', url);
-  console.log('🎵 Track object:', t);
   
   a.src = url;      // ALWAYS via your Edge Function
   a.load();

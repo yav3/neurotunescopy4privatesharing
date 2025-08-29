@@ -4,6 +4,7 @@ export interface Track {
   title: string;
   file_name?: string;
   file_path?: string;
+  storage_key?: string;
   src?: string;
   duration?: number;
   goal?: string;
