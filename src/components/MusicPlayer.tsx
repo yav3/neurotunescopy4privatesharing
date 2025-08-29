@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAudio } from "@/context/AudioContext";
+import { formatTime } from "@/lib/utils";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 
 interface MusicPlayerProps {
@@ -12,9 +14,14 @@ interface MusicPlayerProps {
 }
 
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState([25]);
   const [isLiked, setIsLiked] = useState(false);
+  const { state, currentTrack, toggle, next, prev, seek, setVolume } = useAudio();
+
+  if (!currentTrack) {
+    return null;
+  }
+
+  const progressPercentage = state.duration ? (state.currentTime / state.duration) * 100 : 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -43,51 +50,64 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
           </div>
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">Dawn, Behold</h2>
-            <p className="text-lg text-muted-foreground mb-1">DJ Chris & DJ Wallace</p>
-            <p className="text-sm text-muted-foreground">sleep • Relaxation & Calm</p>
+            <h2 className="text-2xl font-bold text-foreground mb-2">{currentTrack.title}</h2>
+            <p className="text-lg text-muted-foreground mb-1">{currentTrack.genre || 'Therapeutic Music'}</p>
+            <p className="text-sm text-muted-foreground">
+              {currentTrack.bpm && `${Math.round(currentTrack.bpm)} BPM • `}
+              Relaxation & Focus
+            </p>
           </div>
 
           <div className="mb-6">
             <Slider
-              value={progress}
-              onValueChange={setProgress}
-              max={100}
-              step={1}
+              value={[state.currentTime]}
+              onValueChange={([value]) => seek(value)}
+              max={state.duration || 0}
+              step={0.1}
               className="mb-2"
             />
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>0:38</span>
-              <span>3:36</span>
+              <span>{formatTime(state.currentTime)}</span>
+              <span>{formatTime(state.duration)}</span>
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-4 mb-6">
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <Button variant="ghost" size="icon" className="text-muted-foreground" onClick={prev}>
               <SkipBack className="w-6 h-6" />
             </Button>
             
             <Button
               size="icon"
               className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90"
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={toggle}
+              disabled={state.isLoading}
             >
-              {isPlaying ? (
+              {state.isLoading ? (
+                <div className="w-8 h-8 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : state.isPlaying ? (
                 <Pause className="w-8 h-8 text-primary-foreground" />
               ) : (
                 <Play className="w-8 h-8 text-primary-foreground ml-1" />
               )}
             </Button>
             
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <Button variant="ghost" size="icon" className="text-muted-foreground" onClick={next}>
               <SkipForward className="w-6 h-6" />
             </Button>
           </div>
 
           <div className="flex items-center justify-between">
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
-              <Volume2 className="w-5 h-5" />
-            </Button>
+            <div className="flex items-center gap-2 flex-1">
+              <Volume2 className="w-5 h-5 text-muted-foreground" />
+              <Slider
+                value={[state.volume * 100]}
+                onValueChange={([value]) => setVolume(value / 100)}
+                max={100}
+                step={1}
+                className="flex-1 max-w-24"
+              />
+            </div>
             
             <Button
               variant="ghost"

@@ -34,9 +34,9 @@ export interface SessionConfig {
 export class TherapeuticEngine {
   private static readonly GOAL_TO_FREQUENCY_MAP: Record<TherapeuticGoal, FrequencyBand[]> = {
     anxiety_relief: ['alpha', 'theta'],
-    focus_enhancement: ['beta', 'gamma'], 
+    focus_enhancement: ['beta', 'gamma'],
     sleep_preparation: ['delta', 'theta'],
-    mood_boost: ['alpha', 'beta'],
+    mood_boost: ['beta', 'alpha'],
     stress_reduction: ['alpha', 'theta'],
     pain_management: ['theta', 'alpha'],
     meditation_support: ['theta', 'alpha']
@@ -78,29 +78,29 @@ export class TherapeuticEngine {
     const averageTrackLength = 4 // minutes
     const tracksNeeded = Math.max(3, Math.floor(config.duration / averageTrackLength))
     
-    // Create energy-based progression
-    const sessionTracks = this.createTherapeuticProgression(
+    // Select and sequence tracks
+    const sessionTracks = this.selectOptimalTracks(
       suitableTracks,
-      energyProgression,
       tracksNeeded,
+      energyProgression,
       config.intensityLevel
     )
 
-    // Apply harmonic mixing for smooth transitions
-    const harmonicTracks = CamelotRecommendationEngine.sortByHarmonicFlow(sessionTracks)
+    // Apply Camelot harmonic mixing if possible
+    const harmonicSequence = this.applyHarmonicProgression(sessionTracks)
 
     return {
-      id: `session_${Date.now()}`,
+      id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       goal: config.goal,
       duration: config.duration,
-      tracks: harmonicTracks,
-      progression: this.determineProgression(energyProgression),
+      tracks: harmonicSequence,
+      progression: this.determineProgression(config.goal),
       startTime: new Date()
     }
   }
 
   /**
-   * Filter tracks based on therapeutic effectiveness
+   * Filter tracks based on therapeutic criteria using available data
    */
   private static filterTherapeuticTracks(
     tracks: MusicTrack[],
@@ -109,168 +109,223 @@ export class TherapeuticEngine {
     personalHistory?: SessionConfig['personalHistory']
   ): MusicTrack[] {
     return tracks.filter(track => {
-      // Check frequency band compatibility
-      const hasTargetFrequency = track.therapeutic_applications?.some(app =>
-        targetFrequencies.includes(app.frequency_band_primary)
-      )
+      // Use genre as proxy for frequency band mapping
+      const genreToFrequency: Record<string, FrequencyBand> = {
+        'classical': 'delta',
+        'jazz': 'theta', 
+        'rock': 'alpha',
+        'dance': 'beta',
+        'electronic': 'gamma'
+      }
 
-      // Check therapeutic evidence for goal
-      const hasTherapeuticEvidence = track.therapeutic_applications?.some(app => {
-        const goalMap: Record<TherapeuticGoal, keyof typeof app> = {
-          anxiety_relief: 'anxiety_evidence_score',
-          focus_enhancement: 'focus_evidence_score', 
-          sleep_preparation: 'sleep_evidence_score',
-          mood_boost: 'anxiety_evidence_score', // Inverse anxiety
-          stress_reduction: 'anxiety_evidence_score',
-          pain_management: 'sleep_evidence_score', // Related to relaxation
-          meditation_support: 'focus_evidence_score'
-        }
+      const trackFrequency = genreToFrequency[track.genre?.toLowerCase() || '']
+      
+      // Filter by target frequencies if available
+      if (trackFrequency && !targetFrequencies.includes(trackFrequency)) {
+        return false
+      }
 
-        const evidenceField = goalMap[goal]
-        const score = app[evidenceField] as number || 0
-        return score > 0.6 // Minimum evidence threshold
-      })
+      // Check if track has been marked as ineffective by user
+      if (personalHistory?.avoidedTracks?.includes(track.id)) {
+        return false
+      }
 
-      // Check condition targets
-      const hasRelevantConditions = track.therapeutic_applications?.some(app =>
-        app.condition_targets?.some(condition => {
-          const goalConditions: Record<TherapeuticGoal, string[]> = {
-            anxiety_relief: ['anxiety', 'stress_reduction'],
-            focus_enhancement: ['adhd', 'focus_enhancement', 'cognitive_enhancement'],
-            sleep_preparation: ['sleep_improvement'],
-            mood_boost: ['depression', 'mood_enhancement'],
-            stress_reduction: ['stress_reduction', 'anxiety'],
-            pain_management: ['pain_relief'],
-            meditation_support: ['meditation_support']
-          }
-          
-          return goalConditions[goal]?.includes(condition)
-        })
-      )
+      // Prioritize previously effective tracks
+      if (personalHistory?.effectiveTracks?.includes(track.id)) {
+        return true
+      }
 
-      // Personal history filters
-      if (personalHistory) {
-        if (personalHistory.avoidedTracks.includes(track.id)) return false
-        if (personalHistory.preferredGenres.length > 0) {
-          if (!personalHistory.preferredGenres.includes(track.genre)) return false
+      // Filter by genre preferences if provided
+      if (personalHistory?.preferredGenres?.length) {
+        if (!personalHistory.preferredGenres.includes(track.genre)) {
+          return false
         }
       }
 
-      return hasTargetFrequency && (hasTherapeuticEvidence || hasRelevantConditions)
+      // Apply therapeutic criteria based on audio features
+      switch (goal) {
+        case 'anxiety_relief':
+          return (track.valence || 0) < 0.6 && (track.energy || 0) < 0.5
+        case 'focus_enhancement':
+          return (track.energy || 0) > 0.4 && (track.energy || 0) < 0.8
+        case 'sleep_preparation':
+          return (track.energy || 0) < 0.4 && (track.valence || 0) < 0.7
+        case 'mood_boost':
+          return (track.valence || 0) > 0.5 && (track.energy || 0) > 0.3
+        case 'stress_reduction':
+          return (track.valence || 0) < 0.7 && (track.energy || 0) < 0.6
+        default:
+          return true
+      }
     })
   }
 
   /**
-   * Create therapeutic progression with energy flow
+   * Select optimal tracks for the session based on energy progression
    */
-  private static createTherapeuticProgression(
-    tracks: MusicTrack[],
-    energyProgression: number[],
+  private static selectOptimalTracks(
+    suitableTracks: MusicTrack[],
     tracksNeeded: number,
+    energyProgression: number[],
     intensityLevel: number
   ): MusicTrack[] {
-    const progression: MusicTrack[] = []
-    const tracksPerSegment = Math.ceil(tracksNeeded / energyProgression.length)
-
-    for (let i = 0; i < energyProgression.length && progression.length < tracksNeeded; i++) {
-      const targetEnergy = energyProgression[i] / 5 // Convert to 0-1 scale
-      const energyTolerance = 0.2 + (intensityLevel - 1) * 0.05 // More precise at higher intensity
-
-      // Find tracks matching energy level
-      const matchingTracks = tracks.filter(track => {
-        const trackEnergy = track.energy || 0.5
-        const energyDiff = Math.abs(trackEnergy - targetEnergy)
-        return energyDiff <= energyTolerance && !progression.includes(track)
-      })
-
-      // Select tracks for this segment
-      const segmentTracks = matchingTracks
-        .slice(0, tracksPerSegment)
-        .filter((_, index) => progression.length + index < tracksNeeded)
-
-      progression.push(...segmentTracks)
-    }
-
-    // Fill remaining slots if needed
-    while (progression.length < tracksNeeded) {
-      const remainingTracks = tracks.filter(track => !progression.includes(track))
-      if (remainingTracks.length === 0) break
+    const selectedTracks: MusicTrack[] = []
+    const segmentSize = Math.ceil(tracksNeeded / energyProgression.length)
+    
+    // Group tracks by energy level
+    const tracksByEnergy = this.groupTracksByEnergy(suitableTracks)
+    
+    for (let i = 0; i < energyProgression.length && selectedTracks.length < tracksNeeded; i++) {
+      const targetEnergy = energyProgression[i]
+      const tracksInEnergyRange = tracksByEnergy[targetEnergy] || []
       
-      progression.push(remainingTracks[Math.floor(Math.random() * remainingTracks.length)])
+      // Select tracks for this energy segment
+      const segmentTracks = this.selectTracksFromEnergyGroup(
+        tracksInEnergyRange,
+        Math.min(segmentSize, tracksNeeded - selectedTracks.length),
+        intensityLevel
+      )
+      
+      selectedTracks.push(...segmentTracks)
     }
-
-    return progression
-  }
-
-  /**
-   * Determine progression type from energy pattern
-   */
-  private static determineProgression(energyProgression: number[]): 'gradual' | 'maintain' | 'boost' {
-    const start = energyProgression[0]
-    const end = energyProgression[energyProgression.length - 1]
     
-    if (end > start + 1) return 'boost'
-    if (Math.abs(end - start) <= 1) return 'maintain'
-    return 'gradual'
-  }
-
-  /**
-   * Get real-time recommendations based on current state
-   */
-  static getAdaptiveRecommendations(
-    currentTrack: MusicTrack,
-    sessionGoal: TherapeuticGoal,
-    sessionProgress: number, // 0-1
-    userFeedback?: 'effective' | 'ineffective' | 'neutral'
-  ): {
-    nextTracks: MusicTrack[]
-    adjustments: string[]
-  } {
-    const adjustments: string[] = []
+    // If we don't have enough tracks, fill with best available
+    while (selectedTracks.length < tracksNeeded && suitableTracks.length > selectedTracks.length) {
+      const remainingTracks = suitableTracks.filter(t => !selectedTracks.includes(t))
+      if (remainingTracks.length > 0) {
+        selectedTracks.push(remainingTracks[0])
+      } else {
+        break
+      }
+    }
     
-    // Analyze current effectiveness
-    if (userFeedback === 'ineffective') {
-      adjustments.push('Adjusting energy level and frequency band')
-    }
+    return selectedTracks.slice(0, tracksNeeded)
+  }
 
-    if (sessionProgress > 0.8) {
-      adjustments.push('Preparing session conclusion tracks')
-    }
+  /**
+   * Group tracks by energy level (1-5 scale)
+   */
+  private static groupTracksByEnergy(tracks: MusicTrack[]): Record<number, MusicTrack[]> {
+    return tracks.reduce((groups, track) => {
+      const energyLevel = this.mapEnergyToLevel(track.energy || 0.5)
+      if (!groups[energyLevel]) {
+        groups[energyLevel] = []
+      }
+      groups[energyLevel].push(track)
+      return groups
+    }, {} as Record<number, MusicTrack[]>)
+  }
 
-    return {
-      nextTracks: [], // Would be implemented with full track database
-      adjustments
+  /**
+   * Map continuous energy (0-1) to discrete level (1-5)
+   */
+  private static mapEnergyToLevel(energy: number): number {
+    if (energy <= 0.2) return 1
+    if (energy <= 0.4) return 2
+    if (energy <= 0.6) return 3
+    if (energy <= 0.8) return 4
+    return 5
+  }
+
+  /**
+   * Select tracks from an energy group based on therapeutic criteria
+   */
+  private static selectTracksFromEnergyGroup(
+    tracks: MusicTrack[],
+    count: number,
+    intensityLevel: number
+  ): MusicTrack[] {
+    // Score tracks based on therapeutic suitability
+    const scoredTracks = tracks.map(track => ({
+      track,
+      score: this.calculateTherapeuticScore(track, intensityLevel)
+    }))
+    
+    // Sort by score and select best tracks
+    return scoredTracks
+      .sort((a, b) => b.score - a.score)
+      .slice(0, count)
+      .map(item => item.track)
+  }
+
+  /**
+   * Calculate therapeutic score for a track
+   */
+  private static calculateTherapeuticScore(track: MusicTrack, intensityLevel: number): number {
+    let score = 0
+    
+    // Audio feature scoring
+    score += (track.valence || 0.5) * 20 // Emotional positivity
+    score += (1 - Math.abs((track.energy || 0.5) - 0.5)) * 15 // Balanced energy
+    score += (track.acousticness || 0) * 10 // Acoustic preference for therapy
+    score += (1 - (track.speechiness || 0)) * 10 // Prefer instrumental
+    
+    // Adjust for intensity level
+    const energyBonus = Math.abs((track.energy || 0.5) - (intensityLevel / 5)) * -5
+    score += energyBonus
+    
+    return Math.max(0, score)
+  }
+
+  /**
+   * Apply harmonic progression using Camelot wheel
+   */
+  private static applyHarmonicProgression(tracks: MusicTrack[]): MusicTrack[] {
+    if (tracks.length < 2) return tracks
+    
+    try {
+      // Use Camelot recommendation engine for harmonic mixing
+      return CamelotRecommendationEngine.sortByHarmonicFlow(tracks)
+    } catch (error) {
+      console.warn('Camelot progression failed, using original order:', error)
+      return tracks
     }
   }
 
   /**
-   * Calculate session effectiveness score
+   * Determine progression type based on therapeutic goal
    */
-  static calculateEffectiveness(
+  private static determineProgression(goal: TherapeuticGoal): 'gradual' | 'maintain' | 'boost' {
+    switch (goal) {
+      case 'anxiety_relief':
+      case 'sleep_preparation':
+      case 'stress_reduction':
+      case 'pain_management':
+        return 'gradual'
+      case 'mood_boost':
+        return 'boost'
+      case 'meditation_support':
+        return 'maintain'
+      default:
+        return 'gradual'
+    }
+  }
+
+  /**
+   * Analyze session effectiveness (for future learning)
+   */
+  static analyzeSessionEffectiveness(
     session: TherapeuticSession,
     userFeedback: {
-      moodBefore: number // 1-10
-      moodAfter: number // 1-10
-      effectiveness: number // 1-10
+      effectiveness: 1 | 2 | 3 | 4 | 5
+      moodBefore: number
+      moodAfter: number
+      completionRate: number
+      notes?: string
     }
-  ): {
-    score: number
-    insights: string[]
-  } {
-    const moodImprovement = userFeedback.moodAfter - userFeedback.moodBefore
-    const effectivenessWeight = userFeedback.effectiveness / 10
+  ): void {
+    // Store effectiveness data for machine learning improvements
+    console.log('Session analysis:', {
+      sessionId: session.id,
+      goal: session.goal,
+      duration: session.duration,
+      trackCount: session.tracks.length,
+      effectiveness: userFeedback.effectiveness,
+      moodImprovement: userFeedback.moodAfter - userFeedback.moodBefore,
+      completionRate: userFeedback.completionRate
+    })
     
-    const score = (moodImprovement + userFeedback.effectiveness) / 2
-    const insights: string[] = []
-
-    if (moodImprovement > 2) {
-      insights.push('Significant mood improvement detected')
-    }
-
-    if (effectivenessWeight > 0.8) {
-      insights.push('High user satisfaction with track selection')
-    }
-
-    return { score, insights }
+    // In a real implementation, this would update user preferences
+    // and track effectiveness for continuous improvement
   }
 }

@@ -32,7 +32,7 @@ export const NowPlaying: React.FC = () => {
             <div className="min-w-0">
               <h4 className="font-medium truncate">{currentTrack.title}</h4>
               <p className="text-sm text-muted-foreground truncate">
-                {currentTrack.therapeutic_applications?.[0]?.frequency_band_primary?.toUpperCase() || currentTrack.genre}
+                {currentTrack.genre?.toUpperCase() || 'MUSIC'}
                 {currentTrack.bpm && ` • ${Math.round(currentTrack.bpm)} BPM`}
               </p>
             </div>
