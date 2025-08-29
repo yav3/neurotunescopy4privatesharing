@@ -26,6 +26,11 @@ export interface MusicTrack {
   artist?: string
   duration?: number
   mood?: string
+  // Album art fields
+  album_art_url?: string
+  album_art_thumbnail?: string
+  album_art_color?: string
+  album_art_credits?: string
 }
 
 export interface TherapeuticApplication {

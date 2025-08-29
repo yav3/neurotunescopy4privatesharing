@@ -104,9 +104,56 @@ export default function FullPlayer() {
       <div className="px-6 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
         {/* Album Art */}
         <div className="relative mx-auto w-full max-w-sm aspect-square rounded-3xl overflow-hidden shadow-2xl mb-8">
-          <div className="w-full h-full bg-gradient-to-br from-primary/60 via-secondary/60 to-accent/60 flex items-center justify-center">
-            <div className="text-8xl">🧠</div>
-          </div>
+          {/* Therapeutic Nature Background */}
+          {(() => {
+            const primaryApp = currentTrack?.therapeutic_applications?.[0]
+            const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
+            const artworkMap = {
+              delta: { 
+                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+                position: 'object-[center_20%]', // Misty forest
+                gradient: 'from-purple-900/60 via-blue-900/40 to-indigo-800/60'
+              },
+              theta: { 
+                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+                position: 'object-[center_70%]', // Mystical path
+                gradient: 'from-teal-800/60 via-cyan-700/40 to-blue-800/60'
+              },
+              alpha: { 
+                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+                position: 'object-[80%_20%]', // Mountain lake
+                gradient: 'from-emerald-800/60 via-teal-700/40 to-cyan-800/60'
+              },
+              beta: { 
+                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+                position: 'object-[80%_70%]', // Waterfall
+                gradient: 'from-green-700/60 via-emerald-600/40 to-teal-700/60'
+              },
+              gamma: { 
+                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+                position: 'object-center',
+                gradient: 'from-yellow-600/60 via-orange-500/40 to-red-600/60'
+              }
+            }
+            const artwork = artworkMap[frequencyBand] || artworkMap.alpha
+            
+            return (
+              <>
+                <img 
+                  src={artwork.url}
+                  alt={`${frequencyBand} band therapeutic nature scene`}
+                  className={`w-full h-full object-cover ${artwork.position}`}
+                />
+                <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
+                {/* Therapeutic frequency indicator */}
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                  <span className="text-xs font-medium text-white uppercase">
+                    {frequencyBand} Hz Therapy
+                  </span>
+                </div>
+              </>
+            )
+          })()}
           <button
             onClick={toggle}
             disabled={state?.isLoading}

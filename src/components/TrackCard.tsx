@@ -31,26 +31,50 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
   }
 }
 
+// Therapeutic nature artwork by frequency band
+const getTherapeuticArtwork = (frequencyBand: string): { url: string; position: string; gradient: string } => {
+  const artworkMap = {
+    delta: { 
+      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+      position: 'object-[center_20%]', // Top-left: Misty forest
+      gradient: 'from-purple-900/80 via-blue-900/60 to-indigo-800/80'
+    },
+    theta: { 
+      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+      position: 'object-[center_70%]', // Bottom-left: Mystical path
+      gradient: 'from-teal-800/80 via-cyan-700/60 to-blue-800/80'
+    },
+    alpha: { 
+      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+      position: 'object-[80%_20%]', // Top-right: Mountain lake
+      gradient: 'from-emerald-800/80 via-teal-700/60 to-cyan-800/80'
+    },
+    beta: { 
+      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+      position: 'object-[80%_70%]', // Bottom-right: Waterfall
+      gradient: 'from-green-700/80 via-emerald-600/60 to-teal-700/80'
+    },
+    gamma: { 
+      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+      position: 'object-center', // Center: Mix of all scenes
+      gradient: 'from-yellow-600/80 via-orange-500/60 to-red-600/80'
+    }
+  }
+  
+  return artworkMap[frequencyBand] || artworkMap.alpha
+}
+
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
   const { currentTrack, state, loadTrack, toggle } = useAudio()
-  const [albumArtworkUrl, setAlbumArtworkUrl] = useState<string | null>(null)
-  const [isLoadingArtwork, setIsLoadingArtwork] = useState(false)
   
   const isCurrentTrack = currentTrack?.id === track.id
   const isPlaying = isCurrentTrack && state.isPlaying
   const isLoading = isCurrentTrack && state.isLoading
   
   const primaryApp = track.therapeutic_applications?.[0]
-
-  // Load artwork URL when component mounts (disabled until artwork files exist)
-  useEffect(() => {
-    // Temporarily disable artwork loading since no artwork files exist in storage
-    // All searches are returning very low scores (0.12-0.19) indicating no matches
-    console.log('Artwork loading disabled - no artwork files found in storage for:', track.title)
-    setAlbumArtworkUrl(null)
-    setIsLoadingArtwork(false)
-  }, [track.id])
+  const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
+  const artwork = getTherapeuticArtwork(frequencyBand)
 
   const handlePlayClick = async () => {
     console.log('▶️ Play button clicked for track:', track.title)
@@ -70,23 +94,22 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
       <div className="flex gap-4 p-4">
         {/* Album Artwork */}
         <div className="relative flex-shrink-0">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg overflow-hidden flex items-center justify-center">
-            {albumArtworkUrl ? (
-              <img 
-                src={albumArtworkUrl} 
-                alt={`${track.title} artwork`}
-                className="w-full h-full object-cover absolute inset-0"
-                onError={(e) => {
-                  // Hide the image on load error, showing the gradient fallback
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-            ) : null}
-            {/* Fallback design - only shows when no image or image fails to load */}
-            <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center relative z-10">
-              <span className="text-xs font-medium text-primary">
-                {track.title.charAt(0).toUpperCase()}
-              </span>
+          <div className="w-20 h-20 rounded-lg overflow-hidden relative">
+            {/* Therapeutic Nature Background */}
+            <img 
+              src={artwork.url}
+              alt={`${frequencyBand} band therapeutic artwork`}
+              className={`w-full h-full object-cover ${artwork.position}`}
+            />
+            {/* Therapeutic Gradient Overlay */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
+            {/* Frequency Band Indicator */}
+            <div className="absolute top-1 right-1">
+              <div className="w-3 h-3 rounded-full bg-white/80 flex items-center justify-center">
+                <span className="text-[8px] font-bold text-gray-800">
+                  {frequencyBand.charAt(0).toUpperCase()}
+                </span>
+              </div>
             </div>
           </div>
           
