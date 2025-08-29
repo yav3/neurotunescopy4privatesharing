@@ -1,12 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAudio } from "@/context/AudioContext";
+import { SupabaseService } from "@/services/supabase";
 import FullPlayer from "@/components/FullPlayer";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const PlayerPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { currentTrack, loadTrack } = useAudio();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const trackId = searchParams.get('track');
@@ -17,9 +21,54 @@ const PlayerPage = () => {
       return;
     }
 
-    // If track ID is specified but doesn't match current track, we could load it here
-    // For now, we'll just rely on the track being loaded elsewhere
-  }, [searchParams, currentTrack, navigate]);
+    // If track ID is specified and it's different from current track, load it
+    if (trackId && (!currentTrack || currentTrack.id !== trackId)) {
+      const fetchAndLoadTrack = async () => {
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          const track = await SupabaseService.getTrackById(trackId);
+          
+          if (!track) {
+            setError('Track not found');
+            return;
+          }
+          
+          await loadTrack(track);
+        } catch (error) {
+          console.error('Failed to load track:', error);
+          setError('Failed to load track');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchAndLoadTrack();
+    }
+  }, [searchParams, currentTrack, navigate, loadTrack]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <p className="text-muted-foreground">{error}</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
+        >
+          Go Home
+        </button>
+      </div>
+    );
+  }
 
   return <FullPlayer />;
 };

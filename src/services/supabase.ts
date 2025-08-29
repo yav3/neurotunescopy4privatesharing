@@ -89,6 +89,39 @@ export class SupabaseService {
     }
   }
 
+  static async getTrackById(trackId: string): Promise<MusicTrack | null> {
+    try {
+      logger.info('Fetching track by ID', { trackId })
+      
+      const { data, error } = await supabase
+        .from('music_tracks')
+        .select('*')
+        .eq('id', trackId)
+        .eq('upload_status', 'completed')
+        .maybeSingle()
+
+      if (error) throw error
+
+      if (!data) {
+        logger.warn('Track not found', { trackId })
+        return null
+      }
+
+      // Transform data to match MusicTrack interface
+      const track = {
+        ...data,
+        therapeutic_applications: [], // Empty array for now
+        spectral_analysis: [] // Empty array for now
+      } as MusicTrack
+
+      logger.info('Track fetched successfully', { trackId, title: track.title })
+      return track
+    } catch (error) {
+      logger.error('Failed to fetch track by ID', { trackId, error })
+      return null
+    }
+  }
+
   static async getMusicTracksByCategory(category: string): Promise<MusicTrack[]> {
     try {
       // Map category names to genres
