@@ -20,17 +20,13 @@ function sb() {
   );
 }
 
-/** Health endpoint */
-app.get("/api/health", (c) =>
-  c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
-);
-
+/** Health endpoint - NO /api prefix needed */
 app.get("/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
-/** ✅ Playlist endpoint - THE ROUTE THAT WAS MISSING */
-app.get("/api/v1/playlist", async (c) => {
+/** ✅ Playlist endpoint - correct path without /api prefix */
+app.get("/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
@@ -77,53 +73,8 @@ app.get("/api/v1/playlist", async (c) => {
   return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
 
-/** Fallback without /api prefix */
-app.get("/v1/playlist", async (c) => {
-  const goal = c.req.query("goal") ?? "";
-  const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
-  const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
-  const to = offset + limit - 1;
-
-  const supabase = sb();
-  
-  const goalToConditions: Record<string, any> = {
-    'focus': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
-    'relax': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
-    'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
-    'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
-  };
-  
-  const criteria = goalToConditions[goal] || goalToConditions['focus'];
-  
-  let query = supabase
-    .from('music_tracks')
-    .select('*', { count: "exact" })
-    .eq('upload_status', 'completed');
-    
-  if (criteria.energy) {
-    query = query.gte('energy', criteria.energy[0]).lte('energy', criteria.energy[1]);
-  }
-  
-  if (criteria.valence) {
-    query = query.gte('valence', criteria.valence[0]).lte('valence', criteria.valence[1]);
-  }
-  
-  if (criteria.genres.length > 0) {
-    query = query.in('genre', criteria.genres);
-  }
-  
-  const { data: tracks, error, count } = await query.range(offset, to);
-  
-  if (error) {
-    console.error('❌ Database error:', error);
-    return c.json({ ok: false, error: error.message }, 500);
-  }
-
-  return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
-});
-
 /** Build session endpoint */
-app.post("/api/v1/session/build", async (c) => {
+app.post("/v1/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -170,7 +121,7 @@ app.post("/api/v1/session/build", async (c) => {
 });
 
 /** Debug storage access */
-app.get("/api/debug/storage", async (c) => {
+app.get("/debug/storage", async (c) => {
   const supabase = sb();
   
   const envCheck = {
@@ -203,7 +154,7 @@ app.get("/api/debug/storage", async (c) => {
 });
 
 /** Session telemetry */
-app.post("/api/v1/sessions/start", async (c) => {
+app.post("/v1/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -211,14 +162,14 @@ app.post("/api/v1/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/api/v1/sessions/progress", async (c) => {
+app.post("/v1/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/api/v1/sessions/complete", async (c) => {
+app.post("/v1/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
