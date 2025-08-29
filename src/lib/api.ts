@@ -32,10 +32,10 @@ export const API = {
   // Music catalog  
   featured: () => fetch(`${API_BASE}/api/catalog/featured`).then(j),
   playlistByGoal: (goal: string) =>
-    fetch(`${API_BASE}/api/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
+    fetch(`${API_BASE}/api/v1/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
 
   buildSession: (p: {goal: string; durationMin: number; intensity: number}) =>
-    fetch(`${API_BASE}/api/session/build`, {
+    fetch(`${API_BASE}/api/v1/session/build`, {
       method: "POST", 
       headers: {"content-type":"application/json"}, 
       body: JSON.stringify(p)
@@ -43,23 +43,23 @@ export const API = {
 
   // Sessions/telemetry
   startSession: (trackId: string) =>
-    fetch(`${API_BASE}/api/sessions/start`, { 
+    fetch(`${API_BASE}/api/v1/sessions/start`, { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trackId })
     }).then(j<StartSessionResponse>),
 
   progress: (sessionId: string, t: number) =>
-    navigator.sendBeacon?.(`${API_BASE}/api/sessions/progress`,
+    navigator.sendBeacon?.(`${API_BASE}/api/v1/sessions/progress`,
       new Blob([JSON.stringify({ sessionId, t })], { type: "application/json" }))
-    || fetch(`${API_BASE}/api/sessions/progress`, {
+    || fetch(`${API_BASE}/api/v1/sessions/progress`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId, t })
     }),
 
   complete: (sessionId: string) =>
-    fetch(`${API_BASE}/api/sessions/complete`, {
+    fetch(`${API_BASE}/api/v1/sessions/complete`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId })

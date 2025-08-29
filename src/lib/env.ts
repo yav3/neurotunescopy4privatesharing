@@ -1,17 +1,17 @@
 // Single source of truth for the API base
 export const API_BASE = (() => {
-  // For development, use the current origin (localhost:3000 -> localhost:5000)
-  if (typeof window !== 'undefined') {
-    const origin = window.location.origin
-    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
-      return origin.replace(':3000', ':5000').replace(':5173', ':5000')
-    }
-    // In production, assume API is on same origin
-    return origin
+  // Vite or Next.js public env
+  const v =
+    (typeof import.meta !== "undefined"
+      ? (import.meta as any).env?.VITE_API_BASE_URL
+      : process.env.NEXT_PUBLIC_API_BASE_URL) || "";
+
+  if (!/^https?:\/\//.test(v)) {
+    throw new Error(
+      `API base misconfigured: '${v}'. Set VITE_API_BASE_URL or NEXT_PUBLIC_API_BASE_URL to e.g. https://api.yourdomain.com`
+    );
   }
-  
-  // Server-side fallback
-  return process.env.API_BASE_URL || 'http://localhost:5000'
-})()
+  return v.replace(/\/+$/, "");
+})();
 
 console.log('🌍 API_BASE configured as:', API_BASE)
