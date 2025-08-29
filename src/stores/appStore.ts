@@ -6,7 +6,6 @@ interface UserPreferences {
   preferredBands: FrequencyBand[]
   volume: number
   autoplay: boolean
-  darkMode: boolean
   sessionReminders: boolean
   analytics: boolean
 }
@@ -45,7 +44,6 @@ const defaultPreferences: UserPreferences = {
   preferredBands: ['alpha'],
   volume: 0.8,
   autoplay: false,
-  darkMode: true,
   sessionReminders: true,
   analytics: true
 }

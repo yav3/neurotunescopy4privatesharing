@@ -60,8 +60,8 @@ export const PlaylistPage: React.FC = () => {
   // If we have a playlist ID but no data yet
   if (playlistId && isLoadingPlaylist) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white">
-        <header className="bg-gray-800 p-6 border-b border-gray-700">
+      <div className="min-h-screen bg-background text-foreground">
+        <header className="bg-card p-6 border-b border-border">
           <div className="max-w-7xl mx-auto flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
@@ -84,8 +84,8 @@ export const PlaylistPage: React.FC = () => {
   // If there was an error loading the playlist
   if (playlistId && playlistError) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white">
-        <header className="bg-gray-800 p-6 border-b border-gray-700">
+      <div className="min-h-screen bg-background text-foreground">
+        <header className="bg-card p-6 border-b border-border">
           <div className="max-w-7xl mx-auto flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
@@ -105,7 +105,7 @@ export const PlaylistPage: React.FC = () => {
             </p>
             <button
               onClick={() => navigate('/playlists')}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-colors"
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-colors"
             >
               Back to Playlists
             </button>
@@ -116,8 +116,8 @@ export const PlaylistPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <header className="bg-gray-800 p-6 border-b border-gray-700">
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="bg-card p-6 border-b border-border">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
@@ -134,7 +134,7 @@ export const PlaylistPage: React.FC = () => {
           {playlistData && (
             <button
               onClick={handleLoadPlaylist}
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg transition-colors"
             >
               <Plus size={18} />
               Load in Player

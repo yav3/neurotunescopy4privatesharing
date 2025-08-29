@@ -58,33 +58,33 @@ export function AIDJPage() {
       id: 'focus', 
       label: 'Focus', 
       icon: Brain, 
-      gradient: 'bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200',
+      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Enhance concentration and productivity',
-      color: 'text-blue-600'
+      color: 'text-blue-400'
     },
     { 
       id: 'chill', 
       label: 'Chill', 
       icon: HeartIcon, 
-      gradient: 'bg-gradient-to-br from-green-50 to-green-100 border border-green-200',
+      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Relax and unwind with soothing sounds',
-      color: 'text-green-600'
+      color: 'text-green-400'
     },
     { 
       id: 'sleep', 
       label: 'Sleep', 
       icon: Moon, 
-      gradient: 'bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200',
+      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Peaceful music for rest and recovery',
-      color: 'text-gray-600'
+      color: 'text-slate-400'
     },
     { 
       id: 'energy', 
       label: 'Energy', 
       icon: Zap, 
-      gradient: 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200',
+      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Boost motivation and vitality',
-      color: 'text-orange-600'
+      color: 'text-orange-400'
     }
   ];
 
@@ -171,20 +171,20 @@ export function AIDJPage() {
                 >
                   <div className="p-8">
                     <div className="flex items-center gap-4 mb-4">
-                      <div className={cn("p-3 rounded-full bg-white/80 backdrop-blur-sm", mood.color)}>
+                      <div className={cn("p-3 rounded-full bg-card/80 backdrop-blur-sm", mood.color)}>
                         <Icon className="h-8 w-8" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-gray-900">{mood.label}</h3>
-                        <p className="text-gray-700 mt-1">{mood.description}</p>
+                        <h3 className="text-2xl font-bold text-foreground">{mood.label}</h3>
+                        <p className="text-muted-foreground mt-1">{mood.description}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center justify-between mt-6">
-                      <Badge variant="secondary" className="bg-white/80 text-gray-700 border-gray-300">
+                      <Badge variant="secondary" className="bg-card/80 text-foreground border-border">
                         AI Curated
                       </Badge>
-                      <div className="flex items-center gap-2 text-gray-600 group-hover:text-gray-800 transition-colors">
+                      <div className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors">
                         <span className="text-sm font-medium">Start Session</span>
                         <Play className="h-4 w-4" />
                       </div>
@@ -216,14 +216,14 @@ export function AIDJPage() {
                   {selectedMoodData && (
                     <div className="flex items-center gap-3">
                       <div className={cn(
-                        "p-2 rounded-full bg-white border border-gray-200",
+                        "p-2 rounded-full bg-card border-border",
                         selectedMoodData.color
                       )}>
                         <selectedMoodData.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold text-gray-900">{selectedMoodData.label} Mix</h2>
-                        <p className="text-sm text-gray-600">
+                        <h2 className="text-lg font-semibold text-foreground">{selectedMoodData.label} Mix</h2>
+                        <p className="text-sm text-muted-foreground">
                           {playlist.length} tracks • AI Generated
                         </p>
                       </div>

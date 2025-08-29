@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
+	darkMode: "media", // Force dark mode always
 	content: [
 		"./index.html",
 		"./src/**/*.{ts,tsx}",

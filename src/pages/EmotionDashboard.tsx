@@ -251,8 +251,8 @@ export function EmotionDashboard() {
                     return (
                       <div key={goal.id} className="space-y-3">
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 bg-${goal.color}-100 dark:bg-${goal.color}-900/20 rounded-full`}>
-                            <Icon className={`h-4 w-4 text-${goal.color}-600 dark:text-${goal.color}-400`} />
+                          <div className="p-2 bg-card rounded-full">
+                            <Icon className="h-4 w-4 text-foreground" />
                           </div>
                           <span className="font-medium">{goal.label}</span>
                         </div>
@@ -284,8 +284,8 @@ export function EmotionDashboard() {
                     const Icon = insight.icon;
                     return (
                       <div key={index} className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
-                        <div className={`p-2 bg-${insight.color}-100 dark:bg-${insight.color}-900/20 rounded-full`}>
-                          <Icon className={`h-4 w-4 text-${insight.color}-600 dark:text-${insight.color}-400`} />
+                        <div className="p-2 bg-card rounded-full">
+                          <Icon className="h-4 w-4 text-foreground" />
                         </div>
                         <div>
                           <h4 className="font-medium">{insight.title}</h4>
@@ -424,29 +424,29 @@ export function EmotionDashboard() {
                   <CardTitle>Personalized Recommendations</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-100">
+                  <div className="p-4 bg-secondary/50 rounded-lg">
+                    <h4 className="font-medium text-foreground">
                       Morning Focus Sessions
                     </h4>
-                    <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Your focus scores are highest between 9-11 AM. Consider scheduling important tasks during this time.
                     </p>
                   </div>
                   
-                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <h4 className="font-medium text-green-900 dark:text-green-100">
+                  <div className="p-4 bg-secondary/50 rounded-lg">
+                    <h4 className="font-medium text-foreground">
                       Stress Reduction Success
                     </h4>
-                    <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Ambient music sessions have reduced your stress levels by 35%. Keep up the great work!
                     </p>
                   </div>
 
-                  <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <h4 className="font-medium text-purple-900 dark:text-purple-100">
+                  <div className="p-4 bg-secondary/50 rounded-lg">
+                    <h4 className="font-medium text-foreground">
                       Sleep Quality Improvement
                     </h4>
-                    <p className="text-sm text-purple-700 dark:text-purple-300 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Evening classical music sessions correlate with better sleep quality metrics.
                     </p>
                   </div>
