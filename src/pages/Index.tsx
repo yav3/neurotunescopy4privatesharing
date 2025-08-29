@@ -15,7 +15,7 @@ const Index = () => {
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { setPlaylist, currentTrack, loadTrack, state } = useAudio();
+  const { setPlaylist, currentTrack, loadTrack, state, toggle } = useAudio();
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
@@ -47,6 +47,8 @@ const Index = () => {
         });
         
         await loadTrack(tracksToQueue[0]);
+        // Start playing after track is loaded
+        await toggle();
       }
       
       setShowPlayer(false); // Close any existing player
@@ -71,9 +73,7 @@ const Index = () => {
     // Show feedback for tab changes
     const tabNames = {
       "goals": "Therapeutic Goals",
-      "sessions": "Session Builder",
-      "popular": "Popular Tracks",
-      "recent": "Recent Activity"
+      "sessions": "Session Builder"
     };
     
     toast({
