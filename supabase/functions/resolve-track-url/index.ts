@@ -5,130 +5,179 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface StorageIndex {
-  [normalizedPath: string]: {
-    originalPath: string
-    publicUrl: string
+// In-memory index of storage objects
+let storageKeys: string[] = []
+let lastIndexAt = 0
+const INDEX_CACHE_DURATION = 10 * 60 * 1000 // 10 minutes
+
+// Build or refresh the storage index
+async function buildStorageIndex(supabase: any, bucketName: string, force = false) {
+  const now = Date.now()
+  if (!force && storageKeys.length && now - lastIndexAt < INDEX_CACHE_DURATION) {
+    console.log(`Using cached storage index with ${storageKeys.length} files`)
+    return
   }
-}
 
-let storageIndex: StorageIndex | null = null
-let indexLastUpdated: number = 0
-const INDEX_CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
-
-function normalizeFilename(filename: string): string {
-  return filename
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '') // Remove all non-alphanumeric characters
-    .trim()
-}
-
-function calculateSimilarity(str1: string, str2: string): number {
-  // Simple Levenshtein distance-based similarity
-  const longer = str1.length > str2.length ? str1 : str2
-  const shorter = str1.length > str2.length ? str2 : str1
-  
-  if (longer.length === 0) return 1.0
-  
-  const distance = levenshteinDistance(longer, shorter)
-  return (longer.length - distance) / longer.length
-}
-
-function levenshteinDistance(str1: string, str2: string): number {
-  const matrix = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null))
-  
-  for (let i = 0; i <= str1.length; i += 1) {
-    matrix[0][i] = i
-  }
-  
-  for (let j = 0; j <= str2.length; j += 1) {
-    matrix[j][0] = j
-  }
-  
-  for (let j = 1; j <= str2.length; j += 1) {
-    for (let i = 1; i <= str1.length; i += 1) {
-      const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1
-      matrix[j][i] = Math.min(
-        matrix[j][i - 1] + 1, // deletion
-        matrix[j - 1][i] + 1, // insertion
-        matrix[j - 1][i - 1] + indicator // substitution
-      )
-    }
-  }
-  
-  return matrix[str2.length][str1.length]
-}
-
-async function buildStorageIndex(supabase: any, bucketName: string): Promise<StorageIndex> {
   console.log(`Building storage index for bucket: ${bucketName}`)
   
-  const { data: files, error } = await supabase.storage
-    .from(bucketName)
-    .list('', {
-      limit: 1000,
+  // List all objects (paged)
+  const keys: string[] = []
+  let page = 0
+  const PAGE_SIZE = 1000
+
+  while (true) {
+    const { data, error } = await supabase.storage.from(bucketName).list('', {
+      limit: PAGE_SIZE,
+      offset: page * PAGE_SIZE,
       sortBy: { column: 'name', order: 'asc' }
     })
-  
-  if (error) {
-    console.error('Error listing files:', error)
-    throw new Error(`Failed to list storage files: ${error.message}`)
-  }
-  
-  const index: StorageIndex = {}
-  
-  for (const file of files || []) {
-    if (file.name) {
-      const normalizedName = normalizeFilename(file.name)
-      const { data: urlData } = supabase.storage
-        .from(bucketName)
-        .getPublicUrl(file.name)
-      
-      index[normalizedName] = {
-        originalPath: file.name,
-        publicUrl: urlData.publicUrl
+    
+    if (error) {
+      console.error('Error listing storage files:', error)
+      throw error
+    }
+    
+    if (!data?.length) break
+    
+    for (const obj of data) {
+      if (obj?.name) {
+        const name = obj.name.toLowerCase()
+        // Include audio files and potential artwork
+        if (name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.flac') || 
+            name.endsWith('.m4a') || name.endsWith('.ogg') || name.endsWith('.jpg') || 
+            name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp')) {
+          keys.push(obj.name)
+        }
       }
     }
-  }
-  
-  console.log(`Built index with ${Object.keys(index).length} files`)
-  return index
-}
-
-async function getOrBuildIndex(supabase: any, bucketName: string): Promise<StorageIndex> {
-  const now = Date.now()
-  
-  if (!storageIndex || (now - indexLastUpdated) > INDEX_CACHE_DURATION) {
-    console.log('Rebuilding storage index...')
-    storageIndex = await buildStorageIndex(supabase, bucketName)
-    indexLastUpdated = now
-  }
-  
-  return storageIndex
-}
-
-function findBestMatch(dbPath: string, index: StorageIndex, threshold: number = 0.6): string | null {
-  const normalizedDbPath = normalizeFilename(dbPath)
-  
-  // First try exact match
-  if (index[normalizedDbPath]) {
-    return index[normalizedDbPath].publicUrl
-  }
-  
-  // Try fuzzy matching
-  let bestMatch: string | null = null
-  let bestSimilarity = 0
-  
-  for (const [normalizedStoragePath, data] of Object.entries(index)) {
-    const similarity = calculateSimilarity(normalizedDbPath, normalizedStoragePath)
     
-    if (similarity > bestSimilarity && similarity >= threshold) {
-      bestSimilarity = similarity
-      bestMatch = data.publicUrl
+    if (data.length < PAGE_SIZE) break
+    page++
+  }
+  
+  storageKeys = keys
+  lastIndexAt = now
+  console.log(`Built index with ${storageKeys.length} files`)
+}
+
+// Normalize text to tokens
+function normalizeTokens(s: string): string[] {
+  return s
+    .toLowerCase()
+    .replace(/[_\-\.]+/g, ' ')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\b(inst|instr|instrumental)\b/g, 'instrumental')
+    .replace(/\b(re[\s-]?energize)\b/g, 'reenergize')
+    .replace(/\b(hiit)\b/g, 'hiit')
+    .replace(/\b(2010s|2010's)\b/g, '2010s')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+}
+
+// Create character bigrams
+function bigrams(chars: string[]): string[] {
+  const out: string[] = []
+  for (let i = 0; i < chars.length - 1; i++) {
+    out.push(chars[i] + chars[i + 1])
+  }
+  return out
+}
+
+// Dice coefficient for character-level similarity
+function diceCoef(a: string[], b: string[]): number {
+  if (!a.length || !b.length) return 0
+  
+  const map = new Map<string, number>()
+  for (const g of a) {
+    map.set(g, (map.get(g) ?? 0) + 1)
+  }
+  
+  let inter = 0
+  for (const g of b) {
+    const c = map.get(g)
+    if (c && c > 0) {
+      inter++
+      map.set(g, c - 1)
     }
   }
   
-  console.log(`Best match for "${dbPath}": similarity=${bestSimilarity}, found=${!!bestMatch}`)
-  return bestMatch
+  return (2 * inter) / (a.length + b.length)
+}
+
+// Advanced similarity score using Jaccard + Dice
+function similarityScore(aRaw: string, bRaw: string): number {
+  const A = new Set(normalizeTokens(aRaw))
+  const B = new Set(normalizeTokens(bRaw))
+  
+  if (!A.size || !B.size) return 0
+
+  // Jaccard similarity on tokens
+  let inter = 0
+  for (const t of A) {
+    if (B.has(t)) inter++
+  }
+  const jaccard = inter / (A.size + B.size - inter)
+
+  // Dice coefficient on character bigrams
+  const ad = bigrams(Array.from(aRaw.toLowerCase().replace(/\s+/g, '')))
+  const bd = bigrams(Array.from(bRaw.toLowerCase().replace(/\s+/g, '')))
+  const dice = diceCoef(ad, bd)
+
+  // Weighted blend: favor token-level matching but include character-level
+  return 0.65 * jaccard + 0.35 * dice
+}
+
+// Resolve a DB-provided path/title to the best storage key
+async function resolveStorageKey(supabase: any, bucketName: string, dbPathOrTitle: string, fileType: 'audio' | 'artwork'): Promise<{ key: string | null; score: number }> {
+  await buildStorageIndex(supabase, bucketName) // ensure index is warmed
+
+  // Filter keys by file type
+  const relevantKeys = storageKeys.filter(key => {
+    const lowerKey = key.toLowerCase()
+    if (fileType === 'audio') {
+      return lowerKey.endsWith('.mp3') || lowerKey.endsWith('.wav') || 
+             lowerKey.endsWith('.flac') || lowerKey.endsWith('.m4a') || lowerKey.endsWith('.ogg')
+    } else {
+      return lowerKey.endsWith('.jpg') || lowerKey.endsWith('.jpeg') || 
+             lowerKey.endsWith('.png') || lowerKey.endsWith('.webp')
+    }
+  })
+
+  // Try exact name first
+  const exact = relevantKeys.find(k => k.toLowerCase() === dbPathOrTitle.toLowerCase())
+  if (exact) {
+    console.log(`Exact match found: ${exact}`)
+    return { key: exact, score: 1 }
+  }
+
+  // Score all candidates
+  let bestKey: string | null = null
+  let bestScore = 0
+  
+  for (const k of relevantKeys) {
+    const s = similarityScore(dbPathOrTitle, k)
+    if (s > bestScore) {
+      bestScore = s
+      bestKey = k
+    }
+  }
+
+  console.log(`Best match for "${dbPathOrTitle}": key="${bestKey}", score=${bestScore}`)
+
+  // Accept only confident matches
+  if (bestScore >= 0.62) {
+    return { key: bestKey!, score: bestScore }
+  }
+  
+  return { key: null, score: bestScore }
+}
+
+// Get public URL for storage key
+function getPublicUrl(supabase: any, bucketName: string, key: string): string {
+  const { data } = supabase.storage.from(bucketName).getPublicUrl(key)
+  return data.publicUrl
 }
 
 Deno.serve(async (req) => {
@@ -166,6 +215,7 @@ Deno.serve(async (req) => {
       .single()
     
     if (trackError || !track) {
+      console.error('Track not found:', trackError)
       return new Response(
         JSON.stringify({ error: 'Track not found' }),
         { 
@@ -175,20 +225,17 @@ Deno.serve(async (req) => {
       )
     }
     
-    // Build storage index
     const targetBucket = track.bucket_name || bucketName
-    const index = await getOrBuildIndex(supabase, targetBucket)
+    let searchPath = track.file_path || track.title
     
-    let searchPath = track.file_path
-    
-    // If looking for artwork, modify the path
-    if (fileType === 'artwork' && searchPath) {
-      searchPath = searchPath.replace(/\.(mp3|wav|flac|m4a|ogg)$/i, '.jpg')
+    // If looking for artwork, modify the search path
+    if (fileType === 'artwork' && track.file_path) {
+      searchPath = track.file_path.replace(/\.(mp3|wav|flac|m4a|ogg)$/i, '.jpg')
     }
     
     if (!searchPath) {
       return new Response(
-        JSON.stringify({ error: 'No file path found for track' }),
+        JSON.stringify({ error: 'No file path or title found for track' }),
         { 
           status: 404, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -196,15 +243,19 @@ Deno.serve(async (req) => {
       )
     }
     
-    // Find best match
-    const resolvedUrl = findBestMatch(searchPath, index, 0.6)
+    console.log(`Resolving ${fileType} for track ${trackId}: "${searchPath}"`)
     
-    if (!resolvedUrl) {
+    // Find best match using advanced algorithm
+    const { key: resolvedKey, score } = await resolveStorageKey(supabase, targetBucket, searchPath, fileType as 'audio' | 'artwork')
+    
+    if (!resolvedKey) {
+      console.warn(`No matching ${fileType} file found for: ${searchPath} (best score: ${score})`)
       return new Response(
         JSON.stringify({ 
-          error: 'No matching file found in storage',
+          error: `No matching ${fileType} file found in storage`,
           searchPath,
-          availableFiles: Object.keys(index).slice(0, 10) // First 10 for debugging
+          bestScore: score,
+          threshold: 0.62
         }),
         { 
           status: 404, 
@@ -213,12 +264,17 @@ Deno.serve(async (req) => {
       )
     }
     
-    console.log(`Resolved ${fileType} URL for track ${trackId}: ${resolvedUrl}`)
+    // Get public URL
+    const resolvedUrl = getPublicUrl(supabase, targetBucket, resolvedKey)
+    
+    console.log(`Resolved ${fileType} URL for track ${trackId}: ${resolvedUrl} (score: ${score})`)
     
     return new Response(
       JSON.stringify({ 
         url: resolvedUrl,
         originalPath: searchPath,
+        resolvedKey,
+        matchScore: score,
         trackId: track.id
       }),
       { 
