@@ -37,17 +37,19 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   }
 
   return (
-    <div className="group bg-card/80 backdrop-blur-sm rounded-2xl p-6 border-2 transition-all duration-300 hover:shadow-xl border-border hover:border-border/80">
+    <div className="group bg-card rounded-2xl p-6 border border-border transition-all duration-300 hover:shadow-card hover:border-primary/20">
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+          <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
             {track.title}
           </h3>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="capitalize">{track.genre}</span>
+            <span className="capitalize bg-secondary px-2 py-1 rounded-full text-xs">
+              {track.genre}
+            </span>
             <span className="flex items-center gap-1">
               <Clock size={14} />
-              {track.bpm} BPM
+              {track.bpm || 'N/A'} BPM
             </span>
           </div>
         </div>
@@ -55,15 +57,15 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
         <button
           onClick={handlePlayClick}
           disabled={isLoading}
-          className="relative p-4 rounded-full transition-all duration-300 group-hover:scale-110 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          className="relative p-3 rounded-full transition-all duration-300 group-hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
           {isLoading ? (
-            <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
           ) : isPlaying ? (
-            <Pause size={24} />
+            <Pause size={20} />
           ) : (
-            <Play size={24} className="ml-1" />
+            <Play size={20} className="ml-0.5" />
           )}
         </button>
       </div>
@@ -96,7 +98,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
           <div className="flex items-center gap-2 mt-1">
             <div className="flex-1 bg-secondary rounded-full h-1.5">
               <div 
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-1.5 rounded-full" 
+                className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 rounded-full" 
                 style={{ width: `${track.energy * 100}%` }}
               />
             </div>
@@ -111,7 +113,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
           <div className="flex items-center gap-2 mt-1">
             <div className="flex-1 bg-secondary rounded-full h-1.5">
               <div 
-                className="bg-gradient-to-r from-yellow-500 to-green-500 h-1.5 rounded-full" 
+                className="bg-gradient-to-r from-green-500 to-green-600 h-1.5 rounded-full" 
                 style={{ width: `${track.valence * 100}%` }}
               />
             </div>

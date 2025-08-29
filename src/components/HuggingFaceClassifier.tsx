@@ -85,15 +85,39 @@ const HuggingFaceClassifier: React.FC = () => {
     try {
       console.log('Starting HuggingFace classification for:', input);
 
-      // Use a lightweight emotion classification model
-      const classifier = await pipeline(
-        'text-classification', 
-        'cardiffnlp/twitter-roberta-base-emotion-latest',
-        { 
-          device: 'cpu',
-          dtype: 'fp32'
+      // Try different device configurations with fallbacks
+      let classifier;
+      try {
+        // Try WebGPU first
+        classifier = await pipeline(
+          'text-classification', 
+          'cardiffnlp/twitter-roberta-base-emotion-latest',
+          { 
+            device: 'webgpu',
+            dtype: 'fp32'
+          }
+        );
+      } catch (webgpuError) {
+        console.log('WebGPU not available, trying WASM...');
+        try {
+          // Fallback to WASM
+          classifier = await pipeline(
+            'text-classification', 
+            'cardiffnlp/twitter-roberta-base-emotion-latest',
+            { 
+              device: 'wasm',
+              dtype: 'fp32'
+            }
+          );
+        } catch (wasmError) {
+          console.log('WASM not available, using default...');
+          // Final fallback - let the library choose
+          classifier = await pipeline(
+            'text-classification', 
+            'cardiffnlp/twitter-roberta-base-emotion-latest'
+          );
         }
-      );
+      }
 
       setIsModelLoading(false);
 
@@ -145,11 +169,11 @@ const HuggingFaceClassifier: React.FC = () => {
 
   const getEmotionColor = (label: string): string => {
     const colorMap: Record<string, string> = {
-      'joy': 'bg-yellow-500',
-      'happiness': 'bg-yellow-500',
-      'sadness': 'bg-blue-500',
+      'joy': 'bg-blue-500',
+      'happiness': 'bg-blue-500',
+      'sadness': 'bg-gray-500',
       'anger': 'bg-red-500',
-      'fear': 'bg-purple-500',
+      'fear': 'bg-gray-600',
       'surprise': 'bg-green-500',
       'disgust': 'bg-gray-500',
       'optimism': 'bg-orange-500',
@@ -172,7 +196,7 @@ const HuggingFaceClassifier: React.FC = () => {
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-5 w-5 text-primary" />
           AI Mood Analyzer
-          <Sparkles className="h-4 w-4 text-yellow-500" />
+          <Sparkles className="h-4 w-4 text-blue-500" />
         </CardTitle>
         <p className="text-sm text-muted-foreground">
           Describe how you're feeling and get personalized music recommendations

@@ -58,29 +58,33 @@ export function AIDJPage() {
       id: 'focus', 
       label: 'Focus', 
       icon: Brain, 
-      gradient: 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800',
-      description: 'Enhance concentration and productivity'
+      gradient: 'bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200',
+      description: 'Enhance concentration and productivity',
+      color: 'text-blue-600'
     },
     { 
       id: 'chill', 
       label: 'Chill', 
       icon: HeartIcon, 
-      gradient: 'bg-gradient-to-br from-blue-500 via-blue-600 to-teal-700',
-      description: 'Relax and unwind with soothing sounds'
+      gradient: 'bg-gradient-to-br from-green-50 to-green-100 border border-green-200',
+      description: 'Relax and unwind with soothing sounds',
+      color: 'text-green-600'
     },
     { 
       id: 'sleep', 
       label: 'Sleep', 
       icon: Moon, 
-      gradient: 'bg-gradient-to-br from-blue-800 via-indigo-700 to-purple-800',
-      description: 'Peaceful music for rest and recovery'
+      gradient: 'bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200',
+      description: 'Peaceful music for rest and recovery',
+      color: 'text-gray-600'
     },
     { 
       id: 'energy', 
       label: 'Energy', 
       icon: Zap, 
-      gradient: 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600',
-      description: 'Boost motivation and vitality'
+      gradient: 'bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200',
+      description: 'Boost motivation and vitality',
+      color: 'text-orange-600'
     }
   ];
 
@@ -160,28 +164,28 @@ export function AIDJPage() {
                 <Card
                   key={mood.id}
                   className={cn(
-                    "group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl overflow-hidden border-0",
+                    "group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg overflow-hidden",
                     mood.gradient
                   )}
                   onClick={() => handleMoodSelect(mood.id)}
                 >
-                  <div className="p-8 text-white">
+                  <div className="p-8">
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                      <div className={cn("p-3 rounded-full bg-white/80 backdrop-blur-sm", mood.color)}>
                         <Icon className="h-8 w-8" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold">{mood.label}</h3>
-                        <p className="text-white/90 mt-1">{mood.description}</p>
+                        <h3 className="text-2xl font-bold text-gray-900">{mood.label}</h3>
+                        <p className="text-gray-700 mt-1">{mood.description}</p>
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between mt-6">
-                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                      <Badge variant="secondary" className="bg-white/80 text-gray-700 border-gray-300">
                         AI Curated
                       </Badge>
-                      <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-                        <span className="text-sm">Start Session</span>
+                      <div className="flex items-center gap-2 text-gray-600 group-hover:text-gray-800 transition-colors">
+                        <span className="text-sm font-medium">Start Session</span>
                         <Play className="h-4 w-4" />
                       </div>
                     </div>
@@ -212,14 +216,14 @@ export function AIDJPage() {
                   {selectedMoodData && (
                     <div className="flex items-center gap-3">
                       <div className={cn(
-                        "p-2 rounded-full text-white",
-                        selectedMoodData.gradient
+                        "p-2 rounded-full bg-white border border-gray-200",
+                        selectedMoodData.color
                       )}>
                         <selectedMoodData.icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">{selectedMoodData.label} Mix</h2>
-                        <p className="text-sm text-muted-foreground">
+                        <h2 className="text-lg font-semibold text-gray-900">{selectedMoodData.label} Mix</h2>
+                        <p className="text-sm text-gray-600">
                           {playlist.length} tracks • AI Generated
                         </p>
                       </div>
