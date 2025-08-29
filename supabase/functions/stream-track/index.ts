@@ -211,149 +211,162 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
     
     const url = new URL(req.url)
-    const pathParts = url.pathname.split('/')
-    const trackId = pathParts[pathParts.length - 1] // Get last part of path
+    const pathParts = url.pathname.split('/').filter(Boolean)
+    const lastPart = pathParts[pathParts.length - 1] // Get last part of path
     const bucketName = url.searchParams.get('bucket') || 'neuralpositivemusic'
     
-    if (!trackId || trackId === 'stream-track') {
+    let candidate = ''
+    
+    // Handle different request formats:
+    // 1. /stream-track/12345 (track ID)
+    // 2. /stream-track/path/encoded%20path (path-based)
+    // 3. /stream-track (with trackId param - legacy)
+    
+    if (!lastPart || lastPart === 'stream-track') {
+      // Legacy format with trackId parameter
+      const trackId = url.searchParams.get('trackId')
+      if (!trackId) {
+        return new Response(
+          JSON.stringify({ error: 'Track identifier required' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+      
+      // Get track from database
+      const { data: track, error: trackError } = await supabase
+        .from('music_tracks')
+        .select('id, title, original_title, file_path, bucket_name')
+        .eq('id', trackId)
+        .single()
+      
+      if (trackError || !track) {
+        console.error('Track not found:', trackError)
+        return new Response(
+          JSON.stringify({ error: 'Track not found' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+      
+      candidate = track.file_path || track.original_title || track.title
+    } else if (/^\d+$/.test(lastPart)) {
+      // Numeric ID format
+      const { data: track, error: trackError } = await supabase
+        .from('music_tracks')
+        .select('id, title, original_title, file_path, bucket_name')
+        .eq('id', lastPart)
+        .single()
+      
+      if (trackError || !track) {
+        console.error('Track not found:', trackError)
+        return new Response(
+          JSON.stringify({ error: 'Track not found' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+      
+      candidate = track.file_path || track.original_title || track.title
+    } else {
+      // Path-based format - decode the path
+      candidate = decodeURIComponent(lastPart)
+    }
+    
+    if (!candidate) {
       return new Response(
-        JSON.stringify({ error: 'trackId parameter is required in URL path' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
+        JSON.stringify({ error: 'No file path or title found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
     
-    console.log(`Streaming request for track: ${trackId}`)
-    
-    // Get track from database - include original_title for better matching
-    const { data: track, error: trackError } = await supabase
-      .from('music_tracks')
-      .select('id, title, original_title, file_path, bucket_name')
-      .eq('id', trackId)
-      .single()
-    
-    if (trackError || !track) {
-      console.error('Track not found:', trackError)
-      return new Response(
-        JSON.stringify({ error: 'Track not found' }),
-        { 
-          status: 404, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-    
-    const targetBucket = track.bucket_name || bucketName
-    
-    // Try multiple candidates in priority order for better matching
-    const candidates = [
-      track.file_path,           // Direct storage path (if updated)
-      track.title,               // Main title
-      track.original_title       // Original title fallback
-    ].filter(Boolean)
-    
-    if (!candidates.length) {
-      return new Response(
-        JSON.stringify({ error: 'No file path or title identifiers found for track' }),
-        { 
-          status: 404, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-    
-    console.log(`Resolving audio for track ${trackId}: trying ${candidates.length} candidates`)
+    console.log(`Streaming request for candidate: "${candidate}"`)
     
     // Find best match across all candidates
-    let resolvedKey: string | null = null
-    let bestScore = 0
-    let usedCandidate = ''
+    const { key: resolvedKey, score } = await resolveStorageKey(supabase, bucketName, candidate)
     
-    for (const candidate of candidates) {
-      console.log(`Trying candidate: "${candidate}"`)
-      const { key, score } = await resolveStorageKey(supabase, targetBucket, candidate)
-      
-      if (score > bestScore) {
-        bestScore = score
-        resolvedKey = key
-        usedCandidate = candidate
-      }
-      
-      // If we get a perfect or near-perfect match, use it immediately
-      if (score >= 0.95) {
-        console.log(`High confidence match found: ${key} (${(score * 100).toFixed(1)}%)`)
-        break
-      }
-    }
-    
-    console.log(`Best match via "${usedCandidate}": ${resolvedKey} (${(bestScore * 100).toFixed(1)}%)`)
-    
-    if (!resolvedKey) {
-      console.warn(`No matching audio file found. Best score: ${(bestScore * 100).toFixed(1)}%`)
-      
-      // Provide comprehensive debugging info
-      console.log(`Available audio files sample:`, storageKeys.slice(0, 10))
-      console.log(`Track details:`, { 
-        id: trackId, 
-        title: track.title,
-        original_title: track.original_title, 
-        file_path: track.file_path,
-        bucket: targetBucket,
-        candidatesTried: candidates.length
-      })
+    if (!resolvedKey || score < 0.3) {
+      console.warn(`No matching audio file found. Best score: ${(score * 100).toFixed(1)}%`)
       
       return new Response(
         JSON.stringify({ 
           error: 'No storage match found',
-          bestScore: bestScore,
-          candidatesTried: candidates,
-          threshold: '0.62 confident, 0.3 permissive for audio',
-          availableFilesSample: storageKeys.slice(0, 10),
-          trackDetails: {
-            title: track.title,
-            original_title: track.original_title,
-            file_path: track.file_path,
-            bucket: targetBucket
-          }
+          candidate,
+          bestScore: score,
+          threshold: '0.3 minimum for audio streaming'
         }),
-        { 
-          status: 404, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
     
-    // Get public URL (assuming public bucket for now)
-    const streamUrl = getPublicUrl(supabase, targetBucket, resolvedKey)
+    // Get public URL for the resolved file
+    const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(resolvedKey)
+    const storageUrl = urlData.publicUrl
     
-    // Optional: patch DB for future direct hits if score is confident
-    if (bestScore >= 0.75) {
-      patchTrackStoragePath(supabase, trackId, resolvedKey).catch(() => {})
-      console.log(`Updated track ${trackId} with resolved path: ${resolvedKey}`)
+    console.log(`Proxying audio stream: ${resolvedKey} -> ${storageUrl} (score: ${(score * 100).toFixed(1)}%)`)
+    
+    // Proxy the request with range support for seeking
+    const proxyHeaders: Record<string, string> = {
+      'User-Agent': 'Supabase-Edge-Function/1.0'
     }
     
-    console.log(`Redirecting to stream URL for track ${trackId}: ${streamUrl} (score: ${(bestScore * 100).toFixed(1)}% via "${usedCandidate}")`)
+    // Forward Range header for seeking support
+    const rangeHeader = req.headers.get('range')
+    if (rangeHeader) {
+      proxyHeaders['Range'] = rangeHeader
+    }
     
-    // Return redirect response
-    return new Response(null, {
-      status: 302,
-      headers: {
-        ...corsHeaders,
-        'Location': streamUrl,
-        'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+    // Fetch from storage with range support
+    const storageResponse = await fetch(storageUrl, {
+      method: req.method,
+      headers: proxyHeaders
+    })
+    
+    if (!storageResponse.ok) {
+      console.error(`Storage fetch failed: ${storageResponse.status} ${storageResponse.statusText}`)
+      return new Response(
+        JSON.stringify({ error: 'Storage file not accessible' }),
+        { status: storageResponse.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    
+    // Build response headers with CORS and audio-specific headers
+    const responseHeaders = new Headers(corsHeaders)
+    
+    // Copy important headers from storage response
+    const headersToCopy = [
+      'accept-ranges', 'content-range', 'content-length', 
+      'content-type', 'cache-control', 'etag', 'last-modified'
+    ]
+    
+    for (const headerName of headersToCopy) {
+      const headerValue = storageResponse.headers.get(headerName)
+      if (headerValue) {
+        responseHeaders.set(headerName, headerValue)
       }
+    }
+    
+    // Ensure proper content type for audio
+    if (!responseHeaders.get('content-type')) {
+      responseHeaders.set('content-type', 'audio/mpeg')
+    }
+    
+    // Enable range requests for seeking
+    responseHeaders.set('accept-ranges', 'bytes')
+    
+    // Cache for 1 hour
+    responseHeaders.set('cache-control', 'public, max-age=3600')
+    
+    console.log(`Streaming ${resolvedKey} with status ${storageResponse.status}`)
+    
+    // Return the proxied stream
+    return new Response(storageResponse.body, {
+      status: storageResponse.status,
+      headers: responseHeaders
     })
     
   } catch (error) {
     console.error('Error in stream-track:', error)
     return new Response(
       JSON.stringify({ error: 'Internal server error', details: error.message }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
 })
