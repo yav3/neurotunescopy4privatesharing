@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { securityMiddleware } from './middleware/security'
 import { requestLogger, errorLogger, performanceLogger } from './middleware/logging'
 import apiRoutes from './routes/api'
@@ -7,17 +8,67 @@ import streamRoutes from './routes/stream'
 
 const app = express()
 const PORT = process.env.PORT || 5000
+app.set('trust proxy', 1)
 
-// Apply security middleware first
-app.use(securityMiddleware)
-
-// Request parsing
+// 1) JSON/body parsers FIRST
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(securityMiddleware)
 
 // Logging middleware
 app.use(requestLogger)
-app.use(performanceLogger(2000)) // Log requests slower than 2 seconds
+app.use(performanceLogger(2000))
+
+// 2) HEALTH + API ROUTES (mount all /api/* BEFORE static)
+app.get('/api/healthz', (_req, res) =>
+  res.type('application/json').status(200).json({ 
+    ok: true, 
+    service: 'neurotunes-api',
+    time: new Date().toISOString(),
+    version: '1.0.0'
+  })
+)
+
+app.get('/api/readyz', async (_req, res) => {
+  try {
+    // Test Supabase connection
+    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/rest/v1/music_tracks?select=id,title&limit=1'
+    const response = await fetch(testUrl, {
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE'
+      }
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      res.type('application/json').status(200).json({ ok: true, tracks_found: data.length })
+    } else {
+      res.type('application/json').status(500).json({ ok: false, error: `Supabase returned ${response.status}` })
+    }
+  } catch (error) {
+    res.type('application/json').status(500).json({ ok: false, error: error.message })
+  }
+})
+
+app.get('/api/stream-health', async (_req, res) => {
+  try {
+    // Test the stream-audio edge function
+    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=tangelo_jazz_relaxation_remix_2.mp3&bucket=neuralpositivemusic'
+    const response = await fetch(testUrl, { method: 'HEAD' })
+    
+    res.type('application/json').status(200).json({ 
+      ok: response.ok, 
+      status: response.status,
+      headers: {
+        'content-type': response.headers.get('content-type'),
+        'accept-ranges': response.headers.get('accept-ranges'),
+        'content-length': response.headers.get('content-length')
+      }
+    })
+  } catch (error) {
+    res.type('application/json').status(500).json({ ok: false, error: error.message })
+  }
+})
 
 // API routes with real endpoints
 app.use('/api', apiRoutes)
@@ -246,80 +297,20 @@ app.post('/api/sessions/complete', async (req, res) => {
   }
 })
 
-// Health check endpoints - make sure they come BEFORE static files
-app.get('/health', (req, res) => {
-  res.json({ 
-    ok: true, 
-    service: 'neurotunes-api', 
-    time: new Date().toISOString(),
-    version: '1.0.0'
-  })
-})
-
-app.get('/health/supabase', async (req, res) => {
-  try {
-    // Test Supabase connection by trying to fetch a track
-    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/rest/v1/music_tracks?select=id,title&limit=1'
-    const response = await fetch(testUrl, {
-      headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE'
-      }
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      res.json({ ok: true, tracks_found: data.length })
-    } else {
-      res.status(500).json({ ok: false, error: `Supabase returned ${response.status}` })
-    }
-  } catch (error) {
-    res.status(500).json({ ok: false, error: error.message })
-  }
-})
-
-app.get('/health/streaming', async (req, res) => {
-  try {
-    // Test the stream-audio edge function
-    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=tangelo_jazz_relaxation_remix_2.mp3&bucket=neuralpositivemusic'
-    const response = await fetch(testUrl, { method: 'HEAD' })
-    
-    res.json({ 
-      ok: response.ok, 
-      status: response.status,
-      headers: {
-        'content-type': response.headers.get('content-type'),
-        'accept-ranges': response.headers.get('accept-ranges'),
-        'content-length': response.headers.get('content-length')
-      }
-    })
-  } catch (error) {
-    res.status(500).json({ ok: false, error: error.message })
-  }
-})
-
-// Serve static files - both development and production
+// 3) STATIC FILES
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const clientDir = path.resolve(__dirname, '../dist') // adjust to your build output
+app.use(express.static(clientDir, { maxAge: '1y', etag: true }))
 app.use('/assets', express.static('dist/assets'))
 app.use('/lovable-uploads', express.static('public/lovable-uploads'))
 
-// Development static files
-if (process.env.NODE_ENV !== 'production') {
-  app.use(express.static('dist'))
-}
-
-// SPA fallback - but NEVER for API routes or health endpoints
-app.get('*', (req, res, next) => {
-  // Exclude API routes and health endpoints
-  if (req.path.startsWith('/api/') || req.path.startsWith('/health')) {
-    return res.status(404).json({ error: 'Endpoint not found' })
-  }
-  
-  // Serve SPA for all other routes
-  const indexPath = process.env.NODE_ENV === 'production' 
-    ? path.join(__dirname, '../client/index.html')
-    : path.join(__dirname, '../dist/index.html')
-  
-  res.sendFile(indexPath)
+// 4) SPA FALLBACK (MUST be last; must NOT catch /api/*)
+app.get(/^\/(?!api\/).*/, (_req, res) => {
+  res.sendFile(path.join(clientDir, 'index.html'))
 })
+
+// 5) API 404 (after everything else, and only for /api)
+app.use('/api', (_req, res) => res.status(404).json({ ok: false, error: 'NotFound' }))
 
 // Error handling middleware (must be last)
 app.use(errorLogger)
@@ -339,12 +330,12 @@ process.on('SIGINT', () => {
   })
 })
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 NeuroTunes Elite server running on port ${PORT}`)
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`)
   console.log(`🔒 Security: Enabled`)
   console.log(`📝 Logging: Active`)
-  console.log(`🎵 Health checks: /health, /health/supabase, /health/streaming`)
+  console.log(`🎵 Health checks: /api/healthz, /api/readyz, /api/stream-health`)
 })
 
 export default app

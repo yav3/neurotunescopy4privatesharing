@@ -29,9 +29,9 @@ const API_BASE_URL = window.location.origin;
 
 const api = {
   url: (path: string) => `${API_BASE_URL}${path}`,
-  health: () => `${API_BASE_URL}/health`,
-  healthSupabase: () => `${API_BASE_URL}/health/supabase`,
-  healthStreaming: () => `${API_BASE_URL}/health/streaming`,
+  health: () => `${API_BASE_URL}/api/healthz`,
+  healthSupabase: () => `${API_BASE_URL}/api/readyz`,
+  healthStreaming: () => `${API_BASE_URL}/api/stream-health`,
 };
 
 export default function ConnectivityPanel() {

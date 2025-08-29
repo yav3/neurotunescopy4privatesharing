@@ -19,9 +19,9 @@ async function j<T>(r: Response): Promise<T> {
 // New unified API client with real event triggers
 export const API = {
   // Health checks
-  health: () => fetch(`${API_BASE_URL}/health`).then(j),
-  db: () => fetch(`${API_BASE_URL}/health/supabase`).then(j),
-  storage: () => fetch(`${API_BASE_URL}/health/streaming`).then(j),
+  health: () => fetch(`${API_BASE_URL}/api/healthz`).then(j),
+  db: () => fetch(`${API_BASE_URL}/api/readyz`).then(j),
+  storage: () => fetch(`${API_BASE_URL}/api/stream-health`).then(j),
 
   // Music catalog  
   featured: () => fetch(`${API_BASE_URL}/api/catalog/featured`).then(j),
