@@ -6,9 +6,10 @@ import { buildStreamUrl, headOk } from '../lib/stream';
 const AudioDiagnostics: React.FC = () => {
   const { safePlay, pause, isPlaying, currentId } = usePlay();
 
+  // Use real track IDs - these should exist in your music_tracks table
   const testTracks = [
-    { id: "test-track-1", title: "Test Track 1" },
-    { id: "test-track-2", title: "Test Track 2" }
+    { id: "focus", title: "Focus Track (use real UUID from DB)" },
+    { id: "relax", title: "Relax Track (use real UUID from DB)" }
   ];
 
   const handlePlay = async (trackId: string) => {

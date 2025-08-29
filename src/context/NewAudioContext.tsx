@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo, useState, useEffect } from "
 import { audioEngine } from "../audio/AudioEngine";
 
 type Ctx = {
-  playById: (id: string, filePath?: string) => Promise<void>;
+  playById: (id: string) => Promise<void>;
   pause: () => void;
   isPlaying: boolean;
   currentId?: string;
@@ -12,7 +12,7 @@ type Ctx = {
 
 const AudioCtx = createContext<Ctx | null>(null);
 
-export const AudioProvider: React.FC<{ children: React.ReactNode; buildUrl: (id: string, filePath?: string)=>string; }> = ({ children, buildUrl }) => {
+export const AudioProvider: React.FC<{ children: React.ReactNode; buildUrl: (id: string)=>string; }> = ({ children, buildUrl }) => {
   const [isPlaying, setPlaying] = useState(false);
   const [currentId, setCurrentId] = useState<string | undefined>();
   const [progress, setProgress] = useState(0);
@@ -44,8 +44,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode; buildUrl: (id:
   }, []);
 
   const api: Ctx = useMemo(() => ({
-    playById: async (id, filePath) => {
-      const url = buildUrl(id, filePath);
+    playById: async (id) => {
+      const url = buildUrl(id);
       setCurrentId(id);
       await audioEngine.play({ id, url });
     },

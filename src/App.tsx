@@ -26,7 +26,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ErrorBoundary>
-        <AudioProvider buildUrl={(id, filePath) => buildStreamUrl(id, filePath)}>
+        <AudioProvider buildUrl={(id) => buildStreamUrl(id)}>
           <Toaster />
           <Sonner />
           <BrowserRouter>

@@ -1,10 +1,10 @@
-import { API_BASE } from "./env";
+// Direct Supabase Edge Functions URL for streaming
+const FUNCTIONS_BASE = "https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1";
 
 export function buildStreamUrl(trackId: string, filePath?: string) {
-  // Prefer ID routing; encode file paths if your API still accepts them.
-  if (trackId) return `${API_BASE}/stream/${encodeURIComponent(trackId)}`;
-  if (filePath) return `${API_BASE}/stream?file=${encodeURIComponent(filePath)}`;
-  throw new Error("Missing track identifier");
+  // Use dedicated stream Edge Function - ID only routing
+  if (trackId) return `${FUNCTIONS_BASE}/stream/${encodeURIComponent(trackId)}`;
+  throw new Error("Missing track identifier - stream function requires track ID");
 }
 
 export async function headOk(url: string, timeoutMs = 5000) {
