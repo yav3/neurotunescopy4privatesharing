@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useRef, useCallback, useEffect } from 'react'
-import type { MusicTrack, AudioState, FrequencyBand } from '@/types'
+import type { MusicTrack, AudioState } from '@/types'
 import { SupabaseService } from '@/services/supabase'
 import { logger } from '@/services/logger'
 
@@ -20,11 +20,12 @@ interface AudioContextType {
   toggle: () => void
   seek: (time: number) => void
   setVolume: (volume: number) => void
-  loadTrack: (track: MusicTrack, playFromPlaylist?: boolean) => Promise<void>
+  loadTrack: (track: MusicTrack) => Promise<void>
   next: () => void
   prev: () => void
   clearError: () => void
   retryLoad: () => Promise<void>
+  formatTime: (time: number) => string
 }
 
 type AudioAction =
@@ -35,15 +36,13 @@ type AudioAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' }
-  | { type: 'SET_BUFFERING'; payload: boolean }
 
 const initialState: AudioState = {
   isPlaying: false,
   currentTime: 0,
   duration: 0,
   volume: 0.8,
-  isLoading: false,
-  isBuffering: false
+  isLoading: false
 }
 
 function audioReducer(state: AudioState, action: AudioAction): AudioState {
@@ -58,10 +57,8 @@ function audioReducer(state: AudioState, action: AudioAction): AudioState {
       return { ...state, volume: action.payload }
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload }
-    case 'SET_BUFFERING':
-      return { ...state, isBuffering: action.payload }
     case 'SET_ERROR':
-      return { ...state, error: action.payload, isLoading: false, isPlaying: false, isBuffering: false }
+      return { ...state, error: action.payload, isLoading: false, isPlaying: false }
     case 'CLEAR_ERROR':
       return { ...state, error: undefined }
     default:
@@ -74,15 +71,13 @@ const AudioContext = createContext<AudioContextType | null>(null)
 export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(audioReducer, initialState)
   const [currentTrack, setCurrentTrack] = React.useState<MusicTrack | null>(null)
-  const [playlist, setPlaylist] = React.useState<MusicTrack[]>([])
+  const [playlist, setPlaylistState] = React.useState<MusicTrack[]>([])
   const [currentPlaylistId, setCurrentPlaylistId] = React.useState<string | null>(null)
   const [queuePosition, setQueuePosition] = React.useState(0)
   const [repeatMode, setRepeatModeState] = React.useState<'none' | 'one' | 'all'>('none')
   const [shuffleMode, setShuffleModeState] = React.useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const sessionStartTime = useRef<number>(0)
-  const retryCount = useRef(0)
-  const maxRetries = 3
 
   // Initialize audio element
   useEffect(() => {
@@ -127,9 +122,9 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'SET_LOADING', payload: false })
     }
 
-    const handleError = (e: any) => {
+    const handleError = () => {
       const errorMsg = 'Failed to load audio track'
-      logger.error(errorMsg, { error: e, currentTrack: currentTrack?.id })
+      logger.error(errorMsg, { currentTrack: currentTrack?.id })
       dispatch({ type: 'SET_ERROR', payload: errorMsg })
     }
 
@@ -153,7 +148,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       audio.pause()
       audio.src = ''
     }
-  }, [])
+  }, [currentTrack])
 
   const loadTrack = useCallback(async (track: MusicTrack) => {
     if (!audioRef.current) return
@@ -161,126 +156,61 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'CLEAR_ERROR' })
       dispatch({ type: 'SET_LOADING', payload: true })
-      retryCount.current = 0
       
-      console.log('🎵 Loading track:', track.title, '| ID:', track.id)
-      
-      // Use the streaming edge function that handles redirects
-      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/${track.id}?bucket=${track.bucket_name || 'neuralpositivemusic'}`
-      
-      logger.info('Attempting to load audio stream', { 
-        trackId: track.id, 
-        title: track.title,
-        streamUrl,
-        bucketName: track.bucket_name
-      })
+      const url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
       
       // Stop current playback
       audioRef.current.pause()
       audioRef.current.currentTime = 0
       
-      // Try to load the track with streaming URL first
-      audioRef.current.crossOrigin = 'anonymous'
-      audioRef.current.preload = 'metadata'
-      audioRef.current.src = streamUrl
-      
-      // Set current track immediately for UI feedback
-      setCurrentTrack(track)
-      sessionStartTime.current = Date.now()
-      
-      // Wait for the track to start loading
-      return new Promise<void>((resolve, reject) => {
-        if (!audioRef.current) {
-          reject(new Error('Audio element not available'))
-          return
+      // Create a promise that resolves when audio is ready to play
+      await new Promise<void>((resolve, reject) => {
+        const audio = audioRef.current!
+        
+        const cleanup = () => {
+          clearTimeout(timeoutId)
+          audio.removeEventListener('canplaythrough', handleCanPlay)
+          audio.removeEventListener('error', handleError)
         }
 
-        const audio = audioRef.current
-        
         const handleCanPlay = () => {
-          logger.info('Audio ready to play', { trackId: track.id })
-          dispatch({ type: 'SET_LOADING', payload: false })
           cleanup()
           resolve()
         }
-        
-        const handleError = async (e: Event) => {
-          const error = audio.error
-          let errorMsg = error 
-            ? `Audio error: ${error.code} - ${error.message}` 
-            : 'Failed to load audio stream'
-          
-          logger.error('Primary stream failed, trying demo fallback', { 
-            trackId: track.id, 
-            error: errorMsg,
-            streamUrl,
-            networkState: audio.networkState,
-            readyState: audio.readyState
-          })
-          
-          // Try demo audio as fallback
-          const demoUrl = 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
-          logger.info('Using demo audio fallback', { demoUrl })
-          
-          try {
-            audio.src = demoUrl
-            audio.load()
-            
-            // Wait for demo to load
-            const handleDemoCanPlay = () => {
-              logger.info('Demo audio loaded successfully')
-              audio.removeEventListener('canplay', handleDemoCanPlay)
-              audio.removeEventListener('error', handleDemoError)
-              dispatch({ type: 'SET_LOADING', payload: false })
-              cleanup()
-              resolve()
-            }
-            
-            const handleDemoError = () => {
-              logger.error('Demo audio also failed to load')
-              audio.removeEventListener('canplay', handleDemoCanPlay)
-              audio.removeEventListener('error', handleDemoError)
-              cleanup()
-              reject(new Error('Both primary stream and demo audio failed to load'))
-            }
-            
-            audio.addEventListener('canplay', handleDemoCanPlay)
-            audio.addEventListener('error', handleDemoError)
-            
-          } catch (demoError) {
-            cleanup()
-            reject(new Error('Audio system unavailable'))
-          }
+
+        const handleError = () => {
+          cleanup()
+          reject(new Error('Failed to load audio'))
         }
-        
+
         const handleTimeout = () => {
-          logger.error('Audio loading timeout', { trackId: track.id, streamUrl })
           cleanup()
           reject(new Error('Audio loading timeout'))
         }
-        
-        const cleanup = () => {
-          audio.removeEventListener('canplay', handleCanPlay)
-          audio.removeEventListener('error', handleError)
-          clearTimeout(timeoutId)
-        }
-        
+
         // Set up event listeners
-        audio.addEventListener('canplay', handleCanPlay)
-        audio.addEventListener('error', handleError)
+        audio.addEventListener('canplaythrough', handleCanPlay, { once: true })
+        audio.addEventListener('error', handleError, { once: true })
         
         // Set timeout for loading
-        const timeoutId = setTimeout(handleTimeout, 15000) // 15 second timeout
+        const timeoutId = setTimeout(handleTimeout, 10000) // 10 second timeout
         
-        // Start loading
+        // Load new track
+        audio.src = url
         audio.load()
       })
       
+      setCurrentTrack(track)
+      sessionStartTime.current = Date.now()
+      
+      logger.info('Track loaded successfully', { 
+        trackId: track.id, 
+        title: track.title 
+      })
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to load track'
       logger.error('Track loading error', { error, trackId: track.id, filePath: track.file_path })
       dispatch({ type: 'SET_ERROR', payload: errorMsg })
-      dispatch({ type: 'SET_LOADING', payload: false })
     }
   }, [])
 
@@ -340,6 +270,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'CLEAR_ERROR' })
   }, [])
 
+  const formatTime = useCallback((time: number) => {
+    if (!isFinite(time)) return '0:00'
+    
+    const minutes = Math.floor(time / 60)
+    const seconds = Math.floor(time % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }, [])
+
   // Load saved volume on mount
   useEffect(() => {
     const savedVolume = localStorage.getItem('neurotunes-volume')
@@ -360,18 +298,18 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     repeatMode,
     shuffleMode,
     setPlaylist: (tracks: MusicTrack[], playlistId?: string) => {
-      setPlaylist(tracks)
+      setPlaylistState(tracks)
       setCurrentPlaylistId(playlistId || null)
       setQueuePosition(0)
     },
     addToQueue: (track: MusicTrack) => {
-      setPlaylist(prev => [...prev, track])
+      setPlaylistState(prev => [...prev, track])
     },
     removeFromQueue: (trackId: string) => {
-      setPlaylist(prev => prev.filter(t => t.id !== trackId))
+      setPlaylistState(prev => prev.filter(t => t.id !== trackId))
     },
     clearQueue: () => {
-      setPlaylist([])
+      setPlaylistState([])
       setCurrentPlaylistId(null)
       setQueuePosition(0)
     },
@@ -392,11 +330,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     prev,
     clearError,
     retryLoad: async () => {
-      if (currentTrack && retryCount.current < maxRetries) {
-        retryCount.current += 1
+      if (currentTrack) {
         await loadTrack(currentTrack)
       }
-    }
+    },
+    formatTime
   }
 
   return (

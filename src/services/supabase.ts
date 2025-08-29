@@ -5,54 +5,37 @@ import { logger } from './logger'
 export class SupabaseService {
   static async getTrackUrl(filePath: string, bucketName: string = 'neuralpositivemusic'): Promise<string> {
     try {
-      // First check if the bucket exists and is accessible
-      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets()
-      if (bucketsError) {
-        logger.error('Failed to list buckets', { error: bucketsError })
-      } else {
-        logger.info('Available buckets', { buckets: buckets.map(b => b.name) })
-      }
-
-      // Check if the file exists in the bucket
-      const { data: files, error: listError } = await supabase.storage
-        .from(bucketName)
-        .list('', { limit: 100 })
+      logger.info('Getting track URL', { filePath, bucketName })
       
-      if (listError) {
-        logger.error('Failed to list files in bucket', { bucketName, error: listError })
-      } else {
-        logger.info('Files in bucket', { 
-          bucketName, 
-          fileCount: files.length,
-          files: files.slice(0, 5).map(f => f.name),
-          targetFile: filePath
-        })
-        
-        const fileExists = files.some(f => f.name === filePath)
-        if (!fileExists) {
-          logger.warn('Target file not found in bucket', { filePath, bucketName })
-          
-          // Return a demo audio file URL as fallback
-          logger.info('Using demo audio file as fallback')
-          return 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'
-        }
-      }
-
+      // Try direct public URL first for files that exist
       const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath)
+      const publicUrl = data.publicUrl
       
-      logger.info('Generated public URL', { 
-        filePath, 
-        bucketName, 
-        publicUrl: data.publicUrl 
-      })
+      // Test if the direct URL works by making a HEAD request
+      try {
+        const response = await fetch(publicUrl, { method: 'HEAD' })
+        if (response.ok) {
+          logger.info('Direct public URL accessible', { publicUrl })
+          return publicUrl
+        }
+      } catch (fetchError) {
+        logger.warn('Direct public URL not accessible', { publicUrl, error: fetchError })
+      }
       
-      return data.publicUrl
+      // If direct URL doesn't work, use our stream-track edge function
+      // This will handle file resolution and provide fallbacks
+      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/path/${encodeURIComponent(filePath)}?bucket=${bucketName}`
+      
+      logger.info('Using streaming edge function', { streamUrl })
+      return streamUrl
+      
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Return demo audio file as fallback
-      logger.info('Using demo audio file as emergency fallback')
-      return 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'
+      // Final fallback - use streaming function with the filename
+      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/path/${encodeURIComponent(filePath)}?bucket=${bucketName}`
+      logger.info('Using streaming edge function as fallback', { streamUrl })
+      return streamUrl
     }
   }
 
