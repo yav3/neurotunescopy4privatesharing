@@ -20,10 +20,10 @@ function sbAdmin() {
 }
 
 /* ---------- Health ---------- */
-app.get('/health', (c) => c.json({ ok: true, time: new Date().toISOString(), service: 'NeuroTunes API' }))
+app.get('/api/health', (c) => c.json({ ok: true, time: new Date().toISOString(), service: 'NeuroTunes API' }))
 
 /* ---------- Playlist by goal ---------- */
-app.get('/v1/playlist', async (c) => {
+app.get('/api/v1/playlist', async (c) => {
   const goal = c.req.query('goal') ?? ''
   console.log(`🎯 Loading playlist for goal: ${goal}`)
   
@@ -68,7 +68,7 @@ app.get('/v1/playlist', async (c) => {
 })
 
 /* ---------- Session building ---------- */
-app.post('/v1/session/build', async (c) => {
+app.post('/api/v1/session/build', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const { goal = '', durationMin = 15, intensity = 3 } = body
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity })
@@ -117,7 +117,7 @@ app.post('/v1/session/build', async (c) => {
 })
 
 /* ---------- Session telemetry ---------- */
-app.post('/v1/sessions/start', async (c) => {
+app.post('/api/v1/sessions/start', async (c) => {
   const { trackId } = await c.req.json()
   const sessionId = crypto.randomUUID()
   
@@ -125,14 +125,14 @@ app.post('/v1/sessions/start', async (c) => {
   return c.json({ sessionId })
 })
 
-app.post('/v1/sessions/progress', async (c) => {
+app.post('/api/v1/sessions/progress', async (c) => {
   const { sessionId, t } = await c.req.json()
   console.log(`📊 Session ${sessionId} progress: ${t}s`)
   
   return c.json({ ok: true })
 })
 
-app.post('/v1/sessions/complete', async (c) => {
+app.post('/api/v1/sessions/complete', async (c) => {
   const { sessionId } = await c.req.json()
   console.log(`✅ Session ${sessionId} completed`)
   
@@ -140,7 +140,7 @@ app.post('/v1/sessions/complete', async (c) => {
 })
 
 /* ---------- Stream audio ---------- */
-app.get('/stream', async (c) => {
+app.get('/api/stream', async (c) => {
   const fileName = c.req.query('file')
   if (!fileName) {
     return c.json({ error: 'Missing file parameter' }, 400)
