@@ -1,5 +1,56 @@
 import { supabase } from '@/integrations/supabase/client';
 
+// Use window.location.origin for development since we're serving from same domain
+export const API_BASE_URL = window.location.origin;
+
+const headers = { "content-type": "application/json" };
+
+async function j<T>(r: Response): Promise<T> {
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  return r.json();
+}
+
+// New unified API client with real event triggers
+export const API = {
+  // Health checks
+  health: () => fetch(`${API_BASE_URL}/health`).then(j),
+  db: () => fetch(`${API_BASE_URL}/health/supabase`).then(j),
+  storage: () => fetch(`${API_BASE_URL}/health/streaming`).then(j),
+
+  // Music catalog  
+  featured: () => fetch(`${API_BASE_URL}/api/catalog/featured`).then(j),
+  playlistByGoal: (goal: string) =>
+    fetch(`${API_BASE_URL}/api/playlist?goal=${encodeURIComponent(goal)}`).then(j),
+
+  // Sessions/telemetry
+  startSession: (trackId: string) =>
+    fetch(`${API_BASE_URL}/api/sessions/start`, { 
+      method: "POST", 
+      headers, 
+      body: JSON.stringify({ trackId }) 
+    }).then(j),
+    
+  progress: (sessionId: string, t: number) =>
+    navigator.sendBeacon?.(`${API_BASE_URL}/api/sessions/progress`, 
+      new Blob([JSON.stringify({ sessionId, t })], { type: "application/json" }))
+    || fetch(`${API_BASE_URL}/api/sessions/progress`, { 
+      method: "POST", 
+      headers, 
+      body: JSON.stringify({ sessionId, t }) 
+    }),
+    
+  complete: (sessionId: string) =>
+    fetch(`${API_BASE_URL}/api/sessions/complete`, { 
+      method: "POST", 
+      headers, 
+      body: JSON.stringify({ sessionId }) 
+    }).then(j),
+};
+
+export const streamUrl = (fileOrId: string) => 
+  `${API_BASE_URL}/api/stream/path/${encodeURIComponent(fileOrId)}`;
+
+// Legacy APIs - keep for backward compatibility
 // Track API
 export const trackAPI = {
   // Get tracks by mood/genre

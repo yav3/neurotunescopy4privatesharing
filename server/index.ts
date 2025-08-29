@@ -19,9 +19,110 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(requestLogger)
 app.use(performanceLogger(2000)) // Log requests slower than 2 seconds
 
-// API routes first
+// API routes with real endpoints
 app.use('/api', apiRoutes)
 app.use('/api/stream', streamRoutes)
+
+// Catalog endpoints
+app.get('/api/catalog/featured', async (req, res) => {
+  try {
+    console.log('🔥 API: Featured catalog requested');
+    
+    // Get featured tracks from Supabase
+    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/rest/v1/music_tracks?select=*&upload_status=eq.completed&limit=20'
+    const response = await fetch(testUrl, {
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE'
+      }
+    })
+    
+    if (response.ok) {
+      const tracks = await response.json()
+      console.log('✅ API: Featured tracks fetched:', tracks.length)
+      res.json({ items: tracks })
+    } else {
+      res.status(500).json({ error: `Failed to fetch featured: ${response.status}` })
+    }
+  } catch (error) {
+    console.error('❌ API: Featured fetch failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Playlist by goal endpoint  
+app.get('/api/playlist', async (req, res) => {
+  try {
+    const goal = String(req.query.goal || '')
+    console.log('🔥 API: Playlist requested for goal:', goal)
+    
+    // Map goals to genres
+    const goalToGenre = {
+      'focus': 'classical',
+      'chill': 'jazz', 
+      'sleep': 'classical',
+      'energy': 'jazz'
+    }
+    
+    const genre = goalToGenre[goal] || 'classical'
+    const testUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/rest/v1/music_tracks?select=*&upload_status=eq.completed&genre=eq.${genre}&limit=15`
+    
+    const response = await fetch(testUrl, {
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE'
+      }
+    })
+    
+    if (response.ok) {
+      const tracks = await response.json()
+      console.log('✅ API: Playlist tracks fetched:', tracks.length, 'for goal:', goal)
+      res.json({ tracks })
+    } else {
+      res.status(500).json({ error: `Failed to fetch playlist: ${response.status}` })
+    }
+  } catch (error) {
+    console.error('❌ API: Playlist fetch failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Session tracking endpoints
+app.post('/api/sessions/start', async (req, res) => {
+  try {
+    const { trackId } = req.body
+    console.log('🔥 API: Session start requested for track:', trackId)
+    
+    // Generate a session ID (in real app, save to DB)
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    console.log('✅ API: Session started:', sessionId)
+    
+    res.json({ sessionId })
+  } catch (error) {
+    console.error('❌ API: Session start failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/sessions/progress', async (req, res) => {
+  try {
+    const { sessionId, t } = req.body
+    console.log('🔥 API: Progress update:', sessionId, 'at', t, 'seconds')
+    res.json({ ok: true })
+  } catch (error) {
+    console.error('❌ API: Progress update failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/sessions/complete', async (req, res) => {
+  try {
+    const { sessionId } = req.body
+    console.log('🔥 API: Session completed:', sessionId)
+    res.json({ ok: true })
+  } catch (error) {
+    console.error('❌ API: Session complete failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
 
 // Health check endpoints - make sure they come BEFORE static files
 app.get('/health', (req, res) => {

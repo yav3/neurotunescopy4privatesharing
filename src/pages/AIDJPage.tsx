@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { 
   Radio, 
   Zap, 
@@ -15,28 +15,27 @@ import {
   Shuffle,
   Volume2,
   Settings
-} from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { aiDJAPI, trackAPI } from '@/lib/api';
-import { TrackCard } from '@/components/TrackCard';
-import { useAudio } from '@/context/AudioContext'; // Use the same AudioContext!
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Slider } from '@/components/ui/slider';
-import { AudioDebugger } from '@/components/AudioDebugger';
-import AudioTester from '@/components/AudioTester';
-import { cn } from '@/lib/utils';
+} from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { API } from '@/lib/api' // Use the real API client!
+import { TrackCard } from '@/components/TrackCard'
+import { useAudio } from '@/context/AudioContext'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Slider } from '@/components/ui/slider'
+import { AudioDebugger } from '@/components/AudioDebugger'
+import AudioTester from '@/components/AudioTester'
+import { cn } from '@/lib/utils'
 
 export function AIDJPage() {
-  const navigate = useNavigate();
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [localPlaylist, setLocalPlaylist] = useState<any[]>([]);
-  const [selectedGenre, setSelectedGenre] = useState('all');
-  const [showFavorites, setShowFavorites] = useState(false);
-  const [isFullscreenMode, setIsFullscreenMode] = useState(false);
-  const [showAudioTester, setShowAudioTester] = useState(false);
-  
+  const navigate = useNavigate()
+  const [selectedMood, setSelectedMood] = useState<string | null>(null)
+  const [localPlaylist, setLocalPlaylist] = useState<any[]>([])
+  const [selectedGenre, setSelectedGenre] = useState('all')
+  const [showFavorites, setShowFavorites] = useState(false)
+  const [isFullscreenMode, setIsFullscreenMode] = useState(false)
+  const [showAudioTester, setShowAudioTester] = useState(false)
   
   const {
     setPlaylist,
@@ -48,7 +47,31 @@ export function AIDJPage() {
     prev,
     setVolume,
     formatTime
-  } = useAudio();
+  } = useAudio()
+
+  // Add boot trigger - fetch featured content on component mount
+  useEffect(() => {
+    console.log('🔥 BOOT TRIGGER: AI DJ page mounted, testing full stack')
+    ;(async () => {
+      try {
+        // Test full stack connectivity
+        const [healthCheck, dbCheck, storageCheck] = await Promise.all([
+          API.health().catch(e => ({ error: e.message })),
+          API.db().catch(e => ({ error: e.message })),
+          API.storage().catch(e => ({ error: e.message }))
+        ])
+        
+        console.log('✅ BOOT: Health checks completed', { healthCheck, dbCheck, storageCheck })
+        
+        // Fetch featured content to prove the full chain works
+        const featured = await API.featured()
+        console.log('✅ BOOT: Featured content loaded', (featured as any).items?.length, 'tracks')
+        
+      } catch (error) {
+        console.error('❌ BOOT: Full stack test failed:', error)
+      }
+    })()
+  }, [])
 
   const moods = [
     { 
@@ -83,7 +106,7 @@ export function AIDJPage() {
       description: 'Boost motivation and vitality',
       color: 'text-music-energy'
     }
-  ];
+  ]
 
   const genres = [
     { id: 'all', label: 'All Genres' },
@@ -93,45 +116,67 @@ export function AIDJPage() {
     { id: 'electronic', label: 'Electronic' },
     { id: 'indie', label: 'Indie' },
     { id: 'jazz', label: 'Jazz' }
-  ];
+  ]
 
-  // Generate playlist based on mood and genre  
+  // Generate playlist based on mood and genre with REAL API CALLS
   const { data: generatedPlaylist, isLoading: isGenerating, refetch: regeneratePlaylist } = useQuery({
     queryKey: ['ai-playlist', selectedMood, selectedGenre],
-    queryFn: () => selectedMood ? aiDJAPI.generatePlaylist(selectedMood, selectedGenre) : Promise.resolve([]),
-    enabled: !!selectedMood
-  });
+    queryFn: () => selectedMood ? API.playlistByGoal(selectedMood) : Promise.resolve({ tracks: [] }),
+    enabled: !!selectedMood,
+    select: (data) => (data as any)?.tracks || []
+  })
 
   // Update playlist when generated
   useEffect(() => {
     if (generatedPlaylist) {
-      setLocalPlaylist(generatedPlaylist);
+      setLocalPlaylist(generatedPlaylist)
     }
-  }, [generatedPlaylist]);
+  }, [generatedPlaylist])
 
-  const handleMoodSelect = (moodId: string) => {
-    setSelectedMood(moodId);
-    setIsFullscreenMode(true);
-  };
+  const handleMoodSelect = async (moodId: string) => {
+    console.log('🎵 AI DJ: Mood selected:', moodId)
+    setSelectedMood(moodId)
+    setIsFullscreenMode(true)
+    
+    // Trigger API call immediately when mood is selected
+    try {
+      console.log('🔥 TRIGGER: Fetching playlist for goal:', moodId)
+      const playlistData = await API.playlistByGoal(moodId)
+      console.log('✅ TRIGGER: Got playlist data:', playlistData)
+      setLocalPlaylist((playlistData as any).tracks || [])
+    } catch (error) {
+      console.error('❌ TRIGGER: Failed to fetch playlist:', error)
+    }
+  }
 
   const handlePlayPlaylist = async () => {
     if (localPlaylist.length > 0) {
-      console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks');
-      setPlaylist(localPlaylist);
-      await loadTrack(localPlaylist[0]);
+      console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks')
+      console.log('🔥 TRIGGER: Starting session for track:', localPlaylist[0].id)
+      
+      try {
+        // Start session tracking
+        const sessionData = await API.startSession(localPlaylist[0].id)
+        console.log('✅ TRIGGER: Session started:', (sessionData as any).sessionId)
+      } catch (error) {
+        console.error('❌ TRIGGER: Session start failed:', error)
+      }
+      
+      setPlaylist(localPlaylist)
+      await loadTrack(localPlaylist[0])
     }
-  };
+  }
 
   const handleShufflePlaylist = async () => {
     if (localPlaylist.length > 0) {
-      const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5);
-      console.log('🎵 AI DJ: Starting shuffled playlist');
-      setPlaylist(shuffled);
-      await loadTrack(shuffled[0]);
+      const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
+      console.log('🎵 AI DJ: Starting shuffled playlist')
+      setPlaylist(shuffled)
+      await loadTrack(shuffled[0])
     }
-  };
+  }
 
-  const selectedMoodData = moods.find(m => m.id === selectedMood);
+  const selectedMoodData = moods.find(m => m.id === selectedMood)
 
   return (
     <div className="min-h-screen bg-background">
@@ -150,7 +195,7 @@ export function AIDJPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {moods.map((mood) => {
-              const Icon = mood.icon;
+              const Icon = mood.icon
               return (
                 <Card
                   key={mood.id}
@@ -182,7 +227,7 @@ export function AIDJPage() {
                     </div>
                   </div>
                 </Card>
-              );
+              )
             })}
           </div>
         </div>
@@ -344,20 +389,20 @@ export function AIDJPage() {
                       </div>
 
                       {/* Progress Bar */}
-                        <div className="space-y-2">
-                          <div className="w-full bg-secondary rounded-full h-2">
-                            <div 
-                              className="bg-primary h-2 rounded-full transition-all duration-300"
-                              style={{ 
-                                width: state.duration > 0 ? `${(state.currentTime / state.duration) * 100}%` : '0%' 
-                              }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-sm text-muted-foreground">
-                            <span>{formatTime(state.currentTime)}</span>
-                            <span>{formatTime(state.duration)}</span>
-                          </div>
+                      <div className="space-y-2">
+                        <div className="w-full bg-secondary rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            style={{ 
+                              width: state.duration > 0 ? `${(state.currentTime / state.duration) * 100}%` : '0%' 
+                            }}
+                          />
                         </div>
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>{formatTime(state.currentTime)}</span>
+                          <span>{formatTime(state.duration)}</span>
+                        </div>
+                      </div>
 
                       {/* Playback Controls */}
                       <div className="flex items-center justify-center gap-4">
@@ -392,18 +437,18 @@ export function AIDJPage() {
                       </div>
 
                       {/* Volume Control */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <Volume2 className="h-4 w-4 text-muted-foreground" />
-                            <Slider
-                              value={[state.volume]}
-                              onValueChange={(values) => setVolume(values[0])}
-                              max={1}
-                              step={0.1}
-                              className="flex-1"
-                            />
-                          </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Volume2 className="h-4 w-4 text-muted-foreground" />
+                          <Slider
+                            value={[state.volume]}
+                            onValueChange={(values) => setVolume(values[0])}
+                            max={1}
+                            step={0.1}
+                            className="flex-1"
+                          />
                         </div>
+                      </div>
 
                       {/* Favorite Button - Remove for now since we don't have favorites in AudioContext */}
                       <div className="text-center text-sm text-muted-foreground">
@@ -423,5 +468,5 @@ export function AIDJPage() {
         </div>
       )}
     </div>
-  );
+  )
 }
