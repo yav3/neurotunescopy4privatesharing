@@ -360,6 +360,124 @@ function getPayloadConfigFromPayload(
     : config[key as keyof typeof config]
 }
 
+// Specialized tooltip for therapeutic data
+const TherapeuticTooltip = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<typeof ChartTooltipContent> & {
+    showEvidenceScore?: boolean
+    showFrequencyBand?: boolean
+  }
+>(({ showEvidenceScore = true, showFrequencyBand = true, ...props }, ref) => {
+  return (
+    <ChartTooltipContent
+      ref={ref}
+      {...props}
+      className={cn("bg-slate-900/95 border-slate-700/50 text-slate-50", props.className)}
+      formatter={(value, name) => {
+        // Format therapeutic values
+        if (name.includes('score') || name.includes('evidence')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">{name}</span>
+              <span className="font-mono text-emerald-400">{Math.round(Number(value) * 100)}%</span>
+            </div>
+          )
+        }
+        if (name.includes('power') || name.includes('band')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">{name}</span>
+              <span className="font-mono text-blue-400">{Number(value).toFixed(2)}</span>
+            </div>
+          )
+        }
+        if (name.includes('bpm')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">Tempo</span>
+              <span className="font-mono text-purple-400">{value} BPM</span>
+            </div>
+          )
+        }
+        return (
+          <div className="flex items-center justify-between w-full">
+            <span className="text-slate-300">{name}</span>
+            <span className="font-mono">{String(value)}</span>
+          </div>
+        )
+      }}
+      labelFormatter={(label) => {
+        // Format frequency bands or track names
+        if (typeof label === 'string' && ['delta', 'theta', 'alpha', 'beta', 'gamma'].includes(label.toLowerCase())) {
+          const ranges = {
+            delta: '0.5-4Hz',
+            theta: '4-8Hz', 
+            alpha: '8-13Hz',
+            beta: '13-30Hz',
+            gamma: '30-100Hz'
+          }
+          return (
+            <div className="text-slate-100 font-medium">
+              {label.charAt(0).toUpperCase() + label.slice(1)} ({ranges[label.toLowerCase() as keyof typeof ranges]})
+            </div>
+          )
+        }
+        return <div className="text-slate-100 font-medium">{String(label)}</div>
+      }}
+    />
+  )
+})
+
+TherapeuticTooltip.displayName = "TherapeuticTooltip"
+
+// Spectral analysis tooltip for frequency domain charts
+const SpectralTooltip = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<typeof ChartTooltipContent>
+>((props, ref) => {
+  return (
+    <ChartTooltipContent
+      ref={ref}
+      {...props}
+      className={cn("bg-slate-950/90 border-emerald-500/30 text-slate-50 backdrop-blur-sm", props.className)}
+      formatter={(value, name) => {
+        if (name.includes('power')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">{name.replace('_', ' ')}</span>
+              <span className="font-mono text-emerald-400">{Number(value).toFixed(3)} dB</span>
+            </div>
+          )
+        }
+        if (name.includes('frequency')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">Frequency</span>
+              <span className="font-mono text-cyan-400">{Number(value).toFixed(1)} Hz</span>
+            </div>
+          )
+        }
+        if (name.includes('therapeutic') && name.includes('score')) {
+          return (
+            <div className="flex items-center justify-between w-full">
+              <span className="text-slate-300">{name.replace('therapeutic_', '').replace('_score', ' efficacy')}</span>
+              <span className="font-mono text-purple-400">{Math.round(Number(value) * 100)}%</span>
+            </div>
+          )
+        }
+        return (
+          <div className="flex items-center justify-between w-full">
+            <span className="text-slate-300">{name}</span>
+            <span className="font-mono">{String(value)}</span>
+          </div>
+        )
+      }}
+    />
+  )
+})
+
+SpectralTooltip.displayName = "SpectralTooltip"
+
 export {
   ChartContainer,
   ChartTooltip,
@@ -367,4 +485,6 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  TherapeuticTooltip,
+  SpectralTooltip,
 }
