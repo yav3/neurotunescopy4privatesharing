@@ -8,23 +8,23 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* White/Blue Only Design System */
-    --background: 0 0% 8%; /* Deep black background */
+    /* White/Blue Only Design System with Deep Blue Backgrounds */
+    --background: 217 91% 8%; /* Deep blue background */
     --foreground: 0 0% 100%; /* Pure white text */
 
-    --card: 0 0% 12%; /* Dark card background */
+    --card: 217 91% 12%; /* Deep blue card background */
     --card-foreground: 0 0% 100%; /* White card text */
 
-    --popover: 0 0% 12%;
+    --popover: 217 91% 12%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 217 91% 60%; /* Blue primary */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 50% 25%; /* Dark blue secondary */
+    --secondary: 217 91% 18%; /* Deep blue secondary */
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 0 0% 20%; /* Pure gray muted */
+    --muted: 217 91% 15%; /* Deep blue muted */
     --muted-foreground: 217 32% 80%; /* Light blue muted text */
 
     --accent: 217 91% 70%; /* Light blue accent */
@@ -33,18 +33,18 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 30% 25%; /* Blue-tinted borders */
-    --input: 0 0% 15%; /* Dark input background */
+    --border: 217 91% 20%; /* Blue borders */
+    --input: 217 91% 10%; /* Very deep blue input background */
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Blue gradients only */
+    /* Deep blue gradients */
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%), hsl(217 91% 50%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 12%), hsl(217 20% 18%), hsl(0 0% 15%));
-    --gradient-hero: linear-gradient(180deg, hsl(217 20% 20%), hsl(0 0% 8%));
-    --shadow-card: 0 8px 32px hsl(217 91% 30% / 0.3), 0 4px 16px hsl(0 0% 0% / 0.4);
-    --shadow-player: 0 16px 48px hsl(217 91% 35% / 0.4), 0 8px 24px hsl(0 0% 0% / 0.5);
+    --gradient-card: linear-gradient(135deg, hsl(217 91% 12%), hsl(217 91% 18%), hsl(217 91% 15%));
+    --gradient-hero: linear-gradient(180deg, hsl(217 91% 15%), hsl(217 91% 8%));
+    --shadow-card: 0 8px 32px hsl(217 91% 30% / 0.3), 0 4px 16px hsl(217 91% 5% / 0.4);
+    --shadow-player: 0 16px 48px hsl(217 91% 35% / 0.4), 0 8px 24px hsl(217 91% 5% / 0.5);
     
     /* San Francisco font system */
     --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
@@ -68,13 +68,13 @@ All colors MUST be HSL.
     --music-sleep: 217 91% 40%; /* Dark blue for sleep */
     --music-energy: 217 91% 80%; /* Bright blue for energy */
 
-    --sidebar-background: 0 0% 12%;
+    --sidebar-background: 217 91% 10%;
     --sidebar-foreground: 0 0% 85%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 50% 25%;
+    --sidebar-accent: 217 91% 20%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 217 30% 25%;
+    --sidebar-border: 217 91% 25%;
     --sidebar-ring: 217 91% 60%;
   }
 }
