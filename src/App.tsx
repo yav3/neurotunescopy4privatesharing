@@ -7,6 +7,7 @@ import { AudioProvider } from "@/context/AudioContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
+import ConnectivityPanel from "@/components/ConnectivityPanel";
 import Index from "./pages/Index";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
@@ -38,6 +39,7 @@ const App = () => (
               </Routes>
               <NowPlaying />
               <MusicDeliveryStatus />
+              <ConnectivityPanel />
             </div>
           </BrowserRouter>
         </AudioProvider>

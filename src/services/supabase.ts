@@ -7,18 +7,18 @@ export class SupabaseService {
     try {
       logger.info('Getting track URL', { filePath, bucketName })
       
-      // Use Supabase edge function for proper audio streaming
-      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=${encodeURIComponent(filePath)}&bucket=${bucketName}`
+      // Use absolute URL for streaming through our API - this ensures proper routing
+      const streamUrl = `${window.location.origin}/api/stream/path/${encodeURIComponent(filePath)}`
       
-      logger.info('Using Supabase stream-audio edge function', { streamUrl })
+      logger.info('Using absolute stream URL', { streamUrl })
       return streamUrl
       
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Fallback to the same edge function
-      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=${encodeURIComponent(filePath)}&bucket=${bucketName}`
-      logger.info('Using Supabase stream-audio edge function as fallback', { streamUrl })
+      // Fallback to the same absolute URL
+      const streamUrl = `${window.location.origin}/api/stream/path/${encodeURIComponent(filePath)}`
+      logger.info('Using absolute stream URL as fallback', { streamUrl })
       return streamUrl
     }
   }
