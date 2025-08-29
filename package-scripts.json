@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "repair-storage": "npx tsx scripts/repair-storage-paths.ts"
+  }
+}
