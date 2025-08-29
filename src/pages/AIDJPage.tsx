@@ -10,6 +10,7 @@ import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
+import { API_BASE } from '@/lib/env'
 import type { MusicTrack } from '@/types'
 
 // Mock data for moods and genres
@@ -221,7 +222,10 @@ const AIDJPage: React.FC = () => {
                     "group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg overflow-hidden",
                     mood.gradient
                   )}
-                  onClick={() => handleMoodSelect(mood.id)}
+                  onClick={() => {
+                    console.log('🎯 Mood card clicked:', mood.id, mood.label);
+                    handleMoodSelect(mood.id);
+                  }}
                 >
                   <div className="p-8">
                     <div className="flex items-center gap-4 mb-4">
@@ -295,6 +299,33 @@ const AIDJPage: React.FC = () => {
                   >
                     <Settings className="h-4 w-4 mr-2" />
                     Audio Test
+                  </Button>
+
+                  {/* API Test Button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={async () => {
+                      console.log('🔧 API Test button clicked');
+                      try {
+                        console.log('🔧 Testing API health...');
+                        const health = await API.health();
+                        console.log('✅ Health check passed:', health);
+                        
+                        console.log('🔧 Testing debug storage...');
+                        const debug = await fetch(`${API_BASE}/debug/storage`).then(r => r.json());
+                        console.log('✅ Debug storage response:', debug);
+                        
+                        console.log('🔧 Testing playlist API...');
+                        const playlist = await API.playlist('focus');
+                        console.log('✅ Playlist response:', playlist);
+                      } catch (error) {
+                        console.error('❌ API Test failed:', error);
+                      }
+                    }}
+                    className="hover:bg-secondary"
+                  >
+                    🔧 Test API
                   </Button>
 
                   {/* Genre Filter */}
