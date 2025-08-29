@@ -219,7 +219,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           })
           
           // Try demo audio as fallback
-          const demoUrl = 'https://file-examples.com/storage/fe5806b161388dec8b6b518/2017/11/file_example_MP3_700KB.mp3'
+          const demoUrl = 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
           logger.info('Using demo audio fallback', { demoUrl })
           
           try {

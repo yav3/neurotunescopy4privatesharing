@@ -248,8 +248,9 @@ Deno.serve(async (req) => {
       }
       
       candidate = track.file_path || track.original_title || track.title
-    } else if (/^\d+$/.test(lastPart)) {
-      // Numeric ID format
+    } else if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(lastPart) || /^\d+$/.test(lastPart)) {
+      // UUID or numeric ID format
+      console.log(`Looking up track by ID: ${lastPart}`)
       const { data: track, error: trackError } = await supabase
         .from('music_tracks')
         .select('id, title, original_title, file_path, bucket_name')
@@ -259,11 +260,12 @@ Deno.serve(async (req) => {
       if (trackError || !track) {
         console.error('Track not found:', trackError)
         return new Response(
-          JSON.stringify({ error: 'Track not found' }),
+          JSON.stringify({ error: 'Track not found', trackId: lastPart }),
           { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
       }
       
+      console.log(`Found track: ${track.title}, file_path: ${track.file_path}`)
       candidate = track.file_path || track.original_title || track.title
     } else {
       // Path-based format - decode the path
