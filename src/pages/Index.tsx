@@ -14,19 +14,27 @@ const Index = () => {
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { setPlaylist, currentTrack } = useAudio();
+  const { setPlaylist, currentTrack, loadTrack } = useAudio();
 
   const handleCategorySelect = (category: string) => {
     setShowPlayer(true);
   };
 
-  const handleSessionStart = (tracks: any[]) => {
+  const handleSessionStart = async (tracks: any[]) => {
     if (tracks.length > 0) {
       console.log(`🎵 Session starting with ${tracks.length} tracks`);
       const maxTracks = 50; // Match audio-core MAX_QUEUE
       const tracksToQueue = tracks.slice(0, maxTracks);
       console.log(`🔒 Limiting session queue to ${tracksToQueue.length} tracks (from ${tracks.length} total)`);
+      
       setPlaylist(tracksToQueue);
+      
+      // Auto-play the first track to start the session
+      if (tracksToQueue[0]) {
+        console.log('🎵 Auto-playing first track:', tracksToQueue[0].title);
+        await loadTrack(tracksToQueue[0]);
+      }
+      
       setShowPlayer(false); // Close any existing player
     }
   };
