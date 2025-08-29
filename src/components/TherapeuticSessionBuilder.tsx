@@ -107,7 +107,8 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
       const session = await API.buildSession({
         goal: selectedGoal,
         durationMin: duration[0],
-        intensity: intensity[0]
+        intensity: intensity[0],
+        limit: 50 // Add limit to prevent flooding
       })
       
       console.log('✅ Session built via API:', session)

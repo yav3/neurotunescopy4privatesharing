@@ -83,12 +83,12 @@ api.get("/v1/playlist", async (c) => {
 
 // Build session (simple example)
 api.post("/v1/session/build", async (c) => {
-  const { goal = "", durationMin = 15, intensity = 3 } = await c.req.json().catch(() => ({}));
-  console.log(`🏗️ Building session:`, { goal, durationMin, intensity });
+  const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
+  console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
   const supabase = sb();
   
-  // Get tracks using same logic as playlist
+  // Get tracks using same logic as playlist with limit
   const goalToConditions: Record<string, any> = {
     'focus': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
     'relax': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
@@ -115,7 +115,9 @@ api.post("/v1/session/build", async (c) => {
     query = query.in('genre', criteria.genres);
   }
   
-  const { data: tracks, error } = await query.limit(Math.ceil(durationMin / 3));
+  // Apply limit to prevent flooding
+  const trackLimit = Math.min(Number(limit) || 50, 200);
+  const { data: tracks, error } = await query.limit(trackLimit);
   
   if (error) {
     console.error('❌ Session build error:', error);
@@ -125,7 +127,7 @@ api.post("/v1/session/build", async (c) => {
   // Create session record
   const sessionId = crypto.randomUUID();
   
-  console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks`);
+  console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks (limited to ${trackLimit})`);
   return c.json({ sessionId, tracks: tracks || [] });
 });
 

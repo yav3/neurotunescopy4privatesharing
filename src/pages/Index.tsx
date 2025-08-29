@@ -22,7 +22,11 @@ const Index = () => {
 
   const handleSessionStart = (tracks: any[]) => {
     if (tracks.length > 0) {
-      setPlaylist(tracks);
+      console.log(`🎵 Session starting with ${tracks.length} tracks`);
+      const maxTracks = 50; // Match audio-core MAX_QUEUE
+      const tracksToQueue = tracks.slice(0, maxTracks);
+      console.log(`🔒 Limiting session queue to ${tracksToQueue.length} tracks (from ${tracks.length} total)`);
+      setPlaylist(tracksToQueue);
       setShowPlayer(false); // Close any existing player
     }
   };
