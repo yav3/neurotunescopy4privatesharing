@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Bot, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
 import { pipeline } from '@huggingface/transformers';
-import { aiDJAPI } from '@/lib/api';
+import { API } from '@/lib/api';
 import { usePlayerStore } from '@/stores/playerStore';
 
 interface ClassificationResult {
@@ -158,9 +158,10 @@ const HuggingFaceClassifier: React.FC = () => {
     if (!results?.recommendedMood) return;
 
     try {
-      const playlist = await aiDJAPI.generatePlaylist(results.recommendedMood);
-      if (playlist.length > 0) {
-        playPlaylist(playlist, `${results.recommendedMood} (AI Recommended)`);
+      const playlist = await API.playlistByGoal(results.recommendedMood);
+      const tracks = playlist.tracks || [];
+      if (tracks.length > 0) {
+        playPlaylist(tracks, `${results.recommendedMood} (AI Recommended)`);
       }
     } catch (error) {
       console.error('Error generating playlist:', error);

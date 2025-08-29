@@ -9,7 +9,7 @@ import { useAudio } from '@/context/AudioContext'
 import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
-import { API_BASE_URL } from '@/lib/api'
+
 import type { MusicTrack } from '@/types'
 
 // Mock data for moods and genres
@@ -81,7 +81,8 @@ const AIDJPage: React.FC = () => {
       console.log('🔥 REAL API: Fetching playlist for mood:', mood, 'genre:', genre)
       
       // Call the real backend API instead of generating mock data
-      const response = await fetch(`${API_BASE_URL}/api/playlist?goal=${encodeURIComponent(mood)}&genre=${encodeURIComponent(genre)}`)
+      const BASE = window.location.origin
+      const response = await fetch(`${BASE}/api/playlist?goal=${encodeURIComponent(mood)}&genre=${encodeURIComponent(genre)}`)
       
       if (!response.ok) {
         const text = await response.text()
@@ -146,15 +147,9 @@ const AIDJPage: React.FC = () => {
     }
   }
 
-  const regeneratePlaylist = async () => {
-    if (selectedMood) {
-      await generatePlaylist(selectedMood, selectedGenre)
-    }
-  }
-
   const handlePlayPlaylist = () => {
     if (localPlaylist.length > 0) {
-      console.log('🎵 Playing playlist with', localPlaylist.length, 'tracks');
+      console.log('🎵 AI DJ: Playing playlist with', localPlaylist.length, 'tracks');
       setPlaylist(localPlaylist);
       loadTrack(localPlaylist[0]);
     }
@@ -163,12 +158,18 @@ const AIDJPage: React.FC = () => {
   const handleShufflePlaylist = () => {
     if (localPlaylist.length > 0) {
       const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
-      console.log('🔀 Shuffling playlist:', shuffled.length, 'tracks');
+      console.log('🔀 AI DJ: Shuffling playlist:', shuffled.length, 'tracks');
       setLocalPlaylist(shuffled)
       setPlaylist(shuffled)
       loadTrack(shuffled[0]);
     }
   };
+
+  const regeneratePlaylist = async () => {
+    if (selectedMood) {
+      await generatePlaylist(selectedMood, selectedGenre)
+    }
+  }
 
   // Regenerate playlist when genre changes
   useEffect(() => {

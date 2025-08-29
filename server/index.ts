@@ -258,6 +258,61 @@ app.get('/api/playlist', async (req, res) => {
   }
 })
 
+// Session build endpoint
+app.post('/api/session/build', async (req, res) => {
+  try {
+    const { goal, durationMin, intensity } = req.body
+    console.log('🏗️ API: Building session:', { goal, durationMin, intensity })
+    
+    // Use the same playlist logic but adjust for session parameters
+    const playlistResponse = await fetch(`http://localhost:${process.env.PORT || 5000}/api/playlist?goal=${encodeURIComponent(goal)}`)
+    
+    if (!playlistResponse.ok) {
+      throw new Error('Failed to fetch playlist for session')
+    }
+    
+    const { tracks } = await playlistResponse.json()
+    
+    if (!tracks.length) {
+      return res.status(404).json({ error: `No suitable tracks found for ${goal}` })
+    }
+    
+    // Filter and sort tracks based on intensity and duration
+    let sessionTracks = tracks.slice()
+    
+    // Adjust track selection based on intensity (0-100)
+    if (intensity > 70) {
+      // High intensity - prefer energetic tracks
+      sessionTracks = sessionTracks.filter(t => (t.energy || 0.5) > 0.6)
+    } else if (intensity < 30) {
+      // Low intensity - prefer calm tracks
+      sessionTracks = sessionTracks.filter(t => (t.energy || 0.5) < 0.4)
+    }
+    
+    // Calculate number of tracks needed based on duration
+    const avgTrackDuration = 4 // minutes - estimate
+    const targetTrackCount = Math.max(1, Math.ceil(durationMin / avgTrackDuration))
+    
+    // Generate session ID
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    
+    console.log('✅ API: Session built:', {
+      sessionId,
+      trackCount: Math.min(sessionTracks.length, targetTrackCount),
+      originalTracks: tracks.length,
+      filteredTracks: sessionTracks.length
+    })
+    
+    res.json({
+      sessionId,
+      tracks: sessionTracks.slice(0, targetTrackCount)
+    })
+  } catch (error) {
+    console.error('❌ API: Session build failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
 // Session tracking endpoints
 app.post('/api/sessions/start', async (req, res) => {
   try {

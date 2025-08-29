@@ -8,6 +8,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
+import AudioProviderNew from "@/components/AudioProvider";
 import Index from "./pages/Index";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
@@ -23,6 +24,7 @@ const App = () => (
     <TooltipProvider>
       <ErrorBoundary>
         <AudioProvider>
+          <AudioProviderNew />
           <Toaster />
           <Sonner />
           <BrowserRouter>

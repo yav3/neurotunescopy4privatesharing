@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { usePlayerStore } from '@/stores/playerStore';
-import { emotionAPI, statsAPI } from '@/lib/api';
+import { API } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -49,6 +49,30 @@ export function EmotionDashboard() {
   useEffect(() => {
     stopPlayback();
   }, []);
+
+  // Mock functions for emotion and stats APIs (replace with real implementations)
+  const emotionAPI = {
+    getEmotionHistory: async (period: string) => {
+      // Mock data - replace with real API call
+      return {
+        emotions: [
+          { date: '2024-01-01', mood: 'happy', score: 0.8 },
+          { date: '2024-01-02', mood: 'calm', score: 0.7 },
+        ]
+      }
+    }
+  }
+
+  const statsAPI = {
+    getListeningStats: async (period: string) => {
+      // Mock data - replace with real API call  
+      return {
+        totalMinutes: 240,
+        totalSessions: 12,
+        avgSessionLength: 20
+      }
+    }
+  }
 
   // Fetch emotion tracking data
   const { data: emotionData, isLoading: isLoadingEmotions } = useQuery({
