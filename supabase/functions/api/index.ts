@@ -184,33 +184,20 @@ app.post("/api/v1/sessions/complete", async (c) => {
   return c.json({ ok: true });
 });
 
-// Stream by track ID (using storage_key from database)
+// Stream from Storage via file path (reverted from ID-based)
 app.on(["GET", "HEAD"], "/api/stream", async (c) => {
-  const id = c.req.query("id");
-  if (!id) return c.text("Missing 'id'", 400);
+  const file = c.req.query("file");
+  if (!file) return c.text("Missing 'file'", 400);
 
-  console.log(`🎵 Streaming track ID: ${id}`);
-
-  const supabase = sb();
-  
-  // Get storage_key from database
-  const { data: track, error: dbError } = await supabase
-    .from('music_tracks')
-    .select('storage_key')
-    .eq('id', id)
-    .maybeSingle();
-    
-  if (dbError || !track?.storage_key) {
-    console.error('❌ Track not found:', dbError?.message || 'No storage_key');
-    return c.json({ ok: false, error: "TrackNotFound", id }, 404);
-  }
+  console.log(`🎵 Streaming file: ${file}`);
 
   const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(track.storage_key, 1800);
+  const supabase = sb();
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(file, 1800);
   
   if (error || !data?.signedUrl) {
     console.error('❌ Storage error:', error);
-    return c.json({ ok: false, error: error?.message ?? "ObjectNotFound", key: track.storage_key }, 404);
+    return c.text(error?.message ?? "Not found", 404);
   }
 
   const range = c.req.header("range");
@@ -221,7 +208,7 @@ app.on(["GET", "HEAD"], "/api/stream", async (c) => {
   headers.set("Accept-Ranges", "bytes");
   
   // Set content type for MP3 files
-  if (!headers.get("Content-Type") && track.storage_key.toLowerCase().endsWith(".mp3")) {
+  if (!headers.get("Content-Type") && file.toLowerCase().endsWith(".mp3")) {
     headers.set("Content-Type", "audio/mpeg");
   }
 

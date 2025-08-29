@@ -30,5 +30,7 @@ const buildFile = (s: string) => s.includes("/")
   ? s.split("/").map(encodeURIComponent).join("/")
   : encodeURIComponent(s);
 
-export const streamUrl = (t: { id: string }) =>
-  `${API_BASE}/stream?id=${encodeURIComponent(t.id)}`;
+export const streamUrl = (t: { file_path?: string; file_name?: string; src?: string; title?: string }) => {
+  const fileName = t.file_path || t.file_name || t.src || t.title;
+  return `${API_BASE}/stream?file=${encodeURIComponent(fileName || '')}`;
+};
