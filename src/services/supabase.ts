@@ -7,19 +7,20 @@ export class SupabaseService {
     try {
       logger.info('Getting track URL', { filePath, bucketName })
       
-      // Use absolute URL for streaming through our API - this ensures proper routing
-      const streamUrl = `${window.location.origin}/api/stream/path/${encodeURIComponent(filePath)}`
+      // Use our unified API endpoint for streaming
+      const { API_BASE } = await import('@/lib/env')
+      const streamUrl = `${API_BASE}/stream?file=${encodeURIComponent(filePath)}`
       
-      logger.info('Using absolute stream URL', { streamUrl })
+      logger.info('Generated stream URL', { streamUrl, filePath })
       return streamUrl
       
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Fallback to the same absolute URL
-      const streamUrl = `${window.location.origin}/api/stream/path/${encodeURIComponent(filePath)}`
-      logger.info('Using absolute stream URL as fallback', { streamUrl })
-      return streamUrl
+      // Fallback to direct API endpoint
+      const fallbackUrl = `${window.location.origin}/api/stream?file=${encodeURIComponent(filePath)}`
+      logger.info('Using fallback stream URL', { fallbackUrl })
+      return fallbackUrl
     }
   }
 

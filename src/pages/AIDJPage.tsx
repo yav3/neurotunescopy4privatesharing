@@ -150,11 +150,24 @@ const AIDJPage: React.FC = () => {
     }
   }
 
-  const handlePlayPlaylist = () => {
+  const handlePlayPlaylist = async () => {
     if (localPlaylist.length > 0) {
-      console.log('🎵 AI DJ: Playing playlist with', localPlaylist.length, 'tracks');
-      setPlaylist(localPlaylist);
-      loadTrack(localPlaylist[0]);
+      console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks');
+      console.log('🎵 First track:', localPlaylist[0]);
+      
+      try {
+        // Set the playlist in the audio context
+        setPlaylist(localPlaylist);
+        
+        // Load and play the first track
+        await loadTrack(localPlaylist[0]);
+        
+        console.log('✅ AI DJ: Successfully started playback');
+      } catch (error) {
+        console.error('❌ AI DJ: Failed to start playback:', error);
+      }
+    } else {
+      console.log('❌ AI DJ: No tracks in playlist to play');
     }
   };
 
