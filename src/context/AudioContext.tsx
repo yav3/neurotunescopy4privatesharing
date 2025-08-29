@@ -163,33 +163,19 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'SET_LOADING', payload: true })
       retryCount.current = 0
       
-      let url: string
+      // Use the streaming edge function that handles redirects
+      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/${track.id}?bucket=${track.bucket_name || 'neuralpositivemusic'}`
       
-      // Use the edge function to resolve the correct track URL
-      const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/resolve-track-url?trackId=${track.id}&type=audio&bucket=${track.bucket_name || 'neuralpositivemusic'}`)
-      
-      if (!response.ok) {
-        throw new Error(`Failed to resolve track URL: ${response.status} ${response.statusText}`)
-      }
-      
-      const data = await response.json()
-      if (!data.url) {
-        throw new Error('No matching audio file found in storage')
-      }
-      
-      url = data.url
-      
-      // Test if the resolved URL is accessible
-      const testResponse = await fetch(url, { method: 'HEAD' })
+      // Test if the stream URL is accessible (it will redirect to actual file)
+      const testResponse = await fetch(streamUrl, { method: 'HEAD' })
       if (!testResponse.ok) {
-        throw new Error(`Audio file not accessible: ${testResponse.status} ${testResponse.statusText}`)
+        throw new Error(`Stream not accessible: ${testResponse.status} ${testResponse.statusText}`)
       }
       
-      logger.info('Loading audio file', { 
+      logger.info('Loading audio stream', { 
         trackId: track.id, 
         title: track.title,
-        url,
-        originalPath: data.originalPath,
+        streamUrl,
         bucketName: track.bucket_name
       })
       
@@ -200,7 +186,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       // Load new track with CORS settings
       audioRef.current.crossOrigin = 'anonymous'
       audioRef.current.preload = 'metadata'
-      audioRef.current.src = url
+      audioRef.current.src = streamUrl
       
       // Wait for the track to start loading
       return new Promise<void>((resolve, reject) => {
@@ -233,7 +219,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           logger.error('Audio loading failed', { 
             trackId: track.id, 
             error: errorMsg,
-            url,
+            streamUrl,
             networkState: audio.networkState,
             readyState: audio.readyState
           })
@@ -243,7 +229,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         }
         
         const handleTimeout = () => {
-          logger.error('Audio loading timeout', { trackId: track.id, url })
+          logger.error('Audio loading timeout', { trackId: track.id, streamUrl })
           cleanup()
           reject(new Error('Audio loading timeout'))
         }
