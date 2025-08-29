@@ -9,6 +9,7 @@ import { useAudio } from '@/context/AudioContext'
 import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
+import { API_BASE_URL } from '@/lib/api'
 import type { MusicTrack } from '@/types'
 
 // Mock data for moods and genres
@@ -72,36 +73,33 @@ const AIDJPage: React.FC = () => {
 
   const { state, currentTrack, setPlaylist, loadTrack, toggle, prev, next, setVolume } = useAudio()
 
-  // Mock function to generate playlist based on mood and genre
+  // Replace mock function with real API calls
   const generatePlaylist = async (mood: string, genre: string = 'all') => {
     setIsGenerating(true)
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Mock tracks - in real app, this would come from your Supabase database
-    const mockTracks: MusicTrack[] = [
-      {
-        id: 'track-1',
-        title: `${mood.charAt(0).toUpperCase() + mood.slice(1)} Track 1`,
-        genre: 'ambient',
-        energy: mood === 'energy' ? 0.8 : mood === 'focus' ? 0.6 : 0.3,
-        valence: 0.7,
-        acousticness: 0.9,
-        danceability: 0.1,
-        instrumentalness: 0.95,
-        speechiness: 0.05,
-        loudness: -15,
-        bpm: mood === 'energy' ? 120 : mood === 'focus' ? 72 : 60,
-        file_path: `therapeutic/${mood}/track-1.mp3`,
-        bucket_name: 'neurotunes-music',
-        upload_status: 'completed' as const,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        therapeutic_applications: [{
-          id: 'app-1',
-          track_id: 'track-1',
-          frequency_band_primary: mood === 'energy' ? 'beta' as const : mood === 'focus' ? 'alpha' as const : mood === 'sleep' ? 'delta' as const : 'theta' as const,
+    try {
+      console.log('🔥 REAL API: Fetching playlist for mood:', mood, 'genre:', genre)
+      
+      // Call the real backend API instead of generating mock data
+      const response = await fetch(`${API_BASE_URL}/api/playlist?goal=${encodeURIComponent(mood)}&genre=${encodeURIComponent(genre)}`)
+      
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`API error ${response.status}: ${text}`)
+      }
+      
+      const data = await response.json()
+      const tracks = data.tracks || []
+      
+      console.log('✅ REAL API: Playlist received:', tracks.length, 'tracks')
+      
+      // Convert to proper format with therapeutic applications if missing
+      const processedTracks = tracks.map(track => ({
+        ...track,
+        therapeutic_applications: track.therapeutic_applications || [{
+          id: `app-${track.id}`,
+          track_id: track.id,
+          frequency_band_primary: getBandFromBPM(track.bpm),
           condition_targets: [mood === 'focus' ? 'focus' : mood === 'energy' ? 'energy' : mood === 'sleep' ? 'sleep' : 'relaxation'],
           anxiety_evidence_score: mood === 'relax' ? 0.85 : 0.6,
           sleep_evidence_score: mood === 'sleep' ? 0.92 : 0.3,
@@ -109,41 +107,30 @@ const AIDJPage: React.FC = () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }]
-      },
-      {
-        id: 'track-2',
-        title: `${mood.charAt(0).toUpperCase() + mood.slice(1)} Track 2`,
-        genre: 'binaural',
-        energy: mood === 'energy' ? 0.7 : mood === 'focus' ? 0.5 : 0.2,
-        valence: 0.6,
-        acousticness: 0.8,
-        danceability: 0.1,
-        instrumentalness: 0.98,
-        speechiness: 0.02,
-        loudness: -18,
-        bpm: mood === 'energy' ? 100 : mood === 'focus' ? 68 : 55,
-        file_path: `therapeutic/${mood}/track-2.mp3`,
-        bucket_name: 'neurotunes-music',
-        upload_status: 'completed' as const,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        therapeutic_applications: [{
-          id: 'app-2',
-          track_id: 'track-2',
-          frequency_band_primary: mood === 'energy' ? 'beta' as const : mood === 'focus' ? 'alpha' as const : mood === 'sleep' ? 'delta' as const : 'theta' as const,
-          condition_targets: [mood === 'focus' ? 'focus' : mood === 'energy' ? 'energy' : mood === 'sleep' ? 'sleep' : 'relaxation'],
-          anxiety_evidence_score: mood === 'relax' ? 0.82 : 0.5,
-          sleep_evidence_score: mood === 'sleep' ? 0.89 : 0.2,
-          focus_evidence_score: mood === 'focus' ? 0.84 : 0.3,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }]
-      }
-    ]
-    
-    setLocalPlaylist(mockTracks)
-    setPlaylist(mockTracks)
-    setIsGenerating(false)
+      }))
+      
+      setLocalPlaylist(processedTracks)
+      setPlaylist(processedTracks)
+      
+    } catch (error) {
+      console.error('❌ REAL API: Failed to fetch playlist:', error)
+      
+      // Fallback to empty playlist with error message
+      setLocalPlaylist([])
+      setPlaylist([])
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+  
+  // Helper function to determine frequency band from BPM
+  const getBandFromBPM = (bpm: number): 'delta' | 'theta' | 'alpha' | 'beta' | 'gamma' => {
+    if (!bpm) return 'alpha'
+    if (bpm < 60) return 'delta'
+    if (bpm < 90) return 'theta' 
+    if (bpm < 120) return 'alpha'
+    if (bpm < 150) return 'beta'
+    return 'gamma'
   }
 
   const handleMoodSelect = async (moodId: string) => {
