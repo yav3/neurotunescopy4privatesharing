@@ -14,6 +14,7 @@ const formatDuration = (seconds: number): string => {
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
+  console.log('🎵 TrackCard rendered for:', track.title)
   const { currentTrack, state, loadTrack, toggle } = useAudio()
   
   const isCurrentTrack = currentTrack?.id === track.id
@@ -23,6 +24,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   const primaryApp = track.therapeutic_applications?.[0]
 
   const handlePlayClick = async () => {
+    console.log('▶️ Play button clicked for track:', track.title)
     if (isCurrentTrack) {
       toggle()
     } else {

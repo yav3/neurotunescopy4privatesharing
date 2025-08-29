@@ -52,11 +52,15 @@ export const FrequencyBand: React.FC<FrequencyBandProps> = ({
   onClick, 
   count 
 }) => {
+  console.log('🎛️ FrequencyBand rendered:', band, 'active:', isActive)
   const info = bandInfo[band]
   
   return (
     <button
-      onClick={() => onClick(band)}
+      onClick={() => {
+        console.log('🎛️ FrequencyBand clicked:', band)
+        onClick(band)
+      }}
       className={`
         group relative p-6 rounded-2xl border-2 transition-all duration-300
         ${isActive 

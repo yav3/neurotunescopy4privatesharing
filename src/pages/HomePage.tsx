@@ -9,10 +9,13 @@ import { LoadingSpinner, InlineLoadingSpinner } from '@/components/LoadingSpinne
 import type { FrequencyBand as FrequencyBandType, MusicTrack } from '@/types'
 
 export const HomePage: React.FC = () => {
+  console.log('📱 HomePage component rendered')
   const [selectedBand, setSelectedBand] = useState<FrequencyBandType | 'all'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCondition, setSelectedCondition] = useState<string>('')
   const { setPlaylist } = useAudio()
+
+  console.log('🎵 HomePage state:', { selectedBand, searchQuery, selectedCondition })
 
   // Fetch tracks with React Query
   const { 
@@ -85,6 +88,7 @@ export const HomePage: React.FC = () => {
   const availableConditions: string[] = []
 
   const handleBandFilter = (band: FrequencyBandType) => {
+    console.log('🎛️ Band filter clicked:', band, 'current:', selectedBand)
     setSelectedBand(selectedBand === band ? 'all' : band)
   }
 
