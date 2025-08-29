@@ -28,10 +28,8 @@ import { API_BASE } from '@/lib/env'
 
 const api = {
   url: (path: string) => `${API_BASE}${path}`,
-  health: () => `${API_BASE}/api/healthz`,
-  healthSupabase: () => `${API_BASE}/api/readyz`,
-  healthStreaming: () => `${API_BASE}/api/stream-health`,
-};
+  health: () => `${API_BASE}/health`,
+}
 
 export default function ConnectivityPanel() {
   const [checks, setChecks] = useState<HealthCheck[]>([]);
@@ -48,12 +46,10 @@ export default function ConnectivityPanel() {
   const runHealthChecks = async () => {
     const healthChecks = [
       { name: "API", url: api.health() },
-      { name: "Supabase", url: api.healthSupabase() },
-      { name: "Streaming", url: api.healthStreaming() },
     ];
 
     const results: HealthCheck[] = [];
-    let apiOk = false, dbOk = false, storageOk = false;
+    let apiOk = false;
 
     for (const check of healthChecks) {
       try {
@@ -70,8 +66,6 @@ export default function ConnectivityPanel() {
 
         // Track quick status for dots
         if (check.name === "API" && isOk) apiOk = true;
-        if (check.name === "Supabase" && isOk) dbOk = true;
-        if (check.name === "Streaming" && isOk) storageOk = true;
       } catch (error) {
         results.push({ 
           name: check.name, 
@@ -82,7 +76,7 @@ export default function ConnectivityPanel() {
     }
 
     setChecks(results);
-    setQuickStatus({ api: apiOk, db: dbOk, storage: storageOk });
+    setQuickStatus({ api: apiOk, db: false, storage: false });
   };
 
   const allHealthy = checks.every(check => check.ok);
@@ -93,8 +87,6 @@ export default function ConnectivityPanel() {
       {/* Quick status dots - always visible at top right */}
       <div className="fixed top-4 right-4 z-50 bg-black/80 text-white px-3 py-2 rounded-lg text-xs flex items-center">
         <span>API</span><Dot ok={quickStatus.api} />
-        <span className="ml-3">DB</span><Dot ok={quickStatus.db} />
-        <span className="ml-3">Stream</span><Dot ok={quickStatus.storage} />
         <button 
           onClick={() => setIsVisible(!isVisible)}
           className="ml-3 text-gray-400 hover:text-white"

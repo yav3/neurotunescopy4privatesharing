@@ -22,20 +22,18 @@ interface StartSessionResponse {
   sessionId: string
 }
 
-// New unified API client with real event triggers
+// New unified API client with Supabase Edge Functions
 export const API = {
-  // Health checks - using Supabase edge functions
-  health: () => fetch(`${API_BASE}/functions/v1/healthz`).then(j),
-  db: () => fetch(`${API_BASE}/rest/v1/`).then(j),
-  storage: () => fetch(`${API_BASE}/storage/v1/`).then(j),
-
-  // Music catalog  
-  featured: () => fetch(`${API_BASE}/functions/v1/catalog/featured`).then(j),
+  // Health checks
+  health: () => fetch(`${API_BASE}/health`).then(j),
+  
+  // Music catalog
+  featured: () => fetch(`${API_BASE}/catalog/featured`).then(j),
   playlistByGoal: (goal: string) =>
-    fetch(`${API_BASE}/functions/v1/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
+    fetch(`${API_BASE}/v1/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
 
   buildSession: (p: {goal: string; durationMin: number; intensity: number}) =>
-    fetch(`${API_BASE}/functions/v1/session/build`, {
+    fetch(`${API_BASE}/v1/session/build`, {
       method: "POST", 
       headers: {"content-type":"application/json"}, 
       body: JSON.stringify(p)
@@ -43,23 +41,23 @@ export const API = {
 
   // Sessions/telemetry
   startSession: (trackId: string) =>
-    fetch(`${API_BASE}/functions/v1/sessions/start`, { 
+    fetch(`${API_BASE}/v1/sessions/start`, { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trackId })
     }).then(j<StartSessionResponse>),
 
   progress: (sessionId: string, t: number) =>
-    navigator.sendBeacon?.(`${API_BASE}/functions/v1/sessions/progress`,
+    navigator.sendBeacon?.(`${API_BASE}/v1/sessions/progress`,
       new Blob([JSON.stringify({ sessionId, t })], { type: "application/json" }))
-    || fetch(`${API_BASE}/functions/v1/sessions/progress`, {
+    || fetch(`${API_BASE}/v1/sessions/progress`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId, t })
     }),
 
   complete: (sessionId: string) =>
-    fetch(`${API_BASE}/functions/v1/sessions/complete`, {
+    fetch(`${API_BASE}/v1/sessions/complete`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId })
@@ -68,7 +66,7 @@ export const API = {
 
 export const streamUrl = (t: any) => {
   const fileName = t.file_path || t.file_name || t.src || t.id
-  const url = `${API_BASE}/functions/v1/stream-track/${encodeURIComponent(fileName)}`
+  const url = `${API_BASE}/stream?file=${encodeURIComponent(fileName)}`
   console.log('🎵 Generated stream URL:', url, 'for track:', t.title || fileName)
   return url
 }

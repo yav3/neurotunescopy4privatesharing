@@ -38,7 +38,7 @@ export const AudioDebugger = () => {
       const results = [];
       for (const track of tracks || []) {
         try {
-          const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/${track.id}?bucket=neuralpositivemusic`;
+          const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/stream?file=${track.id}&bucket=neuralpositivemusic`;
           const response = await fetch(streamUrl, { method: 'HEAD' });
           
           results.push({
