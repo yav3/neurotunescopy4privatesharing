@@ -13,6 +13,20 @@ const formatDuration = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
+// Generate album artwork URL based on track data
+const getAlbumArtworkUrl = (track: MusicTrack): string | null => {
+  // Try to get artwork from file path (assuming artwork might be stored alongside audio)
+  if (track.file_path && track.bucket_name) {
+    // Replace audio file extension with common image extensions
+    const artworkPath = track.file_path.replace(/\.(mp3|wav|flac|m4a|ogg)$/i, '.jpg')
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+    if (supabaseUrl) {
+      return `${supabaseUrl}/storage/v1/object/public/${track.bucket_name}/${artworkPath}`
+    }
+  }
+  return null
+}
+
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
   const { currentTrack, state, loadTrack, toggle } = useAudio()
@@ -36,14 +50,56 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
     }
   }
 
+  const albumArtworkUrl = getAlbumArtworkUrl(track)
+
   return (
-    <div className="group bg-card rounded-2xl p-6 border border-border transition-all duration-300 hover:shadow-card hover:border-primary/20">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+    <div className="group bg-card rounded-2xl border border-border transition-all duration-300 hover:shadow-card hover:border-primary/20 overflow-hidden">
+      <div className="flex gap-4 p-4">
+        {/* Album Artwork */}
+        <div className="relative flex-shrink-0">
+          <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg overflow-hidden flex items-center justify-center">
+            {albumArtworkUrl ? (
+              <img 
+                src={albumArtworkUrl} 
+                alt={`${track.title} artwork`}
+                className="w-full h-full object-cover absolute inset-0"
+                onError={(e) => {
+                  // Hide the image on load error, showing the gradient fallback
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+            ) : null}
+            {/* Fallback design - only shows when no image or image fails to load */}
+            <div className="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center relative z-10">
+              <span className="text-xs font-medium text-primary">
+                {track.title.charAt(0).toUpperCase()}
+              </span>
+            </div>
+          </div>
+          
+          {/* Play button overlay */}
+          <button
+            onClick={handlePlayClick}
+            disabled={isLoading}
+            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center"
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isLoading ? (
+              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : isPlaying ? (
+              <Pause size={24} className="text-white" />
+            ) : (
+              <Play size={24} className="text-white ml-0.5" />
+            )}
+          </button>
+        </div>
+
+        {/* Track Info */}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors truncate">
             {track.title}
           </h3>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
             <span className="capitalize bg-secondary px-2 py-1 rounded-full text-xs">
               {track.genre}
             </span>
@@ -52,74 +108,61 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
               {track.bpm || 'N/A'} BPM
             </span>
           </div>
-        </div>
-        
-        <button
-          onClick={handlePlayClick}
-          disabled={isLoading}
-          className="relative p-3 rounded-full transition-all duration-300 group-hover:scale-105 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isLoading ? (
-            <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : isPlaying ? (
-            <Pause size={20} />
-          ) : (
-            <Play size={20} className="ml-0.5" />
+
+          {/* Therapeutic info inline */}
+          {primaryApp && (
+            <div className="mb-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Brain size={14} className="text-primary" />
+                <span className="text-xs text-foreground capitalize">
+                  {primaryApp.frequency_band_primary} Band
+                </span>
+              </div>
+              
+              <div className="flex flex-wrap gap-1">
+                {primaryApp.condition_targets?.slice(0, 2).map((condition) => (
+                  <span 
+                    key={condition} 
+                    className="px-2 py-0.5 bg-secondary text-xs rounded-full text-secondary-foreground"
+                  >
+                    {condition.replace('_', ' ')}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
-        </button>
-      </div>
 
-      {primaryApp && (
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Brain size={16} className="text-primary" />
-            <span className="text-sm text-foreground capitalize">
-              {primaryApp.frequency_band_primary} Band
-            </span>
-          </div>
-          
-          <div className="flex flex-wrap gap-2 mb-3">
-            {primaryApp.condition_targets?.slice(0, 3).map((condition) => (
-              <span 
-                key={condition} 
-                className="px-2 py-1 bg-secondary text-xs rounded-full text-secondary-foreground"
-              >
-                {condition.replace('_', ' ')}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 gap-4 text-sm">
-        <div>
-          <span className="text-muted-foreground">Energy</span>
-          <div className="flex items-center gap-2 mt-1">
-            <div className="flex-1 bg-secondary rounded-full h-1.5">
-              <div 
-                className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 rounded-full" 
-                style={{ width: `${track.energy * 100}%` }}
-              />
+          {/* Energy and Valence bars - more compact */}
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div>
+              <span className="text-muted-foreground">Energy</span>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex-1 bg-secondary rounded-full h-1">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-1 rounded-full" 
+                    style={{ width: `${track.energy * 100}%` }}
+                  />
+                </div>
+                <span className="text-foreground text-xs w-8">
+                  {Math.round(track.energy * 100)}%
+                </span>
+              </div>
             </div>
-            <span className="text-foreground text-xs w-8">
-              {Math.round(track.energy * 100)}%
-            </span>
-          </div>
-        </div>
-        
-        <div>
-          <span className="text-muted-foreground">Valence</span>
-          <div className="flex items-center gap-2 mt-1">
-            <div className="flex-1 bg-secondary rounded-full h-1.5">
-              <div 
-                className="bg-gradient-to-r from-green-500 to-green-600 h-1.5 rounded-full" 
-                style={{ width: `${track.valence * 100}%` }}
-              />
+            
+            <div>
+              <span className="text-muted-foreground">Valence</span>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex-1 bg-secondary rounded-full h-1">
+                  <div 
+                    className="bg-gradient-to-r from-green-500 to-green-600 h-1 rounded-full" 
+                    style={{ width: `${track.valence * 100}%` }}
+                  />
+                </div>
+                <span className="text-foreground text-xs w-8">
+                  {Math.round(track.valence * 100)}%
+                </span>
+              </div>
             </div>
-            <span className="text-foreground text-xs w-8">
-              {Math.round(track.valence * 100)}%
-            </span>
           </div>
         </div>
       </div>
