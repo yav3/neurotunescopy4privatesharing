@@ -6,7 +6,7 @@ interface TrendingTabsProps {
 }
 
 export const TrendingTabs = ({ activeTab = "goals", onTabChange }: TrendingTabsProps) => {
-  const tabs = ["Goals", "Popular", "Recent", "All"];
+  const tabs = ["Goals", "Sessions", "Popular", "Recent"];
 
   return (
     <section className="px-4 md:px-8 mb-8">
