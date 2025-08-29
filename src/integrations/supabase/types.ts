@@ -1713,6 +1713,39 @@ export type Database = {
           },
         ]
       }
+      streaming_analytics: {
+        Row: {
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          quality_requested: string
+          start_time: number | null
+          streamed_at: string | null
+          track_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          quality_requested: string
+          start_time?: number | null
+          streamed_at?: string | null
+          track_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          quality_requested?: string
+          start_time?: number | null
+          streamed_at?: string | null
+          track_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       therapeutic_applications: {
         Row: {
           anxiety_evidence_score: number | null
@@ -1790,6 +1823,33 @@ export type Database = {
           },
         ]
       }
+      therapeutic_sessions: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number
+          frequency_band: string | null
+          id: string
+          session_timestamp: string | null
+          track_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds: number
+          frequency_band?: string | null
+          id?: string
+          session_timestamp?: string | null
+          track_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number
+          frequency_band?: string | null
+          id?: string
+          session_timestamp?: string | null
+          track_id?: string
+        }
+        Relationships: []
+      }
       timber_inventory: {
         Row: {
           annual_growth_mbf: number | null
@@ -1847,11 +1907,51 @@ export type Database = {
         }
         Relationships: []
       }
+      track_analytics: {
+        Row: {
+          condition_target: string | null
+          created_at: string | null
+          duration_seconds: number | null
+          event_type: string
+          frequency_band: string | null
+          id: string
+          ip_address: string | null
+          track_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          condition_target?: string | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          event_type: string
+          frequency_band?: string | null
+          id?: string
+          ip_address?: string | null
+          track_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          condition_target?: string | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          event_type?: string
+          frequency_band?: string | null
+          id?: string
+          ip_address?: string | null
+          track_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       tracks: {
         Row: {
           acousticness: number | null
           ai_score: number | null
           album: string | null
+          album_art_color: string | null
+          album_art_credits: string | null
+          album_art_thumbnail: string | null
+          album_art_url: string | null
           arousal: number | null
           artist: string | null
           artwork_path: string | null
@@ -1888,6 +1988,10 @@ export type Database = {
           acousticness?: number | null
           ai_score?: number | null
           album?: string | null
+          album_art_color?: string | null
+          album_art_credits?: string | null
+          album_art_thumbnail?: string | null
+          album_art_url?: string | null
           arousal?: number | null
           artist?: string | null
           artwork_path?: string | null
@@ -1924,6 +2028,10 @@ export type Database = {
           acousticness?: number | null
           ai_score?: number | null
           album?: string | null
+          album_art_color?: string | null
+          album_art_credits?: string | null
+          album_art_thumbnail?: string | null
+          album_art_url?: string | null
           arousal?: number | null
           artist?: string | null
           artwork_path?: string | null
@@ -2050,6 +2158,39 @@ export type Database = {
       }
     }
     Views: {
+      my_favorites: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          track_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          track_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          track_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "problematic_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
@@ -2172,6 +2313,14 @@ export type Database = {
       get_histogram_timings: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_therapeutic_recommendations: {
+        Args: { min_evidence_score?: number; target_condition: string }
+        Returns: {
+          evidence_score: number
+          frequency_band: string
+          track_id: string
+        }[]
       }
       histogram: {
         Args: { _bucket: number; _quryid: number }
