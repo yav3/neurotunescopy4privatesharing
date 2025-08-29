@@ -1,180 +1,181 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { 
-  Radio, 
-  Zap, 
-  Moon, 
-  Brain, 
-  Heart as HeartIcon, 
-  Play, 
-  Heart, 
-  ChevronLeft, 
-  SkipBack, 
-  SkipForward, 
-  Pause,
-  Shuffle,
-  Volume2,
-  Settings
-} from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
-import { API } from '@/lib/api' // Use the real API client!
-import { TrackCard } from '@/components/TrackCard'
-import { useAudio } from '@/context/AudioContext'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from 'react'
+import { Radio, Play, Pause, SkipBack, SkipForward, Volume2, ChevronLeft, Settings, Shuffle } from 'lucide-react'
 import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
-import { AudioDebugger } from '@/components/AudioDebugger'
-import AudioTester from '@/components/AudioTester'
 import { cn } from '@/lib/utils'
+import { useAudio } from '@/context/AudioContext'
+import { TrackCard } from '@/components/TrackCard'
+import AudioTester from '@/components/AudioTester'
+import { AudioDebugger } from '@/components/AudioDebugger'
+import type { MusicTrack } from '@/types'
 
-export function AIDJPage() {
-  const navigate = useNavigate()
-  const [selectedMood, setSelectedMood] = useState<string | null>(null)
-  const [localPlaylist, setLocalPlaylist] = useState<any[]>([])
-  const [selectedGenre, setSelectedGenre] = useState('all')
-  const [showFavorites, setShowFavorites] = useState(false)
+// Mock data for moods and genres
+const moods = [
+  {
+    id: 'focus',
+    label: 'Deep Focus',
+    description: 'Alpha waves for concentration and productivity',
+    icon: Radio,
+    gradient: 'bg-gradient-to-r from-blue-600 to-cyan-600',
+    color: 'text-blue-600'
+  },
+  {
+    id: 'relax',
+    label: 'Relaxation',
+    description: 'Theta waves for deep relaxation and stress relief',
+    icon: Radio,
+    gradient: 'bg-gradient-to-r from-green-600 to-teal-600',
+    color: 'text-green-600'
+  },
+  {
+    id: 'sleep',
+    label: 'Sleep',
+    description: 'Delta waves for deep, restorative sleep',
+    icon: Radio,
+    gradient: 'bg-gradient-to-r from-purple-600 to-indigo-600',
+    color: 'text-purple-600'
+  },
+  {
+    id: 'energy',
+    label: 'Energy',
+    description: 'Beta waves for alertness and motivation',
+    icon: Radio,
+    gradient: 'bg-gradient-to-r from-orange-600 to-red-600',
+    color: 'text-orange-600'
+  }
+]
+
+const genres = [
+  { id: 'all', label: 'All Genres' },
+  { id: 'ambient', label: 'Ambient' },
+  { id: 'binaural', label: 'Binaural Beats' },
+  { id: 'nature', label: 'Nature Sounds' },
+  { id: 'classical', label: 'Classical' }
+]
+
+const formatTime = (seconds: number): string => {
+  if (!Number.isFinite(seconds)) return '0:00'
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
+const AIDJPage: React.FC = () => {
+  const [selectedMood, setSelectedMood] = useState<string>('')
+  const [selectedGenre, setSelectedGenre] = useState<string>('all')
   const [isFullscreenMode, setIsFullscreenMode] = useState(false)
+  const [localPlaylist, setLocalPlaylist] = useState<MusicTrack[]>([])
+  const [isGenerating, setIsGenerating] = useState(false)
   const [showAudioTester, setShowAudioTester] = useState(false)
-  
-  const {
-    setPlaylist,
-    loadTrack,
-    currentTrack,
-    state,
-    toggle,
-    next,
-    prev,
-    setVolume,
-    formatTime
-  } = useAudio()
 
-  // Add boot trigger - fetch featured content on component mount
-  useEffect(() => {
-    console.log('🔥 BOOT TRIGGER: AI DJ page mounted, testing full stack')
-    ;(async () => {
-      try {
-        // Test full stack connectivity
-        const [healthCheck, dbCheck, storageCheck] = await Promise.all([
-          API.health().catch(e => ({ error: e.message })),
-          API.db().catch(e => ({ error: e.message })),
-          API.storage().catch(e => ({ error: e.message }))
-        ])
-        
-        console.log('✅ BOOT: Health checks completed', { healthCheck, dbCheck, storageCheck })
-        
-        // Fetch featured content to prove the full chain works
-        const featured = await API.featured()
-        console.log('✅ BOOT: Featured content loaded', (featured as any).items?.length, 'tracks')
-        
-      } catch (error) {
-        console.error('❌ BOOT: Full stack test failed:', error)
+  const { state, currentTrack, setPlaylist, loadTrack, toggle, prev, next, setVolume } = useAudio()
+
+  // Mock function to generate playlist based on mood and genre
+  const generatePlaylist = async (mood: string, genre: string = 'all') => {
+    setIsGenerating(true)
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    // Mock tracks - in real app, this would come from your Supabase database
+    const mockTracks: MusicTrack[] = [
+      {
+        id: 'track-1',
+        title: `${mood.charAt(0).toUpperCase() + mood.slice(1)} Track 1`,
+        genre: 'ambient',
+        energy: mood === 'energy' ? 0.8 : mood === 'focus' ? 0.6 : 0.3,
+        valence: 0.7,
+        acousticness: 0.9,
+        danceability: 0.1,
+        instrumentalness: 0.95,
+        speechiness: 0.05,
+        loudness: -15,
+        bpm: mood === 'energy' ? 120 : mood === 'focus' ? 72 : 60,
+        file_path: `therapeutic/${mood}/track-1.mp3`,
+        bucket_name: 'neurotunes-music',
+        upload_status: 'completed' as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        therapeutic_applications: [{
+          id: 'app-1',
+          track_id: 'track-1',
+          frequency_band_primary: mood === 'energy' ? 'beta' as const : mood === 'focus' ? 'alpha' as const : mood === 'sleep' ? 'delta' as const : 'theta' as const,
+          condition_targets: [mood === 'focus' ? 'focus' : mood === 'energy' ? 'energy' : mood === 'sleep' ? 'sleep' : 'relaxation'],
+          anxiety_evidence_score: mood === 'relax' ? 0.85 : 0.6,
+          sleep_evidence_score: mood === 'sleep' ? 0.92 : 0.3,
+          focus_evidence_score: mood === 'focus' ? 0.88 : 0.4,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }]
+      },
+      {
+        id: 'track-2',
+        title: `${mood.charAt(0).toUpperCase() + mood.slice(1)} Track 2`,
+        genre: 'binaural',
+        energy: mood === 'energy' ? 0.7 : mood === 'focus' ? 0.5 : 0.2,
+        valence: 0.6,
+        acousticness: 0.8,
+        danceability: 0.1,
+        instrumentalness: 0.98,
+        speechiness: 0.02,
+        loudness: -18,
+        bpm: mood === 'energy' ? 100 : mood === 'focus' ? 68 : 55,
+        file_path: `therapeutic/${mood}/track-2.mp3`,
+        bucket_name: 'neurotunes-music',
+        upload_status: 'completed' as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        therapeutic_applications: [{
+          id: 'app-2',
+          track_id: 'track-2',
+          frequency_band_primary: mood === 'energy' ? 'beta' as const : mood === 'focus' ? 'alpha' as const : mood === 'sleep' ? 'delta' as const : 'theta' as const,
+          condition_targets: [mood === 'focus' ? 'focus' : mood === 'energy' ? 'energy' : mood === 'sleep' ? 'sleep' : 'relaxation'],
+          anxiety_evidence_score: mood === 'relax' ? 0.82 : 0.5,
+          sleep_evidence_score: mood === 'sleep' ? 0.89 : 0.2,
+          focus_evidence_score: mood === 'focus' ? 0.84 : 0.3,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }]
       }
-    })()
-  }, [])
-
-  const moods = [
-    { 
-      id: 'focus', 
-      label: 'Focus', 
-      icon: Brain, 
-      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
-      description: 'Enhance concentration and productivity',
-      color: 'text-music-focus'
-    },
-    { 
-      id: 'chill', 
-      label: 'Chill', 
-      icon: HeartIcon, 
-      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
-      description: 'Relax and unwind with soothing sounds',
-      color: 'text-music-mood'
-    },
-    { 
-      id: 'sleep', 
-      label: 'Sleep', 
-      icon: Moon, 
-      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
-      description: 'Peaceful music for rest and recovery',
-      color: 'text-music-sleep'
-    },
-    { 
-      id: 'energy', 
-      label: 'Energy', 
-      icon: Zap, 
-      gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
-      description: 'Boost motivation and vitality',
-      color: 'text-music-energy'
-    }
-  ]
-
-  const genres = [
-    { id: 'all', label: 'All Genres' },
-    { id: 'classical', label: 'Classical' },
-    { id: 'ambient', label: 'Ambient' },
-    { id: 'acoustic', label: 'Acoustic' },
-    { id: 'electronic', label: 'Electronic' },
-    { id: 'indie', label: 'Indie' },
-    { id: 'jazz', label: 'Jazz' }
-  ]
-
-  // Generate playlist based on mood and genre with REAL API CALLS
-  const { data: generatedPlaylist, isLoading: isGenerating, refetch: regeneratePlaylist } = useQuery({
-    queryKey: ['ai-playlist', selectedMood, selectedGenre],
-    queryFn: () => selectedMood ? API.playlistByGoal(selectedMood) : Promise.resolve({ tracks: [] }),
-    enabled: !!selectedMood,
-    select: (data) => (data as any)?.tracks || []
-  })
-
-  // Update playlist when generated
-  useEffect(() => {
-    if (generatedPlaylist) {
-      setLocalPlaylist(generatedPlaylist)
-    }
-  }, [generatedPlaylist])
+    ]
+    
+    setLocalPlaylist(mockTracks)
+    setPlaylist(mockTracks)
+    setIsGenerating(false)
+  }
 
   const handleMoodSelect = async (moodId: string) => {
-    console.log('🎵 AI DJ: Mood selected:', moodId)
     setSelectedMood(moodId)
     setIsFullscreenMode(true)
-    
-    // Trigger API call immediately when mood is selected
-    try {
-      console.log('🔥 TRIGGER: Fetching playlist for goal:', moodId)
-      const playlistData = await API.playlistByGoal(moodId)
-      console.log('✅ TRIGGER: Got playlist data:', playlistData)
-      setLocalPlaylist((playlistData as any).tracks || [])
-    } catch (error) {
-      console.error('❌ TRIGGER: Failed to fetch playlist:', error)
+    await generatePlaylist(moodId, selectedGenre)
+  }
+
+  const regeneratePlaylist = async () => {
+    if (selectedMood) {
+      await generatePlaylist(selectedMood, selectedGenre)
     }
   }
 
-  const handlePlayPlaylist = async () => {
+  const handlePlayPlaylist = () => {
     if (localPlaylist.length > 0) {
-      console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks')
-      console.log('🔥 TRIGGER: Starting session for track:', localPlaylist[0].id)
-      
-      try {
-        // Start session tracking
-        const sessionData = await API.startSession(localPlaylist[0].id)
-        console.log('✅ TRIGGER: Session started:', (sessionData as any).sessionId)
-      } catch (error) {
-        console.error('❌ TRIGGER: Session start failed:', error)
-      }
-      
-      setPlaylist(localPlaylist)
-      await loadTrack(localPlaylist[0])
+      loadTrack(localPlaylist[0])
     }
   }
 
-  const handleShufflePlaylist = async () => {
-    if (localPlaylist.length > 0) {
-      const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
-      console.log('🎵 AI DJ: Starting shuffled playlist')
-      setPlaylist(shuffled)
-      await loadTrack(shuffled[0])
-    }
+  const handleShufflePlaylist = () => {
+    const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
+    setLocalPlaylist(shuffled)
+    setPlaylist(shuffled)
   }
+
+  // Regenerate playlist when genre changes
+  useEffect(() => {
+    if (selectedMood && isFullscreenMode) {
+      regeneratePlaylist()
+    }
+  }, [selectedGenre])
 
   const selectedMoodData = moods.find(m => m.id === selectedMood)
 
@@ -354,10 +355,10 @@ export function AIDJPage() {
                     </div>
                   ) : localPlaylist.length > 0 ? (
                     localPlaylist.map((track, index) => (
-                    <TrackCard
-                      key={`${track.id}-${index}`}
-                      track={track}
-                    />
+                      <TrackCard
+                        key={`${track.id}-${index}`}
+                        track={track}
+                      />
                     ))
                   ) : (
                     <div className="text-center py-12">
@@ -378,9 +379,6 @@ export function AIDJPage() {
                       {/* Track Info */}
                       <div className="text-center">
                         <h4 className="font-semibold text-lg truncate">{currentTrack.title}</h4>
-                        {currentTrack.artist && (
-                          <p className="text-muted-foreground truncate">{currentTrack.artist}</p>
-                        )}
                         {currentTrack.genre && (
                           <Badge variant="secondary" className="mt-2">
                             {currentTrack.genre}
@@ -450,7 +448,6 @@ export function AIDJPage() {
                         </div>
                       </div>
 
-                      {/* Favorite Button - Remove for now since we don't have favorites in AudioContext */}
                       <div className="text-center text-sm text-muted-foreground">
                         Click any track to play it
                       </div>
@@ -470,3 +467,5 @@ export function AIDJPage() {
     </div>
   )
 }
+
+export { AIDJPage }
