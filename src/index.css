@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Always Dark Mode - No Light Colors */
+    /* Always Dark Mode with Deep Royal Blue */
     --background: 0 0% 7%;
     --foreground: 0 0% 98%;
 
@@ -18,8 +18,8 @@ All colors MUST be HSL.
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 212 100% 47%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 220 100% 30%; /* Deep Royal Blue */
+    --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 98%;
@@ -27,7 +27,7 @@ All colors MUST be HSL.
     --muted: 0 0% 14%;
     --muted-foreground: 0 0% 63%;
 
-    --accent: 0 0% 14%;
+    --accent: 220 100% 25%; /* Darker Royal Blue for accents */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62% 30%;
@@ -35,31 +35,31 @@ All colors MUST be HSL.
 
     --border: 0 0% 14%;
     --input: 0 0% 14%;
-    --ring: 212 100% 47%;
+    --ring: 220 100% 30%;
 
     --radius: 0.75rem;
 
-    /* Dark theme gradients and effects */
-    --gradient-primary: linear-gradient(135deg, hsl(212 100% 47%), hsl(212 100% 42%));
+    /* Dark theme gradients with royal blue */
+    --gradient-primary: linear-gradient(135deg, hsl(220 100% 30%), hsl(220 100% 25%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 9%), hsl(0 0% 11%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 9%), hsl(0 0% 7%));
+    --gradient-hero: linear-gradient(180deg, hsl(220 100% 15%), hsl(0 0% 7%));
     --shadow-card: 0 1px 3px hsl(0 0% 0% / 0.3), 0 1px 2px hsl(0 0% 0% / 0.2);
-    --shadow-player: 0 4px 6px hsl(0 0% 0% / 0.2), 0 10px 15px hsl(0 0% 0% / 0.3);
+    --shadow-player: 0 4px 6px hsl(220 100% 30% / 0.2), 0 10px 15px hsl(0 0% 0% / 0.3);
     
-    /* Dark music colors */
-    --music-focus: 212 100% 47%;
-    --music-mood: 142 71% 45%;
-    --music-sleep: 240 7% 55%;
-    --music-energy: 25 95% 53%;
+    /* Royal blue music colors */
+    --music-focus: 220 100% 35%;
+    --music-mood: 220 100% 40%;
+    --music-sleep: 220 50% 30%;
+    --music-energy: 220 100% 45%;
 
     --sidebar-background: 0 0% 9%;
     --sidebar-foreground: 0 0% 63%;
-    --sidebar-primary: 212 100% 47%;
+    --sidebar-primary: 220 100% 30%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 212 100% 47%;
+    --sidebar-ring: 220 100% 30%;
   }
 }
 

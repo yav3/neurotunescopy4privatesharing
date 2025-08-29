@@ -1,4 +1,5 @@
 import { Home, Music, User, Brain } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
@@ -6,25 +7,40 @@ interface NavigationProps {
   onTabChange?: (tab: string) => void;
 }
 
-export const Navigation = ({ activeTab = "home", onTabChange }: NavigationProps) => {
+export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const tabs = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "ai-dj", label: "AI DJ", icon: Music },
-    { id: "mood-analyzer", label: "Mood Analyzer", icon: Brain },
-    { id: "profile", label: "Profile", icon: User },
+    { id: "home", label: "Home", icon: Home, path: "/" },
+    { id: "ai-dj", label: "AI DJ", icon: Music, path: "/ai-dj" },
+    { id: "mood-analyzer", label: "Mood Analyzer", icon: Brain, path: "/mood-analyzer" },
+    { id: "profile", label: "Profile", icon: User, path: "/dashboard" },
   ];
+
+  const handleTabClick = (tab: any) => {
+    navigate(tab.path);
+    onTabChange?.(tab.id);
+  };
+
+  const getCurrentActiveTab = () => {
+    if (activeTab) return activeTab;
+    const currentPath = location.pathname;
+    const currentTab = tabs.find(tab => tab.path === currentPath);
+    return currentTab?.id || "home";
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border px-4 py-2 md:px-8">
       <div className="flex justify-around items-center max-w-md mx-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
+          const isActive = getCurrentActiveTab() === tab.id;
           
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange?.(tab.id)}
+              onClick={() => handleTabClick(tab)}
               className={cn(
                 "flex flex-col items-center gap-1 py-2 px-3 transition-colors duration-200",
                 isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
