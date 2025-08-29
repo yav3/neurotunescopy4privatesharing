@@ -19,7 +19,7 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
     
     try {
       console.log('🔥 Fetching playlist for category:', title);
-      const { tracks } = await API.playlist(title.toLowerCase());
+      const { tracks } = await API.playlist(title.toLowerCase(), 50, 0); // Only load first 50
       
       if (tracks && tracks.length > 0) {
         console.log('✅ Setting queue with tracks:', tracks.length);

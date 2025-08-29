@@ -74,9 +74,9 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   useEffect(() => {
     const checkTracks = async () => {
       try {
-        const { tracks } = await API.playlist('focus')
-        setAvailableTracks(tracks.length)
-        console.log('📊 Available tracks for sessions:', tracks.length)
+        const { tracks, total } = await API.playlist('focus', 10, 0); // Just sample 10 for count estimation
+        setAvailableTracks(total || tracks.length); // Use total from pagination or fallback to sample
+        console.log('📊 Available tracks for sessions:', total || tracks.length)
       } catch (error) {
         console.error('❌ Failed to check available tracks:', error)
         setAvailableTracks(0)

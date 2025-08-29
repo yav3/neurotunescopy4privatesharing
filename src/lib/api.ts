@@ -5,9 +5,15 @@ const j = async <T>(r: Response) => { if(!r.ok) throw new Error(`${r.status} ${a
 
 export const API = {
   health:       () => fetch(`${API_BASE}/health`).then(j),
-  playlist:     (goal:string) => fetch(`${API_BASE}/v1/playlist?goal=${encodeURIComponent(goal)}`).then(j<{tracks:any[]}>),
-  buildSession: (p:{goal:string; durationMin:number; intensity:number}) =>
-                  fetch(`${API_BASE}/v1/session/build`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify(p)}).then(j<{tracks:any[];sessionId:string}>),
+  playlist:     (goal: string, limit = 50, offset = 0) =>
+                  fetch(`${API_BASE}/v1/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`)
+                    .then(j<{tracks:any[]; total:number; nextOffset:number}>),
+  buildSession: (p:{goal:string; durationMin:number; intensity:number; limit?:number}) =>
+                  fetch(`${API_BASE}/v1/session/build`, { 
+                    method:"POST", 
+                    headers:{ "content-type":"application/json" }, 
+                    body: JSON.stringify({ ...p, limit: p.limit ?? 50 })
+                  }).then(j<{tracks:any[];sessionId:string}>),
   start:        (trackId:string) => fetch(`${API_BASE}/v1/sessions/start`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({trackId})}).then(j<{sessionId:string}>),
   progress:     (sessionId:string, t:number) =>
                   navigator.sendBeacon?.(`${API_BASE}/v1/sessions/progress`, new Blob([JSON.stringify({sessionId,t})], {type:"application/json"}))

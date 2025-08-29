@@ -147,7 +147,7 @@ const AIDJPage: React.FC = () => {
       const goal = moodToGoal[mood] ?? mood.toLowerCase()
       
       // Call the real backend API instead of generating mock data
-      const { tracks } = await API.playlist(goal)
+      const { tracks } = await API.playlist(goal, 50, 0); // Only load first 50
       
       console.log('✅ REAL API: Playlist received:', tracks.length, 'tracks')
       
@@ -379,7 +379,7 @@ const AIDJPage: React.FC = () => {
                         console.log('✅ Debug storage response:', debug);
                         
                         console.log('🔧 Testing playlist API...');
-                        const playlist = await API.playlist('focus');
+                        const playlist = await API.playlist('focus', 10, 0); // Small sample for testing
                         console.log('✅ Playlist response:', playlist);
                       } catch (error) {
                         console.error('❌ API Test failed:', error);

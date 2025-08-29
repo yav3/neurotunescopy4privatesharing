@@ -26,7 +26,7 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
     try {
       // Use API instead of direct Supabase calls
       console.log('🔥 Fetching tracks via API for category:', categoryId);
-      const { tracks } = await API.playlist(categoryId);
+      const { tracks } = await API.playlist(categoryId, 50, 0); // Only load first 50
       console.log('📦 Found tracks via API:', tracks.length);
       
       if (tracks.length > 0) {
@@ -37,7 +37,7 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
       } else {
         // Fallback: try generic 'focus' goal
         console.log('🔄 No specific tracks found, trying focus fallback');
-        const fallback = await API.playlist('focus');
+        const fallback = await API.playlist('focus', 50, 0);
         if (fallback.tracks.length > 0) {
           setPlaylist(fallback.tracks);
           await loadTrack(fallback.tracks[0]);

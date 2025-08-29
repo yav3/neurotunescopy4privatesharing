@@ -36,7 +36,9 @@ api.get("/health", (c) =>
 // Playlist by goal
 api.get("/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
-  console.log(`🎯 Loading playlist for goal: ${goal}`);
+  const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
+  const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
+  console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
   const supabase = sb();
   
@@ -52,7 +54,7 @@ api.get("/v1/playlist", async (c) => {
   
   let query = supabase
     .from('music_tracks')
-    .select('*')
+    .select('*', { count: "exact" })
     .eq('upload_status', 'completed');
     
   if (criteria.energy) {
@@ -67,15 +69,16 @@ api.get("/v1/playlist", async (c) => {
     query = query.in('genre', criteria.genres);
   }
   
-  const { data: tracks, error } = await query.limit(15);
+  const to = offset + limit - 1;
+  const { data: tracks, error, count } = await query.range(offset, to);
   
   if (error) {
     console.error('❌ Database error:', error);
     return c.json({ ok: false, error: error.message }, 500);
   }
 
-  console.log(`✅ Found ${tracks?.length || 0} tracks for goal: ${goal}`);
-  return c.json({ tracks: tracks || [] });
+  console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
+  return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
 
 // Build session (simple example)
