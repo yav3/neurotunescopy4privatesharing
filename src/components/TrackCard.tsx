@@ -16,7 +16,7 @@ const formatDuration = (seconds: number): string => {
 // Resolve track URLs using the edge function
 const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Promise<string | null> => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/resolve-track-url?trackId=${track.id}&type=${type}&bucket=${track.bucket_name || 'neuralpositivemusic'}`)
+    const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/resolve-track-url?trackId=${track.id}&type=${type}&bucket=${track.bucket_name || 'neuralpositivemusic'}`)
     
     if (!response.ok) {
       console.warn(`Failed to resolve ${type} URL for track ${track.id}:`, response.status)
