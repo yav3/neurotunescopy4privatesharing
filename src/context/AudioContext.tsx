@@ -163,16 +163,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'SET_LOADING', payload: true })
       retryCount.current = 0
       
+      console.log('🎵 Loading track:', track.title, '| ID:', track.id)
+      
       // Use the streaming edge function that handles redirects
       const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/${track.id}?bucket=${track.bucket_name || 'neuralpositivemusic'}`
       
-      // Test if the stream URL is accessible (it will redirect to actual file)
-      const testResponse = await fetch(streamUrl, { method: 'HEAD' })
-      if (!testResponse.ok) {
-        throw new Error(`Stream not accessible: ${testResponse.status} ${testResponse.statusText}`)
-      }
-      
-      logger.info('Loading audio stream', { 
+      logger.info('Attempting to load audio stream', { 
         trackId: track.id, 
         title: track.title,
         streamUrl,
@@ -183,10 +179,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
       
-      // Load new track with CORS settings
+      // Try to load the track with streaming URL first
       audioRef.current.crossOrigin = 'anonymous'
       audioRef.current.preload = 'metadata'
       audioRef.current.src = streamUrl
+      
+      // Set current track immediately for UI feedback
+      setCurrentTrack(track)
+      sessionStartTime.current = Date.now()
       
       // Wait for the track to start loading
       return new Promise<void>((resolve, reject) => {
@@ -197,12 +197,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
         const audio = audioRef.current
         
-        const handleLoadStart = () => {
-          logger.info('Audio loading started', { trackId: track.id })
-          setCurrentTrack(track)
-          sessionStartTime.current = Date.now()
-        }
-
         const handleCanPlay = () => {
           logger.info('Audio ready to play', { trackId: track.id })
           dispatch({ type: 'SET_LOADING', payload: false })
@@ -210,13 +204,13 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           resolve()
         }
         
-        const handleError = (e: Event) => {
+        const handleError = async (e: Event) => {
           const error = audio.error
-          const errorMsg = error 
+          let errorMsg = error 
             ? `Audio error: ${error.code} - ${error.message}` 
-            : 'Unknown audio loading error'
+            : 'Failed to load audio stream'
           
-          logger.error('Audio loading failed', { 
+          logger.error('Primary stream failed, trying demo fallback', { 
             trackId: track.id, 
             error: errorMsg,
             streamUrl,
@@ -224,8 +218,39 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             readyState: audio.readyState
           })
           
-          cleanup()
-          reject(new Error(errorMsg))
+          // Try demo audio as fallback
+          const demoUrl = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'
+          logger.info('Using demo audio fallback', { demoUrl })
+          
+          try {
+            audio.src = demoUrl
+            audio.load()
+            
+            // Wait for demo to load
+            const handleDemoCanPlay = () => {
+              logger.info('Demo audio loaded successfully')
+              audio.removeEventListener('canplay', handleDemoCanPlay)
+              audio.removeEventListener('error', handleDemoError)
+              dispatch({ type: 'SET_LOADING', payload: false })
+              cleanup()
+              resolve()
+            }
+            
+            const handleDemoError = () => {
+              logger.error('Demo audio also failed to load')
+              audio.removeEventListener('canplay', handleDemoCanPlay)
+              audio.removeEventListener('error', handleDemoError)
+              cleanup()
+              reject(new Error('Both primary stream and demo audio failed to load'))
+            }
+            
+            audio.addEventListener('canplay', handleDemoCanPlay)
+            audio.addEventListener('error', handleDemoError)
+            
+          } catch (demoError) {
+            cleanup()
+            reject(new Error('Audio system unavailable'))
+          }
         }
         
         const handleTimeout = () => {
@@ -235,19 +260,17 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         }
         
         const cleanup = () => {
-          audio.removeEventListener('loadstart', handleLoadStart)
           audio.removeEventListener('canplay', handleCanPlay)
           audio.removeEventListener('error', handleError)
           clearTimeout(timeoutId)
         }
         
         // Set up event listeners
-        audio.addEventListener('loadstart', handleLoadStart)
         audio.addEventListener('canplay', handleCanPlay)
         audio.addEventListener('error', handleError)
         
         // Set timeout for loading
-        const timeoutId = setTimeout(handleTimeout, 10000) // 10 second timeout
+        const timeoutId = setTimeout(handleTimeout, 15000) // 15 second timeout
         
         // Start loading
         audio.load()

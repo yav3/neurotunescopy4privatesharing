@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
+import { AudioDebugger } from '@/components/AudioDebugger';
 import AudioTester from '@/components/AudioTester';
 import { cn } from '@/lib/utils';
 
@@ -274,6 +275,9 @@ export function AIDJPage() {
             {showAudioTester && (
               <div className="mb-8">
                 <AudioTester />
+                <div className="mt-4">
+                  <AudioDebugger />
+                </div>
               </div>
             )}
 
