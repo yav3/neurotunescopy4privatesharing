@@ -8,6 +8,22 @@ type HealthCheck = {
   details?: any;
 };
 
+// Simple dot component for quick status
+function Dot({ ok }: { ok: boolean }) {
+  return (
+    <span 
+      style={{
+        display: "inline-block", 
+        width: 10, 
+        height: 10, 
+        borderRadius: 9999,
+        background: ok ? "#22c55e" : "#ef4444", 
+        marginLeft: 6
+      }}
+    />
+  );
+}
+
 // Use window.location.origin as the base URL since we're serving from the same domain
 const API_BASE_URL = window.location.origin;
 
@@ -21,11 +37,12 @@ const api = {
 export default function ConnectivityPanel() {
   const [checks, setChecks] = useState<HealthCheck[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [quickStatus, setQuickStatus] = useState({ api: false, db: false, storage: false });
 
   useEffect(() => {
     runHealthChecks();
-    // Re-run health checks every 30 seconds
-    const interval = setInterval(runHealthChecks, 30000);
+    // Re-run health checks every 5 seconds for quick feedback
+    const interval = setInterval(runHealthChecks, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -37,18 +54,25 @@ export default function ConnectivityPanel() {
     ];
 
     const results: HealthCheck[] = [];
+    let apiOk = false, dbOk = false, storageOk = false;
 
     for (const check of healthChecks) {
       try {
         const response = await fetch(check.url);
         const data = response.ok ? await response.json() : null;
+        const isOk = response.ok && (!data || data.ok !== false);
         
         results.push({ 
           name: check.name, 
-          ok: response.ok, 
+          ok: isOk, 
           status: response.status,
           details: data
         });
+
+        // Track quick status for dots
+        if (check.name === "API" && isOk) apiOk = true;
+        if (check.name === "Supabase" && isOk) dbOk = true;
+        if (check.name === "Streaming" && isOk) storageOk = true;
       } catch (error) {
         results.push({ 
           name: check.name, 
@@ -59,6 +83,7 @@ export default function ConnectivityPanel() {
     }
 
     setChecks(results);
+    setQuickStatus({ api: apiOk, db: dbOk, storage: storageOk });
   };
 
   const allHealthy = checks.every(check => check.ok);
@@ -66,7 +91,20 @@ export default function ConnectivityPanel() {
 
   return (
     <>
-      {/* Status indicator */}
+      {/* Quick status dots - always visible at top right */}
+      <div className="fixed top-4 right-4 z-50 bg-black/80 text-white px-3 py-2 rounded-lg text-xs flex items-center">
+        <span>API</span><Dot ok={quickStatus.api} />
+        <span className="ml-3">DB</span><Dot ok={quickStatus.db} />
+        <span className="ml-3">Stream</span><Dot ok={quickStatus.storage} />
+        <button 
+          onClick={() => setIsVisible(!isVisible)}
+          className="ml-3 text-gray-400 hover:text-white"
+        >
+          {isVisible ? '▼' : '▶'}
+        </button>
+      </div>
+
+      {/* Status indicator dot at bottom right */}
       <div 
         className="fixed bottom-4 right-4 z-50 cursor-pointer"
         onClick={() => setIsVisible(!isVisible)}
