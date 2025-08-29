@@ -133,6 +133,7 @@ const AIDJPage: React.FC = () => {
 
   // Replace mock function with real API calls
   const generatePlaylist = async (mood: string, genre: string = 'all') => {
+    console.log('🎯 generatePlaylist called with mood:', mood, 'genre:', genre);
     setIsGenerating(true)
     
     try {
@@ -149,11 +150,22 @@ const AIDJPage: React.FC = () => {
       }
       
       const goal = moodToGoal[mood] ?? mood.toLowerCase()
+      console.log('🎯 Mapped mood to goal:', mood, '->', goal);
       
       // Call the real backend API instead of generating mock data
-      const { tracks } = await API.playlist(goal, 50, 0); // Only load first 50
+      console.log('📡 Making API call to fetch playlist...');
+      const response = await API.playlist(goal, 50, 0);
+      console.log('📡 Raw API response:', response);
       
-      console.log('✅ REAL API: Playlist received:', tracks.length, 'tracks')
+      const { tracks } = response;
+      console.log('✅ REAL API: Playlist received:', tracks?.length || 0, 'tracks')
+      console.log('📊 First 3 tracks:', tracks?.slice(0, 3));
+      
+      if (!tracks || tracks.length === 0) {
+        console.warn('⚠️ No tracks returned from API');
+        setLocalPlaylist([]);
+        return;
+      }
       
       // Convert to proper format with therapeutic applications if missing
       const processedTracks = tracks.map(track => ({
@@ -171,11 +183,17 @@ const AIDJPage: React.FC = () => {
         }]
       }))
       
+      console.log('🔄 REAL API: Setting playlist with', processedTracks.length, 'processed tracks');
       setLocalPlaylist(processedTracks)
       // Don't auto-set playlist, let user control playback
       
     } catch (error) {
       console.error('❌ REAL API: Failed to fetch playlist:', error)
+      console.error('❌ Error details:', {
+        name: error?.name,
+        message: error?.message,
+        stack: error?.stack?.slice(0, 300)
+      });
       
       // Fallback to empty playlist with error message
       setLocalPlaylist([])
