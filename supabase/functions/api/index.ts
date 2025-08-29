@@ -209,8 +209,8 @@ api.on(["GET", "HEAD"], "/stream", async (c) => {
   return new Response(c.req.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
 });
 
-// Attach at root (function already lives at /api/* externally)
-app.route("/", api);
+// Mount API routes at /api path
+app.route("/api", api);
 
 // JSON 404 (helps you see wrong paths fast)
 app.notFound((c) => c.json({ ok: false, error: "NotFound", path: c.req.path }, 404));
