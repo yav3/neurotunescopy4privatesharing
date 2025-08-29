@@ -1,12 +1,18 @@
 import { supabase } from '@/integrations/supabase/client';
 
-// Use window.location.origin for development since we're serving from same domain
-export const API_BASE_URL = window.location.origin;
+// Use different base URL for development vs production
+export const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? window.location.origin 
+  : 'http://localhost:5000'; // Backend server port in development
 
 const headers = { "content-type": "application/json" };
 
 async function j<T>(r: Response): Promise<T> {
-  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  if (!r.ok) {
+    const text = await r.text();
+    console.error(`API Error ${r.status}:`, text);
+    throw new Error(`${r.status} ${text}`);
+  }
   return r.json();
 }
 
