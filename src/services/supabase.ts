@@ -81,6 +81,24 @@ export class SupabaseService {
     }
   }
 
+  static async getMusicTracksByCategory(category: string): Promise<MusicTrack[]> {
+    try {
+      // Map category names to frequency bands or conditions
+      const categoryMap: { [key: string]: any } = {
+        'focus': { bandFilter: 'beta' as FrequencyBand },
+        'mood-boost': { condition: 'depression' },
+        'sleep': { bandFilter: 'delta' as FrequencyBand },
+        'acoustic': { condition: 'anxiety' }
+      }
+
+      const filterOptions = categoryMap[category] || {}
+      return await this.fetchTracks({ ...filterOptions, limit: 10 })
+    } catch (error) {
+      logger.error('Failed to fetch tracks by category', { category, error })
+      return []
+    }
+  }
+
   static async trackTherapeuticSession(
     trackId: string, 
     duration: number, 

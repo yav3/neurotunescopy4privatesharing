@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useAudio } from "@/context/AudioContext";
+import { SupabaseService } from "@/services/supabase";
 
 interface MusicCategoryCardProps {
   title: string;
@@ -9,13 +11,29 @@ interface MusicCategoryCardProps {
 }
 
 export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCategoryCardProps) => {
+  const { setPlaylist, loadTrack } = useAudio();
+
+  const handleClick = async () => {
+    try {
+      const demoTracks = await SupabaseService.getMusicTracksByCategory(title.toLowerCase());
+      if (demoTracks.length > 0) {
+        setPlaylist(demoTracks);
+        await loadTrack(demoTracks[0]);
+      }
+      onClick?.();
+    } catch (error) {
+      console.error('Error loading tracks:', error);
+      onClick?.();
+    }
+  };
+
   return (
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-card bg-gradient-card border-border/50",
         className
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="aspect-square relative">
         <img 

@@ -142,18 +142,22 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'CLEAR_ERROR' })
       dispatch({ type: 'SET_LOADING', payload: true })
       
-      // For demo purposes, use a placeholder audio URL if no file_path
-      let url = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Demo audio
+      let url: string
       
       if (track.file_path && track.bucket_name) {
+        // Get URL from Supabase storage
         url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
+      } else {
+        // For demo, use a working audio file
+        url = 'https://www.soundjay.com/misc/sounds/wind-chimes-04.wav'
       }
       
       // Stop current playback
       audioRef.current.pause()
       audioRef.current.currentTime = 0
       
-      // Load new track
+      // Load new track with CORS settings
+      audioRef.current.crossOrigin = 'anonymous'
       audioRef.current.src = url
       audioRef.current.load()
       
@@ -162,7 +166,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       
       logger.info('Track loaded successfully', { 
         trackId: track.id, 
-        title: track.title 
+        title: track.title,
+        url 
       })
     } catch (error) {
       const errorMsg = 'Failed to load track'

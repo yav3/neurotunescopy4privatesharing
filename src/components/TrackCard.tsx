@@ -27,7 +27,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
       toggle()
     } else {
       await loadTrack(track)
-      setTimeout(() => toggle(), 100)
+      // Auto-play after loading
+      setTimeout(() => {
+        toggle()
+      }, 500)
     }
   }
 
