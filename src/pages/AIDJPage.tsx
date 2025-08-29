@@ -211,9 +211,12 @@ const AIDJPage: React.FC = () => {
       console.log('🎵 First track:', localPlaylist[0]);
       
       try {
-        // Use the new global audio system
+        // Use the new global audio system with queue limit
         const { setQueue } = usePlayer.getState();
-        await setQueue(localPlaylist, 0);
+        const maxTracks = 50; // Match audio-core MAX_QUEUE
+        const tracksToQueue = localPlaylist.slice(0, maxTracks);
+        console.log(`🔒 AI DJ: Limiting queue to ${tracksToQueue.length} tracks (from ${localPlaylist.length} total)`);
+        await setQueue(tracksToQueue, 0);
         
         console.log('✅ AI DJ: Successfully started playback via global audio');
       } catch (error) {
@@ -233,7 +236,10 @@ const AIDJPage: React.FC = () => {
       try {
         setLocalPlaylist(shuffled);
         const { setQueue } = usePlayer.getState();
-        await setQueue(shuffled, 0);
+        const maxTracks = 50; // Match audio-core MAX_QUEUE
+        const tracksToQueue = shuffled.slice(0, maxTracks);
+        console.log(`🔒 AI DJ: Limiting shuffled queue to ${tracksToQueue.length} tracks (from ${shuffled.length} total)`);
+        await setQueue(tracksToQueue, 0);
         
         console.log('✅ AI DJ: Successfully shuffled and started playback');
       } catch (error) {
