@@ -74,11 +74,18 @@ app.get('/health/streaming', async (req, res) => {
   }
 })
 
-// Serve static files in production
+// Serve static files and SPA fallback ONLY in production and as the last middleware
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('dist/client'))
+  // Only serve static files, don't interfere with API routes
+  app.use('/assets', express.static('dist/client/assets'))
+  app.use('/lovable-uploads', express.static('public/lovable-uploads'))
   
-  app.get('*', (req, res) => {
+  // SPA fallback - but exclude API routes
+  app.get('*', (req, res, next) => {
+    // Don't serve SPA for API routes
+    if (req.path.startsWith('/api/') || req.path.startsWith('/health')) {
+      return next()
+    }
     res.sendFile(path.join(__dirname, '../client/index.html'))
   })
 }
