@@ -1,10 +1,14 @@
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
+import { NowPlaying } from "@/components/NowPlaying";
 import HuggingFaceClassifier from "@/components/HuggingFaceClassifier";
+import { useAudio } from "@/context/AudioContext";
 
 const MoodAnalyzerPage = () => {
+  const { currentTrack } = useAudio();
+  
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <Header />
       
       {/* AI Mood Analyzer Section */}
@@ -21,6 +25,7 @@ const MoodAnalyzerPage = () => {
       </section>
       
       <Navigation activeTab="mood-analyzer" />
+      {currentTrack && <NowPlaying />}
     </div>
   );
 };

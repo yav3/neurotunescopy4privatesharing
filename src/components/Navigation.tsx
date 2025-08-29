@@ -15,7 +15,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     { id: "home", label: "Home", icon: Home, path: "/" },
     { id: "ai-dj", label: "AI DJ", icon: Music, path: "/ai-dj" },
     { id: "mood-analyzer", label: "Mood Analyzer", icon: Brain, path: "/mood-analyzer" },
-    { id: "profile", label: "Profile", icon: User, path: "/dashboard" },
+    { id: "profile", label: "Profile", icon: User, path: "/profile" },
   ];
 
   const handleTabClick = (tab: any) => {

@@ -12,6 +12,9 @@ import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
 import { API_BASE } from '@/lib/env'
 import { usePlayer } from '@/stores/usePlayer'
+import { Navigation } from '@/components/Navigation'
+import { NowPlaying } from '@/components/NowPlaying'
+import { toast } from '@/hooks/use-toast'
 import type { MusicTrack } from '@/types'
 
 // Debug hook for React components
@@ -210,6 +213,11 @@ const AIDJPage: React.FC = () => {
       console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks');
       console.log('🎵 First track:', localPlaylist[0]);
       
+      toast({
+        title: "AI DJ Started",
+        description: `Playing ${localPlaylist.length} tracks`,
+      });
+      
       try {
         // Use the new global audio system with queue limit
         const { setQueue } = usePlayer.getState();
@@ -221,9 +229,19 @@ const AIDJPage: React.FC = () => {
         console.log('✅ AI DJ: Successfully started playback via global audio');
       } catch (error) {
         console.error('❌ AI DJ: Failed to start playbook via global audio:', error);
+        toast({
+          title: "Playback Error",
+          description: "Failed to start AI DJ playback",
+          variant: "destructive"
+        });
       }
     } else {
       console.log('❌ AI DJ: No tracks in playlist to play');
+      toast({
+        title: "No Tracks",
+        description: "Please generate a playlist first",
+        variant: "destructive"
+      });
     }
   };
 
@@ -232,6 +250,11 @@ const AIDJPage: React.FC = () => {
     if (localPlaylist.length > 0) {
       const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
       console.log('🔀 AI DJ: Shuffling playlist:', shuffled.length, 'tracks');
+      
+      toast({
+        title: "Playlist Shuffled",
+        description: `Shuffled ${shuffled.length} tracks`,
+      });
       
       try {
         setLocalPlaylist(shuffled);
@@ -244,9 +267,19 @@ const AIDJPage: React.FC = () => {
         console.log('✅ AI DJ: Successfully shuffled and started playback');
       } catch (error) {
         console.error('❌ AI DJ: Failed to shuffle and start playback:', error);
+        toast({
+          title: "Shuffle Error",
+          description: "Failed to shuffle playlist",
+          variant: "destructive"
+        });
       }
     } else {
       console.log('❌ AI DJ: No tracks to shuffle');
+      toast({
+        title: "No Tracks",
+        description: "Please generate a playlist first",
+        variant: "destructive"
+      });
     }
   };
 
@@ -580,6 +613,9 @@ const AIDJPage: React.FC = () => {
           </div>
         </div>
       )}
+      
+      <Navigation activeTab="ai-dj" />
+      {currentTrack && <NowPlaying />}
     </div>
   )
 }
