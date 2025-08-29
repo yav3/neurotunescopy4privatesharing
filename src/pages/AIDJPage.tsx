@@ -290,13 +290,10 @@ export function AIDJPage() {
                     </div>
                   ) : playlist.length > 0 ? (
                     playlist.map((track, index) => (
-                      <TrackCard
-                        key={`${track.id}-${index}`}
-                        track={track}
-                        size="md"
-                        showAddToQueue={true}
-                        showFavorite={true}
-                      />
+                    <TrackCard
+                      key={`${track.id}-${index}`}
+                      track={track}
+                    />
                     ))
                   ) : (
                     <div className="text-center py-12">
