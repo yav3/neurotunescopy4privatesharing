@@ -19,7 +19,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { aiDJAPI, trackAPI } from '@/lib/api';
 import { TrackCard } from '@/components/TrackCard';
-import { usePlayerStore } from '@/stores/playerStore';
+import { useAudio } from '@/context/AudioContext'; // Use the same AudioContext!
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -31,28 +31,24 @@ import { cn } from '@/lib/utils';
 export function AIDJPage() {
   const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [playlist, setPlaylist] = useState<any[]>([]);
+  const [localPlaylist, setLocalPlaylist] = useState<any[]>([]);
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [showFavorites, setShowFavorites] = useState(false);
   const [isFullscreenMode, setIsFullscreenMode] = useState(false);
   const [showAudioTester, setShowAudioTester] = useState(false);
   
+  
   const {
-    addToQueue,
-    playPlaylist,
-    favorites,
+    setPlaylist,
+    loadTrack,
     currentTrack,
-    isPlaying,
-    togglePlay,
-    playNext,
-    playPrevious,
-    toggleFavorite,
-    isFavorite,
-    currentTime,
-    duration,
-    volume,
-    setVolume
-  } = usePlayerStore();
+    state,
+    toggle,
+    next,
+    prev,
+    setVolume,
+    formatTime
+  } = useAudio();
 
   const moods = [
     { 
@@ -99,17 +95,7 @@ export function AIDJPage() {
     { id: 'jazz', label: 'Jazz' }
   ];
 
-  // Format time helper
-  const formatTime = (seconds: number) => {
-    if (!seconds || isNaN(seconds) || seconds === Infinity) {
-      return '0:00';
-    }
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Generate playlist based on mood and genre
+  // Generate playlist based on mood and genre  
   const { data: generatedPlaylist, isLoading: isGenerating, refetch: regeneratePlaylist } = useQuery({
     queryKey: ['ai-playlist', selectedMood, selectedGenre],
     queryFn: () => selectedMood ? aiDJAPI.generatePlaylist(selectedMood, selectedGenre) : Promise.resolve([]),
@@ -119,7 +105,7 @@ export function AIDJPage() {
   // Update playlist when generated
   useEffect(() => {
     if (generatedPlaylist) {
-      setPlaylist(generatedPlaylist);
+      setLocalPlaylist(generatedPlaylist);
     }
   }, [generatedPlaylist]);
 
@@ -128,16 +114,20 @@ export function AIDJPage() {
     setIsFullscreenMode(true);
   };
 
-  const handlePlayPlaylist = () => {
-    if (playlist.length > 0) {
-      playPlaylist(playlist, `${selectedMood} Mix`);
+  const handlePlayPlaylist = async () => {
+    if (localPlaylist.length > 0) {
+      console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks');
+      setPlaylist(localPlaylist);
+      await loadTrack(localPlaylist[0]);
     }
   };
 
-  const handleShufflePlaylist = () => {
-    if (playlist.length > 0) {
-      const shuffled = [...playlist].sort(() => Math.random() - 0.5);
-      playPlaylist(shuffled, `${selectedMood} Mix (Shuffled)`);
+  const handleShufflePlaylist = async () => {
+    if (localPlaylist.length > 0) {
+      const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5);
+      console.log('🎵 AI DJ: Starting shuffled playlist');
+      setPlaylist(shuffled);
+      await loadTrack(shuffled[0]);
     }
   };
 
@@ -225,7 +215,7 @@ export function AIDJPage() {
                       <div>
                         <h2 className="text-lg font-semibold text-foreground">{selectedMoodData.label} Mix</h2>
                         <p className="text-sm text-muted-foreground">
-                          {playlist.length} tracks • AI Generated
+                          {localPlaylist.length} tracks • AI Generated
                         </p>
                       </div>
                     </div>
@@ -288,7 +278,7 @@ export function AIDJPage() {
                 <div className="flex items-center gap-4 mb-8">
                   <Button
                     onClick={handlePlayPlaylist}
-                    disabled={playlist.length === 0}
+                    disabled={localPlaylist.length === 0}
                     className="h-12 px-8 text-lg font-semibold"
                   >
                     <Play className="h-5 w-5 mr-2" />
@@ -298,7 +288,7 @@ export function AIDJPage() {
                   <Button
                     variant="outline"
                     onClick={handleShufflePlaylist}
-                    disabled={playlist.length === 0}
+                    disabled={localPlaylist.length === 0}
                     className="h-12 px-6"
                   >
                     <Shuffle className="h-5 w-5 mr-2" />
@@ -306,7 +296,7 @@ export function AIDJPage() {
                   </Button>
 
                   <Badge variant="secondary" className="h-12 px-4 text-base">
-                    {playlist.length} tracks
+                    {localPlaylist.length} tracks
                   </Badge>
                 </div>
 
@@ -317,8 +307,8 @@ export function AIDJPage() {
                       <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
                       <p className="text-muted-foreground">Generating your perfect playlist...</p>
                     </div>
-                  ) : playlist.length > 0 ? (
-                    playlist.map((track, index) => (
+                  ) : localPlaylist.length > 0 ? (
+                    localPlaylist.map((track, index) => (
                     <TrackCard
                       key={`${track.id}-${index}`}
                       track={track}
@@ -354,37 +344,37 @@ export function AIDJPage() {
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="space-y-2">
-                        <div className="w-full bg-secondary rounded-full h-2">
-                          <div 
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
-                            style={{ 
-                              width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' 
-                            }}
-                          />
+                        <div className="space-y-2">
+                          <div className="w-full bg-secondary rounded-full h-2">
+                            <div 
+                              className="bg-primary h-2 rounded-full transition-all duration-300"
+                              style={{ 
+                                width: state.duration > 0 ? `${(state.currentTime / state.duration) * 100}%` : '0%' 
+                              }}
+                            />
+                          </div>
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>{formatTime(state.currentTime)}</span>
+                            <span>{formatTime(state.duration)}</span>
+                          </div>
                         </div>
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>{formatTime(currentTime)}</span>
-                          <span>{formatTime(duration)}</span>
-                        </div>
-                      </div>
 
                       {/* Playback Controls */}
                       <div className="flex items-center justify-center gap-4">
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={playPrevious}
+                          onClick={prev}
                           className="h-10 w-10 rounded-full"
                         >
                           <SkipBack className="h-5 w-5" />
                         </Button>
 
                         <Button
-                          onClick={togglePlay}
+                          onClick={toggle}
                           className="h-12 w-12 rounded-full"
                         >
-                          {isPlaying ? (
+                          {state.isPlaying ? (
                             <Pause className="h-6 w-6" />
                           ) : (
                             <Play className="h-6 w-6" />
@@ -394,7 +384,7 @@ export function AIDJPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={playNext}
+                          onClick={next}
                           className="h-10 w-10 rounded-full"
                         >
                           <SkipForward className="h-5 w-5" />
@@ -402,33 +392,23 @@ export function AIDJPage() {
                       </div>
 
                       {/* Volume Control */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Volume2 className="h-4 w-4 text-muted-foreground" />
-                          <Slider
-                            value={[volume]}
-                            onValueChange={(values) => setVolume(values[0])}
-                            max={1}
-                            step={0.1}
-                            className="flex-1"
-                          />
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Volume2 className="h-4 w-4 text-muted-foreground" />
+                            <Slider
+                              value={[state.volume]}
+                              onValueChange={(values) => setVolume(values[0])}
+                              max={1}
+                              step={0.1}
+                              className="flex-1"
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Favorite Button */}
-                      <Button
-                        variant="outline"
-                        onClick={() => toggleFavorite(currentTrack.id)}
-                        className="w-full"
-                      >
-                        <Heart 
-                          className={cn(
-                            "h-4 w-4 mr-2",
-                            isFavorite(currentTrack.id) && "fill-current text-red-500"
-                          )} 
-                        />
-                        {isFavorite(currentTrack.id) ? 'Remove from Favorites' : 'Add to Favorites'}
-                      </Button>
+                      {/* Favorite Button - Remove for now since we don't have favorites in AudioContext */}
+                      <div className="text-center text-sm text-muted-foreground">
+                        Click any track to play it
+                      </div>
                     </div>
                   ) : (
                     <div className="text-center py-8">

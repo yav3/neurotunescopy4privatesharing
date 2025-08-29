@@ -19,7 +19,11 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(requestLogger)
 app.use(performanceLogger(2000)) // Log requests slower than 2 seconds
 
-// Health check endpoints
+// API routes first
+app.use('/api', apiRoutes)
+app.use('/api/stream', streamRoutes)
+
+// Health check endpoints - make sure they come BEFORE static files
 app.get('/health', (req, res) => {
   res.json({ 
     ok: true, 
@@ -69,10 +73,6 @@ app.get('/health/streaming', async (req, res) => {
     res.status(500).json({ ok: false, error: error.message })
   }
 })
-
-// API routes
-app.use('/api', apiRoutes)
-app.use('/api/stream', streamRoutes)
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
