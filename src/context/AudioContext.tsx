@@ -7,14 +7,24 @@ interface AudioContextType {
   state: AudioState
   currentTrack: MusicTrack | null
   playlist: MusicTrack[]
-  setPlaylist: (tracks: MusicTrack[]) => void
+  currentPlaylistId: string | null
+  queuePosition: number
+  repeatMode: 'none' | 'one' | 'all'
+  shuffleMode: boolean
+  setPlaylist: (tracks: MusicTrack[], playlistId?: string) => void
+  addToQueue: (track: MusicTrack) => void
+  removeFromQueue: (trackId: string) => void
+  clearQueue: () => void
+  setRepeatMode: (mode: 'none' | 'one' | 'all') => void
+  toggleShuffle: () => void
   toggle: () => void
   seek: (time: number) => void
   setVolume: (volume: number) => void
-  loadTrack: (track: MusicTrack) => Promise<void>
+  loadTrack: (track: MusicTrack, playFromPlaylist?: boolean) => Promise<void>
   next: () => void
   prev: () => void
   clearError: () => void
+  retryLoad: () => Promise<void>
 }
 
 type AudioAction =
@@ -25,13 +35,15 @@ type AudioAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' }
+  | { type: 'SET_BUFFERING'; payload: boolean }
 
 const initialState: AudioState = {
   isPlaying: false,
   currentTime: 0,
   duration: 0,
   volume: 0.8,
-  isLoading: false
+  isLoading: false,
+  isBuffering: false
 }
 
 function audioReducer(state: AudioState, action: AudioAction): AudioState {
@@ -46,8 +58,10 @@ function audioReducer(state: AudioState, action: AudioAction): AudioState {
       return { ...state, volume: action.payload }
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload }
+    case 'SET_BUFFERING':
+      return { ...state, isBuffering: action.payload }
     case 'SET_ERROR':
-      return { ...state, error: action.payload, isLoading: false, isPlaying: false }
+      return { ...state, error: action.payload, isLoading: false, isPlaying: false, isBuffering: false }
     case 'CLEAR_ERROR':
       return { ...state, error: undefined }
     default:
@@ -61,8 +75,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(audioReducer, initialState)
   const [currentTrack, setCurrentTrack] = React.useState<MusicTrack | null>(null)
   const [playlist, setPlaylist] = React.useState<MusicTrack[]>([])
+  const [currentPlaylistId, setCurrentPlaylistId] = React.useState<string | null>(null)
+  const [queuePosition, setQueuePosition] = React.useState(0)
+  const [repeatMode, setRepeatModeState] = React.useState<'none' | 'one' | 'all'>('none')
+  const [shuffleMode, setShuffleModeState] = React.useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const sessionStartTime = useRef<number>(0)
+  const retryCount = useRef(0)
+  const maxRetries = 3
 
   // Initialize audio element
   useEffect(() => {
@@ -247,14 +267,48 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     state,
     currentTrack,
     playlist,
-    setPlaylist,
+    currentPlaylistId,
+    queuePosition,
+    repeatMode,
+    shuffleMode,
+    setPlaylist: (tracks: MusicTrack[], playlistId?: string) => {
+      setPlaylist(tracks)
+      setCurrentPlaylistId(playlistId || null)
+      setQueuePosition(0)
+    },
+    addToQueue: (track: MusicTrack) => {
+      setPlaylist(prev => [...prev, track])
+    },
+    removeFromQueue: (trackId: string) => {
+      setPlaylist(prev => prev.filter(t => t.id !== trackId))
+    },
+    clearQueue: () => {
+      setPlaylist([])
+      setCurrentPlaylistId(null)
+      setQueuePosition(0)
+    },
+    setRepeatMode: (mode: 'none' | 'one' | 'all') => {
+      setRepeatModeState(mode)
+      localStorage.setItem('neurotunes-repeat', mode)
+    },
+    toggleShuffle: () => {
+      const newShuffleMode = !shuffleMode
+      setShuffleModeState(newShuffleMode)
+      localStorage.setItem('neurotunes-shuffle', newShuffleMode.toString())
+    },
     toggle,
     seek,
     setVolume,
     loadTrack,
     next,
     prev,
-    clearError
+    clearError,
+    retryLoad: async () => {
+      if (currentTrack && retryCount.current < maxRetries) {
+        retryCount.current += 1
+        await loadTrack(currentTrack)
+      }
+    }
   }
 
   return (

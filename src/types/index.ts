@@ -75,6 +75,7 @@ export interface AudioState {
   duration: number
   volume: number
   isLoading: boolean
+  isBuffering?: boolean
   error?: string
 }
 
