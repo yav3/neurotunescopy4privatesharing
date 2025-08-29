@@ -7,34 +7,18 @@ export class SupabaseService {
     try {
       logger.info('Getting track URL', { filePath, bucketName })
       
-      // Try direct public URL first for files that exist
-      const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath)
-      const publicUrl = data.publicUrl
+      // Use our local server stream endpoint with the file path
+      const streamUrl = `/api/stream/path/${encodeURIComponent(filePath)}`
       
-      // Test if the direct URL works by making a HEAD request
-      try {
-        const response = await fetch(publicUrl, { method: 'HEAD' })
-        if (response.ok) {
-          logger.info('Direct public URL accessible', { publicUrl })
-          return publicUrl
-        }
-      } catch (fetchError) {
-        logger.warn('Direct public URL not accessible', { publicUrl, error: fetchError })
-      }
-      
-      // If direct URL doesn't work, use our stream-track edge function
-      // This will handle file resolution and provide fallbacks
-      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/path/${encodeURIComponent(filePath)}?bucket=${bucketName}`
-      
-      logger.info('Using streaming edge function', { streamUrl })
+      logger.info('Using local server stream endpoint', { streamUrl })
       return streamUrl
       
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Final fallback - use streaming function with the filename
-      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/path/${encodeURIComponent(filePath)}?bucket=${bucketName}`
-      logger.info('Using streaming edge function as fallback', { streamUrl })
+      // Fallback to the same local endpoint
+      const streamUrl = `/api/stream/path/${encodeURIComponent(filePath)}`
+      logger.info('Using local server stream endpoint as fallback', { streamUrl })
       return streamUrl
     }
   }
