@@ -9,13 +9,13 @@ export interface MusicTrack {
   danceability: number
   loudness: number
   bpm: number
-  file_path?: string
-  bucket_name?: string
+  file_path: string
+  bucket_name: string
   file_size?: number
   file_type?: string
-  upload_status?: 'pending' | 'uploading' | 'completed' | 'failed'
-  created_at?: string
-  updated_at?: string
+  upload_status: 'pending' | 'uploading' | 'completed' | 'failed'
+  created_at: string
+  updated_at: string
   therapeutic_applications?: TherapeuticApplication[]
   spectral_analysis?: SpectralAnalysis[]
   // Additional fields for compatibility

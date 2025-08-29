@@ -1,14 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/integrations/supabase/client'
 import type { MusicTrack, FrequencyBand } from '@/types'
 import { logger } from './logger'
 
-const supabaseUrl = "https://pbtgvcjniayedqlajjzz.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE"
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 export class SupabaseService {
-  static async getTrackUrl(filePath: string, bucketName: string = 'neurotunes-music'): Promise<string> {
+  static async getTrackUrl(filePath: string, bucketName: string = 'neuralpositivemusic'): Promise<string> {
     try {
       const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath)
       return data.publicUrl
@@ -18,7 +13,7 @@ export class SupabaseService {
     }
   }
 
-  static async uploadTrack(file: File, path: string, bucketName: string = 'neurotunes-music') {
+  static async uploadTrack(file: File, path: string, bucketName: string = 'neuralpositivemusic') {
     try {
       const { data, error } = await supabase.storage
         .from(bucketName)
@@ -79,34 +74,9 @@ export class SupabaseService {
         filters: options 
       })
 
-      return data || []
+      return (data || []) as MusicTrack[]
     } catch (error) {
       logger.error('Failed to fetch tracks', { options, error })
-      throw error
-    }
-  }
-
-  static async getTherapeuticRecommendations(
-    condition: string, 
-    minEvidenceScore: number = 0.7
-  ): Promise<MusicTrack[]> {
-    try {
-      const { data, error } = await supabase
-        .rpc('get_therapeutic_recommendations', {
-          target_condition: condition,
-          min_evidence_score: minEvidenceScore
-        })
-
-      if (error) throw error
-
-      logger.info('Therapeutic recommendations fetched', { 
-        condition, 
-        count: data?.length || 0 
-      })
-
-      return data || []
-    } catch (error) {
-      logger.error('Failed to get therapeutic recommendations', { condition, error })
       throw error
     }
   }
@@ -118,12 +88,13 @@ export class SupabaseService {
   ) {
     try {
       const { error } = await supabase
-        .from('therapeutic_sessions')
+        .from('listening_sessions')
         .insert({
-          track_id: trackId,
-          duration_seconds: duration,
-          frequency_band: frequencyBand,
-          session_timestamp: new Date().toISOString()
+          patient_id: null, // For anonymous sessions
+          session_duration_minutes: Math.floor(duration / 60),
+          tracks_played: 1,
+          dominant_genres: [frequencyBand],
+          session_date: new Date().toISOString()
         })
 
       if (error) throw error

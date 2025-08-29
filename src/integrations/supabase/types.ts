@@ -1281,9 +1281,13 @@ export type Database = {
         Row: {
           acousticness: number | null
           bpm: number | null
+          bucket_name: string | null
           created_at: string | null
           danceability: number | null
           energy: number | null
+          file_path: string | null
+          file_size: number | null
+          file_type: string | null
           genre: string | null
           id: string
           instrumentalness: number | null
@@ -1294,14 +1298,19 @@ export type Database = {
           speechiness: number | null
           title: string
           updated_at: string | null
+          upload_status: string | null
           valence: number | null
         }
         Insert: {
           acousticness?: number | null
           bpm?: number | null
+          bucket_name?: string | null
           created_at?: string | null
           danceability?: number | null
           energy?: number | null
+          file_path?: string | null
+          file_size?: number | null
+          file_type?: string | null
           genre?: string | null
           id?: string
           instrumentalness?: number | null
@@ -1312,14 +1321,19 @@ export type Database = {
           speechiness?: number | null
           title: string
           updated_at?: string | null
+          upload_status?: string | null
           valence?: number | null
         }
         Update: {
           acousticness?: number | null
           bpm?: number | null
+          bucket_name?: string | null
           created_at?: string | null
           danceability?: number | null
           energy?: number | null
+          file_path?: string | null
+          file_size?: number | null
+          file_type?: string | null
           genre?: string | null
           id?: string
           instrumentalness?: number | null
@@ -1330,6 +1344,7 @@ export type Database = {
           speechiness?: number | null
           title?: string
           updated_at?: string | null
+          upload_status?: string | null
           valence?: number | null
         }
         Relationships: []
