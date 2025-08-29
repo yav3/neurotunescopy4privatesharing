@@ -75,12 +75,12 @@ export const aiDJAPI = {
   // Generate playlist based on mood and preferences
   generatePlaylist: async (mood: string, genre = 'all', preferences = {}) => {
     try {
-      // Simple playlist generation based on mood mapping
+      // Map moods to actual genres in the database
       const moodToGenreMap: Record<string, string[]> = {
-        focus: ['classical', 'ambient', 'instrumental'],
-        chill: ['acoustic', 'indie', 'lo-fi'],
-        sleep: ['ambient', 'classical', 'nature'],
-        energy: ['electronic', 'pop', 'rock', 'edm']
+        focus: ['classical', 'instrumental', 'baroque'],
+        chill: ['jazz', 'folk', 'contemporary'],
+        sleep: ['classical', 'baroque', 'instrumental'],
+        energy: ['electronica', 'rock', 'dance']
       };
 
       const preferredGenres = moodToGenreMap[mood] || ['acoustic'];
@@ -88,13 +88,13 @@ export const aiDJAPI = {
 
       // Get tracks from each preferred genre
       for (const genreType of preferredGenres) {
-        const genreTracks = await trackAPI.getTracksByGenre(genreType, 10);
+        const genreTracks = await trackAPI.getTracksByGenre(genreType, 8);
         tracks.push(...genreTracks);
       }
 
-      // If no tracks found, get general tracks
+      // If still no tracks, get from electronica (largest genre)
       if (tracks.length === 0) {
-        tracks = await trackAPI.getAllTracks(20);
+        tracks = await trackAPI.getTracksByGenre('electronica', 15);
       }
 
       // Shuffle and limit to 15 tracks

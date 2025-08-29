@@ -46,10 +46,10 @@ All colors MUST be HSL.
     --shadow-card: 0 8px 32px hsl(260 100% 30% / 0.3), 0 4px 16px hsl(0 0% 0% / 0.4);
     --shadow-player: 0 16px 48px hsl(260 100% 35% / 0.4), 0 8px 24px hsl(0 0% 0% / 0.5);
     
-    /* Distinct therapeutic colors */
+    /* Distinct therapeutic colors - No purple allowed */
     --music-focus: 200 100% 60%; /* Cyan for focus */
     --music-mood: 60 100% 65%; /* Yellow for mood boost */
-    --music-sleep: 260 100% 70%; /* Purple for sleep */
+    --music-sleep: 200 90% 50%; /* Deep blue for sleep */
     --music-energy: 0 100% 65%; /* Red for energy */
 
     --sidebar-background: 240 25% 12%;

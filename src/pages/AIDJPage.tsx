@@ -60,7 +60,7 @@ export function AIDJPage() {
       icon: Brain, 
       gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Enhance concentration and productivity',
-      color: 'text-blue-400'
+      color: 'text-music-focus'
     },
     { 
       id: 'chill', 
@@ -68,7 +68,7 @@ export function AIDJPage() {
       icon: HeartIcon, 
       gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Relax and unwind with soothing sounds',
-      color: 'text-green-400'
+      color: 'text-music-mood'
     },
     { 
       id: 'sleep', 
@@ -76,7 +76,7 @@ export function AIDJPage() {
       icon: Moon, 
       gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Peaceful music for rest and recovery',
-      color: 'text-slate-400'
+      color: 'text-music-sleep'
     },
     { 
       id: 'energy', 
@@ -84,7 +84,7 @@ export function AIDJPage() {
       icon: Zap, 
       gradient: 'bg-gradient-to-br from-card to-card/60 border border-border',
       description: 'Boost motivation and vitality',
-      color: 'text-orange-400'
+      color: 'text-music-energy'
     }
   ];
 
