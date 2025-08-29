@@ -8,58 +8,58 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Always Dark Mode with Deep Royal Blue */
-    --background: 0 0% 7%;
+    /* Balanced Dark Theme with Royal Blue - Based on Reference */
+    --background: 220 15% 8%; /* Dark navy instead of pure black */
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 9%;
+    --card: 220 12% 12%; /* Slightly blue-tinted dark cards */
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 9%;
+    --popover: 220 12% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 220 100% 30%; /* Deep Royal Blue */
-    --primary-foreground: 0 0% 98%;
+    --primary: 220 100% 50%; /* Brighter royal blue like in reference */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 220 10% 18%; /* Better contrast secondary */
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 63%;
+    --muted: 220 8% 16%; /* Subtle blue-gray muted */
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 220 100% 25%; /* Darker Royal Blue for accents */
-    --accent-foreground: 0 0% 98%;
+    --accent: 220 90% 45%; /* Vibrant royal blue accent */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62% 30%;
+    --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 220 100% 30%;
+    --border: 220 8% 20%; /* Better border contrast */
+    --input: 220 10% 15%; /* Input background */
+    --ring: 220 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Dark theme gradients with royal blue */
-    --gradient-primary: linear-gradient(135deg, hsl(220 100% 30%), hsl(220 100% 25%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 9%), hsl(0 0% 11%));
-    --gradient-hero: linear-gradient(180deg, hsl(220 100% 15%), hsl(0 0% 7%));
-    --shadow-card: 0 1px 3px hsl(0 0% 0% / 0.3), 0 1px 2px hsl(0 0% 0% / 0.2);
-    --shadow-player: 0 4px 6px hsl(220 100% 30% / 0.2), 0 10px 15px hsl(0 0% 0% / 0.3);
+    /* Enhanced gradients matching reference */
+    --gradient-primary: linear-gradient(135deg, hsl(220 100% 50%), hsl(220 100% 40%));
+    --gradient-card: linear-gradient(135deg, hsl(220 12% 12%), hsl(220 10% 16%));
+    --gradient-hero: linear-gradient(180deg, hsl(220 20% 15%), hsl(220 15% 8%));
+    --shadow-card: 0 4px 6px hsl(220 100% 10% / 0.4), 0 2px 4px hsl(0 0% 0% / 0.3);
+    --shadow-player: 0 8px 25px hsl(220 100% 20% / 0.3), 0 3px 10px hsl(0 0% 0% / 0.4);
     
-    /* Royal blue music colors */
-    --music-focus: 220 100% 35%;
-    --music-mood: 220 100% 40%;
-    --music-sleep: 220 50% 30%;
-    --music-energy: 220 100% 45%;
+    /* Brainwave frequency colors matching reference */
+    --music-focus: 220 100% 55%; /* Alpha - bright blue */
+    --music-mood: 220 80% 45%; /* Theta - medium blue */
+    --music-sleep: 220 60% 35%; /* Delta - deeper blue */
+    --music-energy: 220 100% 60%; /* Beta/Gamma - vibrant blue */
 
-    --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 0 0% 63%;
-    --sidebar-primary: 220 100% 30%;
+    --sidebar-background: 220 12% 12%;
+    --sidebar-foreground: 0 0% 70%;
+    --sidebar-primary: 220 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 220 100% 30%;
+    --sidebar-accent: 220 10% 18%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 220 8% 20%;
+    --sidebar-ring: 220 100% 50%;
   }
 }
 
