@@ -110,28 +110,28 @@ export default function FullPlayer() {
             const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
             const artworkMap = {
               delta: { 
-                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-                position: 'object-[center_20%]', // Misty forest
+                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+                position: 'object-[20%_75%]', // Bottom-left: Misty forest
                 gradient: 'from-purple-900/60 via-blue-900/40 to-indigo-800/60'
               },
               theta: { 
-                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-                position: 'object-[center_70%]', // Mystical path
-                gradient: 'from-teal-800/60 via-cyan-700/40 to-blue-800/60'
+                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+                position: 'object-[20%_40%]', // Middle-left: Golden mystical path
+                gradient: 'from-amber-700/60 via-yellow-600/40 to-orange-700/60'
               },
               alpha: { 
-                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-                position: 'object-[80%_20%]', // Mountain lake
-                gradient: 'from-emerald-800/60 via-teal-700/40 to-cyan-800/60'
+                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+                position: 'object-[80%_20%]', // Top-right: Mountain lake
+                gradient: 'from-blue-800/60 via-cyan-600/40 to-teal-700/60'
               },
               beta: { 
-                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-                position: 'object-[80%_70%]', // Waterfall
+                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+                position: 'object-[80%_40%]', // Middle-right: Waterfall
                 gradient: 'from-green-700/60 via-emerald-600/40 to-teal-700/60'
               },
               gamma: { 
-                url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-                position: 'object-center',
+                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+                position: 'object-[20%_20%]', // Top-left: Sunbeam forest
                 gradient: 'from-yellow-600/60 via-orange-500/40 to-red-600/60'
               }
             }

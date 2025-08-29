@@ -35,28 +35,28 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
 const getTherapeuticArtwork = (frequencyBand: string): { url: string; position: string; gradient: string } => {
   const artworkMap = {
     delta: { 
-      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-      position: 'object-[center_20%]', // Top-left: Misty forest
+      url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+      position: 'object-[20%_75%]', // Bottom-left: Misty forest scene
       gradient: 'from-purple-900/80 via-blue-900/60 to-indigo-800/80'
     },
     theta: { 
-      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-      position: 'object-[center_70%]', // Bottom-left: Mystical path
-      gradient: 'from-teal-800/80 via-cyan-700/60 to-blue-800/80'
+      url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+      position: 'object-[20%_40%]', // Middle-left: Mystical golden path
+      gradient: 'from-amber-700/80 via-yellow-600/60 to-orange-700/80'
     },
     alpha: { 
-      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-      position: 'object-[80%_20%]', // Top-right: Mountain lake
-      gradient: 'from-emerald-800/80 via-teal-700/60 to-cyan-800/80'
+      url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+      position: 'object-[80%_20%]', // Top-right: Mountain lake reflection
+      gradient: 'from-blue-800/80 via-cyan-600/60 to-teal-700/80'
     },
     beta: { 
-      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-      position: 'object-[80%_70%]', // Bottom-right: Waterfall
+      url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+      position: 'object-[80%_40%]', // Middle-right: Waterfall
       gradient: 'from-green-700/80 via-emerald-600/60 to-teal-700/80'
     },
     gamma: { 
-      url: '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-      position: 'object-center', // Center: Mix of all scenes
+      url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+      position: 'object-[20%_20%]', // Top-left: Sunbeam forest
       gradient: 'from-yellow-600/80 via-orange-500/60 to-red-600/80'
     }
   }
