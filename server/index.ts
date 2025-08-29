@@ -4,7 +4,8 @@ import { fileURLToPath } from 'url'
 import { securityMiddleware } from './middleware/security'
 import { requestLogger, errorLogger, performanceLogger } from './middleware/logging'
 import apiRoutes from './routes/api'
-import streamRoutes from './routes/stream'
+import streamRoutes from './routes/stream.js'
+import { tracksStore } from './stores/tracksStore.js'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -265,13 +266,7 @@ app.post('/api/session/build', async (req, res) => {
     console.log('🏗️ API: Building session:', { goal, durationMin, intensity })
     
     // Use the same playlist logic but adjust for session parameters
-    const playlistResponse = await fetch(`http://localhost:${process.env.PORT || 5000}/api/playlist?goal=${encodeURIComponent(goal)}`)
-    
-    if (!playlistResponse.ok) {
-      throw new Error('Failed to fetch playlist for session')
-    }
-    
-    const { tracks } = await playlistResponse.json()
+    const { tracks } = await tracksStore.getTracksByGoal(goal)
     
     if (!tracks.length) {
       return res.status(404).json({ error: `No suitable tracks found for ${goal}` })

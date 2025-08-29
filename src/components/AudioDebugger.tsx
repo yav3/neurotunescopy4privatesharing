@@ -38,7 +38,7 @@ export const AudioDebugger = () => {
       const results = [];
       for (const track of tracks || []) {
         try {
-          const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-track/${track.id}?bucket=neuralpositivemusic`;
+          const streamUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/stream-track/${track.id}?bucket=neuralpositivemusic`;
           const response = await fetch(streamUrl, { method: 'HEAD' });
           
           results.push({
@@ -68,7 +68,7 @@ export const AudioDebugger = () => {
   };
 
   const testDemoAudio = () => {
-    const audio = new Audio('https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3');
+    const audio = new Audio('/lovable-uploads/acoustic-sunset-field.png');
     audio.play().catch(err => {
       setError(`Demo audio failed: ${err.message}`);
     });
