@@ -2,10 +2,16 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// Force hard reload to pick up new .env values
+if (typeof window !== 'undefined' && window.location.search.includes('reload=env')) {
+  window.location.replace(window.location.pathname);
+}
+
 console.log('🚀 Starting NeuroTunes app...')
 console.log('Environment variables:', {
   SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-  HAS_ANON_KEY: !!import.meta.env.VITE_SUPABASE_ANON_KEY
+  HAS_ANON_KEY: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL
 })
 
 // ============= NUCLEAR DEBUGGING SETUP =============
