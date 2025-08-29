@@ -8,8 +8,6 @@ const origin = /^https?:\/\//.test(raw)
   ? raw
   : (typeof window !== "undefined" ? window.location.origin : "");
 
-export const API_BASE = origin.replace(/\/+$/, "").endsWith("/api")
-  ? origin.replace(/\/+$/, "")
-  : origin.replace(/\/+$/, "") + "/api";
+export const API_BASE = origin.replace(/\/+$/, "");
 
 console.log("[API_BASE]", API_BASE);
