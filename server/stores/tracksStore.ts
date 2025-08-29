@@ -19,10 +19,15 @@ export async function getTrackById(trackId: number): Promise<Track | null> {
     .from('music_tracks')
     .select('id, title, file_path')
     .eq('id', trackId)
-    .single();
+    .maybeSingle();
+   
+  if (error) {
+    console.warn(`Error fetching track ${trackId}:`, error);
+    return null;
+  }
   
-  if (error || !data) {
-    console.warn(`Track ${trackId} not found:`, error);
+  if (!data) {
+    console.warn(`Track ${trackId} not found`);
     return null;
   }
 
