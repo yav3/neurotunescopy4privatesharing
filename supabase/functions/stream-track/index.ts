@@ -227,10 +227,10 @@ Deno.serve(async (req) => {
     
     console.log(`Streaming request for track: ${trackId}`)
     
-    // Get track from database
+    // Get track from database - include original_title for better matching
     const { data: track, error: trackError } = await supabase
       .from('music_tracks')
-      .select('id, title, file_path, bucket_name')
+      .select('id, title, original_title, file_path, bucket_name')
       .eq('id', trackId)
       .single()
     
@@ -246,11 +246,17 @@ Deno.serve(async (req) => {
     }
     
     const targetBucket = track.bucket_name || bucketName
-    const candidate = track.file_path || track.title
     
-    if (!candidate) {
+    // Try multiple candidates in priority order for better matching
+    const candidates = [
+      track.file_path,           // Direct storage path (if updated)
+      track.title,               // Main title
+      track.original_title       // Original title fallback
+    ].filter(Boolean)
+    
+    if (!candidates.length) {
       return new Response(
-        JSON.stringify({ error: 'No file path or title found for track' }),
+        JSON.stringify({ error: 'No file path or title identifiers found for track' }),
         { 
           status: 404, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -258,33 +264,58 @@ Deno.serve(async (req) => {
       )
     }
     
-    console.log(`Resolving audio for track ${trackId}: "${candidate}"`)
+    console.log(`Resolving audio for track ${trackId}: trying ${candidates.length} candidates`)
     
-    // Find best match using advanced algorithm
-    const { key: resolvedKey, score } = await resolveStorageKey(supabase, targetBucket, candidate)
+    // Find best match across all candidates
+    let resolvedKey: string | null = null
+    let bestScore = 0
+    let usedCandidate = ''
+    
+    for (const candidate of candidates) {
+      console.log(`Trying candidate: "${candidate}"`)
+      const { key, score } = await resolveStorageKey(supabase, targetBucket, candidate)
+      
+      if (score > bestScore) {
+        bestScore = score
+        resolvedKey = key
+        usedCandidate = candidate
+      }
+      
+      // If we get a perfect or near-perfect match, use it immediately
+      if (score >= 0.95) {
+        console.log(`High confidence match found: ${key} (${(score * 100).toFixed(1)}%)`)
+        break
+      }
+    }
+    
+    console.log(`Best match via "${usedCandidate}": ${resolvedKey} (${(bestScore * 100).toFixed(1)}%)`)
     
     if (!resolvedKey) {
-      console.warn(`No matching audio file found for: ${candidate} (best score: ${score})`)
+      console.warn(`No matching audio file found. Best score: ${(bestScore * 100).toFixed(1)}%`)
       
-      // Provide more debugging info
-      console.log(`Available audio files sample:`, storageKeys.slice(0, 5))
+      // Provide comprehensive debugging info
+      console.log(`Available audio files sample:`, storageKeys.slice(0, 10))
       console.log(`Track details:`, { 
         id: trackId, 
-        title: track.title, 
+        title: track.title,
+        original_title: track.original_title, 
         file_path: track.file_path,
-        bucket: targetBucket
+        bucket: targetBucket,
+        candidatesTried: candidates.length
       })
       
       return new Response(
         JSON.stringify({ 
-          error: 'No storage match',
-          searchPath: candidate,
-          bestScore: score,
-          threshold: '0.62 (or 0.3 for audio)',
-          availableFilesSample: storageKeys.slice(0, 5),
+          error: 'No storage match found',
+          bestScore: bestScore,
+          candidatesTried: candidates,
+          threshold: '0.62 confident, 0.3 permissive for audio',
+          availableFilesSample: storageKeys.slice(0, 10),
           trackDetails: {
             title: track.title,
-            file_path: track.file_path
+            original_title: track.original_title,
+            file_path: track.file_path,
+            bucket: targetBucket
           }
         }),
         { 
@@ -298,11 +329,12 @@ Deno.serve(async (req) => {
     const streamUrl = getPublicUrl(supabase, targetBucket, resolvedKey)
     
     // Optional: patch DB for future direct hits if score is confident
-    if (score >= 0.75) {
+    if (bestScore >= 0.75) {
       patchTrackStoragePath(supabase, trackId, resolvedKey).catch(() => {})
+      console.log(`Updated track ${trackId} with resolved path: ${resolvedKey}`)
     }
     
-    console.log(`Redirecting to stream URL for track ${trackId}: ${streamUrl} (score: ${score})`)
+    console.log(`Redirecting to stream URL for track ${trackId}: ${streamUrl} (score: ${(bestScore * 100).toFixed(1)}% via "${usedCandidate}")`)
     
     // Return redirect response
     return new Response(null, {

@@ -168,12 +168,13 @@ async function resolveStorageKey(dbPathOrTitle: string): Promise<{ key: string |
   return { key: bestKey, score: bestScore }
 }
 
-// Get all tracks that need repair
+// Get all tracks that need repair - optimized for your schema
 async function getAllTracksNeedingRepair() {
   const { data: tracks, error } = await supabase
     .from('music_tracks')
-    .select('id, title, file_path, bucket_name, upload_status')
+    .select('id, title, original_title, file_path, bucket_name, upload_status')
     .eq('upload_status', 'completed')
+    .or('file_path.is.null,file_path.eq.') // Tracks with missing/empty file_path
     .order('created_at', { ascending: false })
   
   if (error) {
@@ -209,29 +210,47 @@ async function repairStoragePaths() {
     let skipped = 0
     
     for (const track of tracks) {
-      const candidate = track.file_path || track.title
-      if (!candidate) {
-        console.log(`[SKIP] ${track.id} - No file_path or title`)
+      // Try multiple candidate sources in priority order
+      const candidates = [
+        track.file_path,           // Current file_path (if exists)
+        track.title,               // Main title
+        track.original_title       // Fallback to original_title
+      ].filter(Boolean)
+      
+      if (!candidates.length) {
+        console.log(`[SKIP] ${track.id} - No usable identifiers`)
         skipped++
         continue
       }
       
       console.log(`Processing: ${track.title} (${track.id})`)
       
-      const { key, score } = await resolveStorageKey(String(candidate))
+      let bestKey: string | null = null
+      let bestScore = 0
+      let bestCandidate = ''
       
-      if (key && score >= 0.75) {
-        await patchTrackStoragePath(track.id, key)
+      // Try each candidate and pick the best match
+      for (const candidate of candidates) {
+        const { key, score } = await resolveStorageKey(String(candidate))
+        if (score > bestScore) {
+          bestScore = score
+          bestKey = key
+          bestCandidate = candidate
+        }
+      }
+      
+      if (bestKey && bestScore >= 0.75) {
+        await patchTrackStoragePath(track.id, bestKey)
         fixed++
-        console.log(`✅ [FIXED] ${track.id} -> ${key} (${(score * 100).toFixed(1)}%)`)
-      } else if (key && score >= 0.3) {
-        // For audio files, consider lower confidence matches
-        await patchTrackStoragePath(track.id, key)
+        console.log(`✅ [FIXED] ${track.id} -> ${bestKey} (${(bestScore * 100).toFixed(1)}% via "${bestCandidate}")`)
+      } else if (bestKey && bestScore >= 0.4) {
+        // Slightly higher threshold for batch repair safety
+        await patchTrackStoragePath(track.id, bestKey)
         fixed++
-        console.log(`⚠️  [FIXED-LOW] ${track.id} -> ${key} (${(score * 100).toFixed(1)}%)`)
+        console.log(`⚠️  [FIXED-MED] ${track.id} -> ${bestKey} (${(bestScore * 100).toFixed(1)}% via "${bestCandidate}")`)
       } else {
         skipped++
-        console.log(`❌ [SKIP] ${track.id} - Best score: ${(score * 100).toFixed(1)}%`)
+        console.log(`❌ [SKIP] ${track.id} - Best: ${(bestScore * 100).toFixed(1)}% via "${bestCandidate}"`)
       }
       
       // Small delay to avoid overwhelming the database
