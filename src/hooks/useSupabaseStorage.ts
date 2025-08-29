@@ -16,7 +16,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
   const uploadFile = useCallback(async (
     file: File, 
     path: string, 
-    bucket: string = 'audio'
+    bucket: string = 'neuralpositivemusic'
   ): Promise<string | null> => {
     setUploading(true);
     setError(null);
@@ -45,7 +45,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
 
   const deleteFile = useCallback(async (
     path: string, 
-    bucket: string = 'audio'
+    bucket: string = 'neuralpositivemusic'
   ): Promise<boolean> => {
     setError(null);
 
@@ -68,7 +68,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
 
   const getPublicUrl = useCallback((
     path: string, 
-    bucket: string = 'audio'
+    bucket: string = 'neuralpositivemusic'
   ): string => {
     const { data } = supabase.storage.from(bucket).getPublicUrl(path);
     return data.publicUrl;

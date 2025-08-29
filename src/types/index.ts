@@ -7,8 +7,12 @@ export interface MusicTrack {
   valence: number
   acousticness: number
   danceability: number
+  instrumentalness: number
   loudness: number
+  speechiness: number
   bpm: number
+  key_signature?: string
+  mode?: string
   file_path: string
   bucket_name: string
   file_size?: number
@@ -16,7 +20,7 @@ export interface MusicTrack {
   upload_status: 'pending' | 'uploading' | 'completed' | 'failed'
   created_at: string
   updated_at: string
-  therapeutic_applications?: TherapeuticApplication[]
+  therapeutic_applications: TherapeuticApplication[]
   spectral_analysis?: SpectralAnalysis[]
   // Additional fields for compatibility
   artist?: string
@@ -25,8 +29,8 @@ export interface MusicTrack {
 }
 
 export interface TherapeuticApplication {
-  id?: string
-  track_id?: string
+  id: string
+  track_id: string
   frequency_band_primary: FrequencyBand
   frequency_band_secondary?: FrequencyBand[]
   condition_targets: string[]
@@ -40,11 +44,13 @@ export interface TherapeuticApplication {
   participant_count?: number
   confidence_interval?: string
   supporting_studies?: string[]
+  created_at: string
+  updated_at: string
 }
 
 export interface SpectralAnalysis {
-  id?: string
-  track_id?: string
+  id: string
+  track_id: string
   delta_band_power: number
   theta_band_power: number
   alpha_band_power: number
@@ -58,6 +64,7 @@ export interface SpectralAnalysis {
   spectral_centroid?: number
   spectral_bandwidth?: number
   fundamental_frequency?: number
+  created_at: string
 }
 
 export type FrequencyBand = 'delta' | 'theta' | 'alpha' | 'beta' | 'gamma'
