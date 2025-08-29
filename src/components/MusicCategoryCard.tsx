@@ -15,10 +15,17 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
 
   const handleClick = async () => {
     try {
+      console.log('Loading tracks for category:', title.toLowerCase());
       const demoTracks = await SupabaseService.getMusicTracksByCategory(title.toLowerCase());
+      console.log('Found tracks:', demoTracks);
+      
       if (demoTracks.length > 0) {
+        console.log('Setting playlist and loading first track:', demoTracks[0]);
         setPlaylist(demoTracks);
         await loadTrack(demoTracks[0]);
+        console.log('Track loaded successfully');
+      } else {
+        console.warn('No tracks found for category:', title.toLowerCase());
       }
       onClick?.();
     } catch (error) {

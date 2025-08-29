@@ -124,16 +124,33 @@ export class SupabaseService {
 
   static async getMusicTracksByCategory(category: string): Promise<MusicTrack[]> {
     try {
-      // Map category names to genres
+      console.log('Fetching tracks for category:', category);
+      
+      // If no specific genre mapping found, return some tracks anyway for testing
+      let filterOptions = {};
+      
+      // Map category names to genres - updated to match actual database genres
       const categoryMap: { [key: string]: any } = {
         'focus': { genre: 'classical' },
-        'mood-boost': { genre: 'jazz' }, 
+        'mood boost': { genre: 'jazz' }, 
         'sleep': { genre: 'classical' },
         'acoustic': { genre: 'jazz' }
       }
 
-      const filterOptions = categoryMap[category] || {}
-      return await this.fetchTracks({ ...filterOptions, limit: 10 })
+      filterOptions = categoryMap[category] || {}
+      console.log('Using filter options:', filterOptions);
+      
+      let tracks = await this.fetchTracks({ ...filterOptions, limit: 10 })
+      
+      // If no tracks found with specific genre, get any tracks for testing
+      if (tracks.length === 0) {
+        console.log('No tracks found for specific genre, fetching any available tracks');
+        tracks = await this.fetchTracks({ limit: 10 })
+      }
+      
+      console.log('Retrieved tracks:', tracks);
+      
+      return tracks
     } catch (error) {
       logger.error('Failed to fetch tracks by category', { category, error })
       return []
