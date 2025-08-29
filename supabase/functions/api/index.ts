@@ -1,20 +1,17 @@
 // deno-lint-ignore-file no-explicit-any
-import { Hono } from "https://deno.land/x/hono@v3.10.4/mod.ts";
-import { cors } from "https://deno.land/x/hono@v3.10.4/middleware.ts";
+import { Hono } from "https://deno.land/x/hono@v4.2.7/mod.ts";
+import { cors } from "https://deno.land/x/hono@v4.2.7/middleware.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const app = new Hono();
+app.use("*", cors({
+  origin: "*",
+  allowHeaders: ["Content-Type", "Authorization", "Range"],
+  allowMethods: ["GET", "HEAD", "POST", "OPTIONS"],
+  exposeHeaders: ["Accept-Ranges", "Content-Length", "Content-Type", "Content-Range"]
+}));
 
-// CORS
-app.use(
-  "/*",
-  cors({
-    origin: Deno.env.get("WEB_ORIGIN") ?? "*",
-    allowMethods: ["GET", "HEAD", "POST", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization", "Range"],
-    exposeHeaders: ["Accept-Ranges", "Content-Length", "Content-Type", "Content-Range"],
-  })
-);
+// Add direct routes instead of sub-router to fix routing issues
 
 // Supabase admin client
 function sb() {
@@ -25,16 +22,13 @@ function sb() {
   );
 }
 
-// ---- /api sub-router ----
-const api = new Hono();
-
-// Health
-api.get("/health", (c) =>
+// Direct routes - no sub-router to avoid mounting issues
+app.get("/api/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
-// Playlist by goal
-api.get("/v1/playlist", async (c) => {
+// Playlist by goal  
+app.get("/api/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
@@ -82,7 +76,7 @@ api.get("/v1/playlist", async (c) => {
 });
 
 // Build session (simple example)
-api.post("/v1/session/build", async (c) => {
+app.post("/api/v1/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -132,7 +126,7 @@ api.post("/v1/session/build", async (c) => {
 });
 
 // Debug storage access
-api.get("/debug/storage", async (c) => {
+app.get("/api/debug/storage", async (c) => {
   const supabase = sb();
   
   // Check environment variables
@@ -168,7 +162,7 @@ api.get("/debug/storage", async (c) => {
 });
 
 // Session telemetry
-api.post("/v1/sessions/start", async (c) => {
+app.post("/api/v1/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -176,46 +170,66 @@ api.post("/v1/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-api.post("/v1/sessions/progress", async (c) => {
+app.post("/api/v1/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-api.post("/v1/sessions/complete", async (c) => {
+app.post("/api/v1/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
   return c.json({ ok: true });
 });
 
-// Stream from Storage via signed URL (GET/HEAD + Range)
-api.on(["GET", "HEAD"], "/stream", async (c) => {
-  const file = c.req.query("file");
-  if (!file) return c.text("Missing 'file'", 400);
+// Stream by track ID (using storage_key from database)
+app.on(["GET", "HEAD"], "/api/stream", async (c) => {
+  const id = c.req.query("id");
+  if (!id) return c.text("Missing 'id'", 400);
 
-  console.log(`🎵 Streaming file: ${file}`);
+  console.log(`🎵 Streaming track ID: ${id}`);
+
+  const supabase = sb();
+  
+  // Get storage_key from database
+  const { data: track, error: dbError } = await supabase
+    .from('music_tracks')
+    .select('storage_key')
+    .eq('id', id)
+    .maybeSingle();
+    
+  if (dbError || !track?.storage_key) {
+    console.error('❌ Track not found:', dbError?.message || 'No storage_key');
+    return c.json({ ok: false, error: "TrackNotFound", id }, 404);
+  }
 
   const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
-  const supabase = sb();
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(file, 120);
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(track.storage_key, 1800);
+  
   if (error || !data?.signedUrl) {
     console.error('❌ Storage error:', error);
-    return c.text(error?.message ?? "Not found", 404);
+    return c.json({ ok: false, error: error?.message ?? "ObjectNotFound", key: track.storage_key }, 404);
   }
 
   const range = c.req.header("range");
   const upstream = await fetch(data.signedUrl, { method: c.req.method, headers: range ? { Range: range } : {} });
 
   const headers = new Headers(upstream.headers);
-  headers.set("Access-Control-Allow-Origin", Deno.env.get("WEB_ORIGIN") ?? "*");
+  headers.set("Access-Control-Allow-Origin", "*");
   headers.set("Accept-Ranges", "bytes");
-  return new Response(c.req.method === "HEAD" ? null : upstream.body, { status: upstream.status, headers });
-});
+  
+  // Set content type for MP3 files
+  if (!headers.get("Content-Type") && track.storage_key.toLowerCase().endsWith(".mp3")) {
+    headers.set("Content-Type", "audio/mpeg");
+  }
 
-// Mount API routes at /api path
-app.route("/api", api);
+  return new Response(c.req.method === "HEAD" ? null : upstream.body, { 
+    status: upstream.status, 
+    headers 
+  });
+});
 
 // JSON 404 (helps you see wrong paths fast)
 app.notFound((c) => c.json({ ok: false, error: "NotFound", path: c.req.path }, 404));
