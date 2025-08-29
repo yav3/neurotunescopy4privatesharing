@@ -80,8 +80,20 @@ const AIDJPage: React.FC = () => {
     try {
       console.log('🔥 REAL API: Fetching playlist for mood:', mood, 'genre:', genre)
       
+      // Map moods to goals for better API compatibility
+      const moodToGoal: Record<string, string> = {
+        'Focus Enhancement': 'focus',
+        'Anxiety Relief': 'relax',
+        'Sleep Preparation': 'sleep',
+        'Mood Boost': 'energy',
+        'Stress Reduction': 'relax',
+        'Meditation Support': 'relax',
+      }
+      
+      const goal = moodToGoal[mood] ?? mood.toLowerCase()
+      
       // Call the real backend API instead of generating mock data
-      const { tracks } = await API.playlist(mood)
+      const { tracks } = await API.playlist(goal)
       
       console.log('✅ REAL API: Playlist received:', tracks.length, 'tracks')
       
