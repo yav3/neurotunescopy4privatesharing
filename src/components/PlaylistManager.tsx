@@ -91,9 +91,9 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
 
   if (error) {
     return (
-      <div className="p-6 bg-red-500/10 border border-red-500/20 rounded-xl">
-        <h3 className="text-red-400 font-medium mb-2">Failed to load playlists</h3>
-        <p className="text-red-300 text-sm">
+      <div className="p-6 bg-destructive/10 border border-destructive/20 rounded-xl">
+        <h3 className="text-destructive font-medium mb-2">Failed to load playlists</h3>
+        <p className="text-destructive/80 text-sm">
           {error instanceof Error ? error.message : 'Something went wrong'}
         </p>
       </div>
@@ -101,15 +101,15 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
   }
 
   return (
-    <div className="bg-gray-800/50 rounded-xl p-6">
+    <div className="bg-gradient-card rounded-xl p-6 shadow-card border border-border">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Music size={24} className="text-purple-400" />
+        <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+          <Music size={24} className="text-primary" />
           Your Playlists
         </h2>
         <button
           onClick={() => setShowCreateForm(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors"
         >
           <Plus size={18} />
           Create Playlist
@@ -118,11 +118,11 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
 
       {/* Create Playlist Form */}
       {showCreateForm && (
-        <div className="mb-6 p-4 bg-gray-700/50 rounded-lg border border-gray-600">
+        <div className="mb-6 p-4 bg-secondary rounded-lg border border-border">
           <form onSubmit={handleCreatePlaylist}>
             <div className="space-y-4">
               <div>
-                <label htmlFor="playlist-name" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="playlist-name" className="block text-sm font-medium text-muted-foreground mb-2">
                   Playlist Name *
                 </label>
                 <input
@@ -131,12 +131,12 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                   value={newPlaylistName}
                   onChange={(e) => setNewPlaylistName(e.target.value)}
                   placeholder="Enter playlist name..."
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="playlist-description" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="playlist-description" className="block text-sm font-medium text-muted-foreground mb-2">
                   Description (Optional)
                 </label>
                 <textarea
@@ -145,14 +145,14 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                   onChange={(e) => setNewPlaylistDescription(e.target.value)}
                   placeholder="Describe your playlist..."
                   rows={3}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div className="flex gap-3">
                 <button
                   type="submit"
                   disabled={createPlaylistMutation.isPending || !newPlaylistName.trim()}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-music-mood hover:bg-music-mood/90 disabled:bg-muted disabled:cursor-not-allowed text-foreground rounded-lg transition-colors"
                 >
                   {createPlaylistMutation.isPending ? 'Creating...' : 'Create'}
                 </button>
@@ -163,7 +163,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                     setNewPlaylistName('')
                     setNewPlaylistDescription('')
                   }}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-muted hover:bg-muted/80 text-muted-foreground rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -180,12 +180,12 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
         </div>
       ) : playlists.length === 0 ? (
         <div className="text-center py-12">
-          <Music size={48} className="mx-auto mb-4 text-gray-500" />
-          <h3 className="text-lg font-medium text-gray-400 mb-2">No playlists yet</h3>
-          <p className="text-gray-500 mb-4">Create your first therapeutic music playlist</p>
+          <Music size={48} className="mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-medium text-muted-foreground mb-2">No playlists yet</h3>
+          <p className="text-muted-foreground mb-4">Create your first therapeutic music playlist</p>
           <button
             onClick={() => setShowCreateForm(true)}
-            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-colors"
+            className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-colors"
           >
             Create Your First Playlist
           </button>
@@ -195,18 +195,18 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
           {playlists.map((playlist) => (
             <div
               key={playlist.id}
-              className="flex items-center justify-between p-4 bg-gray-700/30 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg transition-colors group"
+              className="flex items-center justify-between p-4 bg-card hover:bg-card/80 border border-border rounded-lg transition-colors group shadow-card"
             >
               <div className="flex-1">
-                <h3 className="font-medium text-white group-hover:text-purple-400 transition-colors">
+                <h3 className="font-medium text-card-foreground group-hover:text-primary transition-colors">
                   {playlist.name}
                 </h3>
                 {playlist.description && (
-                  <p className="text-sm text-gray-400 mt-1 line-clamp-2">
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                     {playlist.description}
                   </p>
                 )}
-                <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Music size={12} />
                     {playlist.track_count} tracks
@@ -222,7 +222,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                 <button
                   onClick={() => handlePlayPlaylist(playlist)}
                   disabled={loadPlaylistMutation.isPending}
-                  className="p-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-full transition-colors"
+                  className="p-2 bg-music-mood hover:bg-music-mood/90 disabled:bg-muted disabled:cursor-not-allowed text-foreground rounded-full transition-colors"
                   title="Play playlist"
                 >
                   {loadPlaylistMutation.isPending ? (
@@ -233,21 +233,21 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                 </button>
                 
                 <div className="relative group/menu">
-                  <button className="p-2 hover:bg-gray-600 text-gray-400 hover:text-white rounded-full transition-colors">
+                  <button className="p-2 hover:bg-secondary text-muted-foreground hover:text-foreground rounded-full transition-colors">
                     <MoreVertical size={16} />
                   </button>
                   
-                  <div className="absolute right-0 top-full mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-xl opacity-0 invisible group-hover/menu:opacity-100 group-hover/menu:visible transition-all duration-200 z-10">
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-popover border border-border rounded-lg shadow-xl opacity-0 invisible group-hover/menu:opacity-100 group-hover/menu:visible transition-all duration-200 z-10">
                     <button
                       onClick={() => onSelectPlaylist?.(playlist)}
-                      className="w-full px-4 py-2 text-left text-white hover:bg-gray-700 rounded-t-lg transition-colors"
+                      className="w-full px-4 py-2 text-left text-popover-foreground hover:bg-secondary rounded-t-lg transition-colors"
                     >
                       View Details
                     </button>
                     <button
                       onClick={() => handleDeletePlaylist(playlist)}
                       disabled={deletePlaylistMutation.isPending}
-                      className="w-full px-4 py-2 text-left text-red-400 hover:bg-gray-700 rounded-b-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      className="w-full px-4 py-2 text-left text-destructive hover:bg-secondary rounded-b-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                       <Trash2 size={14} />
                       Delete Playlist
