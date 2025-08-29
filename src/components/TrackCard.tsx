@@ -101,17 +101,31 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   const artwork = React.useMemo(() => getTherapeuticArtwork(frequencyBand, track.id), [frequencyBand, track.id])
 
   const handlePlayClick = async () => {
-    console.log('▶️ Play button clicked for track:', track.title)
-    if (isCurrentTrack) {
-      toggle()
-    } else {
-      await loadTrack(track)
-      // Auto-play after loading
-      setTimeout(() => {
-        toggle()
-      }, 500)
+    console.log('▶️ TrackCard play button clicked for track:', track.title, track.id);
+    
+    try {
+      if (isCurrentTrack && state.isPlaying) {
+        console.log('⏸️ Pausing current track');
+        toggle();
+      } else if (isCurrentTrack && !state.isPlaying) {
+        console.log('▶️ Resuming current track');
+        toggle();
+      } else {
+        console.log('🔄 Loading new track:', track.title);
+        await loadTrack(track);
+        
+        // Wait a moment for loading to complete, then play
+        setTimeout(() => {
+          console.log('▶️ Auto-playing after load');
+          if (!state.isPlaying) {
+            toggle();
+          }
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('❌ Error in play click:', error);
     }
-  }
+  };
 
   return (
     <div className="group bg-card rounded-2xl border border-border transition-all duration-300 hover:shadow-card hover:border-primary/20 overflow-hidden">

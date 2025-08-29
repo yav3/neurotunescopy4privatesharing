@@ -134,9 +134,16 @@ const AIDJPage: React.FC = () => {
   }
 
   const handleMoodSelect = async (moodId: string) => {
+    console.log('🎵 AI DJ mood selected:', moodId);
     setSelectedMood(moodId)
     setIsFullscreenMode(true)
-    await generatePlaylist(moodId, selectedGenre)
+    
+    try {
+      await generatePlaylist(moodId, selectedGenre)
+      console.log('✅ Playlist generated for mood:', moodId);
+    } catch (error) {
+      console.error('❌ Error generating playlist:', error);
+    }
   }
 
   const regeneratePlaylist = async () => {
@@ -147,15 +154,21 @@ const AIDJPage: React.FC = () => {
 
   const handlePlayPlaylist = () => {
     if (localPlaylist.length > 0) {
-      loadTrack(localPlaylist[0])
+      console.log('🎵 Playing playlist with', localPlaylist.length, 'tracks');
+      setPlaylist(localPlaylist);
+      loadTrack(localPlaylist[0]);
     }
-  }
+  };
 
   const handleShufflePlaylist = () => {
-    const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
-    setLocalPlaylist(shuffled)
-    setPlaylist(shuffled)
-  }
+    if (localPlaylist.length > 0) {
+      const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
+      console.log('🔀 Shuffling playlist:', shuffled.length, 'tracks');
+      setLocalPlaylist(shuffled)
+      setPlaylist(shuffled)
+      loadTrack(shuffled[0]);
+    }
+  };
 
   // Regenerate playlist when genre changes
   useEffect(() => {
