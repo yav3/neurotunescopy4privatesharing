@@ -32,20 +32,15 @@ export class SupabaseService {
     }
   }
 
-  static async fetchTracks(options?: {
-    bandFilter?: FrequencyBand | 'all'
-    condition?: string
+  static async fetchTracks(options: {
+    genre?: string
     limit?: number
     offset?: number
-  }): Promise<MusicTrack[]> {
+  } = {}): Promise<MusicTrack[]> {
     try {
       let query = supabase
         .from('music_tracks')
-        .select(`
-          *,
-          therapeutic_applications (*),
-          spectral_analysis (*)
-        `)
+        .select('*')
         .eq('upload_status', 'completed')
         .order('created_at', { ascending: false })
 
@@ -57,24 +52,27 @@ export class SupabaseService {
         query = query.range(options.offset, options.offset + (options.limit || 10) - 1)
       }
 
-      if (options?.bandFilter && options.bandFilter !== 'all') {
-        query = query.eq('therapeutic_applications.frequency_band_primary', options.bandFilter)
-      }
-
-      if (options?.condition) {
-        query = query.contains('therapeutic_applications.condition_targets', [options.condition])
+      if (options?.genre) {
+        query = query.eq('genre', options.genre)
       }
 
       const { data, error } = await query
 
       if (error) throw error
 
+      // Transform data to match MusicTrack interface
+      const tracks = (data || []).map(track => ({
+        ...track,
+        therapeutic_applications: [], // Empty array for now
+        spectral_analysis: [] // Empty array for now
+      })) as MusicTrack[]
+
       logger.info('Tracks fetched successfully', { 
-        count: data?.length || 0, 
+        count: tracks.length, 
         filters: options 
       })
 
-      return (data || []) as MusicTrack[]
+      return tracks
     } catch (error) {
       logger.error('Failed to fetch tracks', { options, error })
       throw error
@@ -83,12 +81,12 @@ export class SupabaseService {
 
   static async getMusicTracksByCategory(category: string): Promise<MusicTrack[]> {
     try {
-      // Map category names to frequency bands or conditions
+      // Map category names to genres
       const categoryMap: { [key: string]: any } = {
-        'focus': { bandFilter: 'beta' as FrequencyBand },
-        'mood-boost': { condition: 'depression' },
-        'sleep': { bandFilter: 'delta' as FrequencyBand },
-        'acoustic': { condition: 'anxiety' }
+        'focus': { genre: 'classical' },
+        'mood-boost': { genre: 'jazz' }, 
+        'sleep': { genre: 'classical' },
+        'acoustic': { genre: 'jazz' }
       }
 
       const filterOptions = categoryMap[category] || {}

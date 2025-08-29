@@ -21,15 +21,26 @@ export const HomePage: React.FC = () => {
     error, 
     refetch 
   } = useQuery({
-    queryKey: ['tracks', selectedBand, selectedCondition],
+    queryKey: ['tracks', selectedBand],
     queryFn: () => SupabaseService.fetchTracks({
-      bandFilter: selectedBand,
-      condition: selectedCondition || undefined,
+      genre: selectedBand === 'all' ? undefined : mapBandToGenre(selectedBand),
       limit: 50
     }),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3
   })
+
+  // Map frequency bands to genres
+  function mapBandToGenre(band: FrequencyBandType | 'all'): string | undefined {
+    const mapping = {
+      'delta': 'classical',
+      'theta': 'jazz', 
+      'alpha': 'rock',
+      'beta': 'dance',
+      'gamma': 'electronic'
+    }
+    return band === 'all' ? undefined : mapping[band as FrequencyBandType]
+  }
 
   // Set playlist when tracks change
   useEffect(() => {
@@ -45,19 +56,22 @@ export const HomePage: React.FC = () => {
     const query = searchQuery.toLowerCase()
     return tracks.filter(track => 
       track.title.toLowerCase().includes(query) ||
-      track.genre.toLowerCase().includes(query) ||
-      track.therapeutic_applications?.some(app =>
-        app.condition_targets?.some(condition =>
-          condition.toLowerCase().includes(query)
-        )
-      )
+      track.genre.toLowerCase().includes(query)
     )
   }, [tracks, searchQuery])
 
-  // Get track counts by frequency band
+  // Get track counts by frequency band (mapped to genres)
   const bandCounts = useMemo(() => {
+    const genreMapping = {
+      'classical': 'delta',
+      'jazz': 'theta',
+      'rock': 'alpha', 
+      'dance': 'beta',
+      'electronic': 'gamma'
+    } as const
+
     const counts = tracks.reduce((acc, track) => {
-      const band = track.therapeutic_applications?.[0]?.frequency_band_primary
+      const band = genreMapping[track.genre as keyof typeof genreMapping]
       if (band) {
         acc[band] = (acc[band] || 0) + 1
       }
@@ -67,16 +81,8 @@ export const HomePage: React.FC = () => {
     return counts
   }, [tracks])
 
-  // Get unique conditions for filter
-  const availableConditions = useMemo(() => {
-    const conditions = new Set<string>()
-    tracks.forEach(track => {
-      track.therapeutic_applications?.forEach(app => {
-        app.condition_targets?.forEach(condition => conditions.add(condition))
-      })
-    })
-    return Array.from(conditions).sort()
-  }, [tracks])
+  // Simplified conditions - no longer using therapeutic applications
+  const availableConditions: string[] = []
 
   const handleBandFilter = (band: FrequencyBandType) => {
     setSelectedBand(selectedBand === band ? 'all' : band)
@@ -275,15 +281,9 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-500">
-                  {tracks.filter(t => 
-                    t.therapeutic_applications?.some(app => 
-                      (app.anxiety_evidence_score || 0) > 0.7 ||
-                      (app.focus_evidence_score || 0) > 0.7 ||
-                      (app.sleep_evidence_score || 0) > 0.7
-                    )
-                  ).length}
+                  {tracks.filter(t => t.energy > 0.7 || t.valence > 0.7).length}
                 </div>
-                <div className="text-sm text-muted-foreground">High Evidence</div>
+                <div className="text-sm text-muted-foreground">High Energy/Valence</div>
               </div>
             </div>
           </section>
