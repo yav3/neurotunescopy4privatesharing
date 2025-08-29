@@ -110,28 +110,28 @@ export default function FullPlayer() {
             const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
             const artworkMap = {
               delta: { 
-                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-                position: 'object-[20%_75%]', // Bottom-left: Misty forest
+                url: '/lovable-uploads/delta-moonlit-lake.png',
+                position: 'object-cover', // Moonlit lake for deep sleep & healing
                 gradient: 'from-purple-900/60 via-blue-900/40 to-indigo-800/60'
               },
               theta: { 
-                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-                position: 'object-[20%_40%]', // Middle-left: Golden mystical path
+                url: '/lovable-uploads/theta-misty-path.png',
+                position: 'object-cover', // Misty forest path for meditation
                 gradient: 'from-amber-700/60 via-yellow-600/40 to-orange-700/60'
               },
               alpha: { 
-                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-                position: 'object-[80%_20%]', // Top-right: Mountain lake
+                url: '/lovable-uploads/alpha-mountain-lake.png',
+                position: 'object-cover', // Serene mountain lake for focus
                 gradient: 'from-blue-800/60 via-cyan-600/40 to-teal-700/60'
               },
               beta: { 
-                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-                position: 'object-[80%_40%]', // Middle-right: Waterfall
+                url: '/lovable-uploads/beta-waterfall.png',
+                position: 'object-cover', // Energetic waterfall for concentration
                 gradient: 'from-green-700/60 via-emerald-600/40 to-teal-700/60'
               },
               gamma: { 
-                url: '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-                position: 'object-[20%_20%]', // Top-left: Sunbeam forest
+                url: '/lovable-uploads/gamma-sunbeam-forest.png',
+                position: 'object-cover', // Golden sunbeam forest for peak performance
                 gradient: 'from-yellow-600/60 via-orange-500/40 to-red-600/60'
               }
             }
