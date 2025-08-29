@@ -12,7 +12,7 @@ const bandInfo = {
   delta: { 
     range: '0.5-4Hz', 
     purpose: 'Deep Sleep & Healing', 
-    color: 'from-purple-600 to-blue-600', 
+    color: 'from-blue-800 to-slate-600', 
     icon: '🌙',
     description: 'Promotes deep sleep, healing, and regeneration'
   },

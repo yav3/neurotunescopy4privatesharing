@@ -46,7 +46,7 @@ const getTherapeuticArtwork = (frequencyBand: string): { url: string; position: 
     delta: { 
       url: Math.random() > 0.5 ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
       position: 'object-cover', // Moonlit scenes for deep sleep & healing
-      gradient: 'from-purple-900/80 via-blue-900/60 to-indigo-800/80'
+      gradient: 'from-blue-900/80 via-slate-800/60 to-blue-800/80'
     },
     theta: { 
       url: Math.random() > 0.5 ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],

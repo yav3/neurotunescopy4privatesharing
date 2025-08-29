@@ -395,7 +395,7 @@ const TherapeuticTooltip = React.forwardRef<
           return (
             <div className="flex items-center justify-between w-full">
               <span className="text-slate-300">Tempo</span>
-              <span className="font-mono text-purple-400">{value} BPM</span>
+              <span className="font-mono text-cyan-400">{value} BPM</span>
             </div>
           )
         }
@@ -461,7 +461,7 @@ const SpectralTooltip = React.forwardRef<
           return (
             <div className="flex items-center justify-between w-full">
               <span className="text-slate-300">{name.replace('therapeutic_', '').replace('_score', ' efficacy')}</span>
-              <span className="font-mono text-purple-400">{Math.round(Number(value) * 100)}%</span>
+              <span className="font-mono text-cyan-400">{Math.round(Number(value) * 100)}%</span>
             </div>
           )
         }

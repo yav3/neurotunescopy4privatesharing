@@ -24,7 +24,7 @@ const THERAPEUTIC_GOALS = [
     name: 'Focus Enhancement', 
     icon: Focus,
     description: 'Improve concentration and mental clarity',
-    color: 'bg-purple-500/20 text-purple-700 border-purple-300'
+    color: 'bg-cyan-500/20 text-cyan-700 border-cyan-300'
   },
   {
     id: 'sleep_preparation' as TherapeuticGoal,

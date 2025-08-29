@@ -219,7 +219,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           })
           
           // Try demo audio as fallback
-          const demoUrl = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'
+          const demoUrl = 'https://file-examples.com/storage/fe5806b161388dec8b6b518/2017/11/file_example_MP3_700KB.mp3'
           logger.info('Using demo audio fallback', { demoUrl })
           
           try {

@@ -65,7 +65,7 @@ export function EmotionDashboard() {
   const therapeuticGoals = [
     { id: 'focus', label: 'Focus Enhancement', icon: Brain, color: 'blue', progress: 75 },
     { id: 'chill', label: 'Stress Reduction', icon: Heart, color: 'green', progress: 88 },
-    { id: 'relaxation', label: 'Relaxation', icon: Heart, color: 'purple', progress: 92 },
+    { id: 'relaxation', label: 'Relaxation', icon: Heart, color: 'cyan', progress: 92 },
     { id: 'energy', label: 'Energy Boost', icon: Zap, color: 'yellow', progress: 67 },
     { id: 'sleep', label: 'Sleep Quality', icon: Moon, color: 'indigo', progress: 84 }
   ];

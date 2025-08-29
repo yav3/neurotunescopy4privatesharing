@@ -121,7 +121,7 @@ export default function FullPlayer() {
               delta: { 
                 url: Math.random() > 0.5 ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
                 position: 'object-cover', // Moonlit scenes for deep sleep & healing
-                gradient: 'from-purple-900/60 via-blue-900/40 to-indigo-800/60'
+                gradient: 'from-blue-900/60 via-slate-800/40 to-blue-800/60'
               },
               theta: { 
                 url: Math.random() > 0.5 ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
