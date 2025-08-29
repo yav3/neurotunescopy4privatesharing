@@ -157,11 +157,25 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'CLEAR_ERROR' })
       dispatch({ type: 'SET_LOADING', payload: true })
       
+      console.log('Loading track:', track.title, 'File path:', track.file_path)
       const url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
+      console.log('Generated audio URL:', url)
       
       // Stop current playback
       audioRef.current.pause()
       audioRef.current.currentTime = 0
+      
+      // Test the URL first
+      try {
+        const testResponse = await fetch(url, { method: 'HEAD' })
+        console.log('URL test response:', testResponse.status, testResponse.statusText)
+        if (!testResponse.ok) {
+          throw new Error(`URL not accessible: ${testResponse.status} ${testResponse.statusText}`)
+        }
+      } catch (urlError) {
+        console.error('URL test failed:', urlError)
+        throw new Error(`Audio URL not accessible: ${urlError.message}`)
+      }
       
       // Create a promise that resolves when audio is ready to play
       await new Promise<void>((resolve, reject) => {
@@ -174,16 +188,19 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         }
 
         const handleCanPlay = () => {
+          console.log('Audio can play through')
           cleanup()
           resolve()
         }
 
         const handleError = () => {
+          console.error('Audio element error:', audio.error)
           cleanup()
-          reject(new Error('Failed to load audio'))
+          reject(new Error(`Audio load failed: ${audio.error?.code} - ${audio.error?.message}`))
         }
 
         const handleTimeout = () => {
+          console.error('Audio loading timeout')
           cleanup()
           reject(new Error('Audio loading timeout'))
         }
@@ -193,15 +210,15 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         audio.addEventListener('error', handleError, { once: true })
         
         // Set timeout for loading
-        const timeoutId = setTimeout(handleTimeout, 10000) // 10 second timeout
+        const timeoutId = setTimeout(handleTimeout, 15000) // 15 second timeout
         
         // Load new track
+        console.log('Setting audio src to:', url)
         audio.src = url
         audio.load()
       })
       
       setCurrentTrack(track)
-      sessionStartTime.current = Date.now()
       
       logger.info('Track loaded successfully', { 
         trackId: track.id, 

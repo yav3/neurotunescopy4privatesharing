@@ -15,9 +15,33 @@ const PlayerPage = () => {
   useEffect(() => {
     const trackId = searchParams.get('track');
     
-    // If no track is specified and no current track, go back
+    // If no track is specified and no current track, try to load a demo track
     if (!trackId && !currentTrack) {
-      navigate('/');
+      const loadDemoTrack = async () => {
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          // Get any available track for demo
+          const demoTracks = await SupabaseService.fetchTracks({ limit: 1 });
+          
+          if (demoTracks.length > 0) {
+            console.log('Loading demo track for empty player:', demoTracks[0]);
+            await loadTrack(demoTracks[0]);
+            return; // Don't navigate away if we successfully loaded a demo track
+          }
+          
+          // If no tracks available, go to home
+          navigate('/');
+        } catch (error) {
+          console.error('Failed to load demo track:', error);
+          navigate('/');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      loadDemoTrack();
       return;
     }
 
