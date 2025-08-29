@@ -1,187 +1,57 @@
-import { useEffect, useRef } from 'react'
-import { usePlayer, currentSrc } from '@/stores/usePlayer'
-import { API } from '@/lib/api'
+import { useEffect } from "react";
+import { getAudio } from "@/player/audio-core";
 
 export default function AudioProvider() {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const index = usePlayer((s) => s.index)
-  const queue = usePlayer((s) => s.queue)
-  const isPlaying = usePlayer((s) => s.isPlaying)
-  const setPlaying = usePlayer((s) => s.setPlaying)
-  const setLoading = usePlayer((s) => s.setLoading)
-  const setError = usePlayer((s) => s.setError)
-  const next = usePlayer((s) => s.next)
-
-  // Load new track when index/queue changes
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    const src = currentSrc()
-    console.log('🎵 AudioProvider: Loading new track, src:', src)
+    console.log('🎵 AudioProvider: Initializing global audio element');
+    const a = getAudio();
     
-    if (!src) {
-      audio.pause()
-      audio.src = ''
-      return
-    }
-
-    setLoading(true)
-    setError(undefined)
-    
-    // Add detailed error logging
-    const handleError = (event: Event) => {
-      const error = audio.error
-      console.error('❌ AUDIO ERROR:', {
-        code: error?.code,
+    // Add error logging with detailed diagnostics
+    const handleError = (e: Event) => {
+      const error = a.error;
+      const errorTypes = {
+        1: 'ABORTED', 2: 'NETWORK', 3: 'DECODE', 4: 'NOT_SUPPORTED'
+      };
+      
+      const errorDetails = {
+        errorCode: error?.code,
+        errorType: errorTypes[error?.code as keyof typeof errorTypes] || 'UNKNOWN',
         message: error?.message,
-        src: audio.src,
-        event
-      })
-      setError(`Audio error: ${error?.code || 'unknown'} - ${audio.src}`)
-      setLoading(false)
-      setPlaying(false)
+        networkState: a.networkState,
+        readyState: a.readyState,
+        currentSrc: a.currentSrc,
+        duration: a.duration,
+        currentTime: a.currentTime
+      };
       
-      // Show user-friendly error
-      if (typeof window !== 'undefined') {
-        console.error(`Audio failed to load: ${audio.src}`)
-      }
-    }
+      console.error('[GLOBAL AUDIO ERROR]', errorDetails);
+    };
     
-    audio.src = src
-    audio.load()
+    // Add other useful event listeners
+    const handleLoadStart = () => console.log('🔄 Global audio: Load start');
+    const handleCanPlay = () => console.log('✅ Global audio: Can play');
+    const handlePlay = () => console.log('▶️ Global audio: Started playing');
+    const handlePause = () => console.log('⏸️ Global audio: Paused');
+    const handleEnded = () => console.log('🏁 Global audio: Ended');
     
-    const handleCanPlay = () => {
-      console.log('✅ AudioProvider: Track can play')
-      setLoading(false)
-      if (isPlaying) {
-        audio.play().catch((error) => {
-          console.error('❌ AudioProvider: Play failed:', error)
-          setError('Playback failed')
-          setPlaying(false)
-        })
-      }
-    }
-
-    audio.addEventListener('canplay', handleCanPlay, { once: true })
-    audio.addEventListener('error', handleError, { once: true })
-
+    a.addEventListener("error", handleError);
+    a.addEventListener("loadstart", handleLoadStart);
+    a.addEventListener("canplay", handleCanPlay);
+    a.addEventListener("play", handlePlay);
+    a.addEventListener("pause", handlePause);
+    a.addEventListener("ended", handleEnded);
+    
+    console.log('✅ Global audio element ready:', a.id);
+    
     return () => {
-      audio.removeEventListener('canplay', handleCanPlay)
-      audio.removeEventListener('error', handleError)
-    }
-  }, [index, queue, setLoading, setError, isPlaying, setPlaying])
-
-  // Handle play/pause state changes
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    if (isPlaying && audio.paused && audio.src) {
-      console.log('▶️ AudioProvider: Starting playback')
-      audio.play().catch((error) => {
-        console.error('❌ AudioProvider: Play failed:', error)
-        setError('Playback failed')
-        setPlaying(false)
-      })
-    } else if (!isPlaying && !audio.paused) {
-      console.log('⏸️ AudioProvider: Pausing playback')
-      audio.pause()
-    }
-  }, [isPlaying, setError, setPlaying])
-
-  // Telemetry + auto-next
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    let sessionId: string | undefined
-    let lastReportedTime = 0
-
-    const onPlay = async () => {
-      console.log('🎵 AudioProvider: Play event - starting session')
-      const currentTrack = queue[index]
-      if (!currentTrack) return
-
-      try {
-        const response = await API.startSession(currentTrack.id)
-        sessionId = response.sessionId
-        console.log('✅ AudioProvider: Session started:', sessionId)
-      } catch (error) {
-        console.error('❌ AudioProvider: Failed to start session:', error)
-      }
-    }
-
-    const onTimeUpdate = () => {
-      if (!sessionId) return
-      const currentTime = Math.floor(audio.currentTime)
-      
-      // Report progress every 10 seconds
-      if (currentTime - lastReportedTime >= 10) {
-        API.progress(sessionId, currentTime)
-        lastReportedTime = currentTime
-      }
-    }
-
-    const onEnded = async () => {
-      console.log('🏁 AudioProvider: Track ended')
-      
-      if (sessionId) {
-        try {
-          await API.complete(sessionId)
-          console.log('✅ AudioProvider: Session completed:', sessionId)
-        } catch (error) {
-          console.error('❌ AudioProvider: Failed to complete session:', error)
-        }
-      }
-      
-      // Auto-advance to next track
-      next()
-    }
-
-    const onPause = () => {
-      setPlaying(false)
-    }
-
-    const onPlaying = () => {
-      setPlaying(true)
-      setLoading(false)
-    }
-
-    const onWaiting = () => {
-      setLoading(true)
-    }
-
-    const onLoadStart = () => {
-      setLoading(true)
-    }
-
-    // Add all event listeners
-    audio.addEventListener('play', onPlay)
-    audio.addEventListener('timeupdate', onTimeUpdate)
-    audio.addEventListener('ended', onEnded)
-    audio.addEventListener('pause', onPause)
-    audio.addEventListener('playing', onPlaying)
-    audio.addEventListener('waiting', onWaiting)
-    audio.addEventListener('loadstart', onLoadStart)
-
-    return () => {
-      audio.removeEventListener('play', onPlay)
-      audio.removeEventListener('timeupdate', onTimeUpdate)
-      audio.removeEventListener('ended', onEnded)
-      audio.removeEventListener('pause', onPause)
-      audio.removeEventListener('playing', onPlaying)
-      audio.removeEventListener('waiting', onWaiting)
-      audio.removeEventListener('loadstart', onLoadStart)
-    }
-  }, [index, queue, next, setPlaying, setLoading])
-
-  return (
-    <audio 
-      ref={audioRef} 
-      preload="metadata" 
-      className="hidden"
-      playsInline
-    />
-  )
+      a.removeEventListener("error", handleError);
+      a.removeEventListener("loadstart", handleLoadStart);
+      a.removeEventListener("canplay", handleCanPlay);
+      a.removeEventListener("play", handlePlay);
+      a.removeEventListener("pause", handlePause);
+      a.removeEventListener("ended", handleEnded);
+    };
+  }, []);
+  
+  return null;
 }

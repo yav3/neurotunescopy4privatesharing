@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { usePlayer } from "@/stores/usePlayer";
+import { API } from "@/lib/api";
 
 interface MusicCategoryCardProps {
   title: string;
@@ -10,18 +11,23 @@ interface MusicCategoryCardProps {
 }
 
 export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCategoryCardProps) => {
-  const loadGoal = usePlayer((s) => s.loadGoal);
-  const playAt = usePlayer((s) => s.playAt);
-  const setPlaying = usePlayer((s) => s.setPlaying);
+  const setQueue = usePlayer((s) => s.setQueue);
   const isLoading = usePlayer((s) => s.isLoading);
 
   const handleClick = async () => {
     console.log('🎵 Category card clicked:', title);
     
     try {
-      await loadGoal(title.toLowerCase());   // fetch from backend
-      playAt(0);                             // start at first track
-      setPlaying(true);                      // begin playback
+      console.log('🔥 Fetching playlist for category:', title);
+      const { tracks } = await API.playlist(title.toLowerCase());
+      
+      if (tracks && tracks.length > 0) {
+        console.log('✅ Setting queue with tracks:', tracks.length);
+        await setQueue(tracks, 0);
+      } else {
+        console.log('❌ No tracks found for category:', title);
+      }
+      
       onClick?.();
     } catch (error) {
       console.error('❌ Category click failed:', error);

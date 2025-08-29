@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
 import type { MusicTrack } from '@/types'
-import { useAudio } from '@/context/AudioContext'
+import { usePlayer } from '@/stores/usePlayer'
 
 interface TrackCardProps {
   track: MusicTrack
@@ -90,11 +90,7 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
-  const { currentTrack, state, loadTrack, toggle } = useAudio()
-  
-  const isCurrentTrack = currentTrack?.id === track.id
-  const isPlaying = isCurrentTrack && state.isPlaying
-  const isLoading = isCurrentTrack && state.isLoading
+  const { playSingle } = usePlayer()
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
@@ -104,26 +100,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
     console.log('▶️ TrackCard play button clicked for track:', track.title, track.id);
     
     try {
-      if (isCurrentTrack && state.isPlaying) {
-        console.log('⏸️ Pausing current track');
-        toggle();
-      } else if (isCurrentTrack && !state.isPlaying) {
-        console.log('▶️ Resuming current track');
-        toggle();
-      } else {
-        console.log('🔄 Loading new track:', track.title);
-        await loadTrack(track);
-        
-        // Wait a moment for loading to complete, then play
-        setTimeout(() => {
-          console.log('▶️ Auto-playing after load');
-          if (!state.isPlaying) {
-            toggle();
-          }
-        }, 1000);
-      }
+      console.log('🔄 Playing single track via TrackCard');
+      await playSingle(track);
     } catch (error) {
-      console.error('❌ Error in play click:', error);
+      console.error('❌ Error in TrackCard play click:', error);
     }
   };
 
@@ -154,17 +134,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
           {/* Play button overlay */}
           <button
             onClick={handlePlayClick}
-            disabled={isLoading}
             className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center"
-            aria-label={isPlaying ? 'Pause' : 'Play'}
+            aria-label="Play track"
           >
-            {isLoading ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : isPlaying ? (
-              <Pause size={24} className="text-white" />
-            ) : (
-              <Play size={24} className="text-white ml-0.5" />
-            )}
+            <Play size={24} className="text-white ml-0.5" />
           </button>
         </div>
 

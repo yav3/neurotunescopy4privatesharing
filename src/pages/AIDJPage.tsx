@@ -11,6 +11,7 @@ import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
 import { API_BASE } from '@/lib/env'
+import { usePlayer } from '@/stores/usePlayer'
 import type { MusicTrack } from '@/types'
 
 // Debug hook for React components
@@ -204,33 +205,42 @@ const AIDJPage: React.FC = () => {
   }
 
   const handlePlayPlaylist = async () => {
+    console.log('🎵 AI DJ: Play All button clicked');
     if (localPlaylist.length > 0) {
       console.log('🎵 AI DJ: Starting playlist with', localPlaylist.length, 'tracks');
       console.log('🎵 First track:', localPlaylist[0]);
       
       try {
-        // Set the playlist in the audio context
-        setPlaylist(localPlaylist);
+        // Use the new global audio system
+        const { setQueue } = usePlayer.getState();
+        await setQueue(localPlaylist, 0);
         
-        // Load and play the first track
-        await loadTrack(localPlaylist[0]);
-        
-        console.log('✅ AI DJ: Successfully started playback');
+        console.log('✅ AI DJ: Successfully started playback via global audio');
       } catch (error) {
-        console.error('❌ AI DJ: Failed to start playback:', error);
+        console.error('❌ AI DJ: Failed to start playbook via global audio:', error);
       }
     } else {
       console.log('❌ AI DJ: No tracks in playlist to play');
     }
   };
 
-  const handleShufflePlaylist = () => {
+  const handleShufflePlaylist = async () => {
+    console.log('🎵 AI DJ: Shuffle button clicked');
     if (localPlaylist.length > 0) {
       const shuffled = [...localPlaylist].sort(() => Math.random() - 0.5)
       console.log('🔀 AI DJ: Shuffling playlist:', shuffled.length, 'tracks');
-      setLocalPlaylist(shuffled)
-      setPlaylist(shuffled)
-      loadTrack(shuffled[0]);
+      
+      try {
+        setLocalPlaylist(shuffled);
+        const { setQueue } = usePlayer.getState();
+        await setQueue(shuffled, 0);
+        
+        console.log('✅ AI DJ: Successfully shuffled and started playback');
+      } catch (error) {
+        console.error('❌ AI DJ: Failed to shuffle and start playback:', error);
+      }
+    } else {
+      console.log('❌ AI DJ: No tracks to shuffle');
     }
   };
 
