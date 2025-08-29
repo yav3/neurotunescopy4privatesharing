@@ -1,1 +1,4 @@
 project_id = "pbtgvcjniayedqlajjzz"
+
+[functions.resolve-track-url]
+verify_jwt = false

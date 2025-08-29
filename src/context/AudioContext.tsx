@@ -165,24 +165,31 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       
       let url: string
       
-      if (track.file_path && track.bucket_name) {
-        // Get URL from Supabase storage
-        url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
-        
-        // Test if the URL is accessible
-        const testResponse = await fetch(url, { method: 'HEAD' })
-        if (!testResponse.ok) {
-          throw new Error(`Audio file not accessible: ${testResponse.status} ${testResponse.statusText}`)
-        }
-      } else {
-        throw new Error('No file path or bucket name provided')
+      // Use the edge function to resolve the correct track URL
+      const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/resolve-track-url?trackId=${track.id}&type=audio&bucket=${track.bucket_name || 'neuralpositivemusic'}`)
+      
+      if (!response.ok) {
+        throw new Error(`Failed to resolve track URL: ${response.status} ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      if (!data.url) {
+        throw new Error('No matching audio file found in storage')
+      }
+      
+      url = data.url
+      
+      // Test if the resolved URL is accessible
+      const testResponse = await fetch(url, { method: 'HEAD' })
+      if (!testResponse.ok) {
+        throw new Error(`Audio file not accessible: ${testResponse.status} ${testResponse.statusText}`)
       }
       
       logger.info('Loading audio file', { 
         trackId: track.id, 
         title: track.title,
         url,
-        filePath: track.file_path,
+        originalPath: data.originalPath,
         bucketName: track.bucket_name
       })
       

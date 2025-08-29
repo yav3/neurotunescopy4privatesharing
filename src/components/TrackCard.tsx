@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
 import type { MusicTrack } from '@/types'
 import { useAudio } from '@/context/AudioContext'
@@ -13,29 +13,52 @@ const formatDuration = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// Generate album artwork URL based on track data
-const getAlbumArtworkUrl = (track: MusicTrack): string | null => {
-  // Try to get artwork from file path (assuming artwork might be stored alongside audio)
-  if (track.file_path && track.bucket_name) {
-    // Replace audio file extension with common image extensions
-    const artworkPath = track.file_path.replace(/\.(mp3|wav|flac|m4a|ogg)$/i, '.jpg')
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-    if (supabaseUrl) {
-      return `${supabaseUrl}/storage/v1/object/public/${track.bucket_name}/${artworkPath}`
+// Resolve track URLs using the edge function
+const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Promise<string | null> => {
+  try {
+    const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/resolve-track-url?trackId=${track.id}&type=${type}&bucket=${track.bucket_name || 'neuralpositivemusic'}`)
+    
+    if (!response.ok) {
+      console.warn(`Failed to resolve ${type} URL for track ${track.id}:`, response.status)
+      return null
     }
+    
+    const data = await response.json()
+    return data.url || null
+  } catch (error) {
+    console.error(`Error resolving ${type} URL for track ${track.id}:`, error)
+    return null
   }
-  return null
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
   const { currentTrack, state, loadTrack, toggle } = useAudio()
+  const [albumArtworkUrl, setAlbumArtworkUrl] = useState<string | null>(null)
+  const [isLoadingArtwork, setIsLoadingArtwork] = useState(false)
   
   const isCurrentTrack = currentTrack?.id === track.id
   const isPlaying = isCurrentTrack && state.isPlaying
   const isLoading = isCurrentTrack && state.isLoading
   
   const primaryApp = track.therapeutic_applications?.[0]
+
+  // Load artwork URL when component mounts
+  useEffect(() => {
+    const loadArtwork = async () => {
+      setIsLoadingArtwork(true)
+      try {
+        const artworkUrl = await resolveTrackUrl(track, 'artwork')
+        setAlbumArtworkUrl(artworkUrl)
+      } catch (error) {
+        console.warn('Failed to load artwork for track:', track.title)
+      } finally {
+        setIsLoadingArtwork(false)
+      }
+    }
+
+    loadArtwork()
+  }, [track.id])
 
   const handlePlayClick = async () => {
     console.log('▶️ Play button clicked for track:', track.title)
@@ -49,8 +72,6 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
       }, 500)
     }
   }
-
-  const albumArtworkUrl = getAlbumArtworkUrl(track)
 
   return (
     <div className="group bg-card rounded-2xl border border-border transition-all duration-300 hover:shadow-card hover:border-primary/20 overflow-hidden">
