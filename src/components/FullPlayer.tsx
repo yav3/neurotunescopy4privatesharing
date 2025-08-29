@@ -108,30 +108,39 @@ export default function FullPlayer() {
           {(() => {
             const primaryApp = currentTrack?.therapeutic_applications?.[0]
             const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
+            // Musical instrument variations for different genres/moods
+            const musicalArtwork = [
+              '/lovable-uploads/folk-instruments-meadow.png',
+              '/lovable-uploads/classical-meadow-ensemble.png', 
+              '/lovable-uploads/string-quartet-studio.png',
+              '/lovable-uploads/european-classical-terrace.png',
+              '/lovable-uploads/acoustic-sunset-field.png'
+            ]
+            
             const artworkMap = {
               delta: { 
-                url: '/lovable-uploads/delta-moonlit-lake.png',
-                position: 'object-cover', // Moonlit lake for deep sleep & healing
+                url: Math.random() > 0.5 ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+                position: 'object-cover', // Moonlit scenes for deep sleep & healing
                 gradient: 'from-purple-900/60 via-blue-900/40 to-indigo-800/60'
               },
               theta: { 
-                url: '/lovable-uploads/theta-misty-path.png',
-                position: 'object-cover', // Misty forest path for meditation
+                url: Math.random() > 0.5 ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+                position: 'object-cover', // Misty forest paths for meditation
                 gradient: 'from-amber-700/60 via-yellow-600/40 to-orange-700/60'
               },
               alpha: { 
-                url: '/lovable-uploads/alpha-mountain-lake.png',
-                position: 'object-cover', // Serene mountain lake for focus
+                url: Math.random() > 0.5 ? '/lovable-uploads/alpha-mountain-lake.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+                position: 'object-cover', // Serene mountain lakes for focus
                 gradient: 'from-blue-800/60 via-cyan-600/40 to-teal-700/60'
               },
               beta: { 
-                url: '/lovable-uploads/beta-waterfall.png',
-                position: 'object-cover', // Energetic waterfall for concentration
+                url: Math.random() > 0.5 ? '/lovable-uploads/beta-waterfall.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+                position: 'object-cover', // Energetic waterfalls for concentration
                 gradient: 'from-green-700/60 via-emerald-600/40 to-teal-700/60'
               },
               gamma: { 
-                url: '/lovable-uploads/gamma-sunbeam-forest.png',
-                position: 'object-cover', // Golden sunbeam forest for peak performance
+                url: Math.random() > 0.5 ? '/lovable-uploads/gamma-sunbeam-forest.png' : musicalArtwork[Math.floor(Math.random() * musicalArtwork.length)],
+                position: 'object-cover', // Golden sunbeam forests for peak performance
                 gradient: 'from-yellow-600/60 via-orange-500/40 to-red-600/60'
               }
             }
