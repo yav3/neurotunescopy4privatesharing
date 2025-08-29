@@ -15,6 +15,10 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
 
   const handleClick = async () => {
     console.log('🎵 Category card clicked:', title.toLowerCase());
+    console.log('🔧 Click event fired - this proves buttons work!');
+    
+    // Test if we have useAudio context
+    console.log('🎮 Audio context check:', { setPlaylist: !!setPlaylist, loadTrack: !!loadTrack });
     
     // Test basic audio functionality first
     console.log('🔧 Testing basic audio element...');
