@@ -126,6 +126,42 @@ api.post("/v1/session/build", async (c) => {
   return c.json({ sessionId, tracks: tracks || [] });
 });
 
+// Debug storage access
+api.get("/debug/storage", async (c) => {
+  const supabase = sb();
+  
+  // Check environment variables
+  const envCheck = {
+    SUPABASE_URL: !!Deno.env.get("SUPABASE_URL"),
+    SUPABASE_SERVICE_ROLE_KEY: !!Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+    BUCKET: Deno.env.get("BUCKET") ?? "neuralpositivemusic",
+    WEB_ORIGIN: Deno.env.get("WEB_ORIGIN")
+  };
+  
+  // Try to list buckets
+  const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+  
+  // Try to list files in the main bucket
+  const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
+  const { data: files, error: filesError } = await supabase.storage.from(bucket).list();
+  
+  return c.json({
+    environment: envCheck,
+    buckets: {
+      count: buckets?.length ?? 0,
+      list: buckets?.map(b => ({ name: b.name, public: b.public })) ?? [],
+      error: bucketsError?.message
+    },
+    files: {
+      bucket: bucket,
+      count: files?.length ?? 0,
+      sample: files?.slice(0, 5) ?? [],
+      error: filesError?.message
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Session telemetry
 api.post("/v1/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
