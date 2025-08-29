@@ -24,14 +24,13 @@ function Dot({ ok }: { ok: boolean }) {
   );
 }
 
-// Use window.location.origin as the base URL since we're serving from the same domain
-const API_BASE_URL = window.location.origin;
+import { API_BASE } from '@/lib/env'
 
 const api = {
-  url: (path: string) => `${API_BASE_URL}${path}`,
-  health: () => `${API_BASE_URL}/api/healthz`,
-  healthSupabase: () => `${API_BASE_URL}/api/readyz`,
-  healthStreaming: () => `${API_BASE_URL}/api/stream-health`,
+  url: (path: string) => `${API_BASE}${path}`,
+  health: () => `${API_BASE}/api/healthz`,
+  healthSupabase: () => `${API_BASE}/api/readyz`,
+  healthStreaming: () => `${API_BASE}/api/stream-health`,
 };
 
 export default function ConnectivityPanel() {
@@ -160,7 +159,7 @@ export default function ConnectivityPanel() {
           </div>
           
           <div className="mt-2 text-xs text-gray-500">
-            Base URL: {API_BASE_URL}
+            Base URL: {API_BASE}
           </div>
         </div>
       )}

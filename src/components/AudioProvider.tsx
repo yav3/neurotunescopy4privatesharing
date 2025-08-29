@@ -29,6 +29,25 @@ export default function AudioProvider() {
     setLoading(true)
     setError(undefined)
     
+    // Add detailed error logging
+    const handleError = (event: Event) => {
+      const error = audio.error
+      console.error('❌ AUDIO ERROR:', {
+        code: error?.code,
+        message: error?.message,
+        src: audio.src,
+        event
+      })
+      setError(`Audio error: ${error?.code || 'unknown'} - ${audio.src}`)
+      setLoading(false)
+      setPlaying(false)
+      
+      // Show user-friendly error
+      if (typeof window !== 'undefined') {
+        console.error(`Audio failed to load: ${audio.src}`)
+      }
+    }
+    
     audio.src = src
     audio.load()
     
@@ -42,13 +61,6 @@ export default function AudioProvider() {
           setPlaying(false)
         })
       }
-    }
-
-    const handleError = () => {
-      console.error('❌ AudioProvider: Track load error')
-      setError('Failed to load track')
-      setLoading(false)
-      setPlaying(false)
     }
 
     audio.addEventListener('canplay', handleCanPlay, { once: true })

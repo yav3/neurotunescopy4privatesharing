@@ -9,7 +9,7 @@ import { useAudio } from '@/context/AudioContext'
 import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
-
+import { API_BASE } from '@/lib/env'
 import type { MusicTrack } from '@/types'
 
 // Mock data for moods and genres
@@ -81,8 +81,7 @@ const AIDJPage: React.FC = () => {
       console.log('🔥 REAL API: Fetching playlist for mood:', mood, 'genre:', genre)
       
       // Call the real backend API instead of generating mock data
-      const BASE = window.location.origin
-      const response = await fetch(`${BASE}/api/playlist?goal=${encodeURIComponent(mood)}&genre=${encodeURIComponent(genre)}`)
+      const response = await fetch(`${API_BASE}/api/playlist?goal=${encodeURIComponent(mood)}&genre=${encodeURIComponent(genre)}`)
       
       if (!response.ok) {
         const text = await response.text()

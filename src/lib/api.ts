@@ -1,6 +1,4 @@
-const BASE = typeof window !== 'undefined' 
-  ? window.location.origin 
-  : 'http://localhost:5000'
+import { API_BASE } from './env'
 
 const j = async <T>(r: Response): Promise<T> => {
   if (!r.ok) {
@@ -27,17 +25,17 @@ interface StartSessionResponse {
 // New unified API client with real event triggers
 export const API = {
   // Health checks
-  health: () => fetch(`${BASE}/api/healthz`).then(j),
-  db: () => fetch(`${BASE}/api/readyz`).then(j),
-  storage: () => fetch(`${BASE}/api/stream-health`).then(j),
+  health: () => fetch(`${API_BASE}/api/healthz`).then(j),
+  db: () => fetch(`${API_BASE}/api/readyz`).then(j),
+  storage: () => fetch(`${API_BASE}/api/stream-health`).then(j),
 
   // Music catalog  
-  featured: () => fetch(`${BASE}/api/catalog/featured`).then(j),
+  featured: () => fetch(`${API_BASE}/api/catalog/featured`).then(j),
   playlistByGoal: (goal: string) =>
-    fetch(`${BASE}/api/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
+    fetch(`${API_BASE}/api/playlist?goal=${encodeURIComponent(goal)}`).then(j<PlaylistResponse>),
 
   buildSession: (p: {goal: string; durationMin: number; intensity: number}) =>
-    fetch(`${BASE}/api/session/build`, {
+    fetch(`${API_BASE}/api/session/build`, {
       method: "POST", 
       headers: {"content-type":"application/json"}, 
       body: JSON.stringify(p)
@@ -45,28 +43,32 @@ export const API = {
 
   // Sessions/telemetry
   startSession: (trackId: string) =>
-    fetch(`${BASE}/api/sessions/start`, { 
+    fetch(`${API_BASE}/api/sessions/start`, { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trackId })
     }).then(j<StartSessionResponse>),
 
   progress: (sessionId: string, t: number) =>
-    navigator.sendBeacon?.(`${BASE}/api/sessions/progress`,
+    navigator.sendBeacon?.(`${API_BASE}/api/sessions/progress`,
       new Blob([JSON.stringify({ sessionId, t })], { type: "application/json" }))
-    || fetch(`${BASE}/api/sessions/progress`, {
+    || fetch(`${API_BASE}/api/sessions/progress`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId, t })
     }),
 
   complete: (sessionId: string) =>
-    fetch(`${BASE}/api/sessions/complete`, {
+    fetch(`${API_BASE}/api/sessions/complete`, {
       method:"POST", 
       headers:{ "content-type":"application/json" }, 
       body: JSON.stringify({ sessionId })
     }),
 }
 
-export const streamUrl = (t: any) =>
-  `${BASE}/api/stream/${encodeURIComponent(t.file_path || t.file_name || t.src || t.id)}`
+export const streamUrl = (t: any) => {
+  const fileName = t.file_path || t.file_name || t.src || t.id
+  const url = `${API_BASE}/api/stream/${encodeURIComponent(fileName)}`
+  console.log('🎵 Generated stream URL:', url, 'for track:', t.title || fileName)
+  return url
+}

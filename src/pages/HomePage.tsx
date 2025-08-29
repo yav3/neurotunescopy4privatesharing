@@ -6,6 +6,7 @@ import { useAudio } from '@/context/AudioContext'
 import { FrequencyBand } from '@/components/FrequencyBand'
 import { TrackCard } from '@/components/TrackCard'
 import { LoadingSpinner, InlineLoadingSpinner } from '@/components/LoadingSpinner'
+import { API } from '@/lib/api'
 import type { FrequencyBand as FrequencyBandType, MusicTrack } from '@/types'
 
 export const HomePage: React.FC = () => {
@@ -63,24 +64,50 @@ export const HomePage: React.FC = () => {
     )
   }, [tracks, searchQuery])
 
-  // Get track counts by frequency band (mapped to genres)
+  // Get track counts by frequency band (computed from real data)
   const bandCounts = useMemo(() => {
-    const genreMapping = {
-      'classical': 'delta',
-      'jazz': 'theta',
-      'rock': 'alpha', 
-      'dance': 'beta',
-      'electronic': 'gamma'
-    } as const
+    // Helper to determine frequency band from track data
+    const getBandFromTrack = (track: any): FrequencyBandType => {
+      // First try brainwave_hz if available
+      const hz = Number(track.brainwave_hz || track.frequency_hz)
+      if (!isNaN(hz) && hz > 0) {
+        if (hz < 4) return 'delta'
+        if (hz < 8) return 'theta' 
+        if (hz < 13) return 'alpha'
+        if (hz < 30) return 'beta'
+        return 'gamma'
+      }
+      
+      // Fallback to genre mapping or tags
+      const genre = (track.genre || '').toLowerCase()
+      const tags = (track.tags || '').toLowerCase()
+      const combined = `${genre} ${tags}`
+      
+      if (combined.includes('delta') || genre === 'classical') return 'delta'
+      if (combined.includes('theta') || genre === 'jazz') return 'theta'
+      if (combined.includes('alpha') || genre === 'rock') return 'alpha'
+      if (combined.includes('beta') || genre === 'dance') return 'beta'
+      if (combined.includes('gamma') || genre === 'electronic') return 'gamma'
+      
+      // Default mapping based on energy/BPM
+      if (track.bpm) {
+        if (track.bpm < 60) return 'delta'
+        if (track.bpm < 90) return 'theta'
+        if (track.bpm < 120) return 'alpha'
+        if (track.bpm < 150) return 'beta'
+        return 'gamma'
+      }
+      
+      return 'alpha' // Default fallback
+    }
 
     const counts = tracks.reduce((acc, track) => {
-      const band = genreMapping[track.genre as keyof typeof genreMapping]
-      if (band) {
-        acc[band] = (acc[band] || 0) + 1
-      }
+      const band = getBandFromTrack(track)
+      acc[band] = (acc[band] || 0) + 1
       return acc
     }, {} as Record<FrequencyBandType, number>)
     
+    console.log('📊 Computed band counts from', tracks.length, 'tracks:', counts)
     return counts
   }, [tracks])
 
@@ -90,6 +117,21 @@ export const HomePage: React.FC = () => {
   const handleBandFilter = (band: FrequencyBandType) => {
     console.log('🎛️ Band filter clicked:', band, 'current:', selectedBand)
     setSelectedBand(selectedBand === band ? 'all' : band)
+  }
+
+  const handleCategoryClick = async (categoryId: string) => {
+    console.log('🎵 HomePage: Category clicked:', categoryId)
+    try {
+      const response = await API.playlistByGoal(categoryId)
+      const tracks = response.tracks || []
+      
+      if (tracks.length > 0) {
+        console.log('✅ HomePage: Setting playlist with', tracks.length, 'tracks')
+        setPlaylist(tracks)
+      }
+    } catch (error) {
+      console.error('❌ HomePage: Failed to load category playlist:', error)
+    }
   }
 
   const clearFilters = () => {
