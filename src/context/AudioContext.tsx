@@ -161,16 +161,30 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'CLEAR_ERROR' })
       dispatch({ type: 'SET_LOADING', payload: true })
+      retryCount.current = 0
       
       let url: string
       
       if (track.file_path && track.bucket_name) {
         // Get URL from Supabase storage
         url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
+        
+        // Test if the URL is accessible
+        const testResponse = await fetch(url, { method: 'HEAD' })
+        if (!testResponse.ok) {
+          throw new Error(`Audio file not accessible: ${testResponse.status} ${testResponse.statusText}`)
+        }
       } else {
-        // For demo, use a working audio file
-        url = 'https://www.soundjay.com/misc/sounds/wind-chimes-04.wav'
+        throw new Error('No file path or bucket name provided')
       }
+      
+      logger.info('Loading audio file', { 
+        trackId: track.id, 
+        title: track.title,
+        url,
+        filePath: track.file_path,
+        bucketName: track.bucket_name
+      })
       
       // Stop current playback
       audioRef.current.pause()
@@ -178,21 +192,79 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       
       // Load new track with CORS settings
       audioRef.current.crossOrigin = 'anonymous'
+      audioRef.current.preload = 'metadata'
       audioRef.current.src = url
-      audioRef.current.load()
       
-      setCurrentTrack(track)
-      sessionStartTime.current = Date.now()
-      
-      logger.info('Track loaded successfully', { 
-        trackId: track.id, 
-        title: track.title,
-        url 
+      // Wait for the track to start loading
+      return new Promise<void>((resolve, reject) => {
+        if (!audioRef.current) {
+          reject(new Error('Audio element not available'))
+          return
+        }
+
+        const audio = audioRef.current
+        
+        const handleLoadStart = () => {
+          logger.info('Audio loading started', { trackId: track.id })
+          setCurrentTrack(track)
+          sessionStartTime.current = Date.now()
+        }
+
+        const handleCanPlay = () => {
+          logger.info('Audio ready to play', { trackId: track.id })
+          dispatch({ type: 'SET_LOADING', payload: false })
+          cleanup()
+          resolve()
+        }
+        
+        const handleError = (e: Event) => {
+          const error = audio.error
+          const errorMsg = error 
+            ? `Audio error: ${error.code} - ${error.message}` 
+            : 'Unknown audio loading error'
+          
+          logger.error('Audio loading failed', { 
+            trackId: track.id, 
+            error: errorMsg,
+            url,
+            networkState: audio.networkState,
+            readyState: audio.readyState
+          })
+          
+          cleanup()
+          reject(new Error(errorMsg))
+        }
+        
+        const handleTimeout = () => {
+          logger.error('Audio loading timeout', { trackId: track.id, url })
+          cleanup()
+          reject(new Error('Audio loading timeout'))
+        }
+        
+        const cleanup = () => {
+          audio.removeEventListener('loadstart', handleLoadStart)
+          audio.removeEventListener('canplay', handleCanPlay)
+          audio.removeEventListener('error', handleError)
+          clearTimeout(timeoutId)
+        }
+        
+        // Set up event listeners
+        audio.addEventListener('loadstart', handleLoadStart)
+        audio.addEventListener('canplay', handleCanPlay)
+        audio.addEventListener('error', handleError)
+        
+        // Set timeout for loading
+        const timeoutId = setTimeout(handleTimeout, 10000) // 10 second timeout
+        
+        // Start loading
+        audio.load()
       })
+      
     } catch (error) {
-      const errorMsg = 'Failed to load track'
-      logger.error(errorMsg, { error, trackId: track.id })
+      const errorMsg = error instanceof Error ? error.message : 'Failed to load track'
+      logger.error('Track loading error', { error, trackId: track.id, filePath: track.file_path })
       dispatch({ type: 'SET_ERROR', payload: errorMsg })
+      dispatch({ type: 'SET_LOADING', payload: false })
     }
   }, [])
 

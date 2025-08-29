@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AudioProvider } from "@/context/AudioContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NowPlaying } from "@/components/NowPlaying";
+import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import Index from "./pages/Index";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
@@ -36,6 +37,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <NowPlaying />
+              <MusicDeliveryStatus />
             </div>
           </BrowserRouter>
         </AudioProvider>

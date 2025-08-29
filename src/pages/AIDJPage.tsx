@@ -13,7 +13,8 @@ import {
   SkipForward, 
   Pause,
   Shuffle,
-  Volume2
+  Volume2,
+  Settings
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { aiDJAPI, trackAPI } from '@/lib/api';
@@ -23,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
+import AudioTester from '@/components/AudioTester';
 import { cn } from '@/lib/utils';
 
 export function AIDJPage() {
@@ -32,6 +34,7 @@ export function AIDJPage() {
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [showFavorites, setShowFavorites] = useState(false);
   const [isFullscreenMode, setIsFullscreenMode] = useState(false);
+  const [showAudioTester, setShowAudioTester] = useState(false);
   
   const {
     addToQueue,
@@ -225,6 +228,17 @@ export function AIDJPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  {/* Audio Test Button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowAudioTester(!showAudioTester)}
+                    className="hover:bg-secondary"
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Audio Test
+                  </Button>
+
                   {/* Genre Filter */}
                   <select
                     value={selectedGenre}
@@ -252,6 +266,13 @@ export function AIDJPage() {
           </div>
 
           <div className="container max-w-6xl mx-auto px-4 py-8">
+            {/* Audio Tester (Debug Tool) */}
+            {showAudioTester && (
+              <div className="mb-8">
+                <AudioTester />
+              </div>
+            )}
+
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
