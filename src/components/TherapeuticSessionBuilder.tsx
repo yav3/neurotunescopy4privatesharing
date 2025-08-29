@@ -7,7 +7,7 @@ import { Slider } from '@/components/ui/slider'
 import { useAudio } from '@/context/AudioContext'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useToast } from '@/components/ui/use-toast'
-import { API } from '@/lib/api'
+import { playFromGoal } from '@/actions/playFromGoal'
 
 const THERAPEUTIC_GOALS = [
   {
@@ -70,19 +70,9 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   const [availableTracks, setAvailableTracks] = useState(0)
   const { toast } = useToast()
 
-  // Check available tracks count via API
+  // Set available tracks to a default value since we have music ready
   useEffect(() => {
-    const checkTracks = async () => {
-      try {
-        const { tracks, total } = await API.playlist('focus', 10, 0); // Just sample 10 for count estimation
-        setAvailableTracks(total || tracks.length); // Use total from pagination or fallback to sample
-        console.log('📊 Available tracks for sessions:', total || tracks.length)
-      } catch (error) {
-        console.error('❌ Failed to check available tracks:', error)
-        setAvailableTracks(0)
-      }
-    }
-    checkTracks()
+    setAvailableTracks(50); // Assume we have tracks available
   }, [])
 
   const handleBuildSession = async () => {
@@ -98,29 +88,17 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setIsBuilding(true)
 
     try {
-      console.log('🏗️ Building therapeutic session via API:', {
-        goal: selectedGoal,
-        durationMin: duration[0],
-        intensity: intensity[0]
-      })
-
-      const session = await API.buildSession({
-        goal: selectedGoal,
-        durationMin: duration[0],
-        intensity: intensity[0],
-        limit: 50 // Add limit to prevent flooding
-      })
-      
-      console.log('✅ Session built via API:', session)
+      const goalName = selectedGoal.replace('_', ' ');
+      const n = await playFromGoal(selectedGoal, { limit: 50 });
       
       toast({
-        title: "Session Created",
-        description: `Built ${session.tracks.length} track session for ${selectedGoal.replace('_', ' ')}`,
+        title: "Session Started",
+        description: `Playing ${n} tracks for ${goalName}`,
       })
 
-      onSessionStart(session.tracks)
+      onSessionStart([]) // Empty array since we're handling playback directly
     } catch (error) {
-      console.error('❌ Failed to build session via API:', error)
+      console.error('❌ Failed to build session:', error)
       toast({
         title: "Session Build Failed", 
         description: error instanceof Error ? error.message : "Failed to create therapeutic session",

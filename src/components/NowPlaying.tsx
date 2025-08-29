@@ -1,21 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
-import { useAudio } from '@/context/AudioContext';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { formatTime } from '@/lib/utils';
+import { usePlayer, currentTrack } from '@/stores/usePlayer';
+import { getAudio } from '@/player/audio-core';
 
 export const NowPlaying: React.FC = () => {
   const navigate = useNavigate();
-  const { state, currentTrack, toggle, next, prev, seek, setVolume } = useAudio();
+  const { next, prev, isPlaying, setPlaying } = usePlayer();
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const track = currentTrack();
 
-  if (!currentTrack) {
+  useEffect(() => {
+    const audio = getAudio();
+    
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => setDuration(audio.duration);
+    const updateVolume = () => setVolume(audio.volume);
+    const updatePlaying = () => setPlaying(!audio.paused);
+    
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('durationchange', updateDuration);
+    audio.addEventListener('volumechange', updateVolume);
+    audio.addEventListener('play', updatePlaying);
+    audio.addEventListener('pause', updatePlaying);
+    
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('durationchange', updateDuration);
+      audio.removeEventListener('volumechange', updateVolume);
+      audio.removeEventListener('play', updatePlaying);
+      audio.removeEventListener('pause', updatePlaying);
+    };
+  }, [setPlaying]);
+
+  const toggle = () => {
+    const audio = getAudio();
+    if (audio.paused) {
+      audio.play().catch(console.warn);
+    } else {
+      audio.pause();
+    }
+  };
+
+  const seek = (time: number) => {
+    const audio = getAudio();
+    audio.currentTime = time;
+  };
+
+  const handleVolumeChange = (vol: number) => {
+    const audio = getAudio();
+    audio.volume = vol;
+  };
+
+  if (!track) {
     return null;
   }
 
-  const progressPercentage = state.duration ? (state.currentTime / state.duration) * 100 : 0;
+  const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   return (
     <Card className="fixed bottom-0 left-0 right-0 z-40 rounded-none border-t bg-card/95 backdrop-blur-sm">
@@ -30,10 +79,9 @@ export const NowPlaying: React.FC = () => {
               🧠
             </div>
             <div className="min-w-0">
-              <h4 className="font-medium truncate">{currentTrack.title}</h4>
+              <h4 className="font-medium truncate">{track.title}</h4>
               <p className="text-sm text-muted-foreground truncate">
-                {currentTrack.genre?.toUpperCase() || 'MUSIC'}
-                {currentTrack.bpm && ` • ${Math.round(currentTrack.bpm)} BPM`}
+                THERAPEUTIC MUSIC
               </p>
             </div>
           </div>
@@ -49,12 +97,9 @@ export const NowPlaying: React.FC = () => {
             variant="default" 
             size="sm" 
             onClick={toggle}
-            disabled={state.isLoading}
             className="w-10 h-10 rounded-full"
           >
-            {state.isLoading ? (
-              <div className="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
-            ) : state.isPlaying ? (
+            {isPlaying ? (
               <Pause size={16} />
             ) : (
               <Play size={16} className="ml-0.5" />
@@ -66,20 +111,19 @@ export const NowPlaying: React.FC = () => {
           </Button>
         </div>
 
-        {/* Progress */}
         <div className="hidden md:flex items-center gap-2 flex-1 max-w-md">
           <span className="text-xs text-muted-foreground w-10">
-            {formatTime(state.currentTime)}
+            {formatTime(currentTime)}
           </span>
           <Slider
-            value={[state.currentTime]}
-            max={state.duration || 0}
+            value={[currentTime]}
+            max={duration || 0}
             step={0.1}
             onValueChange={([value]) => seek(value)}
             className="flex-1"
           />
           <span className="text-xs text-muted-foreground w-10">
-            {formatTime(state.duration)}
+            {formatTime(duration)}
           </span>
         </div>
 
@@ -87,10 +131,10 @@ export const NowPlaying: React.FC = () => {
         <div className="hidden lg:flex items-center gap-2 w-32">
           <Volume2 size={16} className="text-muted-foreground" />
           <Slider
-            value={[state.volume * 100]}
+            value={[volume * 100]}
             max={100}
             step={1}
-            onValueChange={([value]) => setVolume(value / 100)}
+            onValueChange={([value]) => handleVolumeChange(value / 100)}
           />
         </div>
       </div>

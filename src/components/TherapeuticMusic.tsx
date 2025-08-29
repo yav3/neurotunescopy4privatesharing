@@ -3,16 +3,14 @@ import focusArtwork from "@/assets/focus-artwork.jpg";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import { useAudio } from "@/context/AudioContext";
-import { API } from "@/lib/api";
+import { playFromGoal } from "@/actions/playFromGoal";
+import { toast } from "sonner";
 
 interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
-  const { setPlaylist, loadTrack } = useAudio();
-  
   const categories = [
     { id: "focus", title: "Focus", image: focusArtwork },
     { id: "mood-boost", title: "Mood Boost", image: moodBoostArtwork },
@@ -21,34 +19,13 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
-    console.log('🎵 Therapeutic category clicked:', categoryTitle);
-    
+    toast.loading(`Preparing ${categoryTitle.toLowerCase()}…`, { id: "goal" });
     try {
-      // Use API instead of direct Supabase calls
-      console.log('🔥 Fetching tracks via API for category:', categoryId);
-      const { tracks } = await API.playlist(categoryId, 50, 0); // Only load first 50
-      console.log('📦 Found tracks via API:', tracks.length);
-      
-      if (tracks.length > 0) {
-        console.log('🎮 Setting playlist and loading first track');
-        setPlaylist(tracks);
-        await loadTrack(tracks[0]);
-        console.log('✅ Music playback initiated for:', tracks[0].title);
-      } else {
-        // Fallback: try generic 'focus' goal
-        console.log('🔄 No specific tracks found, trying focus fallback');
-        const fallback = await API.playlist('focus', 50, 0);
-        if (fallback.tracks.length > 0) {
-          setPlaylist(fallback.tracks);
-          await loadTrack(fallback.tracks[0]);
-          console.log('✅ Fallback music loaded:', fallback.tracks[0].title);
-        }
-      }
-      
-      onCategorySelect?.(categoryId);
-    } catch (error) {
-      console.error('❌ Error loading therapeutic music via API:', error);
-      onCategorySelect?.(categoryId);
+      const n = await playFromGoal(categoryId);
+      toast.success(`Playing ${n} ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
+      onCategorySelect?.(categoryTitle);
+    } catch (e: any) {
+      toast.error(e.message ?? "Could not load tracks", { id: "goal" });
     }
   };
 

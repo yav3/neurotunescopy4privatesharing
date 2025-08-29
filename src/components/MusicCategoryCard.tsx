@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { usePlayer } from "@/stores/usePlayer";
-import { API } from "@/lib/api";
+import { playFromGoal } from "@/actions/playFromGoal";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface MusicCategoryCardProps {
   title: string;
@@ -11,27 +12,19 @@ interface MusicCategoryCardProps {
 }
 
 export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCategoryCardProps) => {
-  const setQueue = usePlayer((s) => s.setQueue);
-  const isLoading = usePlayer((s) => s.isLoading);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
-    console.log('🎵 Category card clicked:', title);
-    
+    setIsLoading(true);
+    toast.loading(`Preparing ${title.toLowerCase()}…`, { id: "goal" });
     try {
-      console.log('🔥 Fetching playlist for category:', title);
-      const { tracks } = await API.playlist(title.toLowerCase(), 50, 0); // Only load first 50
-      
-      if (tracks && tracks.length > 0) {
-        console.log('✅ Setting queue with tracks:', tracks.length);
-        await setQueue(tracks, 0);
-      } else {
-        console.log('❌ No tracks found for category:', title);
-      }
-      
+      const n = await playFromGoal(title.toLowerCase());
+      toast.success(`Playing ${n} ${title.toLowerCase()} tracks`, { id: "goal" });
       onClick?.();
-    } catch (error) {
-      console.error('❌ Category click failed:', error);
-      onClick?.();
+    } catch (e: any) {
+      toast.error(e.message ?? "Could not load tracks", { id: "goal" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
