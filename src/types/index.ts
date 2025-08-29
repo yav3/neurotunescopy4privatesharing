@@ -110,6 +110,38 @@ export interface Track {
   file_size?: number;
   created_at?: string;
   updated_at?: string;
+  // Additional properties for compatibility
+  energy?: number;
+  valence?: number;
+  bpm?: number;
+  therapeutic_applications?: Array<{
+    id?: string;
+    track_id?: string;
+    frequency_band_primary?: string;
+    condition_targets?: string[];
+    anxiety_evidence_score?: number;
+    sleep_evidence_score?: number;
+    focus_evidence_score?: number;
+    created_at?: string;
+    updated_at?: string;
+  }>;
+}
+
+export interface PlaylistRequest {
+  goal: string;
+  limit?: number;
+}
+
+export interface SessionRequest {
+  goal: string;
+  durationMin: number;
+  intensity: number;
+}
+
+export interface ApiResponse<T> {
+  ok: boolean;
+  data?: T;
+  error?: string;
 }
 
 // Legacy interface for compatibility

@@ -1,12 +1,5 @@
 import { streamUrl } from "@/lib/api";
-
-export type Track = { 
-  id: string; 
-  title?: string; 
-  file_name?: string; 
-  file_path?: string;
-  src?: string 
-};
+import type { Track } from "@/types";
 
 const MAX_QUEUE = 50;         // hard cap loaded at once
 const EXTEND_CHUNK = 10;      // how many to append when we near the end

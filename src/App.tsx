@@ -12,7 +12,7 @@ import AudioProviderNew from "@/components/AudioProvider";
 import Index from "./pages/Index";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
-import { AIDJPage } from "./pages/AIDJPage";
+import AIDJPage from "./pages/AIDJPage";
 import { EmotionDashboard } from "./pages/EmotionDashboard";
 import MoodAnalyzerPage from "./pages/MoodAnalyzerPage";
 import PlayerPage from "./pages/PlayerPage";

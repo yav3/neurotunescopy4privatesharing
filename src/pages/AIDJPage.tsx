@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
-import { useAudio } from '@/context/AudioContext'
+// Use the new player store instead of AudioContext
 import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
 import { API_BASE } from '@/lib/env'
-import { usePlayer } from '@/stores/usePlayer'
+import { usePlayer, currentTrack } from '@/stores/usePlayer'
 import { Navigation } from '@/components/Navigation'
 import { NowPlaying } from '@/components/NowPlaying'
 import { toast } from '@/hooks/use-toast'
-import type { MusicTrack } from '@/types'
+import type { Track, MusicTrack } from '@/types'
 
 // Debug hook for React components
 const useDebugComponent = (componentName: string, props: any, state: any) => {
@@ -88,13 +88,14 @@ const AIDJPage: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [showAudioTester, setShowAudioTester] = useState(false)
 
-  const { state, currentTrack, setPlaylist, loadTrack, toggle, prev, next, setVolume } = useAudio()
+  // Use player store instead of AudioContext
+  const { next, prev } = usePlayer()
+  const track = currentTrack();
 
   // Debug this component
   useDebugComponent('AIDJPage', {}, { 
     selectedMood, selectedGenre, isFullscreenMode, 
-    localPlaylist: localPlaylist.length, isGenerating, showAudioTester,
-    audioState: state, currentTrack: currentTrack?.id
+    localPlaylist: localPlaylist.length, isGenerating, showAudioTester
   });
 
   // Component lifecycle and API test
@@ -171,14 +172,13 @@ const AIDJPage: React.FC = () => {
       }))
       
       setLocalPlaylist(processedTracks)
-      setPlaylist(processedTracks)
+      // Don't auto-set playlist, let user control playback
       
     } catch (error) {
       console.error('❌ REAL API: Failed to fetch playlist:', error)
       
       // Fallback to empty playlist with error message
       setLocalPlaylist([])
-      setPlaylist([])
     } finally {
       setIsGenerating(false)
     }
@@ -523,32 +523,25 @@ const AIDJPage: React.FC = () => {
                 <Card className="sticky top-24 p-6">
                   <h3 className="text-lg font-semibold mb-4">Now Playing</h3>
                   
-                  {currentTrack ? (
+                  {track ? (
                     <div className="space-y-6">
                       {/* Track Info */}
                       <div className="text-center">
-                        <h4 className="font-semibold text-lg truncate">{currentTrack.title}</h4>
-                        {currentTrack.genre && (
+                        <h4 className="font-semibold text-lg truncate">{track.title}</h4>
+                        {track.genre && (
                           <Badge variant="secondary" className="mt-2">
-                            {currentTrack.genre}
+                            {track.genre}
                           </Badge>
                         )}
                       </div>
 
-                      {/* Progress Bar */}
-                      <div className="space-y-2">
-                        <div className="w-full bg-secondary rounded-full h-2">
-                          <div 
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
-                            style={{ 
-                              width: state.duration > 0 ? `${(state.currentTime / state.duration) * 100}%` : '0%' 
-                            }}
-                          />
+                      {/* Simplified Now Playing - Remove complex state dependencies */}
+                      <div className="text-center py-8">
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/60 to-secondary/60 flex items-center justify-center text-2xl mx-auto mb-4">
+                          🧠
                         </div>
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                          <span>{formatTime(state.currentTime)}</span>
-                          <span>{formatTime(state.duration)}</span>
-                        </div>
+                        <p className="text-muted-foreground">Now Playing</p>
+                        <p className="font-medium">{track.title}</p>
                       </div>
 
                       {/* Playback Controls */}
@@ -563,14 +556,20 @@ const AIDJPage: React.FC = () => {
                         </Button>
 
                         <Button
-                          onClick={toggle}
+                          onClick={() => {
+                            // Simple play/pause without complex state
+                            const audio = document.getElementById('np-audio') as HTMLAudioElement;
+                            if (audio) {
+                              if (audio.paused) {
+                                audio.play().catch(console.warn);
+                              } else {
+                                audio.pause();
+                              }
+                            }
+                          }}
                           className="h-12 w-12 rounded-full"
                         >
-                          {state.isPlaying ? (
-                            <Pause className="h-6 w-6" />
-                          ) : (
-                            <Play className="h-6 w-6" />
-                          )}
+                          <Play className="h-6 w-6" />
                         </Button>
 
                         <Button
@@ -581,20 +580,6 @@ const AIDJPage: React.FC = () => {
                         >
                           <SkipForward className="h-5 w-5" />
                         </Button>
-                      </div>
-
-                      {/* Volume Control */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Volume2 className="h-4 w-4 text-muted-foreground" />
-                          <Slider
-                            value={[state.volume]}
-                            onValueChange={(values) => setVolume(values[0])}
-                            max={1}
-                            step={0.1}
-                            className="flex-1"
-                          />
-                        </div>
                       </div>
 
                       <div className="text-center text-sm text-muted-foreground">
@@ -615,9 +600,9 @@ const AIDJPage: React.FC = () => {
       )}
       
       <Navigation activeTab="ai-dj" />
-      {currentTrack && <NowPlaying />}
+      {track && <NowPlaying />}
     </div>
   )
 }
 
-export { AIDJPage }
+export default AIDJPage

@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
-import type { MusicTrack } from '@/types'
+import type { Track } from '@/types'
+// For backward compatibility with MusicTrack
+type MusicTrack = Track & {
+  therapeutic_applications?: Array<{
+    frequency_band_primary?: string;
+    condition_targets?: string[];
+  }>;
+  energy?: number;
+  valence?: number;
+  bpm?: number;
+  genre?: string;
+}
 import { usePlayer } from '@/stores/usePlayer'
 
 interface TrackCardProps {

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Track } from "@/player/audio-core";
+import type { Track } from "@/types";
 import { setQueue, playAt, playSingle, next, prev, current } from "@/player/audio-core";
 
 type State = {

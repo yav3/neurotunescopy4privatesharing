@@ -1,11 +1,16 @@
 import { API } from "@/lib/api";
 import { setQueue, playSingle } from "@/player/audio-core";
 
+import type { Track } from "@/types";
+
 type TrackLike = { id?: string; track_id?: string; title?: string; storage_key?: string; file_name?: string };
 
-function normalize(t: TrackLike) {
+function normalize(t: TrackLike): Track {
   // player only needs { id } (stream by id); keep title for UI
-  return { id: (t.id ?? t.track_id) as string, title: t.title ?? "" };
+  return { 
+    id: (t.id ?? t.track_id) as string, 
+    title: t.title ?? "" 
+  };
 }
 
 export async function playFromGoal(goal: string, { limit = 50 } = {}) {
