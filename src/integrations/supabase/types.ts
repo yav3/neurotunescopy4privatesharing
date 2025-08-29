@@ -1296,6 +1296,7 @@ export type Database = {
           mode: string | null
           original_title: string | null
           speechiness: number | null
+          storage_key: string | null
           title: string
           updated_at: string | null
           upload_status: string | null
@@ -1319,6 +1320,7 @@ export type Database = {
           mode?: string | null
           original_title?: string | null
           speechiness?: number | null
+          storage_key?: string | null
           title: string
           updated_at?: string | null
           upload_status?: string | null
@@ -1342,6 +1344,7 @@ export type Database = {
           mode?: string | null
           original_title?: string | null
           speechiness?: number | null
+          storage_key?: string | null
           title?: string
           updated_at?: string | null
           upload_status?: string | null
