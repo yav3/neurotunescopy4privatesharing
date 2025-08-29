@@ -34,10 +34,23 @@ const loadCurrent = async () => {
   }
   
   const url = streamUrl(t);
-  console.log('🔄 Loading track via audio-core:', t.title, 'URL:', url);
+  console.log('🔄 Loading track via audio-core:', t.title);
+  console.log('🔗 Stream URL:', url);
+  console.log('🎵 Track object:', t);
   
   a.src = url;      // ALWAYS via your Edge Function
   a.load();
+  
+  // Add error handling
+  a.onerror = (e) => {
+    console.error('❌ Audio error:', e);
+    console.error('❌ Audio error details:', a.error);
+  };
+  
+  a.onloadstart = () => console.log('🔄 Load started');
+  a.oncanplay = () => console.log('✅ Can play');
+  a.oncanplaythrough = () => console.log('✅ Can play through');
+  
   try { 
     await a.play();
     console.log('✅ Track started playing via audio-core');

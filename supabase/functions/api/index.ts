@@ -187,21 +187,44 @@ app.post("/api/v1/sessions/complete", async (c) => {
 // Stream from Storage via file path (reverted from ID-based)
 app.on(["GET", "HEAD"], "/api/stream", async (c) => {
   const file = c.req.query("file");
-  if (!file) return c.text("Missing 'file'", 400);
+  console.log(`🎵 Stream request - file: "${file}"`);
+  
+  if (!file) {
+    console.error('❌ Missing file parameter');
+    return c.text("Missing 'file'", 400);
+  }
 
   console.log(`🎵 Streaming file: ${file}`);
 
   const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
+  console.log(`🪣 Using bucket: ${bucket}`);
+  
   const supabase = sb();
   const { data, error } = await supabase.storage.from(bucket).createSignedUrl(file, 1800);
   
-  if (error || !data?.signedUrl) {
+  if (error) {
     console.error('❌ Storage error:', error);
-    return c.text(error?.message ?? "Not found", 404);
+    return c.text(error.message, 404);
   }
+  
+  if (!data?.signedUrl) {
+    console.error('❌ No signed URL returned');
+    return c.text("Could not generate signed URL", 404);
+  }
+  
+  console.log(`✅ Generated signed URL: ${data.signedUrl.substring(0, 100)}...`);
 
   const range = c.req.header("range");
-  const upstream = await fetch(data.signedUrl, { method: c.req.method, headers: range ? { Range: range } : {} });
+  console.log(`📊 Range header: ${range || 'none'}`);
+  
+  const upstream = await fetch(data.signedUrl, { 
+    method: c.req.method, 
+    headers: range ? { Range: range } : {} 
+  });
+  
+  console.log(`📥 Upstream response: ${upstream.status} ${upstream.statusText}`);
+  console.log(`📊 Content-Type: ${upstream.headers.get('content-type')}`);
+  console.log(`📊 Content-Length: ${upstream.headers.get('content-length')}`);
 
   const headers = new Headers(upstream.headers);
   headers.set("Access-Control-Allow-Origin", "*");

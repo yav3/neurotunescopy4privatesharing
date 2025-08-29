@@ -32,5 +32,10 @@ const buildFile = (s: string) => s.includes("/")
 
 export const streamUrl = (t: { file_path?: string; file_name?: string; src?: string; title?: string }) => {
   const fileName = t.file_path || t.file_name || t.src || t.title;
-  return `${API_BASE}/stream?file=${encodeURIComponent(fileName || '')}`;
+  console.log('🎵 streamUrl input:', t);
+  console.log('🎵 fileName resolved:', fileName);
+  console.log('🎵 API_BASE:', API_BASE);
+  const url = `${API_BASE}/stream?file=${encodeURIComponent(fileName || '')}`;
+  console.log('🎵 Final stream URL:', url);
+  return url;
 };
