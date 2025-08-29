@@ -1,95 +1,112 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from 'react'
+import type { FrequencyBand as FrequencyBandType } from '@/types'
 
 interface FrequencyBandProps {
-  band: 'delta' | 'theta' | 'alpha' | 'beta' | 'gamma';
-  power: number;
-  therapeuticScore?: number;
-  className?: string;
+  band: FrequencyBandType
+  isActive: boolean
+  onClick: (band: FrequencyBandType) => void
+  count?: number
 }
 
 const bandInfo = {
-  delta: {
-    name: 'Delta',
-    range: '0.5-4 Hz',
-    color: 'bg-purple-500',
-    description: 'Deep sleep, healing'
+  delta: { 
+    range: '0.5-4Hz', 
+    purpose: 'Deep Sleep & Healing', 
+    color: 'from-purple-600 to-blue-600', 
+    icon: '🌙',
+    description: 'Promotes deep sleep, healing, and regeneration'
   },
-  theta: {
-    name: 'Theta', 
-    range: '4-8 Hz',
-    color: 'bg-blue-500',
-    description: 'Meditation, creativity'
+  theta: { 
+    range: '4-8Hz', 
+    purpose: 'Meditation & Creativity', 
+    color: 'from-blue-600 to-teal-600', 
+    icon: '🧘',
+    description: 'Enhances meditation, creativity, and intuition'
   },
-  alpha: {
-    name: 'Alpha',
-    range: '8-13 Hz', 
-    color: 'bg-green-500',
-    description: 'Relaxation, focus'
+  alpha: { 
+    range: '8-13Hz', 
+    purpose: 'Relaxed Focus', 
+    color: 'from-teal-600 to-green-600', 
+    icon: '🌊',
+    description: 'Calms the mind while maintaining alertness'
   },
-  beta: {
-    name: 'Beta',
-    range: '13-30 Hz',
-    color: 'bg-yellow-500', 
-    description: 'Active thinking, alertness'
+  beta: { 
+    range: '13-30Hz', 
+    purpose: 'Active Concentration', 
+    color: 'from-green-600 to-yellow-600', 
+    icon: '⚡',
+    description: 'Supports focused thinking and problem-solving'
   },
-  gamma: {
-    name: 'Gamma',
-    range: '30-100 Hz',
-    color: 'bg-red-500',
-    description: 'High-level cognition'
+  gamma: { 
+    range: '30-100Hz', 
+    purpose: 'Peak Performance', 
+    color: 'from-yellow-600 to-red-600', 
+    icon: '🚀',
+    description: 'Enhances cognitive function and peak performance'
   }
-};
+} as const
 
 export const FrequencyBand: React.FC<FrequencyBandProps> = ({ 
   band, 
-  power, 
-  therapeuticScore,
-  className 
+  isActive, 
+  onClick, 
+  count 
 }) => {
-  const info = bandInfo[band];
+  const info = bandInfo[band]
   
   return (
-    <div className={cn('p-3 rounded-lg bg-card border', className)}>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <div className={cn('w-3 h-3 rounded-full', info.color)} />
-          <span className="font-medium text-sm">{info.name}</span>
-        </div>
-        <span className="text-xs text-muted-foreground">{info.range}</span>
-      </div>
-      
-      <div className="space-y-2">
-        <div>
-          <div className="flex justify-between text-xs mb-1">
-            <span>Power</span>
-            <span>{(power * 100).toFixed(1)}%</span>
-          </div>
-          <div className="w-full bg-muted rounded-full h-2">
-            <div 
-              className={cn('h-2 rounded-full transition-all', info.color)}
-              style={{ width: `${Math.min(power * 100, 100)}%` }}
-            />
-          </div>
+    <button
+      onClick={() => onClick(band)}
+      className={`
+        group relative p-6 rounded-2xl border-2 transition-all duration-300
+        ${isActive 
+          ? `bg-gradient-to-r ${info.color} text-primary-foreground shadow-lg transform scale-105 border-transparent` 
+          : 'bg-card hover:bg-card/80 text-foreground border-border hover:border-border/60'
+        }
+      `}
+      aria-label={`${band} frequency band: ${info.purpose}`}
+    >
+      <div className="text-center">
+        <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">
+          {info.icon}
         </div>
         
-        {therapeuticScore !== undefined && (
-          <div>
-            <div className="flex justify-between text-xs mb-1">
-              <span>Therapeutic</span>
-              <span>{(therapeuticScore * 100).toFixed(1)}%</span>
-            </div>
-            <div className="w-full bg-muted rounded-full h-2">
-              <div 
-                className="h-2 rounded-full bg-primary transition-all"
-                style={{ width: `${Math.min(therapeuticScore * 100, 100)}%` }}
-              />
-            </div>
+        <h3 className="text-lg font-bold capitalize mb-1">
+          {band}
+        </h3>
+        
+        <div className={`text-sm mb-2 ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+          {info.range}
+        </div>
+        
+        <div className={`text-xs font-medium mb-3 ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
+          {info.purpose}
+        </div>
+        
+        {count !== undefined && (
+          <div className={`
+            inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+            ${isActive 
+              ? 'bg-primary-foreground/20 text-primary-foreground' 
+              : 'bg-secondary text-secondary-foreground'
+            }
+          `}>
+            {count} tracks
           </div>
         )}
       </div>
       
-      <p className="text-xs text-muted-foreground mt-2">{info.description}</p>
-    </div>
-  );
-};
+      {/* Tooltip */}
+      <div className="
+        absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2
+        bg-popover text-popover-foreground text-xs rounded-lg px-3 py-2 border
+        opacity-0 group-hover:opacity-100 transition-opacity duration-200
+        pointer-events-none z-10 whitespace-nowrap
+      ">
+        {info.description}
+      </div>
+    </button>
+  )
+}
+
+export default FrequencyBand

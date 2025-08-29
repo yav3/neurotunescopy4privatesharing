@@ -1,18 +1,20 @@
-import React, { createContext, useContext, useReducer, useRef, useCallback } from 'react'
-import { MusicTrack, AudioState } from '@/types'
-import { supabase } from '@/integrations/supabase/client'
+import React, { createContext, useContext, useReducer, useRef, useCallback, useEffect } from 'react'
+import type { MusicTrack, AudioState, FrequencyBand } from '@/types'
+import { SupabaseService } from '@/services/supabase'
+import { logger } from '@/services/logger'
 
 interface AudioContextType {
   state: AudioState
   currentTrack: MusicTrack | null
   playlist: MusicTrack[]
+  setPlaylist: (tracks: MusicTrack[]) => void
   toggle: () => void
   seek: (time: number) => void
   setVolume: (volume: number) => void
   loadTrack: (track: MusicTrack) => Promise<void>
   next: () => void
   prev: () => void
-  setPlaylist: (tracks: MusicTrack[]) => void
+  clearError: () => void
 }
 
 type AudioAction =
@@ -21,12 +23,14 @@ type AudioAction =
   | { type: 'SET_DURATION'; payload: number }
   | { type: 'SET_VOLUME'; payload: number }
   | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'SET_ERROR'; payload: string }
+  | { type: 'CLEAR_ERROR' }
 
 const initialState: AudioState = {
   isPlaying: false,
   currentTime: 0,
   duration: 0,
-  volume: 1,
+  volume: 0.8,
   isLoading: false
 }
 
@@ -42,6 +46,10 @@ function audioReducer(state: AudioState, action: AudioAction): AudioState {
       return { ...state, volume: action.payload }
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload }
+    case 'SET_ERROR':
+      return { ...state, error: action.payload, isLoading: false, isPlaying: false }
+    case 'CLEAR_ERROR':
+      return { ...state, error: undefined }
     default:
       return state
   }
@@ -54,89 +62,148 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [currentTrack, setCurrentTrack] = React.useState<MusicTrack | null>(null)
   const [playlist, setPlaylist] = React.useState<MusicTrack[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const sessionStartTime = useRef<number>(0)
 
   // Initialize audio element
-  React.useEffect(() => {
+  useEffect(() => {
     const audio = new Audio()
     audioRef.current = audio
+    
+    // Set initial volume
+    audio.volume = state.volume
 
-    audio.addEventListener('loadedmetadata', () => {
+    // Audio event listeners
+    const handleLoadedMetadata = () => {
       dispatch({ type: 'SET_DURATION', payload: audio.duration })
-    })
+      dispatch({ type: 'SET_LOADING', payload: false })
+    }
 
-    audio.addEventListener('timeupdate', () => {
+    const handleTimeUpdate = () => {
       dispatch({ type: 'SET_TIME', payload: audio.currentTime })
-    })
+    }
 
-    audio.addEventListener('ended', () => {
+    const handleEnded = () => {
       dispatch({ type: 'SET_PLAYING', payload: false })
+      
+      // Track therapeutic session
+      if (currentTrack && sessionStartTime.current) {
+        const duration = Date.now() - sessionStartTime.current
+        SupabaseService.trackTherapeuticSession(
+          currentTrack.id,
+          Math.floor(duration / 1000),
+          currentTrack.therapeutic_applications?.[0]?.frequency_band_primary || 'alpha'
+        )
+      }
+      
       // Auto-play next track
       next()
-    })
-
-    audio.addEventListener('loadstart', () => {
-      dispatch({ type: 'SET_LOADING', payload: true })
-    })
-
-    audio.addEventListener('canplay', () => {
-      dispatch({ type: 'SET_LOADING', payload: false })
-    })
-
-    return () => {
-      audio.pause()
-      audio.removeAttribute('src')
     }
-  }, [])
 
-  const getTrackUrl = useCallback(async (filePath: string, bucketName: string = 'audio'): Promise<string> => {
-    const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath)
-    return data.publicUrl
+    const handleLoadStart = () => {
+      dispatch({ type: 'SET_LOADING', payload: true })
+    }
+
+    const handleCanPlay = () => {
+      dispatch({ type: 'SET_LOADING', payload: false })
+    }
+
+    const handleError = (e: any) => {
+      const errorMsg = 'Failed to load audio track'
+      logger.error(errorMsg, { error: e, currentTrack: currentTrack?.id })
+      dispatch({ type: 'SET_ERROR', payload: errorMsg })
+    }
+
+    // Add event listeners
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    audio.addEventListener('ended', handleEnded)
+    audio.addEventListener('loadstart', handleLoadStart)
+    audio.addEventListener('canplay', handleCanPlay)
+    audio.addEventListener('error', handleError)
+
+    // Cleanup
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('timeupdate', handleTimeUpdate)
+      audio.removeEventListener('ended', handleEnded)
+      audio.removeEventListener('loadstart', handleLoadStart)
+      audio.removeEventListener('canplay', handleCanPlay)
+      audio.removeEventListener('error', handleError)
+      
+      audio.pause()
+      audio.src = ''
+    }
   }, [])
 
   const loadTrack = useCallback(async (track: MusicTrack) => {
     if (!audioRef.current) return
 
     try {
+      dispatch({ type: 'CLEAR_ERROR' })
       dispatch({ type: 'SET_LOADING', payload: true })
       
       // For demo purposes, use a placeholder audio URL if no file_path
       let url = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' // Demo audio
       
       if (track.file_path && track.bucket_name) {
-        url = await getTrackUrl(track.file_path, track.bucket_name)
+        url = await SupabaseService.getTrackUrl(track.file_path, track.bucket_name)
       }
       
+      // Stop current playback
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      
+      // Load new track
       audioRef.current.src = url
       audioRef.current.load()
+      
       setCurrentTrack(track)
+      sessionStartTime.current = Date.now()
+      
+      logger.info('Track loaded successfully', { 
+        trackId: track.id, 
+        title: track.title 
+      })
     } catch (error) {
-      console.error('Failed to load track:', error)
-      dispatch({ type: 'SET_LOADING', payload: false })
+      const errorMsg = 'Failed to load track'
+      logger.error(errorMsg, { error, trackId: track.id })
+      dispatch({ type: 'SET_ERROR', payload: errorMsg })
     }
-  }, [getTrackUrl])
+  }, [])
 
-  const toggle = useCallback(() => {
-    if (!audioRef.current) return
+  const toggle = useCallback(async () => {
+    if (!audioRef.current || !currentTrack) return
 
-    if (state.isPlaying) {
-      audioRef.current.pause()
-      dispatch({ type: 'SET_PLAYING', payload: false })
-    } else {
-      audioRef.current.play()
-      dispatch({ type: 'SET_PLAYING', payload: true })
+    try {
+      if (state.isPlaying) {
+        audioRef.current.pause()
+        dispatch({ type: 'SET_PLAYING', payload: false })
+      } else {
+        await audioRef.current.play()
+        dispatch({ type: 'SET_PLAYING', payload: true })
+        sessionStartTime.current = Date.now()
+      }
+    } catch (error) {
+      const errorMsg = 'Failed to play audio'
+      logger.error(errorMsg, { error, trackId: currentTrack?.id })
+      dispatch({ type: 'SET_ERROR', payload: errorMsg })
     }
-  }, [state.isPlaying])
+  }, [state.isPlaying, currentTrack])
 
   const seek = useCallback((time: number) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = time
+      audioRef.current.currentTime = Math.max(0, Math.min(time, audioRef.current.duration || 0))
     }
   }, [])
 
   const setVolume = useCallback((volume: number) => {
+    const clampedVolume = Math.max(0, Math.min(1, volume))
     if (audioRef.current) {
-      audioRef.current.volume = volume
-      dispatch({ type: 'SET_VOLUME', payload: volume })
+      audioRef.current.volume = clampedVolume
+      dispatch({ type: 'SET_VOLUME', payload: clampedVolume })
+      
+      // Save to localStorage
+      localStorage.setItem('neurotunes-volume', clampedVolume.toString())
     }
   }, [])
 
@@ -156,17 +223,33 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     loadTrack(playlist[prevIndex])
   }, [currentTrack, playlist, loadTrack])
 
+  const clearError = useCallback(() => {
+    dispatch({ type: 'CLEAR_ERROR' })
+  }, [])
+
+  // Load saved volume on mount
+  useEffect(() => {
+    const savedVolume = localStorage.getItem('neurotunes-volume')
+    if (savedVolume) {
+      const volume = parseFloat(savedVolume)
+      if (!isNaN(volume)) {
+        setVolume(volume)
+      }
+    }
+  }, [setVolume])
+
   const value: AudioContextType = {
     state,
     currentTrack,
     playlist,
+    setPlaylist,
     toggle,
     seek,
     setVolume,
     loadTrack,
     next,
     prev,
-    setPlaylist
+    clearError
   }
 
   return (
