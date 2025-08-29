@@ -1,37 +1,46 @@
-export interface MusicTrack {
-  id: string
-  title: string
-  original_title?: string
-  genre: string
-  energy: number
-  valence: number
-  acousticness: number
-  danceability: number
-  instrumentalness: number
-  loudness: number
-  speechiness: number
-  bpm: number
-  key_signature?: string
-  mode?: string
-  file_path: string
-  bucket_name: string
-  file_size?: number
-  file_type?: string
-  upload_status: 'pending' | 'uploading' | 'completed' | 'failed'
-  created_at: string
-  updated_at: string
-  therapeutic_applications: TherapeuticApplication[]
-  spectral_analysis?: SpectralAnalysis[]
-  // Additional fields for compatibility
-  artist?: string
-  duration?: number
-  mood?: string
-  // Album art fields
-  album_art_url?: string
-  album_art_thumbnail?: string
-  album_art_color?: string
-  album_art_credits?: string
+// Unified Track interface for the entire application
+export interface Track {
+  id: string;
+  title: string;
+  file_name?: string;
+  file_path?: string;
+  src?: string;
+  duration?: number;
+  goal?: string;
+  therapeutic_use?: string;
+  eeg_targets?: string;
+  genre?: string;
+  artist?: string;
+  album?: string;
+  bucket_name?: string;
+  upload_status?: 'pending' | 'uploading' | 'completed' | 'failed';
+  file_size?: number;
+  created_at?: string;
+  updated_at?: string;
+  // Audio analysis properties
+  energy?: number;
+  valence?: number;
+  bpm?: number;
+  acousticness?: number;
+  danceability?: number;
+  instrumentalness?: number;
+  loudness?: number;
+  speechiness?: number;
+  key_signature?: string;
+  mode?: string;
+  file_type?: string;
+  original_title?: string;
+  mood?: string;
+  album_art_url?: string;
+  album_art_thumbnail?: string;
+  album_art_color?: string;
+  album_art_credits?: string;
+  therapeutic_applications?: TherapeuticApplication[];
+  spectral_analysis?: SpectralAnalysis[];
 }
+
+// Alias for backward compatibility
+export type MusicTrack = Track;
 
 export interface TherapeuticApplication {
   id: string
@@ -91,42 +100,6 @@ export interface AppError {
   timestamp: string
 }
 
-// Simplified Track interface for frontend use
-export interface Track {
-  id: string;
-  title: string;
-  file_name?: string;
-  file_path?: string;
-  src?: string;
-  duration?: number;
-  goal?: string;
-  therapeutic_use?: string;
-  eeg_targets?: string;
-  genre?: string;
-  artist?: string;
-  album?: string;
-  bucket_name?: string;
-  upload_status?: string;
-  file_size?: number;
-  created_at?: string;
-  updated_at?: string;
-  // Additional properties for compatibility
-  energy?: number;
-  valence?: number;
-  bpm?: number;
-  therapeutic_applications?: Array<{
-    id?: string;
-    track_id?: string;
-    frequency_band_primary?: string;
-    condition_targets?: string[];
-    anxiety_evidence_score?: number;
-    sleep_evidence_score?: number;
-    focus_evidence_score?: number;
-    created_at?: string;
-    updated_at?: string;
-  }>;
-}
-
 export interface PlaylistRequest {
   goal: string;
   limit?: number;
@@ -143,6 +116,3 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
-
-// Legacy interface for compatibility
-export interface LegacyTrack extends MusicTrack {}

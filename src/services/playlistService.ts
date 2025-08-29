@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from './logger'
-import type { MusicTrack, FrequencyBand } from '@/types'
+import type { Track, MusicTrack, FrequencyBand } from '@/types'
 
 export interface Playlist {
   id: number

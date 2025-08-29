@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useRef, useCallback, useEffect } from 'react'
-import type { MusicTrack, AudioState } from '@/types'
+import type { Track, MusicTrack, AudioState } from '@/types'
 import { SupabaseService } from '@/services/supabase'
 import { logger } from '@/services/logger'
 

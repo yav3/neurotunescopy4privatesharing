@@ -4,7 +4,7 @@ import {
   Clock, Signal, Wifi, WifiOff, AlertTriangle, RotateCcw
 } from 'lucide-react'
 import { useAudio } from '@/context/AudioContext'
-import type { MusicTrack } from '@/types'
+import type { Track } from '@/types'
 
 interface EnhancedMusicPlayerProps {
   className?: string

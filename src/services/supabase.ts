@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client'
-import type { MusicTrack, FrequencyBand } from '@/types'
+import type { Track, MusicTrack, FrequencyBand } from '@/types'
 import { logger } from './logger'
 
 export class SupabaseService {

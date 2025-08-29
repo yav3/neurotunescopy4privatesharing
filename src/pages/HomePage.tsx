@@ -7,7 +7,7 @@ import { FrequencyBand } from '@/components/FrequencyBand'
 import { TrackCard } from '@/components/TrackCard'
 import { LoadingSpinner, InlineLoadingSpinner } from '@/components/LoadingSpinner'
 import { API } from '@/lib/api'
-import type { FrequencyBand as FrequencyBandType, MusicTrack } from '@/types'
+import type { Track, MusicTrack, FrequencyBand as FrequencyBandType } from '@/types'
 
 export const HomePage: React.FC = () => {
   console.log('📱 HomePage component rendered')

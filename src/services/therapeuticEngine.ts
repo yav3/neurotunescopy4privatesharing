@@ -1,4 +1,4 @@
-import type { MusicTrack, FrequencyBand } from '@/types'
+import type { Track, MusicTrack, FrequencyBand } from '@/types'
 import { CamelotRecommendationEngine, type CamelotKey } from '@/utils/camelotWheel'
 import { FREQUENCY_BANDS } from '@/utils/constants'
 
