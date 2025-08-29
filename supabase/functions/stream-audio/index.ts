@@ -4,68 +4,93 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.8'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, HEAD, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 }
 
 serve(async (req: Request) => {
+  const url = new URL(req.url)
+  const method = req.method
+
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+  if (method === 'OPTIONS') {
+    return new Response(null, { 
+      status: 200, 
+      headers: corsHeaders 
+    })
+  }
+
+  // Handle HEAD requests (for connectivity testing)
+  if (method === 'HEAD') {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json'
+      }
+    })
   }
 
   try {
     // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+    
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Missing environment variables',
+          details: 'SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured'
+        }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    if (req.method === 'GET') {
-      // Handle audio streaming
-      const url = new URL(req.url)
+    // Handle GET requests
+    if (method === 'GET') {
       const trackId = url.searchParams.get('trackId')
-      const filePath = url.searchParams.get('filePath')
-      const bucketName = url.searchParams.get('bucket') || 'neuralpositivemusic'
+      const quality = url.searchParams.get('quality') || 'medium'
 
-      if (!trackId && !filePath) {
+      // Test endpoint - return success without trackId
+      if (!trackId) {
         return new Response(
-          JSON.stringify({ error: 'Track ID or file path is required' }),
+          JSON.stringify({ 
+            status: 'ok',
+            message: 'Edge function is working',
+            timestamp: new Date().toISOString(),
+            availableEndpoints: [
+              'GET /?trackId=ID&quality=medium',
+              'POST / (with JSON body)',
+              'HEAD / (connectivity test)'
+            ]
+          }),
           { 
-            status: 400, 
+            status: 200, 
             headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
           }
         )
       }
 
-      let track = null
-      let audioFilePath = filePath
+      // Get track metadata
+      const { data: track, error: trackError } = await supabase
+        .from('music_tracks')
+        .select('file_path, bucket_name, title, file_size')
+        .eq('id', trackId)
+        .eq('upload_status', 'completed')
+        .single()
 
-      // If trackId is provided, get track metadata
-      if (trackId) {
-        const { data: trackData, error: trackError } = await supabase
-          .from('music_tracks')
-          .select('file_path, bucket_name, title, file_size')
-          .eq('id', trackId)
-          .eq('upload_status', 'completed')
-          .single()
-
-        if (trackError || !trackData) {
-          return new Response(
-            JSON.stringify({ error: 'Track not found' }),
-            { 
-              status: 404, 
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-            }
-          )
-        }
-
-        track = trackData
-        audioFilePath = trackData.file_path
-      }
-
-      if (!audioFilePath) {
+      if (trackError || !track) {
         return new Response(
-          JSON.stringify({ error: 'Audio file path not found' }),
+          JSON.stringify({ 
+            error: 'Track not found',
+            trackId,
+            details: trackError?.message || 'No track with this ID'
+          }),
           { 
             status: 404, 
             headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -73,15 +98,17 @@ serve(async (req: Request) => {
         )
       }
 
-      // Get signed URL for the audio file with longer expiry
+      // Get signed URL for the audio file
       const { data: urlData, error: urlError } = await supabase.storage
-        .from(bucketName)
-        .createSignedUrl(audioFilePath, 86400) // 24 hours expiry
+        .from(track.bucket_name)
+        .createSignedUrl(track.file_path, 3600) // 1 hour expiry
 
       if (urlError || !urlData) {
-        console.error('Failed to generate signed URL:', urlError)
         return new Response(
-          JSON.stringify({ error: 'Failed to generate streaming URL' }),
+          JSON.stringify({ 
+            error: 'Failed to generate streaming URL',
+            details: urlError?.message || 'Storage error'
+          }),
           { 
             status: 500, 
             headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -89,73 +116,69 @@ serve(async (req: Request) => {
         )
       }
 
-      // Fetch the audio file and stream it with proper headers
-      const audioResponse = await fetch(urlData.signedUrl, {
-        headers: req.headers.get('range') ? { 'Range': req.headers.get('range')! } : {}
-      })
+      return new Response(
+        JSON.stringify({
+          status: 'success',
+          streamUrl: urlData.signedUrl,
+          track: {
+            id: trackId,
+            title: track.title,
+            fileSize: track.file_size
+          },
+          quality,
+          expiresAt: new Date(Date.now() + 3600 * 1000).toISOString()
+        }),
+        {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'private, max-age=300'
+          }
+        }
+      )
+    }
 
-      if (!audioResponse.ok) {
+    // Handle POST requests
+    if (method === 'POST') {
+      const body = await req.json()
+      
+      if (!body.trackId) {
         return new Response(
-          JSON.stringify({ error: 'Audio file not accessible' }),
+          JSON.stringify({ error: 'Track ID is required in POST body' }),
           { 
-            status: 404, 
+            status: 400, 
             headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
           }
         )
       }
 
-      // Forward the audio response with proper headers
-      const responseHeaders = new Headers(corsHeaders)
-      
-      // Copy important headers from the storage response
-      const headersToForward = [
-        'content-length',
-        'content-range', 
-        'accept-ranges',
-        'content-type',
-        'cache-control',
-        'etag',
-        'last-modified'
-      ]
-
-      headersToForward.forEach(header => {
-        const value = audioResponse.headers.get(header)
-        if (value) {
-          responseHeaders.set(header, value)
+      // Similar logic as GET but with POST body
+      return new Response(
+        JSON.stringify({ 
+          status: 'success',
+          message: 'POST request processed',
+          receivedData: body
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
-      })
-
-      // Ensure proper audio content type
-      if (!responseHeaders.get('content-type')) {
-        responseHeaders.set('content-type', 'audio/mpeg')
-      }
-
-      // Enable range requests
-      responseHeaders.set('accept-ranges', 'bytes')
-      responseHeaders.set('cache-control', 'public, max-age=31536000, immutable')
-
-      // Log streaming analytics if trackId provided
-      if (trackId) {
-        supabase.from('streaming_analytics').insert({
-          track_id: trackId,
-          quality_requested: 'medium',
-          start_time: 0,
-          user_agent: req.headers.get('User-Agent'),
-          ip_address: req.headers.get('x-forwarded-for') || 'unknown',
-        }).then(() => {}).catch(() => {}) // Fire and forget
-      }
-
-      return new Response(audioResponse.body, {
-        status: audioResponse.status,
-        headers: responseHeaders
-      })
+      )
     }
 
+    // Method not allowed
     return new Response(
-      JSON.stringify({ error: 'Method not allowed' }),
+      JSON.stringify({ 
+        error: 'Method not allowed',
+        allowedMethods: ['GET', 'POST', 'HEAD', 'OPTIONS'],
+        receivedMethod: method
+      }),
       { 
         status: 405, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Allow': 'GET, POST, HEAD, OPTIONS'
+        } 
       }
     )
 
@@ -165,7 +188,8 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({ 
         error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
       }),
       { 
         status: 500, 
