@@ -7,18 +7,18 @@ export class SupabaseService {
     try {
       logger.info('Getting track URL', { filePath, bucketName })
       
-      // Use our local server stream endpoint with the file path
-      const streamUrl = `/api/stream/path/${encodeURIComponent(filePath)}`
+      // Use Supabase edge function for proper audio streaming
+      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=${encodeURIComponent(filePath)}&bucket=${bucketName}`
       
-      logger.info('Using local server stream endpoint', { streamUrl })
+      logger.info('Using Supabase stream-audio edge function', { streamUrl })
       return streamUrl
       
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Fallback to the same local endpoint
-      const streamUrl = `/api/stream/path/${encodeURIComponent(filePath)}`
-      logger.info('Using local server stream endpoint as fallback', { streamUrl })
+      // Fallback to the same edge function
+      const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=${encodeURIComponent(filePath)}&bucket=${bucketName}`
+      logger.info('Using Supabase stream-audio edge function as fallback', { streamUrl })
       return streamUrl
     }
   }
