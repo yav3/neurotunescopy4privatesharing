@@ -23,12 +23,12 @@ function sb() {
 }
 
 // Direct routes - no sub-router to avoid mounting issues
-app.get("/api/health", (c) =>
+app.get("/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
 // Playlist by goal  
-app.get("/api/v1/playlist", async (c) => {
+app.get("/v1/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
@@ -76,7 +76,7 @@ app.get("/api/v1/playlist", async (c) => {
 });
 
 // Build session (simple example)
-app.post("/api/v1/session/build", async (c) => {
+app.post("/v1/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -126,7 +126,7 @@ app.post("/api/v1/session/build", async (c) => {
 });
 
 // Debug storage access
-app.get("/api/debug/storage", async (c) => {
+app.get("/debug/storage", async (c) => {
   const supabase = sb();
   
   // Check environment variables
@@ -162,7 +162,7 @@ app.get("/api/debug/storage", async (c) => {
 });
 
 // Session telemetry
-app.post("/api/v1/sessions/start", async (c) => {
+app.post("/v1/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -170,14 +170,14 @@ app.post("/api/v1/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/api/v1/sessions/progress", async (c) => {
+app.post("/v1/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/api/v1/sessions/complete", async (c) => {
+app.post("/v1/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
@@ -185,7 +185,7 @@ app.post("/api/v1/sessions/complete", async (c) => {
 });
 
 // Stream from Storage via file path (reverted from ID-based)
-app.on(["GET", "HEAD"], "/api/stream", async (c) => {
+app.on(["GET", "HEAD"], "/stream", async (c) => {
   const file = c.req.query("file");
   console.log(`🎵 Stream request - file: "${file}"`);
   
