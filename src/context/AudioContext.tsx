@@ -123,8 +123,26 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
 
     const handleError = () => {
-      const errorMsg = 'Failed to load audio track'
-      logger.error(errorMsg, { currentTrack: currentTrack?.id })
+      const error = audio.error
+      const errorTypes = {
+        1: 'ABORTED', 2: 'NETWORK', 3: 'DECODE', 4: 'NOT_SUPPORTED'
+      }
+      
+      const errorDetails = {
+        errorCode: error?.code,
+        errorType: errorTypes[error?.code] || 'UNKNOWN',
+        message: error?.message,
+        networkState: audio.networkState,
+        readyState: audio.readyState,
+        currentSrc: audio.currentSrc,
+        duration: audio.duration,
+        currentTime: audio.currentTime
+      }
+      
+      console.log('[AUDIO ERROR]', errorDetails)
+      logger.error('Audio element error', { errorDetails, currentTrack: currentTrack?.id })
+      
+      const errorMsg = `Audio ${errorDetails.errorType}: ${error?.message || 'Unknown error'}`
       dispatch({ type: 'SET_ERROR', payload: errorMsg })
     }
 
