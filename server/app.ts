@@ -4,6 +4,7 @@ import helmet from "helmet";
 import compression from "compression";
 import morgan from "morgan";
 import streamRouter from "./routes/stream.js";
+import tracksRouter from "./routes/tracks.js";
 
 const app = express();
 
@@ -46,5 +47,8 @@ app.get("/api/health", (_req, res) => {
 
 // Streaming (Range-aware)
 app.use("/api/stream", streamRouter);
+
+// Track search
+app.use("/api/tracks", tracksRouter);
 
 export default app;
