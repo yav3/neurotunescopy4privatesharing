@@ -56,28 +56,34 @@ export async function getTracksByGoal(goal: string): Promise<{ tracks: any[] }> 
   // Map goals to therapeutic conditions and audio features
   const goalToConditions = {
     'focus': {
-      condition: 'focus',
+      condition: 'focus_enhancement',
       energyRange: [0.4, 0.7],
       valenceRange: [0.4, 0.8],
       preferredGenres: ['classical', 'instrumental', 'acoustic']
     },
     'relax': {
-      condition: 'anxiety',
+      condition: 'stress_reduction',
       energyRange: [0.1, 0.4],
       valenceRange: [0.6, 0.9],
       preferredGenres: ['jazz', 'classical', 'folk']
     },
     'sleep': {
-      condition: 'insomnia', 
+      condition: 'sleep_preparation', 
       energyRange: [0.0, 0.3],
       valenceRange: [0.3, 0.7],
       preferredGenres: ['classical', 'acoustic', 'instrumental']
     },
     'energy': {
-      condition: 'depression',
+      condition: 'mood_boost',
       energyRange: [0.5, 1.0],
       valenceRange: [0.7, 1.0],
       preferredGenres: ['jazz', 'electronic', 'indie']
+    },
+    'anxiety_relief': {
+      condition: 'anxiety_relief',
+      energyRange: [0.1, 0.4],
+      valenceRange: [0.5, 0.8],
+      preferredGenres: ['classical', 'acoustic', 'folk']
     }
   }
   

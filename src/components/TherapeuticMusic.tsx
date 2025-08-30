@@ -12,10 +12,10 @@ interface TherapeuticMusicProps {
 
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
   const categories = [
-    { id: "focus", title: "Focus", image: focusArtwork },
-    { id: "mood-boost", title: "Mood Boost", image: moodBoostArtwork },
-    { id: "sleep", title: "Sleep", image: sleepArtwork },
-    { id: "acoustic", title: "Acoustic", image: acousticArtwork },
+    { id: "focus", title: "Focus Enhancement", image: focusArtwork },
+    { id: "relax", title: "Stress Reduction", image: moodBoostArtwork },
+    { id: "sleep", title: "Sleep Preparation", image: sleepArtwork },
+    { id: "energy", title: "Mood Boost", image: acousticArtwork },
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
