@@ -295,7 +295,7 @@ app.on(["GET","HEAD"], "/stream/:id", async (c) => {
 });
 
 /** HEAD endpoint for stream validation by ID */
-app.head("/stream/:id", async (c) => {
+app.on("HEAD", "/stream/:id", async (c) => {
   const id = c.req.param("id");
   if (!id) return c.json({ error: "Missing track ID" }, 400);
 
