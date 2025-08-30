@@ -8,6 +8,9 @@ import { useAudio } from '@/context/AudioContext'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useToast } from '@/components/ui/use-toast'
 import { playFromGoal } from '@/actions/playFromGoal'
+import { API } from '@/lib/api'
+import { useAudioStore, setSessionManager } from '@/stores/audioStore'
+import { useSessionManager } from '@/hooks/useSessionManager'
 
 const THERAPEUTIC_GOALS = [
   {
@@ -69,6 +72,12 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   const [isBuilding, setIsBuilding] = useState(false)
   const [availableTracks, setAvailableTracks] = useState(0)
   const { toast } = useToast()
+  const sessionManager = useSessionManager()
+
+  // 🔄 MIRROR BACKEND: Connect session manager to audio store
+  useEffect(() => {
+    setSessionManager(sessionManager);
+  }, [sessionManager]);
 
   // Set available tracks to a default value since we have music ready
   useEffect(() => {
@@ -88,24 +97,58 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setIsBuilding(true)
 
     try {
-      console.log('🏗️ Building therapeutic session:', {
+      console.log('🏗️ Building therapeutic session with backend:', {
         goal: selectedGoal,
-        duration: duration[0],
+        durationMin: duration[0],
         intensity: intensity[0]
       });
 
-      // Use the enhanced playFromGoal that includes therapeutic ordering
-      const trackCount = await playFromGoal(selectedGoal);
+      // 🔄 MIRROR BACKEND: Use API.buildSession endpoint exactly as backend expects
+      const session = await API.buildSession({
+        goal: selectedGoal,
+        durationMin: duration[0],
+        intensity: intensity[0],
+        limit: 50
+      });
+      
+      console.log('✅ Backend session built:', session.sessionId, 'with', session.tracks.length, 'tracks');
+
+      // Convert backend tracks to frontend format 
+      const tracks = session.tracks.map((t: any) => ({
+        id: t.id,
+        title: t.title || "",
+        artist: t.genre || "Unknown",
+        duration: 0,
+        // Include VAD data from backend
+        energy: t.energy,
+        valence: t.valence,
+        acousticness: t.acousticness,
+        instrumentalness: t.instrumentalness
+      }));
+
+      // 🔄 MIRROR BACKEND: Start session tracking
+      if (tracks.length > 0) {
+        const sessionTracker = await API.start(tracks[0].id);
+        console.log('📊 Session tracking started:', sessionTracker.sessionId);
+        
+        // Store session info for progress tracking
+        sessionStorage.setItem('currentSessionId', sessionTracker.sessionId);
+        sessionStorage.setItem('sessionStartTime', Date.now().toString());
+      }
+
+      // Set tracks to audio store
+      const { setQueue } = useAudioStore.getState();
+      await setQueue(tracks, 0);
       
       const goalName = THERAPEUTIC_GOALS.find(g => g.id === selectedGoal)?.name || selectedGoal;
       
       toast({
         title: "Therapeutic Session Started",
-        description: `Playing ${trackCount} therapeutically ordered tracks for ${goalName}`,
+        description: `Playing ${tracks.length} backend-curated tracks for ${goalName}`,
       })
 
-      console.log('✅ Therapeutic session started with VAD/Camelot ordering');
-      onSessionStart([]) // Empty array since we're handling playback directly
+      console.log('✅ Frontend mirrored backend session structure');
+      onSessionStart(tracks);
     } catch (error) {
       console.error('❌ Failed to build therapeutic session:', error)
       toast({

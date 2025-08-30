@@ -4,6 +4,13 @@ import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
 
+// Session management integration
+let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
+
+export const setSessionManager = (manager: typeof sessionManager) => {
+  sessionManager = manager;
+};
+
 type AudioState = {
   // Playback state
   isPlaying: boolean;
@@ -68,10 +75,28 @@ export const useAudioStore = create<AudioState>((set, get) => {
     audio.addEventListener("pause", () => set({ isPlaying: false }));
     audio.addEventListener("ended", () => {
       set({ isPlaying: false });
+      
+      // 🔄 MIRROR BACKEND: Complete session when queue ends
+      const { queue, index } = get();
+      const isLastTrack = index >= queue.length - 1;
+      
+      if (isLastTrack && sessionManager) {
+        console.log('🎵 Session completed - last track finished');
+        sessionManager.completeSession().catch(console.error);
+      }
+      
       get().next();
     });
     audio.addEventListener("timeupdate", () => {
-      set({ currentTime: audio.currentTime });
+      const currentTime = audio.currentTime;
+      const duration = audio.duration || 0;
+      
+      set({ currentTime });
+      
+      // 🔄 MIRROR BACKEND: Track session progress
+      if (sessionManager && duration > 0) {
+        sessionManager.trackProgress(currentTime, duration);
+      }
     });
     audio.addEventListener("loadedmetadata", () => {
       set({ duration: audio.duration || 0 });
