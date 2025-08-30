@@ -30,20 +30,13 @@ const buildFile = (s: string) => s.includes("/")
   ? s.split("/").map(encodeURIComponent).join("/")
   : encodeURIComponent(s);
 
-export const streamUrl = (t: { file_path?: string; file_name?: string; storage_key?: string; src?: string; title?: string }) => {
-  // Prioritize actual file paths over fallbacks
-  const fileName = t.file_path || t.storage_key || t.file_name || t.src;
-  
-  if (!fileName) {
-    console.error('❌ streamUrl: No valid file path found in track object:', t);
-    throw new Error(`No valid file path for track: ${t.title || 'Unknown'}`);
+export const streamUrl = (t: { id: string; title?: string }) => {
+  if (!t.id) {
+    console.error('❌ streamUrl: No track ID found in track object:', t);
+    throw new Error(`No valid track ID for track: ${t.title || 'Unknown'}`);
   }
   
-  console.log('🎵 streamUrl input:', t);
-  console.log('🎵 fileName resolved:', fileName);
-  console.log('🎵 API_BASE:', API_BASE);
-  
-  const url = `${API_BASE}/stream?file=${encodeURIComponent(fileName)}`;
-  console.log('🎵 Final stream URL:', url);
+  const url = `${API_BASE}/stream/${encodeURIComponent(t.id)}`;
+  console.log('🎵 Stream URL by ID:', url);
   return url;
 };

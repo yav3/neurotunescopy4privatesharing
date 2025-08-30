@@ -60,7 +60,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
   const loadPlaylistMutation = useMutation({
     mutationFn: PlaylistService.getPlaylistWithTracks,
     onSuccess: ({ playlist, tracks }) => {
-      setPlaylist(tracks, playlist.id.toString())
+      // TODO: Implement setPlaylist functionality with audio core
       onSelectPlaylist?.(playlist)
       logger.info('Playlist loaded', { playlistId: playlist.id, trackCount: tracks.length })
     },

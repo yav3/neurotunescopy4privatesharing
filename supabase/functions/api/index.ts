@@ -176,72 +176,106 @@ app.post("/v1/sessions/complete", async (c) => {
   return c.json({ ok: true });
 });
 
-/** Stream/Play endpoint - STREAM FILES BY ID */
-app.get("/stream/:id", async (c) => {
-  const id = c.req.param("id");
-  console.log(`🎵 Stream by ID request: ${id}`);
-  
-  if (!id) {
-    console.error('❌ Missing track ID');
-    return c.json({ error: "Missing track ID" }, 400);
+/** Stream/Play endpoint - STREAM FILES BY ID WITH DIAGNOSIS */
+app.on(["GET","HEAD"], "/stream/:id", async (c) => {
+  const trace = crypto.randomUUID();
+  const j = (status: number, code: string, extra: Record<string, unknown> = {}) =>
+    c.json({ ok: false, code, trace, ...extra }, status);
+
+  try {
+    const id = c.req.param("id");
+    console.log(`🎵 Stream request [${trace}]: ${id}`);
+    
+    if (!id) return j(400, "MissingId");
+
+    const supabase = sb();
+    const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
+
+    // 1) DB → storage_key
+    const { data: row, error: qErr } = await supabase
+      .from("music_tracks")
+      .select("storage_key, file_path, title")
+      .eq("id", id)
+      .maybeSingle();
+    
+    if (qErr || !row) {
+      console.log(`❌ Track not found [${trace}]: ${id}`);
+      return j(404, "TrackNotFound", { id });
+    }
+
+    const storageKey = row.storage_key || row.file_path;
+    if (!storageKey) {
+      console.log(`❌ No storage key [${trace}]: ${id}`);
+      return j(404, "TrackNotFound", { id, reason: "no_storage_key" });
+    }
+
+    // 2) Storage → signed URL
+    const signed = await supabase.storage.from(bucket).createSignedUrl(storageKey, 1800);
+    if (!signed.data?.signedUrl) {
+      console.error(`❌ Object not found [${trace}]:`, { bucket, key: storageKey, err: signed.error?.message });
+      return j(404, "ObjectNotFound", { bucket, key: storageKey, err: signed.error?.message });
+    }
+
+    // 3) Upstream fetch
+    const range = c.req.header("range");
+    const method = c.req.method;
+    const upstreamUrl = signed.data.signedUrl;
+    
+    console.log(`🎵 Proxying [${trace}]: ${method} ${storageKey}`);
+    
+    const up = await fetch(upstreamUrl, { 
+      method, 
+      headers: range ? { Range: range } : {} 
+    });
+    
+    if (up.status >= 400) {
+      console.error(`❌ Upstream error [${trace}]:`, { 
+        bucket, 
+        key: storageKey, 
+        upstreamStatus: up.status,
+        upstreamUrl: upstreamUrl.substring(0, 100) + "..."
+      });
+      return j(up.status, "UpstreamError", { 
+        bucket, 
+        key: storageKey, 
+        upstreamStatus: up.status 
+      });
+    }
+
+    // Success: pass through audio with proper headers
+    const headers = new Headers();
+    
+    // CORS headers
+    headers.set("Access-Control-Allow-Origin", Deno.env.get("WEB_ORIGIN") ?? "*");
+    headers.set("Access-Control-Allow-Headers", "Range, Content-Type, Accept");
+    headers.set("Access-Control-Expose-Headers", "Accept-Ranges, Content-Range, Content-Length, Content-Type, Cache-Control");
+    
+    // Audio streaming headers
+    headers.set("Accept-Ranges", "bytes");
+    headers.set("Cache-Control", "public, max-age=3600");
+    
+    // Copy important headers from upstream
+    const upstreamCT = up.headers.get("Content-Type");
+    headers.set("Content-Type", upstreamCT || "audio/mpeg");
+    
+    const passHeaders = ["Content-Range", "Content-Length", "ETag", "Last-Modified"];
+    for (const h of passHeaders) {
+      const v = up.headers.get(h);
+      if (v) headers.set(h, v);
+    }
+
+    console.log(`✅ Stream success [${trace}]: ${up.status} ${storageKey}`);
+    
+    return new Response(method === "HEAD" ? null : up.body, { 
+      status: up.status, 
+      headers 
+    });
+    
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error(String(e));
+    console.error(`❌ Unhandled error [${trace}]:`, error.message);
+    return j(500, "Unhandled", { message: error.message });
   }
-
-  const supabase = sb();
-  const { data: track, error } = await supabase
-    .from('music_tracks')
-    .select('file_path, storage_key, title')
-    .eq('id', id)
-    .single();
-
-  if (error || !track) {
-    console.log(`❌ Track not found: ${id}`);
-    return c.json({ error: "Track not found" }, 404);
-  }
-
-  // Set proper headers for audio streaming
-  c.header("Accept-Ranges", "bytes");
-  c.header("Content-Type", "audio/mpeg");
-  c.header("Cache-Control", "public, max-age=60");
-
-  // Use file_path or storage_key to stream
-  const filePath = track.file_path || track.storage_key;
-  if (!filePath) {
-    console.error(`❌ No file path for track ${id}`);
-    return c.json({ error: "Track file path not found" }, 404);
-  }
-
-  console.log(`🎵 Streaming file: ${filePath} for track: ${track.title}`);
-
-  const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
-  const { data, error: storageError } = await supabase.storage.from(bucket).createSignedUrl(filePath, 1800);
-  
-  if (storageError) {
-    console.error('❌ Storage error:', storageError);
-    return c.json({ error: storageError.message }, 404);
-  }
-  
-  if (!data?.signedUrl) {
-    console.error('❌ No signed URL returned');
-    return c.json({ error: "Could not generate signed URL" }, 404);
-  }
-  
-  console.log(`✅ Generated signed URL for track ${id}`);
-
-  const range = c.req.header("range");
-  const upstream = await fetch(data.signedUrl, { 
-    method: "GET", 
-    headers: range ? { Range: range } : {} 
-  });
-  
-  const headers = new Headers(upstream.headers);
-  headers.set("Access-Control-Allow-Origin", "*");
-  headers.set("Accept-Ranges", "bytes");
-  headers.set("Content-Type", "audio/mpeg");
-
-  return new Response(upstream.body, { 
-    status: upstream.status, 
-    headers 
-  });
 });
 
 /** HEAD endpoint for stream validation by ID */
