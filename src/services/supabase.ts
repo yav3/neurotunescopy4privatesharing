@@ -3,25 +3,48 @@ import type { Track, MusicTrack, FrequencyBand } from '@/types'
 import { logger } from './logger'
 
 export class SupabaseService {
-  static async getTrackUrl(filePath: string, bucketName: string = 'neuralpositivemusic'): Promise<string> {
+  static async getTrackUrl(trackIdOrPath: string, bucketName: string = 'neuralpositivemusic'): Promise<string> {
     try {
-      logger.info('Getting track URL', { filePath, bucketName })
+      logger.info('Getting track URL', { trackIdOrPath, bucketName })
       
-      // Use dedicated Supabase edge function for streaming - filePath as trackId
-      const { buildStreamUrl } = await import('@/lib/stream')
-      const streamUrl = buildStreamUrl(filePath)
+      // Check if input is a valid UUID (track ID) or a file path/goal name
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(trackIdOrPath);
       
-      logger.info('Generated stream URL', { streamUrl, filePath })
-      return streamUrl
+      if (isUUID) {
+        // Valid track ID - use stream function directly
+        const { buildStreamUrl } = await import('@/lib/stream')
+        const streamUrl = buildStreamUrl(trackIdOrPath)
+        logger.info('Generated stream URL for track ID', { streamUrl, trackIdOrPath })
+        return streamUrl
+      } else {
+        // File path or goal name - need to resolve to track ID first
+        logger.warn('⚠️ Non-UUID passed to getTrackUrl, attempting to resolve', { trackIdOrPath })
+        
+        // Try to find track by file_path or storage_key
+        const { data: track } = await supabase
+          .from('music_tracks')
+          .select('id')
+          .or(`file_path.eq.${trackIdOrPath},storage_key.eq.${trackIdOrPath}`)
+          .eq('upload_status', 'completed')
+          .maybeSingle()
+        
+        if (track) {
+          const { buildStreamUrl } = await import('@/lib/stream')
+          const streamUrl = buildStreamUrl(track.id)
+          logger.info('Resolved file path to track ID and generated stream URL', { 
+            originalPath: trackIdOrPath, 
+            trackId: track.id,
+            streamUrl 
+          })
+          return streamUrl
+        } else {
+          throw new Error(`Could not resolve "${trackIdOrPath}" to a valid track ID`)
+        }
+      }
       
     } catch (error) {
-      logger.error('Failed to get track URL', { filePath, bucketName, error })
-      
-      // Fallback to dedicated Supabase edge function
-      const { buildStreamUrl } = await import('@/lib/stream')
-      const fallbackUrl = buildStreamUrl(filePath)
-      logger.info('Using fallback stream URL', { fallbackUrl })
-      return fallbackUrl
+      logger.error('Failed to get track URL', { trackIdOrPath, bucketName, error })
+      throw error
     }
   }
 
