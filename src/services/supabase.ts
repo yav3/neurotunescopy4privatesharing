@@ -7,9 +7,9 @@ export class SupabaseService {
     try {
       logger.info('Getting track URL', { filePath, bucketName })
       
-      // Use our unified API endpoint for streaming
-      const { API_BASE } = await import('@/lib/env')
-      const streamUrl = `${API_BASE}/stream?file=${encodeURIComponent(filePath)}`
+      // Use dedicated Supabase edge function for streaming
+      const { buildStreamUrl } = await import('@/lib/stream')
+      const streamUrl = buildStreamUrl(filePath)
       
       logger.info('Generated stream URL', { streamUrl, filePath })
       return streamUrl
@@ -17,8 +17,8 @@ export class SupabaseService {
     } catch (error) {
       logger.error('Failed to get track URL', { filePath, bucketName, error })
       
-      // Fallback to direct API endpoint
-      const fallbackUrl = `${window.location.origin}/api/stream?file=${encodeURIComponent(filePath)}`
+      // Fallback to dedicated Supabase edge function
+      const fallbackUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${encodeURIComponent(filePath)}`
       logger.info('Using fallback stream URL', { fallbackUrl })
       return fallbackUrl
     }

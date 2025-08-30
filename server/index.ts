@@ -53,8 +53,8 @@ app.get('/api/readyz', async (_req, res) => {
 
 app.get('/api/stream-health', async (_req, res) => {
   try {
-    // Test the stream-audio edge function
-    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream-audio?filePath=tangelo_jazz_relaxation_remix_2.mp3&bucket=neuralpositivemusic'
+    // Test the unified stream edge function with a known track ID
+    const testUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/test-track-id'
     const response = await fetch(testUrl, { method: 'HEAD' })
     
     res.type('application/json').status(200).json({ 
@@ -73,7 +73,7 @@ app.get('/api/stream-health', async (_req, res) => {
 
 // API routes with real endpoints
 app.use('/api', apiRoutes)
-app.use('/api/stream', streamRoutes)
+// REMOVED: Conflicting Express stream route - using dedicated Supabase edge function only
 
 // Catalog endpoints
 app.get('/api/catalog/featured', async (req, res) => {
