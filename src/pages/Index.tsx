@@ -55,8 +55,6 @@ const Index = () => {
     setActiveNavTab(tab);
     if (tab === "ai-dj") {
       navigate("/ai-dj");
-    } else if (tab === "mood-analyzer") {
-      navigate("/mood-analyzer");
     } else if (tab === "profile") {
       navigate("/profile");
     }

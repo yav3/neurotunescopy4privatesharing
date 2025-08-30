@@ -14,7 +14,6 @@ import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import AIDJPage from "./pages/AIDJPage";
 import { EmotionDashboard } from "./pages/EmotionDashboard";
-import MoodAnalyzerPage from "./pages/MoodAnalyzerPage";
 import PlayerPage from "./pages/PlayerPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import AudioDiagnostics from "./pages/AudioDiagnostics";
@@ -33,7 +32,6 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/ai-dj" element={<AIDJPage />} />
-                <Route path="/mood-analyzer" element={<MoodAnalyzerPage />} />
                 <Route path="/dashboard" element={<EmotionDashboard />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/player" element={<PlayerPage />} />
