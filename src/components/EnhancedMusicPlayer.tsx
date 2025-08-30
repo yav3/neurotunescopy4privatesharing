@@ -3,7 +3,7 @@ import {
   Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Repeat, Shuffle, 
   Clock, Signal, Wifi, WifiOff, AlertTriangle, RotateCcw
 } from 'lucide-react'
-import { useAudio } from '@/context/AudioContext'
+import { useNewAudio } from '@/context/NewAudioContext'
 import type { Track } from '@/types'
 
 interface EnhancedMusicPlayerProps {
@@ -49,7 +49,7 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
     toggleShuffle,
     clearError,
     retryLoad
-  } = useAudio()
+  } = useNewAudio()
 
   const [connectionStatus, setConnectionStatus] = useState(getConnectionStatus())
   const [showVolumeSlider, setShowVolumeSlider] = useState(false)

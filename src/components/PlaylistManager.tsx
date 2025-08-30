@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Plus, Play, Trash2, Music, Clock, MoreVertical } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
-import { useAudio } from '@/context/AudioContext'
+import { usePlay } from '@/hooks/usePlay'
 import { LoadingSpinner } from './LoadingSpinner'
 import { logger } from '@/services/logger'
 
@@ -15,7 +15,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
   const [newPlaylistName, setNewPlaylistName] = useState('')
   const [newPlaylistDescription, setNewPlaylistDescription] = useState('')
   const queryClient = useQueryClient()
-  const { setPlaylist } = useAudio()
+  const { safePlay } = usePlay()
 
   // Fetch playlists
   const { 

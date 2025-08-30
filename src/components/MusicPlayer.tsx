@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAudio } from "@/context/AudioContext";
+import { usePlay } from "@/hooks/usePlay";
 import { formatTime } from "@/lib/utils";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 
@@ -15,7 +15,7 @@ interface MusicPlayerProps {
 
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const { state, currentTrack, toggle, next, prev, seek, setVolume } = useAudio();
+  const { isPlaying, currentId, safePlay, pause } = usePlay();
 
   if (!currentTrack) {
     return null;

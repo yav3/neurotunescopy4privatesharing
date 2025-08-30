@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAudio } from "@/context/AudioContext";
+import { useNewAudio } from "@/context/NewAudioContext";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Volume2, Maximize, Minimize } from "lucide-react";
 import { formatTime } from "@/lib/utils";
 
 export default function FullPlayer() {
   const navigate = useNavigate();
-  const { state, toggle, seek, setVolume, next, prev, currentTrack } = useAudio();
+  const { playById, pause, isPlaying, currentId, progress, duration } = useNewAudio();
 
   // Derive track fields safely
   const { title, artist, cover } = useMemo(() => {
