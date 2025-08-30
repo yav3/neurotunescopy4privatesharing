@@ -3,8 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AudioProvider } from "@/context/NewAudioContext";
-import { buildStreamUrl } from "@/lib/stream";
+import { AudioProvider } from "@/context/AudioContext"; // Using the compatibility shim
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
@@ -26,7 +25,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ErrorBoundary>
-        <AudioProvider buildUrl={(id) => buildStreamUrl(id)}>
+        <AudioProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
