@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { buildStreamUrl } from "@/lib/stream";
 import { API } from "@/lib/api";
 import type { Track } from "@/types";
+import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
 
 type AudioState = {
   // Playback state
@@ -117,25 +118,89 @@ export const useAudioStore = create<AudioState>((set, get) => {
     playFromGoal: async (goal: string) => {
       set({ isLoading: true, error: undefined });
       try {
-        const response = await API.playlist(goal);
-        console.log('🎵 Playlist response:', response);
+        console.log('🎵 Starting therapeutic session for goal:', goal);
         
-        const tracks = response?.tracks?.map((t: any) => ({
+        // Fetch tracks from API
+        const response = await API.playlist(goal);
+        console.log('🎵 API response received:', response?.tracks?.length, 'tracks');
+        
+        if (!response?.tracks?.length) {
+          throw new Error(`No tracks available for goal "${goal}"`);
+        }
+
+        // Convert API response to MusicTrack format for therapeutic engine
+        const musicTracks = response.tracks.map((t: any) => ({
           id: t.id,
           title: t.title || "",
           artist: t.genre || "Unknown",
-          duration: 0, // Duration will be set when track loads
-        })).filter((t: Track) => !!t.id) || [];
+          genre: t.genre || "",
+          duration: 0, // Will be set when track loads
+          // VAD and Camelot data from API
+          energy: t.energy || 0.5,
+          valence: t.valence || 0.5,
+          acousticness: t.acousticness || 0.5,
+          danceability: t.danceability || 0.5,
+          instrumentalness: t.instrumentalness || 0.5,
+          loudness: t.loudness || -10,
+          speechiness: t.speechiness || 0.1,
+          bpm: t.bpm
+        }));
+
+        console.log('🎵 Converted to therapeutic format:', musicTracks.length, 'tracks');
+
+        // Apply therapeutic ordering using VAD and Camelot wheel
+        const goalMapping: Record<string, TherapeuticGoal> = {
+          'focus': 'focus_enhancement',
+          'focus enhancement': 'focus_enhancement',
+          'focus_enhancement': 'focus_enhancement',
+          'relax': 'stress_reduction', 
+          'stress reduction': 'stress_reduction',
+          'stress_reduction': 'stress_reduction',
+          'sleep': 'sleep_preparation',
+          'sleep preparation': 'sleep_preparation',
+          'sleep_preparation': 'sleep_preparation',
+          'energy': 'mood_boost',
+          'mood boost': 'mood_boost',
+          'mood_boost': 'mood_boost',
+          'anxiety relief': 'anxiety_relief',
+          'anxiety_relief': 'anxiety_relief',
+          'meditation support': 'meditation_support',
+          'meditation_support': 'meditation_support',
+          'pain management': 'pain_management',
+          'pain_management': 'pain_management'
+        };
         
-        console.log('🎵 Mapped tracks:', tracks.length);
+        const therapeuticGoal = goalMapping[goal.toLowerCase()] || 'focus_enhancement';
+        const sessionConfig: SessionConfig = {
+          goal: therapeuticGoal,
+          duration: 15, // Default 15 minute session
+          intensityLevel: 3 // Medium intensity
+        };
+
+        console.log('🧠 Creating therapeutic session with config:', sessionConfig);
         
-        if (!tracks.length) throw new Error(`No tracks for goal "${goal}"`);
+        // Use TherapeuticEngine for proper VAD and Camelot ordering
+        const therapeuticSession = await TherapeuticEngine.createSession(sessionConfig, musicTracks);
         
-        await get().setQueue(tracks, 0);
+        console.log('✅ Therapeutic session created with', therapeuticSession.tracks.length, 'properly ordered tracks');
+        
+        // Convert back to Track format for audio store
+        const orderedTracks: Track[] = therapeuticSession.tracks.map(t => ({
+          id: t.id,
+          title: t.title,
+          artist: t.artist || t.genre || "Unknown",
+          duration: t.duration || 0
+        }));
+
+        if (!orderedTracks.length) throw new Error(`No suitable tracks for therapeutic goal "${goal}"`);
+        
+        await get().setQueue(orderedTracks, 0);
         set({ isLoading: false });
-        return tracks.length; // Return count for toast message
+        
+        console.log('🎵 Therapeutic playlist set with VAD/Camelot ordering:', orderedTracks.length, 'tracks');
+        return orderedTracks.length;
       } catch (error: any) {
-        console.error('❌ playFromGoal error:', error);
+        console.error('❌ Therapeutic playFromGoal error:', error);
         set({ error: error.message, isLoading: false });
         throw error;
       }

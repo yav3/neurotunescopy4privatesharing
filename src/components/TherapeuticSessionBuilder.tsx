@@ -75,7 +75,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setAvailableTracks(50); // Assume we have tracks available
   }, [])
 
-  const handleBuildSession = async () => {
+      const handleBuildSession = async () => {
     if (availableTracks === 0) {
       toast({
         title: "No Tracks Available",
@@ -88,17 +88,26 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setIsBuilding(true)
 
     try {
-      const goalName = selectedGoal.replace('_', ' ');
-      const n = await playFromGoal(selectedGoal);
+      console.log('🏗️ Building therapeutic session:', {
+        goal: selectedGoal,
+        duration: duration[0],
+        intensity: intensity[0]
+      });
+
+      // Use the enhanced playFromGoal that includes therapeutic ordering
+      const trackCount = await playFromGoal(selectedGoal);
+      
+      const goalName = THERAPEUTIC_GOALS.find(g => g.id === selectedGoal)?.name || selectedGoal;
       
       toast({
-        title: "Session Started",
-        description: `Playing ${n} tracks for ${goalName}`,
+        title: "Therapeutic Session Started",
+        description: `Playing ${trackCount} therapeutically ordered tracks for ${goalName}`,
       })
 
+      console.log('✅ Therapeutic session started with VAD/Camelot ordering');
       onSessionStart([]) // Empty array since we're handling playback directly
     } catch (error) {
-      console.error('❌ Failed to build session:', error)
+      console.error('❌ Failed to build therapeutic session:', error)
       toast({
         title: "Session Build Failed", 
         description: error instanceof Error ? error.message : "Failed to create therapeutic session",

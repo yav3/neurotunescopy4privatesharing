@@ -19,13 +19,15 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
-    toast.loading(`Preparing ${categoryTitle.toLowerCase()}…`, { id: "goal" });
+    toast.loading(`Preparing therapeutic ${categoryTitle.toLowerCase()} session…`, { id: "goal" });
     try {
+      console.log('🎵 Starting therapeutic session from category:', categoryId, categoryTitle);
       const n = await playFromGoal(categoryId);
-      toast.success(`Playing ${n} ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
+      toast.success(`Playing ${n} therapeutically ordered ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
       onCategorySelect?.(categoryTitle);
     } catch (e: any) {
-      toast.error(e.message ?? "Could not load tracks", { id: "goal" });
+      console.error('❌ Category selection failed:', e);
+      toast.error(e.message ?? "Could not load therapeutic tracks", { id: "goal" });
     }
   };
 
@@ -34,7 +36,7 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-foreground mb-2">Therapeutic Music</h2>
-          <p className="text-muted-foreground">Choose Your Therapeutic Goal</p>
+          <p className="text-muted-foreground">Scientifically ordered tracks using VAD and Camelot wheel harmonic progression</p>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
