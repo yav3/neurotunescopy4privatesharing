@@ -1,14 +1,5 @@
 project_id = "pbtgvcjniayedqlajjzz"
 
-[functions.resolve-track-url]
-verify_jwt = false
-
-[functions.stream-track]
-verify_jwt = false
-
-[functions.stream-audio]
-verify_jwt = false
-
 [functions.stream]
 verify_jwt = false
 
