@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// No longer needed - using unified audio store
+import { AudioProvider } from "@/context/AudioContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
@@ -24,9 +24,10 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ErrorBoundary>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+        <AudioProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
             <div className="relative min-h-screen">
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -43,6 +44,7 @@ const App = () => (
               <NowPlaying />
             </div>
           </BrowserRouter>
+        </AudioProvider>
       </ErrorBoundary>
     </TooltipProvider>
   </QueryClientProvider>
