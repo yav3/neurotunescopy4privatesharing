@@ -197,7 +197,46 @@ app.post("/api/sessions/complete", async (c) => {
 //   // REMOVED: Duplicate streaming logic moved to dedicated /stream function
 // });
 
-// All streaming endpoints removed - handled by dedicated /stream function to prevent race conditions
+// Add brainwave streaming endpoint that the test script expects
+app.post("/api/v1/stream", async (c) => {
+  console.log('🧠 Brainwave stream request received - delegating to brainwave-stream function');
+  
+  const body = await c.req.json().catch(() => ({}));
+  const { frequency, goal, duration } = body;
+  
+  // Validate required parameters
+  if (!frequency && !goal) {
+    return c.json({ error: 'Missing required parameter: frequency or goal' }, 400);
+  }
+  
+  // Delegate to dedicated brainwave streaming function
+  const streamResponse = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/brainwave-stream`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ frequency, goal, duration })
+  });
+  
+  if (!streamResponse.ok) {
+    return c.json({ error: 'Brainwave stream generation failed' }, 500);
+  }
+  
+  // Return the streaming response with proper headers
+  return new Response(streamResponse.body, {
+    status: streamResponse.status,
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    }
+  });
+});
+
+// All other streaming endpoints removed - handled by dedicated functions to prevent race conditions
 
 /** JSON 404 with exact path debugging */
 app.notFound((c) => c.json({ ok: false, error: "NotFound", path: c.req.path }, 404));
