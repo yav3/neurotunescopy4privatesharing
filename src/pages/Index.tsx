@@ -9,6 +9,7 @@ import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
 import { useAudio } from "@/context/AudioContext";
 import { toast } from "@/hooks/use-toast";
+import { playFromGoal } from "@/actions/playFromGoal";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("goals");
@@ -19,40 +20,35 @@ const Index = () => {
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
-    setShowPlayer(true);
     
     // Show feedback to user
     toast({
       title: "Loading Music",
       description: `Preparing ${category} tracks for you...`,
     });
+    
+    try {
+      // Direct playback for category selection
+      await playFromGoal(category);
+      
+      toast({
+        title: "Music Started",
+        description: `Now playing ${category} tracks`,
+      });
+    } catch (error) {
+      console.error('Failed to start category music:', error);
+      toast({
+        title: "Failed to Load Music",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleSessionStart = async (tracks: any[]) => {
-    if (tracks.length > 0) {
-      console.log(`🎵 Session starting with ${tracks.length} tracks`);
-      const maxTracks = 50; // Match audio-core MAX_QUEUE
-      const tracksToQueue = tracks.slice(0, maxTracks);
-      console.log(`🔒 Limiting session queue to ${tracksToQueue.length} tracks (from ${tracks.length} total)`);
-      
-      setPlaylist(tracksToQueue);
-      
-      // Auto-play the first track to start the session
-      if (tracksToQueue[0]) {
-        console.log('🎵 Auto-playing first track:', tracksToQueue[0].title);
-        
-        toast({
-          title: "Session Started",
-          description: `Now playing: ${tracksToQueue[0].title}`,
-        });
-        
-        await loadTrack(tracksToQueue[0]);
-        // Start playing after track is loaded
-        await toggle();
-      }
-      
-      setShowPlayer(false); // Close any existing player
-    }
+    // Session is already handled in TherapeuticSessionBuilder
+    // Just ensure the modal player is closed since NowPlaying will show
+    setShowPlayer(false);
   };
 
   const handleNavTabChange = (tab: string) => {
