@@ -1,14 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { usePlay } from "@/hooks/usePlay";
-import { usePlayer, currentTrack } from "@/stores/usePlayer";
+import { useAudioStore } from "@/stores/audioStore";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 export default function FullPlayer() {
   const navigate = useNavigate();
   const { safePlay, pause, isPlaying } = usePlay();
-  const { next, prev } = usePlayer();
-  const track = currentTrack();
+  const { next, prev, currentTrack: track } = useAudioStore();
 
   if (!track) {
     return (

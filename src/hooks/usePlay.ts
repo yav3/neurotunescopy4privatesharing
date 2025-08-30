@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { useNewAudio } from "../context/NewAudioContext";
+import { useAudioStore } from "@/stores/audioStore";
 import { buildStreamUrl, headOk } from "../lib/stream";
 
 export function usePlay() {
-  const { playById, pause, isPlaying, currentId } = useNewAudio();
+  const { playTrack, pause, isPlaying, currentTrack } = useAudioStore();
   const lastClick = useRef(0);
 
   async function safePlay(trackId: string) {
@@ -16,8 +16,8 @@ export function usePlay() {
     if (!ok) {
       throw new Error(`Stream 404/blocked for ${trackId} (${url})`);
     }
-    await playById(trackId);
+    await playTrack({ id: trackId, title: "" });
   }
 
-  return { safePlay, pause, isPlaying, currentId };
+  return { safePlay, pause, isPlaying, currentId: currentTrack?.id };
 }

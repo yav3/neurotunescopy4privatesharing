@@ -5,59 +5,30 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { formatTime } from '@/lib/utils';
-import { usePlayer, currentTrack } from '@/stores/usePlayer';
-import { getAudio } from '@/player/audio-core';
+import { useAudioStore } from '@/stores/audioStore';
 
 export const NowPlaying: React.FC = () => {
   const navigate = useNavigate();
-  const { next, prev, isPlaying, setPlaying } = usePlayer();
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const track = currentTrack();
-
-  useEffect(() => {
-    const audio = getAudio();
-    
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
-    const updateVolume = () => setVolume(audio.volume);
-    const updatePlaying = () => setPlaying(!audio.paused);
-    
-    audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('durationchange', updateDuration);
-    audio.addEventListener('volumechange', updateVolume);
-    audio.addEventListener('play', updatePlaying);
-    audio.addEventListener('pause', updatePlaying);
-    
-    return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('durationchange', updateDuration);
-      audio.removeEventListener('volumechange', updateVolume);
-      audio.removeEventListener('play', updatePlaying);
-      audio.removeEventListener('pause', updatePlaying);
-    };
-  }, [setPlaying]);
+  const { 
+    next, 
+    prev, 
+    isPlaying, 
+    currentTrack: track, 
+    currentTime, 
+    duration, 
+    volume, 
+    play, 
+    pause, 
+    seek, 
+    setVolume: handleVolumeChange 
+  } = useAudioStore();
 
   const toggle = () => {
-    const audio = getAudio();
-    if (audio.paused) {
-      audio.play().catch(console.warn);
+    if (isPlaying) {
+      pause();
     } else {
-      audio.pause();
+      play();
     }
-  };
-
-  const seek = (time: number) => {
-    const audio = getAudio();
-    audio.currentTime = time;
-  };
-
-  const handleVolumeChange = (vol: number) => {
-    const audio = getAudio();
-    audio.volume = vol;
   };
 
   if (!track) {

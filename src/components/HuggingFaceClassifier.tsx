@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Bot, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
 import { pipeline } from '@huggingface/transformers';
 import { API } from '@/lib/api';
-import { usePlayerStore } from '@/stores/playerStore';
+import { useAudioStore } from '@/stores/audioStore';
 
 interface ClassificationResult {
   label: string;
@@ -29,7 +29,7 @@ const HuggingFaceClassifier: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isModelLoading, setIsModelLoading] = useState(false);
 
-  const { playPlaylist } = usePlayerStore();
+  const { setQueue } = useAudioStore();
 
   // Map emotion classifications to moods
   const emotionToMoodMap: Record<string, string> = {
@@ -161,7 +161,7 @@ const HuggingFaceClassifier: React.FC = () => {
       const playlist = await API.playlistByGoal(results.recommendedMood);
       const tracks = playlist.tracks || [];
       if (tracks.length > 0) {
-        playPlaylist(tracks, `${results.recommendedMood} (AI Recommended)`);
+        await setQueue(tracks, 0);
       }
     } catch (error) {
       console.error('Error generating playlist:', error);

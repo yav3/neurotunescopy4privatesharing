@@ -11,7 +11,7 @@ import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
 import { API_BASE } from '@/lib/env'
-import { usePlayer, currentTrack } from '@/stores/usePlayer'
+import { useAudioStore } from '@/stores/audioStore'
 import { Navigation } from '@/components/Navigation'
 import { NowPlaying } from '@/components/NowPlaying'
 import { toast } from '@/hooks/use-toast'
@@ -88,9 +88,8 @@ const AIDJPage: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [showAudioTester, setShowAudioTester] = useState(false)
 
-  // Use player store instead of AudioContext
-  const { next, prev } = usePlayer()
-  const track = currentTrack();
+  // Use unified audio store
+  const { next, prev, currentTrack: track, setQueue } = useAudioStore()
 
   // Debug this component
   useDebugComponent('AIDJPage', {}, { 
@@ -237,8 +236,7 @@ const AIDJPage: React.FC = () => {
       });
       
       try {
-        // Use the new global audio system with queue limit
-        const { setQueue } = usePlayer.getState();
+        // Use the unified audio system
         const maxTracks = 50; // Match audio-core MAX_QUEUE
         const tracksToQueue = localPlaylist.slice(0, maxTracks);
         console.log(`🔒 AI DJ: Limiting queue to ${tracksToQueue.length} tracks (from ${localPlaylist.length} total)`);
@@ -276,7 +274,6 @@ const AIDJPage: React.FC = () => {
       
       try {
         setLocalPlaylist(shuffled);
-        const { setQueue } = usePlayer.getState();
         const maxTracks = 50; // Match audio-core MAX_QUEUE
         const tracksToQueue = shuffled.slice(0, maxTracks);
         console.log(`🔒 AI DJ: Limiting shuffled queue to ${tracksToQueue.length} tracks (from ${shuffled.length} total)`);

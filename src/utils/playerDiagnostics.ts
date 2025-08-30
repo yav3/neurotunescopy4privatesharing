@@ -1,21 +1,20 @@
-// Player diagnostics utilities
-import { current } from "@/player/audio-core";
+// Player diagnostics utilities - now uses unified audio store
+import { useAudioStore } from '@/stores/audioStore';
 
 export const logPlayerState = () => {
-  const state = current();
+  const state = useAudioStore.getState();
   console.log("🎵 Player State:", { 
     index: state.index, 
-    queueSize: state.size, 
-    backlog: state.backlog,
-    currentTrack: state.track?.title || 'None'
+    queueSize: state.queue.length, 
+    currentTrack: state.currentTrack?.title || 'None'
   });
   return state;
 };
 
 export const validateQueueSize = (maxSize = 50) => {
-  const state = current();
-  if (state.size > maxSize) {
-    console.warn(`⚠️ Queue size ${state.size} exceeds maximum ${maxSize}`);
+  const state = useAudioStore.getState();
+  if (state.queue.length > maxSize) {
+    console.warn(`⚠️ Queue size ${state.queue.length} exceeds maximum ${maxSize}`);
     return false;
   }
   return true;

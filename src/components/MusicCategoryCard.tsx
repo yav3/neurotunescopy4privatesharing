@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { playFromGoal } from "@/actions/playFromGoal";
+import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "sonner";
 import { useState } from "react";
 
@@ -14,12 +14,14 @@ interface MusicCategoryCardProps {
 export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCategoryCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const { playFromGoal } = useAudioStore();
+  
   const handleClick = async () => {
     setIsLoading(true);
     toast.loading(`Preparing ${title.toLowerCase()}…`, { id: "goal" });
     try {
-      const n = await playFromGoal(title.toLowerCase());
-      toast.success(`Playing ${n} ${title.toLowerCase()} tracks`, { id: "goal" });
+      await playFromGoal(title.toLowerCase());
+      toast.success(`Playing ${title.toLowerCase()} tracks`, { id: "goal" });
       onClick?.();
     } catch (e: any) {
       toast.error(e.message ?? "Could not load tracks", { id: "goal" });

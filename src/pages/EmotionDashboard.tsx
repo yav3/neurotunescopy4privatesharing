@@ -18,7 +18,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { usePlayerStore } from '@/stores/playerStore';
+import { useAudioStore } from '@/stores/audioStore';
 import { API } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,13 +41,13 @@ import {
 
 export function EmotionDashboard() {
   const navigate = useNavigate();
-  const { stopPlayback } = usePlayerStore();
+  const { pause } = useAudioStore();
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [selectedMetric, setSelectedMetric] = useState('mood');
 
   // Stop playback when entering dashboard
   useEffect(() => {
-    stopPlayback();
+    pause();
   }, []);
 
   // Mock functions for emotion and stats APIs (replace with real implementations)

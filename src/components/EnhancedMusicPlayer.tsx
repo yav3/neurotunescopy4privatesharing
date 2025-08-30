@@ -4,7 +4,7 @@ import {
   Clock, Signal, Wifi, WifiOff, AlertTriangle, RotateCcw
 } from 'lucide-react'
 import { usePlay } from '@/hooks/usePlay'
-import { usePlayer, currentTrack } from '@/stores/usePlayer'
+import { useAudioStore } from '@/stores/audioStore'
 import type { Track } from '@/types'
 
 interface EnhancedMusicPlayerProps {
@@ -35,8 +35,8 @@ const getConnectionStatus = (): 'online' | 'offline' | 'slow' => {
 
 export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ className = '' }) => {
   const { safePlay, pause, isPlaying } = usePlay()
-  const { queue, index, isLoading, error, next, prev, clearError } = usePlayer()
-  const track = currentTrack()
+  const { queue, index, isLoading, error, next, prev, currentTrack: track, setError } = useAudioStore()
+  const clearError = () => setError(undefined)
 
   const [connectionStatus, setConnectionStatus] = useState(getConnectionStatus())
   const [showVolumeSlider, setShowVolumeSlider] = useState(false)

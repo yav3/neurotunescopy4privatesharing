@@ -12,7 +12,7 @@ type MusicTrack = Track & {
   bpm?: number;
   genre?: string;
 }
-import { usePlayer } from '@/stores/usePlayer'
+import { useAudioStore } from '@/stores/audioStore'
 
 interface TrackCardProps {
   track: MusicTrack
@@ -101,7 +101,7 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
-  const { playSingle } = usePlayer()
+  const { playTrack } = useAudioStore()
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
@@ -112,7 +112,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
     
     try {
       console.log('🔄 Playing single track via TrackCard');
-      await playSingle(track);
+      await playTrack(track);
     } catch (error) {
       console.error('❌ Error in TrackCard play click:', error);
     }

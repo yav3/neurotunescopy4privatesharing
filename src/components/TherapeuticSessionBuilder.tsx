@@ -89,7 +89,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
 
     try {
       const goalName = selectedGoal.replace('_', ' ');
-      const n = await playFromGoal(selectedGoal, { limit: 50 });
+      const n = await playFromGoal(selectedGoal);
       
       toast({
         title: "Session Started",
