@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Header = () => {
   return (
     <header className="px-4 py-6 md:px-8">

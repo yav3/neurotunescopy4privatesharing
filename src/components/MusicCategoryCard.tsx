@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "sonner";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface MusicCategoryCardProps {
   title: string;
