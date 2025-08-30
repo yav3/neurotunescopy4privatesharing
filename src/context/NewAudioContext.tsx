@@ -61,6 +61,20 @@ export const AudioProvider: React.FC<{ children: React.ReactNode; buildUrl: (id:
 
 export function useNewAudio() {
   const ctx = useContext(AudioCtx);
-  if (!ctx) throw new Error("useNewAudio must be used within AudioProvider");
-  return ctx;
+  if (ctx) return ctx;
+  
+  // Soft fallback: keep UI alive; log once so you can fix the wrapper.
+  if (typeof window !== "undefined" && !(window as any).__audio_warned) {
+    console.warn("useAudio called outside AudioProvider — using no-op fallback");
+    (window as any).__audio_warned = true;
+  }
+  
+  return {
+    playById: async () => {},
+    pause: () => {},
+    isPlaying: false,
+    currentId: undefined,
+    progress: 0,
+    duration: 0,
+  };
 }
