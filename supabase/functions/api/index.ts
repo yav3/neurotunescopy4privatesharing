@@ -20,13 +20,13 @@ function sb() {
   );
 }
 
-/** Health endpoint - NO /api prefix needed */
-app.get("/health", (c) =>
+/** Health endpoint */
+app.get("/api/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
-/** ✅ Playlist endpoint - correct path without /api prefix */
-app.get("/playlist", async (c) => {
+/** ✅ Playlist endpoint */
+app.get("/api/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
@@ -82,7 +82,7 @@ app.get("/playlist", async (c) => {
 });
 
 /** Build session endpoint */
-app.post("/session/build", async (c) => {
+app.post("/api/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -137,7 +137,7 @@ app.post("/session/build", async (c) => {
 });
 
 /** Debug storage access */
-app.get("/debug/storage", async (c) => {
+app.get("/api/debug/storage", async (c) => {
   const supabase = sb();
   
   const envCheck = {
@@ -170,7 +170,7 @@ app.get("/debug/storage", async (c) => {
 });
 
 /** Session telemetry */
-app.post("/sessions/start", async (c) => {
+app.post("/api/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -178,14 +178,14 @@ app.post("/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/sessions/progress", async (c) => {
+app.post("/api/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/sessions/complete", async (c) => {
+app.post("/api/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
@@ -193,7 +193,7 @@ app.post("/sessions/complete", async (c) => {
 });
 
 /** Stream/Play endpoint - STREAM FILES BY ID WITH DIAGNOSIS */
-app.on(["GET","HEAD"], "/stream/:id", async (c) => {
+app.on(["GET","HEAD"], "/api/stream/:id", async (c) => {
   const trace = crypto.randomUUID();
   const j = (status: number, code: string, extra: Record<string, unknown> = {}) =>
     c.json({ ok: false, code, trace, ...extra }, status);
@@ -295,7 +295,7 @@ app.on(["GET","HEAD"], "/stream/:id", async (c) => {
 });
 
 /** HEAD endpoint for stream validation by ID */
-app.on("HEAD", "/stream/:id", async (c) => {
+app.on("HEAD", "/api/stream/:id", async (c) => {
   const id = c.req.param("id");
   if (!id) return c.json({ error: "Missing track ID" }, 400);
 
@@ -319,7 +319,7 @@ app.on("HEAD", "/stream/:id", async (c) => {
 });
 
 /** Stream from Storage via file path */
-app.on(["GET", "HEAD"], "/stream", async (c) => {
+app.on(["GET", "HEAD"], "/api/stream", async (c) => {
   const file = c.req.query("file");
   console.log(`🎵 Stream request - file: "${file}"`);
   
