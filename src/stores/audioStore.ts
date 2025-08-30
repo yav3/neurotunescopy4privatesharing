@@ -18,7 +18,7 @@ type AudioState = {
   
   // Actions
   playTrack: (track: Track) => Promise<void>;
-  playFromGoal: (goal: string) => Promise<void>;
+  playFromGoal: (goal: string) => Promise<number>;
   setQueue: (tracks: Track[], startAt?: number) => Promise<void>;
   play: () => void;
   pause: () => void;
@@ -118,18 +118,26 @@ export const useAudioStore = create<AudioState>((set, get) => {
       set({ isLoading: true, error: undefined });
       try {
         const response = await API.playlist(goal);
+        console.log('🎵 Playlist response:', response);
+        
         const tracks = response?.tracks?.map((t: any) => ({
-          id: t.id ?? t.track_id,
-          title: t.title ?? "",
-          artist: t.artist,
-          duration: t.duration,
+          id: t.id,
+          title: t.title || "",
+          artist: t.genre || "Unknown",
+          duration: 0, // Duration will be set when track loads
         })).filter((t: Track) => !!t.id) || [];
+        
+        console.log('🎵 Mapped tracks:', tracks.length);
         
         if (!tracks.length) throw new Error(`No tracks for goal "${goal}"`);
         
         await get().setQueue(tracks, 0);
+        set({ isLoading: false });
+        return tracks.length; // Return count for toast message
       } catch (error: any) {
+        console.error('❌ playFromGoal error:', error);
         set({ error: error.message, isLoading: false });
+        throw error;
       }
     },
 
@@ -196,7 +204,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
 // Simplified action exports for backward compatibility
 export const playFromGoal = async (goal: string) => {
-  await useAudioStore.getState().playFromGoal(goal);
+  return await useAudioStore.getState().playFromGoal(goal);
 };
 
 export const playTrackNow = async (track: Track) => {
