@@ -38,7 +38,8 @@ export const AudioDebugger = () => {
       const results = [];
       for (const track of tracks || []) {
         try {
-          const streamUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${track.id}`;
+          const { buildStreamUrl } = await import('@/lib/stream');
+          const streamUrl = buildStreamUrl(track.id);
           const response = await fetch(streamUrl, { method: 'HEAD' });
           
           results.push({

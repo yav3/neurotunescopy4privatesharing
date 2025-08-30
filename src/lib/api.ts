@@ -36,8 +36,7 @@ export const streamUrl = (t: { id: string; title?: string }) => {
     throw new Error(`No valid track ID for track: ${t.title || 'Unknown'}`);
   }
   
-  // 🔄 USE DEDICATED STREAM FUNCTION: Remove /api prefix to use dedicated stream function
-  const url = `${API_BASE.replace('/api', '')}/stream/${encodeURIComponent(t.id)}`;
-  console.log('🎵 Stream URL pointing to dedicated stream function:', url);
-  return url;
+  // Use unified buildStreamUrl function
+  const { buildStreamUrl } = require('@/lib/stream');
+  return buildStreamUrl(t.id);
 };
