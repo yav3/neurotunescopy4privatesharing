@@ -1,10 +1,9 @@
-// src/lib/api.ts
 import { API_BASE } from "@/lib/env";
 
 const j = async <T>(r: Response) => { if(!r.ok) throw new Error(`${r.status} ${await r.text()}`); return r.json() as T; };
 
 export const API = {
-  health:       () => fetch(`${API_BASE}/health`).then(j),
+  health:       () => fetch(`${API_BASE}/api/health`).then(j),
   playlist:     (goal: string, limit = 50, offset = 0) =>
                   fetch(`${API_BASE}/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`)
                     .then(j<{tracks:any[]; total:number; nextOffset:number}>),
@@ -36,7 +35,6 @@ export const streamUrl = (t: { id: string; title?: string }) => {
     throw new Error(`No valid track ID for track: ${t.title || 'Unknown'}`);
   }
   
-  // Use unified buildStreamUrl function
-  const { buildStreamUrl } = require('@/lib/stream');
-  return buildStreamUrl(t.id);
+  // Use new Range-aware stream endpoint
+  return `${API_BASE}/api/stream/${encodeURIComponent(t.id)}`;
 };
