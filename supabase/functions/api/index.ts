@@ -26,7 +26,7 @@ app.get("/health", (c) =>
 );
 
 /** ✅ Playlist endpoint - correct path without /api prefix */
-app.get("/v1/playlist", async (c) => {
+app.get("/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";
   const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
   const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
@@ -74,7 +74,7 @@ app.get("/v1/playlist", async (c) => {
 });
 
 /** Build session endpoint */
-app.post("/v1/session/build", async (c) => {
+app.post("/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -154,7 +154,7 @@ app.get("/debug/storage", async (c) => {
 });
 
 /** Session telemetry */
-app.post("/v1/sessions/start", async (c) => {
+app.post("/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -162,14 +162,14 @@ app.post("/v1/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/v1/sessions/progress", async (c) => {
+app.post("/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/v1/sessions/complete", async (c) => {
+app.post("/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
