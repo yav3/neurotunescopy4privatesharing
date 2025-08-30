@@ -1,5 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { AudioProvider } from '@/context'
 import App from './App.tsx'
 import './index.css'
 
@@ -125,6 +127,10 @@ setTimeout(debugButtons, 1000);
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <AudioProvider>
+        <App />
+      </AudioProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

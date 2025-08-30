@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Navigation } from "@/components/Navigation";
 import { NowPlaying } from "@/components/NowPlaying";
-import { useAudio } from "@/context/AudioContext";
+import { useAudio } from "@/context";
 import { 
   User, 
   Brain, 

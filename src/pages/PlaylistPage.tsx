@@ -8,7 +8,7 @@ import { TrackCard } from '@/components/TrackCard'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
 import useRealtimePlaylist from '@/hooks/useRealtimePlaylist'
-import { useAudio } from '@/context/AudioContext'
+import { useAudio } from "@/context";
 
 export const PlaylistPage: React.FC = () => {
   const navigate = useNavigate()

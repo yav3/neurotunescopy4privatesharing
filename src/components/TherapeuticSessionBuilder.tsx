@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
-import { useAudio } from '@/context/AudioContext'
+import { useAudio } from "@/context";
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useToast } from '@/components/ui/use-toast'
 import { playFromGoal } from '@/actions/playFromGoal'

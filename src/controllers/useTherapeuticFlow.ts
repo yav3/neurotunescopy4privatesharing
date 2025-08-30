@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useAudio } from "@/context/AudioContext";
+import { useAudio } from "@/context";
 import { searchTracks, toStreamUrl, type SearchCriteria } from "@/services/catalog";
 import type { TherapeuticGoal, Track } from "@/types/music";
 

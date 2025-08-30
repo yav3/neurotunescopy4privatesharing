@@ -7,7 +7,7 @@ import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilde
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
-import { useAudio } from "@/context/AudioContext";
+import { useAudio } from "@/context";
 import { toast } from "@/hooks/use-toast";
 import { playFromGoal } from "@/actions/playFromGoal";
 
