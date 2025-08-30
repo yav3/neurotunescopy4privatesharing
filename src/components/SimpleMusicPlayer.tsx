@@ -1,30 +1,26 @@
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePlay } from "@/hooks/usePlay";
 import { usePlayer, currentTrack } from "@/stores/usePlayer";
-import { formatTime } from "@/lib/utils";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 
-interface MusicPlayerProps {
+interface SimpleMusicPlayerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
+export const SimpleMusicPlayer = ({ open, onOpenChange }: SimpleMusicPlayerProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const { isPlaying, currentId, safePlay, pause } = usePlay();
+  const { safePlay, pause, isPlaying } = usePlay();
   const { next, prev } = usePlayer();
   const track = currentTrack();
 
   if (!track) {
     return null;
   }
-
-  const progressPercentage = 0; // Simplified for now
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -62,13 +58,9 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
           </div>
 
           <div className="mb-6">
-            <Slider
-              value={[0]}
-              max={100}
-              step={0.1}
-              className="mb-2"
-              disabled
-            />
+            <div className="w-full bg-secondary rounded-full h-2 mb-2">
+              <div className="bg-primary h-2 rounded-full w-0" />
+            </div>
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>0:00</span>
               <span>0:00</span>
@@ -83,7 +75,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
             <Button
               size="icon"
               className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90"
-              onClick={() => isPlaying ? pause() : track && safePlay(track.id)}
+              onClick={() => isPlaying ? pause() : safePlay(track.id)}
             >
               {isPlaying ? (
                 <Pause className="w-8 h-8 text-primary-foreground" />
@@ -97,18 +89,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
             </Button>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 flex-1">
-              <Volume2 className="w-5 h-5 text-muted-foreground" />
-              <Slider
-                value={[80]}
-                max={100}
-                step={1}
-                className="flex-1 max-w-24"
-                disabled
-              />
-            </div>
-            
+          <div className="flex items-center justify-end">
             <Button
               variant="ghost"
               size="icon"

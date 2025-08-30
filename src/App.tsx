@@ -44,9 +44,7 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              {/* <NowPlaying />
-              <MusicDeliveryStatus />
-              <ConnectivityPanel /> */}
+              {/* Components temporarily disabled for audio context migration */}
             </div>
           </BrowserRouter>
         </AudioProvider>

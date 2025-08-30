@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { AlertTriangle, Wifi, WifiOff, Volume2 } from 'lucide-react'
+import { AlertTriangle, Wifi, WifiOff, Volume2, VolumeX } from 'lucide-react'
 import { usePlay } from '@/hooks/usePlay'
 import { usePlayer, currentTrack } from '@/stores/usePlayer'
 
-export const MusicDeliveryStatus: React.FC = () => {
+export const SimpleDeliveryStatus: React.FC = () => {
   const { isPlaying } = usePlay()
   const { error } = usePlayer()
   const track = currentTrack()
@@ -77,4 +77,4 @@ export const MusicDeliveryStatus: React.FC = () => {
   )
 }
 
-export default MusicDeliveryStatus
+export default SimpleDeliveryStatus

@@ -4,7 +4,7 @@ import { usePlay } from "@/hooks/usePlay";
 import { usePlayer, currentTrack } from "@/stores/usePlayer";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
-export default function FullPlayer() {
+export default function SimpleFullPlayer() {
   const navigate = useNavigate();
   const { safePlay, pause, isPlaying } = usePlay();
   const { next, prev } = usePlayer();

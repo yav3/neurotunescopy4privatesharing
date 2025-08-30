@@ -3,7 +3,8 @@ import {
   Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Repeat, Shuffle, 
   Clock, Signal, Wifi, WifiOff, AlertTriangle, RotateCcw
 } from 'lucide-react'
-import { useNewAudio } from '@/context/NewAudioContext'
+import { usePlay } from '@/hooks/usePlay'
+import { usePlayer, currentTrack } from '@/stores/usePlayer'
 import type { Track } from '@/types'
 
 interface EnhancedMusicPlayerProps {
@@ -33,23 +34,9 @@ const getConnectionStatus = (): 'online' | 'offline' | 'slow' => {
 }
 
 export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ className = '' }) => {
-  const {
-    state,
-    currentTrack,
-    playlist,
-    queuePosition,
-    repeatMode,
-    shuffleMode,
-    toggle,
-    seek,
-    setVolume,
-    next,
-    prev,
-    setRepeatMode,
-    toggleShuffle,
-    clearError,
-    retryLoad
-  } = useNewAudio()
+  const { safePlay, pause, isPlaying } = usePlay()
+  const { queue, index, isLoading, error, next, prev, clearError } = usePlayer()
+  const track = currentTrack()
 
   const [connectionStatus, setConnectionStatus] = useState(getConnectionStatus())
   const [showVolumeSlider, setShowVolumeSlider] = useState(false)
@@ -72,36 +59,24 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
   // Update seek position when not dragging
   useEffect(() => {
     if (!isDraggingSeek) {
-      setSeekPosition(state.currentTime)
+      setSeekPosition(0) // Simplified for now
     }
-  }, [state.currentTime, isDraggingSeek])
+  }, [isDraggingSeek])
 
   const handleSeekStart = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const percentage = (e.clientX - rect.left) / rect.width
-    const newTime = percentage * state.duration
-    setSeekPosition(newTime)
+    // Simplified - no seeking for now
     setIsDraggingSeek(true)
-  }, [state.duration])
+  }, [])
 
   const handleSeekMove = useCallback((e: MouseEvent) => {
-    if (!isDraggingSeek) return
-    
-    const progressBar = document.querySelector('[data-seek-bar]') as HTMLDivElement
-    if (!progressBar) return
-    
-    const rect = progressBar.getBoundingClientRect()
-    const percentage = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    const newTime = percentage * state.duration
-    setSeekPosition(newTime)
-  }, [isDraggingSeek, state.duration])
+    // Simplified - no seeking for now
+  }, [isDraggingSeek])
 
   const handleSeekEnd = useCallback(() => {
     if (isDraggingSeek) {
-      seek(seekPosition)
       setIsDraggingSeek(false)
     }
-  }, [isDraggingSeek, seekPosition, seek])
+  }, [isDraggingSeek])
 
   useEffect(() => {
     if (isDraggingSeek) {
@@ -116,11 +91,7 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
   }, [isDraggingSeek, handleSeekMove, handleSeekEnd])
 
   const getRepeatIcon = () => {
-    switch (repeatMode) {
-      case 'one': return <Repeat className="text-music-sleep" size={18} />
-      case 'all': return <Repeat className="text-primary" size={18} />
-      default: return <Repeat className="text-muted-foreground" size={18} />
-    }
+    return <Repeat className="text-muted-foreground" size={18} />
   }
 
   const getConnectionIcon = () => {
@@ -131,11 +102,9 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
     }
   }
 
-  const progressPercentage = state.duration > 0 
-    ? (isDraggingSeek ? seekPosition : state.currentTime) / state.duration * 100 
-    : 0
+  const progressPercentage = 0 // Simplified for now
 
-  if (!currentTrack) {
+  if (!track) {
     return (
       <div className={`bg-card backdrop-blur-sm rounded-xl p-6 border border-border shadow-card ${className}`}>
         <div className="text-center text-muted-foreground">
@@ -154,23 +123,17 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
         <div className="flex items-center gap-2">
           {getConnectionIcon()}
           <span className="text-xs text-muted-foreground capitalize">{connectionStatus}</span>
-          {state.isBuffering && (
+          {isLoading && (
             <div className="flex items-center gap-1 text-music-energy">
               <div className="w-2 h-2 bg-music-energy rounded-full animate-pulse" />
-              <span className="text-xs">Buffering...</span>
+              <span className="text-xs">Loading...</span>
             </div>
           )}
         </div>
 
-        {state.error && (
+        {error && (
           <div className="flex items-center gap-2">
             <AlertTriangle className="text-destructive" size={16} />
-            <button
-              onClick={retryLoad}
-              className="text-xs text-destructive/80 hover:text-destructive underline"
-            >
-              Retry
-            </button>
             <button
               onClick={clearError}
               className="text-xs text-muted-foreground hover:text-foreground underline"
@@ -184,14 +147,14 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
       {/* Track Info */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-foreground mb-1 truncate">
-          {currentTrack.title}
+          {track.title}
         </h3>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span className="capitalize">{currentTrack.genre}</span>
-          <span>{currentTrack.bpm} BPM</span>
-          {playlist.length > 0 && (
+          <span className="capitalize">{track.genre}</span>
+          <span>{track.bpm} BPM</span>
+          {queue.length > 0 && (
             <span>
-              {queuePosition + 1} of {playlist.length}
+              {index + 1} of {queue.length}
             </span>
           )}
         </div>
@@ -217,8 +180,8 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
         </div>
         
         <div className="flex justify-between text-xs text-muted-foreground mt-2">
-          <span>{formatTime(isDraggingSeek ? seekPosition : state.currentTime)}</span>
-          <span>{formatTime(state.duration)}</span>
+          <span>{formatTime(0)}</span>
+          <span>{formatTime(0)}</span>
         </div>
       </div>
 
@@ -226,11 +189,9 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
       <div className="flex items-center justify-center gap-6 mb-4">
         {/* Shuffle */}
         <button
-          onClick={toggleShuffle}
-          className={`p-2 rounded-full transition-colors ${
-            shuffleMode ? 'bg-music-focus text-foreground' : 'text-muted-foreground hover:text-foreground'
-          }`}
-          title="Toggle Shuffle"
+          className="p-2 rounded-full transition-colors text-muted-foreground hover:text-foreground"
+          title="Shuffle (disabled)"
+          disabled
         >
           <Shuffle size={18} />
         </button>
@@ -246,21 +207,21 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
 
         {/* Play/Pause */}
         <button
-          onClick={toggle}
-          disabled={state.isLoading}
+          onClick={() => isPlaying ? pause() : track && safePlay(track.id)}
+          disabled={isLoading}
           className={`
             p-4 rounded-full transition-all duration-300 
-            ${state.isPlaying 
+            ${isPlaying 
               ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground' 
               : 'bg-music-mood hover:bg-music-mood/90 text-foreground'
             }
             disabled:opacity-50 disabled:cursor-not-allowed
           `}
-          title={state.isPlaying ? 'Pause' : 'Play'}
+          title={isPlaying ? 'Pause' : 'Play'}
         >
-          {state.isLoading ? (
+          {isLoading ? (
             <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : state.isPlaying ? (
+          ) : isPlaying ? (
             <Pause size={24} />
           ) : (
             <Play size={24} className="ml-1" />
@@ -278,14 +239,9 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
 
         {/* Repeat */}
         <button
-          onClick={() => {
-            const modes: Array<'none' | 'one' | 'all'> = ['none', 'one', 'all']
-            const currentIndex = modes.indexOf(repeatMode)
-            const nextMode = modes[(currentIndex + 1) % modes.length]
-            setRepeatMode(nextMode)
-          }}
           className="p-2 rounded-full transition-colors hover:bg-secondary"
-          title={`Repeat: ${repeatMode}`}
+          title="Repeat (disabled)"
+          disabled
         >
           {getRepeatIcon()}
         </button>
@@ -296,51 +252,25 @@ export const EnhancedMusicPlayer: React.FC<EnhancedMusicPlayerProps> = ({ classN
         <div className="flex items-center gap-2">
           <Clock className="text-muted-foreground" size={16} />
           <span className="text-xs text-muted-foreground">
-            {formatTime(state.duration - state.currentTime)} remaining
+            Playing...
           </span>
         </div>
 
-        <div 
-          className="flex items-center gap-2 relative"
-          onMouseEnter={() => setShowVolumeSlider(true)}
-          onMouseLeave={() => setShowVolumeSlider(false)}
-        >
-          <button
-            onClick={() => setVolume(state.volume > 0 ? 0 : 0.8)}
-            className="p-2 text-muted-foreground hover:text-foreground rounded-full transition-colors"
-          >
-            {state.volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
-          </button>
-          
-          {showVolumeSlider && (
-            <div className="absolute bottom-full right-0 mb-2 bg-popover p-3 rounded-lg shadow-xl border border-border">
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={state.volume}
-                onChange={(e) => setVolume(parseFloat(e.target.value))}
-                className="w-20 accent-primary"
-              />
-            </div>
-          )}
-          
-          <span className="text-xs text-muted-foreground w-8 text-right">
-            {Math.round(state.volume * 100)}%
-          </span>
+        <div className="flex items-center gap-2">
+          <Volume2 className="text-muted-foreground" size={18} />
+          <span className="text-xs text-muted-foreground">100%</span>
         </div>
       </div>
 
       {/* Error State */}
-      {state.error && (
+      {error && (
         <div className="mt-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
           <div className="flex items-center justify-between">
-            <p className="text-destructive text-sm flex-1">{state.error}</p>
+            <p className="text-destructive text-sm flex-1">{error}</p>
             <button
-              onClick={retryLoad}
+              onClick={clearError}
               className="ml-2 p-1 text-destructive/80 hover:text-destructive rounded"
-              title="Retry Loading"
+              title="Dismiss Error"
             >
               <RotateCcw size={16} />
             </button>
