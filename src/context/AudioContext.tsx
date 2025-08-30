@@ -1,7 +1,7 @@
 // Route all legacy imports to the new context.
 export {
   AudioProvider,
-  useNewAudio as useAudio,
+  useAudio,
 } from "./NewAudioContext";
 
 // Re-export any types if needed

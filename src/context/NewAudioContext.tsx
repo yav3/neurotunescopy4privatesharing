@@ -116,15 +116,18 @@ const NOOP_AUDIO: Ctx = {
   playTrack: async () => {},
 };
 
-export function useNewAudio(): Ctx {
+export function useAudio(): Ctx {
   const ctx = useContext(AudioCtx);
   if (ctx) return ctx;
   
   // Soft fallback: keep UI alive; log once so you can fix the wrapper.
   if (typeof window !== "undefined" && !(window as any).__audio_warned) {
-    console.warn("useAudio called outside AudioProvider — using no-op fallback");
+    console.warn("useAudio called outside AudioProvider — returning no-op API");
     (window as any).__audio_warned = true;
   }
   
   return NOOP_AUDIO;
 }
+
+// Keep alias for backward compatibility
+export const useNewAudio = useAudio;
