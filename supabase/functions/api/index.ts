@@ -25,6 +25,93 @@ app.get("/api/health", (c) =>
   c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
+/** ✅ Tracks Search endpoint for therapeutic flow */
+app.get("/api/tracks/search", async (c) => {
+  const goal = c.req.query("goal") ?? "";
+  const valence_min = Number(c.req.query("valence_min") ?? 0);
+  const arousal_max = Number(c.req.query("arousal_max") ?? 1);
+  const dominance_min = Number(c.req.query("dominance_min") ?? 0);
+  const camelot_allow = c.req.query("camelot_allow")?.split(',').filter(Boolean) ?? [];
+  const limit = Math.min(Number(c.req.query("limit") ?? 100), 200);
+  
+  console.log('🔍 Track search request:', { goal, valence_min, arousal_max, dominance_min, camelot_allow, limit });
+  
+  const supabase = sb();
+  
+  // Apply goal-based defaults
+  let vmin = valence_min;
+  let amax = arousal_max;
+  
+  if (goal === "focus_up") { 
+    vmin = Math.max(vmin, 0.70); 
+    amax = Math.min(amax, 0.50); 
+  }
+  if (goal === "anxiety_down" || goal === "sleep") { 
+    vmin = Math.max(vmin, 0.65); 
+    amax = Math.min(amax, 0.45); 
+  }
+  if (goal === "mood_up" || goal === "pain_down") { 
+    vmin = Math.max(vmin, 0.80); 
+  }
+
+  let query = supabase
+    .from('music_tracks')
+    .select(`
+      id,
+      title,
+      artist,
+      file_path,
+      storage_key,
+      valence,
+      acousticness,
+      energy,
+      bpm,
+      key_signature
+    `)
+    .gte('valence', vmin)
+    .lte('energy', amax)
+    .eq('upload_status', 'completed')
+    .limit(limit);
+
+  if (camelot_allow.length > 0) {
+    query = query.in('key_signature', camelot_allow);
+  }
+
+  const { data: tracks, error } = await query;
+
+  if (error) {
+    console.error('❌ Track search error:', error);
+    return c.json({ ok: false, error: error.message }, 500);
+  }
+
+  // Transform to expected format with defensive deduplication
+  const seen = new Set<string>();
+  const formatted = [];
+  
+  for (const track of tracks || []) {
+    if (seen.has(track.id)) continue;
+    seen.add(track.id);
+    
+    formatted.push({
+      unique_id: track.id,
+      title: track.title,
+      artist: track.artist,
+      file_path: track.file_path || track.storage_key,
+      camelot_key: track.key_signature || "1A",
+      bpm: track.bpm,
+      vad: {
+        valence: track.valence || 0.5,
+        arousal: track.energy || 0.5,
+        dominance: track.acousticness || 0.5
+      },
+      audio_status: "working"
+    });
+  }
+
+  console.log(`✅ Found ${formatted.length} tracks for goal: ${goal}`);
+  return c.json(formatted);
+});
+
 /** ✅ Playlist endpoint */
 app.get("/api/playlist", async (c) => {
   const goal = c.req.query("goal") ?? "";

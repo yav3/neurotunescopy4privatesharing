@@ -24,7 +24,7 @@ export async function searchTracks(criteria: SearchCriteria): Promise<Track[]> {
     }
   });
 
-  const url = `${location.origin}/api/tracks/search?${params}`;
+  const url = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/tracks/search?${params}`;
   console.log('🌐 Fetching from:', url);
   
   const response = await fetch(url);
