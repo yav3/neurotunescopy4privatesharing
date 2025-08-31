@@ -92,6 +92,8 @@ export function useTherapeuticFlow(): Flow {
     if (!goal) return;
     if (!criteria) return;
 
+    console.log('🎯 Starting therapeutic flow for goal:', goal, 'with criteria:', criteria);
+    
     abort();
     const ac = new AbortController();
     inFlight.current = ac;
@@ -99,10 +101,14 @@ export function useTherapeuticFlow(): Flow {
     setState("querying");
 
     try {
+      console.log('🔍 Searching for tracks...');
       const tracks = await searchTracks(criteria);
       if (ac.signal.aborted) return;
 
+      console.log('📋 Search complete, found tracks:', tracks.length);
+
       if (!tracks.length) {
+        console.warn('⚠️ No tracks found for criteria');
         setQueue([]);
         setState("error");
         setError("No tracks matched the criteria.");
@@ -111,29 +117,47 @@ export function useTherapeuticFlow(): Flow {
 
       setQueue(tracks);
       setState("queued");
+      console.log('🎵 Loading first track:', tracks[0].title);
       // Immediately load the first
       await loadThenPlay(tracks[0], ac);
     } catch (e: any) {
       if (e?.name === "AbortError") return;
+      console.error('❌ Therapeutic flow error:', e);
       setState("error");
       setError(e?.message || "Search failed");
     }
   }, [goal, criteria]);
 
   const loadThenPlay = useCallback(async (track: Track, ac: AbortController) => {
+    console.log('🔄 Loading track:', track.title, 'file_path:', track.file_path);
     setCurrent(track);
     setState("loading");
     const url = toStreamUrl(track.file_path);
+    console.log('🌐 Stream URL:', url);
 
-    // HEAD to validate + warm CDN
-    await fetch(url, { method: "HEAD", signal: ac.signal });
+    try {
+      // HEAD to validate + warm CDN
+      console.log('🔍 HEAD request to validate stream...');
+      await fetch(url, { method: "HEAD", signal: ac.signal });
+      console.log('✅ HEAD request successful');
 
-    if (ac.signal.aborted) return;
-    await audio.load(url);
-    if (ac.signal.aborted) return;
+      if (ac.signal.aborted) return;
+      
+      console.log('🎵 Loading audio into player...');
+      await audio.load(url);
+      console.log('✅ Audio loaded successfully');
+      
+      if (ac.signal.aborted) return;
 
-    audio.play();
-    setState("playing");
+      console.log('▶️ Starting playback...');
+      audio.play();
+      setState("playing");
+      console.log('🎶 Playback started!');
+    } catch (error: any) {
+      console.error('❌ Load/Play error:', error);
+      setState("error");
+      setError(error.message || "Failed to load/play track");
+    }
   }, [audio]);
 
   const next = useCallback(async () => {
