@@ -3,14 +3,25 @@ import focusArtwork from "@/assets/focus-artwork.jpg";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import { playFromGoal } from "@/actions/playFromGoal";
+import { useTherapeuticFlow } from "@/controllers/useTherapeuticFlow";
 import { toast } from "sonner";
+import type { TherapeuticGoal } from "@/types/music";
 
 interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
+// Map category IDs to therapeutic goals
+const CATEGORY_TO_GOAL: Record<string, TherapeuticGoal> = {
+  "focus": "focus_up",
+  "relax": "anxiety_down", 
+  "sleep": "sleep",
+  "energy": "mood_up"
+};
+
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
+  const flow = useTherapeuticFlow();
+  
   const categories = [
     { id: "focus", title: "Focus Enhancement", image: focusArtwork },
     { id: "relax", title: "Stress Reduction", image: moodBoostArtwork },
@@ -19,11 +30,21 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
+    const goal = CATEGORY_TO_GOAL[categoryId];
+    if (!goal) {
+      toast.error("Invalid category selected");
+      return;
+    }
+
     toast.loading(`Preparing therapeutic ${categoryTitle.toLowerCase()} session…`, { id: "goal" });
     try {
-      console.log('🎵 Starting therapeutic session from category:', categoryId, categoryTitle);
-      const n = await playFromGoal(categoryId);
-      toast.success(`Playing ${n} therapeutically ordered ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
+      console.log('🎵 Starting therapeutic session from category:', categoryId, categoryTitle, 'goal:', goal);
+      
+      // Select goal and start the therapeutic flow
+      flow.selectGoal(goal);
+      await flow.start();
+      
+      toast.success(`Playing therapeutically ordered ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
       onCategorySelect?.(categoryTitle);
     } catch (e: any) {
       console.error('❌ Category selection failed:', e);
