@@ -1,22 +1,45 @@
-import { API_BASE } from "./env";
-import { routes } from "./routes";
+// Single source of truth for API base (must be absolute)
+const RAW_BASE =
+  (typeof import.meta !== "undefined" ? (import.meta as any).env?.VITE_API_BASE_URL : undefined) ||
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "";
+
+if (!/^https?:\/\//.test(RAW_BASE)) {
+  throw new Error(
+    `API base misconfigured: '${RAW_BASE}'. Set VITE_API_BASE_URL (e.g. https://<project>.functions.supabase.co)`
+  );
+}
+const API_BASE = RAW_BASE.replace(/\/+$/, ""); // no trailing slash
 
 function join(base: string, path: string) {
-  if (!path.startsWith("/")) throw new Error(`Route must start with '/': ${path}`);
-  return `${base}${path}`.replace(/\/{2,}/g, "/").replace(/^https?:\//, m => m + "/");
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`.replace(/\/{2,}/g, "/").replace(/^https?:\//, (m) => m + "/");
+}
+
+// Accept callers passing "/api/..." or "/..."; always send absolute
+export async function apiFetch(path: string, init?: RequestInit) {
+  // strip a single leading /api
+  const normalized = path.replace(/^\/api(\/|$)/, "/");
+  const url = join(API_BASE, normalized);
+  const res = await fetch(url, {
+    ...init,
+    headers: {
+      "content-type": "application/json",
+      ...(init?.headers || {}),
+    },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error("[API ERROR]", res.status, url, text);
+  }
+  return res;
 }
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
-  const url = join(API_BASE, path);
-  console.log(`[API] ${init?.method || 'GET'} ${url}`);
-  
   let lastErr: any;
   for (let i = 0; i < 2; i++) {
     try {
-      const r = await fetch(url, {
-        ...init,
-        headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
-      });
+      const r = await apiFetch(path, init);
       if (!r.ok) {
         const text = await r.text().catch(() => 'Unknown error');
         throw new Error(`${r.status} ${r.statusText} @ ${path}: ${text}`);
@@ -39,13 +62,13 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const API = {
-  health: () => req<{ ok: true }>(routes.health()),
+  health: () => req<{ ok: true }>("/health"),
   playlist: (body: { goal: string; limit?: number; offset?: number }) =>
-    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>(routes.playlist(), {
+    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/playlist", {
       method: "POST",
       body: JSON.stringify(body),
     }),
-  debugStorage: () => req<any>(routes.debugStorage()),
+  debugStorage: () => req<any>("/debug/storage"),
   streamUrl: (id: string) => {
     if (!id) {
       console.error('[STREAM URL] No track ID provided:', id);
@@ -56,7 +79,7 @@ export const API = {
     if (!isUUID) {
       throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
     }
-    const url = join(API_BASE, routes.directStream(id));
+    const url = join(API_BASE, `/stream/${encodeURIComponent(id)}`);
     console.log("[STREAM URL]", { id, url });
     return url;
   },
@@ -72,27 +95,27 @@ export const API = {
         }
       }
     });
-    return req<any[]>(`${routes.searchTracks()}?${searchParams}`);
+    return req<any[]>(`/tracks/search?${searchParams}`);
   },
   
   // Legacy compatibility methods
   buildSession: (body: { goal: string; durationMin: number; intensity: number; limit?: number }) =>
-    req<{ tracks: any[]; sessionId: string }>(routes.buildSession(), {
+    req<{ tracks: any[]; sessionId: string }>("/session/build", {
       method: "POST", 
       body: JSON.stringify(body)
     }),
   startSession: (body: { trackId: string }) =>
-    req<{ sessionId: string }>(routes.startSession(), {
+    req<{ sessionId: string }>("/sessions/start", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   progressSession: (body: { sessionId: string; t: number }) =>
-    req<{ ok: boolean }>(routes.progressSession(), {
+    req<{ ok: boolean }>("/sessions/progress", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   completeSession: (body: { sessionId: string }) =>
-    req<{ ok: boolean }>(routes.completeSession(), {
+    req<{ ok: boolean }>("/sessions/complete", {
       method: "POST", 
       body: JSON.stringify(body)
     }),

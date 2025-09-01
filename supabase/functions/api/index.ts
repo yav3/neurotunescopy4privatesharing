@@ -1,42 +1,35 @@
-import { Hono } from "https://deno.land/x/hono@v4.2.7/mod.ts";
-import { cors } from "https://deno.land/x/hono@v4.2.7/middleware.ts";
+// Supabase Edge Function (Deno) — accepts both "/api/*" and "/*"
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const app = new Hono();
+type Handler = (req: Request, ctx: { params: Record<string, string> }) => Promise<Response> | Response;
 
-// Enhanced CORS configuration
-const corsOptions = {
-  origin: "*",
-  allowHeaders: ["Content-Type", "Authorization", "Range", "x-client-info", "apikey"],
-  allowMethods: ["GET", "HEAD", "POST", "OPTIONS"],
-  exposeHeaders: ["Accept-Ranges", "Content-Length", "Content-Type", "Content-Range"]
-};
-
-app.use("/*", cors(corsOptions));
-
-// Handle CORS preflight requests
-app.options("/*", (c) => {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
-      "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
-    },
-  });
-});
-
-// Enhanced JSON response helper
-function jsonResponse(data: any, init: ResponseInit = {}) {
+function json(data: unknown, init: ResponseInit = {}) {
   return new Response(JSON.stringify(data), {
+    ...init,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, x-client-info, apikey",
-      "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
-      ...init.headers,
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      ...(init.headers || {}),
     },
-    status: init.status ?? 200,
   });
+}
+
+function withCors(res: Response) {
+  const h = new Headers(res.headers);
+  h.set("access-control-allow-origin", "*");
+  h.set("access-control-allow-methods", "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS");
+  h.set("access-control-allow-headers", "authorization,content-type,range,x-client-info,apikey");
+  h.set("access-control-expose-headers", "accept-ranges,content-length,content-type,content-range");
+  return new Response(res.body, { status: res.status, headers: h });
+}
+
+// Strip a single leading "/api" if present; also collapse multiple slashes.
+function normalizePath(url: URL): string {
+  let p = url.pathname.replace(/\/{2,}/g, "/");
+  p = p.startsWith("/api/") ? p.slice(4) : p; // "/api/foo" -> "/foo"
+  p = p === "/api" ? "/" : p;                // exactly "/api" -> "/"
+  return p;
 }
 
 // Supabase admin client
@@ -48,19 +41,21 @@ function sb() {
   );
 }
 
-/** Health endpoint */
-app.get("/health", (c) =>
-  jsonResponse({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
-);
+// Simple router
+const routes = new Map<string, Handler>();
 
-/** ✅ Tracks Search endpoint for therapeutic flow */
-app.get("/api/tracks/search", async (c) => {
-  const goal = c.req.query("goal") ?? "";
-  const valence_min = Number(c.req.query("valence_min") ?? 0);
-  const arousal_max = Number(c.req.query("arousal_max") ?? 1);
-  const dominance_min = Number(c.req.query("dominance_min") ?? 0);
-  const camelot_allow = c.req.query("camelot_allow")?.split(',').filter(Boolean) ?? [];
-  const limit = Math.min(Number(c.req.query("limit") ?? 100), 200);
+// Health
+routes.set("GET /health", () => json({ ok: true, ts: Date.now(), service: "NeuroTunes API" }));
+
+// Tracks Search endpoint
+routes.set("GET /tracks/search", async (req) => {
+  const url = new URL(req.url);
+  const goal = url.searchParams.get("goal") ?? "";
+  const valence_min = Number(url.searchParams.get("valence_min") ?? 0);
+  const arousal_max = Number(url.searchParams.get("arousal_max") ?? 1);
+  const dominance_min = Number(url.searchParams.get("dominance_min") ?? 0);
+  const camelot_allow = url.searchParams.get("camelot_allow")?.split(',').filter(Boolean) ?? [];
+  const limit = Math.min(Number(url.searchParams.get("limit") ?? 100), 200);
   
   console.log('🔍 Track search request:', { goal, valence_min, arousal_max, dominance_min, camelot_allow, limit });
   
@@ -109,7 +104,7 @@ app.get("/api/tracks/search", async (c) => {
 
   if (error) {
     console.error('❌ Track search error:', error);
-    return c.json({ ok: false, error: error.message }, 500);
+    return json({ ok: false, error: error.message }, { status: 500 });
   }
 
   // Transform to expected format with defensive deduplication
@@ -137,12 +132,12 @@ app.get("/api/tracks/search", async (c) => {
   }
 
   console.log(`✅ Found ${formatted.length} tracks for goal: ${goal}`);
-  return c.json(formatted);
+  return json(formatted);
 });
 
-/** ✅ Playlist endpoint - Updated for consistent response format */
-app.post("/playlist", async (c) => {
-  const { goal = "", limit = 50, offset = 0 } = await c.req.json().catch(() => ({}));
+// Playlist endpoint
+routes.set("POST /playlist", async (req) => {
+  const { goal = "", limit = 50, offset = 0 } = await req.json().catch(() => ({}));
   console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
   const supabase = sb();
@@ -187,16 +182,16 @@ app.post("/playlist", async (c) => {
   
   if (error) {
     console.error('❌ Database error:', error);
-    return jsonResponse({ ok: false, error: error.message }, { status: 500 });
+    return json({ ok: false, error: error.message }, { status: 500 });
   }
 
   console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
-  return jsonResponse({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
+  return json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
 
-/** Build session endpoint */
-app.post("/session/build", async (c) => {
-  const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
+// Build session endpoint
+routes.set("POST /session/build", async (req) => {
+  const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
   const supabase = sb();
@@ -240,17 +235,17 @@ app.post("/session/build", async (c) => {
   
   if (error) {
     console.error('❌ Session build error:', error);
-    return c.json({ ok: false, error: error.message }, 500);
+    return json({ ok: false, error: error.message }, { status: 500 });
   }
 
   const sessionId = crypto.randomUUID();
   
   console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks (limited to ${trackLimit})`);
-  return c.json({ sessionId, tracks: tracks || [] });
+  return json({ sessionId, tracks: tracks || [] });
 });
 
-/** Debug storage access */
-app.get("/debug/storage", async (c) => {
+// Debug storage access
+routes.set("GET /debug/storage", async () => {
   const supabase = sb();
   
   const envCheck = {
@@ -265,7 +260,7 @@ app.get("/debug/storage", async (c) => {
   const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
   const { data: files, error: filesError } = await supabase.storage.from(bucket).list();
   
-  return c.json({
+  return json({
     environment: envCheck,
     buckets: {
       count: buckets?.length ?? 0,
@@ -282,44 +277,39 @@ app.get("/debug/storage", async (c) => {
   });
 });
 
-/** Session telemetry */
-app.post("/sessions/start", async (c) => {
-  const { trackId } = await c.req.json();
+// Session telemetry
+routes.set("POST /sessions/start", async (req) => {
+  const { trackId } = await req.json().catch(() => ({}));
   const sessionId = crypto.randomUUID();
   
   console.log(`🎵 Started session ${sessionId} for track ${trackId}`);
-  return c.json({ sessionId });
+  return json({ sessionId });
 });
 
-app.post("/sessions/progress", async (c) => {
-  const { sessionId, t } = await c.req.json();
+routes.set("POST /sessions/progress", async (req) => {
+  const { sessionId, t } = await req.json().catch(() => ({}));
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
-  return c.json({ ok: true });
+  return json({ ok: true });
 });
 
-app.post("/sessions/complete", async (c) => {
-  const { sessionId } = await c.req.json();
+routes.set("POST /sessions/complete", async (req) => {
+  const { sessionId } = await req.json().catch(() => ({}));
   console.log(`✅ Session ${sessionId} completed`);
   
-  return c.json({ ok: true });
+  return json({ ok: true });
 });
 
-// Remove duplicate streaming endpoint from API function - delegate to dedicated stream function
-// app.on(["GET","HEAD"], "/api/stream/:id", async (c) => {
-//   // REMOVED: Duplicate streaming logic moved to dedicated /stream function
-// });
-
-// Add brainwave streaming endpoint that the test script expects
-app.post("/v1/stream", async (c) => {
+// Brainwave streaming endpoint
+routes.set("POST /v1/stream", async (req) => {
   console.log('🧠 Brainwave stream request received - delegating to brainwave-stream function');
   
-  const body = await c.req.json().catch(() => ({}));
+  const body = await req.json().catch(() => ({}));
   const { frequency, goal, duration } = body;
   
   // Validate required parameters
   if (!frequency && !goal) {
-    return c.json({ error: 'Missing required parameter: frequency or goal' }, 400);
+    return json({ error: 'Missing required parameter: frequency or goal' }, { status: 400 });
   }
   
   // Delegate to dedicated brainwave streaming function
@@ -333,7 +323,7 @@ app.post("/v1/stream", async (c) => {
   });
   
   if (!streamResponse.ok) {
-    return c.json({ error: 'Brainwave stream generation failed' }, 500);
+    return json({ error: 'Brainwave stream generation failed' }, { status: 500 });
   }
   
   // Return the streaming response with proper headers
@@ -349,11 +339,12 @@ app.post("/v1/stream", async (c) => {
   });
 });
 
-/** Audio streaming endpoint with proper headers */
-app.get("/stream", async (c) => {
-  const id = c.req.query("id");
+// Audio streaming endpoint with proper headers  
+routes.set("GET /stream", async (req) => {
+  const url = new URL(req.url);
+  const id = url.searchParams.get("id");
   if (!id) {
-    return jsonResponse({ error: "Missing track ID parameter" }, { status: 400 });
+    return json({ error: "Missing track ID parameter" }, { status: 400 });
   }
   
   console.log(`🎵 Stream request for track: ${id}`);
@@ -370,7 +361,7 @@ app.get("/stream", async (c) => {
     
   if (error || !track) {
     console.error('❌ Track not found:', id, error);
-    return jsonResponse({ error: "Track not found" }, { status: 404 });
+    return json({ error: "Track not found" }, { status: 404 });
   }
   
   // Return stream metadata with proper audio headers
@@ -390,9 +381,57 @@ app.get("/stream", async (c) => {
   });
 });
 
-// All other streaming endpoints removed - handled by dedicated functions to prevent race conditions
+// Debug route list
+routes.set("GET /__routes", () =>
+  json({ routes: [...routes.keys()].sort() })
+);
 
-/** JSON 404 with exact path debugging */
-app.notFound((c) => jsonResponse({ ok: false, error: "NotFound", path: c.req.path }, { status: 404 }));
+// Main handler
+serve(async (req) => {
+  try {
+    const url = new URL(req.url);
+    const method = req.method.toUpperCase();
 
-export default app;
+    // CORS preflight
+    if (method === "OPTIONS") {
+      return withCors(new Response(null, { status: 204 }));
+    }
+
+    const normPath = normalizePath(url);
+
+    // Exact match first
+    let key = `${method} ${normPath}`;
+    let handler = routes.get(key);
+
+    // Support trailing slash equivalence
+    if (!handler) {
+      const alt =
+        normPath.endsWith("/") && normPath !== "/"
+          ? normPath.slice(0, -1)
+          : normPath + "/";
+      handler = routes.get(`${method} ${alt}`);
+      key = `${method} ${alt}`;
+    }
+
+    if (!handler) {
+      return withCors(
+        json(
+          {
+            error: "Not Found",
+            method,
+            requested: url.pathname,
+            normalized: normPath,
+            hint: "Check /__routes to see registered handlers.",
+          },
+          { status: 404 }
+        )
+      );
+    }
+
+    const res = await handler(req, { params: {} });
+    return withCors(res);
+  } catch (err) {
+    console.error(err);
+    return withCors(json({ error: "Internal Error" }, { status: 500 }));
+  }
+});
