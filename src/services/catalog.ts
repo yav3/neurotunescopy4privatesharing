@@ -1,4 +1,5 @@
 import type { Track, TherapeuticGoal } from "@/types/music";
+import { API } from "@/lib/api";
 
 export type SearchCriteria = {
   goal: TherapeuticGoal;
@@ -12,30 +13,7 @@ export type SearchCriteria = {
 export async function searchTracks(criteria: SearchCriteria): Promise<Track[]> {
   console.log('🔍 Searching tracks with criteria:', criteria);
   
-  // Build query parameters
-  const params = new URLSearchParams();
-  Object.entries(criteria).forEach(([key, value]) => {
-    if (value !== undefined) {
-      if (Array.isArray(value)) {
-        params.append(key, value.join(','));
-      } else {
-        params.append(key, String(value));
-      }
-    }
-  });
-
-  const url = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/tracks/search?${params}`;
-  console.log('🌐 Fetching from:', url);
-  
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error('❌ Search failed:', response.status, errorText);
-    throw new Error(`${response.status} ${errorText}`);
-  }
-
-  const data = await response.json();
+  const data = await API.searchTracks(criteria);
   console.log('📊 Raw tracks received:', data.length);
 
   // Defensive: drop bad/unknown audio, enforce uniqueness
@@ -53,9 +31,6 @@ export async function searchTracks(criteria: SearchCriteria): Promise<Track[]> {
 }
 
 /** Build the proxied stream URL your player must use */
-export function toStreamUrl(file_pathOrAbsUrl: string): string {
-  const isAbs = /^https?:\/\//i.test(file_pathOrAbsUrl);
-  const qp = isAbs ? `url=${encodeURIComponent(file_pathOrAbsUrl)}`
-                   : `path=${encodeURIComponent(file_pathOrAbsUrl)}`;
-  return `${location.origin}/api/stream?${qp}`;
+export function toStreamUrl(trackId: string): string {
+  return API.streamUrl(trackId);
 }

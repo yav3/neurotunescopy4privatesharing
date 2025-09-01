@@ -51,9 +51,28 @@ export const API = {
       console.error('[STREAM URL] No track ID provided:', id);
       throw new Error('Track ID is required for streaming');
     }
-    const url = join(API_BASE, routes.stream(id));
+    // Validate UUID format
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (!isUUID) {
+      throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
+    }
+    const url = join(API_BASE, routes.directStream(id));
     console.log("[STREAM URL]", { id, url });
     return url;
+  },
+  
+  searchTracks: (params: Record<string, any>) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          searchParams.append(key, value.join(','));
+        } else {
+          searchParams.append(key, String(value));
+        }
+      }
+    });
+    return req<any[]>(`${routes.searchTracks()}?${searchParams}`);
   },
   
   // Legacy compatibility methods
