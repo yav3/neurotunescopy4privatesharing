@@ -49,7 +49,7 @@ function sb() {
 }
 
 /** Health endpoint */
-app.get("/health", (c) =>
+app.get("/api/health", (c) =>
   jsonResponse({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 

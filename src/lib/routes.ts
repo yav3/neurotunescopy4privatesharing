@@ -1,5 +1,5 @@
 export const routes = {
-  health: () => `/health`,
+  health: () => `/api/health`,
   playlist: () => `/api/playlist`,
   debugStorage: () => `/api/debug/storage`,
   stream: (id: string) => `/api/stream?id=${encodeURIComponent(id)}`,
