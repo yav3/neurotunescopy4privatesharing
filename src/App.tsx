@@ -9,7 +9,7 @@ import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
 import Index from "./pages/Index";
-import HomePage from "./pages/HomePage";
+
 import NotFound from "./pages/NotFound";
 import AIDJPage from "./pages/AIDJPage";
 import { EmotionDashboard } from "./pages/EmotionDashboard";
@@ -28,7 +28,7 @@ const App = () => (
         <div className="relative min-h-screen">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/home" element={<HomePage />} />
+            
             <Route path="/ai-dj" element={<AIDJPage />} />
             <Route path="/dashboard" element={<EmotionDashboard />} />
             <Route path="/profile" element={<ProfilePage />} />
