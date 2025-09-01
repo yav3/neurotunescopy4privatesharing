@@ -1,10 +1,10 @@
 export const routes = {
-  health: () => `/api/health`,
-  playlist: () => `/api/playlist`,
-  debugStorage: () => `/api/debug/storage`,
-  stream: (id: string) => `/api/stream?id=${encodeURIComponent(id)}`,
-  buildSession: () => `/api/session/build`,
-  startSession: () => `/api/sessions/start`,
-  progressSession: () => `/api/sessions/progress`,
-  completeSession: () => `/api/sessions/complete`,
+  health: () => `/health`,
+  playlist: () => `/playlist`,
+  debugStorage: () => `/debug/storage`,
+  stream: (id: string) => `/stream?id=${encodeURIComponent(id)}`,
+  buildSession: () => `/session/build`,
+  startSession: () => `/sessions/start`,
+  progressSession: () => `/sessions/progress`,
+  completeSession: () => `/sessions/complete`,
 } as const;

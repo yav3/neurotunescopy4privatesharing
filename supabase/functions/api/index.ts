@@ -49,7 +49,7 @@ function sb() {
 }
 
 /** Health endpoint */
-app.get("/api/health", (c) =>
+app.get("/health", (c) =>
   jsonResponse({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
@@ -141,7 +141,7 @@ app.get("/api/tracks/search", async (c) => {
 });
 
 /** ✅ Playlist endpoint - Updated for consistent response format */
-app.post("/api/playlist", async (c) => {
+app.post("/playlist", async (c) => {
   const { goal = "", limit = 50, offset = 0 } = await c.req.json().catch(() => ({}));
   console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
@@ -195,7 +195,7 @@ app.post("/api/playlist", async (c) => {
 });
 
 /** Build session endpoint */
-app.post("/api/session/build", async (c) => {
+app.post("/session/build", async (c) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await c.req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
   
@@ -250,7 +250,7 @@ app.post("/api/session/build", async (c) => {
 });
 
 /** Debug storage access */
-app.get("/api/debug/storage", async (c) => {
+app.get("/debug/storage", async (c) => {
   const supabase = sb();
   
   const envCheck = {
@@ -283,7 +283,7 @@ app.get("/api/debug/storage", async (c) => {
 });
 
 /** Session telemetry */
-app.post("/api/sessions/start", async (c) => {
+app.post("/sessions/start", async (c) => {
   const { trackId } = await c.req.json();
   const sessionId = crypto.randomUUID();
   
@@ -291,14 +291,14 @@ app.post("/api/sessions/start", async (c) => {
   return c.json({ sessionId });
 });
 
-app.post("/api/sessions/progress", async (c) => {
+app.post("/sessions/progress", async (c) => {
   const { sessionId, t } = await c.req.json();
   console.log(`📊 Session ${sessionId} progress: ${t}s`);
   
   return c.json({ ok: true });
 });
 
-app.post("/api/sessions/complete", async (c) => {
+app.post("/sessions/complete", async (c) => {
   const { sessionId } = await c.req.json();
   console.log(`✅ Session ${sessionId} completed`);
   
@@ -311,7 +311,7 @@ app.post("/api/sessions/complete", async (c) => {
 // });
 
 // Add brainwave streaming endpoint that the test script expects
-app.post("/api/v1/stream", async (c) => {
+app.post("/v1/stream", async (c) => {
   console.log('🧠 Brainwave stream request received - delegating to brainwave-stream function');
   
   const body = await c.req.json().catch(() => ({}));
@@ -350,7 +350,7 @@ app.post("/api/v1/stream", async (c) => {
 });
 
 /** Audio streaming endpoint with proper headers */
-app.get("/api/stream", async (c) => {
+app.get("/stream", async (c) => {
   const id = c.req.query("id");
   if (!id) {
     return jsonResponse({ error: "Missing track ID parameter" }, { status: 400 });
