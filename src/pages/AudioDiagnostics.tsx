@@ -8,23 +8,34 @@ const AudioDiagnostics: React.FC = () => {
   const [realTracks, setRealTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load REAL tracks from the database instead of fake goal names
+  // Load REAL tracks directly from music_tracks table (not via broken API)
   useEffect(() => {
     const loadRealTracks = async () => {
       try {
         console.log('🔍 Loading REAL tracks from music_tracks database...');
         
-        // Get actual tracks with real UUIDs from different goals
-        const focusResponse = await API.playlist('focus', 2);
-        const relaxResponse = await API.playlist('relax', 2);
+        // Import supabase and query music_tracks table directly
+        const { supabase } = await import('@/integrations/supabase/client');
         
-        const tracks = [
-          ...(focusResponse.tracks || []).slice(0, 1).map((t: any) => ({...t, goal: 'focus'})),
-          ...(relaxResponse.tracks || []).slice(0, 1).map((t: any) => ({...t, goal: 'relax'}))
-        ];
+        const { data: tracks, error } = await supabase
+          .from('music_tracks')
+          .select('id, title, file_path, storage_key, bucket_name, bpm, energy, valence, genre')
+          .eq('upload_status', 'completed')
+          .limit(4);
         
-        console.log('✅ Loaded real tracks with UUIDs:', tracks.map(t => ({id: t.id, title: t.title})));
-        setRealTracks(tracks);
+        if (error) {
+          throw error;
+        }
+        
+        console.log('✅ Loaded real tracks with storage info:', tracks?.map(t => ({
+          id: t.id, 
+          title: t.title, 
+          file_path: t.file_path, 
+          storage_key: t.storage_key,
+          bucket: t.bucket_name
+        })));
+        
+        setRealTracks(tracks || []);
       } catch (error) {
         console.error('❌ Failed to load real tracks from database:', error);
         setRealTracks([]);
@@ -101,8 +112,10 @@ const AudioDiagnostics: React.FC = () => {
                 <div key={track.id} className="p-3 border rounded bg-gray-50">
                   <div className="mb-2">
                     <p className="font-medium text-gray-900">{track.title}</p>
-                    <p className="text-xs text-gray-600">Goal: {track.goal} • Genre: {track.genre}</p>
+                    <p className="text-xs text-gray-600">Genre: {track.genre} • BPM: {track.bpm}</p>
                     <p className="text-xs text-gray-500 font-mono">UUID: {track.id}</p>
+                    <p className="text-xs text-blue-600">Storage: {track.file_path || track.storage_key}</p>
+                    <p className="text-xs text-purple-600">Bucket: {track.bucket_name}</p>
                   </div>
                   
                   <div className="flex gap-2">
