@@ -106,7 +106,7 @@ const AIDJPage: React.FC = () => {
       console.log('🧪 Testing API connectivity on mount...');
       const tests = [
         { name: 'Health', test: () => API.health() },
-        { name: 'Debug Storage', test: () => fetch(`${API_BASE}/debug/storage`).then(r => r.json()) },
+        { name: 'Debug Storage', test: () => fetch(`${API_BASE}/api/debug/storage`).then(r => r.json()) },
         { name: 'External Test', test: () => fetch('https://httpbin.org/get').then(r => r.json()) }
       ];
       
@@ -429,7 +429,7 @@ const AIDJPage: React.FC = () => {
                         console.log('✅ Health check passed:', health);
                         
                         console.log('🔧 Testing debug storage...');
-                        const debug = await fetch(`${API_BASE}/debug/storage`).then(r => r.json());
+                        const debug = await fetch(`${API_BASE}/api/debug/storage`).then(r => r.json());
                         console.log('✅ Debug storage response:', debug);
                         
                         console.log('🔧 Testing playlist API...');

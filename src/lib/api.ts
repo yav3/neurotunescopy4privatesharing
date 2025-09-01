@@ -3,21 +3,21 @@ import { API_BASE } from "@/lib/env";
 const j = async <T>(r: Response) => { if(!r.ok) throw new Error(`${r.status} ${await r.text()}`); return r.json() as T; };
 
 export const API = {
-  health:       () => fetch(`${API_BASE}/api/health`).then(j),
+  health:       () => fetch(`${API_BASE}/health`).then(j),
   playlist:     (goal: string, limit = 50, offset = 0) =>
-                  fetch(`${API_BASE}/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`)
+                  fetch(`${API_BASE}/api/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`)
                     .then(j<{tracks:any[]; total:number; nextOffset:number}>),
   buildSession: (p:{goal:string; durationMin:number; intensity:number; limit?:number}) =>
-                  fetch(`${API_BASE}/session/build`, { 
+                  fetch(`${API_BASE}/api/session/build`, { 
                     method:"POST", 
                     headers:{ "content-type":"application/json" }, 
                     body: JSON.stringify({ ...p, limit: p.limit ?? 50 })
                   }).then(j<{tracks:any[];sessionId:string}>),
-  start:        (trackId:string) => fetch(`${API_BASE}/sessions/start`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({trackId})}).then(j<{sessionId:string}>),
+  start:        (trackId:string) => fetch(`${API_BASE}/api/sessions/start`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({trackId})}).then(j<{sessionId:string}>),
   progress:     (sessionId:string, t:number) =>
-                  navigator.sendBeacon?.(`${API_BASE}/sessions/progress`, new Blob([JSON.stringify({sessionId,t})], {type:"application/json"}))
-                  || fetch(`${API_BASE}/sessions/progress`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({sessionId,t})}),
-  complete:     (sessionId:string) => fetch(`${API_BASE}/sessions/complete`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({sessionId})}),
+                  navigator.sendBeacon?.(`${API_BASE}/api/sessions/progress`, new Blob([JSON.stringify({sessionId,t})], {type:"application/json"}))
+                  || fetch(`${API_BASE}/api/sessions/progress`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({sessionId,t})}),
+  complete:     (sessionId:string) => fetch(`${API_BASE}/api/sessions/complete`, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({sessionId})}),
   
   // Compatibility aliases
   get playlistByGoal() { return this.playlist },
@@ -35,6 +35,6 @@ export const streamUrl = (t: { id: string; title?: string }) => {
     throw new Error(`No valid track ID for track: ${t.title || 'Unknown'}`);
   }
   
-  // Use new Range-aware stream endpoint
-  return `${API_BASE}/api/stream/${encodeURIComponent(t.id)}`;
+  // Use new Range-aware stream endpoint  
+  return `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${encodeURIComponent(t.id)}`;
 };
