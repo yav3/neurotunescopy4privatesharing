@@ -1,16 +1,23 @@
-// Single source of truth for API base (works on Lovable, Replit, Railway, Vercel)
+// Single source of truth for API base with strict validation
 export const API_BASE = (() => {
-  const v =
+  const raw =
     (typeof import.meta !== "undefined"
       ? (import.meta as any).env?.VITE_API_BASE_URL
       : process.env.NEXT_PUBLIC_API_BASE_URL) || "";
 
-  if (!/^https?:\/\//.test(v)) {
+  if (!/^https?:\/\//.test(raw)) {
     throw new Error(
-      `API base misconfigured: '${v}'. Set VITE_API_BASE_URL or NEXT_PUBLIC_API_BASE_URL to an absolute https URL, e.g. https://api.yourdomain.com`
+      `VITE_API_BASE_URL must include protocol (http:// or https://). Got: '${raw}'`
     );
   }
-  return v.replace(/\/+$/, "");
+  
+  // Strip trailing slash to prevent double slashes
+  const cleaned = raw.replace(/\/+$/, "");
+  console.log("[API_BASE]", cleaned);
+  return cleaned;
 })();
 
-console.log("[API_BASE]", API_BASE);
+// Validation on module load
+if (!API_BASE) {
+  throw new Error("API_BASE is empty after validation");
+}

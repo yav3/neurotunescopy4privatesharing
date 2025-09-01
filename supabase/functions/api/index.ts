@@ -1,15 +1,43 @@
-// deno-lint-ignore-file no-explicit-any
 import { Hono } from "https://deno.land/x/hono@v4.2.7/mod.ts";
 import { cors } from "https://deno.land/x/hono@v4.2.7/middleware.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const app = new Hono();
-app.use("/*", cors({
+
+// Enhanced CORS configuration
+const corsOptions = {
   origin: "*",
-  allowHeaders: ["Content-Type", "Authorization", "Range"],
+  allowHeaders: ["Content-Type", "Authorization", "Range", "x-client-info", "apikey"],
   allowMethods: ["GET", "HEAD", "POST", "OPTIONS"],
   exposeHeaders: ["Accept-Ranges", "Content-Length", "Content-Type", "Content-Range"]
-}));
+};
+
+app.use("/*", cors(corsOptions));
+
+// Handle CORS preflight requests
+app.options("/*", (c) => {
+  return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
+      "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
+    },
+  });
+});
+
+// Enhanced JSON response helper
+function jsonResponse(data: any, init: ResponseInit = {}) {
+  return new Response(JSON.stringify(data), {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, x-client-info, apikey",
+      "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
+      ...init.headers,
+    },
+    status: init.status ?? 200,
+  });
+}
 
 // Supabase admin client
 function sb() {
@@ -21,8 +49,8 @@ function sb() {
 }
 
 /** Health endpoint */
-app.get("/api/health", (c) =>
-  c.json({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
+app.get("/health", (c) =>
+  jsonResponse({ ok: true, time: new Date().toISOString(), service: "NeuroTunes API" })
 );
 
 /** ✅ Tracks Search endpoint for therapeutic flow */
@@ -112,11 +140,9 @@ app.get("/api/tracks/search", async (c) => {
   return c.json(formatted);
 });
 
-/** ✅ Playlist endpoint */
-app.get("/api/playlist", async (c) => {
-  const goal = c.req.query("goal") ?? "";
-  const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
-  const offset = Math.max(Number(c.req.query("offset") ?? 0), 0);
+/** ✅ Playlist endpoint - Updated for consistent response format */
+app.post("/api/playlist", async (c) => {
+  const { goal = "", limit = 50, offset = 0 } = await c.req.json().catch(() => ({}));
   console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
   const supabase = sb();
@@ -161,11 +187,11 @@ app.get("/api/playlist", async (c) => {
   
   if (error) {
     console.error('❌ Database error:', error);
-    return c.json({ ok: false, error: error.message }, 500);
+    return jsonResponse({ ok: false, error: error.message }, { status: 500 });
   }
 
   console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
-  return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
+  return jsonResponse({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
 });
 
 /** Build session endpoint */
@@ -323,9 +349,50 @@ app.post("/api/v1/stream", async (c) => {
   });
 });
 
+/** Audio streaming endpoint with proper headers */
+app.get("/api/stream", async (c) => {
+  const id = c.req.query("id");
+  if (!id) {
+    return jsonResponse({ error: "Missing track ID parameter" }, { status: 400 });
+  }
+  
+  console.log(`🎵 Stream request for track: ${id}`);
+  
+  // For now, return a placeholder response since actual streaming is handled by /stream function
+  // This endpoint validates the ID exists and provides metadata
+  const supabase = sb();
+  const { data: track, error } = await supabase
+    .from('music_tracks')
+    .select('id, title, file_path, storage_key')
+    .eq('id', id)
+    .eq('upload_status', 'completed')
+    .single();
+    
+  if (error || !track) {
+    console.error('❌ Track not found:', id, error);
+    return jsonResponse({ error: "Track not found" }, { status: 404 });
+  }
+  
+  // Return stream metadata with proper audio headers
+  return new Response(JSON.stringify({
+    id: track.id,
+    title: track.title,
+    streamUrl: `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${id}`,
+    ready: true
+  }), {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept-Ranges": "bytes",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
+      "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+    }
+  });
+});
+
 // All other streaming endpoints removed - handled by dedicated functions to prevent race conditions
 
 /** JSON 404 with exact path debugging */
-app.notFound((c) => c.json({ ok: false, error: "NotFound", path: c.req.path }, 404));
+app.notFound((c) => jsonResponse({ ok: false, error: "NotFound", path: c.req.path }, { status: 404 }));
 
 export default app;

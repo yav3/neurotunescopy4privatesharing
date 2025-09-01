@@ -10,6 +10,7 @@ import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
+import { ApiStatusChip } from '@/components/ApiStatusChip'
 import { API_BASE } from '@/lib/env'
 import { useAudioStore } from '@/stores/audioStore'
 import { Navigation } from '@/components/Navigation'
@@ -406,6 +407,9 @@ const AIDJPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  {/* API Status Indicator */}
+                  <ApiStatusChip />
+                  
                   {/* Audio Test Button */}
                   <Button
                     variant="ghost"
