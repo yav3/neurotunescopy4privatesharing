@@ -154,7 +154,7 @@ const AIDJPage: React.FC = () => {
       
       // Call the real backend API instead of generating mock data
       console.log('📡 Making API call to fetch playlist...');
-      const response = await API.playlist(goal, 50, 0);
+      const response = await API.playlist({ goal, limit: 50, offset: 0 });
       console.log('📡 Raw API response:', response);
       
       const { tracks } = response;
@@ -170,10 +170,10 @@ const AIDJPage: React.FC = () => {
       // Convert to proper format with therapeutic applications if missing
       const processedTracks = tracks.map(track => ({
         ...track,
-        therapeutic_applications: track.therapeutic_applications || [{
+        therapeutic_applications: (track as any).therapeutic_applications || [{
           id: `app-${track.id}`,
           track_id: track.id,
-          frequency_band_primary: getBandFromBPM(track.bpm),
+          frequency_band_primary: getBandFromBPM((track as any).bpm || 120),
           condition_targets: [mood === 'focus' ? 'focus' : mood === 'energy' ? 'energy' : mood === 'sleep' ? 'sleep' : 'relaxation'],
           anxiety_evidence_score: mood === 'relax' ? 0.85 : 0.6,
           sleep_evidence_score: mood === 'sleep' ? 0.92 : 0.3,
@@ -437,7 +437,7 @@ const AIDJPage: React.FC = () => {
                         console.log('✅ Debug storage response:', debug);
                         
                         console.log('🔧 Testing playlist API...');
-                        const playlist = await API.playlist('focus', 10, 0); // Small sample for testing
+                        const playlist = await API.playlist({ goal: 'focus', limit: 10, offset: 0 }); // Small sample for testing
                         console.log('✅ Playlist response:', playlist);
                       } catch (error) {
                         console.error('❌ API Test failed:', error);

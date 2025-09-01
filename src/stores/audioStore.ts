@@ -146,7 +146,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log('🎵 Starting therapeutic session for goal:', goal);
         
         // Fetch tracks from API
-        const response = await API.playlist(goal);
+        const response = await API.playlist({ goal });
         console.log('🎵 API response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {
