@@ -74,7 +74,7 @@ routes.set("GET /tracks/search", async (req) => {
     amax = Math.min(amax, 0.45); 
   }
   if (goal === "mood_up" || goal === "pain_down") { 
-    vmin = Math.max(vmin, 0.80); 
+    vmin = Math.max(vmin, 0.75); 
   }
 
   let query = supabase
