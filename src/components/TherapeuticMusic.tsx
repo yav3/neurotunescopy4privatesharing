@@ -10,12 +10,13 @@ interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
-// Map category IDs to goal strings for the API
+// Map category IDs to goal strings that match the backend API exactly
 const CATEGORY_TO_GOAL: Record<string, string> = {
   "focus": "focus enhancement",
-  "relax": "stress reduction", 
+  "anxiety": "anxiety relief", 
+  "stress": "stress reduction",
   "sleep": "sleep preparation",
-  "energy": "mood boost"
+  "mood": "mood boost"
 };
 
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
@@ -23,9 +24,10 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   
   const categories = [
     { id: "focus", title: "Focus Enhancement", image: focusArtwork },
-    { id: "relax", title: "Stress Reduction", image: moodBoostArtwork },
+    { id: "anxiety", title: "Anxiety Relief", image: acousticArtwork },
+    { id: "stress", title: "Stress Reduction", image: moodBoostArtwork },
     { id: "sleep", title: "Sleep Preparation", image: sleepArtwork },
-    { id: "energy", title: "Mood Boost", image: acousticArtwork },
+    { id: "mood", title: "Mood Boost", image: moodBoostArtwork },
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
@@ -63,7 +65,7 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
           <p className="text-muted-foreground">Scientifically ordered tracks using VAD and Camelot wheel harmonic progression</p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {categories.map((category) => (
             <MusicCategoryCard
               key={category.id}
