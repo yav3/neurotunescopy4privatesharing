@@ -66,15 +66,16 @@ routes.set("GET /tracks/search", async (req) => {
   let amax = arousal_max;
   
   if (goal === "focus_up") { 
-    vmin = Math.max(vmin, 0.70); 
-    amax = Math.min(amax, 0.50); 
+    vmin = Math.max(vmin, 0.60); 
+    amax = Math.min(amax, 0.60); 
   }
   if (goal === "anxiety_down" || goal === "sleep") { 
-    vmin = Math.max(vmin, 0.65); 
-    amax = Math.min(amax, 0.45); 
+    vmin = Math.max(vmin, 0.55); 
+    amax = Math.min(amax, 0.55); 
   }
   if (goal === "mood_up" || goal === "pain_down") { 
-    vmin = Math.max(vmin, 0.80); 
+    vmin = Math.max(vmin, 0.65); 
+    amax = Math.min(amax, 0.75); 
   }
 
   let query = supabase
@@ -153,8 +154,8 @@ routes.set("POST /playlist", async (req) => {
     'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'sleep preparation': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] },
-    'mood_boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] }
+    'mood boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
+    'mood_boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
@@ -206,8 +207,8 @@ routes.set("POST /session/build", async (req) => {
     'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'sleep preparation': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] },
-    'mood_boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] }
+    'mood boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
+    'mood_boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
