@@ -66,16 +66,15 @@ routes.set("GET /tracks/search", async (req) => {
   let amax = arousal_max;
   
   if (goal === "focus_up") { 
-    vmin = Math.max(vmin, 0.60); 
-    amax = Math.min(amax, 0.60); 
+    vmin = Math.max(vmin, 0.70); 
+    amax = Math.min(amax, 0.50); 
   }
   if (goal === "anxiety_down" || goal === "sleep") { 
-    vmin = Math.max(vmin, 0.55); 
-    amax = Math.min(amax, 0.55); 
+    vmin = Math.max(vmin, 0.65); 
+    amax = Math.min(amax, 0.45); 
   }
   if (goal === "mood_up" || goal === "pain_down") { 
-    vmin = Math.max(vmin, 0.65); 
-    amax = Math.min(amax, 0.75); 
+    vmin = Math.max(vmin, 0.80); 
   }
 
   let query = supabase
