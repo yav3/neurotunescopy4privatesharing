@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Play, CheckCircle, XCircle, AlertCircle, RefreshCw } from 'lucide-react'
+import { API } from '@/lib/api'
 
 interface TestResult {
   name: string
@@ -141,11 +142,9 @@ export const AudioTester: React.FC = () => {
       setResults([...newResults])
 
       // Try to get a sample track from database
-      const response = await fetch('/api/v1/playlist?goal=focus')
-      if (response.ok) {
-        const data = await response.json()
-        const tracks = data.tracks || []
-        if (tracks.length > 0) {
+      const data = await API.playlist({ goal: 'focus' })
+      const tracks = data.tracks || []
+      if (tracks.length > 0) {
           const sampleTrack = tracks[0]
           
           // Test streaming URL generation
@@ -178,9 +177,6 @@ export const AudioTester: React.FC = () => {
             details: { tracksFound: 0 }
           }
         }
-      } else {
-        throw new Error(`Failed to fetch tracks: HTTP ${response.status}`)
-      }
     } catch (error) {
       newResults[newResults.length - 1] = {
         name: 'Sample Track Test',
