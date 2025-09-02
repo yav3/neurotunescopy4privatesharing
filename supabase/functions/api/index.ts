@@ -153,8 +153,8 @@ routes.set("POST /playlist", async (req) => {
     'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'sleep preparation': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood_boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
+    'mood boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] },
+    'mood_boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
@@ -206,8 +206,8 @@ routes.set("POST /session/build", async (req) => {
     'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'sleep preparation': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
     'energy': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'mood_boost': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] }
+    'mood boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] },
+    'mood_boost': { energy: [0.4, 0.8], valence: [0.6, 1.0], genres: ['classical', 'instrumental', 'acoustic'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
