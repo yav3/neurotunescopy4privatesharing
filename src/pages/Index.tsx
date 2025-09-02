@@ -7,42 +7,20 @@ import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilde
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
-import { useAudio } from "@/context";
+import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "@/hooks/use-toast";
-import { playFromGoal } from "@/actions/playFromGoal";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("goals");
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { setPlaylist, currentTrack, loadTrack, state, toggle } = useAudio();
+  const { currentTrack } = useAudioStore();
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
-    
-    // Show feedback to user
-    toast({
-      title: "Loading Music",
-      description: `Preparing ${category} tracks for you...`,
-    });
-    
-    try {
-      // Direct playback for category selection
-      await playFromGoal(category);
-      
-      toast({
-        title: "Music Started",
-        description: `Now playing ${category} tracks`,
-      });
-    } catch (error) {
-      console.error('Failed to start category music:', error);
-      toast({
-        title: "Failed to Load Music",
-        description: "Please try again",
-        variant: "destructive"
-      });
-    }
+    // Category playback is now handled directly in TherapeuticMusic component
+    // No need to call playFromGoal again here to avoid conflicts
   };
 
   const handleSessionStart = async (tracks: any[]) => {

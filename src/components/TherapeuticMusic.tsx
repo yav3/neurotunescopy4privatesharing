@@ -3,24 +3,23 @@ import focusArtwork from "@/assets/focus-artwork.jpg";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import { useTherapeuticFlow } from "@/controllers/useTherapeuticFlow";
+import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "sonner";
-import type { TherapeuticGoal } from "@/types/music";
 
 interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
-// Map category IDs to therapeutic goals
-const CATEGORY_TO_GOAL: Record<string, TherapeuticGoal> = {
-  "focus": "focus_up",
-  "relax": "anxiety_down", 
-  "sleep": "sleep",
-  "energy": "mood_up"
+// Map category IDs to goal strings for the API
+const CATEGORY_TO_GOAL: Record<string, string> = {
+  "focus": "focus enhancement",
+  "relax": "stress reduction", 
+  "sleep": "sleep preparation",
+  "energy": "mood boost"
 };
 
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
-  const flow = useTherapeuticFlow();
+  const { playFromGoal, isLoading } = useAudioStore();
   
   const categories = [
     { id: "focus", title: "Focus Enhancement", image: focusArtwork },
@@ -36,13 +35,17 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
       return;
     }
 
+    if (isLoading) {
+      toast.error("Already loading music, please wait...");
+      return;
+    }
+
     toast.loading(`Preparing therapeutic ${categoryTitle.toLowerCase()} session…`, { id: "goal" });
     try {
       console.log('🎵 Starting therapeutic session from category:', categoryId, categoryTitle, 'goal:', goal);
       
-      // Select goal and start the therapeutic flow
-      flow.selectGoal(goal);
-      await flow.start();
+      // Use unified audio store for playback
+      await playFromGoal(goal);
       
       toast.success(`Playing therapeutically ordered ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
       onCategorySelect?.(categoryTitle);
