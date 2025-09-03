@@ -130,6 +130,8 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     if (!error) {
       const tracks = data ?? [];
       console.log(`✅ /playlist using cs=[${csCols.join(",")}] ilike=[${ilikeCols.join(",")}] -> ${tracks.length}`);
+      console.log('📊 Sample track data:', tracks.slice(0, 2));
+      console.log('🔍 Raw response being sent:', JSON.stringify({ tracks: tracks.slice(0, 1), total: tracks.length, nextOffset: offset + tracks.length }));
       return new Response(
         JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
