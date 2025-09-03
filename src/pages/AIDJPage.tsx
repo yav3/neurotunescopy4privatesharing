@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
-// Use the new player store instead of AudioContext
 import { TrackCard } from '@/components/TrackCard'
 import AudioTester from '@/components/AudioTester'
 import { AudioDebugger } from '@/components/AudioDebugger'
@@ -15,8 +14,9 @@ import { API_BASE } from '@/lib/env'
 import { useAudioStore } from '@/stores/audioStore'
 import { Navigation } from '@/components/Navigation'
 import { NowPlaying } from '@/components/NowPlaying'
-import { toast } from '@/hooks/use-toast'
-import type { Track, MusicTrack } from '@/types'
+import { toast } from "@/hooks/use-toast"
+import { toGoalSlug } from "@/domain/goals"
+import type { Track } from '@/types'
 
 // Debug hook for React components
 const useDebugComponent = (componentName: string, props: any, state: any) => {
@@ -85,7 +85,7 @@ const AIDJPage: React.FC = () => {
   const [selectedMood, setSelectedMood] = useState<string>('')
   const [selectedGenre, setSelectedGenre] = useState<string>('all')
   const [isFullscreenMode, setIsFullscreenMode] = useState(false)
-  const [localPlaylist, setLocalPlaylist] = useState<MusicTrack[]>([])
+  const [localPlaylist, setLocalPlaylist] = useState<Track[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [showAudioTester, setShowAudioTester] = useState(false)
 
@@ -154,7 +154,10 @@ const AIDJPage: React.FC = () => {
       
       // Call the real backend API instead of generating mock data
       console.log('📡 Making API call to fetch playlist...');
-      const response = await API.playlist({ goal, limit: 50, offset: 0 });
+      const goalSlug = toGoalSlug(goal);
+      console.log(`🎵 Mapped "${goal}" to goal slug: "${goalSlug}"`);
+      
+      const response = await API.playlist(goalSlug, 50);
       console.log('📡 Raw API response:', response);
       
       const { tracks } = response;
@@ -437,7 +440,8 @@ const AIDJPage: React.FC = () => {
                         console.log('✅ Debug storage response:', debug);
                         
                         console.log('🔧 Testing playlist API...');
-                        const playlist = await API.playlist({ goal: 'focus', limit: 10, offset: 0 }); // Small sample for testing
+                        const goalSlug = toGoalSlug('focus');
+                        const playlist = await API.playlist(goalSlug, 10);
                         console.log('✅ Playlist response:', playlist);
                       } catch (error) {
                         console.error('❌ API Test failed:', error);

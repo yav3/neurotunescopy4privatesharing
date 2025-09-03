@@ -3,6 +3,7 @@ import { buildStreamUrl } from "@/lib/stream";
 import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
+import { toGoalSlug } from '@/domain/goals';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -45,10 +46,26 @@ type AudioState = {
 };
 
 // Single audio element
+// Runtime guard to detect multiple audio elements
+if (typeof window !== "undefined") {
+  const existing = document.querySelectorAll("audio");
+  if (existing.length > 1) {
+    console.error("[audio] Multiple <audio> elements detected:", existing);
+  }
+}
+
 let audioElement: HTMLAudioElement | null = null;
 
-const getAudioElement = (): HTMLAudioElement => {
+const ensureAudioElement = (): HTMLAudioElement => {
   if (audioElement && document.body.contains(audioElement)) return audioElement;
+  
+  // Clean up any existing audio elements first
+  document.querySelectorAll("audio").forEach(el => {
+    if (el.id !== "audio-player") {
+      console.warn("[audio] Removing duplicate audio element:", el.id || "no-id");
+      el.remove();
+    }
+  });
   
   audioElement = document.getElementById("audio-player") as HTMLAudioElement;
   if (!audioElement) {
@@ -58,6 +75,7 @@ const getAudioElement = (): HTMLAudioElement => {
     audioElement.crossOrigin = "anonymous";
     audioElement.style.display = "none";
     document.body.appendChild(audioElement);
+    console.log("🎵 Created unified audio element #audio-player");
   }
   return audioElement;
 };
@@ -67,7 +85,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   
   // Initialize audio element and events
   const initAudio = () => {
-    const audio = getAudioElement();
+    const audio = ensureAudioElement();
     
     console.log('🎵 Audio element initialized:', audio.id, 'src:', audio.src);
     
@@ -193,7 +211,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log('🎵 Starting therapeutic session for goal:', goal);
         
         // Fetch tracks from API
-        const response = await API.playlist({ goal });
+        const goalSlug = toGoalSlug(goal);
+        const response = await API.playlist(goalSlug);
         console.log('🎵 API response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {

@@ -1,19 +1,6 @@
-// Single source of truth for API base (must be absolute)
-const RAW_BASE =
-  (typeof import.meta !== "undefined" ? (import.meta as any).env?.VITE_API_BASE_URL : undefined) ||
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "";
-
-if (!/^https?:\/\//.test(RAW_BASE)) {
-  throw new Error(
-    `API base misconfigured: '${RAW_BASE}'. Set VITE_API_BASE_URL (e.g. https://<project>.functions.supabase.co/functions/v1)`
-  );
-}
-
-// Ensure /api is appended if not present
-export const API_BASE = RAW_BASE.replace(/\/+$/, "").endsWith("/api")
-  ? RAW_BASE.replace(/\/+$/, "")
-  : RAW_BASE.replace(/\/+$/, "") + "/api";
+import { API_BASE } from "./env";
+import { logger } from "@/services/logger";
+import type { GoalSlug } from "@/domain/goals";
 
 function join(base: string, path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -67,11 +54,10 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const API = {
   health: () => req<{ ok: true }>("/health"),
-  playlist: (body: { goal: string; limit?: number; offset?: number }) =>
-    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/playlist", {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
+  async playlist(goal: GoalSlug, limit = 50, offset = 0) {
+    const url = `/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`;
+    return req<{ tracks: Array<{ id: string; title: string; artist?: string; genre?: string }> }>(url);
+  },
   debugStorage: () => req<any>("/debug/storage"),
   streamUrl: (id: string) => {
     if (!id) {
@@ -137,7 +123,7 @@ export const API = {
     const health = await API.health();
     console.log("✅ Health check:", health);
     
-    const { tracks } = await API.playlist({ goal: "focus", limit: 1 });
+    const { tracks } = await API.playlist("focus-enhancement", 1);
     if (!tracks?.length) throw new Error("No tracks returned");
     console.log("✅ Playlist check:", tracks[0]);
     

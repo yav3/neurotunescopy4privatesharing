@@ -11,6 +11,7 @@ import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "@/hooks/use-toast";
 import { API } from "@/lib/api";
+import { toGoalSlug } from "@/domain/goals";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("goals");
