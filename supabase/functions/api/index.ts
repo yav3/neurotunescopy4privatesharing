@@ -82,6 +82,11 @@ Deno.serve(async (req) => {
       return handleAuditVerifyRequest(req);
     }
 
+    // Admin batch audit endpoint
+    if (path === '/admin/audit' || path === '/api/admin/audit') {
+      return handleAdminAuditRequest(req);
+    }
+
     return new Response('Not Found', { status: 404, headers: corsHeaders });
   } catch (err) {
     console.error('API Error:', err);
@@ -126,7 +131,8 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     const orExpr = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
     let q = supabase
       .from("tracks")
-      .select("id,title,genre,mood,storage_key", { count: "exact" })
+      .select("id,title,genre,mood,storage_key,audio_status", { count: "exact" })
+      .eq("audio_status", "working")  // Only return working tracks
       .not("storage_key","is",null)
       .neq("storage_key","")
       // Use a stable column to sort; 'id' is safest across schemas
@@ -321,6 +327,98 @@ async function handleStreamDiag(req: Request): Promise<Response> {
   out.head_len = head.headers.get('content-length');
 
   return json({ ok: head.status < 400, ...out });
+}
+
+// ---------- ADMIN BATCH AUDIT ----------
+async function handleAdminAuditRequest(req: Request): Promise<Response> {
+  // Check admin authorization
+  const adminKey = Deno.env.get('ADMIN_KEY');
+  const authHeader = req.headers.get('x-admin-key') || req.headers.get('Authorization')?.replace('Bearer ', '');
+  
+  if (!adminKey || !authHeader || authHeader !== adminKey) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
+  const id = rid();
+  const supabase = sb();
+  const url = new URL(req.url);
+  const limit = Math.min(parseInt(url.searchParams.get('limit') || '100'), 1000);
+  const offset = Math.max(0, parseInt(url.searchParams.get('offset') || '0'));
+  const dry = url.searchParams.get('dry') === '1';
+
+  log(id, 'audit:start', { limit, offset, dry });
+
+  try {
+    // Get batch of tracks to audit
+    const { data: tracks, error } = await supabase
+      .from('tracks')
+      .select('id, storage_bucket, storage_key, audio_status')
+      .not('storage_key', 'is', null)
+      .neq('storage_key', '')
+      .range(offset, offset + limit - 1)
+      .order('id');
+
+    if (error) {
+      log(id, 'audit:db_error', { error: error.message });
+      return json({ error: 'Database query failed' }, 500);
+    }
+
+    let working = 0;
+    let missing = 0;
+    const updates: Array<{ id: string; status: string }> = [];
+
+    // Check each track
+    for (const track of tracks || []) {
+      const bucket = track.storage_bucket || DEFAULT_BUCKET;
+      
+      try {
+        // Sign and HEAD check
+        const signed = await supabase.storage.from(bucket).createSignedUrl(track.storage_key, 120);
+        if (!signed.data?.signedUrl) {
+          missing++;
+          updates.push({ id: track.id, status: 'missing' });
+          continue;
+        }
+
+        const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
+        if (head.status < 400) {
+          working++;
+          updates.push({ id: track.id, status: 'working' });
+        } else {
+          missing++;
+          updates.push({ id: track.id, status: 'missing' });
+        }
+      } catch (err) {
+        missing++;
+        updates.push({ id: track.id, status: 'missing' });
+      }
+    }
+
+    // Apply updates if not dry run
+    if (!dry && updates.length > 0) {
+      for (const update of updates) {
+        await supabase
+          .from('tracks')
+          .update({ audio_status: update.status })
+          .eq('id', update.id);
+      }
+    }
+
+    log(id, 'audit:complete', { total: tracks?.length || 0, working, missing, dry });
+
+    return json({
+      rid: id,
+      total: tracks?.length || 0,
+      working,
+      missing,
+      dry,
+      processed: updates.length
+    });
+
+  } catch (error) {
+    log(id, 'audit:error', { error: error.message });
+    return json({ error: 'Audit failed' }, 500);
+  }
 }
 
 // Storage debug endpoint - shows sample storage info
