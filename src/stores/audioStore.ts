@@ -144,6 +144,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const url = buildStreamUrl(track.id);
       console.log('🎵 Stream URL built:', url);
       
+      // Test if the stream URL is accessible
+      console.log('🎵 Testing stream URL accessibility...');
+      try {
+        const testResponse = await fetch(url, { method: 'HEAD' });
+        console.log('🎵 Stream URL test result:', testResponse.status, testResponse.statusText);
+        if (!testResponse.ok) {
+          throw new Error(`Stream URL not accessible: ${testResponse.status} ${testResponse.statusText}`);
+        }
+      } catch (error) {
+        console.error('🎵 Stream URL test failed:', error);
+        throw error;
+      }
+      
       audio.src = url;
       console.log('🎵 Audio src set, attempting to load...');
       
