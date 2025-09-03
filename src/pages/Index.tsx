@@ -7,7 +7,7 @@ import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilde
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
-import { AudioDebugPanel } from "@/components/AudioDebugPanel";
+import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "@/hooks/use-toast";
 
@@ -74,8 +74,8 @@ const Index = () => {
       
       <Navigation activeTab={activeNavTab} onTabChange={handleNavTabChange} />
       
-      {/* Audio Debug Panel - development only */}
-      {import.meta.env.DEV && <AudioDebugPanel />}
+      {/* Audio Debug Tools - development only */}
+      {import.meta.env.DEV && <AudioSystemDebugger />}
       
       <MusicPlayer open={showPlayer} onOpenChange={setShowPlayer} />
       

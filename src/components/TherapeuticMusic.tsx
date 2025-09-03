@@ -5,6 +5,7 @@ import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "sonner";
+import { registerAudioSystem } from "@/components/AudioSystemDebugger";
 
 interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
@@ -22,6 +23,9 @@ const CATEGORY_TO_GOAL: Record<string, string> = {
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
   const { playFromGoal, isLoading } = useAudioStore();
   
+  // 🔍 DEBUG: Register this component's audio usage
+  registerAudioSystem('TherapeuticMusic');
+  
   const categories = [
     { id: "focus", title: "Focus Enhancement", image: focusArtwork },
     { id: "anxiety", title: "Anxiety Relief", image: acousticArtwork },
@@ -31,7 +35,16 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   ];
 
   const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
+    // 🔍 DEBUG: Log category selection
+    console.group(`🎯 Therapeutic Category Selected: ${categoryId}`);
+    console.log('Category ID:', categoryId);
+    console.log('Category Title:', categoryTitle);
+    console.log('Is Loading:', isLoading);
+    
     const goal = CATEGORY_TO_GOAL[categoryId];
+    console.log('Mapped Goal:', goal);
+    console.groupEnd();
+    
     if (!goal) {
       toast.error("Invalid category selected");
       return;
