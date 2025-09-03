@@ -9,12 +9,10 @@ import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
 import Index from "./pages/Index";
-
 import NotFound from "./pages/NotFound";
 import AIDJPage from "./pages/AIDJPage";
-import { EmotionDashboard } from "./pages/EmotionDashboard";
+import { UnifiedDashboard } from "./pages/UnifiedDashboard";
 import PlayerPage from "./pages/PlayerPage";
-import { ProfilePage } from "./pages/ProfilePage";
 import AudioDiagnostics from "./pages/AudioDiagnostics";
 
 const queryClient = new QueryClient();
@@ -28,10 +26,8 @@ const App = () => (
         <div className="relative min-h-screen">
           <Routes>
             <Route path="/" element={<Index />} />
-            
             <Route path="/ai-dj" element={<AIDJPage />} />
-            <Route path="/dashboard" element={<EmotionDashboard />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<UnifiedDashboard />} />
             <Route path="/player" element={<PlayerPage />} />
             <Route path="/diagnostics/audio" element={<AudioDiagnostics />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
