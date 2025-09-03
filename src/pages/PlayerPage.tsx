@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAudio } from "@/context";
+import { useAudioStore } from "@/stores/audioStore";
 import { SupabaseService } from "@/services/supabase";
 import FullPlayer from "@/components/FullPlayer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -8,9 +8,11 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 const PlayerPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { currentTrack, loadTrack } = useAudio();
+  const { currentTrack, playTrack } = useAudioStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  console.log('🎵 PlayerPage - currentTrack:', currentTrack?.title);
 
   useEffect(() => {
     const trackId = searchParams.get('track');
@@ -27,7 +29,7 @@ const PlayerPage = () => {
           
           if (demoTracks.length > 0) {
             console.log('Loading demo track for empty player:', demoTracks[0]);
-            await loadTrack(demoTracks[0]);
+            await playTrack(demoTracks[0]);
             return; // Don't navigate away if we successfully loaded a demo track
           }
           
@@ -59,7 +61,7 @@ const PlayerPage = () => {
             return;
           }
           
-          await loadTrack(track);
+          await playTrack(track);
         } catch (error) {
           console.error('Failed to load track:', error);
           setError('Failed to load track');
@@ -70,7 +72,7 @@ const PlayerPage = () => {
 
       fetchAndLoadTrack();
     }
-  }, [searchParams, currentTrack, navigate, loadTrack]);
+  }, [searchParams, currentTrack, navigate, playTrack]);
 
   if (isLoading) {
     return (
