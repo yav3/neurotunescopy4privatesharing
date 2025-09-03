@@ -58,6 +58,16 @@ Deno.serve(async (req) => {
       return handleStreamRequest(req);
     }
 
+    // Storage debug endpoint
+    if (path === '/debug/storage' || path === '/api/debug/storage') {
+      return handleStorageDebugRequest(req);
+    }
+
+    // Admin audit endpoint
+    if (path === '/audit/verify' || path === '/api/audit/verify') {
+      return handleAuditVerifyRequest(req);
+    }
+
     return new Response('Not Found', { status: 404, headers: corsHeaders });
   } catch (err) {
     console.error('API Error:', err);
@@ -190,4 +200,88 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   if (!h.get('Content-Type') && row.storage_key.toLowerCase().endsWith('.mp3')) h.set('Content-Type','audio/mpeg');
 
   return new Response(req.method === 'HEAD' ? null : upstream.body, { status: upstream.status, headers: h });
+}
+
+// Storage debug endpoint - shows sample storage info
+async function handleStorageDebugRequest(req: Request): Promise<Response> {
+  const url = new URL(req.url);
+  const limit = parseInt(url.searchParams.get('limit') || '10');
+  
+  try {
+    const supabase = sb();
+    
+    // Get sample tracks with storage info
+    const { data: tracks, error } = await supabase
+      .from('tracks')
+      .select('id, title, storage_bucket, storage_key, audio_status')
+      .limit(limit)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.log('❌ Debug query error:', error);
+      return json({ error: 'Database query failed' }, 500);
+    }
+
+    return json({
+      total_tracks: tracks?.length || 0,
+      tracks: tracks || [],
+      storage_buckets: ['audio', 'neuralpositivemusic'],
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.log('❌ Storage debug error:', error);
+    return json({ error: 'Debug request failed' }, 500);
+  }
+}
+
+// Admin-only audit endpoint - verifies storage integrity
+async function handleAuditVerifyRequest(req: Request): Promise<Response> {
+  // Check admin authorization
+  const adminKey = Deno.env.get('ADMIN_KEY');
+  const authHeader = req.headers.get('Authorization');
+  
+  if (!adminKey || !authHeader || authHeader !== `Bearer ${adminKey}`) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
+  try {
+    const supabase = sb();
+    
+    // Get tracks with missing or invalid storage
+    const { data: brokenTracks, error } = await supabase
+      .rpc('find_broken_tracks');
+
+    if (error) {
+      console.log('❌ Audit query error:', error);
+      return json({ error: 'Audit query failed' }, 500);
+    }
+
+    // Get tracks marked as working but might be broken
+    const { data: suspiciousTracks, error: suspiciousError } = await supabase
+      .from('tracks')
+      .select('id, title, storage_bucket, storage_key, audio_status')
+      .eq('audio_status', 'working')
+      .or('storage_key.is.null,storage_key.eq.,storage_bucket.is.null')
+      .limit(50);
+
+    if (suspiciousError) {
+      console.log('❌ Suspicious tracks query error:', suspiciousError);
+    }
+
+    return json({
+      audit_timestamp: new Date().toISOString(),
+      broken_tracks: brokenTracks || [],
+      suspicious_tracks: suspiciousTracks || [],
+      recommendations: [
+        'Update audio_status to "missing" for tracks without storage_key',
+        'Verify storage bucket accessibility', 
+        'Check for orphaned storage files'
+      ]
+    });
+    
+  } catch (error) {
+    console.log('❌ Audit verify error:', error);
+    return json({ error: 'Audit verification failed' }, 500);
+  }
 }
