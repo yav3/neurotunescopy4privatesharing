@@ -32,6 +32,12 @@ const SUPABASE_URL  = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'neuralpositivemusic';
 
+console.log('🔧 Environment check:', {
+  hasUrl: !!SUPABASE_URL,
+  hasKey: !!SERVICE_KEY,
+  bucket: DEFAULT_BUCKET
+});
+
 function wordsFor(goal: string): string[] {
   const g = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
   return [g, ...(alias[g] ?? [])];
