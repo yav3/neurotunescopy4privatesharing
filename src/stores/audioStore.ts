@@ -63,47 +63,74 @@ const getAudioElement = (): HTMLAudioElement => {
 };
 
 export const useAudioStore = create<AudioState>((set, get) => {
-  let audio: HTMLAudioElement;
+  let eventListenersAdded = false;
   
   // Initialize audio element and events
   const initAudio = () => {
-    if (audio) return audio;
+    const audio = getAudioElement();
     
-    audio = getAudioElement();
+    console.log('🎵 Audio element initialized:', audio.id, 'src:', audio.src);
     
-    audio.addEventListener("play", () => set({ isPlaying: true }));
-    audio.addEventListener("pause", () => set({ isPlaying: false }));
-    audio.addEventListener("ended", () => {
-      set({ isPlaying: false });
+    // Only add event listeners once
+    if (!eventListenersAdded) {
+      const handlePlay = () => {
+        console.log('🎵 Audio play event fired');
+        set({ isPlaying: true });
+      };
       
-      // 🔄 MIRROR BACKEND: Complete session when queue ends
-      const { queue, index } = get();
-      const isLastTrack = index >= queue.length - 1;
+      const handlePause = () => {
+        console.log('🎵 Audio pause event fired'); 
+        set({ isPlaying: false });
+      };
       
-      if (isLastTrack && sessionManager) {
-        console.log('🎵 Session completed - last track finished');
-        sessionManager.completeSession().catch(console.error);
-      }
+      const handleEnded = () => {
+        console.log('🎵 Audio ended event fired');
+        set({ isPlaying: false });
+        
+        // 🔄 MIRROR BACKEND: Complete session when queue ends
+        const { queue, index } = get();
+        const isLastTrack = index >= queue.length - 1;
+        
+        if (isLastTrack && sessionManager) {
+          console.log('🎵 Session completed - last track finished');
+          sessionManager.completeSession().catch(console.error);
+        }
+        
+        get().next();
+      };
       
-      get().next();
-    });
-    audio.addEventListener("timeupdate", () => {
-      const currentTime = audio.currentTime;
-      const duration = audio.duration || 0;
+      const handleTimeUpdate = () => {
+        const currentTime = audio.currentTime;
+        const duration = audio.duration || 0;
+        
+        set({ currentTime });
+        
+        // 🔄 MIRROR BACKEND: Track session progress
+        if (sessionManager && duration > 0) {
+          sessionManager.trackProgress(currentTime, duration);
+        }
+      };
       
-      set({ currentTime });
+      const handleLoadedMetadata = () => {
+        console.log('🎵 Audio metadata loaded, duration:', audio.duration);
+        set({ duration: audio.duration || 0 });
+      };
       
-      // 🔄 MIRROR BACKEND: Track session progress
-      if (sessionManager && duration > 0) {
-        sessionManager.trackProgress(currentTime, duration);
-      }
-    });
-    audio.addEventListener("loadedmetadata", () => {
-      set({ duration: audio.duration || 0 });
-    });
-    audio.addEventListener("error", () => {
-      set({ isPlaying: false, error: "Playback failed" });
-    });
+      const handleError = (e: Event) => {
+        console.error('🎵 Audio error:', e);
+        set({ isPlaying: false, error: "Playback failed" });
+      };
+      
+      audio.addEventListener("play", handlePlay);
+      audio.addEventListener("pause", handlePause);
+      audio.addEventListener("ended", handleEnded);
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.addEventListener("error", handleError);
+      
+      eventListenersAdded = true;
+      console.log('🎵 Event listeners added to audio element');
+    }
     
     return audio;
   };
@@ -241,8 +268,26 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     play: async () => {
+      const { currentTrack, queue } = get();
+      if (!currentTrack && queue.length === 0) {
+        console.log('🎵 No track to play - queue is empty and no current track');
+        set({ error: "No track selected to play" });
+        return;
+      }
+      
       const audio = initAudio();
-      console.log('🎵 Play called - audio element:', audio.src, 'readyState:', audio.readyState);
+      console.log('🎵 Play called - audio element:', audio.src, 'readyState:', audio.readyState, 'currentTrack:', currentTrack?.title);
+      
+      if (!audio.src) {
+        console.log('🎵 No audio source, attempting to load first track from queue');
+        if (queue.length > 0) {
+          await loadTrack(queue[0]);
+        } else {
+          set({ error: "No audio track available to play" });
+          return;
+        }
+      }
+      
       try {
         await audio.play();
         console.log('🎵 Play successful');
