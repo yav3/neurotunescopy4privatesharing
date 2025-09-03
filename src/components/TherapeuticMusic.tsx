@@ -10,13 +10,13 @@ interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
-// Map category IDs to TherapeuticGoal enum values
+// Map category IDs to proper goal slugs
 const CATEGORY_TO_GOAL: Record<string, string> = {
-  "focus": "focus_up",
-  "anxiety": "anxiety_down", 
-  "stress": "anxiety_down",  // stress reduction maps to anxiety_down
-  "sleep": "sleep",
-  "mood": "mood_up"
+  "focus": "focus-enhancement",
+  "anxiety": "anxiety-relief", 
+  "stress": "stress-reduction",
+  "sleep": "sleep-preparation",
+  "mood": "mood-boost"
 };
 
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
