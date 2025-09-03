@@ -62,13 +62,13 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const API = {
-  health: () => req<{ ok: true }>("/health"),
+  health: () => req<{ ok: true }>("/api/health"),
   playlist: (body: { goal: string; limit?: number; offset?: number }) =>
-    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/playlist", {
+    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/api/playlist", {
       method: "POST",
       body: JSON.stringify(body),
     }),
-  debugStorage: () => req<any>("/debug/storage"),
+  debugStorage: () => req<any>("/api/debug/storage"),
   streamUrl: (id: string) => {
     if (!id) {
       console.error('[STREAM URL] No track ID provided:', id);
@@ -79,7 +79,7 @@ export const API = {
     if (!isUUID) {
       throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
     }
-    const url = join(API_BASE, `/stream?id=${encodeURIComponent(id)}`);
+    const url = join(API_BASE, `/api/stream?id=${encodeURIComponent(id)}`);
     console.log("[STREAM URL]", { id, url });
     return url;
   },
@@ -95,27 +95,27 @@ export const API = {
         }
       }
     });
-    return req<any[]>(`/tracks/search?${searchParams}`);
+    return req<any[]>(`/api/tracks/search?${searchParams}`);
   },
   
   // Legacy compatibility methods
   buildSession: (body: { goal: string; durationMin: number; intensity: number; limit?: number }) =>
-    req<{ tracks: any[]; sessionId: string }>("/session/build", {
+    req<{ tracks: any[]; sessionId: string }>("/api/session/build", {
       method: "POST", 
       body: JSON.stringify(body)
     }),
   startSession: (body: { trackId: string }) =>
-    req<{ sessionId: string }>("/sessions/start", {
+    req<{ sessionId: string }>("/api/sessions/start", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   progressSession: (body: { sessionId: string; t: number }) =>
-    req<{ ok: boolean }>("/sessions/progress", {
+    req<{ ok: boolean }>("/api/sessions/progress", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   completeSession: (body: { sessionId: string }) =>
-    req<{ ok: boolean }>("/sessions/complete", {
+    req<{ ok: boolean }>("/api/sessions/complete", {
       method: "POST", 
       body: JSON.stringify(body)
     }),
