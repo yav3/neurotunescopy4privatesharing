@@ -385,11 +385,11 @@ routes.set("GET /stream", async (req) => {
   
   console.log(`🎵 Stream request for track: ${id}`);
   
-  // Validate track exists in tracks table and provides metadata
+  // Validate track exists in tracks table 
   const supabase = sb();
   const { data: track, error } = await supabase
     .from('tracks')
-    .select('id, title, file_path, storage_key, tags')
+    .select('id, title, file_path, storage_key, file_name')
     .eq('id', id)
     .eq('audio_status', 'working')
     .single();
@@ -399,23 +399,42 @@ routes.set("GET /stream", async (req) => {
     return json({ error: "Track not found" }, { status: 404 });
   }
   
-  // Return stream metadata with Camelot info and proper audio headers
-  return new Response(JSON.stringify({
-    id: track.id,
-    title: track.title,
-    streamUrl: `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${id}`,
-    camelot_key: parseCamelotFromTags(track.tags),
-    musical_key: parseKeyFromTags(track.tags),
-    ready: true
-  }), {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept-Ranges": "bytes",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
-      "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  // Get the actual file path from storage_key, file_path, or file_name
+  const fileName = track.storage_key || track.file_path || track.file_name;
+  if (!fileName) {
+    console.error('❌ No file path found for track:', track);
+    return json({ error: "Track file path not found" }, { status: 404 });
+  }
+  
+  console.log(`🎵 Streaming file: ${fileName} for track: ${track.title}`);
+  
+  try {
+    // Get the file from Supabase Storage
+    const { data: fileData, error: storageError } = await supabase.storage
+      .from('music')
+      .download(fileName);
+      
+    if (storageError || !fileData) {
+      console.error('❌ Storage download failed:', storageError);
+      return json({ error: "File not found in storage" }, { status: 404 });
     }
-  });
+    
+    // Stream the audio file with proper headers
+    return new Response(fileData, {
+      headers: {
+        "Content-Type": "audio/mpeg",
+        "Accept-Ranges": "bytes",
+        "Content-Length": fileData.size.toString(),
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        "Cache-Control": "public, max-age=3600"
+      }
+    });
+  } catch (streamError) {
+    console.error('❌ Stream error:', streamError);
+    return json({ error: "Failed to stream audio file" }, { status: 500 });
+  }
 });
 
 // Debug route list

@@ -79,7 +79,7 @@ export const API = {
     if (!isUUID) {
       throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
     }
-    const url = join(API_BASE, `/stream/${encodeURIComponent(id)}`);
+    const url = join(API_BASE, `/stream?id=${encodeURIComponent(id)}`);
     console.log("[STREAM URL]", { id, url });
     return url;
   },
