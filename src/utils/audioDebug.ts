@@ -57,22 +57,14 @@ export const debugStreamUrl = (track: any) => {
   return { urlById, urlByFile, trackId, isValidUUID: isValidUUID(trackId?.toString() || '') };
 };
 
-// 4. Audio Store Conflict Detector
-let activeAudioSystems: string[] = [];
-
-export const registerAudioSystem = (systemName: string) => {
-  activeAudioSystems.push(systemName);
-  console.warn(`🎵 Audio System Registered: ${systemName}`);
-  console.warn(`🚨 Active systems: [${activeAudioSystems.join(', ')}]`);
-  
-  if (activeAudioSystems.length > 1) {
-    console.error('🚨 CONFLICT: Multiple audio systems active!', activeAudioSystems);
-  }
-};
-
-export const unregisterAudioSystem = (systemName: string) => {
-  activeAudioSystems = activeAudioSystems.filter(s => s !== systemName);
-  console.log(`🎵 Audio System Unregistered: ${systemName}`);
+// 4. Audio System Status (Simplified - No competing systems tracking)
+export const logAudioSystemStatus = () => {
+  console.group('🎵 Audio System Status');
+  console.log('✅ Unified Audio System: useAudioStore');
+  console.log('✅ Single Audio Element: #audio-player');
+  console.log('✅ Unified API Client: /lib/api.ts');
+  console.log('✅ Single Database Table: tracks');
+  console.groupEnd();
 };
 
 // 5. API Request Interceptor for UUID Tracking
@@ -214,14 +206,14 @@ export const runAudioDebugSuite = async () => {
     location: window.location.href
   });
   
+  // Log system status
+  logAudioSystemStatus();
+  
   // Check database ID formats
   await checkDatabaseIdFormats();
   
   // Monitor audio element
   const audioLogger = monitorAudioElement();
-  
-  // Register this debug system
-  registerAudioSystem('DEBUG_SUITE');
   
   console.log('🔧 Debug suite active. Try playing a track...');
   

@@ -3,7 +3,6 @@ import { buildStreamUrl } from "@/lib/stream";
 import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
-import { logTrackId, debugStreamUrl, registerAudioSystem } from "@/utils/audioDebug";
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -65,9 +64,6 @@ const getAudioElement = (): HTMLAudioElement => {
 
 export const useAudioStore = create<AudioState>((set, get) => {
   let eventListenersAdded = false;
-  
-  // 🔍 DEBUG: Register this audio system
-  registerAudioSystem('useAudioStore');
   
   // Initialize audio element and events
   const initAudio = () => {
@@ -144,15 +140,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
     set({ isLoading: true, error: undefined });
     
     try {
-      // 🔍 DEBUG: Log track ID format
-      logTrackId(track, 'loadTrack');
-      
       console.log('🎵 Loading track:', track.title, 'ID:', track.id);
       const url = buildStreamUrl(track.id);
       console.log('🎵 Stream URL built:', url);
-      
-      // 🔍 DEBUG: Analyze stream URL generation
-      debugStreamUrl(track);
       
       // Test if the stream URL is accessible
       console.log('🎵 Testing stream URL accessibility...');
