@@ -23,17 +23,17 @@ function sb() {
 app.on(["GET","HEAD"], "/api/health", c => c.json({ ok:true, time:new Date().toISOString() }));
 app.on(["GET","HEAD"], "/health", c => c.json({ ok:true, time:new Date().toISOString() }));
 
-/** Playlist (simple, absolute path) */
+/** Playlist - only return tracks with verified storage */
 app.post("/api/playlist", async c => {
   const { goal = "", limit = 50, offset = 0 } = await c.req.json().catch(() => ({}));
   console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
   const s = sb();
   
-  // Build query with proper goal matching and storage validation
+  // Get tracks and verify their storage keys exist
   let query = s
     .from("tracks")
-    .select("id,title,artist,album,genre,mood,energy_level,bpm,duration_seconds,file_path,file_name,storage_bucket,storage_key,arousal,valence,dominance", { count: "exact" })
+    .select("id,title,artist,album,genre,mood,energy_level,bpm,duration_seconds,file_path,file_name,storage_bucket,storage_key,arousal,valence,dominance")
     .eq('audio_status', 'working')
     .not("storage_key", "is", null);
     
@@ -49,16 +49,41 @@ app.post("/api/playlist", async c => {
     }
   }
     
-  const to = offset + limit - 1;
-  const { data: tracks, error, count } = await query.range(offset, to);
+  const { data: allTracks, error } = await query.limit(200);
   
   if (error) {
     console.error('❌ Database error:', error);
     return c.json({ ok: false, error: error.message }, 500);
   }
 
-  console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
-  return c.json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
+  // Verify storage keys exist and filter to working tracks
+  const verifiedTracks = [];
+  const bucket = Deno.env.get("BUCKET") ?? "neuralpositivemusic";
+  
+  for (const track of allTracks || []) {
+    try {
+      const trackBucket = track.storage_bucket || bucket;
+      const { data } = await s.storage.from(trackBucket).list("", { 
+        limit: 1, 
+        search: track.storage_key,
+        sortBy: { column: "name", order: "asc" }
+      });
+      
+      if (data?.find(file => file.name === track.storage_key)) {
+        verifiedTracks.push(track);
+        if (verifiedTracks.length >= limit) break;
+      }
+    } catch (e) {
+      console.warn(`❌ Storage check failed for ${track.id}:`, e);
+    }
+  }
+
+  console.log(`✅ Found ${verifiedTracks.length} verified tracks for goal: ${goal}`);
+  return c.json({ 
+    tracks: verifiedTracks.slice(offset, offset + limit), 
+    total: verifiedTracks.length,
+    nextOffset: Math.min(offset + limit, verifiedTracks.length)
+  });
 });
 
 /** ✅ Stream by id (deterministic) */
