@@ -96,7 +96,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 
     let q = supabase
       .from('tracks')
-      .select('id,title,goal,storage_key', { count: 'exact' })
+      .select('id,title,mood,storage_key', { count: 'exact' })
       .not('storage_key','is',null)
       .neq('storage_key','')
       // IMPORTANT: use ONLY range() for paging
@@ -110,10 +110,9 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 
   // Try progressively smaller column sets to avoid "column does not exist" errors
   const columnPlans: string[][] = [
-    ['goal','mood','genre','tags'],
-    ['goal','mood','genre'],
-    ['goal','genre'],
-    ['goal'],
+    ['mood','genre','tags'],
+    ['mood','genre'], 
+    ['genre'],
     [], // no filter (just return recent playable tracks)
   ];
 
