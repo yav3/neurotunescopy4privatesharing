@@ -47,7 +47,33 @@ const routes = new Map<string, Handler>();
 // Health
 routes.set("GET /health", () => json({ ok: true, ts: Date.now(), service: "NeuroTunes API" }));
 
-// Tracks Search endpoint
+// Helper function to parse Camelot key from tags
+function parseCamelotFromTags(tags: string[]): string | null {
+  if (!tags || !Array.isArray(tags)) return null;
+  
+  for (const tag of tags) {
+    const camelotMatch = tag.match(/Camelot:(\d+[AB])/);
+    if (camelotMatch) {
+      return camelotMatch[1];
+    }
+  }
+  return null;
+}
+
+// Helper function to parse musical key from tags
+function parseKeyFromTags(tags: string[]): string | null {
+  if (!tags || !Array.isArray(tags)) return null;
+  
+  for (const tag of tags) {
+    const keyMatch = tag.match(/Key:([A-G][b#]?m?)/);
+    if (keyMatch) {
+      return keyMatch[1];
+    }
+  }
+  return null;
+}
+
+// Tracks Search endpoint - Now using tracks table with Camelot data
 routes.set("GET /tracks/search", async (req) => {
   const url = new URL(req.url);
   const goal = url.searchParams.get("goal") ?? "";
@@ -77,8 +103,9 @@ routes.set("GET /tracks/search", async (req) => {
     vmin = Math.max(vmin, 0.75); 
   }
 
+  // Query the tracks table with all the musical key data
   let query = supabase
-    .from('music_tracks')
+    .from('tracks')
     .select(`
       id,
       title,
@@ -86,19 +113,16 @@ routes.set("GET /tracks/search", async (req) => {
       file_path,
       storage_key,
       valence,
-      acousticness,
-      energy,
+      dominance,
+      arousal,
       bpm,
-      key_signature
+      tags,
+      audio_status
     `)
     .gte('valence', vmin)
-    .lte('energy', amax)
-    .eq('upload_status', 'completed')
-    .limit(limit);
-
-  if (camelot_allow.length > 0) {
-    query = query.in('key_signature', camelot_allow);
-  }
+    .lte('arousal', amax)
+    .eq('audio_status', 'working')
+    .limit(limit * 2); // Get more to account for Camelot filtering
 
   const { data: tracks, error } = await query;
 
@@ -107,60 +131,70 @@ routes.set("GET /tracks/search", async (req) => {
     return json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  // Transform to expected format with defensive deduplication
+  // Transform and filter with Camelot key parsing
   const seen = new Set<string>();
   const formatted = [];
   
   for (const track of tracks || []) {
-    if (seen.has(track.id)) continue;
-    seen.add(track.id);
+    if (seen.has(track.id.toString())) continue;
+    seen.add(track.id.toString());
+    
+    const camelotKey = parseCamelotFromTags(track.tags);
+    
+    // Apply Camelot filtering if specified
+    if (camelot_allow.length > 0 && (!camelotKey || !camelot_allow.includes(camelotKey))) {
+      continue;
+    }
     
     formatted.push({
-      unique_id: track.id,
+      unique_id: track.id.toString(),
       title: track.title,
       artist: track.artist,
       file_path: track.file_path || track.storage_key,
-      camelot_key: track.key_signature || "1A",
+      camelot_key: camelotKey || "1A",
       bpm: track.bpm,
       vad: {
         valence: track.valence || 0.5,
-        arousal: track.energy || 0.5,
-        dominance: track.acousticness || 0.5
+        arousal: track.arousal || 0.5,
+        dominance: track.dominance || 0.5
       },
       audio_status: "working"
     });
+    
+    // Stop when we have enough tracks
+    if (formatted.length >= limit) break;
   }
 
-  console.log(`✅ Found ${formatted.length} tracks for goal: ${goal}`);
+  console.log(`✅ Found ${formatted.length} tracks for goal: ${goal} (${camelot_allow.length > 0 ? `filtered by Camelot: ${camelot_allow.join(',')}` : 'no Camelot filter'})`);
   return json(formatted);
 });
 
-// Playlist endpoint
+// Playlist endpoint - Updated to use tracks table
 routes.set("POST /playlist", async (req) => {
   const { goal = "", limit = 50, offset = 0 } = await req.json().catch(() => ({}));
   console.log('🎵 Playlist request for goal:', goal, 'limit:', limit, 'offset:', offset);
   
   const supabase = sb();
   
-  // Map therapeutic goals to conditions using enum values only
+  // Map therapeutic goals to conditions - updated for tracks table schema
   const goalToConditions: Record<string, any> = {
-    'focus_up': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
-    'anxiety_down': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
-    'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
-    'mood_up': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'pain_down': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] }
+    'focus_up': { arousal: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
+    'anxiety_down': { arousal: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
+    'sleep': { arousal: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
+    'mood_up': { arousal: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
+    'pain_down': { arousal: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
   const criteria = goalToConditions[normalizedGoal] || goalToConditions['focus_up'];
   
   let query = supabase
-    .from('music_tracks')
+    .from('tracks')
     .select('*', { count: "exact" })
-    .eq('upload_status', 'completed');
+    .eq('audio_status', 'working');
     
-  if (criteria.energy) {
-    query = query.gte('energy', criteria.energy[0]).lte('energy', criteria.energy[1]);
+  if (criteria.arousal) {
+    query = query.gte('arousal', criteria.arousal[0]).lte('arousal', criteria.arousal[1]);
   }
   
   if (criteria.valence) {
@@ -179,11 +213,18 @@ routes.set("POST /playlist", async (req) => {
     return json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  console.log(`✅ Found ${tracks?.length || 0} tracks (${count} total) for goal: ${goal}`);
-  return json({ tracks: tracks || [], total: count ?? 0, nextOffset: to + 1 });
+  // Add Camelot parsing to playlist tracks
+  const enrichedTracks = (tracks || []).map(track => ({
+    ...track,
+    camelot_key: parseCamelotFromTags(track.tags),
+    musical_key: parseKeyFromTags(track.tags)
+  }));
+
+  console.log(`✅ Found ${enrichedTracks.length} tracks (${count} total) for goal: ${goal}`);
+  return json({ tracks: enrichedTracks, total: count ?? 0, nextOffset: to + 1 });
 });
 
-// Build session endpoint
+// Build session endpoint - Updated to use tracks table
 routes.set("POST /session/build", async (req) => {
   const { goal = "", durationMin = 15, intensity = 3, limit = 50 } = await req.json().catch(() => ({}));
   console.log(`🏗️ Building session:`, { goal, durationMin, intensity, limit });
@@ -191,23 +232,23 @@ routes.set("POST /session/build", async (req) => {
   const supabase = sb();
   
   const goalToConditions: Record<string, any> = {
-    'focus_up': { energy: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
-    'anxiety_down': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
-    'sleep': { energy: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
-    'mood_up': { energy: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
-    'pain_down': { energy: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] }
+    'focus_up': { arousal: [0.4, 0.7], valence: [0.4, 0.8], genres: ['classical', 'instrumental', 'acoustic'] },
+    'anxiety_down': { arousal: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] },
+    'sleep': { arousal: [0.0, 0.3], valence: [0.3, 0.7], genres: ['classical', 'acoustic', 'instrumental'] },
+    'mood_up': { arousal: [0.5, 1.0], valence: [0.7, 1.0], genres: ['jazz', 'electronic', 'indie'] },
+    'pain_down': { arousal: [0.1, 0.4], valence: [0.6, 0.9], genres: ['jazz', 'classical', 'folk'] }
   };
   
   const normalizedGoal = goal.toLowerCase().trim();
   const criteria = goalToConditions[normalizedGoal] || goalToConditions['focus_up'];
   
   let query = supabase
-    .from('music_tracks')
+    .from('tracks')
     .select('*')
-    .eq('upload_status', 'completed');
+    .eq('audio_status', 'working');
     
-  if (criteria.energy) {
-    query = query.gte('energy', criteria.energy[0]).lte('energy', criteria.energy[1]);
+  if (criteria.arousal) {
+    query = query.gte('arousal', criteria.arousal[0]).lte('arousal', criteria.arousal[1]);
   }
   
   if (criteria.valence) {
@@ -226,10 +267,17 @@ routes.set("POST /session/build", async (req) => {
     return json({ ok: false, error: error.message }, { status: 500 });
   }
 
+  // Enrich tracks with Camelot data for harmonic recommendations
+  const enrichedTracks = (tracks || []).map(track => ({
+    ...track,
+    camelot_key: parseCamelotFromTags(track.tags),
+    musical_key: parseKeyFromTags(track.tags)
+  }));
+
   const sessionId = crypto.randomUUID();
   
-  console.log(`✅ Built session ${sessionId} with ${tracks?.length || 0} tracks (limited to ${trackLimit})`);
-  return json({ sessionId, tracks: tracks || [] });
+  console.log(`✅ Built session ${sessionId} with ${enrichedTracks.length} tracks (limited to ${trackLimit})`);
+  return json({ sessionId, tracks: enrichedTracks });
 });
 
 // Debug storage access
@@ -327,7 +375,7 @@ routes.set("POST /v1/stream", async (req) => {
   });
 });
 
-// Audio streaming endpoint with proper headers  
+// Audio streaming endpoint - Updated to use tracks table
 routes.set("GET /stream", async (req) => {
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
@@ -337,14 +385,13 @@ routes.set("GET /stream", async (req) => {
   
   console.log(`🎵 Stream request for track: ${id}`);
   
-  // For now, return a placeholder response since actual streaming is handled by /stream function
-  // This endpoint validates the ID exists and provides metadata
+  // Validate track exists in tracks table and provides metadata
   const supabase = sb();
   const { data: track, error } = await supabase
-    .from('music_tracks')
-    .select('id, title, file_path, storage_key')
+    .from('tracks')
+    .select('id, title, file_path, storage_key, tags')
     .eq('id', id)
-    .eq('upload_status', 'completed')
+    .eq('audio_status', 'working')
     .single();
     
   if (error || !track) {
@@ -352,11 +399,13 @@ routes.set("GET /stream", async (req) => {
     return json({ error: "Track not found" }, { status: 404 });
   }
   
-  // Return stream metadata with proper audio headers
+  // Return stream metadata with Camelot info and proper audio headers
   return new Response(JSON.stringify({
     id: track.id,
     title: track.title,
     streamUrl: `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/stream/${id}`,
+    camelot_key: parseCamelotFromTags(track.tags),
+    musical_key: parseKeyFromTags(track.tags),
     ready: true
   }), {
     headers: {
