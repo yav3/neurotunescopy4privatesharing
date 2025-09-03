@@ -6,10 +6,14 @@ const RAW_BASE =
 
 if (!/^https?:\/\//.test(RAW_BASE)) {
   throw new Error(
-    `API base misconfigured: '${RAW_BASE}'. Set VITE_API_BASE_URL (e.g. https://<project>.functions.supabase.co)`
+    `API base misconfigured: '${RAW_BASE}'. Set VITE_API_BASE_URL (e.g. https://<project>.functions.supabase.co/functions/v1)`
   );
 }
-const API_BASE = RAW_BASE.replace(/\/+$/, ""); // no trailing slash
+
+// Ensure /api is appended if not present
+export const API_BASE = RAW_BASE.replace(/\/+$/, "").endsWith("/api")
+  ? RAW_BASE.replace(/\/+$/, "")
+  : RAW_BASE.replace(/\/+$/, "") + "/api";
 
 function join(base: string, path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -62,13 +66,13 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const API = {
-  health: () => req<{ ok: true }>("/api/health"),
+  health: () => req<{ ok: true }>("/health"),
   playlist: (body: { goal: string; limit?: number; offset?: number }) =>
-    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/api/playlist", {
+    req<{ tracks: Array<{ id: string; title: string; file_path: string }> }>("/playlist", {
       method: "POST",
       body: JSON.stringify(body),
     }),
-  debugStorage: () => req<any>("/api/debug/storage"),
+  debugStorage: () => req<any>("/debug/storage"),
   streamUrl: (id: string) => {
     if (!id) {
       console.error('[STREAM URL] No track ID provided:', id);
@@ -79,7 +83,7 @@ export const API = {
     if (!isUUID) {
       throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
     }
-    const url = join(API_BASE, `/api/stream?id=${encodeURIComponent(id)}`);
+    const url = join(API_BASE, `/stream?id=${encodeURIComponent(id)}`);
     console.log("[STREAM URL]", { id, url });
     return url;
   },
@@ -95,27 +99,27 @@ export const API = {
         }
       }
     });
-    return req<any[]>(`/api/tracks/search?${searchParams}`);
+    return req<any[]>(`/tracks/search?${searchParams}`);
   },
   
   // Legacy compatibility methods
   buildSession: (body: { goal: string; durationMin: number; intensity: number; limit?: number }) =>
-    req<{ tracks: any[]; sessionId: string }>("/api/session/build", {
+    req<{ tracks: any[]; sessionId: string }>("/session/build", {
       method: "POST", 
       body: JSON.stringify(body)
     }),
   startSession: (body: { trackId: string }) =>
-    req<{ sessionId: string }>("/api/sessions/start", {
+    req<{ sessionId: string }>("/sessions/start", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   progressSession: (body: { sessionId: string; t: number }) =>
-    req<{ ok: boolean }>("/api/sessions/progress", {
+    req<{ ok: boolean }>("/sessions/progress", {
       method: "POST",
       body: JSON.stringify(body)
     }),
   completeSession: (body: { sessionId: string }) =>
-    req<{ ok: boolean }>("/api/sessions/complete", {
+    req<{ ok: boolean }>("/sessions/complete", {
       method: "POST", 
       body: JSON.stringify(body)
     }),

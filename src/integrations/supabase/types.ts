@@ -2201,6 +2201,16 @@ export type Database = {
         Args: { elevel: number }
         Returns: string
       }
+      find_broken_tracks: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          issue: string
+          storage_bucket: string
+          storage_key: string
+          title: string
+        }[]
+      }
       get_camelot_neighbors: {
         Args: { input_camelot: string }
         Returns: string[]

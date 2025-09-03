@@ -10,6 +10,9 @@ import { NowPlaying } from "@/components/NowPlaying";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";
+// Import test utilities for global access
+import "@/utils/testPlaybackInvariants";
+import "@/utils/fixApiConfig";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AIDJPage from "./pages/AIDJPage";
