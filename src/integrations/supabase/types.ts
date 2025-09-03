@@ -250,22 +250,7 @@ export type Database = {
           track_id?: number
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "blocked_tracks_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "problematic_tracks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "blocked_tracks_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "tracks"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       canadian_lumber_prices: {
         Row: {
@@ -1563,20 +1548,6 @@ export type Database = {
             referencedRelation: "playlists"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "playlist_tracks_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "problematic_tracks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "playlist_tracks_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "tracks"
-            referencedColumns: ["id"]
-          },
         ]
       }
       playlists: {
@@ -1973,7 +1944,7 @@ export type Database = {
           file_path: string | null
           file_size_bytes: number | null
           genre: string | null
-          id: number
+          id: string
           instrumentalness: number | null
           investigation_notes: string | null
           mood: string | null
@@ -2014,7 +1985,7 @@ export type Database = {
           file_path?: string | null
           file_size_bytes?: number | null
           genre?: string | null
-          id?: number
+          id?: string
           instrumentalness?: number | null
           investigation_notes?: string | null
           mood?: string | null
@@ -2055,7 +2026,7 @@ export type Database = {
           file_path?: string | null
           file_size_bytes?: number | null
           genre?: string | null
-          id?: number
+          id?: string
           instrumentalness?: number | null
           investigation_notes?: string | null
           mood?: string | null
@@ -2069,6 +2040,24 @@ export type Database = {
           therapeutic_use?: string[] | null
           title?: string
           valence?: number | null
+        }
+        Relationships: []
+      }
+      tracks_id_mapping: {
+        Row: {
+          created_at: string | null
+          new_id: string
+          old_id: number
+        }
+        Insert: {
+          created_at?: string | null
+          new_id: string
+          old_id: number
+        }
+        Update: {
+          created_at?: string | null
+          new_id?: string
+          old_id?: number
         }
         Relationships: []
       }
@@ -2091,22 +2080,7 @@ export type Database = {
           track_id?: number
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_favorites_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "problematic_tracks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_favorites_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "tracks"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       weather_data: {
         Row: {
@@ -2180,22 +2154,7 @@ export type Database = {
           id?: string | null
           track_id?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_favorites_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "problematic_tracks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_favorites_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "tracks"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       pg_stat_monitor: {
         Row: {
@@ -2270,39 +2229,6 @@ export type Database = {
           wal_bytes: number | null
           wal_fpi: number | null
           wal_records: number | null
-        }
-        Relationships: []
-      }
-      problematic_tracks: {
-        Row: {
-          artist: string | null
-          audio_status: string | null
-          created_date: string | null
-          file_path: string | null
-          genre: string | null
-          id: number | null
-          investigation_notes: string | null
-          title: string | null
-        }
-        Insert: {
-          artist?: string | null
-          audio_status?: string | null
-          created_date?: string | null
-          file_path?: string | null
-          genre?: string | null
-          id?: number | null
-          investigation_notes?: string | null
-          title?: string | null
-        }
-        Update: {
-          artist?: string | null
-          audio_status?: string | null
-          created_date?: string | null
-          file_path?: string | null
-          genre?: string | null
-          id?: number | null
-          investigation_notes?: string | null
-          title?: string | null
         }
         Relationships: []
       }
