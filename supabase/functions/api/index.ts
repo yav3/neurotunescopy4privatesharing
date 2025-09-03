@@ -77,63 +77,71 @@ function json(body: Record<string, unknown>, status = 200) {
 async function handlePlaylistRequest(req: Request): Promise<Response> {
   const supabase = sb();
   const url = new URL(req.url);
-  const rawGoal = (url.searchParams.get('goal') || '').toString();
-  const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get('limit')  || '50', 10), 200));
-  const offset = Math.max(0,       parseInt(url.searchParams.get('offset') || '0',  10));
+  const rawGoal = (url.searchParams.get("goal") || "").toString();
+  const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get("limit")  || "50", 10), 200));
+  const offset = Math.max(0,       parseInt(url.searchParams.get("offset") || "0",  10));
   const to = offset + limit - 1;
 
   console.log(`🎵 /playlist goal="${rawGoal}" limit=${limit} offset=${offset}`);
 
-  // Build word list once (slug + aliases)
+  // Words to match (your alias map feeds wordsFor)
   const searchWords = wordsFor(rawGoal);
 
-  // Helper to run the query with a given set of columns for OR
-  const run = async (cols: string[]) => {
-    const orExpr =
-      cols.length && rawGoal.trim()
-        ? '(' + cols.flatMap(col => searchWords.map(w => `${col}.ilike.%${w}%`)).join(',') + ')'
-        : '';
+  // Build an OR string with chosen operator per column list
+  const buildOr = (colsCS: string[], colsILIKE: string[]) => {
+    const a: string[] = [];
+    for (const w of searchWords) {
+      for (const c of colsCS)   a.push(`${c}.cs.{${w}}`);
+      for (const c of colsILIKE)a.push(`${c}.ilike.%${w}%`);
+    }
+    return a.length ? `(${a.join(",")})` : "";
+  };
 
+  // One query runner that uses ONLY range() for paging (no .limit())
+  const run = async (colsCS: string[], colsILIKE: string[]) => {
+    const orExpr = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
     let q = supabase
-      .from('tracks')
-      .select('id,title,mood,storage_key', { count: 'exact' })
-      .not('storage_key','is',null)
-      .neq('storage_key','')
-      // IMPORTANT: use ONLY range() for paging
-      .order('id', { ascending: true })
+      .from("tracks")
+      .select("id,title,genre,mood,storage_key", { count: "exact" })
+      .not("storage_key","is",null)
+      .neq("storage_key","")
+      // Use a stable column to sort; 'id' is safest across schemas
+      .order("id", { ascending: true })
       .range(offset, to);
 
     if (orExpr) q = q.or(orExpr);
-
     return q;
   };
 
-  // Try progressively smaller column sets to avoid "column does not exist" errors
-  const columnPlans: string[][] = [
-    ['mood','genre','tags'],
-    ['mood','genre'], 
-    ['genre'],
-    [], // no filter (just return recent playable tracks)
+  // Try array/jsonb matches first; fall back to pure ILIKE if schema doesn't support cs.{}
+  const plans: Array<[string[], string[]]> = [
+    // Plan A: arrays/jsonb present → cs.{word} on tags-like cols + ilike on mood/genre
+    [["tags","therapeutic_use","emotion_tags"], ["mood","genre"]],
+    // Plan B: everything via ILIKE (if tags-like aren't arrays)
+    [[], ["mood","genre","tags","therapeutic_use","emotion_tags"]],
+    // Plan C: minimal filter (mood/genre only)
+    [[], ["mood","genre"]],
+    // Plan D: no filter → just return playable tracks
+    [[], []],
   ];
 
-  for (const cols of columnPlans) {
-    const { data, error } = await run(cols);
+  for (const [csCols, ilikeCols] of plans) {
+    const { data, error } = await run(csCols, ilikeCols);
     if (!error) {
       const tracks = data ?? [];
-      console.log(`✅ /playlist using cols=[${cols.join(',')}] -> ${tracks.length} tracks`);
+      console.log(`✅ /playlist using cs=[${csCols.join(",")}] ilike=[${ilikeCols.join(",")}] -> ${tracks.length}`);
       return new Response(
         JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-    // Log and try the next plan if it looks like a schema mismatch
-    console.warn(`/playlist plan [${cols.join(',')}]: ${error.message}`);
+    // Schema/operator mismatch? Try the next plan.
+    console.warn(`/playlist plan cs=[${csCols.join(",")}] ilike=[${ilikeCols.join(",")}] failed: ${error.message}`);
   }
 
-  // If all plans failed, return the last error explicitly
   return new Response(
-    JSON.stringify({ ok:false, error: 'PlaylistQueryFailed' }),
-    { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    JSON.stringify({ ok:false, error: "PlaylistQueryFailed" }),
+    { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
   );
 }
 
