@@ -9,10 +9,6 @@ import { AUDIO_ELEMENT_ID } from '@/player/constants';
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
 
-export const setSessionManager = (manager: typeof sessionManager) => {
-  sessionManager = manager;
-};
-
 type AudioState = {
   // Playback state
   isPlaying: boolean;
@@ -25,6 +21,10 @@ type AudioState = {
   // Queue
   queue: Track[];
   index: number;
+  
+  // Session management
+  sessionManager: typeof sessionManager;
+  setSessionManager: (manager: typeof sessionManager) => void;
   
   // Actions
   playTrack: (track: Track) => Promise<void>;
@@ -198,6 +198,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     volume: 0.8,
     queue: [],
     index: -1,
+    sessionManager: null,
 
     // Actions
     playTrack: async (track: Track) => {
@@ -388,6 +389,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
     setCurrentTime: (time: number) => set({ currentTime: time }),
     setDuration: (duration: number) => set({ duration: duration }),
     setError: (error?: string) => set({ error }),
+    
+    // Session management
+    setSessionManager: (manager) => {
+      sessionManager = manager;
+      set({ sessionManager: manager });
+    },
   };
 });
 

@@ -8,7 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useToast } from '@/components/ui/use-toast'
 import { playFromGoal } from '@/actions/playFromGoal'
 import { API } from '@/lib/api'
-import { useAudioStore, setSessionManager } from '@/stores'
+import { useAudioStore } from '@/stores'
 import { useSessionManager } from '@/hooks/useSessionManager'
 
 const THERAPEUTIC_GOALS = [
@@ -75,6 +75,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
 
   // 🔄 MIRROR BACKEND: Connect session manager to audio store
   useEffect(() => {
+    const setSessionManager = useAudioStore.getState().setSessionManager;
     setSessionManager(sessionManager);
   }, [sessionManager]);
 
