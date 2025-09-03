@@ -76,7 +76,7 @@ export class PlaylistService {
    */
   static async getPlaylistWithTracks(playlistId: number): Promise<{
     playlist: Playlist
-    tracks: MusicTrack[]
+    tracks: any[]
   }> {
     try {
       // Get playlist info
@@ -93,7 +93,7 @@ export class PlaylistService {
         .from('playlist_tracks')
         .select(`
           *,
-          music_tracks (*)
+          tracks (*)
         `)
         .eq('playlist_id', playlistId)
         .order('position')
@@ -101,12 +101,12 @@ export class PlaylistService {
       if (tracksError) throw tracksError
 
       const tracks = (playlistTracks || [])
-        .filter(pt => pt.music_tracks && typeof pt.music_tracks === 'object')
+        .filter(pt => pt.tracks && typeof pt.tracks === 'object')
         .map(pt => ({
-          ...(pt.music_tracks as any),
+          ...(pt.tracks as any),
           therapeutic_applications: [],
           spectral_analysis: []
-        })) as MusicTrack[]
+        })) as any[]
 
       logger.info('Playlist with tracks fetched', { 
         playlistId, 
@@ -207,7 +207,7 @@ export class PlaylistService {
     frequencyBand: FrequencyBand,
     targetCondition: string,
     evidenceThreshold: number = 0.7
-  ): Promise<{ playlist: Playlist; tracks: MusicTrack[] }> {
+  ): Promise<{ playlist: Playlist; tracks: any[] }> {
     try {
       // Create the playlist
       const playlist = await this.createPlaylist(
@@ -217,9 +217,9 @@ export class PlaylistService {
 
       // Get tracks that match criteria
       const { data: tracks, error } = await supabase
-        .from('music_tracks')
+        .from('tracks')
         .select('*')
-        .eq('upload_status', 'completed')
+        .eq('audio_status', 'working')
         .limit(20)
 
       if (error) throw error
@@ -249,7 +249,7 @@ export class PlaylistService {
         ...track,
         therapeutic_applications: [],
         spectral_analysis: []
-      })) as MusicTrack[]
+      })) as any[]
 
       logger.info('Therapeutic playlist created', { 
         playlistId: playlist.id, 

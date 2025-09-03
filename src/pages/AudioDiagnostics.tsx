@@ -8,19 +8,19 @@ const AudioDiagnostics: React.FC = () => {
   const [realTracks, setRealTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load REAL tracks directly from music_tracks table (not via broken API)
+  // Load REAL tracks directly from tracks table (unified system)
   useEffect(() => {
     const loadRealTracks = async () => {
       try {
-        console.log('🔍 Loading REAL tracks from music_tracks database...');
+        console.log('🔍 Loading REAL tracks from tracks database...');
         
-        // Import supabase and query music_tracks table directly
+        // Import supabase and query tracks table directly
         const { supabase } = await import('@/integrations/supabase/client');
         
         const { data: tracks, error } = await supabase
-          .from('music_tracks')
-          .select('id, title, file_path, storage_key, bucket_name, bpm, energy, valence, genre')
-          .eq('upload_status', 'completed')
+          .from('tracks')
+          .select('id, title, file_path, storage_key, bpm, energy_level, valence, genre')
+          .eq('audio_status', 'working')
           .limit(4);
         
         if (error) {
@@ -32,7 +32,7 @@ const AudioDiagnostics: React.FC = () => {
           title: t.title, 
           file_path: t.file_path, 
           storage_key: t.storage_key,
-          bucket: t.bucket_name
+          energy: t.energy_level
         })));
         
         setRealTracks(tracks || []);
@@ -80,7 +80,7 @@ const AudioDiagnostics: React.FC = () => {
   return (
     <div className="p-6 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-6">🧪 Audio Diagnostics</h1>
-      <p className="text-sm text-gray-600 mb-4">Testing with REAL tracks from music_tracks database</p>
+      <p className="text-sm text-gray-600 mb-4">Testing with REAL tracks from tracks database</p>
       
       <div className="space-y-4">
         <button
@@ -99,7 +99,7 @@ const AudioDiagnostics: React.FC = () => {
             </div>
           ) : realTracks.length === 0 ? (
             <div className="p-4 bg-red-50 border border-red-200 rounded">
-              <p className="text-red-800">❌ No tracks found in music_tracks table</p>
+              <p className="text-red-800">❌ No tracks found in tracks table</p>
               <p className="text-sm text-red-600 mt-1">Check if tracks exist in database</p>
             </div>
           ) : (
@@ -112,10 +112,9 @@ const AudioDiagnostics: React.FC = () => {
                 <div key={track.id} className="p-3 border rounded bg-gray-50">
                   <div className="mb-2">
                     <p className="font-medium text-gray-900">{track.title}</p>
-                    <p className="text-xs text-gray-600">Genre: {track.genre} • BPM: {track.bpm}</p>
+                    <p className="text-xs text-gray-600">Genre: {track.genre} • Energy: {track.energy_level}</p>
                     <p className="text-xs text-gray-500 font-mono">UUID: {track.id}</p>
                     <p className="text-xs text-blue-600">Storage: {track.file_path || track.storage_key}</p>
-                    <p className="text-xs text-purple-600">Bucket: {track.bucket_name}</p>
                   </div>
                   
                   <div className="flex gap-2">

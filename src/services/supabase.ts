@@ -22,10 +22,10 @@ export class SupabaseService {
         
         // Try to find track by file_path or storage_key
         const { data: track } = await supabase
-          .from('music_tracks')
+          .from('tracks')
           .select('id')
           .or(`file_path.eq.${trackIdOrPath},storage_key.eq.${trackIdOrPath}`)
-          .eq('upload_status', 'completed')
+          .eq('audio_status', 'working')
           .maybeSingle()
         
         if (track) {
@@ -71,12 +71,12 @@ export class SupabaseService {
     genre?: string
     limit?: number
     offset?: number
-  } = {}): Promise<MusicTrack[]> {
+  } = {}): Promise<any[]> {
     try {
       let query = supabase
-        .from('music_tracks')
+        .from('tracks')
         .select('*')
-        .eq('upload_status', 'completed')
+        .eq('audio_status', 'working')
         .order('created_at', { ascending: false })
 
       if (options?.limit) {
@@ -95,12 +95,12 @@ export class SupabaseService {
 
       if (error) throw error
 
-      // Transform data to match MusicTrack interface
+      // Transform data to match Track interface
       const tracks = (data || []).map(track => ({
         ...track,
         therapeutic_applications: [], // Empty array for now
         spectral_analysis: [] // Empty array for now
-      })) as MusicTrack[]
+      })) as any[]
 
       logger.info('Tracks fetched successfully', { 
         count: tracks.length, 
@@ -114,15 +114,15 @@ export class SupabaseService {
     }
   }
 
-  static async getTrackById(trackId: string): Promise<MusicTrack | null> {
+  static async getTrackById(trackId: string): Promise<any | null> {
     try {
       logger.info('Fetching track by ID', { trackId })
       
       const { data, error } = await supabase
-        .from('music_tracks')
+        .from('tracks')
         .select('*')
         .eq('id', trackId)
-        .eq('upload_status', 'completed')
+        .eq('audio_status', 'working')
         .maybeSingle()
 
       if (error) throw error
@@ -132,12 +132,12 @@ export class SupabaseService {
         return null
       }
 
-      // Transform data to match MusicTrack interface
+      // Transform data to match Track interface
       const track = {
         ...data,
         therapeutic_applications: [], // Empty array for now
         spectral_analysis: [] // Empty array for now
-      } as MusicTrack
+      } as any
 
       logger.info('Track fetched successfully', { trackId, title: track.title })
       return track
@@ -147,7 +147,7 @@ export class SupabaseService {
     }
   }
 
-  static async getMusicTracksByCategory(category: string): Promise<MusicTrack[]> {
+  static async getMusicTracksByCategory(category: string): Promise<any[]> {
     try {
       console.log('Fetching tracks for category:', category);
       

@@ -1265,6 +1265,7 @@ export type Database = {
       music_tracks: {
         Row: {
           acousticness: number | null
+          audio_status: string | null
           bpm: number | null
           bucket_name: string | null
           created_at: string | null
@@ -1289,6 +1290,7 @@ export type Database = {
         }
         Insert: {
           acousticness?: number | null
+          audio_status?: string | null
           bpm?: number | null
           bucket_name?: string | null
           created_at?: string | null
@@ -1313,6 +1315,7 @@ export type Database = {
         }
         Update: {
           acousticness?: number | null
+          audio_status?: string | null
           bpm?: number | null
           bucket_name?: string | null
           created_at?: string | null

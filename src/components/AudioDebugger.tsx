@@ -27,8 +27,9 @@ export const AudioDebugger = () => {
       
       // Get sample tracks
       const { data: tracks, error: dbError } = await supabase
-        .from('music_tracks')
-        .select('id, title, original_title, file_path')
+        .from('tracks')
+        .select('id, title, file_path, storage_key')
+        .eq('audio_status', 'working')
         .limit(5);
       
       if (dbError) throw dbError;
