@@ -11,7 +11,7 @@ import { AudioDebugger } from '@/components/AudioDebugger'
 import { API } from '@/lib/api'
 import { ApiStatusChip } from '@/components/ApiStatusChip'
 import { API_BASE } from '@/lib/env'
-import { useAudioStore } from '@/stores/audioStore'
+import { useAudioStore } from '@/stores'
 import { Navigation } from '@/components/Navigation'
 import { NowPlaying } from '@/components/NowPlaying'
 import { toast } from "@/hooks/use-toast"
