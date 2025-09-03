@@ -3,7 +3,7 @@ import { buildStreamUrl } from "@/lib/stream";
 import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
-import { logTrackId, debugStreamUrl, registerAudioSystem } from "@/components/AudioSystemDebugger";
+import { logTrackId, debugStreamUrl, registerAudioSystem } from "@/utils/audioDebug";
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;

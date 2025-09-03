@@ -22,7 +22,7 @@ export const logTrackId = (track: any, context: string) => {
   console.groupEnd();
 };
 
-// 3. Stream URL Debug Function
+// 3. Stream URL Debug Function  
 export const debugStreamUrl = (track: any) => {
   console.group('🌐 Stream URL Generation Debug');
   
@@ -31,13 +31,22 @@ export const debugStreamUrl = (track: any) => {
   console.log('Extracted ID:', trackId);
   console.log('ID is valid UUID:', isValidUUID(trackId?.toString() || ''));
   
-  // Test different URL generation approaches
+  // Use the proper API method to generate stream URL
+  try {
+    const { API } = require('@/lib/api');
+    const properUrl = API.streamUrl(trackId);
+    console.log('Proper stream URL:', properUrl);
+  } catch (e) {
+    console.log('API streamUrl error:', e);
+  }
+  
+  // Legacy method for comparison
   const api_base = import.meta.env.VITE_API_BASE_URL;
   console.log('API_BASE from env:', api_base);
   
-  // Method 1: Using ID
+  // Method 1: Using ID (legacy - shows URL construction issue)
   const urlById = `${api_base}/stream?id=${trackId}`;
-  console.log('URL by ID:', urlById);
+  console.log('URL by ID (legacy):', urlById);
   
   // Method 2: Using file_path
   const file_path = track.file_path || track.file_name || track.src;
@@ -126,26 +135,21 @@ export const checkDatabaseIdFormats = async () => {
   console.group('🗃️ Database ID Format Check');
   
   try {
-    // Test a playlist request to see what ID formats come back
-    const api_base = import.meta.env.VITE_API_BASE_URL;
-    const response = await fetch(`${api_base}/playlist`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal: 'focus', limit: 5 })
-    });
-    const data = await response.json();
+    // Use the proper API method instead of direct fetch to avoid URL issues
+    const { API } = await import('@/lib/api');
+    const response = await API.playlist({ goal: 'focus', limit: 5 });
+    console.log('API Response:', response);
     
-    console.log('Response data:', data);
-    
-    if (data.tracks && Array.isArray(data.tracks)) {
-      data.tracks.forEach((track: any, index: number) => {
+    if (response.tracks && Array.isArray(response.tracks)) {
+      response.tracks.forEach((track: any, index: number) => {
         console.log(`Track ${index + 1}:`, {
           id: track.id,
           type: typeof track.id,
           isUUID: isValidUUID(track.id?.toString() || ''),
           file_path: track.file_path,
           storage_key: track.storage_key,
-          allFields: Object.keys(track)
+          allFields: Object.keys(track),
+          track: track
         });
       });
     }

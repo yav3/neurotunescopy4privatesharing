@@ -5,7 +5,8 @@ import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "sonner";
-import { registerAudioSystem } from "@/components/AudioSystemDebugger";
+import { registerAudioSystem, unregisterAudioSystem } from "@/components/AudioSystemDebugger";
+import React from "react";
 
 interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
@@ -23,8 +24,11 @@ const CATEGORY_TO_GOAL: Record<string, string> = {
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
   const { playFromGoal, isLoading } = useAudioStore();
   
-  // 🔍 DEBUG: Register this component's audio usage
-  registerAudioSystem('TherapeuticMusic');
+  // 🔍 DEBUG: Register this component's audio usage only once
+  React.useEffect(() => {
+    registerAudioSystem('TherapeuticMusic');
+    return () => unregisterAudioSystem('TherapeuticMusic');
+  }, []);
   
   const categories = [
     { id: "focus", title: "Focus Enhancement", image: focusArtwork },
