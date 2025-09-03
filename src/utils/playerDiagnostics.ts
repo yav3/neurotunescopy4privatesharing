@@ -1,5 +1,5 @@
 // Player diagnostics utilities - now uses unified audio store
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 
 export const logPlayerState = () => {
   const state = useAudioStore.getState();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAudioStore } from "@/stores/audioStore";
+import { useAudioStore } from "@/stores";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 export default function FullPlayer() {

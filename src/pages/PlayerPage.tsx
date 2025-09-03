@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAudioStore } from "@/stores/audioStore";
+import { useAudioStore } from "@/stores";
 import { SupabaseService } from "@/services/supabase";
 import FullPlayer from "@/components/FullPlayer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";

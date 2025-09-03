@@ -21,7 +21,7 @@ import {
   Sun
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

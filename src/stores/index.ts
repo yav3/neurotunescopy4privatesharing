@@ -1,1 +1,1 @@
-export { useAudioStore } from "./audioStore";
+export { useAudioStore, setSessionManager, playFromGoal, playTrackNow } from "./audioStore";

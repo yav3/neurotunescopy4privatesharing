@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Bot, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
 import { pipeline } from '@huggingface/transformers';
 import { API } from '@/lib/api';
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 
 interface ClassificationResult {
   label: string;

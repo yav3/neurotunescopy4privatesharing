@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAudioStore } from '../stores/audioStore';
+import { useAudioStore } from '../stores';
 import { API } from '../lib/api';
 import { buildStreamUrl, headOk } from '../lib/stream';
 

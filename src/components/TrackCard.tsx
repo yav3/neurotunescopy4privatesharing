@@ -12,7 +12,7 @@ type MusicTrack = Track & {
   bpm?: number;
   genre?: string;
 }
-import { useAudioStore } from '@/stores/audioStore'
+import { useAudioStore } from '@/stores'
 
 interface TrackCardProps {
   track: MusicTrack

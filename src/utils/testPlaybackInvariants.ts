@@ -4,7 +4,7 @@
  */
 
 import { API } from '@/lib/api';
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 
 export async function testPlaybackInvariants() {
   console.log('🧪 Testing playback invariants...');

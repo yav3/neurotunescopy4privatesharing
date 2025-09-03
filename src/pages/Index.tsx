@@ -8,7 +8,7 @@ import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
 import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
-import { useAudioStore } from "@/stores/audioStore";
+import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { API } from "@/lib/api";
 import { toGoalSlug } from "@/domain/goals";

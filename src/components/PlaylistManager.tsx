@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Plus, Play, Trash2, Music, Clock, MoreVertical } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
-import { useAudioStore } from '@/stores/audioStore'
+import { useAudioStore } from '@/stores'
 import { LoadingSpinner } from './LoadingSpinner'
 import { logger } from '@/services/logger'
 

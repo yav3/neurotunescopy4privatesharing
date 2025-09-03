@@ -3,7 +3,7 @@ import focusArtwork from "@/assets/focus-artwork.jpg";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import sleepArtwork from "@/assets/sleep-artwork.jpg";
 import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import { useAudioStore } from "@/stores/audioStore";
+import { useAudioStore } from "@/stores";
 import { toast } from "sonner";
 
 interface TherapeuticMusicProps {

@@ -8,7 +8,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useToast } from '@/components/ui/use-toast'
 import { playFromGoal } from '@/actions/playFromGoal'
 import { API } from '@/lib/api'
-import { useAudioStore, setSessionManager } from '@/stores/audioStore'
+import { useAudioStore, setSessionManager } from '@/stores'
 import { useSessionManager } from '@/hooks/useSessionManager'
 
 const THERAPEUTIC_GOALS = [

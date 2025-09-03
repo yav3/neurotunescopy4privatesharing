@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { AlertTriangle, Wifi, WifiOff, Volume2 } from 'lucide-react'
-import { useAudioStore } from '@/stores/audioStore'
+import { useAudioStore } from '@/stores'
 
 export const MusicDeliveryStatus: React.FC = () => {
   const { isPlaying, error, currentTrack: track } = useAudioStore()

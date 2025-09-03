@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { formatTime, cn } from '@/lib/utils';
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
 
 export const NowPlaying: React.FC = () => {

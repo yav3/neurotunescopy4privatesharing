@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAudioStore } from '@/stores/audioStore';
+import { useAudioStore } from '@/stores';
 
 interface DebugInfo {
   audioElements: number;
