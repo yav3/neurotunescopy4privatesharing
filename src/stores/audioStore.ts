@@ -137,7 +137,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     playTrack: async (track: Track) => {
       await loadTrack(track);
       set({ queue: [track], index: 0 });
-      get().play();
+      await get().play();
     },
 
     playFromGoal: async (goal: string) => {
@@ -240,11 +240,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
     },
 
-    play: () => {
+    play: async () => {
       const audio = initAudio();
-      audio.play().catch(() => {
-        set({ error: "Playback failed" });
-      });
+      try {
+        await audio.play();
+        set({ error: undefined });
+      } catch (error: any) {
+        console.log('🎵 Play failed (likely autoplay restriction):', error.message);
+        set({ error: "Click play to start music (browser autoplay restriction)" });
+      }
     },
 
     pause: () => {
@@ -258,7 +262,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (nextIndex < queue.length) {
         set({ index: nextIndex });
         await loadTrack(queue[nextIndex]);
-        get().play();
+        await get().play();
       }
     },
 
@@ -268,7 +272,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (prevIndex >= 0) {
         set({ index: prevIndex });
         await loadTrack(queue[prevIndex]);
-        get().play();
+        await get().play();
       }
     },
 
