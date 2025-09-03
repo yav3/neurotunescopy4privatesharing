@@ -152,6 +152,7 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const id = url.searchParams.get('id');
 
+  console.log(`🎵 Stream request for ID: ${id}`);
   if (!id) return new Response('Missing track ID', { status: 400, headers: corsHeaders });
 
   const { data: row, error } = await supabase
@@ -160,8 +161,16 @@ async function handleStreamRequest(req: Request): Promise<Response> {
     .eq('id', id)
     .maybeSingle();
 
-  if (error || !row)       return json({ ok:false, error:'TrackNotFound', id }, 404);
-  if (!row.storage_key)    return json({ ok:false, error:'MissingStorageKey', id }, 404);
+  console.log(`📊 Track lookup result:`, { id, row, error });
+
+  if (error || !row) {
+    console.error(`❌ Track not found: ${id}`, error);
+    return json({ ok:false, error:'TrackNotFound', id }, 404);
+  }
+  if (!row.storage_key) {
+    console.error(`❌ Missing storage key for track: ${id}`);
+    return json({ ok:false, error:'MissingStorageKey', id }, 404);
+  }
 
   const bucket = row.storage_bucket || DEFAULT_BUCKET;
   const signed = await supabase.storage.from(bucket).createSignedUrl(row.storage_key, 1800);
