@@ -77,44 +77,65 @@ function json(body: Record<string, unknown>, status = 200) {
 async function handlePlaylistRequest(req: Request): Promise<Response> {
   const supabase = sb();
   const url = new URL(req.url);
-  const rawGoal = url.searchParams.get('goal') || '';
-  const limit = Math.max(1, Math.min(parseInt(url.searchParams.get('limit') || '50', 10), 200));
-  const offset = Math.max(0, parseInt(url.searchParams.get('offset') || '0', 10));
+  const rawGoal = (url.searchParams.get('goal') || '').toString();
+  const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get('limit')  || '50', 10), 200));
+  const offset = Math.max(0,       parseInt(url.searchParams.get('offset') || '0',  10));
   const to = offset + limit - 1;
 
-  console.log(`🎵 Playlist goal="${rawGoal}" limit=${limit} offset=${offset}`);
+  console.log(`🎵 /playlist goal="${rawGoal}" limit=${limit} offset=${offset}`);
 
-  // build an OR expression; only add when a goal is passed
+  // Build word list once (slug + aliases)
   const searchWords = wordsFor(rawGoal);
-  const orConditions = searchWords.flatMap(word => [
-    `mood.ilike.%${word}%`,
-    `genre.ilike.%${word}%`,
-    // If these are text[] or jsonb arrays, cs.{word} works; if columns don't exist,
-    // we avoid using them to prevent 500s.
-    // 'therapeutic_use.cs.{'+word+'}',
-    // 'emotion_tags.cs.{'+word+'}',
-    // 'eeg_targets.cs.{'+word+'}',
-  ]).join(',');
 
-  // only select what the client needs; heavy * slows you down
-  let q = supabase
-    .from('tracks')
-    .select('id,title,storage_key', { count: 'exact' })
-    .not('storage_key','is',null)
-    .neq('storage_key','')
-    .order('created_date', { ascending: false })
-    .range(offset, to);
+  // Helper to run the query with a given set of columns for OR
+  const run = async (cols: string[]) => {
+    const orExpr =
+      cols.length && rawGoal.trim()
+        ? '(' + cols.flatMap(col => searchWords.map(w => `${col}.ilike.%${w}%`)).join(',') + ')'
+        : '';
 
-  if (rawGoal.trim()) q = q.or(orConditions);
+    let q = supabase
+      .from('tracks')
+      .select('id,title,goal,storage_key', { count: 'exact' })
+      .not('storage_key','is',null)
+      .neq('storage_key','')
+      // IMPORTANT: use ONLY range() for paging
+      .order('id', { ascending: true })
+      .range(offset, to);
 
-  const { data, error } = await q;
-  if (error) {
-    console.error('DB error:', error.message);
-    return json({ ok:false, error: error.message }, 500);
+    if (orExpr) q = q.or(orExpr);
+
+    return q;
+  };
+
+  // Try progressively smaller column sets to avoid "column does not exist" errors
+  const columnPlans: string[][] = [
+    ['goal','mood','genre','tags'],
+    ['goal','mood','genre'],
+    ['goal','genre'],
+    ['goal'],
+    [], // no filter (just return recent playable tracks)
+  ];
+
+  for (const cols of columnPlans) {
+    const { data, error } = await run(cols);
+    if (!error) {
+      const tracks = data ?? [];
+      console.log(`✅ /playlist using cols=[${cols.join(',')}] -> ${tracks.length} tracks`);
+      return new Response(
+        JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    // Log and try the next plan if it looks like a schema mismatch
+    console.warn(`/playlist plan [${cols.join(',')}]: ${error.message}`);
   }
-  const tracks = data ?? [];
-  console.log(`✅ ${tracks.length} tracks for "${rawGoal}"`);
-  return json({ tracks, total: tracks.length, nextOffset: offset + tracks.length });
+
+  // If all plans failed, return the last error explicitly
+  return new Response(
+    JSON.stringify({ ok:false, error: 'PlaylistQueryFailed' }),
+    { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  );
 }
 
 async function handleStreamRequest(req: Request): Promise<Response> {
