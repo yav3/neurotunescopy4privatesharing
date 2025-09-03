@@ -102,7 +102,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     .select('id,title,storage_key', { count: 'exact' })
     .not('storage_key','is',null)
     .neq('storage_key','')
-    .order('created_at', { ascending: false }) // change if your sort column differs
+    .order('created_date', { ascending: false })
     .range(offset, to);
 
   if (rawGoal.trim()) q = q.or(orConditions);
