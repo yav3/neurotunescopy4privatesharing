@@ -75,11 +75,13 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
   // Get search words for the goal
   const searchWords = wordsFor(goal);
   
-  // Build OR expression for flexible goal matching
+  // Build OR expression for flexible goal matching using actual table columns
   const orConditions = searchWords.flatMap(word => [
-    `goal.ilike.%${word}%`,
     `mood.ilike.%${word}%`,
-    `genre.ilike.%${word}%`
+    `genre.ilike.%${word}%`,
+    `therapeutic_use.cs.{${word}}`,
+    `emotion_tags.cs.{${word}}`,
+    `eeg_targets.cs.{${word}}`
   ]).join(',');
 
   // Query tracks with verified storage keys and flexible goal matching
