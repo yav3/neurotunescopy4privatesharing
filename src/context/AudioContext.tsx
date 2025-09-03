@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useMemo, useRef, useState } from "react";
+// DEPRECATED: This component is replaced by unified audioStore
+// Keeping for backward compatibility but redirecting to audioStore
+import React, { createContext, useContext, useMemo } from "react";
+import { useAudioStore } from "@/stores/audioStore";
 
 type AudioCtx = {
   load: (url: string) => Promise<void>;
@@ -17,72 +20,49 @@ type AudioCtx = {
 const Ctx = createContext<AudioCtx | null>(null);
 
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState<string>();
-  const [currentTrack, setCurrentTrack] = useState<any>(null);
-  const loadAbort = useRef<AbortController | null>(null);
+  console.log('⚠️ AudioProvider is deprecated - using unified audioStore instead');
 
-  if (!audioRef.current) {
-    const el = new Audio();
-    el.preload = "none";
-    el.crossOrigin = "anonymous";
-    el.addEventListener("play", () => setIsPlaying(true));
-    el.addEventListener("pause", () => setIsPlaying(false));
-    el.addEventListener("ended", () => setIsPlaying(false));
-    audioRef.current = el;
-  }
-
+  // Redirect all audio operations to the unified audioStore
+  const audioStore = useAudioStore();
+  
   const api = useMemo<AudioCtx>(() => ({
       async load(url: string) {
-        // Abort any in-flight load
-        loadAbort.current?.abort();
-        const controller = new AbortController();
-        loadAbort.current = controller;
-
-        try {
-          // Force a HEAD first to warm the cache & validate
-          await fetch(url, { method: "HEAD", signal: controller.signal });
-          if (controller.signal.aborted) return;
-
-          const a = audioRef.current!;
-          if (a.src !== url) {
-            a.pause();
-            a.src = url;
-            setCurrentSrc(url);
-          }
-          await a.load(); // sync, but keep for semantics
-        } catch (e) {
-          if ((e as any).name !== "AbortError") throw e;
-        }
+        console.log('🔄 AudioContext.load() redirected to audioStore');
+        // Extract track ID from URL for audioStore
+        const trackId = url.split('/').pop() || '';
+        await audioStore.playTrack({ id: trackId, title: '', artist: '', duration: 0 });
       },
       async loadTrack(track: any) {
-        setCurrentTrack(track);
-        const url = `${process.env.VITE_API_BASE_URL || 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api'}/stream/${track.id}`;
-        await api.load(url);
+        console.log('🔄 AudioContext.loadTrack() redirected to audioStore');
+        await audioStore.playTrack(track);
       },
       play() {
-        audioRef.current?.play();
+        console.log('🔄 AudioContext.play() redirected to audioStore');
+        audioStore.play();
       },
       pause() {
-        audioRef.current?.pause();
+        console.log('🔄 AudioContext.pause() redirected to audioStore');
+        audioStore.pause();
       },
       toggle() {
-        const a = audioRef.current!;
-        if (a.paused) a.play();
-        else a.pause();
-      },
-      setPlaylist(tracks: any[], playlistId?: string) {
-        // Compatibility with existing code - load first track if available
-        if (tracks.length > 0) {
-          api.loadTrack(tracks[0]);
+        console.log('🔄 AudioContext.toggle() redirected to audioStore');
+        if (audioStore.isPlaying) {
+          audioStore.pause();
+        } else {
+          audioStore.play();
         }
       },
-      isPlaying,
-      currentSrc,
-      currentTrack,
-      state: isPlaying ? "playing" : "paused",
-    }), [isPlaying, currentSrc, currentTrack]);
+      setPlaylist(tracks: any[], playlistId?: string) {
+        console.log('🔄 AudioContext.setPlaylist() redirected to audioStore');
+        if (tracks.length > 0) {
+          audioStore.setQueue(tracks, 0);
+        }
+      },
+      isPlaying: audioStore.isPlaying,
+      currentSrc: audioStore.currentTrack ? `stream/${audioStore.currentTrack.id}` : undefined,
+      currentTrack: audioStore.currentTrack,
+      state: audioStore.isPlaying ? "playing" : "paused",
+    }), [audioStore]);
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 };
