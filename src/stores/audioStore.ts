@@ -154,7 +154,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     return audio;
   };
 
-  const loadTrack = async (track: Track) => {
+  const loadTrack = async (track: Track): Promise<boolean> => {
     const audio = initAudio();
     set({ isLoading: true, error: undefined });
     
@@ -182,9 +182,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
       await audio.load();
       console.log('🎵 Track loaded successfully:', track.title);
       set({ currentTrack: track, isLoading: false });
+      return true;
     } catch (error) {
       console.error('🎵 Load track failed:', error);
-      set({ error: "Failed to load track", isLoading: false });
+      return false;
     }
   };
 
@@ -202,9 +203,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     // Actions
     playTrack: async (track: Track) => {
-      await loadTrack(track);
-      set({ queue: [track], index: 0 });
-      await get().play();
+      const success = await loadTrack(track);
+      if (success) {
+        set({ queue: [track], index: 0 });
+        await get().play();
+      } else {
+        set({ error: "Track not available", isLoading: false });
+      }
     },
 
     playFromGoal: async (goal: string) => {
@@ -307,8 +312,24 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const validIndex = Math.max(0, Math.min(startAt, tracks.length - 1));
       set({ queue: tracks, index: validIndex });
       
-      if (tracks[validIndex]) {
-        await loadTrack(tracks[validIndex]);
+      // Try to find a working track starting from the requested index
+      let workingTrackFound = false;
+      for (let i = validIndex; i < tracks.length; i++) {
+        console.log('🎵 Trying to load track', i + 1, 'of', tracks.length, ':', tracks[i].title);
+        const success = await loadTrack(tracks[i]);
+        if (success) {
+          set({ index: i });
+          workingTrackFound = true;
+          console.log('🎵 Found working track at index', i, ':', tracks[i].title);
+          break;
+        } else {
+          console.log('🎵 Track failed, trying next one...');
+        }
+      }
+      
+      if (!workingTrackFound) {
+        set({ isLoading: false, error: "No working tracks found in queue" });
+        console.error('🎵 No working tracks found in entire queue');
       }
     },
 
@@ -327,10 +348,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       if (!audio.src && currentTrack) {
         console.log('🎵 No audio source, loading current track:', currentTrack.title);
-        await loadTrack(currentTrack);
+        const success = await loadTrack(currentTrack);
+        if (!success) {
+          set({ error: "Current track not available" });
+          return;
+        }
       } else if (!audio.src && queue.length > 0) {
         console.log('🎵 No audio source, loading first track from queue:', queue[0].title);
-        await loadTrack(queue[0]);
+        const success = await loadTrack(queue[0]);
+        if (!success) {
+          set({ error: "Track not available" });
+          return;
+        }
       } else if (!audio.src) {
         set({ error: "No audio track available to play" });
         return;
@@ -354,22 +383,38 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     next: async () => {
       const { queue, index } = get();
-      const nextIndex = index + 1;
-      if (nextIndex < queue.length) {
-        set({ index: nextIndex });
-        await loadTrack(queue[nextIndex]);
-        await get().play();
+      
+      // Try to find the next working track
+      for (let nextIndex = index + 1; nextIndex < queue.length; nextIndex++) {
+        console.log('🎵 Trying next track at index', nextIndex, ':', queue[nextIndex].title);
+        const success = await loadTrack(queue[nextIndex]);
+        if (success) {
+          set({ index: nextIndex });
+          await get().play();
+          return;
+        }
       }
+      
+      console.log('🎵 No more working tracks in queue');
+      set({ isLoading: false, error: "No more tracks available" });
     },
 
     prev: async () => {
       const { queue, index } = get();
-      const prevIndex = index - 1;
-      if (prevIndex >= 0) {
-        set({ index: prevIndex });
-        await loadTrack(queue[prevIndex]);
-        await get().play();
+      
+      // Try to find the previous working track
+      for (let prevIndex = index - 1; prevIndex >= 0; prevIndex--) {
+        console.log('🎵 Trying previous track at index', prevIndex, ':', queue[prevIndex].title);
+        const success = await loadTrack(queue[prevIndex]);
+        if (success) {
+          set({ index: prevIndex });
+          await get().play();
+          return;
+        }
       }
+      
+      console.log('🎵 No previous working tracks in queue');
+      set({ isLoading: false, error: "No previous tracks available" });
     },
 
     seek: (time: number) => {
