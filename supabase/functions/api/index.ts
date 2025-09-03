@@ -1,6 +1,15 @@
 // supabase/functions/api/index.ts
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.1'
 
+// util: req id
+const rid = () =>
+  Math.random().toString(16).slice(2, 10) +
+  Math.random().toString(16).slice(2, 10);
+
+// small helpers
+const log = (id: string, msg: string, extra: Record<string, unknown> = {}) =>
+  console.log(JSON.stringify({ rid: id, msg, ...extra }));
+
 // ---- CORS (include methods + expose headers for streaming/HEAD) ----
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -56,6 +65,11 @@ Deno.serve(async (req) => {
     // Stream on both forms
     if (path === '/stream' || path === '/api/stream') {
       return handleStreamRequest(req);
+    }
+
+    // Stream diagnostics endpoint
+    if (path === '/diag/stream' || path === '/api/diag/stream') {
+      return handleStreamDiag(req);
     }
 
     // Storage debug endpoint
@@ -158,48 +172,155 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 }
 
 async function handleStreamRequest(req: Request): Promise<Response> {
+  const id = rid();
   const supabase = sb();
   const url = new URL(req.url);
-  const id = url.searchParams.get('id');
+  const trackId = url.searchParams.get('id') || '';
 
-  console.log(`🎵 Stream request for ID: ${id}`);
-  if (!id) return new Response('Missing track ID', { status: 400, headers: corsHeaders });
+  log(id, 'stream:start', { trackId, path: url.pathname, method: req.method });
 
+  if (!trackId) {
+    log(id, 'stream:missing_id');
+    return json({ ok: false, error: 'MissingId' }, 400);
+  }
+
+  // DB lookup
+  const t0 = Date.now();
   const { data: row, error } = await supabase
     .from('tracks')
     .select('storage_bucket, storage_key, title')
-    .eq('id', id)
+    .eq('id', trackId)
     .maybeSingle();
-
-  console.log(`📊 Track lookup result:`, { id, row, error });
+  log(id, 'stream:db_lookup', {
+    ms: Date.now() - t0,
+    found: !!row,
+    error: error?.message ?? null,
+    bucket: row?.storage_bucket ?? null,
+    key: row?.storage_key ?? null,
+  });
 
   if (error || !row) {
-    console.error(`❌ Track not found: ${id}`, error);
-    return json({ ok:false, error:'TrackNotFound', id }, 404);
+    return json({ ok: false, error: 'TrackNotFound', id: trackId }, 404);
   }
   if (!row.storage_key) {
-    console.error(`❌ Missing storage key for track: ${id}`);
-    return json({ ok:false, error:'MissingStorageKey', id }, 404);
+    return json({ ok: false, error: 'MissingStorageKey', id: trackId }, 404);
   }
 
-  const bucket = row.storage_bucket || DEFAULT_BUCKET;
+  const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'neuralpositivemusic');
+
+  // Sign
+  const t1 = Date.now();
   const signed = await supabase.storage.from(bucket).createSignedUrl(row.storage_key, 1800);
+  log(id, 'stream:sign', {
+    ms: Date.now() - t1,
+    ok: !!signed.data?.signedUrl,
+    bucket,
+    key: row.storage_key,
+    signError: signed.error?.message ?? null,
+  });
+
   if (!signed.data?.signedUrl) {
-    console.error(`Sign failed ${bucket}:${row.storage_key}`);
-    return json({ ok:false, error:'ObjectNotFound', bucket, key: row.storage_key, id }, 404);
+    return json(
+      { ok: false, error: 'ObjectNotFound', bucket, key: row.storage_key, id: trackId },
+      404
+    );
   }
 
-  // Proxy stream with Range; add cache & expose headers for browsers
+  // HEAD to validate object before proxying (super cheap, super useful)
+  const t2 = Date.now();
+  const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
+  log(id, 'stream:head', {
+    ms: Date.now() - t2,
+    status: head.status,
+    ct: head.headers.get('content-type'),
+    ar: head.headers.get('accept-ranges'),
+    len: head.headers.get('content-length'),
+  });
+
+  if (head.status >= 400) {
+    return json(
+      {
+        ok: false,
+        error: 'SignedUrlHeadFailed',
+        status: head.status,
+        bucket,
+        key: row.storage_key,
+        id: trackId,
+      },
+      404
+    );
+  }
+
+  // Proxy with Range support
   const range = req.headers.get('range');
-  const upstream = await fetch(signed.data.signedUrl, { method: req.method, headers: range ? { Range: range } : {} });
+  const upstream = await fetch(signed.data.signedUrl, {
+    method: req.method,
+    headers: range ? { Range: range } : {},
+  });
 
   const h = new Headers(upstream.headers);
   h.set('Access-Control-Allow-Origin', '*');
   h.set('Accept-Ranges', 'bytes');
   h.set('Cache-Control', 'public, max-age=3600');
-  if (!h.get('Content-Type') && row.storage_key.toLowerCase().endsWith('.mp3')) h.set('Content-Type','audio/mpeg');
+  if (!h.get('Content-Type') && row.storage_key.toLowerCase().endsWith('.mp3')) {
+    h.set('Content-Type', 'audio/mpeg');
+  }
 
-  return new Response(req.method === 'HEAD' ? null : upstream.body, { status: upstream.status, headers: h });
+  log(id, 'stream:proxy', { status: upstream.status });
+  return new Response(req.method === 'HEAD' ? null : upstream.body, {
+    status: upstream.status,
+    headers: h,
+  });
+}
+
+// ---------- DIAG (same checks, returns JSON instead of audio) ----------
+async function handleStreamDiag(req: Request): Promise<Response> {
+  const id = rid();
+  const supabase = sb();
+  const url = new URL(req.url);
+  const trackId = url.searchParams.get('id') || '';
+
+  const out: Record<string, unknown> = { rid: id, id: trackId, path: url.pathname };
+  if (!trackId) return json({ ok: false, error: 'MissingId', ...out }, 400);
+
+  // DB
+  const t0 = Date.now();
+  const { data: row, error } = await supabase
+    .from('tracks')
+    .select('storage_bucket, storage_key, title')
+    .eq('id', trackId)
+    .maybeSingle();
+  out.db_ms = Date.now() - t0;
+  out.db_found = !!row;
+  out.db_error = error?.message ?? null;
+  out.bucket = row?.storage_bucket ?? Deno.env.get('BUCKET') ?? 'neuralpositivemusic';
+  out.key = row?.storage_key ?? null;
+
+  if (error || !row) return json({ ok: false, error: 'TrackNotFound', ...out }, 404);
+  if (!row.storage_key) return json({ ok: false, error: 'MissingStorageKey', ...out }, 404);
+
+  // SIGN
+  const bucket = out.bucket as string;
+  const t1 = Date.now();
+  const signed = await supabase.storage.from(bucket).createSignedUrl(row.storage_key, 120);
+  out.sign_ms = Date.now() - t1;
+  out.sign_ok = !!signed.data?.signedUrl;
+  out.sign_error = signed.error?.message ?? null;
+
+  if (!signed.data?.signedUrl) {
+    return json({ ok: false, error: 'ObjectNotFound', ...out }, 404);
+  }
+
+  // HEAD
+  const t2 = Date.now();
+  const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
+  out.head_ms = Date.now() - t2;
+  out.head_status = head.status;
+  out.head_ct = head.headers.get('content-type');
+  out.head_ar = head.headers.get('accept-ranges');
+  out.head_len = head.headers.get('content-length');
+
+  return json({ ok: head.status < 400, ...out });
 }
 
 // Storage debug endpoint - shows sample storage info
