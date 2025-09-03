@@ -409,13 +409,27 @@ routes.set("GET /stream", async (req) => {
   console.log(`🎵 Streaming file: ${fileName} for track: ${track.title}`);
   
   try {
-    // Get the file from Supabase Storage
-    const { data: fileData, error: storageError } = await supabase.storage
-      .from('music')
-      .download(fileName);
+    // Get the file from Supabase Storage - try multiple buckets
+    let fileData, storageError;
+    const buckets = ['audio', 'neuralpositivemusic', 'music'];
+    
+    for (const bucket of buckets) {
+      console.log(`🎵 Trying bucket: ${bucket} for file: ${fileName}`);
+      const result = await supabase.storage
+        .from(bucket)
+        .download(fileName);
+        
+      if (!result.error && result.data) {
+        fileData = result.data;
+        console.log(`✅ Found file in bucket: ${bucket}`);
+        break;
+      } else {
+        console.log(`❌ Not found in bucket ${bucket}:`, result.error?.message);
+      }
+    }
       
-    if (storageError || !fileData) {
-      console.error('❌ Storage download failed:', storageError);
+    if (!fileData) {
+      console.error('❌ File not found in any storage bucket:', fileName);
       return json({ error: "File not found in storage" }, { status: 404 });
     }
     
