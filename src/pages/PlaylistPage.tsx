@@ -8,12 +8,12 @@ import { TrackCard } from '@/components/TrackCard'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
 import useRealtimePlaylist from '@/hooks/useRealtimePlaylist'
-import { useAudio } from "@/context";
+import { useAudioStore } from "@/stores/audioStore";
 
 export const PlaylistPage: React.FC = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-  const { setPlaylist } = useAudio()
+  const { setQueue } = useAudioStore()
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null)
 
   const playlistId = id ? parseInt(id) : null
@@ -53,7 +53,8 @@ export const PlaylistPage: React.FC = () => {
 
   const handleLoadPlaylist = () => {
     if (playlistData) {
-      setPlaylist(playlistData.tracks, playlistData.playlist.id.toString())
+      const { setQueue } = useAudioStore.getState();
+      setQueue(playlistData.tracks, 0);
     }
   }
 

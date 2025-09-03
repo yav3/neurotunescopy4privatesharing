@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Navigation } from "@/components/Navigation";
 import { NowPlaying } from "@/components/NowPlaying";
-import { useAudio } from "@/context";
+import { useAudioStore } from "@/stores/audioStore";
 import { 
   User, 
   Brain, 
@@ -27,7 +27,7 @@ import {
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const { currentTrack } = useAudio();
+  const { currentTrack } = useAudioStore();
 
   // Mock user data - replace with real user data
   const userData = {
