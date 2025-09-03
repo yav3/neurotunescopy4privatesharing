@@ -20,8 +20,8 @@ const Index = () => {
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
-    // Category playback is now handled directly in TherapeuticMusic component
-    // No need to call playFromGoal again here to avoid conflicts
+    // Auto-show player when therapeutic music starts
+    setShowPlayer(true);
   };
 
   const handleSessionStart = async (tracks: any[]) => {
