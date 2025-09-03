@@ -1262,84 +1262,6 @@ export type Database = {
           },
         ]
       }
-      music_tracks: {
-        Row: {
-          acousticness: number | null
-          audio_status: string | null
-          bpm: number | null
-          bucket_name: string | null
-          created_at: string | null
-          danceability: number | null
-          energy: number | null
-          file_path: string | null
-          file_size: number | null
-          file_type: string | null
-          genre: string | null
-          id: string
-          instrumentalness: number | null
-          key_signature: string | null
-          loudness: number | null
-          mode: string | null
-          original_title: string | null
-          speechiness: number | null
-          storage_key: string | null
-          title: string
-          updated_at: string | null
-          upload_status: string | null
-          valence: number | null
-        }
-        Insert: {
-          acousticness?: number | null
-          audio_status?: string | null
-          bpm?: number | null
-          bucket_name?: string | null
-          created_at?: string | null
-          danceability?: number | null
-          energy?: number | null
-          file_path?: string | null
-          file_size?: number | null
-          file_type?: string | null
-          genre?: string | null
-          id?: string
-          instrumentalness?: number | null
-          key_signature?: string | null
-          loudness?: number | null
-          mode?: string | null
-          original_title?: string | null
-          speechiness?: number | null
-          storage_key?: string | null
-          title: string
-          updated_at?: string | null
-          upload_status?: string | null
-          valence?: number | null
-        }
-        Update: {
-          acousticness?: number | null
-          audio_status?: string | null
-          bpm?: number | null
-          bucket_name?: string | null
-          created_at?: string | null
-          danceability?: number | null
-          energy?: number | null
-          file_path?: string | null
-          file_size?: number | null
-          file_type?: string | null
-          genre?: string | null
-          id?: string
-          instrumentalness?: number | null
-          key_signature?: string | null
-          loudness?: number | null
-          mode?: string | null
-          original_title?: string | null
-          speechiness?: number | null
-          storage_key?: string | null
-          title?: string
-          updated_at?: string | null
-          upload_status?: string | null
-          valence?: number | null
-        }
-        Relationships: []
-      }
       optimization_scenarios: {
         Row: {
           build_acquire_schedule: Json | null
@@ -1680,15 +1602,7 @@ export type Database = {
           updated_at?: string | null
           zero_crossing_rate?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "spectral_analysis_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "music_tracks"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       streaming_analytics: {
         Row: {
@@ -1790,15 +1704,7 @@ export type Database = {
           track_id?: string
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "therapeutic_applications_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "music_tracks"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       therapeutic_sessions: {
         Row: {

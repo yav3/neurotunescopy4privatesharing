@@ -1,8 +1,5 @@
 project_id = "pbtgvcjniayedqlajjzz"
 
-[functions.stream]
-verify_jwt = false
-
 [functions.api]
 verify_jwt = false
 
