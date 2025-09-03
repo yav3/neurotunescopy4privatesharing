@@ -100,7 +100,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
   
-  // Helper: Throttled HEAD check with timeout and abort control
+  // Helper: Throttled HEAD check with timeout and abort control + Range fallback
   const headCheck = async (url: string, ms = 3000): Promise<boolean> => {
     // After N failures, skip HEAD and let stream self-heal
     if (headFailures >= 3) {
@@ -119,11 +119,26 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const response = await fetch(url, { method: 'HEAD', signal: controller.signal });
       clearTimeout(timeout);
       headFailures = response.ok ? 0 : headFailures + 1;
-      return response.ok;
+      if (response.ok) return true;
     } catch {
       clearTimeout(timeout);
+    }
+    
+    // Fallback: 1-byte range GET (some CDNs 403 on HEAD)
+    try {
+      const response = await fetch(url, { 
+        method: 'GET', 
+        headers: { Range: 'bytes=0-0' },
+        signal: controller.signal 
+      });
+      headFailures = response.ok ? 0 : headFailures + 1;
+      return response.ok;
+    } catch {
       headFailures++;
       return false;
+    } finally {
+      // Clean up controller reference
+      if (currentAbort === controller) currentAbort = null;
     }
   };
   
@@ -475,6 +490,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 No more working tracks in queue');
       set({ isLoading: false, error: "No more tracks available" });
+      return;
     },
 
     prev: async () => {
@@ -499,6 +515,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 No previous working tracks in queue');
       set({ isLoading: false, error: "No previous tracks available" });
+      return;
     },
 
     seek: (time: number) => {
