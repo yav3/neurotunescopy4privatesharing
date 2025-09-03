@@ -213,9 +213,10 @@ routes.set("POST /playlist", async (req) => {
     return json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  // Add Camelot parsing to playlist tracks
+  // Add Camelot parsing to playlist tracks and ensure UUIDs are returned
   const enrichedTracks = (tracks || []).map(track => ({
     ...track,
+    id: track.id.toString(), // Ensure UUID is string for consistency
     camelot_key: parseCamelotFromTags(track.tags),
     musical_key: parseKeyFromTags(track.tags)
   }));
@@ -267,9 +268,10 @@ routes.set("POST /session/build", async (req) => {
     return json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  // Enrich tracks with Camelot data for harmonic recommendations
+  // Enrich tracks with Camelot data for harmonic recommendations and ensure UUIDs
   const enrichedTracks = (tracks || []).map(track => ({
     ...track,
+    id: track.id.toString(), // Ensure UUID is string for consistency
     camelot_key: parseCamelotFromTags(track.tags),
     musical_key: parseKeyFromTags(track.tags)
   }));
@@ -385,14 +387,22 @@ routes.set("GET /stream", async (req) => {
   
   console.log(`🎵 Stream request for track: ${id}`);
   
-  // Validate track exists in tracks table 
+  // Validate track exists in tracks table using UUID
   const supabase = sb();
+  
+  // Validate UUID format
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  if (!isUUID) {
+    console.error('❌ Invalid UUID format:', id);
+    return json({ error: "Invalid track ID format" }, { status: 400 });
+  }
+  
   const { data: track, error } = await supabase
     .from('tracks')
     .select('id, title, file_path, storage_key, file_name')
     .eq('id', id)
     .eq('audio_status', 'working')
-    .single();
+    .maybeSingle();
     
   if (error || !track) {
     console.error('❌ Track not found:', id, error);
