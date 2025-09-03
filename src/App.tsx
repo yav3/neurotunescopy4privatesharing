@@ -13,6 +13,7 @@ import { initializeDebugging } from "@/utils/debugInit";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
+import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AIDJPage from "./pages/AIDJPage";

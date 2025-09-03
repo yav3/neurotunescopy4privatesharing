@@ -5,9 +5,19 @@ import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
 import { toGoalSlug } from '@/domain/goals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { toast } from "sonner";
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
+
+// Race condition protection
+let loadSeq = 0;
+
+// HEAD request throttling
+let headFailures = 0;
+
+// Skip tracking for UX
+let skipped = 0;
 
 type AudioState = {
   // Playback state
@@ -84,6 +94,39 @@ const ensureAudioElement = (): HTMLAudioElement => {
 export const useAudioStore = create<AudioState>((set, get) => {
   let eventListenersAdded = false;
   
+  // Helper: Remove item from array at index
+  const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
+  
+  // Helper: Throttled HEAD check with timeout
+  const headCheck = async (url: string, ms = 3000): Promise<boolean> => {
+    // After N failures, skip HEAD and let stream self-heal
+    if (headFailures >= 3) {
+      console.log('🎵 Skipping HEAD check (too many failures), letting stream self-heal');
+      return true;
+    }
+    
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), ms);
+    
+    try {
+      const response = await fetch(url, { method: 'HEAD', signal: controller.signal });
+      clearTimeout(timeout);
+      headFailures = response.ok ? 0 : headFailures + 1;
+      return response.ok;
+    } catch {
+      clearTimeout(timeout);
+      headFailures++;
+      return false;
+    }
+  };
+  
+  // Helper: Announce skips with smart UX (don't spam)
+  const announceSkip = () => {
+    skipped++;
+    if (skipped === 1) toast.info("Skipping broken tracks…");
+    if (skipped % 5 === 0) toast.info(`Skipped ${skipped} broken tracks`);
+  };
+  
   // Initialize audio element and events
   const initAudio = () => {
     const audio = ensureAudioElement();
@@ -155,36 +198,55 @@ export const useAudioStore = create<AudioState>((set, get) => {
   };
 
   const loadTrack = async (track: Track): Promise<boolean> => {
+    const mySeq = ++loadSeq;         // capture monotonic token
     const audio = initAudio();
     set({ isLoading: true, error: undefined });
     
     try {
-      console.log('🎵 Loading track:', track.title, 'ID:', track.id);
+      console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
       const url = buildStreamUrl(track.id);
       console.log('🎵 Stream URL built:', url);
       
-      // Test if the stream URL is accessible
+      // Quick HEAD with timeout (don't hang forever)
       console.log('🎵 Testing stream URL accessibility...');
-      try {
-        const testResponse = await fetch(url, { method: 'HEAD' });
-        console.log('🎵 Stream URL test result:', testResponse.status, testResponse.statusText);
-        if (!testResponse.ok) {
-          throw new Error(`Stream URL not accessible: ${testResponse.status} ${testResponse.statusText}`);
-        }
-      } catch (error) {
-        console.error('🎵 Stream URL test failed:', error);
-        throw error;
+      const headOk = await headCheck(url, 3000);
+      if (!headOk) {
+        console.log('🎵 HEAD check failed for:', track.title);
+        return false;
+      }
+      
+      // If a newer load started, ignore this one
+      if (mySeq !== loadSeq) {
+        console.log('🎵 Load sequence outdated, ignoring:', mySeq, 'vs', loadSeq);
+        return false;
       }
       
       audio.src = url;
-      console.log('🎵 Audio src set, attempting to load...');
+      console.log('🎵 Audio src set, attempting to play...');
       
-      await audio.load();
+      // .load() is sync; browsers fire async events, so just try to play
+      try { 
+        await audio.play(); 
+      } catch { 
+        // gesture needed; fine - this will be handled by user clicking play
+        console.log('🎵 Autoplay blocked (expected), waiting for user gesture');
+      }
+      
+      // Still current?
+      if (mySeq !== loadSeq) {
+        console.log('🎵 Load sequence outdated after play attempt, ignoring:', mySeq, 'vs', loadSeq);
+        return false;
+      }
+      
       console.log('🎵 Track loaded successfully:', track.title);
-      set({ currentTrack: track, isLoading: false });
+      set({ currentTrack: track, isLoading: false, error: undefined });
       return true;
     } catch (error) {
       console.error('🎵 Load track failed:', error);
+      // If this load is stale we don't touch global state
+      if (mySeq === loadSeq) {
+        set({ isLoading: false });
+      }
       return false;
     }
   };
@@ -310,27 +372,31 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     setQueue: async (tracks: Track[], startAt = 0) => {
       const validIndex = Math.max(0, Math.min(startAt, tracks.length - 1));
-      set({ queue: tracks, index: validIndex });
+      set({ queue: tracks, index: validIndex, isLoading: true, error: undefined });
       
-      // Try to find a working track starting from the requested index
-      let workingTrackFound = false;
-      for (let i = validIndex; i < tracks.length; i++) {
-        console.log('🎵 Trying to load track', i + 1, 'of', tracks.length, ':', tracks[i].title);
-        const success = await loadTrack(tracks[i]);
+      // Reset skip counter for new session
+      skipped = 0;
+      
+      let { queue, index } = get();
+      for (let i = index; i < queue.length; i++) {
+        console.log('🎵 Trying to load track', i + 1, 'of', queue.length, ':', queue[i].title);
+        const success = await loadTrack(queue[i]);
         if (success) {
           set({ index: i });
-          workingTrackFound = true;
-          console.log('🎵 Found working track at index', i, ':', tracks[i].title);
-          break;
-        } else {
-          console.log('🎵 Track failed, trying next one...');
+          console.log('🎵 Found working track at index', i, ':', queue[i].title);
+          return;
         }
+        
+        // Drop broken track from this session's queue and announce skip
+        console.log('🎵 Removing broken track from queue:', queue[i].title);
+        announceSkip();
+        queue = removeAt(queue, i);
+        i--; // Adjust index since we removed an item
+        set({ queue });
       }
       
-      if (!workingTrackFound) {
-        set({ isLoading: false, error: "No working tracks found in queue" });
-        console.error('🎵 No working tracks found in entire queue');
-      }
+      set({ isLoading: false, error: "No working tracks found in queue" });
+      console.error('🎵 No working tracks found in entire queue');
     },
 
     play: async () => {
@@ -382,17 +448,23 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      const { queue, index } = get();
+      let { queue, index } = get();
       
-      // Try to find the next working track
-      for (let nextIndex = index + 1; nextIndex < queue.length; nextIndex++) {
-        console.log('🎵 Trying next track at index', nextIndex, ':', queue[nextIndex].title);
-        const success = await loadTrack(queue[nextIndex]);
+      for (let i = index + 1; i < queue.length; i++) {
+        console.log('🎵 Trying next track at index', i, ':', queue[i].title);
+        const success = await loadTrack(queue[i]);
         if (success) {
-          set({ index: nextIndex });
+          set({ index: i });
           await get().play();
           return;
         }
+        
+        // Drop broken track from queue and announce skip
+        console.log('🎵 Removing broken track from queue:', queue[i].title);
+        announceSkip();
+        queue = removeAt(queue, i);
+        i--; // Adjust index since we removed an item
+        set({ queue });
       }
       
       console.log('🎵 No more working tracks in queue');
@@ -400,17 +472,23 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     prev: async () => {
-      const { queue, index } = get();
+      let { queue, index } = get();
       
-      // Try to find the previous working track
-      for (let prevIndex = index - 1; prevIndex >= 0; prevIndex--) {
-        console.log('🎵 Trying previous track at index', prevIndex, ':', queue[prevIndex].title);
-        const success = await loadTrack(queue[prevIndex]);
+      for (let i = index - 1; i >= 0; i--) {
+        console.log('🎵 Trying previous track at index', i, ':', queue[i].title);
+        const success = await loadTrack(queue[i]);
         if (success) {
-          set({ index: prevIndex });
+          set({ index: i });
           await get().play();
           return;
         }
+        
+        // Drop broken track from queue and announce skip
+        console.log('🎵 Removing broken track from queue:', queue[i].title);
+        announceSkip();
+        queue = removeAt(queue, i);
+        // No need to adjust i since we're walking downward
+        set({ queue });
       }
       
       console.log('🎵 No previous working tracks in queue');
