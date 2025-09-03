@@ -1865,6 +1865,8 @@ export type Database = {
           investigation_notes: string | null
           key: string | null
           key_strength: number | null
+          last_error: string | null
+          last_verified_at: string | null
           mood: string | null
           mood_scores: Json | null
           play_count: number | null
@@ -1924,6 +1926,8 @@ export type Database = {
           investigation_notes?: string | null
           key?: string | null
           key_strength?: number | null
+          last_error?: string | null
+          last_verified_at?: string | null
           mood?: string | null
           mood_scores?: Json | null
           play_count?: number | null
@@ -1983,6 +1987,8 @@ export type Database = {
           investigation_notes?: string | null
           key?: string | null
           key_strength?: number | null
+          last_error?: string | null
+          last_verified_at?: string | null
           mood?: string | null
           mood_scores?: Json | null
           play_count?: number | null
