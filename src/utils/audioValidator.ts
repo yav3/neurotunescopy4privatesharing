@@ -1,3 +1,5 @@
+import { AUDIO_ELEMENT_ID } from '@/player/constants';
+
 interface AudioValidationResult {
   isValid: boolean;
   errors: string[];
@@ -19,9 +21,9 @@ export class AudioValidator {
     }
     
     // Check audio element properties
-    const audioElement = document.getElementById('audio-player') as HTMLAudioElement;
+    const audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
     if (!audioElement) {
-      errors.push('Main audio element (#audio-player) not found');
+      errors.push(`Main audio element (#${AUDIO_ELEMENT_ID}) not found`);
     } else {
       if (!audioElement.crossOrigin) {
         warnings.push('Audio element missing crossOrigin attribute');

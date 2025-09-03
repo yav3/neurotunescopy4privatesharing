@@ -25,7 +25,8 @@ const Index = () => {
     
     try {
       // Get tracks for the selected category (deterministic API call)
-      const { tracks } = await API.playlist({ goal: category.toLowerCase(), limit: 50 });
+      const goalSlug = toGoalSlug(category.toLowerCase());
+      const { tracks } = await API.playlist(goalSlug, 50);
       
       if (!tracks?.length) {
         toast({

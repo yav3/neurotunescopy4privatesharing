@@ -17,7 +17,7 @@ export async function testPlaybackInvariants() {
     
     // 2. Get playlist  
     console.log('2️⃣ Fetching playlist...');
-    const { tracks } = await API.playlist({ goal: 'focus', limit: 1 });
+    const { tracks } = await API.playlist('focus-enhancement', 1);
     if (!tracks?.length) throw new Error('No tracks returned');
     console.log('✅ Playlist:', tracks[0]);
     

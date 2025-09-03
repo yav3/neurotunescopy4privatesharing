@@ -142,7 +142,7 @@ export const AudioTester: React.FC = () => {
       setResults([...newResults])
 
       // Try to get a sample track from database
-      const data = await API.playlist({ goal: 'focus' })
+      const data = await API.playlist('focus-enhancement')
       const tracks = data.tracks || []
       if (tracks.length > 0) {
           const sampleTrack = tracks[0]

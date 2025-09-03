@@ -129,7 +129,7 @@ export const checkDatabaseIdFormats = async () => {
   try {
     // Use the proper API method instead of direct fetch to avoid URL issues
     const { API } = await import('@/lib/api');
-    const response = await API.playlist({ goal: 'focus', limit: 5 });
+    const response = await API.playlist('focus-enhancement', 5);
     console.log('API Response:', response);
     
     if (response.tracks && Array.isArray(response.tracks)) {

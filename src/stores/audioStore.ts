@@ -4,6 +4,7 @@ import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
 import { toGoalSlug } from '@/domain/goals';
+import { AUDIO_ELEMENT_ID } from '@/player/constants';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -61,21 +62,21 @@ const ensureAudioElement = (): HTMLAudioElement => {
   
   // Clean up any existing audio elements first
   document.querySelectorAll("audio").forEach(el => {
-    if (el.id !== "audio-player") {
+    if (el.id !== AUDIO_ELEMENT_ID) {
       console.warn("[audio] Removing duplicate audio element:", el.id || "no-id");
       el.remove();
     }
   });
   
-  audioElement = document.getElementById("audio-player") as HTMLAudioElement;
+  audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
   if (!audioElement) {
     audioElement = document.createElement("audio");
-    audioElement.id = "audio-player";
+    audioElement.id = AUDIO_ELEMENT_ID;
     audioElement.preload = "metadata";
     audioElement.crossOrigin = "anonymous";
     audioElement.style.display = "none";
     document.body.appendChild(audioElement);
-    console.log("🎵 Created unified audio element #audio-player");
+    console.log(`🎵 Created unified audio element #${AUDIO_ELEMENT_ID}`);
   }
   return audioElement;
 };
