@@ -1,8 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useAudioStore } from "@/stores/audioStore";
-import { toast } from "sonner";
-import React, { useState } from "react";
+import React from "react";
 
 interface MusicCategoryCardProps {
   title: string;
@@ -12,32 +10,13 @@ interface MusicCategoryCardProps {
 }
 
 export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCategoryCardProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { playFromGoal } = useAudioStore();
-  
-  const handleClick = async () => {
-    setIsLoading(true);
-    toast.loading(`Preparing ${title.toLowerCase()}…`, { id: "goal" });
-    try {
-      await playFromGoal(title.toLowerCase());
-      toast.success(`Playing ${title.toLowerCase()} tracks`, { id: "goal" });
-      onClick?.();
-    } catch (e: any) {
-      toast.error(e.message ?? "Could not load tracks", { id: "goal" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-card bg-gradient-card border-border/50",
-        isLoading && "opacity-50 cursor-wait",
         className
       )}
-      onClick={handleClick}
+      onClick={onClick}
     >
       <div className="aspect-square relative">
         <img 
@@ -49,11 +28,6 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
         <div className="absolute bottom-4 left-4 right-4">
           <h3 className="text-foreground font-semibold text-lg">{title}</h3>
         </div>
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          </div>
-        )}
       </div>
     </Card>
   );

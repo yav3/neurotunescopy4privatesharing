@@ -242,8 +242,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     play: async () => {
       const audio = initAudio();
+      console.log('🎵 Play called - audio element:', audio.src, 'readyState:', audio.readyState);
       try {
         await audio.play();
+        console.log('🎵 Play successful');
         set({ error: undefined });
       } catch (error: any) {
         console.log('🎵 Play failed (likely autoplay restriction):', error.message);
