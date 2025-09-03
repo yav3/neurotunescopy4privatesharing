@@ -21,7 +21,7 @@ const alias: Record<string, string[]> = {
 
 const SUPABASE_URL  = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'audio';
+const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'neuralpositivemusic';
 
 function wordsFor(goal: string): string[] {
   const g = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
