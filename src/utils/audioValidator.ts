@@ -19,9 +19,9 @@ export class AudioValidator {
     }
     
     // Check audio element properties
-    const audioElement = document.getElementById('np-audio') as HTMLAudioElement;
+    const audioElement = document.getElementById('audio-player') as HTMLAudioElement;
     if (!audioElement) {
-      errors.push('Main audio element (#np-audio) not found');
+      errors.push('Main audio element (#audio-player) not found');
     } else {
       if (!audioElement.crossOrigin) {
         warnings.push('Audio element missing crossOrigin attribute');
