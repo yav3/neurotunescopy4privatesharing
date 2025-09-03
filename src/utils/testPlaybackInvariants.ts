@@ -4,7 +4,7 @@
  */
 
 import { API } from '@/lib/api';
-import { setQueue } from '@/player/audio-core';
+import { useAudioStore } from '@/stores/audioStore';
 
 export async function testPlaybackInvariants() {
   console.log('🧪 Testing playback invariants...');
@@ -43,14 +43,15 @@ export async function testPlaybackInvariants() {
       throw new Error(`Stream HEAD failed: ${head.status}`);
     }
     
-    // 5. Test player integration
-    console.log('5️⃣ Testing player integration...');
-    await setQueue(tracks, 0);
+  // 5. Test player integration
+  console.log('5️⃣ Testing player integration...');
+  const { setQueue } = useAudioStore.getState();
+  await setQueue(tracks, 0);
     
-    // 6. Verify audio element
-    const audioEl = document.getElementById('np-audio') as HTMLAudioElement;
-    if (!audioEl) throw new Error('Audio element not created');
-    console.log('🎵 Audio element src:', audioEl.src);
+  // 6. Verify audio element
+  const audioEl = document.getElementById('audio-player') as HTMLAudioElement;
+  if (!audioEl) throw new Error('Audio element not created');
+  console.log('🎵 Audio element src:', audioEl.src);
     
     console.log('🎉 All invariants PASSED');
     return {

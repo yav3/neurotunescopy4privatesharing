@@ -238,7 +238,7 @@ const AIDJPage: React.FC = () => {
       
       try {
         // Use the unified audio system
-        const maxTracks = 50; // Match audio-core MAX_QUEUE
+        const maxTracks = 50; // Reasonable limit for queue size
         const tracksToQueue = localPlaylist.slice(0, maxTracks);
         console.log(`🔒 AI DJ: Limiting queue to ${tracksToQueue.length} tracks (from ${localPlaylist.length} total)`);
         await setQueue(tracksToQueue, 0);
@@ -275,7 +275,7 @@ const AIDJPage: React.FC = () => {
       
       try {
         setLocalPlaylist(shuffled);
-        const maxTracks = 50; // Match audio-core MAX_QUEUE
+        const maxTracks = 50; // Reasonable limit for queue size
         const tracksToQueue = shuffled.slice(0, maxTracks);
         console.log(`🔒 AI DJ: Limiting shuffled queue to ${tracksToQueue.length} tracks (from ${shuffled.length} total)`);
         await setQueue(tracksToQueue, 0);
@@ -577,7 +577,7 @@ const AIDJPage: React.FC = () => {
                         <Button
                           onClick={() => {
                             // Simple play/pause without complex state
-                            const audio = document.getElementById('np-audio') as HTMLAudioElement;
+                            const audio = document.getElementById('audio-player') as HTMLAudioElement;
                             if (audio) {
                               if (audio.paused) {
                                 audio.play().catch(console.warn);

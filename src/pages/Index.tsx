@@ -11,14 +11,13 @@ import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
 import { useAudioStore } from "@/stores/audioStore";
 import { toast } from "@/hooks/use-toast";
 import { API } from "@/lib/api";
-import { setQueue } from "@/player/audio-core";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("goals");
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { currentTrack } = useAudioStore();
+  const { currentTrack, setQueue } = useAudioStore();
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
