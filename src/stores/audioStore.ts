@@ -140,11 +140,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
     set({ isLoading: true, error: undefined });
     
     try {
+      console.log('🎵 Loading track:', track.title, 'ID:', track.id);
       const url = buildStreamUrl(track.id);
+      console.log('🎵 Stream URL built:', url);
+      
       audio.src = url;
+      console.log('🎵 Audio src set, attempting to load...');
+      
       await audio.load();
+      console.log('🎵 Track loaded successfully:', track.title);
       set({ currentTrack: track, isLoading: false });
     } catch (error) {
+      console.error('🎵 Load track failed:', error);
       set({ error: "Failed to load track", isLoading: false });
     }
   };
@@ -247,6 +254,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         if (!orderedTracks.length) throw new Error(`No suitable tracks for therapeutic goal "${goal}"`);
         
         await get().setQueue(orderedTracks, 0);
+        
+        // Auto-play the first track after setting queue
+        await get().play();
+        
         set({ isLoading: false });
         
         console.log('🎵 Therapeutic playlist set with VAD/Camelot ordering:', orderedTracks.length, 'tracks');
