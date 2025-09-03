@@ -377,87 +377,159 @@ routes.set("POST /v1/stream", async (req) => {
   });
 });
 
-// Audio streaming endpoint - Updated to use tracks table
+// Audio streaming endpoint - DETERMINISTIC with fallback
 routes.set("GET /stream", async (req) => {
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
-  if (!id) {
-    return json({ error: "Missing track ID parameter" }, { status: 400 });
+  const fileQ = url.searchParams.get("file");
+  
+  if (!id && !fileQ) {
+    return json({ error: "Missing track ID or file parameter" }, { status: 400 });
   }
   
-  console.log(`🎵 Stream request for track: ${id}`);
+  console.log(`🎵 Stream request for track ID: ${id}, file: ${fileQ}`);
   
-  // Validate track exists in tracks table using UUID
   const supabase = sb();
+  const BUCKETS = ['neuralpositivemusic', 'audio', 'music']; // Order matters - prefer first
   
-  // Validate UUID format
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-  if (!isUUID) {
-    console.error('❌ Invalid UUID format:', id);
-    return json({ error: "Invalid track ID format" }, { status: 400 });
-  }
-  
-  const { data: track, error } = await supabase
-    .from('tracks')
-    .select('id, title, file_path, storage_key, file_name')
-    .eq('id', id)
-    .eq('audio_status', 'working')
-    .maybeSingle();
-    
-  if (error || !track) {
-    console.error('❌ Track not found:', id, error);
-    return json({ error: "Track not found" }, { status: 404 });
-  }
-  
-  // Get the actual file path from storage_key, file_path, or file_name
-  const fileName = track.storage_key || track.file_path || track.file_name;
-  if (!fileName) {
-    console.error('❌ No file path found for track:', track);
-    return json({ error: "Track file path not found" }, { status: 404 });
-  }
-  
-  console.log(`🎵 Streaming file: ${fileName} for track: ${track.title}`);
-  
-  try {
-    // Get the file from Supabase Storage - try multiple buckets
-    let fileData, storageError;
-    const buckets = ['audio', 'neuralpositivemusic', 'music'];
-    
-    for (const bucket of buckets) {
-      console.log(`🎵 Trying bucket: ${bucket} for file: ${fileName}`);
-      const result = await supabase.storage
-        .from(bucket)
-        .download(fileName);
-        
-      if (!result.error && result.data) {
-        fileData = result.data;
-        console.log(`✅ Found file in bucket: ${bucket}`);
-        break;
-      } else {
-        console.log(`❌ Not found in bucket ${bucket}:`, result.error?.message);
-      }
+  let bucket: string | null = null;
+  let key: string | null = null;
+
+  // 1) DETERMINISTIC: Resolve by ID from database (fastest path)
+  if (id) {
+    // Validate UUID format
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (!isUUID) {
+      console.error('❌ Invalid UUID format:', id);
+      return json({ error: "Invalid track ID format" }, { status: 400 });
     }
+
+    const { data: row, error } = await supabase
+      .from("tracks")
+      .select("storage_bucket, storage_key, title")
+      .eq("id", id)
+      .eq("audio_status", "working")
+      .maybeSingle();
       
-    if (!fileData) {
-      console.error('❌ File not found in any storage bucket:', fileName);
-      return json({ error: "File not found in storage" }, { status: 404 });
+    if (row?.storage_key) {
+      bucket = row.storage_bucket || BUCKETS[0]; // Default to neuralpositivemusic
+      key = row.storage_key;
+      console.log(`🎯 DETERMINISTIC: Found mapping ${id} → ${bucket}/${key} for "${row.title}"`);
+    } else if (error) {
+      console.error('❌ Database error for track:', id, error.message);
+      return json({ error: error.message, id }, 404);
+    } else {
+      console.warn(`⚠️ No deterministic mapping found for track: ${id}`);
+    }
+  }
+
+  // 2) FALLBACK: Legacy file param or missing mapping → search across buckets
+  if (!key && fileQ) {
+    console.log(`🔍 FALLBACK: Searching for file "${fileQ}" across buckets`);
+    const seg = fileQ.split("/").map(decodeURIComponent).join("/");
+    
+    for (const b of BUCKETS) {
+      console.log(`🎵 Trying bucket: ${b} for file: ${seg}`);
+      try {
+        // Test if file exists by attempting to create a signed URL
+        const trySign = await supabase.storage.from(b).createSignedUrl(seg, 60);
+        if (trySign.data?.signedUrl && !trySign.error) {
+          bucket = b;
+          key = seg;
+          console.log(`✅ FALLBACK: Found file in bucket: ${b}`);
+          break;
+        }
+      } catch (fallbackError) {
+        console.log(`❌ Fallback error in bucket ${b}:`, fallbackError);
+      }
+    }
+  }
+
+  // 3) If still not found → report exactly what we tried
+  if (!key || !bucket) {
+    console.error('❌ File not found anywhere:', { id, file: fileQ, buckets: BUCKETS });
+    return json({ 
+      error: "File not found", 
+      id, 
+      file: fileQ || null, 
+      buckets_searched: BUCKETS,
+      deterministic_lookup: !!id,
+      fallback_attempted: !!fileQ
+    }, 404);
+  }
+
+  // 4) Stream the file with proper headers and Range support
+  try {
+    console.log(`🎵 Streaming from ${bucket}/${key}`);
+    
+    // Handle Range requests for audio seeking
+    const range = req.headers.get("range");
+    const method = req.method;
+    
+    // Get signed URL for the file
+    const signed = await supabase.storage.from(bucket).createSignedUrl(key, 1800); // 30 min
+    if (!signed.data?.signedUrl) {
+      console.error('❌ Failed to create signed URL:', signed.error);
+      return json({ error: "Failed to create signed URL", bucket, key }, 500);
+    }
+
+    // Fetch with range support
+    const headers: Record<string, string> = {};
+    if (range) {
+      headers.Range = range;
     }
     
-    // Stream the audio file with proper headers
-    return new Response(fileData, {
-      headers: {
-        "Content-Type": "audio/mpeg",
-        "Accept-Ranges": "bytes",
-        "Content-Length": fileData.size.toString(),
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, Range, x-client-info, apikey",
-        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-        "Cache-Control": "public, max-age=3600"
-      }
+    const upstream = await fetch(signed.data.signedUrl, { method, headers });
+    
+    if (!upstream.ok) {
+      console.error('❌ Upstream fetch failed:', upstream.status, upstream.statusText);
+      return json({ error: "Upstream fetch failed", status: upstream.status }, upstream.status);
+    }
+
+    // Build response headers
+    const responseHeaders = new Headers();
+    
+    // Copy relevant headers from upstream
+    ['content-type', 'content-length', 'content-range', 'accept-ranges'].forEach(h => {
+      const value = upstream.headers.get(h);
+      if (value) responseHeaders.set(h, value);
     });
+    
+    // Set CORS and caching headers
+    responseHeaders.set("Access-Control-Allow-Origin", "*");
+    responseHeaders.set("Access-Control-Allow-Headers", "Content-Type, Authorization, Range, x-client-info, apikey");
+    responseHeaders.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+    responseHeaders.set("Access-Control-Expose-Headers", "Accept-Ranges, Content-Length, Content-Type, Content-Range");
+    responseHeaders.set("Accept-Ranges", "bytes");
+    responseHeaders.set("Cache-Control", "public, max-age=3600");
+    
+    // Set content type if not present
+    if (!responseHeaders.get("content-type") && key.toLowerCase().endsWith(".mp3")) {
+      responseHeaders.set("Content-Type", "audio/mpeg");
+    }
+
+    // Log successful stream info once per request
+    console.log(JSON.stringify({ 
+      success: true,
+      used_bucket: bucket, 
+      key, 
+      method,
+      has_range: !!range,
+      status: upstream.status,
+      content_type: responseHeaders.get("content-type")
+    }));
+
+    return new Response(
+      method === "HEAD" ? null : upstream.body,
+      { 
+        status: upstream.status,
+        headers: responseHeaders
+      }
+    );
+
   } catch (streamError) {
     console.error('❌ Stream error:', streamError);
-    return json({ error: "Failed to stream audio file" }, { status: 500 });
+    return json({ error: "Failed to stream audio file", bucket, key }, 500);
   }
 });
 

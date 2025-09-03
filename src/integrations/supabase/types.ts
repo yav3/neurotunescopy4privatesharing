@@ -1969,6 +1969,7 @@ export type Database = {
           skip_count: number | null
           spectral_features: Json | null
           speechiness: number | null
+          storage_bucket: string | null
           storage_key: string | null
           structural_features: Json | null
           tags: string[] | null
@@ -2027,6 +2028,7 @@ export type Database = {
           skip_count?: number | null
           spectral_features?: Json | null
           speechiness?: number | null
+          storage_bucket?: string | null
           storage_key?: string | null
           structural_features?: Json | null
           tags?: string[] | null
@@ -2085,6 +2087,7 @@ export type Database = {
           skip_count?: number | null
           spectral_features?: Json | null
           speechiness?: number | null
+          storage_bucket?: string | null
           storage_key?: string | null
           structural_features?: Json | null
           tags?: string[] | null
