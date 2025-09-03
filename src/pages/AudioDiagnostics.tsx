@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { usePlay } from '../hooks/usePlay';
+import { useAudioStore } from '../stores/audioStore';
 import { API } from '../lib/api';
 import { buildStreamUrl, headOk } from '../lib/stream';
 
 const AudioDiagnostics: React.FC = () => {
-  const { safePlay, pause, isPlaying, currentId } = usePlay();
+  const { playTrack, pause, isPlaying, currentTrack } = useAudioStore();
   const [realTracks, setRealTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -70,7 +70,7 @@ const AudioDiagnostics: React.FC = () => {
   const handlePlay = async (track: any) => {
     try {
       console.log(`🎵 Playing REAL track:`, track);
-      await safePlay(track.id);
+      await playTrack(track);
     } catch (error) {
       console.error('❌ Play failed:', error);
       alert(`Play Test: ❌ FAIL\nTrack: "${track.title}"\nError: ${error}`);
@@ -128,10 +128,10 @@ const AudioDiagnostics: React.FC = () => {
                     
                     <button
                       onClick={() => handlePlay(track)}
-                      disabled={isPlaying && currentId === track.id}
+                      disabled={isPlaying && currentTrack?.id === track.id}
                       className="px-3 py-1 bg-purple-500 text-white text-sm rounded hover:bg-purple-600 disabled:opacity-50 font-medium"
                     >
-                      {isPlaying && currentId === track.id ? '▶️ Playing...' : '▶️ Play'}
+                      {isPlaying && currentTrack?.id === track.id ? '▶️ Playing...' : '▶️ Play'}
                     </button>
                   </div>
                 </div>

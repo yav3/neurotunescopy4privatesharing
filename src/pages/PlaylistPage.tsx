@@ -3,7 +3,7 @@ import { ArrowLeft, Plus } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import PlaylistManager from '@/components/PlaylistManager'
-import EnhancedMusicPlayer from '@/components/EnhancedMusicPlayer'
+import { MusicPlayer } from '@/components/MusicPlayer'
 import { TrackCard } from '@/components/TrackCard'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
@@ -188,7 +188,7 @@ export const PlaylistPage: React.FC = () => {
           {/* Enhanced Music Player */}
           <div className="lg:col-span-1">
             <div className="sticky top-6">
-              <EnhancedMusicPlayer />
+              <MusicPlayer open={false} onOpenChange={() => {}} />
             </div>
           </div>
         </div>

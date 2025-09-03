@@ -1,7 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { AudioProvider } from '@/context'
+// AudioProvider removed - using unified useAudioStore instead
 import App from './App.tsx'
 import './index.css'
 
@@ -128,9 +128,7 @@ setTimeout(debugButtons, 1000);
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AudioProvider>
-        <App />
-      </AudioProvider>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

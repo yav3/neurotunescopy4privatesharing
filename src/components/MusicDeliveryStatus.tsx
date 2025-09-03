@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { AlertTriangle, Wifi, WifiOff, Volume2 } from 'lucide-react'
-import { usePlay } from '@/hooks/usePlay'
 import { useAudioStore } from '@/stores/audioStore'
 
 export const MusicDeliveryStatus: React.FC = () => {
-  const { isPlaying } = usePlay()
-  const { error, currentTrack: track } = useAudioStore()
+  const { isPlaying, error, currentTrack: track } = useAudioStore()
   const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline'>('online')
 
   useEffect(() => {

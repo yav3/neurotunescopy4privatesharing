@@ -1,13 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { usePlay } from "@/hooks/usePlay";
 import { useAudioStore } from "@/stores/audioStore";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 export default function FullPlayer() {
   const navigate = useNavigate();
-  const { safePlay, pause, isPlaying } = usePlay();
-  const { next, prev, currentTrack: track } = useAudioStore();
+  const { play, pause, next, prev, isPlaying, currentTrack: track } = useAudioStore();
 
   if (!track) {
     return (
@@ -51,7 +49,7 @@ export default function FullPlayer() {
           </button>
           
           <button
-            onClick={() => isPlaying ? pause() : safePlay(track.id)}
+            onClick={() => isPlaying ? pause() : play()}
             className="p-6 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
           >
             {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10 ml-1" />}

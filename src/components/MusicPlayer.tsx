@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { usePlay } from "@/hooks/usePlay";
 import { useAudioStore } from "@/stores/audioStore";
 import { formatTime } from "@/lib/utils";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
@@ -16,8 +15,7 @@ interface MusicPlayerProps {
 
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const { isPlaying, currentId, safePlay, pause } = usePlay();
-  const { next, prev, currentTrack: track } = useAudioStore();
+  const { play, pause, next, prev, isPlaying, currentTrack: track } = useAudioStore();
 
   if (!track) {
     return null;
@@ -82,7 +80,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
             <Button
               size="icon"
               className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90"
-              onClick={() => isPlaying ? pause() : track && safePlay(track.id)}
+              onClick={() => isPlaying ? pause() : play()}
             >
               {isPlaying ? (
                 <Pause className="w-8 h-8 text-primary-foreground" />

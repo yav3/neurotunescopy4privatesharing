@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Plus, Play, Trash2, Music, Clock, MoreVertical } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { PlaylistService, type Playlist } from '@/services/playlistService'
-import { usePlay } from '@/hooks/usePlay'
+import { useAudioStore } from '@/stores/audioStore'
 import { LoadingSpinner } from './LoadingSpinner'
 import { logger } from '@/services/logger'
 
@@ -16,7 +16,7 @@ export const SimplePlaylistManager: React.FC<SimplePlaylistManagerProps> = ({ us
   const [newPlaylistName, setNewPlaylistName] = useState('')
   const [newPlaylistDescription, setNewPlaylistDescription] = useState('')
   const queryClient = useQueryClient()
-  const { safePlay } = usePlay()
+  const { playTrack } = useAudioStore()
 
   // Fetch playlists
   const { 
@@ -72,7 +72,7 @@ export const SimplePlaylistManager: React.FC<SimplePlaylistManagerProps> = ({ us
       const tracks = fullPlaylist.tracks || []
       if (tracks.length > 0) {
         // For simplicity, just play the first track
-        await safePlay(tracks[0].id)
+        await playTrack(tracks[0])
         logger.info(`Playing playlist: ${playlist.name}`)
       }
     } catch (error) {
