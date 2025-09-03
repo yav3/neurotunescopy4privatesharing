@@ -269,6 +269,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     play: async () => {
       const { currentTrack, queue } = get();
+      console.log('🎵 Play called - currentTrack:', currentTrack?.title, 'queue length:', queue.length);
+      
       if (!currentTrack && queue.length === 0) {
         console.log('🎵 No track to play - queue is empty and no current track');
         set({ error: "No track selected to play" });
@@ -276,24 +278,26 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       const audio = initAudio();
-      console.log('🎵 Play called - audio element:', audio.src, 'readyState:', audio.readyState, 'currentTrack:', currentTrack?.title);
+      console.log('🎵 Audio element state - src:', audio.src, 'readyState:', audio.readyState, 'paused:', audio.paused);
       
-      if (!audio.src) {
-        console.log('🎵 No audio source, attempting to load first track from queue');
-        if (queue.length > 0) {
-          await loadTrack(queue[0]);
-        } else {
-          set({ error: "No audio track available to play" });
-          return;
-        }
+      if (!audio.src && currentTrack) {
+        console.log('🎵 No audio source, loading current track:', currentTrack.title);
+        await loadTrack(currentTrack);
+      } else if (!audio.src && queue.length > 0) {
+        console.log('🎵 No audio source, loading first track from queue:', queue[0].title);
+        await loadTrack(queue[0]);
+      } else if (!audio.src) {
+        set({ error: "No audio track available to play" });
+        return;
       }
       
       try {
+        console.log('🎵 Attempting to play audio...');
         await audio.play();
         console.log('🎵 Play successful');
         set({ error: undefined });
       } catch (error: any) {
-        console.log('🎵 Play failed (likely autoplay restriction):', error.message);
+        console.error('🎵 Play failed:', error);
         set({ error: "Click play to start music (browser autoplay restriction)" });
       }
     },
