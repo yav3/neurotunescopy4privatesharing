@@ -214,7 +214,15 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   if (error || !row) {
     return json({ ok: false, error: 'TrackNotFound', id: trackId }, 404);
   }
+  
   if (!row.storage_key) {
+    // Self-heal: Mark as missing
+    await supabase.from('tracks').update({
+      audio_status: 'missing',
+      last_verified_at: new Date().toISOString(),
+      last_error: 'MissingStorageKey'
+    }).eq('id', trackId);
+    
     return json({ ok: false, error: 'MissingStorageKey', id: trackId }, 404);
   }
 
@@ -232,6 +240,13 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   });
 
   if (!signed.data?.signedUrl) {
+    // Self-heal: Mark as missing with specific error
+    await supabase.from('tracks').update({
+      audio_status: 'missing',
+      last_verified_at: new Date().toISOString(),
+      last_error: `ObjectNotFound:${bucket}:${row.storage_key}`
+    }).eq('id', trackId);
+    
     return json(
       { ok: false, error: 'ObjectNotFound', bucket, key: row.storage_key, id: trackId },
       404
@@ -250,6 +265,13 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   });
 
   if (head.status >= 400) {
+    // Self-heal: Mark as missing with HEAD failure status
+    await supabase.from('tracks').update({
+      audio_status: 'missing',
+      last_verified_at: new Date().toISOString(),
+      last_error: `SignedUrlHeadFailed:${head.status}`
+    }).eq('id', trackId);
+    
     return json(
       {
         ok: false,
@@ -262,6 +284,13 @@ async function handleStreamRequest(req: Request): Promise<Response> {
       404
     );
   }
+
+  // Success: Mark as working
+  await supabase.from('tracks').update({
+    audio_status: 'working',
+    last_verified_at: new Date().toISOString(),
+    last_error: null
+  }).eq('id', trackId);
 
   // Proxy with Range support
   const range = req.headers.get('range');
