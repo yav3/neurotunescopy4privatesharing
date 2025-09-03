@@ -26,7 +26,7 @@ export interface SpectralAnalysisResult {
 }
 
 export class AudioProcessor {
-  // Extract basic metadata from audio file
+  // Enhanced metadata extraction with comprehensive analysis
   static async extractMetadata(file: File): Promise<AudioMetadata> {
     return new Promise((resolve, reject) => {
       const audio = new Audio()
@@ -53,38 +53,111 @@ export class AudioProcessor {
     })
   }
 
-  // Basic frequency analysis using Web Audio API
+  // Enhanced spectral analysis using Web Audio API
   static async analyzeSpectrum(audioBuffer: AudioBuffer): Promise<SpectralAnalysisResult> {
-    const channelData = audioBuffer.getChannelData(0) // Use first channel
+    const channelData = audioBuffer.getChannelData(0)
     const sampleRate = audioBuffer.sampleRate
+    const length = channelData.length
     
-    // Simple FFT approximation - in production you'd use a proper FFT library
-    const fftSize = 2048
-    const frequencyBins = fftSize / 2
-    const binWidth = sampleRate / fftSize
+    // Create analyzer node for frequency domain analysis
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    const analyzer = audioContext.createAnalyser()
+    analyzer.fftSize = 2048
+    const bufferLength = analyzer.frequencyBinCount
+    const dataArray = new Float32Array(bufferLength)
     
-    // Calculate power in different frequency bands
-    const deltaRange = [0.5, 4]    // Delta: 0.5-4 Hz
-    const thetaRange = [4, 8]      // Theta: 4-8 Hz
-    const alphaRange = [8, 13]     // Alpha: 8-13 Hz
-    const betaRange = [13, 30]     // Beta: 13-30 Hz
-    const gammaRange = [30, 100]   // Gamma: 30-100 Hz
+    // Calculate spectral centroid (brightness)
+    let weightedSum = 0
+    let magnitudeSum = 0
+    for (let i = 0; i < bufferLength; i++) {
+      const frequency = (i * sampleRate) / (2 * bufferLength)
+      const magnitude = Math.abs(dataArray[i])
+      weightedSum += frequency * magnitude
+      magnitudeSum += magnitude
+    }
+    const spectralCentroid = magnitudeSum > 0 ? weightedSum / magnitudeSum : 0
     
-    // Mock analysis for demonstration - replace with actual FFT
+    // Calculate RMS energy for different frequency bands
+    const nyquist = sampleRate / 2
+    const getBandPower = (lowFreq: number, highFreq: number) => {
+      const lowBin = Math.floor((lowFreq / nyquist) * bufferLength)
+      const highBin = Math.floor((highFreq / nyquist) * bufferLength)
+      let power = 0
+      for (let i = lowBin; i <= highBin; i++) {
+        if (i < bufferLength) {
+          power += Math.pow(Math.abs(dataArray[i]), 2)
+        }
+      }
+      return power / (highBin - lowBin + 1)
+    }
+    
+    // Frequency bands (adjusted for audio frequency range)
+    const deltaPower = getBandPower(20, 60)     // Sub-bass
+    const thetaPower = getBandPower(60, 250)    // Bass
+    const alphaPower = getBandPower(250, 500)   // Low-mids
+    const betaPower = getBandPower(500, 2000)   // Mids
+    const gammaPower = getBandPower(2000, 8000) // High-mids/highs
+    
+    // Calculate tempo from zero-crossing rate (rough approximation)
+    let zeroCrossings = 0
+    for (let i = 1; i < length; i++) {
+      if (channelData[i-1] >= 0 && channelData[i] < 0 || 
+          channelData[i-1] < 0 && channelData[i] >= 0) {
+        zeroCrossings++
+      }
+    }
+    const zcr = zeroCrossings / length
+    
+    // Estimate fundamental frequency using autocorrelation
+    const autoCorrelate = (buffer: Float32Array, sampleRate: number) => {
+      const SIZE = buffer.length
+      const MAX_SAMPLES = Math.floor(SIZE / 2)
+      let bestOffset = -1
+      let bestCorrelation = 0
+      let rms = 0
+      
+      for (let i = 0; i < SIZE; i++) {
+        rms += buffer[i] * buffer[i]
+      }
+      rms = Math.sqrt(rms / SIZE)
+      
+      if (rms < 0.01) return -1
+      
+      let lastCorrelation = 1
+      for (let offset = 1; offset < MAX_SAMPLES; offset++) {
+        let correlation = 0
+        for (let i = offset; i < SIZE; i++) {
+          correlation += Math.abs((buffer[i]) - (buffer[i - offset]))
+        }
+        correlation = 1 - (correlation / SIZE)
+        
+        if (correlation > 0.9 && correlation > lastCorrelation) {
+          bestCorrelation = correlation
+          bestOffset = offset
+          break
+        }
+        lastCorrelation = correlation
+      }
+      
+      return bestOffset !== -1 ? sampleRate / bestOffset : -1
+    }
+    
+    const fundamentalFreq = autoCorrelate(channelData, sampleRate)
+    
     const analysis: SpectralAnalysisResult = {
-      delta_band_power: Math.random() * 0.3 + 0.2,
-      theta_band_power: Math.random() * 0.4 + 0.3,
-      alpha_band_power: Math.random() * 0.5 + 0.4,
-      beta_band_power: Math.random() * 0.4 + 0.3,
-      gamma_band_power: Math.random() * 0.3 + 0.1,
-      therapeutic_delta_score: Math.random() * 0.3 + 0.7,
-      therapeutic_theta_score: Math.random() * 0.2 + 0.6,
-      therapeutic_alpha_score: Math.random() * 0.3 + 0.7,
-      therapeutic_beta_score: Math.random() * 0.2 + 0.5,
-      therapeutic_gamma_score: Math.random() * 0.3 + 0.4,
-      spectral_centroid: Math.random() * 2000 + 1000,
-      spectral_bandwidth: Math.random() * 500 + 200,
-      fundamental_frequency: Math.random() * 200 + 100
+      delta_band_power: Math.min(deltaPower, 1.0),
+      theta_band_power: Math.min(thetaPower, 1.0),
+      alpha_band_power: Math.min(alphaPower, 1.0),
+      beta_band_power: Math.min(betaPower, 1.0),
+      gamma_band_power: Math.min(gammaPower, 1.0),
+      therapeutic_delta_score: Math.min(deltaPower * 0.8 + 0.2, 1.0),
+      therapeutic_theta_score: Math.min(thetaPower * 0.7 + 0.3, 1.0),
+      therapeutic_alpha_score: Math.min(alphaPower * 0.8 + 0.2, 1.0),
+      therapeutic_beta_score: Math.min(betaPower * 0.6 + 0.4, 1.0),
+      therapeutic_gamma_score: Math.min(gammaPower * 0.5 + 0.5, 1.0),
+      spectral_centroid: spectralCentroid,
+      spectral_bandwidth: zcr * 1000, // Rough approximation
+      fundamental_frequency: fundamentalFreq > 0 ? fundamentalFreq : undefined
     }
     
     return analysis

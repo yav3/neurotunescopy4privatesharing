@@ -1926,15 +1926,21 @@ export type Database = {
           album_art_credits: string | null
           album_art_thumbnail: string | null
           album_art_url: string | null
+          analysis_version: string | null
+          analyzed_at: string | null
           arousal: number | null
           artist: string | null
           artwork_path: string | null
           audio_status: string | null
           bpm: number | null
+          camelot: string | null
+          comprehensive_analysis: Json | null
           created_date: string | null
           danceability: number | null
+          danceability_score: number | null
           dominance: number | null
           duration_seconds: number | null
+          dynamic_features: Json | null
           eeg_targets: string[] | null
           emotion_tags: string[] | null
           energy: number | null
@@ -1944,19 +1950,30 @@ export type Database = {
           file_path: string | null
           file_size_bytes: number | null
           genre: string | null
+          harmonic_features: Json | null
           id: string
           instrumentalness: number | null
           investigation_notes: string | null
+          key: string | null
+          key_strength: number | null
           mood: string | null
+          mood_scores: Json | null
           play_count: number | null
+          psychoacoustic_features: Json | null
           release_year: number | null
+          rhythmic_features: Json | null
+          scale: string | null
           skip_count: number | null
+          spectral_features: Json | null
           speechiness: number | null
           storage_key: string | null
+          structural_features: Json | null
           tags: string[] | null
           tempo: number | null
+          tempo_bpm: number | null
           therapeutic_use: string[] | null
           title: string
+          tonal_features: Json | null
           valence: number | null
         }
         Insert: {
@@ -1967,15 +1984,21 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_version?: string | null
+          analyzed_at?: string | null
           arousal?: number | null
           artist?: string | null
           artwork_path?: string | null
           audio_status?: string | null
           bpm?: number | null
+          camelot?: string | null
+          comprehensive_analysis?: Json | null
           created_date?: string | null
           danceability?: number | null
+          danceability_score?: number | null
           dominance?: number | null
           duration_seconds?: number | null
+          dynamic_features?: Json | null
           eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           energy?: number | null
@@ -1985,19 +2008,30 @@ export type Database = {
           file_path?: string | null
           file_size_bytes?: number | null
           genre?: string | null
+          harmonic_features?: Json | null
           id?: string
           instrumentalness?: number | null
           investigation_notes?: string | null
+          key?: string | null
+          key_strength?: number | null
           mood?: string | null
+          mood_scores?: Json | null
           play_count?: number | null
+          psychoacoustic_features?: Json | null
           release_year?: number | null
+          rhythmic_features?: Json | null
+          scale?: string | null
           skip_count?: number | null
+          spectral_features?: Json | null
           speechiness?: number | null
           storage_key?: string | null
+          structural_features?: Json | null
           tags?: string[] | null
           tempo?: number | null
+          tempo_bpm?: number | null
           therapeutic_use?: string[] | null
           title: string
+          tonal_features?: Json | null
           valence?: number | null
         }
         Update: {
@@ -2008,15 +2042,21 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_version?: string | null
+          analyzed_at?: string | null
           arousal?: number | null
           artist?: string | null
           artwork_path?: string | null
           audio_status?: string | null
           bpm?: number | null
+          camelot?: string | null
+          comprehensive_analysis?: Json | null
           created_date?: string | null
           danceability?: number | null
+          danceability_score?: number | null
           dominance?: number | null
           duration_seconds?: number | null
+          dynamic_features?: Json | null
           eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           energy?: number | null
@@ -2026,19 +2066,30 @@ export type Database = {
           file_path?: string | null
           file_size_bytes?: number | null
           genre?: string | null
+          harmonic_features?: Json | null
           id?: string
           instrumentalness?: number | null
           investigation_notes?: string | null
+          key?: string | null
+          key_strength?: number | null
           mood?: string | null
+          mood_scores?: Json | null
           play_count?: number | null
+          psychoacoustic_features?: Json | null
           release_year?: number | null
+          rhythmic_features?: Json | null
+          scale?: string | null
           skip_count?: number | null
+          spectral_features?: Json | null
           speechiness?: number | null
           storage_key?: string | null
+          structural_features?: Json | null
           tags?: string[] | null
           tempo?: number | null
+          tempo_bpm?: number | null
           therapeutic_use?: string[] | null
           title?: string
+          tonal_features?: Json | null
           valence?: number | null
         }
         Relationships: []
@@ -2237,6 +2288,10 @@ export type Database = {
       decode_error_level: {
         Args: { elevel: number }
         Returns: string
+      }
+      get_camelot_neighbors: {
+        Args: { input_camelot: string }
+        Returns: string[]
       }
       get_cmd_type: {
         Args: { cmd_type: number }
