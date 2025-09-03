@@ -1981,6 +1981,7 @@ export type Database = {
           release_year: number | null
           skip_count: number | null
           speechiness: number | null
+          storage_key: string | null
           tags: string[] | null
           tempo: number | null
           therapeutic_use: string[] | null
@@ -2021,6 +2022,7 @@ export type Database = {
           release_year?: number | null
           skip_count?: number | null
           speechiness?: number | null
+          storage_key?: string | null
           tags?: string[] | null
           tempo?: number | null
           therapeutic_use?: string[] | null
@@ -2061,6 +2063,7 @@ export type Database = {
           release_year?: number | null
           skip_count?: number | null
           speechiness?: number | null
+          storage_key?: string | null
           tags?: string[] | null
           tempo?: number | null
           therapeutic_use?: string[] | null
