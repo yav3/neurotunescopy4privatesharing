@@ -16,6 +16,9 @@ let loadSeq = 0;
 // HEAD request throttling
 let headFailures = 0;
 
+// Network hang protection  
+let currentAbort: AbortController | null = null;
+
 // Skip tracking for UX
 let skipped = 0;
 
@@ -97,7 +100,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
   
-  // Helper: Throttled HEAD check with timeout
+  // Helper: Throttled HEAD check with timeout and abort control
   const headCheck = async (url: string, ms = 3000): Promise<boolean> => {
     // After N failures, skip HEAD and let stream self-heal
     if (headFailures >= 3) {
@@ -105,7 +108,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
       return true;
     }
     
+    // Cancel any prior probe
+    currentAbort?.abort();
     const controller = new AbortController();
+    currentAbort = controller;
+    
     const timeout = setTimeout(() => controller.abort(), ms);
     
     try {
@@ -135,21 +142,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
     
     // Only add event listeners once
     if (!eventListenersAdded) {
-      const handlePlay = () => {
-        console.log('🎵 Audio play event fired');
-        set({ isPlaying: true });
-      };
-      
-      const handlePause = () => {
-        console.log('🎵 Audio pause event fired'); 
-        set({ isPlaying: false });
-      };
-      
-      const handleEnded = () => {
-        console.log('🎵 Audio ended event fired');
+      // Auto-next on track end
+      audio.addEventListener('ended', async () => {
+        console.log('🎵 Audio ended - auto-next');
         set({ isPlaying: false });
         
-        // 🔄 MIRROR BACKEND: Complete session when queue ends
+        // Complete session when queue ends
         const { queue, index } = get();
         const isLastTrack = index >= queue.length - 1;
         
@@ -158,40 +156,48 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        get().next();
-      };
+        await get().next();
+      });
       
-      const handleTimeUpdate = () => {
+      // Auto-skip on audio error
+      audio.addEventListener('error', async () => {
+        console.warn('🎵 Audio error event — skipping to next track');
+        set({ isPlaying: false });
+        announceSkip();
+        await get().next();
+      });
+      
+      // Honest state tracking
+      audio.addEventListener('play', () => {
+        console.log('🎵 Audio play event fired');
+        set({ isPlaying: true });
+      });
+      
+      audio.addEventListener('pause', () => {
+        console.log('🎵 Audio pause event fired');
+        set({ isPlaying: false });
+      });
+      
+      // Time and metadata tracking
+      audio.addEventListener('timeupdate', () => {
         const currentTime = audio.currentTime;
         const duration = audio.duration || 0;
         
         set({ currentTime });
         
-        // 🔄 MIRROR BACKEND: Track session progress
+        // Track session progress
         if (sessionManager && duration > 0) {
           sessionManager.trackProgress(currentTime, duration);
         }
-      };
+      });
       
-      const handleLoadedMetadata = () => {
+      audio.addEventListener('loadedmetadata', () => {
         console.log('🎵 Audio metadata loaded, duration:', audio.duration);
         set({ duration: audio.duration || 0 });
-      };
-      
-      const handleError = (e: Event) => {
-        console.error('🎵 Audio error:', e);
-        set({ isPlaying: false, error: "Playback failed" });
-      };
-      
-      audio.addEventListener("play", handlePlay);
-      audio.addEventListener("pause", handlePause);
-      audio.addEventListener("ended", handleEnded);
-      audio.addEventListener("timeupdate", handleTimeUpdate);
-      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.addEventListener("error", handleError);
+      });
       
       eventListenersAdded = true;
-      console.log('🎵 Event listeners added to audio element');
+      console.log('🎵 Bullet-proof event listeners added to audio element');
     }
     
     return audio;
