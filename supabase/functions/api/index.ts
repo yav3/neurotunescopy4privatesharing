@@ -124,17 +124,23 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 
   // Build an OR string with chosen operator per column list
   const buildOr = (colsCS: string[], colsILIKE: string[]) => {
-    const a: string[] = [];
+    const conditions: string[] = [];
     for (const w of searchWords) {
-      for (const c of colsCS)   a.push(`${c}.cs.{${w}}`);
-      for (const c of colsILIKE)a.push(`${c}.ilike.%${w}%`);
+      // Add array containment checks for CS columns
+      for (const c of colsCS) {
+        conditions.push(`${c}.cs.{${w}}`);
+      }
+      // Add ILIKE checks for text columns  
+      for (const c of colsILIKE) {
+        conditions.push(`${c}.ilike.%${w}%`);
+      }
     }
-    return a.length ? `(${a.join(",")})` : "";
+    return conditions.length ? conditions.join(",") : "";
   };
 
   // One query runner that uses ONLY range() for paging (no .limit())
   const run = async (colsCS: string[], colsILIKE: string[]) => {
-    const orExpr = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
+    const orConditions = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
     let q = supabase
       .from("tracks")
       .select("id,title,genre,mood,storage_key,audio_status", { count: "exact" })
@@ -145,7 +151,10 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       .order("id", { ascending: true })
       .range(offset, to);
 
-    if (orExpr) q = q.or(orExpr);
+    // Apply OR filtering if we have conditions
+    if (orConditions) {
+      q = q.or(orConditions);
+    }
     return q;
   };
 
