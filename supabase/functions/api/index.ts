@@ -28,6 +28,24 @@ const alias: Record<string, string[]> = {
   'meditation-support': ['meditation','mindfulness','theta'],
 };
 
+// Goal normalization: convert hyphens to underscores for backend compatibility
+const normalizeGoal = (goal: string): string => {
+  const normalized = goal.toLowerCase().trim().replace(/[-\s]+/g, '_');
+  const hyphenated = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
+  
+  // Return the normalized version if it's a known therapeutic goal
+  const therapeuticGoals = [
+    'anxiety_relief', 'focus_enhancement', 'sleep_preparation', 
+    'mood_boost', 'stress_reduction', 'meditation_support'
+  ];
+  
+  if (therapeuticGoals.includes(normalized)) {
+    return normalized;
+  }
+  
+  return goal;
+};
+
 const SUPABASE_URL  = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'audio';
@@ -40,7 +58,18 @@ console.log('🔧 Environment check:', {
 
 function wordsFor(goal: string): string[] {
   const g = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
-  return [g, ...(alias[g] ?? [])];
+  const normalized = normalizeGoal(goal);
+  
+  // Get words from both the original goal and the normalized version
+  const words = [g, normalized, ...(alias[g] ?? [])];
+  
+  log('playlist:goal_processing', { 
+    originalGoal: goal, 
+    normalizedGoal: normalized, 
+    searchTerms: words 
+  });
+  
+  return words;
 }
 
 function sb() {
@@ -110,6 +139,7 @@ function json(body: Record<string, unknown>, status = 200) {
 
 // ---------- Handlers ----------
 async function handlePlaylistRequest(req: Request): Promise<Response> {
+  const id = rid();
   const supabase = sb();
   const url = new URL(req.url);
 
@@ -117,6 +147,14 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
   const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get("limit")  || "50", 10), 200));
   const offset = Math.max(0,       parseInt(url.searchParams.get("offset") || "0",  10));
   const to = offset + limit - 1;
+
+  log(id, 'playlist:start', { 
+    rawGoal, 
+    limit, 
+    offset, 
+    userAgent: req.headers.get('user-agent'),
+    origin: req.headers.get('origin')
+  });
 
   // Robust tokenization: slug + aliases -> split on space/hyphen, dedupe, discard empties
   const words = Array.from(
@@ -157,14 +195,28 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 
   // Try the safe query; on error, fall back to no-goal filter (still playable)
   let data, error;
+  const t0 = Date.now();
   try {
     ({ data, error } = await q);
+    log(id, 'playlist:query_success', {
+      ms: Date.now() - t0,
+      resultCount: data?.length || 0,
+      orExpr,
+      words
+    });
   } catch (e:any) {
     error = { message: e?.message || String(e) };
+    log(id, 'playlist:query_exception', {
+      ms: Date.now() - t0,
+      error: error.message,
+      orExpr,
+      words
+    });
   }
 
   if (error) {
-    console.warn(`[playlist:safe-filter] ${error.message} — falling back to playable-only`);
+    log(id, 'playlist:error_fallback', { error: error.message, rawGoal, words });
+    const t1 = Date.now();
     const fb = await supabase
       .from("tracks")
       .select(baseSelect, { count: "exact" })
@@ -173,9 +225,15 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       .order("id",{ ascending:true })
       .range(offset, to);
 
+    log(id, 'playlist:fallback_query', {
+      ms: Date.now() - t1,
+      fbError: fb.error?.message || null,
+      resultCount: fb.data?.length || 0
+    });
+
     if (fb.error) {
-      console.error(`[playlist:fallback] ${fb.error.message}`);
-      return new Response(JSON.stringify({ ok:false, error:"PlaylistQueryFailed" }), {
+      log(id, 'playlist:fallback_failed', { error: fb.error.message });
+      return new Response(JSON.stringify({ ok:false, error:"PlaylistQueryFailed", rid: id }), {
         status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" }
       });
     }
@@ -183,8 +241,16 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
   }
 
   const tracks = data ?? [];
+  log(id, 'playlist:success', { 
+    tracksReturned: tracks.length,
+    total: tracks.length,
+    nextOffset: offset + tracks.length,
+    rawGoal,
+    processingTime: Date.now() - t0
+  });
+  
   return new Response(
-    JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
+    JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length, rid: id }),
     { headers: { ...corsHeaders, "Content-Type": "application/json" } }
   );
 }
