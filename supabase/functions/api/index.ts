@@ -149,85 +149,111 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
   
   console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:start\",\"rawGoal\":\"${rawGoal}\",\"limit\":${limit},\"offset\":${offset},\"userAgent\":\"${req.headers.get('user-agent') || 'unknown'}\",\"origin\":\"${req.headers.get('origin') || 'unknown'}\"}`);
 
-  const getTherapeuticTracks = async (goal: string) => {
-    let baseQuery = supabase
-      .from('tracks')
-      .select('id,title,artist,storage_key,bpm,camelot,valence,arousal,dominance,audio_status')
-      .eq('audio_status', 'working')
-      .eq('storage_bucket', 'audio')
-      .not('camelot', 'is', null)
-      .not('bpm', 'is', null)
-      .is('last_error', null);
+  // VAD-only therapeutic system with fallback support
+  const getTherapeuticTracksVAD = async (goal: string, offset: number, limit: number) => {
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_start\",\"goal\":\"${goal}\",\"system\":\"VAD+Fallback\"}`);
 
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_filter\",\"goal\":\"${goal}\",\"system\":\"VAD+Camelot\"}`);
-
-    // VAD + therapeutic rule enforcement
-    switch (goal) {
-      case 'focus-enhancement':
-        return baseQuery
-          .gte('bpm', 78).lte('bpm', 100)
-          .like('title', '%Focus%')
-          .gte('arousal', 0.6)       // VAD: High arousal for focus
-          .gte('valence', 0.4)       // VAD: Positive valence
-          .order('camelot')          // Harmonic progression
-          .order('bpm', { ascending: true }); // Energizing sequence
-
-      case 'anxiety-relief':
-        return baseQuery
-          .gte('bpm', 40).lte('bpm', 80)
-          .lte('arousal', 0.4)       // VAD: Low arousal for calm
-          .gte('valence', 0.3)       // VAD: Gentle positivity
-          .order('bpm', { ascending: false }); // Calming sequence
-
-      case 'sleep-preparation':
-        return baseQuery
-          .gte('bpm', 40).lte('bpm', 60)
-          .lte('arousal', 0.2)       // VAD: Very low arousal
-          .lte('dominance', 0.3)     // VAD: Low dominance
-          .order('bpm', { ascending: false }); // Deep relaxation
-
-      case 'mood-boost':
-        return baseQuery
-          .gte('bpm', 90).lte('bpm', 140)
-          .gte('valence', 0.7)       // VAD: High positive valence
-          .gte('arousal', 0.6)       // VAD: High arousal
-          .order('camelot')          // Harmonic progression
-          .order('bpm', { ascending: true }); // Energizing
-
-      case 'meditation-support':
-        return baseQuery
-          .gte('bpm', 50).lte('bpm', 70)
-          .lte('arousal', 0.3)       // VAD: Very low arousal
-          .gte('valence', 0.4)       // VAD: Peaceful positivity
-          .lte('dominance', 0.4)     // VAD: Low dominance
-          .order('bpm', { ascending: false }); // Calming sequence
-
-      default:
-        return baseQuery.limit(0); // No generic playlists
+    // Pull candidate tracks with fallback for missing columns
+    let rows: any[] | null = null;
+    try {
+      const { data, error } = await supabase
+        .from('tracks')
+        .select('id,title,artist,storage_key,valence,arousal,dominance,energy,energy_level,bpm,bpm_est,audio_status')
+        .eq('audio_status', 'working')
+        .not('storage_key', 'is', null).neq('storage_key', '')
+        .limit(2000);
+      if (error) throw error;
+      rows = data || [];
+      console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_data_full\",\"count\":${rows.length}}`);
+    } catch {
+      // Fallback if VAD columns don't exist
+      const { data } = await supabase
+        .from('tracks')
+        .select('id,title,artist,storage_key,energy_level,bpm,audio_status')
+        .eq('audio_status', 'working')
+        .not('storage_key', 'is', null).neq('storage_key', '')
+        .limit(2000);
+      rows = data || [];
+      console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_data_fallback\",\"count\":${rows.length}}`);
     }
+
+    // VAD scoring function
+    const vadScore = (track: any, profile: any) => {
+      const v = track.valence ?? (track.energy_level ? (track.energy_level - 1) / 9 * 0.8 + 0.1 : 0.5);
+      const a = track.arousal ?? track.energy ?? (track.energy_level ? (track.energy_level - 1) / 9 : 0.5);
+      const d = track.dominance ?? 0.5;
+      const bpm = track.bpm ?? track.bpm_est ?? 60;
+
+      // BPM filtering
+      if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
+
+      // VAD distance scoring
+      const vDist = Math.abs(v - profile.valence);
+      const aDist = Math.abs(a - profile.arousal);
+      const dDist = Math.abs(d - profile.dominance);
+      const score = 1 - (vDist + aDist + dDist) / 3;
+
+      return { score: Math.max(0, score), v, a, d };
+    };
+
+    // Therapeutic profiles
+    const profiles: Record<string, any> = {
+      'focus-enhancement': { valence: 0.6, arousal: 0.7, dominance: 0.6, bpm_min: 78, bpm_max: 100, seq: 'accelerate' },
+      'anxiety-relief': { valence: 0.6, arousal: 0.2, dominance: 0.4, bpm_min: 40, bpm_max: 80, seq: 'decelerate' },
+      'sleep-preparation': { valence: 0.5, arousal: 0.1, dominance: 0.3, bpm_min: 40, bpm_max: 60, seq: 'decelerate' },
+      'mood-boost': { valence: 0.8, arousal: 0.7, dominance: 0.6, bpm_min: 90, bpm_max: 140, seq: 'accelerate' },
+      'meditation-support': { valence: 0.6, arousal: 0.2, dominance: 0.3, bpm_min: 50, bpm_max: 70, seq: 'decelerate' },
+      'stress-reduction': { valence: 0.6, arousal: 0.3, dominance: 0.4, bpm_min: 50, bpm_max: 80, seq: 'decelerate' }
+    };
+
+    const profile = profiles[goal] || profiles['mood-boost'];
+
+    // Score and filter tracks
+    const scored = rows.map(r => ({ r, s: vadScore(r, profile) }))
+      .filter(x => x.s.score >= 0)
+      .sort((a, b) => b.s.score - a.s.score);
+
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_scored\",\"candidates\":${scored.length},\"goal\":\"${goal}\"}`);
+
+    const top = scored.slice(0, Math.max(limit * 3, 60));
+    
+    // Sequence: accelerate (focus/mood) or decelerate (anxiety/sleep)
+    if (profile.seq === 'accelerate') {
+      top.sort((a, b) => (a.s.a - b.s.a));  // Low to high arousal
+    } else {
+      top.sort((a, b) => (b.s.a - a.s.a));  // High to low arousal  
+    }
+
+    const final = top.slice(offset, offset + limit).map(t => ({
+      id: t.r.id,
+      title: t.r.title,
+      artist: t.r.artist,
+      storage_key: t.r.storage_key,
+      vad_score: t.s.score,
+      valence: t.s.v,
+      arousal: t.s.a,
+      dominance: t.s.d
+    }));
+
+    return { tracks: final, total: top.length };
   };
 
   try {
     const startTime = Date.now();
-    const query = getTherapeuticTracks(rawGoal).range(offset, offset + limit - 1);
-    const { data, error, count } = await query;
-    
+    const result = await getTherapeuticTracksVAD(rawGoal, offset, limit);
     const processingTime = Date.now() - startTime;
     
-    if (error) {
-      console.error(`{\"rid\":\"${rid}\",\"msg\":\"playlist:error\",\"error\":\"${error.message}\"}`);
-      throw new Error(error.message);
-    }
-
-    const tracks = data ?? [];
-    const total = count ?? tracks.length;
-    const nextOffset = offset + tracks.length;
-
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:vad_query_success\",\"ms\":${processingTime},\"resultCount\":${tracks.length},\"goal\":\"${rawGoal}\",\"system\":\"VAD+Camelot\"}`);
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:success\",\"tracksReturned\":${tracks.length},\"total\":${total},\"nextOffset\":${nextOffset},\"rawGoal\":\"${rawGoal}\",\"processingTime\":${processingTime}}`);
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:vad_success\",\"ms\":${processingTime},\"resultCount\":${result.tracks.length},\"goal\":\"${rawGoal}\",\"system\":\"VAD\"}`);
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:success\",\"tracksReturned\":${result.tracks.length},\"total\":${result.total},\"nextOffset\":${offset + result.tracks.length},\"rawGoal\":\"${rawGoal}\",\"processingTime\":${processingTime}}`);
 
     return new Response(
-      JSON.stringify({ tracks, total, nextOffset }),
+      JSON.stringify({ 
+        goal: rawGoal,
+        algorithm: 'vad',
+        tracks: result.tracks, 
+        total: result.total, 
+        nextOffset: offset + result.tracks.length 
+      }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (e: any) {
