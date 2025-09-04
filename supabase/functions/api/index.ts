@@ -147,6 +147,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       .eq("audio_status", "working")  // Only return working tracks
       .eq("storage_bucket", "audio")  // Only return tracks from audio bucket
       .not("camelot", "is", null)     // Only tracks with Camelot keys (247 tracks)
+      .is("last_error", null)         // Exclude tracks with ObjectNotFound errors
       .not("storage_key","is",null)
       .neq("storage_key","")
       // Use a stable column to sort; 'id' is safest across schemas
