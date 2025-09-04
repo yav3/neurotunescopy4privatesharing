@@ -165,7 +165,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     )
   );
 
-  // Build a SAFE .or() with only text columns: mood/genre
+  // Build a SAFE .or() with only text columns: mood/genre + BPM filtering for therapeutic goals
   const buildOr = () => {
     if (!words.length) return "";
     const parts: string[] = [];
@@ -177,9 +177,9 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     return parts.join(",");
   };
 
-  const baseSelect = 'id,title,genre,mood,storage_key,audio_status';
+  const baseSelect = 'id,title,genre,mood,storage_key,audio_status,bpm';
 
-  // First attempt: safe filter on mood/genre only
+  // First attempt: safe filter on mood/genre + therapeutic BPM ranges
   const orExpr = buildOr();
   let q = supabase
     .from("tracks")
@@ -190,6 +190,25 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     .not("last_error", "like", "%SignedUrlHeadFailed%")
     .order("id", { ascending: true })
     .range(offset, to);
+
+  // Add therapeutic BPM filtering for specific goals
+  if (rawGoal === 'sleep-preparation') {
+    // Sleep: 40-80 BPM (relaxing range)
+    q = q.gte('bpm', 40).lte('bpm', 80);
+    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '40-80' });
+  } else if (rawGoal === 'anxiety-relief' || rawGoal === 'stress-reduction') {
+    // Anxiety/Stress: 60-100 BPM (calming but not too slow)
+    q = q.gte('bpm', 60).lte('bpm', 100);
+    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '60-100' });
+  } else if (rawGoal === 'focus-enhancement') {
+    // Focus: 70-120 BPM (alertness range)
+    q = q.gte('bpm', 70).lte('bpm', 120);
+    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '70-120' });
+  } else if (rawGoal === 'mood-boost') {
+    // Mood: 90-140 BPM (energizing range) - FIXED TYPO
+    q = q.gte('bpm', 90).lte('bpm', 140);  // Fixed: 'bmp' -> 'bpm'
+    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '90-140' });
+  }
 
   if (orExpr) q = q.or(orExpr);
 
