@@ -304,6 +304,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
     queue: [],
     index: -1,
     sessionManager: null,
+    error: undefined,
+    lastGoal: undefined,
 
     // Actions
     playTrack: async (track: Track) => {
@@ -431,7 +433,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       if (working.length === 0) {
-        set({ queue: [], index: -1, isLoading: false, error: "No working tracks found in queue" });
+        const { lastGoal } = get();
+        const isMoodBoost = lastGoal === 'mood-boost' || lastGoal === 'mood_boost' || lastGoal === 'energy-boost';
+        
+        set({ 
+          queue: [], 
+          index: -1, 
+          isLoading: false, 
+          error: isMoodBoost ? "soundcloud-fallback" : "No working tracks found in queue" 
+        });
         return;
       }
       

@@ -9,6 +9,7 @@ import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
 import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
+import SoundCloudFallback from "@/components/SoundCloudFallback";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { API } from "@/lib/api";
@@ -20,7 +21,7 @@ const Index = () => {
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { currentTrack, setQueue } = useAudioStore();
+  const { currentTrack, setQueue, error, lastGoal } = useAudioStore();
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
@@ -119,6 +120,12 @@ const Index = () => {
       
       <Navigation activeTab={activeNavTab} onTabChange={handleNavTabChange} />
       
+      {/* SoundCloud fallback for mood boost */}
+      {error === "soundcloud-fallback" && lastGoal && (
+        <div className="fixed inset-0 bg-background/95 backdrop-blur z-50 flex items-center justify-center">
+          <SoundCloudFallback goal={lastGoal} />
+        </div>
+      )}
       
       <MusicPlayer open={showPlayer} onOpenChange={setShowPlayer} />
       
