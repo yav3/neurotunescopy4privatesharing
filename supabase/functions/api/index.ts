@@ -139,149 +139,104 @@ function json(body: Record<string, unknown>, status = 200) {
 
 // ---------- Handlers ----------
 async function handlePlaylistRequest(req: Request): Promise<Response> {
-  const id = rid();
   const supabase = sb();
   const url = new URL(req.url);
+  const rid = Math.random().toString(36).substring(2, 18);
 
   const rawGoal = (url.searchParams.get("goal") || "").toString();
-  const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get("limit")  || "50", 10), 200));
-  const offset = Math.max(0,       parseInt(url.searchParams.get("offset") || "0",  10));
-  const to = offset + limit - 1;
-
-  log(id, 'playlist:start', { 
-    rawGoal, 
-    limit, 
-    offset, 
-    userAgent: req.headers.get('user-agent'),
-    origin: req.headers.get('origin')
-  });
-
-  // Remove unused text search logic since we're using VAD + Camelot only
-
-  const baseSelect = 'id,title,genre,mood,storage_key,audio_status,bpm,camelot,valence,arousal,dominance';
-
-  // VAD + Camelot Therapeutic System (NO TEXT SEARCH)
-  let q = supabase
-    .from("tracks")
-    .select(baseSelect, { count: "exact" })
-    .eq("audio_status", "working")
-    .not("storage_key", "is", null).neq("storage_key", "")
-    .not("last_error", "like", "%ObjectNotFound%")
-    .not("last_error", "like", "%SignedUrlHeadFailed%")
-    .range(offset, to);
-
-  // VAD + Camelot Therapeutic Filtering
-  if (rawGoal === 'focus-enhancement') {
-    log(id, 'vad_filter', { goal: 'focus-enhancement', system: 'VAD+Camelot' });
-    q = q.gte('bpm', 78).lte('bpm', 100)
-      .like('title', '%Focus%Focus%')  // Must contain "Focus" twice
-      .not('camelot', 'is', null)
-      .gte('valence', 0.3).lte('valence', 0.7)  // Moderate valence
-      .gte('arousal', 0.4).lte('arousal', 0.8)  // Moderate-high arousal
-      .gte('dominance', 0.5)  // Higher dominance for focus
-      .order('camelot').order('bpm', { ascending: true }); // Camelot + ascending BPM (energizing)
-      
-  } else if (rawGoal === 'anxiety-relief' || rawGoal === 'stress-reduction') {
-    log(id, 'vad_filter', { goal: rawGoal, system: 'VAD+Camelot' });
-    q = q.gte('bpm', 40).lte('bpm', 80)
-      .not('camelot', 'is', null)
-      .gte('valence', 0.6)  // Higher valence for positive mood
-      .lte('arousal', 0.4)  // Lower arousal for calming
-      .gte('dominance', 0.3)  // Moderate dominance
-      .order('bpm', { ascending: false }).order('camelot'); // Descending BPM (calming)
-      
-  } else if (rawGoal === 'sleep-preparation') {
-    log(id, 'vad_filter', { goal: 'sleep-preparation', system: 'VAD+Camelot' });
-    q = q.gte('bpm', 40).lte('bpm', 70)
-      .not('camelot', 'is', null)
-      .gte('valence', 0.4)  // Moderate positive valence
-      .lte('arousal', 0.3)  // Very low arousal for sleep
-      .lte('dominance', 0.5)  // Lower dominance
-      .order('bpm', { ascending: false }).order('camelot'); // Descending BPM (sleep prep)
-      
-  } else if (rawGoal === 'mood-boost') {
-    log(id, 'vad_filter', { goal: 'mood-boost', system: 'VAD+Camelot' });
-    q = q.gte('bpm', 80).lte('bpm', 140)
-      .not('camelot', 'is', null)
-      .gte('valence', 0.7)  // High valence for positive mood
-      .gte('arousal', 0.6)  // High arousal for energy
-      .gte('dominance', 0.5)  // Higher dominance
-      .order('bpm', { ascending: true }).order('camelot'); // Ascending BPM (energizing)
-      
-  } else if (rawGoal === 'meditation-support') {
-    log(id, 'vad_filter', { goal: 'meditation-support', system: 'VAD+Camelot' });
-    q = q.gte('bpm', 50).lte('bpm', 90)
-      .not('camelot', 'is', null)
-      .gte('valence', 0.5)  // Neutral to positive valence
-      .lte('arousal', 0.5)  // Low to moderate arousal
-      .gte('dominance', 0.4)  // Moderate dominance
-      .order('camelot').order('bpm', { ascending: true }); // Camelot progression
-      
-  } else {
-    // Default ordering if no specific goal
-    q = q.order("id", { ascending: true });
-  }
-
-  // Try the safe query; on error, fall back to no-goal filter (still playable)
-  let data, error;
-  const t0 = Date.now();
-  try {
-    ({ data, error } = await q);
-    log(id, 'playlist:vad_query_success', {
-      ms: Date.now() - t0,
-      resultCount: data?.length || 0,
-      goal: rawGoal,
-      system: 'VAD+Camelot'
-    });
-  } catch (e:any) {
-    error = { message: e?.message || String(e) };
-    log(id, 'playlist:vad_query_exception', {
-      ms: Date.now() - t0,
-      error: error.message,
-      goal: rawGoal,
-      system: 'VAD+Camelot'
-    });
-  }
-
-  if (error) {
-    log(id, 'playlist:error_fallback', { error: error.message, rawGoal, system: 'VAD+Camelot' });
-    const t1 = Date.now();
-    const fb = await supabase
-      .from("tracks")
-      .select(baseSelect, { count: "exact" })
-      .eq("audio_status","working")
-      .not("storage_key","is",null).neq("storage_key","")
-      .order("id",{ ascending:true })
-      .range(offset, to);
-
-    log(id, 'playlist:fallback_query', {
-      ms: Date.now() - t1,
-      fbError: fb.error?.message || null,
-      resultCount: fb.data?.length || 0
-    });
-
-    if (fb.error) {
-      log(id, 'playlist:fallback_failed', { error: fb.error.message });
-      return new Response(JSON.stringify({ ok:false, error:"PlaylistQueryFailed", rid: id }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
-    }
-    data = fb.data;
-  }
-
-  const tracks = data ?? [];
-  log(id, 'playlist:success', { 
-    tracksReturned: tracks.length,
-    total: tracks.length,
-    nextOffset: offset + tracks.length,
-    rawGoal,
-    processingTime: Date.now() - t0
-  });
+  const limit = Math.max(1, Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 200));
+  const offset = Math.max(0, parseInt(url.searchParams.get("offset") || "0", 10));
   
-  return new Response(
-    JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length, rid: id }),
-    { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-  );
+  console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:start\",\"rawGoal\":\"${rawGoal}\",\"limit\":${limit},\"offset\":${offset},\"userAgent\":\"${req.headers.get('user-agent') || 'unknown'}\",\"origin\":\"${req.headers.get('origin') || 'unknown'}\"}`);
+
+  const getTherapeuticTracks = async (goal: string) => {
+    let baseQuery = supabase
+      .from('tracks')
+      .select('id,title,artist,storage_key,bpm,camelot,valence,arousal,dominance,audio_status')
+      .eq('audio_status', 'working')
+      .eq('storage_bucket', 'audio')
+      .not('camelot', 'is', null)
+      .not('bpm', 'is', null)
+      .is('last_error', null);
+
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_filter\",\"goal\":\"${goal}\",\"system\":\"VAD+Camelot\"}`);
+
+    // VAD + therapeutic rule enforcement
+    switch (goal) {
+      case 'focus-enhancement':
+        return baseQuery
+          .gte('bpm', 78).lte('bpm', 100)
+          .like('title', '%Focus%')
+          .gte('arousal', 0.6)       // VAD: High arousal for focus
+          .gte('valence', 0.4)       // VAD: Positive valence
+          .order('camelot')          // Harmonic progression
+          .order('bpm', { ascending: true }); // Energizing sequence
+
+      case 'anxiety-relief':
+        return baseQuery
+          .gte('bpm', 40).lte('bpm', 80)
+          .lte('arousal', 0.4)       // VAD: Low arousal for calm
+          .gte('valence', 0.3)       // VAD: Gentle positivity
+          .order('bpm', { ascending: false }); // Calming sequence
+
+      case 'sleep-preparation':
+        return baseQuery
+          .gte('bpm', 40).lte('bpm', 60)
+          .lte('arousal', 0.2)       // VAD: Very low arousal
+          .lte('dominance', 0.3)     // VAD: Low dominance
+          .order('bpm', { ascending: false }); // Deep relaxation
+
+      case 'mood-boost':
+        return baseQuery
+          .gte('bpm', 90).lte('bpm', 140)
+          .gte('valence', 0.7)       // VAD: High positive valence
+          .gte('arousal', 0.6)       // VAD: High arousal
+          .order('camelot')          // Harmonic progression
+          .order('bpm', { ascending: true }); // Energizing
+
+      case 'meditation-support':
+        return baseQuery
+          .gte('bpm', 50).lte('bpm', 70)
+          .lte('arousal', 0.3)       // VAD: Very low arousal
+          .gte('valence', 0.4)       // VAD: Peaceful positivity
+          .lte('dominance', 0.4)     // VAD: Low dominance
+          .order('bpm', { ascending: false }); // Calming sequence
+
+      default:
+        return baseQuery.limit(0); // No generic playlists
+    }
+  };
+
+  try {
+    const startTime = Date.now();
+    const query = getTherapeuticTracks(rawGoal).range(offset, offset + limit - 1);
+    const { data, error, count } = await query;
+    
+    const processingTime = Date.now() - startTime;
+    
+    if (error) {
+      console.error(`{\"rid\":\"${rid}\",\"msg\":\"playlist:error\",\"error\":\"${error.message}\"}`);
+      throw new Error(error.message);
+    }
+
+    const tracks = data ?? [];
+    const total = count ?? tracks.length;
+    const nextOffset = offset + tracks.length;
+
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:vad_query_success\",\"ms\":${processingTime},\"resultCount\":${tracks.length},\"goal\":\"${rawGoal}\",\"system\":\"VAD+Camelot\"}`);
+    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:success\",\"tracksReturned\":${tracks.length},\"total\":${total},\"nextOffset\":${nextOffset},\"rawGoal\":\"${rawGoal}\",\"processingTime\":${processingTime}}`);
+
+    return new Response(
+      JSON.stringify({ tracks, total, nextOffset }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  } catch (e: any) {
+    console.error(`{\"rid\":\"${rid}\",\"msg\":\"playlist:failed\",\"error\":\"${e?.message || e}\"}`);
+    return new Response(
+      JSON.stringify({ ok: false, error: "TherapeuticQueryFailed", detail: e?.message || e }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
 }
 
 async function handleStreamRequest(req: Request): Promise<Response> {
