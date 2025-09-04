@@ -36,9 +36,9 @@ export const AudioAnalysisRunner: React.FC = () => {
         message: 'Preparing to connect to database...'
       },
       {
-        name: 'Track Validation',
+        name: 'Track Discovery',
         status: 'pending', 
-        message: 'Checking track storage mappings...'
+        message: 'Finding tracks that need analysis...'
       },
       {
         name: 'Audio Analysis',
@@ -60,104 +60,118 @@ export const AudioAnalysisRunner: React.FC = () => {
       steps[0].message = 'Testing Supabase connection...'
       setResults([...steps])
 
-      const { data: connectionTest, error: connectionError } = await supabase
+      const { count, error: countError } = await supabase
         .from('tracks')
-        .select('count', { count: 'exact', head: true })
+        .select('*', { count: 'exact', head: true })
 
-      if (connectionError) throw connectionError
+      if (countError) throw countError
 
       steps[0].status = 'success'
-      steps[0].message = `Connected successfully. Found ${connectionTest} tracks total.`
+      steps[0].message = `Connected successfully. Found ${count || 0} tracks total.`
       setResults([...steps])
 
-      // Step 2: Get tracks needing validation/analysis
+      // Step 2: Find tracks needing analysis
       steps[1].status = 'loading'
-      steps[1].message = 'Fetching tracks that need processing...'
+      steps[1].message = 'Checking which tracks need analysis...'
       setResults([...steps])
 
-      // Get tracks needing validation
-      const { data: unknownTracks } = await supabase
+      const { count: needsAnalysisCount, error: analysisCountError } = await supabase
         .from('tracks')
-        .select('id,storage_bucket,storage_key,audio_status')
-        .in('audio_status', ['unknown', 'missing'])
-        .limit(50)
+        .select('*', { count: 'exact', head: true })
+        .or('bpm.is.null,camelot_code.is.null,analysis_status.is.null,analysis_status.neq.complete')
 
-      // Get tracks needing analysis  
-      const { data: pendingAnalysis } = await supabase
-        .from('tracks')
-        .select('id,storage_bucket,storage_key,audio_status,analysis_status')
-        .eq('audio_status', 'working')
-        .or('analysis_status.is.null,analysis_status.eq.pending')
-        .limit(50)
-
-      const totalTracks = (unknownTracks?.length || 0) + (pendingAnalysis?.length || 0)
+      if (analysisCountError) throw analysisCountError
 
       steps[1].status = 'success'
-      steps[1].message = `Found ${totalTracks} tracks needing processing (${unknownTracks?.length || 0} validation, ${pendingAnalysis?.length || 0} analysis)`
-      steps[1].details = { validation: unknownTracks?.length || 0, analysis: pendingAnalysis?.length || 0 }
+      steps[1].message = `Found ${needsAnalysisCount || 0} tracks needing comprehensive analysis`
+      steps[1].details = { needsAnalysis: needsAnalysisCount || 0, total: count || 0 }
       setResults([...steps])
 
-      if (totalTracks === 0) {
+      if (!needsAnalysisCount || needsAnalysisCount === 0) {
         steps[2].status = 'success'
-        steps[2].message = 'No tracks need processing - all up to date!'
+        steps[2].message = '✅ All tracks already have complete analysis!'
         steps[3].status = 'success'
         steps[3].message = 'Analysis complete - no changes needed.'
         setResults([...steps])
         return
       }
 
-      // Step 3: Simulate analysis process
-      steps[2].status = 'loading'
-      steps[2].message = `${isDryRun ? '[DRY RUN] Simulating' : 'Processing'} ${totalTracks} tracks...`
-      setResults([...steps])
-
-      // Simulate progress
-      let processed = 0
-      const mockResults = { complete: 0, missing: 0, error: 0 }
-
-      for (let i = 0; i < Math.min(totalTracks, 10); i++) {
-        await new Promise(resolve => setTimeout(resolve, 500))
-        processed++
-        
-        // Simulate different outcomes
-        const outcome = Math.random()
-        if (outcome > 0.8) mockResults.error++
-        else if (outcome > 0.6) mockResults.missing++
-        else mockResults.complete++
-
-        steps[2].progress = (processed / Math.min(totalTracks, 10)) * 100
-        steps[2].message = `${isDryRun ? '[DRY RUN] Processing' : 'Processing'} track ${processed}/${Math.min(totalTracks, 10)}...`
+      if (isDryRun) {
+        // Simulate the process for dry run
+        steps[2].status = 'loading'
+        steps[2].message = `[DRY RUN] Simulating analysis of ${needsAnalysisCount} tracks...`
         setResults([...steps])
+
+        // Simulate progress
+        for (let i = 0; i <= 100; i += 10) {
+          await new Promise(resolve => setTimeout(resolve, 200))
+          steps[2].progress = i
+          steps[2].message = `[DRY RUN] Simulating analysis... ${i}%`
+          setResults([...steps])
+        }
+
+        steps[2].status = 'success'
+        steps[2].message = `[DRY RUN] Would analyze ${needsAnalysisCount} tracks with BPM, Camelot keys, and therapeutic metrics`
+        setResults([...steps])
+
+        steps[3].status = 'success'
+        steps[3].message = 'DRY RUN complete - no database changes made'
+        steps[3].details = { 
+          total: needsAnalysisCount, 
+          complete: needsAnalysisCount, 
+          missing: 0, 
+          error: 0 
+        }
+        setResults([...steps])
+
+        setSummary({
+          total: needsAnalysisCount,
+          complete: needsAnalysisCount,
+          missing: 0,
+          error: 0,
+          timestamp: new Date().toISOString()
+        })
+
+      } else {
+        // Run the actual analysis
+        steps[2].status = 'loading'
+        steps[2].message = `Running comprehensive analysis on ${needsAnalysisCount} tracks...`
+        setResults([...steps])
+
+        const response = await supabase.functions.invoke('complete-audio-analysis', {
+          body: {}
+        })
+
+        if (response.error) {
+          throw new Error(`Analysis function error: ${response.error.message}`)
+        }
+
+        const analysisResult = response.data
+
+        steps[2].status = 'success'
+        steps[2].message = `✅ Analyzed ${analysisResult.processed} tracks successfully`
+        steps[2].details = analysisResult
+        setResults([...steps])
+
+        // Step 4: Final results
+        steps[3].status = 'success'
+        steps[3].message = analysisResult.errors > 0 
+          ? `Analysis complete with ${analysisResult.errors} errors` 
+          : 'Analysis completed successfully!'
+        steps[3].details = analysisResult
+        setResults([...steps])
+
+        setSummary({
+          total: analysisResult.total || 0,
+          complete: analysisResult.processed || 0,
+          missing: 0,
+          error: analysisResult.errors || 0,
+          timestamp: new Date().toISOString()
+        })
       }
-
-      steps[2].status = 'success'
-      steps[2].message = `${isDryRun ? '[DRY RUN] Would process' : 'Processed'} ${processed} tracks successfully`
-      steps[2].details = mockResults
-      setResults([...steps])
-
-      // Step 4: Results summary
-      steps[3].status = 'loading'
-      steps[3].message = 'Generating analysis summary...'
-      setResults([...steps])
-
-      const finalSummary: AnalysisSummary = {
-        total: processed,
-        complete: mockResults.complete,
-        missing: mockResults.missing, 
-        error: mockResults.error,
-        timestamp: new Date().toISOString()
-      }
-
-      setSummary(finalSummary)
-
-      steps[3].status = 'success'
-      steps[3].message = isDryRun 
-        ? 'DRY RUN complete - no database changes made' 
-        : 'Analysis complete - database updated'
-      steps[3].details = finalSummary
-      setResults([...steps])
 
     } catch (error) {
+      console.error('Analysis error:', error)
       const currentStepIndex = steps.findIndex(step => step.status === 'loading')
       if (currentStepIndex >= 0) {
         steps[currentStepIndex].status = 'error'
