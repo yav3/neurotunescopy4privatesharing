@@ -1835,6 +1835,7 @@ export type Database = {
           album_art_credits: string | null
           album_art_thumbnail: string | null
           album_art_url: string | null
+          analysis_timestamp: string | null
           analysis_version: string | null
           analyzed_at: string | null
           arousal: number | null
@@ -1845,11 +1846,14 @@ export type Database = {
           camelot: string | null
           comprehensive_analysis: Json | null
           created_date: string | null
+          crest_factor: number | null
           danceability: number | null
           danceability_score: number | null
           dominance: number | null
           duration_seconds: number | null
+          dynamic_complexity: number | null
           dynamic_features: Json | null
+          dynamic_range: number | null
           eeg_targets: string[] | null
           emotion_tags: string[] | null
           energy: number | null
@@ -1861,21 +1865,37 @@ export type Database = {
           genre: string | null
           harmonic_features: Json | null
           id: string
+          inharmonicity: number | null
           instrumentalness: number | null
           investigation_notes: string | null
           key: string | null
+          key_confidence: number | null
           key_strength: number | null
           last_error: string | null
           last_verified_at: string | null
+          loudness_lufs: number | null
           mood: string | null
+          mood_acoustic: number | null
+          mood_aggressive: number | null
+          mood_electronic: number | null
+          mood_happy: number | null
+          mood_relaxed: number | null
+          mood_sad: number | null
           mood_scores: Json | null
+          onset_rate: number | null
+          pitch_mean: number | null
           play_count: number | null
           psychoacoustic_features: Json | null
           release_year: number | null
           rhythmic_features: Json | null
+          rms_energy: number | null
+          roughness: number | null
           scale: string | null
           skip_count: number | null
+          spectral_bandwidth: number | null
+          spectral_centroid: number | null
           spectral_features: Json | null
+          spectral_rolloff: number | null
           speechiness: number | null
           storage_bucket: string | null
           storage_key: string | null
@@ -1886,7 +1906,9 @@ export type Database = {
           therapeutic_use: string[] | null
           title: string
           tonal_features: Json | null
+          tuning_frequency: number | null
           valence: number | null
+          zero_crossing_rate: number | null
         }
         Insert: {
           acousticness?: number | null
@@ -1896,6 +1918,7 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_timestamp?: string | null
           analysis_version?: string | null
           analyzed_at?: string | null
           arousal?: number | null
@@ -1906,11 +1929,14 @@ export type Database = {
           camelot?: string | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
+          crest_factor?: number | null
           danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
           duration_seconds?: number | null
+          dynamic_complexity?: number | null
           dynamic_features?: Json | null
+          dynamic_range?: number | null
           eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           energy?: number | null
@@ -1922,21 +1948,37 @@ export type Database = {
           genre?: string | null
           harmonic_features?: Json | null
           id?: string
+          inharmonicity?: number | null
           instrumentalness?: number | null
           investigation_notes?: string | null
           key?: string | null
+          key_confidence?: number | null
           key_strength?: number | null
           last_error?: string | null
           last_verified_at?: string | null
+          loudness_lufs?: number | null
           mood?: string | null
+          mood_acoustic?: number | null
+          mood_aggressive?: number | null
+          mood_electronic?: number | null
+          mood_happy?: number | null
+          mood_relaxed?: number | null
+          mood_sad?: number | null
           mood_scores?: Json | null
+          onset_rate?: number | null
+          pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
           release_year?: number | null
           rhythmic_features?: Json | null
+          rms_energy?: number | null
+          roughness?: number | null
           scale?: string | null
           skip_count?: number | null
+          spectral_bandwidth?: number | null
+          spectral_centroid?: number | null
           spectral_features?: Json | null
+          spectral_rolloff?: number | null
           speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
@@ -1947,7 +1989,9 @@ export type Database = {
           therapeutic_use?: string[] | null
           title: string
           tonal_features?: Json | null
+          tuning_frequency?: number | null
           valence?: number | null
+          zero_crossing_rate?: number | null
         }
         Update: {
           acousticness?: number | null
@@ -1957,6 +2001,7 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_timestamp?: string | null
           analysis_version?: string | null
           analyzed_at?: string | null
           arousal?: number | null
@@ -1967,11 +2012,14 @@ export type Database = {
           camelot?: string | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
+          crest_factor?: number | null
           danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
           duration_seconds?: number | null
+          dynamic_complexity?: number | null
           dynamic_features?: Json | null
+          dynamic_range?: number | null
           eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           energy?: number | null
@@ -1983,21 +2031,37 @@ export type Database = {
           genre?: string | null
           harmonic_features?: Json | null
           id?: string
+          inharmonicity?: number | null
           instrumentalness?: number | null
           investigation_notes?: string | null
           key?: string | null
+          key_confidence?: number | null
           key_strength?: number | null
           last_error?: string | null
           last_verified_at?: string | null
+          loudness_lufs?: number | null
           mood?: string | null
+          mood_acoustic?: number | null
+          mood_aggressive?: number | null
+          mood_electronic?: number | null
+          mood_happy?: number | null
+          mood_relaxed?: number | null
+          mood_sad?: number | null
           mood_scores?: Json | null
+          onset_rate?: number | null
+          pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
           release_year?: number | null
           rhythmic_features?: Json | null
+          rms_energy?: number | null
+          roughness?: number | null
           scale?: string | null
           skip_count?: number | null
+          spectral_bandwidth?: number | null
+          spectral_centroid?: number | null
           spectral_features?: Json | null
+          spectral_rolloff?: number | null
           speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
@@ -2008,7 +2072,9 @@ export type Database = {
           therapeutic_use?: string[] | null
           title?: string
           tonal_features?: Json | null
+          tuning_frequency?: number | null
           valence?: number | null
+          zero_crossing_rate?: number | null
         }
         Relationships: []
       }
