@@ -36,10 +36,11 @@ Deno.serve(async (req) => {
 
     console.log(`📁 Found ${audioFiles.length} audio files in storage`);
 
-    // Step 2: Get all database tracks
+    // Step 2: Get only tracks from audio storage bucket
     const { data: dbTracks, error: dbError } = await supabase
       .from('tracks')
-      .select('id, title, storage_key, storage_bucket, audio_status, file_path, original_title');
+      .select('id, title, storage_key, storage_bucket, audio_status, file_path, original_title')
+      .eq('storage_bucket', 'audio');
 
     if (dbError) {
       throw new Error(`Database query failed: ${dbError.message}`);
