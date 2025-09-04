@@ -2217,6 +2217,16 @@ export type Database = {
           title: string
         }[]
       }
+      find_cross_bucket_candidates: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          current_bucket: string
+          storage_key: string
+          suggested_bucket: string
+          title: string
+          track_id: string
+        }[]
+      }
       get_camelot_neighbors: {
         Args: { input_camelot: string }
         Returns: string[]
@@ -2284,6 +2294,10 @@ export type Database = {
       range: {
         Args: Record<PropertyKey, never>
         Returns: string[]
+      }
+      update_track_bucket: {
+        Args: { new_bucket: string; track_id: string }
+        Returns: boolean
       }
     }
     Enums: {
