@@ -157,15 +157,8 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       q = q.or(orConditions);
     }
 
-    // Special rule for focus tracks: must have "focus" twice in title (beginning + middle)
-    // Only apply this rule for explicit focus-enhancement goals
-    if (rawGoal === 'focus-enhancement') {
-      // Add additional filter: title must start with focus AND contain focus again
-      q = q.ilike('title', 'focus%').ilike('title', '%focus%');
-      console.log('🎯 Applied focus double-mention rule for focus-enhancement');
-    } else {
-      console.log(`🎵 Processing goal: ${rawGoal} (no special focus rule)`);
-    }
+    console.log(`🎵 Processing goal: ${rawGoal}`);
+    // No special restrictive rules - let the OR conditions handle filtering
 
     return q;
   };
