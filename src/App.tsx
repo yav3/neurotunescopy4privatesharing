@@ -16,11 +16,7 @@ import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
 import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import AIDJPage from "./pages/AIDJPage";
-import { UnifiedDashboard } from "./pages/UnifiedDashboard";
-import PlayerPage from "./pages/PlayerPage";
-import AudioDiagnostics from "./pages/AudioDiagnostics";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -52,12 +48,8 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/ai-dj" element={<AIDJPage />} />
-              <Route path="/profile" element={<UnifiedDashboard />} />
-              <Route path="/player" element={<PlayerPage />} />
-              <Route path="/diagnostics/audio" element={<AudioDiagnostics />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<Index />} />
             </Routes>
             {/* Global Music Player - Always visible when music is playing */}
             <NowPlaying />

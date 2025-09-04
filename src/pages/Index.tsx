@@ -69,9 +69,7 @@ const Index = () => {
 
   const handleNavTabChange = (tab: string) => {
     setActiveNavTab(tab);
-    if (tab === "ai-dj") {
-      navigate("/ai-dj");
-    } else if (tab === "profile") {
+    if (tab === "profile") {
       navigate("/profile");
     }
   };
