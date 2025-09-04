@@ -5,43 +5,24 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { useAudioStore } from '@/stores'
 import { toast } from "@/hooks/use-toast"
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals'
 
-const therapeuticGoals = [
-  {
-    id: 'focus',
-    label: 'Deep Focus',
-    description: 'Alpha waves for concentration and productivity',
-    gradient: 'from-blue-500 to-cyan-500',
-    backendKey: 'Focus Enhancement'
-  },
-  {
-    id: 'relaxation',
-    label: 'Relaxation',
-    description: 'Theta waves for deep relaxation and stress relief',
-    gradient: 'from-green-500 to-emerald-500',
-    backendKey: 'Stress Reduction'
-  },
-  {
-    id: 'sleep',
-    label: 'Sleep',
-    description: 'Delta waves for deep, restorative sleep',
-    gradient: 'from-blue-600 to-indigo-600',
-    backendKey: 'Sleep Preparation'
-  },
-  {
-    id: 'energy',
-    label: 'Energy',
-    description: 'Beta waves for alertness and motivation',
-    gradient: 'from-orange-500 to-red-500',
-    backendKey: 'Mood Boost'
-  }
-]
+// Use only the main therapeutic goals for the AI DJ interface
+const aiDjGoals = THERAPEUTIC_GOALS.filter(goal => 
+  ['focus-enhancement', 'anxiety-relief', 'sleep-aid', 'mood-boost'].includes(goal.slug)
+).map(goal => ({
+  ...goal,
+  gradient: goal.slug === 'focus-enhancement' ? 'from-blue-500 to-cyan-500' :
+           goal.slug === 'anxiety-relief' ? 'from-green-500 to-emerald-500' :
+           goal.slug === 'sleep-aid' ? 'from-blue-600 to-indigo-600' :
+           'from-orange-500 to-red-500' // mood-boost
+}))
 
 const AIDJPage: React.FC = () => {
   const { playFromGoal, isLoading } = useAudioStore()
 
-  const handleGoalClick = async (goalId: string) => {
-    const goal = therapeuticGoals.find(g => g.id === goalId)
+  const handleGoalClick = async (goalSlug: string) => {
+    const goal = aiDjGoals.find(g => g.slug === goalSlug)
     if (!goal) {
       toast({
         title: "Error",
@@ -62,16 +43,16 @@ const AIDJPage: React.FC = () => {
 
     toast({
       title: "Starting Session",
-      description: `Preparing therapeutic ${goal.label.toLowerCase()} session…`,
+      description: `Preparing ${goal.name.toLowerCase()} session…`,
     })
 
     try {
-      console.log('🎵 Starting therapeutic session:', goal.label, 'backend key:', goal.backendKey)
+      console.log('🎵 Starting therapeutic session:', goal.name, 'backend key:', goal.backendKey)
       await playFromGoal(goal.backendKey)
       
       toast({
         title: "Session Started",
-        description: `Playing therapeutically ordered ${goal.label.toLowerCase()} tracks`,
+        description: `Playing therapeutically ordered ${goal.name.toLowerCase()} tracks`,
       })
     } catch (error: any) {
       console.error('❌ Session start failed:', error)
@@ -97,7 +78,7 @@ const AIDJPage: React.FC = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {therapeuticGoals.map((goal) => (
+          {aiDjGoals.map((goal) => (
             <Card
               key={goal.id}
               className={cn(
@@ -105,7 +86,7 @@ const AIDJPage: React.FC = () => {
                 `bg-gradient-to-br ${goal.gradient}`,
                 isLoading && "opacity-50 pointer-events-none"
               )}
-              onClick={() => handleGoalClick(goal.id)}
+              onClick={() => handleGoalClick(goal.slug)}
             >
               <div className="p-8 text-white">
                 <div className="flex items-center gap-4 mb-4">
@@ -113,7 +94,7 @@ const AIDJPage: React.FC = () => {
                     <Radio className="h-8 w-8" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold">{goal.label}</h3>
+                    <h3 className="text-2xl font-bold">{goal.name}</h3>
                     <p className="text-white/80 mt-1">{goal.description}</p>
                   </div>
                 </div>
