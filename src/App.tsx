@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
 import { NowPlaying } from "@/components/NowPlaying";
+import { TherapeuticDebugPanel } from "@/components/TherapeuticDebugPanel";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";

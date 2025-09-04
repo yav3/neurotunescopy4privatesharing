@@ -161,13 +161,29 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       q = q.or(orConditions);
     }
 
-    // Apply goal-specific BPM filtering
-    if (rawGoal === 'anxiety-relief' || rawGoal === 'stress-reduction') {
-      // For anxiety relief and stress reduction, include calming tracks (BPM 0-80)
-      q = q.gte('bpm', 0).lte('bpm', 80);
-      console.log(`🧘 Applied ${rawGoal} BPM filter: 0-80 BPM`);
+    // Apply advanced VAD-based therapeutic filtering
+    if (rawGoal === 'focus-enhancement') {
+      // Focus: 78-100 BPM, instrumental preferred
+      q = q.gte('bpm', 78).lte('bpm', 100);
+      console.log('🧠 Applied focus-enhancement BPM filter: 78-100 BPM (optimal cognitive range)');
+    } else if (rawGoal === 'anxiety-relief') {
+      // Anxiety relief: 40-80 BPM, calming tracks
+      q = q.gte('bpm', 40).lte('bpm', 80);
+      console.log('🧘 Applied anxiety-relief BPM filter: 40-80 BPM (calming range)');
+    } else if (rawGoal === 'stress-reduction') {
+      // Stress reduction: 45-80 BPM, relaxing tracks  
+      q = q.gte('bpm', 45).lte('bpm', 80);
+      console.log('🌊 Applied stress-reduction BPM filter: 45-80 BPM (relaxing range)');
+    } else if (rawGoal === 'sleep-preparation') {
+      // Sleep: 40-60 BPM, ultra slow
+      q = q.gte('bpm', 40).lte('bmp', 60);
+      console.log('😴 Applied sleep-preparation BPM filter: 40-60 BPM (ultra slow range)');
+    } else if (rawGoal === 'mood-boost') {
+      // Mood boost: 90-140 BPM, energetic tracks
+      q = q.gte('bpm', 90).lte('bpm', 140);
+      console.log('⚡ Applied mood-boost BPM filter: 90-140 BPM (energetic range)');
     } else {
-      console.log(`🎵 Processing goal: ${rawGoal}`);
+      console.log(`🎵 Processing goal: ${rawGoal} (no specific BPM filter)`);
     }
 
     return q;
