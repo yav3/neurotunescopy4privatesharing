@@ -25,6 +25,8 @@ export class SupabaseService {
           .from('tracks')
           .select('id')
           .or(`file_path.eq.${trackIdOrPath},storage_key.eq.${trackIdOrPath}`)
+          .eq('storage_bucket', 'audio')
+          .not('camelot', 'is', null)
           .eq('audio_status', 'working')
           .maybeSingle()
         
@@ -73,11 +75,13 @@ export class SupabaseService {
     offset?: number
   } = {}): Promise<any[]> {
     try {
-      let query = supabase
-        .from('tracks')
-        .select('*')
-        .eq('audio_status', 'working')
-        .order('created_at', { ascending: false })
+    let query = supabase
+      .from('tracks')
+      .select('*')
+      .eq('storage_bucket', 'audio')
+      .not('camelot', 'is', null)
+      .eq('audio_status', 'working')
+      .order('created_at', { ascending: false })
 
       if (options?.limit) {
         query = query.limit(options.limit)
@@ -122,6 +126,8 @@ export class SupabaseService {
         .from('tracks')
         .select('*')
         .eq('id', trackId)
+        .eq('storage_bucket', 'audio')
+        .not('camelot', 'is', null)
         .eq('audio_status', 'working')
         .maybeSingle()
 

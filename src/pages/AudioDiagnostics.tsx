@@ -25,6 +25,8 @@ const AudioDiagnostics: React.FC = () => {
         const { data: tracks, error } = await supabase
           .from('tracks')
           .select('id, title, file_path, storage_key, bpm, energy_level, valence, genre')
+          .eq('storage_bucket', 'audio')
+          .not('camelot', 'is', null)
           .eq('audio_status', 'working')
           .limit(4);
         

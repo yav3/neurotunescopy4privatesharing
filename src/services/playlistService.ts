@@ -219,6 +219,8 @@ export class PlaylistService {
       const { data: tracks, error } = await supabase
         .from('tracks')
         .select('*')
+        .eq('storage_bucket', 'audio')
+        .not('camelot', 'is', null)
         .eq('audio_status', 'working')
         .limit(20)
 

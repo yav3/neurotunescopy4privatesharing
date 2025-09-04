@@ -29,6 +29,8 @@ export const AudioDebugger = () => {
       const { data: tracks, error: dbError } = await supabase
         .from('tracks')
         .select('id, title, file_path, storage_key')
+        .eq('storage_bucket', 'audio')
+        .not('camelot', 'is', null)
         .eq('audio_status', 'working')
         .limit(5);
       
