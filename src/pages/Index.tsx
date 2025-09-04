@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { TrendingTabs } from "@/components/TrendingTabs";
 import { TherapeuticMusic } from "@/components/TherapeuticMusic";
 import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilder";
+import { AudioDataCompiler } from "@/components/AudioDataCompiler";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
@@ -80,7 +81,8 @@ const Index = () => {
     // Show feedback for tab changes
     const tabNames = {
       "goals": "Therapeutic Goals",
-      "sessions": "Session Builder"
+      "sessions": "Session Builder",
+      "data": "Audio Data Management"
     };
     
     toast({
@@ -102,6 +104,14 @@ const Index = () => {
         <div className="px-4 md:px-8 mb-24">
           <div className="max-w-4xl mx-auto">
             <TherapeuticSessionBuilder onSessionStart={handleSessionStart} />
+          </div>
+        </div>
+      )}
+      
+      {activeTab === "data" && (
+        <div className="px-4 md:px-8 mb-24">
+          <div className="max-w-4xl mx-auto">
+            <AudioDataCompiler />
           </div>
         </div>
       )}
