@@ -224,7 +224,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
     set({ isLoading: true, error: undefined });
     
     try {
-      console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
+      console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'Storage:', track.storage_key, 'seq:', mySeq);
+      
+      // Validate track has proper storage info
+      if (!track.id || (!track.storage_key && !track.file_path)) {
+        console.log('🎵 Track missing required storage info:', { id: track.id, storage_key: track.storage_key, file_path: track.file_path });
+        return false;
+      }
+      
       const url = buildStreamUrl(track.id);
       console.log('🎵 Stream URL built:', url);
       
@@ -232,7 +239,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       console.log('🎵 Testing stream URL accessibility...');
       const headOk = await headCheck(url, 3000);
       if (!headOk) {
-        console.log('🎵 HEAD check failed for:', track.title);
+        console.log('🎵 HEAD check failed for:', track.title, 'URL:', url);
         return false;
       }
       
