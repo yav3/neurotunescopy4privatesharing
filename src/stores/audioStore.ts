@@ -219,30 +219,47 @@ export const useAudioStore = create<AudioState>((set, get) => {
     return audio;
   };
 
+  // Fast parallel validation of multiple tracks
+  const validateTracks = async (tracks: Track[]): Promise<{ working: Track[], broken: Track[] }> => {
+    if (tracks.length === 0) return { working: [], broken: [] };
+    
+    console.log(`🎵 Validating ${tracks.length} tracks in parallel...`);
+    
+    // Validate all tracks in parallel with 1 second timeout each
+    const results = await Promise.allSettled(
+      tracks.map(async (track) => {
+        if (!track.id || (!track.storage_key && !track.file_path)) return { track, valid: false };
+        
+        const url = buildStreamUrl(track.id);
+        const valid = await headCheck(url, 1000); // Faster timeout for batch validation
+        return { track, valid };
+      })
+    );
+    
+    const working: Track[] = [];
+    const broken: Track[] = [];
+    
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value.valid) {
+        working.push(result.value.track);
+      } else {
+        broken.push(tracks[index]);
+      }
+    });
+    
+    console.log(`🎵 Validation complete: ${working.length} working, ${broken.length} broken`);
+    return { working, broken };
+  };
+
   const loadTrack = async (track: Track): Promise<boolean> => {
-    const mySeq = ++loadSeq;         // capture monotonic token
+    const mySeq = ++loadSeq;
     const audio = initAudio();
     set({ isLoading: true, error: undefined });
     
     try {
-      console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'Storage:', track.storage_key, 'seq:', mySeq);
-      
-      // Validate track has proper storage info
-      if (!track.id || (!track.storage_key && !track.file_path)) {
-        console.log('🎵 Track missing required storage info:', { id: track.id, storage_key: track.storage_key, file_path: track.file_path });
-        return false;
-      }
+      console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
       
       const url = buildStreamUrl(track.id);
-      console.log('🎵 Stream URL built:', url);
-      
-      // Quick HEAD with timeout (don't hang forever)
-      console.log('🎵 Testing stream URL accessibility...');
-      const headOk = await headCheck(url, 3000);
-      if (!headOk) {
-        console.log('🎵 HEAD check failed for:', track.title, 'URL:', url);
-        return false;
-      }
       
       // If a newer load started, ignore this one
       if (mySeq !== loadSeq) {
@@ -253,15 +270,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
       audio.src = url;
       console.log('🎵 Audio src set, attempting to play...');
       
-      // .load() is sync; browsers fire async events, so just try to play
       try { 
         await audio.play(); 
       } catch { 
-        // gesture needed; fine - this will be handled by user clicking play
         console.log('🎵 Autoplay blocked (expected), waiting for user gesture');
       }
       
-      // Still current?
       if (mySeq !== loadSeq) {
         console.log('🎵 Load sequence outdated after play attempt, ignoring:', mySeq, 'vs', loadSeq);
         return false;
@@ -272,7 +286,6 @@ export const useAudioStore = create<AudioState>((set, get) => {
       return true;
     } catch (error) {
       console.error('🎵 Load track failed:', error);
-      // If this load is stale we don't touch global state
       if (mySeq === loadSeq) {
         set({ isLoading: false });
       }
@@ -400,32 +413,36 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     setQueue: async (tracks: Track[], startAt = 0) => {
-      const validIndex = Math.max(0, Math.min(startAt, tracks.length - 1));
-      set({ queue: tracks, index: validIndex, isLoading: true, error: undefined });
-      
-      // Reset skip counter for new session
+      set({ queue: tracks, index: -1, isLoading: true, error: undefined });
       skipped = 0;
       
-      let { queue, index } = get();
-      for (let i = index; i < queue.length; i++) {
-        console.log('🎵 Trying to load track', i + 1, 'of', queue.length, ':', queue[i].title);
-        const success = await loadTrack(queue[i]);
-        if (success) {
-          set({ index: i });
-          console.log('🎵 Found working track at index', i, ':', queue[i].title);
-          return;
+      // Fast parallel validation
+      const { working, broken } = await validateTracks(tracks);
+      
+      // Remove broken tracks and announce skips
+      if (broken.length > 0) {
+        console.log(`🎵 Removing ${broken.length} broken tracks`);
+        for (let i = 0; i < Math.min(broken.length, 3); i++) {
+          announceSkip();
         }
-        
-        // Drop broken track from this session's queue and announce skip
-        console.log('🎵 Removing broken track from queue:', queue[i].title);
-        announceSkip();
-        queue = removeAt(queue, i);
-        i--; // Adjust index since we removed an item
-        set({ queue });
+        if (broken.length > 3) {
+          toast.info(`Skipped ${broken.length} broken tracks`);
+        }
       }
       
-      set({ isLoading: false, error: "No working tracks found in queue" });
-      console.error('🎵 No working tracks found in entire queue');
+      if (working.length === 0) {
+        set({ queue: [], index: -1, isLoading: false, error: "No working tracks found in queue" });
+        return;
+      }
+      
+      // Set clean working queue and load first track
+      const targetIndex = Math.min(startAt, working.length - 1);
+      set({ queue: working, index: targetIndex });
+      
+      const success = await loadTrack(working[targetIndex]);
+      if (!success) {
+        set({ isLoading: false, error: "Failed to load first track" });
+      }
     },
 
     play: async () => {
