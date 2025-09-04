@@ -34,6 +34,7 @@ type AudioState = {
   // Queue
   queue: Track[];
   index: number;
+  lastGoal?: string;
   
   // Session management
   sessionManager: typeof sessionManager;
@@ -303,7 +304,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     playFromGoal: async (goal: string) => {
-      set({ isLoading: true, error: undefined });
+      set({ isLoading: true, error: undefined, lastGoal: goal });
       try {
         console.log('🎵 Starting therapeutic session for goal:', goal);
         
@@ -535,7 +536,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ queue });
       }
       
-      console.log('🎵 No more working tracks in queue');
+      // If no more tracks in current queue, try to reload the last goal
+      const { lastGoal } = get();
+      if (lastGoal) {
+        console.log('🎵 Queue exhausted, reloading tracks for goal:', lastGoal);
+        await get().playFromGoal(lastGoal);
+        return;
+      }
+      
+      console.log('🎵 No more working tracks in queue and no goal to reload');
       set({ isLoading: false, error: "No more tracks available" });
       return;
     },
