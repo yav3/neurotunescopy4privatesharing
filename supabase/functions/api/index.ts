@@ -162,14 +162,10 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     }
 
     // Apply goal-specific BPM filtering
-    if (rawGoal === 'anxiety-relief') {
-      // For anxiety relief, only include tracks with BPM under 90 (calming tempo)
-      q = q.lt('bpm', 90);
-      console.log('🧘 Applied anxiety-relief BPM filter: <90 BPM');
-    } else if (rawGoal === 'stress-reduction') {
-      // For stress reduction, include calming tracks (BPM < 100)
-      q = q.lt('bpm', 100);
-      console.log('🌊 Applied stress-reduction BPM filter: <100 BPM');
+    if (rawGoal === 'anxiety-relief' || rawGoal === 'stress-reduction') {
+      // For anxiety relief and stress reduction, include calming tracks (BPM 0-80)
+      q = q.gte('bpm', 0).lte('bpm', 80);
+      console.log(`🧘 Applied ${rawGoal} BPM filter: 0-80 BPM`);
     } else {
       console.log(`🎵 Processing goal: ${rawGoal}`);
     }
