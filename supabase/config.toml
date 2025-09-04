@@ -51,6 +51,9 @@ verify_jwt = false
 [functions.comprehensive-audio-analyzer]
 verify_jwt = false
 
+[functions.data-migration]
+verify_jwt = false
+
 [functions.api.env]
 SUPABASE_URL = "SUPABASE_URL"
 SUPABASE_SERVICE_ROLE_KEY = "SUPABASE_SERVICE_ROLE_KEY"

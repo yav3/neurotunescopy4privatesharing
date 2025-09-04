@@ -3,6 +3,7 @@ import AudioTester from '@/components/AudioTester'
 import AudioAnalysisRunner from '@/components/AudioAnalysisRunner'
 import { StorageAudit } from "@/components/StorageAudit";
 import { ComprehensiveAudioAnalyzer } from "@/components/ComprehensiveAudioAnalyzer";
+import DataMigrationPanel from "@/components/DataMigrationPanel";
 import { useAudioStore } from '../stores';
 import { API } from '../lib/api';
 import { buildStreamUrl, headOk } from '../lib/stream';
@@ -88,9 +89,12 @@ const AudioDiagnostics: React.FC = () => {
       {/* Audio Analysis Pipeline */}
       <AudioAnalysisRunner />
       
+      {/* Data Migration & Cleanup */}
+      <DataMigrationPanel />
+      
       {/* Storage Audit */}
-          <ComprehensiveAudioAnalyzer />
-          <StorageAudit />
+      <ComprehensiveAudioAnalyzer />
+      <StorageAudit />
       
       {/* Front-to-Back Audio Testing */}
       <AudioTester />
