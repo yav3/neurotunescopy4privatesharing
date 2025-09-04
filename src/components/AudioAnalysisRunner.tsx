@@ -63,6 +63,7 @@ export const AudioAnalysisRunner: React.FC = () => {
       const { count, error: countError } = await supabase
         .from('tracks')
         .select('*', { count: 'exact', head: true })
+        .eq('storage_bucket', 'audio')
 
       if (countError) throw countError
 
@@ -75,10 +76,11 @@ export const AudioAnalysisRunner: React.FC = () => {
       steps[1].message = 'Checking which tracks need analysis...'
       setResults([...steps])
 
-      // Use a simpler query approach to avoid OR syntax issues
+      // Use a simpler query approach to avoid OR syntax issues - only audio bucket tracks
       const { data: allTracks, error: tracksError } = await supabase
         .from('tracks')
-        .select('id, bpm, musical_key_est, analysis_status')
+        .select('id, bpm, musical_key_est, analysis_status, storage_bucket')
+        .eq('storage_bucket', 'audio')
         .limit(1000)
 
       if (tracksError) throw tracksError
