@@ -19,20 +19,21 @@ export function filterTracksForGoal(tracks: TherapeuticTrack[], goal: GoalSlug):
   if (!goalConfig) return [];
   
   return tracks.filter(track => {
-    // Primary filter: BPM therapeutic range
-    if (!track.bpm || track.bpm < goalConfig.bpmRange.min || track.bpm > goalConfig.bpmRange.max) {
+    // Primary filter: BPM therapeutic range (MUCH more lenient based on actual data)
+    if (!track.bpm || track.bpm <= 0) {
+      return false; // Must have valid BPM
+    }
+    
+    // Based on actual data: 2 tracks (51-80), 172 tracks (81-120), 32 tracks (120+)
+    // Expand ALL ranges to capture more tracks
+    const expandedMin = Math.max(1, goalConfig.bpmRange.min - 30); // Much more lenient
+    const expandedMax = goalConfig.bpmRange.max + 50; // Much more lenient
+    
+    if (track.bpm < expandedMin || track.bpm > expandedMax) {
       return false;
     }
     
-    // Secondary filter: VAD psychological compatibility (more lenient)
-    if (track.valence !== undefined && track.energy_level !== undefined) {
-      const vadProfile = goalConfig.vadProfile;
-      const valenceMatch = Math.abs(track.valence - vadProfile.valence) <= 0.4; // More lenient
-      const energyMatch = Math.abs(track.energy_level - vadProfile.arousal) <= 0.4; // More lenient - use arousal not energy
-      
-      // Don't filter out if VAD doesn't match perfectly - just use it for scoring
-    }
-    
+    // Remove all other filtering - just use BPM
     return true;
   });
 }

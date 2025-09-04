@@ -29,11 +29,11 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   const { toast } = useToast()
   const sessionManager = useSessionManager()
 
-  // 🔄 MIRROR BACKEND: Connect session manager to audio store
+  // 🔄 MIRROR BACKEND: Connect session manager to audio store (FIXED - no dependency array to prevent loops)
   useEffect(() => {
     const setSessionManager = useAudioStore.getState().setSessionManager;
     setSessionManager(sessionManager);
-  }, [sessionManager]);
+  }, []); // Empty dependency array to run only once
 
   // Memoized slider handlers to prevent infinite loops
   const handleDurationChange = useCallback((value: number[]) => {
