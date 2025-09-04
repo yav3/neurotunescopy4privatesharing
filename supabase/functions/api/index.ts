@@ -148,6 +148,8 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     .select(baseSelect, { count: "exact" })
     .eq("audio_status", "working")
     .not("storage_key", "is", null).neq("storage_key", "")
+    .not("last_error", "like", "%ObjectNotFound%")
+    .not("last_error", "like", "%SignedUrlHeadFailed%")
     .order("id", { ascending: true })
     .range(offset, to);
 
@@ -232,13 +234,32 @@ async function handleStreamRequest(req: Request): Promise<Response> {
 
   const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'audio');
 
-  // Multi-bucket sign - try original bucket first, then fallback
+  // Multi-bucket file existence check and sign
   const buckets = [bucket, bucket === 'audio' ? 'neuralpositivemusic' : 'audio'];
   let signed: any = null;
   let workingBucket = bucket;
   
   const t1 = Date.now();
   for (const tryBucket of buckets) {
+    // First check if file exists
+    const { data: fileInfo, error: listError } = await supabase.storage
+      .from(tryBucket)
+      .list('', { 
+        limit: 1,
+        search: row.storage_key 
+      });
+
+    if (listError || !fileInfo || fileInfo.length === 0) {
+      log(id, 'stream:file_check', {
+        bucket: tryBucket,
+        key: row.storage_key,
+        exists: false,
+        error: listError?.message ?? 'File not found'
+      });
+      continue;
+    }
+    
+    // File exists, try to create signed URL
     const attempt = await supabase.storage.from(tryBucket).createSignedUrl(row.storage_key, 1800);
     log(id, 'stream:sign_attempt', {
       bucket: tryBucket,
