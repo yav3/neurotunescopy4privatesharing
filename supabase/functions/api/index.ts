@@ -143,7 +143,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     const orConditions = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
     let q = supabase
       .from("tracks")
-      .select("id,title,genre,mood,storage_key,audio_status", { count: "exact" })
+      .select("id,title,genre,mood,storage_key,audio_status,bpm", { count: "exact" })
       .eq("audio_status", "working")  // Only return working tracks
       .eq("storage_bucket", "audio")  // Only return tracks from audio bucket
       .not("storage_key","is",null)
@@ -157,8 +157,14 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       q = q.or(orConditions);
     }
 
-    console.log(`🎵 Processing goal: ${rawGoal}`);
-    // No special restrictive rules - let the OR conditions handle filtering
+    // Apply BPM filtering for anxiety relief
+    if (rawGoal === 'anxiety-relief') {
+      // For anxiety relief, only include tracks with BPM under 90 (calming tempo)
+      q = q.or('bpm.is.null,bpm.lt.90');
+      console.log('🧘 Applied anxiety-relief BPM filter: <90 BPM or null');
+    } else {
+      console.log(`🎵 Processing goal: ${rawGoal}`);
+    }
 
     return q;
   };
