@@ -69,7 +69,7 @@ export class CamelotSystem {
         .from('tracks')
         .select('*')
         .eq('audio_status', 'working')
-        .in('camelot_key', allKeys)
+        .in('camelot', allKeys)
         .limit(limit);
 
       if (error) {
@@ -88,12 +88,12 @@ export class CamelotSystem {
    * Get the next harmonic track in sequence
    */
   static async getNextHarmonicTrack(currentTrack: any): Promise<any | null> {
-    if (!currentTrack?.camelot_key) {
+    if (!currentTrack?.camelot) {
       console.warn('Current track has no Camelot key');
       return null;
     }
 
-    const compatibleTracks = await this.findCompatibleTracks(currentTrack.camelot_key, 50);
+    const compatibleTracks = await this.findCompatibleTracks(currentTrack.camelot, 50);
     
     // Filter out the current track
     const nextTracks = compatibleTracks.filter(track => track.id !== currentTrack.id);
@@ -103,10 +103,10 @@ export class CamelotSystem {
     }
 
     // Prioritize tracks with exact key match, then neighbors
-    const neighbors = await this.getNeighborsFromDB(currentTrack.camelot_key);
+    const neighbors = await this.getNeighborsFromDB(currentTrack.camelot);
     
-    const exactMatches = nextTracks.filter(track => track.camelot_key === currentTrack.camelot_key);
-    const neighborMatches = nextTracks.filter(track => neighbors.includes(track.camelot_key));
+    const exactMatches = nextTracks.filter(track => track.camelot === currentTrack.camelot);
+    const neighborMatches = nextTracks.filter(track => neighbors.includes(track.camelot));
     
     const prioritized = [...exactMatches, ...neighborMatches];
     
@@ -131,7 +131,7 @@ export class CamelotSystem {
         .from('tracks')
         .select('*')
         .eq('audio_status', 'working')
-        .not('camelot_key', 'is', null);
+        .not('camelot', 'is', null);
 
       if (error) {
         console.error('Error getting tracks by key:', error);
@@ -140,7 +140,7 @@ export class CamelotSystem {
 
       const grouped: Record<string, any[]> = {};
       tracks?.forEach(track => {
-        const key = track.camelot_key;
+        const key = track.camelot;
         if (!grouped[key]) {
           grouped[key] = [];
         }

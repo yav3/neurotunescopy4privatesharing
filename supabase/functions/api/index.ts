@@ -156,31 +156,11 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     origin: req.headers.get('origin')
   });
 
-  // Robust tokenization: slug + aliases -> split on space/hyphen, dedupe, discard empties
-  const words = Array.from(
-    new Set(
-      wordsFor(rawGoal)                   // e.g. ["sleep-preparation","sleep","deep sleep","delta"]
-        .flatMap(w => w.toLowerCase().split(/[\s-]+/)) // ["sleep","preparation","sleep","deep","sleep","delta"]
-        .filter(Boolean)
-    )
-  );
+  // Remove unused text search logic since we're using VAD + Camelot only
 
-  // Build a SAFE .or() with text columns including title: title/mood/genre + BPM filtering for therapeutic goals
-  const buildOr = () => {
-    if (!words.length) return "";
-    const parts: string[] = [];
-    for (const w of words) {
-      const star = `*${w}*`;            // PostgREST wildcard for .ilike
-      parts.push(`title.ilike.${star}`, `mood.ilike.${star}`, `genre.ilike.${star}`);
-    }
-    // supabase-js will wrap it into or=(...)
-    return parts.join(",");
-  };
+  const baseSelect = 'id,title,genre,mood,storage_key,audio_status,bpm,camelot,valence,arousal,dominance';
 
-  const baseSelect = 'id,title,genre,mood,storage_key,audio_status,bpm';
-
-  // First attempt: safe filter on mood/genre + therapeutic BPM ranges
-  const orExpr = buildOr();
+  // VAD + Camelot Therapeutic System (NO TEXT SEARCH)
   let q = supabase
     .from("tracks")
     .select(baseSelect, { count: "exact" })
@@ -188,53 +168,83 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     .not("storage_key", "is", null).neq("storage_key", "")
     .not("last_error", "like", "%ObjectNotFound%")
     .not("last_error", "like", "%SignedUrlHeadFailed%")
-    .order("id", { ascending: true })
     .range(offset, to);
 
-  // Add therapeutic BPM filtering for specific goals
-  if (rawGoal === 'sleep-preparation') {
-    // Sleep: 40-80 BPM (relaxing range)
-    q = q.gte('bpm', 40).lte('bpm', 80);
-    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '40-80' });
+  // VAD + Camelot Therapeutic Filtering
+  if (rawGoal === 'focus-enhancement') {
+    log(id, 'vad_filter', { goal: 'focus-enhancement', system: 'VAD+Camelot' });
+    q = q.gte('bpm', 78).lte('bpm', 100)
+      .like('title', '%Focus%Focus%')  // Must contain "Focus" twice
+      .not('camelot', 'is', null)
+      .gte('valence', 0.3).lte('valence', 0.7)  // Moderate valence
+      .gte('arousal', 0.4).lte('arousal', 0.8)  // Moderate-high arousal
+      .gte('dominance', 0.5)  // Higher dominance for focus
+      .order('camelot').order('bpm', { ascending: true }); // Camelot + ascending BPM (energizing)
+      
   } else if (rawGoal === 'anxiety-relief' || rawGoal === 'stress-reduction') {
-    // Anxiety/Stress: 60-100 BPM (calming but not too slow)
-    q = q.gte('bpm', 60).lte('bpm', 100);
-    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '60-100' });
-  } else if (rawGoal === 'focus-enhancement') {
-    // Focus: 70-120 BPM (alertness range)
-    q = q.gte('bpm', 70).lte('bpm', 120);
-    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '70-120' });
+    log(id, 'vad_filter', { goal: rawGoal, system: 'VAD+Camelot' });
+    q = q.gte('bpm', 40).lte('bpm', 80)
+      .not('camelot', 'is', null)
+      .gte('valence', 0.6)  // Higher valence for positive mood
+      .lte('arousal', 0.4)  // Lower arousal for calming
+      .gte('dominance', 0.3)  // Moderate dominance
+      .order('bpm', { ascending: false }).order('camelot'); // Descending BPM (calming)
+      
+  } else if (rawGoal === 'sleep-preparation') {
+    log(id, 'vad_filter', { goal: 'sleep-preparation', system: 'VAD+Camelot' });
+    q = q.gte('bpm', 40).lte('bpm', 70)
+      .not('camelot', 'is', null)
+      .gte('valence', 0.4)  // Moderate positive valence
+      .lte('arousal', 0.3)  // Very low arousal for sleep
+      .lte('dominance', 0.5)  // Lower dominance
+      .order('bpm', { ascending: false }).order('camelot'); // Descending BPM (sleep prep)
+      
   } else if (rawGoal === 'mood-boost') {
-    // Mood: 90-140 BPM (energizing range) - FIXED TYPO
-    q = q.gte('bpm', 90).lte('bpm', 140);  // Fixed: 'bmp' -> 'bpm'
-    log(id, 'playlist:bpm_filter', { goal: rawGoal, bpmRange: '90-140' });
+    log(id, 'vad_filter', { goal: 'mood-boost', system: 'VAD+Camelot' });
+    q = q.gte('bpm', 80).lte('bpm', 140)
+      .not('camelot', 'is', null)
+      .gte('valence', 0.7)  // High valence for positive mood
+      .gte('arousal', 0.6)  // High arousal for energy
+      .gte('dominance', 0.5)  // Higher dominance
+      .order('bpm', { ascending: true }).order('camelot'); // Ascending BPM (energizing)
+      
+  } else if (rawGoal === 'meditation-support') {
+    log(id, 'vad_filter', { goal: 'meditation-support', system: 'VAD+Camelot' });
+    q = q.gte('bpm', 50).lte('bpm', 90)
+      .not('camelot', 'is', null)
+      .gte('valence', 0.5)  // Neutral to positive valence
+      .lte('arousal', 0.5)  // Low to moderate arousal
+      .gte('dominance', 0.4)  // Moderate dominance
+      .order('camelot').order('bpm', { ascending: true }); // Camelot progression
+      
+  } else {
+    // Default ordering if no specific goal
+    q = q.order("id", { ascending: true });
   }
-
-  if (orExpr) q = q.or(orExpr);
 
   // Try the safe query; on error, fall back to no-goal filter (still playable)
   let data, error;
   const t0 = Date.now();
   try {
     ({ data, error } = await q);
-    log(id, 'playlist:query_success', {
+    log(id, 'playlist:vad_query_success', {
       ms: Date.now() - t0,
       resultCount: data?.length || 0,
-      orExpr,
-      words
+      goal: rawGoal,
+      system: 'VAD+Camelot'
     });
   } catch (e:any) {
     error = { message: e?.message || String(e) };
-    log(id, 'playlist:query_exception', {
+    log(id, 'playlist:vad_query_exception', {
       ms: Date.now() - t0,
       error: error.message,
-      orExpr,
-      words
+      goal: rawGoal,
+      system: 'VAD+Camelot'
     });
   }
 
   if (error) {
-    log(id, 'playlist:error_fallback', { error: error.message, rawGoal, words });
+    log(id, 'playlist:error_fallback', { error: error.message, rawGoal, system: 'VAD+Camelot' });
     const t1 = Date.now();
     const fb = await supabase
       .from("tracks")
