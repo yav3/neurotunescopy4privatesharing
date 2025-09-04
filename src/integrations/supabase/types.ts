@@ -2431,6 +2431,15 @@ export type Database = {
         Args: { new_bucket: string; track_id: string }
         Returns: boolean
       }
+      verify_all_tracks: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          bucket_corrections: number
+          now_working: number
+          still_missing: number
+          total_checked: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
