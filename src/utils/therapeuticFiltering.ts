@@ -19,21 +19,19 @@ export function filterTracksForGoal(tracks: TherapeuticTrack[], goal: GoalSlug):
   if (!goalConfig) return [];
   
   return tracks.filter(track => {
-    // Primary filter: BPM therapeutic range (MUCH more lenient based on actual data)
+    // Must have valid BPM
     if (!track.bpm || track.bpm <= 0) {
-      return false; // Must have valid BPM
-    }
-    
-    // Based on actual data: 2 tracks (51-80), 172 tracks (81-120), 32 tracks (120+)
-    // Expand ALL ranges to capture more tracks
-    const expandedMin = Math.max(1, goalConfig.bpmRange.min - 30); // Much more lenient
-    const expandedMax = goalConfig.bpmRange.max + 50; // Much more lenient
-    
-    if (track.bpm < expandedMin || track.bpm > expandedMax) {
       return false;
     }
     
-    // Remove all other filtering - just use BPM
+    // STRICT therapeutic BPM ranges - no expansion for proper therapeutic effect
+    const { min, max } = goalConfig.bpmRange;
+    
+    if (track.bpm < min || track.bpm > max) {
+      return false;
+    }
+    
+    // Must have valid audio file
     return true;
   });
 }
