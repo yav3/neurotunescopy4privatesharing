@@ -24,14 +24,13 @@ export function filterTracksForGoal(tracks: TherapeuticTrack[], goal: GoalSlug):
       return false;
     }
     
-    // Secondary filter: VAD psychological compatibility
+    // Secondary filter: VAD psychological compatibility (more lenient)
     if (track.valence !== undefined && track.energy_level !== undefined) {
-      const valenceMatch = Math.abs((track.valence - 0.5) * 2 - goalConfig.vadProfile.valence) < 0.6;
-      const arousalMatch = Math.abs((track.energy_level - 0.5) * 2 - goalConfig.vadProfile.arousal) < 0.6;
+      const vadProfile = goalConfig.vadProfile;
+      const valenceMatch = Math.abs(track.valence - vadProfile.valence) <= 0.4; // More lenient
+      const energyMatch = Math.abs(track.energy_level - vadProfile.arousal) <= 0.4; // More lenient - use arousal not energy
       
-      if (!valenceMatch || !arousalMatch) {
-        return false;
-      }
+      // Don't filter out if VAD doesn't match perfectly - just use it for scoring
     }
     
     return true;

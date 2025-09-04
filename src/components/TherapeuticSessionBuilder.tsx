@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Play, Clock, Target, Brain } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -26,7 +26,6 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   const [duration, setDuration] = useState([15])
   const [intensity, setIntensity] = useState([3])
   const [isBuilding, setIsBuilding] = useState(false)
-  const [availableTracks, setAvailableTracks] = useState(0)
   const { toast } = useToast()
   const sessionManager = useSessionManager()
 
@@ -36,10 +35,19 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setSessionManager(sessionManager);
   }, [sessionManager]);
 
-  // Set available tracks to a default value since we have music ready
-  useEffect(() => {
-    setAvailableTracks(50); // Assume we have tracks available
-  }, [])
+  // Memoized slider handlers to prevent infinite loops
+  const handleDurationChange = useCallback((value: number[]) => {
+    setDuration(value);
+  }, []);
+
+  const handleIntensityChange = useCallback((value: number[]) => {
+    setIntensity(value);
+  }, []);
+
+  // Get real track count for selected goal
+  const selectedGoal = mapper.getById(selectedGoalId);
+  const goalWithMetrics = goals.find(g => g.id === selectedGoalId);
+  const availableTracks = goalWithMetrics?.trackCount ?? 0;
 
   const handleBuildSession = async () => {
     if (availableTracks === 0) {
@@ -126,7 +134,6 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     }
   }
 
-  const selectedGoal = mapper.getById(selectedGoalId);
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -168,7 +175,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
           <div className="space-y-3">
             <Slider
               value={duration}
-              onValueChange={setDuration}
+              onValueChange={handleDurationChange}
               min={5}
               max={60}
               step={5}
@@ -195,7 +202,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
           <div className="space-y-3">
             <Slider
               value={intensity}
-              onValueChange={setIntensity}
+              onValueChange={handleIntensityChange}
               min={1}
               max={5}
               step={1}
