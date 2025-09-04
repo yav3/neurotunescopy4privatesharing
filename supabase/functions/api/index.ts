@@ -228,29 +228,64 @@ async function handleStreamRequest(req: Request): Promise<Response> {
 
   const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'neuralpositivemusic');
 
-  // Sign
+  // Multi-bucket sign - try original bucket first, then fallback
+  const buckets = [bucket, bucket === 'neuralpositivemusic' ? 'audio' : 'neuralpositivemusic'];
+  let signed: any = null;
+  let workingBucket = bucket;
+  
   const t1 = Date.now();
-  const signed = await supabase.storage.from(bucket).createSignedUrl(row.storage_key, 1800);
+  for (const tryBucket of buckets) {
+    const attempt = await supabase.storage.from(tryBucket).createSignedUrl(row.storage_key, 1800);
+    log(id, 'stream:sign_attempt', {
+      bucket: tryBucket,
+      ok: !!attempt.data?.signedUrl,
+      error: attempt.error?.message ?? null,
+    });
+    
+    if (attempt.data?.signedUrl && !attempt.error) {
+      signed = attempt;
+      workingBucket = tryBucket;
+      break;
+    }
+  }
+  
   log(id, 'stream:sign', {
     ms: Date.now() - t1,
-    ok: !!signed.data?.signedUrl,
-    bucket,
+    ok: !!signed?.data?.signedUrl,
+    originalBucket: bucket,
+    workingBucket,
     key: row.storage_key,
-    signError: signed.error?.message ?? null,
+    signError: signed?.error?.message ?? null,
   });
 
-  if (!signed.data?.signedUrl) {
+  if (!signed?.data?.signedUrl) {
     // Self-heal: Mark as missing with specific error
     await supabase.from('tracks').update({
       audio_status: 'missing',
       last_verified_at: new Date().toISOString(),
-      last_error: `ObjectNotFound:${bucket}:${row.storage_key}`
+      last_error: `ObjectNotFound:tried_buckets:[${buckets.join(',')}]:${row.storage_key}`
     }).eq('id', trackId);
     
     return json(
-      { ok: false, error: 'ObjectNotFound', bucket, key: row.storage_key, id: trackId },
+      { ok: false, error: 'ObjectNotFound', buckets_tried: buckets, key: row.storage_key, id: trackId },
       404
     );
+  }
+
+  // Self-heal: Update bucket if we found it in a different location
+  if (workingBucket !== bucket) {
+    log(id, 'stream:bucket_correction', {
+      originalBucket: bucket,
+      correctedBucket: workingBucket,
+      trackId,
+    });
+    
+    await supabase.from('tracks').update({
+      storage_bucket: workingBucket,
+      audio_status: 'working',
+      last_verified_at: new Date().toISOString(),
+      last_error: null
+    }).eq('id', trackId);
   }
 
   // HEAD to validate object before proxying (super cheap, super useful)
