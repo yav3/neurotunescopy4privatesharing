@@ -1,6 +1,81 @@
-# Storage Path Repair Scripts
+# Audio Analysis & Storage Scripts
 
-This directory contains scripts to repair storage paths for music tracks in the database.
+This directory contains production-grade scripts for comprehensive audio analysis and storage path management.
+
+## 🎯 **NEW: Production Audio Pipeline** 
+
+**`validate-and-analyze.ts`** - Enterprise-grade validation and analysis pipeline that:
+
+1. **Validates Storage Mappings**: Ensures every track UUID maps to a real file
+2. **Canonicalizes Paths**: Organizes files in `tracks/<uuid>.mp3` format
+3. **Comprehensive Analysis**: Full audio metadata extraction and analysis
+4. **Database Updates**: Complete track metadata with analysis results
+
+### Quick Start
+
+1. **Install dependencies** (if not already done):
+   ```bash
+   npm install
+   ```
+
+2. **Install system dependencies**:
+   ```bash
+   # Ubuntu/Debian
+   sudo apt-get install ffmpeg
+   
+   # macOS
+   brew install ffmpeg
+   ```
+
+3. **Set your Supabase service role key**:
+   ```bash
+   export SUPABASE_SERVICE_ROLE_KEY="your_service_role_key_here"
+   ```
+
+4. **Run the analysis**:
+   ```bash
+   # Make script executable
+   chmod +x scripts/run-analysis.sh
+   
+   # Dry run first (recommended)
+   ./scripts/run-analysis.sh dry-run
+   
+   # Then run for real
+   ./scripts/run-analysis.sh
+   ```
+
+### What It Analyzes
+
+- **Format Detection**: MP3, WAV, FLAC, etc.
+- **Duration**: Precise duration in seconds
+- **Sample Rate**: Hz (44100, 48000, etc.)
+- **Channels**: Mono/stereo detection
+- **Bitrate**: Kbps for compressed formats
+- **Loudness**: LUFS measurement for volume normalization
+- **MD5 Hash**: File integrity verification
+- **BPM Estimation**: Ready for your preferred library
+- **Musical Key**: Ready for your preferred library
+
+### Database Schema Updates
+
+The pipeline uses these new columns in the `tracks` table:
+- `storage_bucket`, `storage_key`: Canonical file locations
+- `audio_status`: working/missing/unknown
+- `analysis_status`: pending/complete/error
+- `last_verified_at`, `last_analyzed_at`: Timestamps
+- `format`, `duration_sec`, `sample_rate_hz`, `channels`, `bitrate_kbps`
+- `loudness_lufs`, `md5_hex`
+- `bpm_est`, `musical_key_est`
+
+### Safety Features
+
+- **Dry Run Mode**: Test without making changes
+- **Concurrency Limits**: Prevents API overload
+- **Error Handling**: Graceful failure recovery
+- **Progress Tracking**: Real-time status updates
+- **Detailed Reporting**: JSON reports with full details
+
+---
 
 ## NEW: Audio Analysis Pipeline
 
