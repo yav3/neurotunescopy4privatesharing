@@ -97,9 +97,14 @@ Deno.serve(async (req) => {
       return handlePlaylistRequest(req);
     }
 
-    // Stream on both forms
-    if (path === '/stream' || path === '/api/stream') {
+    // Stream endpoints - handle both direct and v1 paths
+    if (path === '/stream' || path === '/api/stream' || path.startsWith('/api/v1/stream/')) {
       return handleStreamRequest(req);
+    }
+
+    // Session build endpoint
+    if (path === '/session/build' || path === '/api/session/build') {
+      return handleSessionBuild(req);
     }
 
     // Stream diagnostics endpoint
@@ -269,7 +274,13 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   const id = rid();
   const supabase = sb();
   const url = new URL(req.url);
-  const trackId = url.searchParams.get('id') || '';
+  
+  // Extract track ID from query param or URL path
+  let trackId = url.searchParams.get('id') || '';
+  if (!trackId && url.pathname.includes('/stream/')) {
+    const pathParts = url.pathname.split('/');
+    trackId = pathParts[pathParts.length - 1] || '';
+  }
 
   log(id, 'stream:start', { trackId, path: url.pathname, method: req.method });
 
@@ -622,6 +633,86 @@ async function handleStorageDebugRequest(req: Request): Promise<Response> {
   } catch (error) {
     console.log('❌ Storage debug error:', error);
     return json({ error: 'Debug request failed' }, 500);
+  }
+}
+
+// Session build endpoint - creates therapeutic sessions
+async function handleSessionBuild(req: Request): Promise<Response> {
+  const id = rid();
+  const url = new URL(req.url);
+  
+  log(id, 'session:build_start', { method: req.method, path: url.pathname });
+
+  try {
+    const body = await req.json();
+    const { goal, duration = 15, intensity = 3, trackCount = 20 } = body;
+
+    if (!goal) {
+      log(id, 'session:missing_goal');
+      return json({ error: 'Goal parameter required' }, 400);
+    }
+
+    log(id, 'session:params', { goal, duration, intensity, trackCount });
+
+    // Get playlist tracks by calling our own playlist endpoint
+    const baseUrl = new URL(req.url).origin;
+    const playlistUrl = `${baseUrl}/api/playlist?goal=${encodeURIComponent(goal)}&limit=${trackCount}`;
+    
+    log(id, 'session:fetching_playlist', { playlistUrl });
+
+    const playlistResponse = await fetch(playlistUrl, {
+      headers: {
+        'User-Agent': 'session-builder/1.0'
+      }
+    });
+
+    if (!playlistResponse.ok) {
+      log(id, 'session:playlist_error', { 
+        status: playlistResponse.status, 
+        statusText: playlistResponse.statusText 
+      });
+      return json({ 
+        error: `Failed to fetch playlist: ${playlistResponse.status}` 
+      }, playlistResponse.status);
+    }
+
+    const playlistData = await playlistResponse.json();
+
+    if (!playlistData.tracks || playlistData.tracks.length === 0) {
+      log(id, 'session:no_tracks', { goal });
+      return json({ 
+        error: `No tracks available for goal: ${goal}` 
+      }, 404);
+    }
+
+    // Create session object
+    const session = {
+      id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      goal,
+      duration,
+      intensity,
+      trackCount: playlistData.tracks.length,
+      tracks: playlistData.tracks,
+      algorithm: playlistData.algorithm || 'vad',
+      createdAt: new Date().toISOString()
+    };
+
+    log(id, 'session:build_success', { 
+      sessionId: session.id, 
+      goal, 
+      trackCount: session.trackCount 
+    });
+
+    return json({ 
+      success: true, 
+      session 
+    });
+
+  } catch (error) {
+    log(id, 'session:build_error', { error: error.message });
+    return json({ 
+      error: error.message || 'Session build failed' 
+    }, 500);
   }
 }
 
