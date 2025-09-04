@@ -1,5 +1,5 @@
 import { APIInterceptor } from './apiInterceptor';
-import { PerformanceMonitor } from './performanceMonitor';
+import { performanceMonitor, debugPerformance } from './performanceMonitor';
 import { AudioValidator } from './audioValidator';
 
 export function initializeDebugging() {
@@ -10,8 +10,9 @@ export function initializeDebugging() {
   // Initialize API interceptor
   APIInterceptor.init();
   
-  // Start performance monitoring
-  PerformanceMonitor.startMonitoring();
+  // Initialize performance monitoring
+  console.log('📊 Performance monitoring initialized');
+  debugPerformance.logMetrics();
   
   // Add global error handler
   window.addEventListener('error', (event) => {
@@ -45,7 +46,7 @@ export function initializeDebugging() {
   // Cleanup function
   const cleanup = () => {
     clearInterval(validationInterval);
-    PerformanceMonitor.stopMonitoring();
+    performanceMonitor.clearCache();
     APIInterceptor.restore();
   };
   

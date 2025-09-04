@@ -501,13 +501,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       try {
-        console.log('🎵 Attempting to play audio...');
+        console.log('🎵 Attempting audio.play()...');
         await audio.play();
-        console.log('🎵 Play successful');
+        console.log('✅ Audio.play() successful - track should be playing');
         set({ error: undefined });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
         set({ error: "Click play to start music (browser autoplay restriction)" });
+        toast.error(`Failed to play: ${error}`);
       }
     },
 
