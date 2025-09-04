@@ -143,31 +143,35 @@ async function analyzeTrack(track: Track): Promise<any> {
   const analysis = generateComprehensiveAnalysis(track.title, bpm, camelot);
   
   return {
-    // Basic metadata
+    // Basic metadata - use existing columns
     bpm,
     camelot,
+    tempo_bpm: bpm,
     
-    // Harmonic Analysis
+    // Harmonic Analysis - use existing columns
     key: analysis.key,
+    musical_key_est: analysis.key,
     mode: analysis.mode,
     key_confidence: analysis.key_confidence,
+    key_strength: analysis.key_confidence,
     
-    // Rhythmic Analysis
-    danceability: analysis.danceability,
+    // Rhythmic Analysis - use existing columns
+    danceability: Math.round(analysis.danceability * 10), // Convert to 1-10 scale
+    danceability_score: analysis.danceability,
     onset_rate: analysis.onset_rate,
     
-    // Spectral Analysis  
+    // Spectral Analysis - use existing columns
     spectral_centroid: analysis.spectral_centroid,
     spectral_rolloff: analysis.spectral_rolloff,
     spectral_bandwidth: analysis.spectral_bandwidth,
     zero_crossing_rate: analysis.zero_crossing_rate,
     
-    // Psychoacoustic Analysis
+    // Psychoacoustic Analysis - use existing columns
     loudness_lufs: analysis.loudness_lufs,
     dynamic_complexity: analysis.dynamic_complexity,
     roughness: analysis.roughness,
     
-    // Mood Analysis
+    // Mood Analysis - use existing columns
     mood_happy: analysis.mood_happy,
     mood_sad: analysis.mood_sad,
     mood_aggressive: analysis.mood_aggressive,
@@ -175,31 +179,34 @@ async function analyzeTrack(track: Track): Promise<any> {
     mood_acoustic: analysis.mood_acoustic,
     mood_electronic: analysis.mood_electronic,
     
-    // Tonal Analysis
+    // Tonal Analysis - use existing columns
     pitch_mean: analysis.pitch_mean,
     tuning_frequency: analysis.tuning_frequency,
     inharmonicity: analysis.inharmonicity,
     
-    // Dynamic Analysis
+    // Dynamic Analysis - use existing columns
     rms_energy: analysis.rms_energy,
     dynamic_range: analysis.dynamic_range,
     crest_factor: analysis.crest_factor,
     
-    // Therapeutic Scoring
-    therapeutic_delta_score: analysis.therapeutic_delta_score,
-    therapeutic_theta_score: analysis.therapeutic_theta_score,
-    therapeutic_alpha_score: analysis.therapeutic_alpha_score,
-    therapeutic_beta_score: analysis.therapeutic_beta_score,
-    therapeutic_gamma_score: analysis.therapeutic_gamma_score,
+    // Store therapeutic scores in JSON (since individual columns don't exist)
+    mood_scores: {
+      therapeutic_delta: analysis.therapeutic_delta_score,
+      therapeutic_theta: analysis.therapeutic_theta_score,
+      therapeutic_alpha: analysis.therapeutic_alpha_score,
+      therapeutic_beta: analysis.therapeutic_beta_score,
+      therapeutic_gamma: analysis.therapeutic_gamma_score
+    },
     
-    // Full Analysis JSON
+    // Full Analysis JSON - use existing column
     comprehensive_analysis: analysis,
-    analysis_timestamp: analysis.analysis_timestamp,
+    analysis_timestamp: new Date(),
     analysis_version: analysis.analysis_version,
     
-    // Status updates
-    audio_status: 'analyzed',
-    last_verified_at: new Date().toISOString()
+    // Status updates - use existing columns
+    analysis_status: 'completed',
+    last_analyzed_at: new Date().toISOString(),
+    audio_status: 'working'
   };
 }
 
