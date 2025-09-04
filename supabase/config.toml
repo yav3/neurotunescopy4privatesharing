@@ -9,5 +9,5 @@ verify_jwt = false
 [functions.api.env]
 SUPABASE_URL = "SUPABASE_URL"
 SUPABASE_SERVICE_ROLE_KEY = "SUPABASE_SERVICE_ROLE_KEY"
-BUCKET = "neuralpositivemusic"
+BUCKET = "audio"
 WEB_ORIGIN = "*"

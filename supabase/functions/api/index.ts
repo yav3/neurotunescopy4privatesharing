@@ -30,7 +30,7 @@ const alias: Record<string, string[]> = {
 
 const SUPABASE_URL  = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'neuralpositivemusic';
+const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'audio';
 
 console.log('🔧 Environment check:', {
   hasUrl: !!SUPABASE_URL,
@@ -246,10 +246,10 @@ async function handleStreamRequest(req: Request): Promise<Response> {
     return json({ ok: false, error: 'MissingStorageKey', id: trackId }, 404);
   }
 
-  const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'neuralpositivemusic');
+  const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'audio');
 
   // Multi-bucket sign - try original bucket first, then fallback
-  const buckets = [bucket, bucket === 'neuralpositivemusic' ? 'audio' : 'neuralpositivemusic'];
+  const buckets = [bucket, bucket === 'audio' ? 'neuralpositivemusic' : 'audio'];
   let signed: any = null;
   let workingBucket = bucket;
   
@@ -389,7 +389,7 @@ async function handleStreamDiag(req: Request): Promise<Response> {
   out.db_ms = Date.now() - t0;
   out.db_found = !!row;
   out.db_error = error?.message ?? null;
-  out.bucket = row?.storage_bucket ?? Deno.env.get('BUCKET') ?? 'neuralpositivemusic';
+  out.bucket = row?.storage_bucket ?? Deno.env.get('BUCKET') ?? 'audio';
   out.key = row?.storage_key ?? null;
 
   if (error || !row) return json({ ok: false, error: 'TrackNotFound', ...out }, 404);

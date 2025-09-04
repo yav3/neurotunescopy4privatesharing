@@ -18,7 +18,7 @@ export const AudioDebugger = () => {
       
       // Check storage files
       const { data: files, error: storageError } = await supabase.storage
-        .from('neuralpositivemusic')
+        .from('audio')
         .list('', { limit: 20 });
       
       if (storageError) throw storageError;

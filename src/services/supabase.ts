@@ -3,7 +3,7 @@ import type { Track, MusicTrack, FrequencyBand } from '@/types'
 import { logger } from './logger'
 
 export class SupabaseService {
-  static async getTrackUrl(trackIdOrPath: string, bucketName: string = 'neuralpositivemusic'): Promise<string> {
+  static async getTrackUrl(trackIdOrPath: string, bucketName: string = 'audio'): Promise<string> {
     try {
       logger.info('Getting track URL', { trackIdOrPath, bucketName })
       
@@ -48,7 +48,7 @@ export class SupabaseService {
     }
   }
 
-  static async uploadTrack(file: File, path: string, bucketName: string = 'neuralpositivemusic') {
+  static async uploadTrack(file: File, path: string, bucketName: string = 'audio') {
     try {
       const { data, error } = await supabase.storage
         .from(bucketName)
