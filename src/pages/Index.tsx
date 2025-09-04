@@ -13,6 +13,7 @@ import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { API } from "@/lib/api";
 import { toGoalSlug } from "@/domain/goals";
+import "@/utils/startCompilation"; // Auto-start compilation
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("goals");
