@@ -1,30 +1,6 @@
-import { GoalSlug } from '@/domain/goals';
-
-// VAD Therapeutic Engine - Precise BPM targeting for psychological states
-const THERAPEUTIC_BPM_RANGES = {
-  "focus-enhancement": { min: 78, max: 100, optimal: 85 },
-  "anxiety-relief": { min: 40, max: 80, optimal: 60 },
-  "stress-reduction": { min: 40, max: 80, optimal: 65 },
-  "sleep-preparation": { min: 40, max: 60, optimal: 45 },
-  "mood-boost": { min: 90, max: 140, optimal: 120 },
-  "meditation-support": { min: 50, max: 75, optimal: 60 },
-} as const;
-
-// VAD (Valence-Arousal-Dominance) psychological profiling
-interface VADProfile {
-  valence: number; // Emotional positivity (-1 to 1)
-  arousal: number; // Energy/activation (-1 to 1) 
-  dominance: number; // Control/power (-1 to 1)
-}
-
-const GOAL_VAD_PROFILES: Record<GoalSlug, VADProfile> = {
-  "focus-enhancement": { valence: 0.2, arousal: 0.6, dominance: 0.8 },
-  "anxiety-relief": { valence: 0.3, arousal: -0.4, dominance: -0.2 },
-  "stress-reduction": { valence: 0.4, arousal: -0.3, dominance: 0.1 },
-  "sleep-preparation": { valence: 0.1, arousal: -0.8, dominance: -0.6 },
-  "mood-boost": { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-  "meditation-support": { valence: 0.2, arousal: -0.2, dominance: 0.3 },
-};
+// Updated to use centralized therapeutic goals configuration
+import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
+import type { GoalSlug } from '@/config/therapeuticGoals';
 
 interface TherapeuticTrack {
   id: number;
@@ -36,22 +12,22 @@ interface TherapeuticTrack {
 }
 
 /**
- * Enhanced therapeutic filtering using VAD engine and BPM targeting
+ * Enhanced therapeutic filtering using centralized VAD engine and BPM targeting
  */
 export function filterTracksForGoal(tracks: TherapeuticTrack[], goal: GoalSlug): TherapeuticTrack[] {
-  const bpmRange = THERAPEUTIC_BPM_RANGES[goal];
-  const vadProfile = GOAL_VAD_PROFILES[goal];
+  const goalConfig = TherapeuticGoalMapper.getBySlug(goal);
+  if (!goalConfig) return [];
   
   return tracks.filter(track => {
     // Primary filter: BPM therapeutic range
-    if (!track.bpm || track.bpm < bpmRange.min || track.bpm > bpmRange.max) {
+    if (!track.bpm || track.bpm < goalConfig.bpmRange.min || track.bpm > goalConfig.bpmRange.max) {
       return false;
     }
     
     // Secondary filter: VAD psychological compatibility
     if (track.valence !== undefined && track.energy_level !== undefined) {
-      const valenceMatch = Math.abs((track.valence - 0.5) * 2 - vadProfile.valence) < 0.6;
-      const arousalMatch = Math.abs((track.energy_level - 0.5) * 2 - vadProfile.arousal) < 0.6;
+      const valenceMatch = Math.abs((track.valence - 0.5) * 2 - goalConfig.vadProfile.valence) < 0.6;
+      const arousalMatch = Math.abs((track.energy_level - 0.5) * 2 - goalConfig.vadProfile.arousal) < 0.6;
       
       if (!valenceMatch || !arousalMatch) {
         return false;
@@ -66,15 +42,18 @@ export function filterTracksForGoal(tracks: TherapeuticTrack[], goal: GoalSlug):
  * Get therapeutic effectiveness score for a track and goal
  */
 export function getTherapeuticScore(track: TherapeuticTrack, goal: GoalSlug): number {
-  const bpmRange = THERAPEUTIC_BPM_RANGES[goal];
-  const vadProfile = GOAL_VAD_PROFILES[goal];
+  const goalConfig = TherapeuticGoalMapper.getBySlug(goal);
+  if (!goalConfig) return 0;
   
   let score = 0;
   
   // BPM score (0-40 points)
   if (track.bpm) {
-    const bpmDistance = Math.abs(track.bpm - bpmRange.optimal);
-    const maxDistance = Math.max(bpmRange.optimal - bpmRange.min, bpmRange.max - bpmRange.optimal);
+    const bpmDistance = Math.abs(track.bpm - goalConfig.bpmRange.optimal);
+    const maxDistance = Math.max(
+      goalConfig.bpmRange.optimal - goalConfig.bpmRange.min, 
+      goalConfig.bpmRange.max - goalConfig.bpmRange.optimal
+    );
     score += Math.max(0, 40 - (bpmDistance / maxDistance) * 40);
   }
   
@@ -83,15 +62,14 @@ export function getTherapeuticScore(track: TherapeuticTrack, goal: GoalSlug): nu
     const trackValence = (track.valence - 0.5) * 2;
     const trackArousal = (track.energy_level - 0.5) * 2;
     
-    const valenceScore = Math.max(0, 20 - Math.abs(trackValence - vadProfile.valence) * 20);
-    const arousalScore = Math.max(0, 20 - Math.abs(trackArousal - vadProfile.arousal) * 20);
+    const valenceScore = Math.max(0, 20 - Math.abs(trackValence - goalConfig.vadProfile.valence) * 20);
+    const arousalScore = Math.max(0, 20 - Math.abs(trackArousal - goalConfig.vadProfile.arousal) * 20);
     
     score += valenceScore + arousalScore;
   }
   
   // Harmonic compatibility (0-20 points)
   if (track.camelot) {
-    // Basic harmonic bonus for having key information
     score += 10;
   }
   
@@ -110,7 +88,7 @@ export function sortByTherapeuticEffectiveness(tracks: TherapeuticTrack[], goal:
 }
 
 /**
- * Get track count for therapeutic goal (enhanced version of your filter)
+ * Get track count for therapeutic goal (enhanced version)
  */
 export function getTherapeuticTrackCount(tracks: TherapeuticTrack[], goal: GoalSlug): number {
   return filterTracksForGoal(tracks, goal).length;
@@ -121,13 +99,13 @@ export function getTherapeuticTrackCount(tracks: TherapeuticTrack[], goal: GoalS
  */
 export function getTherapeuticInsights(tracks: TherapeuticTrack[], goal: GoalSlug) {
   const filteredTracks = filterTracksForGoal(tracks, goal);
-  const bpmRange = THERAPEUTIC_BPM_RANGES[goal];
+  const goalConfig = TherapeuticGoalMapper.getBySlug(goal);
   
-  if (filteredTracks.length === 0) {
+  if (!goalConfig || filteredTracks.length === 0) {
     return {
       count: 0,
       effectiveness: 0,
-      insights: [`No tracks found in therapeutic BPM range ${bpmRange.min}-${bpmRange.max}`]
+      insights: [`No tracks found for therapeutic goal`]
     };
   }
   
@@ -136,7 +114,7 @@ export function getTherapeuticInsights(tracks: TherapeuticTrack[], goal: GoalSlu
   
   const insights = [
     `${filteredTracks.length} therapeutically matched tracks`,
-    `Average BPM: ${Math.round(avgBpm)} (optimal: ${bpmRange.optimal})`,
+    `Average BPM: ${Math.round(avgBpm)} (optimal: ${goalConfig.bpmRange.optimal})`,
     `Therapeutic effectiveness: ${Math.round(avgScore)}%`
   ];
   

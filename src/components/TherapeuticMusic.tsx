@@ -1,8 +1,5 @@
-import { MusicCategoryCard } from "./MusicCategoryCard";
-import focusArtwork from "@/assets/focus-artwork.jpg";
-import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
-import sleepArtwork from "@/assets/sleep-artwork.jpg";
-import acousticArtwork from "@/assets/acoustic-artwork.jpg";
+import { TherapeuticGoalCard } from "./ui/TherapeuticGoalCard";
+import { useTherapeuticGoals } from "@/hooks/useTherapeuticGoals";
 import { useAudioStore } from "@/stores";
 import { toast } from "sonner";
 
@@ -10,56 +7,39 @@ interface TherapeuticMusicProps {
   onCategorySelect?: (category: string) => void;
 }
 
-// Map category IDs to proper goal slugs
-const CATEGORY_TO_GOAL: Record<string, string> = {
-  "focus": "focus-enhancement",
-  "anxiety": "anxiety-relief", 
-  "stress": "stress-reduction",
-  "sleep": "sleep-preparation",
-  "mood": "mood-boost"
-};
-
 export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) => {
   const { playFromGoal, isLoading } = useAudioStore();
-  
-  const categories = [
-    { id: "focus", title: "Focus Enhancement", image: focusArtwork },
-    { id: "anxiety", title: "Anxiety Relief", image: acousticArtwork },
-    { id: "stress", title: "Stress Reduction", image: moodBoostArtwork },
-    { id: "sleep", title: "Sleep Preparation", image: sleepArtwork },
-    { id: "mood", title: "Mood Boost", image: moodBoostArtwork },
-  ];
+  const { goals, mapper } = useTherapeuticGoals();
 
-  const handleCategoryClick = async (categoryId: string, categoryTitle: string) => {
-    // 🔍 DEBUG: Log category selection
-    console.group(`🎯 Therapeutic Category Selected: ${categoryId}`);
-    console.log('Category ID:', categoryId);
-    console.log('Category Title:', categoryTitle);
-    console.log('Is Loading:', isLoading);
-    
-    const goal = CATEGORY_TO_GOAL[categoryId];
-    console.log('Mapped Goal:', goal);
-    console.groupEnd();
-    
+  const handleCategoryClick = async (goalId: string) => {
+    const goal = mapper.getById(goalId);
     if (!goal) {
       toast.error("Invalid category selected");
       return;
     }
+
+    // 🔍 DEBUG: Log category selection
+    console.group(`🎯 Therapeutic Category Selected: ${goalId}`);
+    console.log('Goal ID:', goalId);
+    console.log('Goal Name:', goal.name);
+    console.log('Backend Key:', goal.backendKey);
+    console.log('Is Loading:', isLoading);
+    console.groupEnd();
 
     if (isLoading) {
       toast.error("Already loading music, please wait...");
       return;
     }
 
-    toast.loading(`Preparing therapeutic ${categoryTitle.toLowerCase()} session…`, { id: "goal" });
+    toast.loading(`Preparing therapeutic ${goal.name.toLowerCase()} session…`, { id: "goal" });
     try {
-      console.log('🎵 Starting therapeutic session from category:', categoryId, categoryTitle, 'goal:', goal);
+      console.log('🎵 Starting therapeutic session:', goal.name, 'backend key:', goal.backendKey);
       
-      // Use unified audio store for playback
-      await playFromGoal(goal);
+      // Use unified audio store for playback with backend key
+      await playFromGoal(goal.backendKey);
       
-      toast.success(`Playing therapeutically ordered ${categoryTitle.toLowerCase()} tracks`, { id: "goal" });
-      onCategorySelect?.(categoryTitle);
+      toast.success(`Playing therapeutically ordered ${goal.name.toLowerCase()} tracks`, { id: "goal" });
+      onCategorySelect?.(goal.name);
     } catch (e: any) {
       console.error('❌ Category selection failed:', e);
       toast.error(e.message ?? "Could not load therapeutic tracks", { id: "goal" });
@@ -75,12 +55,14 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {categories.map((category) => (
-            <MusicCategoryCard
-              key={category.id}
-              title={category.title}
-              image={category.image}
-              onClick={() => handleCategoryClick(category.id, category.title)}
+          {goals.map((goal) => (
+            <TherapeuticGoalCard
+              key={goal.id}
+              goal={goal}
+              trackCount={goal.trackCount}
+              showBpmRange={false}
+              onClick={() => handleCategoryClick(goal.id)}
+              className="h-full"
             />
           ))}
         </div>

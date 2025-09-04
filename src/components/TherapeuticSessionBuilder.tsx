@@ -1,60 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Play, Clock, Target, Brain, Heart, Moon, Focus, Zap, Shield } from 'lucide-react'
+import { Play, Clock, Target, Brain } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { TherapeuticGoalCard } from '@/components/ui/TherapeuticGoalCard'
+import { useTherapeuticGoals } from '@/hooks/useTherapeuticGoals'
 import { useToast } from '@/components/ui/use-toast'
-import { playFromGoal } from '@/actions/playFromGoal'
 import { API } from '@/lib/api'
 import { useAudioStore } from '@/stores'
 import { useSessionManager } from '@/hooks/useSessionManager'
-
-const THERAPEUTIC_GOALS = [
-  {
-    id: 'anxiety_relief',
-    name: 'Anxiety Relief',
-    icon: Shield,
-    description: 'Calm your mind and reduce anxious thoughts',
-    color: 'bg-blue-500/20 text-blue-700 border-blue-300'
-  },
-  {
-    id: 'focus_enhancement',
-    name: 'Focus Enhancement', 
-    icon: Focus,
-    description: 'Improve concentration and mental clarity',
-    color: 'bg-cyan-500/20 text-cyan-700 border-cyan-300'
-  },
-  {
-    id: 'sleep_preparation',
-    name: 'Sleep Preparation',
-    icon: Moon,
-    description: 'Wind down and prepare for restful sleep',
-    color: 'bg-indigo-500/20 text-indigo-700 border-indigo-300'
-  },
-  {
-    id: 'mood_boost',
-    name: 'Mood Boost',
-    icon: Heart,
-    description: 'Elevate your mood and increase positivity',
-    color: 'bg-pink-500/20 text-pink-700 border-pink-300'
-  },
-  {
-    id: 'stress_reduction',
-    name: 'Stress Reduction',
-    icon: Brain,
-    description: 'Release tension and promote relaxation',
-    color: 'bg-green-500/20 text-green-700 border-green-300'
-  },
-  {
-    id: 'meditation_support',
-    name: 'Meditation Support',
-    icon: Zap,
-    description: 'Enhance mindfulness and meditation practice',
-    color: 'bg-orange-500/20 text-orange-700 border-orange-300'
-  }
-]
 
 interface TherapeuticSessionBuilderProps {
   onSessionStart: (tracks: any[]) => void
@@ -65,7 +21,8 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   onSessionStart,
   className = ''
 }) => {
-  const [selectedGoal, setSelectedGoal] = useState('anxiety_relief')
+  const { goals, mapper } = useTherapeuticGoals();
+  const [selectedGoalId, setSelectedGoalId] = useState('anxiety-relief') // Use kebab-case ID
   const [duration, setDuration] = useState([15])
   const [intensity, setIntensity] = useState([3])
   const [isBuilding, setIsBuilding] = useState(false)
@@ -84,7 +41,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     setAvailableTracks(50); // Assume we have tracks available
   }, [])
 
-      const handleBuildSession = async () => {
+  const handleBuildSession = async () => {
     if (availableTracks === 0) {
       toast({
         title: "No Tracks Available",
@@ -94,18 +51,28 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
       return
     }
 
+    const selectedGoal = mapper.getById(selectedGoalId);
+    if (!selectedGoal) {
+      toast({
+        title: "Invalid Goal",
+        description: "Please select a valid therapeutic goal.",
+        variant: "destructive"
+      })
+      return;
+    }
+
     setIsBuilding(true)
 
     try {
       console.log('🏗️ Building therapeutic session with backend:', {
-        goal: selectedGoal,
+        goal: selectedGoal.backendKey, // Use backend key for API
         durationMin: duration[0],
         intensity: intensity[0]
       });
 
       // 🔄 MIRROR BACKEND: Use API.buildSession endpoint exactly as backend expects
       const session = await API.buildSession({
-        goal: selectedGoal,
+        goal: selectedGoal.backendKey, // Use backend key
         durationMin: duration[0],
         intensity: intensity[0],
         limit: 50
@@ -140,11 +107,9 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
       const { setQueue } = useAudioStore.getState();
       await setQueue(tracks, 0);
       
-      const goalName = THERAPEUTIC_GOALS.find(g => g.id === selectedGoal)?.name || selectedGoal;
-      
       toast({
         title: "Therapeutic Session Started",
-        description: `Playing ${tracks.length} backend-curated tracks for ${goalName}`,
+        description: `Playing ${tracks.length} backend-curated tracks for ${selectedGoal.name}`,
       })
 
       console.log('✅ Frontend mirrored backend session structure');
@@ -161,7 +126,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
     }
   }
 
-  const selectedGoalInfo = THERAPEUTIC_GOALS.find(g => g.id === selectedGoal)
+  const selectedGoal = mapper.getById(selectedGoalId);
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -178,36 +143,15 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
       <div className="space-y-4">
         <h3 className="text-xl font-semibold text-foreground">Select Your Goal</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {THERAPEUTIC_GOALS.map((goal) => {
-            const Icon = goal.icon
-            const isSelected = selectedGoal === goal.id
-            
-            return (
-              <Card
-                key={goal.id}
-                className={`p-4 cursor-pointer transition-all duration-200 border-2 ${
-                  isSelected 
-                    ? 'border-primary bg-primary/5 shadow-lg' 
-                    : 'border-border hover:border-primary/50 hover:shadow-md'
-                }`}
-                onClick={() => setSelectedGoal(goal.id)}
-              >
-                <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-lg ${goal.color}`}>
-                    <Icon size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-foreground mb-1">
-                      {goal.name}
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      {goal.description}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            )
-          })}
+          {goals.map((goal) => (
+            <TherapeuticGoalCard
+              key={goal.id}
+              goal={goal}
+              isSelected={selectedGoalId === goal.id}
+              showBpmRange={false}
+              onClick={() => setSelectedGoalId(goal.id)}
+            />
+          ))}
         </div>
       </div>
 
@@ -269,18 +213,18 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
       </div>
 
       {/* Session Preview */}
-      {selectedGoalInfo && (
+      {selectedGoal && (
         <Card className="p-6 bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
           <div className="flex items-center gap-4 mb-4">
-            <div className={`p-3 rounded-full ${selectedGoalInfo.color}`}>
-              <selectedGoalInfo.icon size={32} />
+            <div className={`p-3 rounded-full bg-gradient-to-br ${selectedGoal.gradient} text-white`}>
+              <selectedGoal.icon size={32} />
             </div>
             <div>
               <h3 className="text-xl font-bold text-foreground">
-                {selectedGoalInfo.name} Session
+                {selectedGoal.name} Session
               </h3>
               <p className="text-muted-foreground">
-                {selectedGoalInfo.description}
+                {selectedGoal.description}
               </p>
             </div>
           </div>
@@ -297,6 +241,9 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
             <Badge variant="secondary" className="flex items-center gap-1">
               <Brain size={14} />
               {availableTracks} tracks available
+            </Badge>
+            <Badge variant="secondary" className="flex items-center gap-1">
+              BPM: {selectedGoal.bpmRange.min}-{selectedGoal.bpmRange.max}
             </Badge>
           </div>
 
