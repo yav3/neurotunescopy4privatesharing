@@ -146,7 +146,9 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       .select("id,title,genre,mood,storage_key,audio_status,bpm", { count: "exact" })
       .eq("audio_status", "working")  // Only return working tracks
       .eq("storage_bucket", "audio")  // Only return tracks from audio bucket
-      .not("camelot", "is", null)     // Only tracks with Camelot keys (247 tracks)
+      .not("camelot", "is", null)     // Only tracks with Camelot keys
+      .not("bpm", "is", null)         // Only tracks with BPM (eliminates the 118 problematic tracks)
+      .gt("bpm", 0)                   // Ensure BPM is actually set
       .is("last_error", null)         // Exclude tracks with ObjectNotFound errors
       .not("storage_key","is",null)
       .neq("storage_key","")
