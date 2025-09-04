@@ -108,26 +108,6 @@ const Index = () => {
       
       <Navigation activeTab={activeNavTab} onTabChange={handleNavTabChange} />
       
-      {/* Audio Debug Tools - development only */}
-      {import.meta.env.DEV && <AudioSystemDebugger />}
-      
-      {/* Add test buttons for invariant checking */}
-      {import.meta.env.DEV && (
-        <div className="fixed bottom-20 left-4 space-y-2 z-40">
-          <button 
-            onClick={() => (window as any).testPlaybackInvariants?.()}
-            className="bg-primary text-primary-foreground px-3 py-2 rounded text-xs"
-          >
-            🧪 Test Invariants
-          </button>
-          <button 
-            onClick={() => (window as any).fixApiConfig?.()}
-            className="bg-secondary text-secondary-foreground px-3 py-2 rounded text-xs"
-          >
-            🔧 Check API Config
-          </button>
-        </div>
-      )}
       
       <MusicPlayer open={showPlayer} onOpenChange={setShowPlayer} />
       

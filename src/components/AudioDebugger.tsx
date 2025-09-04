@@ -126,8 +126,6 @@ export const AudioDebugger = () => {
                 {dbTracks.map(track => (
                   <li key={track.id} className="truncate">
                     <span className="font-medium">{track.title}</span>
-                    <br />
-                    <span className="text-muted-foreground text-xs">Path: {track.file_path || 'none'}</span>
                   </li>
                 ))}
               </ul>

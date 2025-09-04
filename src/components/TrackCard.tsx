@@ -190,38 +190,6 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
             </div>
           )}
 
-          {/* Energy and Valence bars - more compact */}
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div>
-              <span className="text-muted-foreground">Energy</span>
-              <div className="flex items-center gap-2 mt-1">
-                <div className="flex-1 bg-secondary rounded-full h-1">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-1 rounded-full" 
-                    style={{ width: `${track.energy * 100}%` }}
-                  />
-                </div>
-                <span className="text-foreground text-xs w-8">
-                  {Math.round(track.energy * 100)}%
-                </span>
-              </div>
-            </div>
-            
-            <div>
-              <span className="text-muted-foreground">Valence</span>
-              <div className="flex items-center gap-2 mt-1">
-                <div className="flex-1 bg-secondary rounded-full h-1">
-                  <div 
-                    className="bg-gradient-to-r from-green-500 to-green-600 h-1 rounded-full" 
-                    style={{ width: `${track.valence * 100}%` }}
-                  />
-                </div>
-                <span className="text-foreground text-xs w-8">
-                  {Math.round(track.valence * 100)}%
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
