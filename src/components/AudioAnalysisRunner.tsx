@@ -75,16 +75,33 @@ export const AudioAnalysisRunner: React.FC = () => {
       steps[1].message = 'Checking which tracks need analysis...'
       setResults([...steps])
 
-      const { count: needsAnalysisCount, error: analysisCountError } = await supabase
+      // Use a simpler query approach to avoid OR syntax issues
+      const { data: allTracks, error: tracksError } = await supabase
         .from('tracks')
-        .select('*', { count: 'exact', head: true })
-        .or('bpm.is.null,camelot_code.is.null,analysis_status.is.null,analysis_status.neq.complete')
+        .select('id, bpm, musical_key_est, analysis_status')
+        .limit(1000)
 
-      if (analysisCountError) throw analysisCountError
+      if (tracksError) throw tracksError
+
+      // Filter in JavaScript to find tracks needing analysis
+      const needsAnalysis = allTracks?.filter(track => 
+        !track.bpm || 
+        !track.musical_key_est || 
+        !track.analysis_status || 
+        track.analysis_status !== 'complete'
+      ) || []
+
+      const needsAnalysisCount = needsAnalysis.length
 
       steps[1].status = 'success'
-      steps[1].message = `Found ${needsAnalysisCount || 0} tracks needing comprehensive analysis`
-      steps[1].details = { needsAnalysis: needsAnalysisCount || 0, total: count || 0 }
+      steps[1].message = `Found ${needsAnalysisCount} tracks needing comprehensive analysis`
+      steps[1].details = { 
+        needsAnalysis: needsAnalysisCount, 
+        total: count || 0,
+        missingBPM: needsAnalysis.filter(t => !t.bpm).length,
+        missingKey: needsAnalysis.filter(t => !t.musical_key_est).length,
+        incompleteAnalysis: needsAnalysis.filter(t => !t.analysis_status || t.analysis_status !== 'complete').length
+      }
       setResults([...steps])
 
       if (!needsAnalysisCount || needsAnalysisCount === 0) {
