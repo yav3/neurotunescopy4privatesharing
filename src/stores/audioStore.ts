@@ -507,8 +507,35 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ error: undefined });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
-        set({ error: "Click play to start music (browser autoplay restriction)" });
-        toast.error(`Failed to play: ${error}`);
+        
+        // Better error handling based on error type
+        const errorMessage = error.name;
+        const errorCode = error.code;
+        
+        if (errorMessage === 'NotAllowedError' || errorMessage === 'AbortError') {
+          // Browser autoplay restriction - common and expected
+          set({ error: "Click play to start music (browser autoplay restriction)" });
+          toast.info("Click the play button to start music");
+        } else if (errorMessage === 'NotSupportedError' || errorCode === 4) {
+          // Media format/source not supported
+          set({ error: "Audio format not supported" });
+          toast.error("Track format not supported - trying next track");
+          // Auto-skip to next track
+          setTimeout(() => get().next(), 1000);
+        } else if (errorMessage === 'NetworkError' || errorCode === 2) {
+          // Network/loading error
+          set({ error: "Network error loading track" });
+          toast.error("Network error - checking next track");
+          // Auto-skip to next track  
+          setTimeout(() => get().next(), 1000);
+        } else {
+          // Other errors
+          set({ error: "Playback error - trying next track" });
+          toast.error("Playback issue - trying next track");
+          console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
+          // Auto-skip to next track
+          setTimeout(() => get().next(), 1000);
+        }
       }
     },
 
