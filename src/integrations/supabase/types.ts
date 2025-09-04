@@ -2241,6 +2241,10 @@ export type Database = {
         Args: { _bucket: number; _quryid: number }
         Returns: Record<string, unknown>[]
       }
+      mark_likely_missing_tracks: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       pg_stat_monitor_internal: {
         Args: { showtext: boolean }
         Returns: Record<string, unknown>[]
