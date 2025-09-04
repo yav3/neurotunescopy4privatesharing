@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """
-Python client for sending audio analysis results to Supabase Edge Function
-Integrates with your comprehensive audio analysis pipeline
+Fixed Audio Analysis Client for Supabase Edge Function
+Sends comprehensive audio analysis results with proper field mapping
 """
 
 import asyncio
-import httpx
+import aiohttp
 import json
-import pandas as pd
+import logging
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import uuid
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class SupabaseAnalysisClient:
     """Client for sending audio analysis results to Supabase Edge Function"""
@@ -21,21 +24,54 @@ class SupabaseAnalysisClient:
         self.session = None
         
     async def __aenter__(self):
-        self.session = httpx.AsyncClient(timeout=30.0)
+        self.session = aiohttp.ClientSession(
+            timeout=aiohttp.ClientTimeout(total=120),
+            connector=aiohttp.TCPConnector(limit=10)
+        )
         return self
         
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         if self.session:
-            await self.session.aclose()
+            await self.session.close()
+    
+    def fix_field_names(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        """Fix field names to match Edge Function interface"""
+        fixed_result = result.copy()
+        
+        # Map old field names to new ones if present
+        field_mapping = {
+            'camelot_key': 'camelot',
+            'bmp_multifeature': 'bpm',
+            'spectral_centroid_mean': 'spectral_centroid',
+            'spectral_rolloff_mean': 'spectral_rolloff', 
+            'spectral_bandwidth_mean': 'spectral_bandwidth',
+            'zero_crossing_rate_mean': 'zero_crossing_rate',
+            'onset_rate_per_second': 'onset_rate',
+            'pitch_mean_hz': 'pitch_mean',
+            'loudness_integrated_lufs': 'loudness_lufs',
+            'rms_energy_mean': 'rms_energy',
+            'dynamic_range_db': 'dynamic_range',
+            'tuning_frequency_hz': 'tuning_frequency',
+            'analysis_error': 'error'  # Consolidate error fields
+        }
+        
+        for old_field, new_field in field_mapping.items():
+            if old_field in fixed_result:
+                fixed_result[new_field] = fixed_result.pop(old_field)
+        
+        return fixed_result
     
     async def send_analysis_batch(self, results: List[Dict[str, Any]], batch_id: str = None) -> Dict[str, Any]:
         """Send a batch of analysis results to the Edge Function"""
         
         if not batch_id:
-            batch_id = str(uuid.uuid4())[:8]
+            batch_id = f"batch_{uuid.uuid4().hex[:8]}"
+        
+        # Fix field names for all results
+        fixed_results = [self.fix_field_names(result) for result in results]
         
         headers = {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
         
         if self.api_key:
@@ -43,46 +79,48 @@ class SupabaseAnalysisClient:
             headers['Authorization'] = f'Bearer {self.api_key}'
         
         payload = {
-            'results': results,
+            'results': fixed_results,
             'batch_id': batch_id,
             'processing_info': {
                 'timestamp': datetime.now().isoformat(),
-                'client_version': '2.0',
-                'batch_size': len(results)
+                'client_version': '2.1',
+                'batch_size': len(fixed_results)
             }
         }
         
-        print(f"🚀 Sending batch {batch_id} with {len(results)} results to Supabase")
+        logger.info(f"📤 Sending batch {batch_id} with {len(fixed_results)} results")
         
         try:
-            response = await self.session.post(
+            async with self.session.post(
                 self.edge_function_url,
                 headers=headers,
                 json=payload
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                print(f"✅ Batch {batch_id}: {result.get('processed_count', 0)} tracks processed successfully")
+            ) as response:
                 
-                # Log any errors
-                if result.get('error_count', 0) > 0:
-                    print(f"⚠️  {result.get('error_count')} tracks had errors:")
-                    for error in result.get('errors', []):
-                        print(f"   - {error.get('track_id')}: {error.get('error')}")
-                
-                return result
-            else:
-                error_text = response.text
-                print(f"❌ Batch {batch_id} failed: {response.status_code} - {error_text}")
-                return {
-                    'success': False,
-                    'error': f"HTTP {response.status_code}: {error_text}",
-                    'batch_id': batch_id
-                }
-                
+                if response.status == 200:
+                    result = await response.json()
+                    processed = result.get('processed_count', 0)
+                    errors = result.get('error_count', 0)
+                    logger.info(f"✅ Batch {batch_id}: {processed} processed, {errors} errors")
+                    return result
+                else:
+                    error_text = await response.text()
+                    logger.error(f"❌ Batch {batch_id} failed: HTTP {response.status} - {error_text}")
+                    return {
+                        'success': False,
+                        'error': f"HTTP {response.status}: {error_text}",
+                        'batch_id': batch_id
+                    }
+                    
+        except asyncio.TimeoutError:
+            logger.error(f"❌ Batch {batch_id} timed out")
+            return {
+                'success': False,
+                'error': "Request timed out",
+                'batch_id': batch_id
+            }
         except Exception as e:
-            print(f"❌ Network error for batch {batch_id}: {e}")
+            logger.error(f"❌ Network error for batch {batch_id}: {e}")
             return {
                 'success': False,
                 'error': f"Network error: {str(e)}",
@@ -90,31 +128,35 @@ class SupabaseAnalysisClient:
             }
     
     async def send_analysis_results(self, results: List[Dict[str, Any]], batch_size: int = 10) -> List[Dict[str, Any]]:
-        """Send all analysis results in batches"""
+        """Send all analysis results in batches with progress tracking"""
         
-        print(f"📊 Uploading {len(results)} analysis results in batches of {batch_size}")
+        total_batches = (len(results) + batch_size - 1) // batch_size
         batch_results = []
+        successful_uploads = 0
+        failed_uploads = 0
+        
+        logger.info(f"📊 Uploading {len(results)} results in {total_batches} batches")
         
         # Process in batches
         for i in range(0, len(results), batch_size):
             batch = results[i:i+batch_size]
-            batch_id = f"batch_{i//batch_size + 1:03d}"
+            batch_num = i // batch_size + 1
+            batch_id = f"batch_{batch_num:03d}_{total_batches:03d}"
+            
+            logger.info(f"📤 Processing batch {batch_num}/{total_batches}")
             
             result = await self.send_analysis_batch(batch, batch_id)
             batch_results.append(result)
             
+            if result.get('success', False):
+                successful_uploads += len(batch)
+            else:
+                failed_uploads += len(batch)
+            
             # Small delay between batches to avoid overwhelming the server
             await asyncio.sleep(0.5)
         
-        # Summary
-        successful_batches = len([r for r in batch_results if r.get('success', False)])
-        total_processed = sum(r.get('processed_count', 0) for r in batch_results)
-        total_errors = sum(r.get('error_count', 0) for r in batch_results)
-        
-        print(f"\n📈 Upload Summary:")
-        print(f"   Batches: {successful_batches}/{len(batch_results)} successful")
-        print(f"   Tracks: {total_processed} processed, {total_errors} errors")
-        
+        logger.info(f"📊 Upload Summary: {successful_uploads} successful, {failed_uploads} failed")
         return batch_results
 
 # Example usage

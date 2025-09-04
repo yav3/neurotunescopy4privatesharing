@@ -11,12 +11,12 @@ const corsHeaders = {
 interface AnalysisResult {
   track_id: string;
   
-  // Core musical features
+  // Core musical features - FIXED field names to match database
   bpm?: number;
   tempo_bpm?: number;
   key?: string;
   scale?: string;
-  camelot?: string;
+  camelot?: string;  // Fixed: was camelot_key
   key_strength?: number;
   key_confidence?: number;
   tuning_frequency?: number;
@@ -40,17 +40,17 @@ interface AnalysisResult {
   crest_factor?: number;
   rms_energy?: number;
   
-  // Spectral features
-  spectral_centroid?: number;
-  spectral_rolloff?: number;
-  spectral_bandwidth?: number;
-  zero_crossing_rate?: number;
+  // Spectral features - FIXED field names
+  spectral_centroid?: number;  // Fixed: was spectral_centroid_mean
+  spectral_rolloff?: number;   // Fixed: was spectral_rolloff_mean
+  spectral_bandwidth?: number; // Fixed: was spectral_bandwidth_mean
+  zero_crossing_rate?: number; // Fixed: was zero_crossing_rate_mean
   roughness?: number;
   inharmonicity?: number;
   
   // Rhythm and timing
-  onset_rate?: number;
-  pitch_mean?: number;
+  onset_rate?: number;  // Fixed: was onset_rate_per_second
+  pitch_mean?: number;  // Fixed: was pitch_mean_hz
   
   // Mood scores
   mood_happy?: number;
@@ -74,6 +74,7 @@ interface AnalysisResult {
   comprehensive_analysis?: Record<string, any>;
   analysis_version?: string;
   analyzed_at?: string;
+  analysis_timestamp?: string;  // Legacy support
   tags?: string[];
   emotion_tags?: string[];
   therapeutic_use?: string[];
@@ -81,11 +82,10 @@ interface AnalysisResult {
   
   // Error handling
   error?: string;
-  timestamp?: string;
+  analysis_error?: string;  // Legacy support
 }
 
 serve(async (req: Request) => {
-  const url = new URL(req.url);
   const method = req.method;
 
   // Handle CORS preflight
@@ -93,7 +93,6 @@ serve(async (req: Request) => {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
 
-  // Only allow POST requests
   if (method !== 'POST') {
     return new Response(
       JSON.stringify({ error: 'Method not allowed' }),
@@ -125,7 +124,7 @@ serve(async (req: Request) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Parse request body - expect array of results directly
+    // Parse request body - handle both formats
     let results: AnalysisResult[];
     const body = await req.json();
     
@@ -137,7 +136,7 @@ serve(async (req: Request) => {
       return new Response(
         JSON.stringify({ 
           error: 'Invalid request format',
-          details: 'Expected array of analysis results'
+          details: 'Expected array of analysis results or {results: [...]} object'
         }),
         { 
           status: 400, 
@@ -146,20 +145,22 @@ serve(async (req: Request) => {
       );
     }
 
-    console.log(`🔬 Processing ${results.length} comprehensive analysis results`);
+    const batch_id = body.batch_id || `batch_${Date.now()}`;
+    console.log(`🔬 Processing batch ${batch_id} with ${results.length} analysis results`);
 
-    // Process each analysis result
     const processed = [];
     const errors = [];
 
     for (const result of results) {
       try {
-        if (result.error) {
-          // Handle analysis errors
+        // Handle analysis errors
+        if (result.error || result.analysis_error) {
+          const error_msg = result.error || result.analysis_error;
+          
           const { error: updateError } = await supabase
             .from('tracks')
             .update({
-              last_error: result.error,
+              last_error: error_msg,
               analyzed_at: new Date().toISOString()
             })
             .eq('id', result.track_id);
@@ -185,7 +186,7 @@ serve(async (req: Request) => {
           key_confidence: result.key_confidence || null,
           tuning_frequency: result.tuning_frequency || null,
           
-          // Energy and dynamics  
+          // Energy and dynamics
           energy_level: result.energy_level || null,
           energy: result.energy || null,
           valence: result.valence || null,
@@ -237,11 +238,11 @@ serve(async (req: Request) => {
           // Full comprehensive analysis
           comprehensive_analysis: result.comprehensive_analysis || null,
           analysis_version: result.analysis_version || 'v2024_comprehensive',
-          analyzed_at: result.analyzed_at || new Date().toISOString(),
+          analyzed_at: result.analyzed_at || result.analysis_timestamp || new Date().toISOString(),
           
           // Tags and metadata
           tags: result.tags || null,
-          emotion_tags: result.emotion_tags || null, 
+          emotion_tags: result.emotion_tags || null,
           therapeutic_use: result.therapeutic_use || null,
           eeg_targets: result.eeg_targets || null,
           
@@ -263,7 +264,7 @@ serve(async (req: Request) => {
           processed.push({ 
             track_id: result.track_id, 
             status: 'updated',
-            camelot_key: result.camelot,
+            camelot: result.camelot,
             bpm: result.bpm
           });
         }
@@ -278,11 +279,12 @@ serve(async (req: Request) => {
     }
 
     // Log batch completion
-    console.log(`🎵 Analysis batch completed: ${processed.length} successful, ${errors.length} errors`);
+    console.log(`🎵 Batch ${batch_id} completed: ${processed.length} successful, ${errors.length} errors`);
 
     return new Response(
       JSON.stringify({
         success: true,
+        batch_id,
         processed_count: processed.length,
         error_count: errors.length,
         processed_tracks: processed,
