@@ -6,6 +6,7 @@ Fixes data integrity issues and creates organized storage structure
 
 import asyncio
 import psycopg2
+from psycopg2 import pool
 import logging
 from pathlib import Path
 from typing import List, Dict, Any, Set, Optional, Tuple
@@ -16,6 +17,7 @@ import shutil
 from datetime import datetime
 import json
 import hashlib
+from tqdm import tqdm
 
 # Setup logging
 logging.basicConfig(
@@ -26,10 +28,26 @@ logger = logging.getLogger(__name__)
 
 class DataMigrationManager:
     def __init__(self, db_connection_string: str, supabase_url: str, supabase_key: str):
-        self.db_connection_string = db_connection_string
+        # Validate required environment variables
+        if not db_connection_string:
+            raise ValueError("Database connection string is required")
+        if not supabase_url:
+            raise ValueError("Supabase URL is required")
+        if not supabase_key:
+            raise ValueError("Supabase key is required")
+            
         self.supabase_url = supabase_url
         self.supabase_key = supabase_key
         self.supabase: Client = create_client(supabase_url, supabase_key)
+        
+        # Create connection pool for better performance
+        try:
+            self.connection_pool = psycopg2.pool.ThreadedConnectionPool(
+                1, 20, db_connection_string
+            )
+        except Exception as e:
+            logger.error(f"Failed to create database connection pool: {e}")
+            raise
         
         # Define organized bucket structure
         self.organized_buckets = {
@@ -39,21 +57,46 @@ class DataMigrationManager:
         }
     
     def get_db_connection(self):
-        """Get database connection"""
-        return psycopg2.connect(self.db_connection_string)
+        """Get connection from pool"""
+        try:
+            return self.connection_pool.getconn()
+        except Exception as e:
+            logger.error(f"Failed to get database connection from pool: {e}")
+            raise
+    
+    def return_db_connection(self, conn):
+        """Return connection to pool"""
+        try:
+            self.connection_pool.putconn(conn)
+        except Exception as e:
+            logger.error(f"Failed to return connection to pool: {e}")
+    
+    def close_connection_pool(self):
+        """Close all connections in the pool"""
+        try:
+            self.connection_pool.closeall()
+        except Exception as e:
+            logger.error(f"Failed to close connection pool: {e}")
     
     def sanitize_filename(self, filename: str) -> str:
         """Create safe, consistent filename"""
+        if not filename or not isinstance(filename, str):
+            return "unknown_file"
+        
         # Remove or replace problematic characters
         sanitized = re.sub(r'[<>:"/\\|?*]', '_', filename)
         sanitized = re.sub(r'\s+', '_', sanitized)  # Replace spaces with underscores
         sanitized = re.sub(r'_+', '_', sanitized)   # Collapse multiple underscores
-        sanitized = sanitized.strip('_')            # Remove leading/trailing underscores
+        sanitized = sanitized.strip('_.')           # Remove leading/trailing underscores and dots
         
-        # Limit length
+        # Ensure it's not empty after sanitization
+        if not sanitized:
+            return "unnamed_file"
+        
+        # Limit length but preserve extension
         if len(sanitized) > 200:
             name, ext = os.path.splitext(sanitized)
-            sanitized = name[:195] + ext
+            sanitized = name[:195-len(ext)] + ext
         
         return sanitized
     
@@ -139,7 +182,10 @@ class DataMigrationManager:
         cursor = conn.cursor()
         
         try:
-            for track in tracks_with_issues:
+            # Batch the updates for better performance
+            batch_updates = []
+            
+            for track in tqdm(tracks_with_issues, desc="Processing storage key fixes"):
                 track_id = track['id']
                 original_key = track.get('storage_key', '')
                 
@@ -147,34 +193,32 @@ class DataMigrationManager:
                 cleaned_key = self.sanitize_filename(original_key) if original_key else None
                 
                 if cleaned_key and cleaned_key != original_key:
-                    try:
-                        # Update database
-                        cursor.execute("""
-                            UPDATE tracks 
-                            SET storage_key = %s, 
-                                updated_at = %s,
-                                last_verified_at = %s
-                            WHERE id = %s
-                        """, (cleaned_key, datetime.now(), datetime.now(), track_id))
-                        
-                        results['fixed_tracks'].append({
-                            'track_id': track_id,
-                            'title': track.get('title'),
-                            'old_key': original_key,
-                            'new_key': cleaned_key
-                        })
-                        
-                    except Exception as e:
-                        results['failed_tracks'].append({
-                            'track_id': track_id,
-                            'error': str(e)
-                        })
+                    batch_updates.append((
+                        cleaned_key, datetime.now(), datetime.now(), track_id
+                    ))
+                    
+                    results['fixed_tracks'].append({
+                        'track_id': track_id,
+                        'title': track.get('title'),
+                        'old_key': original_key,
+                        'new_key': cleaned_key
+                    })
                 
                 results['total_processed'] += 1
             
+            # Execute batch updates
+            if batch_updates:
+                cursor.executemany("""
+                    UPDATE tracks 
+                    SET storage_key = %s, 
+                        updated_at = %s,
+                        last_verified_at = %s
+                    WHERE id = %s
+                """, batch_updates)
+            
             conn.commit()
             cursor.close()
-            conn.close()
+            self.return_db_connection(conn)
             
             logger.info(f"Fixed {len(results['fixed_tracks'])} storage key issues")
             return results
@@ -182,7 +226,7 @@ class DataMigrationManager:
         except Exception as e:
             conn.rollback()
             cursor.close()
-            conn.close()
+            self.return_db_connection(conn)
             logger.error(f"Error fixing storage keys: {e}")
             return {'error': str(e)}
     
@@ -198,9 +242,8 @@ class DataMigrationManager:
         
         conn = self.get_db_connection()
         cursor = conn.cursor()
-        
         try:
-            for storage_key, track_ids in duplicate_groups.items():
+            for storage_key, track_ids in tqdm(duplicate_groups.items(), desc="Resolving duplicates"):
                 if len(track_ids) <= 1:
                     continue
                 
@@ -253,15 +296,15 @@ class DataMigrationManager:
             
             conn.commit()
             cursor.close()
-            conn.close()
-            
+            self.return_db_connection(conn)
+        
             logger.info(f"Resolved {len(results['resolved_duplicates'])} duplicate path conflicts")
             return results
             
         except Exception as e:
             conn.rollback()
             cursor.close()
-            conn.close()
+            self.return_db_connection(conn)
             logger.error(f"Error resolving duplicates: {e}")
             return {'error': str(e)}
     
@@ -292,7 +335,7 @@ class DataMigrationManager:
         tracks = [dict(zip(columns, row)) for row in cursor.fetchall()]
         
         cursor.close()
-        conn.close()
+        self.return_db_connection(conn)
         
         logger.info(f"Found {len(tracks)} tracks ready for migration")
         
@@ -350,16 +393,25 @@ class DataMigrationManager:
                     if not file_info:
                         results['skipped'].append({
                             'track_id': track['id'],
-                            'reason': 'File not found in original location',
+                            'reason': 'File not found in storage',
                             'original_path': f"{original_bucket}/{original_key}"
                         })
                         continue
-                except:
-                    results['skipped'].append({
-                        'track_id': track['id'],
-                        'reason': 'Cannot access original file',
-                        'original_path': f"{original_bucket}/{original_key}"
-                    })
+                except Exception as e:
+                    # Be more specific about the error type
+                    if "NotFound" in str(e) or "404" in str(e):
+                        results['skipped'].append({
+                            'track_id': track['id'],
+                            'reason': 'File not found in storage',
+                            'original_path': f"{original_bucket}/{original_key}",
+                            'error': str(e)
+                        })
+                    else:
+                        results['failed'].append({
+                            'track_id': track['id'],
+                            'error': f"Storage access error: {str(e)}",
+                            'original_path': f"{original_bucket}/{original_key}"
+                        })
                     continue
                 
                 # Generate organized path
@@ -438,12 +490,12 @@ class DataMigrationManager:
             
             conn.commit()
             cursor.close()
-            conn.close()
+            self.return_db_connection(conn)
             
         except Exception as e:
             conn.rollback()
             cursor.close()
-            conn.close()
+            self.return_db_connection(conn)
             raise e
     
     async def cleanup_orphaned_files(self, orphaned_files: List[str], bucket_name: str = 'audio') -> Dict[str, Any]:
@@ -574,65 +626,76 @@ class DataMigrationManager:
                 'timestamp': datetime.now().isoformat()
             })
             return migration_report
+        finally:
+            # Close connection pool
+            self.close_connection_pool()
 
 async def main():
     """Run complete data migration process"""
     
-    # Configuration
-    DATABASE_URL = os.getenv('DATABASE_URL', 
-        "postgresql://postgres.pbtgvcjniayedqlajjzz:YOUR_PASSWORD@aws-0-us-east-1.pooler.supabase.co:6543/postgres"
-    )
-    SUPABASE_URL = "https://pbtgvcjniayedqlajjzz.supabase.co"
-    SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE"
+    # Secure configuration using environment variables
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    SUPABASE_URL = os.getenv('SUPABASE_URL', "https://pbtgvcjniayedqlajjzz.supabase.co")
+    SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
     
-    if "YOUR_PASSWORD" in DATABASE_URL:
-        logger.error("Update DATABASE_URL with your actual password")
+    # Validate required environment variables
+    if not DATABASE_URL:
+        logger.error("DATABASE_URL environment variable is required")
         return
     
-    # Create migration manager
-    migrator = DataMigrationManager(DATABASE_URL, SUPABASE_URL, SUPABASE_KEY)
+    if not SUPABASE_KEY:
+        logger.error("SUPABASE_SERVICE_ROLE_KEY environment variable is required")
+        return
     
-    # Load validation results if available
-    validation_results = None
-    validation_files = [f for f in os.listdir('.') if f.startswith('validation_report_') and f.endswith('.json')]
-    
-    if validation_files:
-        latest_validation = sorted(validation_files)[-1]
-        logger.info(f"Loading validation results from: {latest_validation}")
+    try:
+        # Create migration manager
+        migrator = DataMigrationManager(DATABASE_URL, SUPABASE_URL, SUPABASE_KEY)
         
-        with open(latest_validation, 'r') as f:
-            validation_results = json.load(f)
-    else:
-        logger.warning("No validation results found. Run data validation first for best results.")
-    
-    # Run complete migration
-    logger.info("Starting complete data migration and cleanup...")
-    results = await migrator.run_complete_migration(validation_results)
-    
-    # Save migration report
-    report_filename = f"migration_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    with open(report_filename, 'w') as f:
-        json.dump(results, f, indent=2, default=str)
-    
-    # Print summary
-    summary = results.get('summary', {})
-    print(f"\n{'='*60}")
-    print(f"DATA MIGRATION REPORT")
-    print(f"{'='*60}")
-    print(f"Steps Completed: {summary.get('total_steps', 0)}")
-    print(f"Buckets Created: {summary.get('buckets_created', 0)}")
-    print(f"Tracks Migrated: {summary.get('tracks_migrated', 0)}")
-    print(f"Success Rate: {summary.get('migration_success_rate', 0)}%")
-    print(f"Ready for Analysis: {'Yes' if summary.get('ready_for_analysis') else 'No'}")
-    
-    logger.info(f"Migration report saved to: {report_filename}")
-    
-    if summary.get('ready_for_analysis'):
-        logger.info("Your data is now organized and ready for the audio analysis pipeline!")
-    else:
-        logger.warning("Some issues remain. Review the migration report and fix remaining problems.")
-    
-    return results
+        # Load validation results if available
+        validation_results = None
+        validation_files = [f for f in os.listdir('.') if f.startswith('validation_report_') and f.endswith('.json')]
+        
+        if validation_files:
+            latest_validation = sorted(validation_files)[-1]
+            logger.info(f"Loading validation results from: {latest_validation}")
+            
+            with open(latest_validation, 'r') as f:
+                validation_results = json.load(f)
+        else:
+            logger.warning("No validation results found. Run data validation first for best results.")
+        
+        # Run complete migration
+        logger.info("Starting complete data migration and cleanup...")
+        results = await migrator.run_complete_migration(validation_results)
+        
+        # Save migration report
+        report_filename = f"migration_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(report_filename, 'w') as f:
+            json.dump(results, f, indent=2, default=str)
+        
+        # Print summary
+        summary = results.get('summary', {})
+        print(f"\n{'='*60}")
+        print(f"DATA MIGRATION REPORT")
+        print(f"{'='*60}")
+        print(f"Steps Completed: {summary.get('total_steps', 0)}")
+        print(f"Buckets Created: {summary.get('buckets_created', 0)}")
+        print(f"Tracks Migrated: {summary.get('tracks_migrated', 0)}")
+        print(f"Success Rate: {summary.get('migration_success_rate', 0)}%")
+        print(f"Ready for Analysis: {'Yes' if summary.get('ready_for_analysis') else 'No'}")
+        
+        logger.info(f"Migration report saved to: {report_filename}")
+        
+        if summary.get('ready_for_analysis'):
+            logger.info("Your data is now organized and ready for the audio analysis pipeline!")
+        else:
+            logger.warning("Some issues remain. Review the migration report and fix remaining problems.")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Migration failed with error: {e}")
+        raise
 
 if __name__ == "__main__":
     asyncio.run(main())
