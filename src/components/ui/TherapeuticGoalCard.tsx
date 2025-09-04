@@ -1,152 +1,121 @@
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-import { type TherapeuticGoal } from '@/config/therapeuticGoals';
+import type { TherapeuticGoal } from '@/config/therapeuticGoals';
+
+// Import the artwork images
+import acousticArtwork from '@/assets/acoustic-artwork.jpg';
+import focusArtwork from '@/assets/focus-artwork.jpg';
+import moodBoostArtwork from '@/assets/mood-boost-artwork.jpg';
+import sleepArtwork from '@/assets/sleep-artwork.jpg';
+
+// Map therapeutic goals to their artwork
+const getGoalArtwork = (goalId: string): string => {
+  const artworkMap: Record<string, string> = {
+    'focus-enhancement': focusArtwork,
+    'anxiety-relief': acousticArtwork,
+    'stress-reduction': acousticArtwork,
+    'sleep-preparation': sleepArtwork,
+    'mood-boost': moodBoostArtwork,
+    'meditation-support': acousticArtwork,
+  };
+  
+  return artworkMap[goalId] || acousticArtwork;
+};
 
 interface TherapeuticGoalCardProps {
   goal: TherapeuticGoal;
-  trackCount?: number;
   isSelected?: boolean;
-  showProgress?: boolean;
   showBpmRange?: boolean;
-  showEffectiveness?: boolean;
+  trackCount?: number;
   effectiveness?: number;
   onClick?: () => void;
   className?: string;
 }
 
-export function TherapeuticGoalCard({
+export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   goal,
-  trackCount,
   isSelected = false,
-  showProgress = false,
   showBpmRange = true,
-  showEffectiveness = false,
+  trackCount,
   effectiveness,
   onClick,
   className
-}: TherapeuticGoalCardProps) {
-  const Icon = goal.icon;
+}) => {
+  const artwork = getGoalArtwork(goal.id);
   
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg",
-        isSelected && `ring-2 ring-${goal.color}-500 shadow-lg`,
-        `hover:shadow-${goal.color}-500/20`,
+        "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
+        "bg-gradient-to-br from-card to-card/80 border-border/50",
+        isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
         className
       )}
       onClick={onClick}
     >
-      {/* Background gradient */}
-      <div className={cn(
-        "absolute inset-0 opacity-10 bg-gradient-to-br",
-        goal.gradient
-      )} />
-      
-      <CardContent className="relative p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <div className={cn(
-              "p-2 rounded-lg bg-gradient-to-br",
-              goal.gradient,
-              "text-white shadow-md"
-            )}>
-              <Icon className="h-5 w-5" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg text-foreground">
-                {goal.name}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {goal.description}
-              </p>
-            </div>
-          </div>
-          
-          {isSelected && (
-            <Badge variant="default" className={`bg-${goal.color}-500`}>
-              Active
-            </Badge>
-          )}
-        </div>
+      <div className="aspect-[4/3] relative">
+        {/* Background Image */}
+        <img 
+          src={artwork} 
+          alt={goal.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
         
-        {/* Metrics Row */}
-        <div className="flex items-center justify-between mb-3">
-          {trackCount !== undefined && (
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-foreground">
-                {trackCount}
-              </span>
-              <span className="text-sm text-muted-foreground">
-                tracks available
-              </span>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        
+        {/* Content */}
+        <div className="absolute inset-0 p-4 flex flex-col justify-between">
+          {/* Top Section - Icon and Status */}
+          <div className="flex items-start justify-between">
+            <div className={`p-2 rounded-full bg-gradient-to-br ${goal.gradient} text-white shadow-lg`}>
+              <goal.icon size={20} />
             </div>
-          )}
-          
-          {showEffectiveness && effectiveness !== undefined && (
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-muted-foreground">
-                Effectiveness:
-              </span>
+            
+            {/* Track Count Badge */}
+            {trackCount !== undefined && (
               <Badge 
-                variant={effectiveness >= 80 ? "default" : effectiveness >= 60 ? "secondary" : "outline"}
-                className={effectiveness >= 80 ? `bg-${goal.color}-500` : ''}
+                variant="secondary" 
+                className="bg-background/90 text-foreground border-0 shadow-sm"
               >
-                {effectiveness}%
+                {trackCount} tracks available
               </Badge>
-            </div>
-          )}
-        </div>
-        
-        {/* BPM Range */}
-        {showBpmRange && (
-          <div className="mb-3">
-            <div className="flex items-center justify-between text-sm mb-1">
-              <span className="text-muted-foreground">Therapeutic BPM Range</span>
-              <span className="font-mono text-foreground">
-                {goal.bpmRange.min}-{goal.bpmRange.max} 
-                <span className="text-muted-foreground ml-1">
-                  (optimal: {goal.bpmRange.optimal})
-                </span>
-              </span>
-            </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
-              <div 
-                className={cn("h-full bg-gradient-to-r", goal.gradient)}
-                style={{ width: '100%' }}
-              />
+            )}
+          </div>
+          
+          {/* Bottom Section - Title and Details */}
+          <div className="space-y-2">
+            <h3 className="text-white font-semibold text-lg leading-tight">
+              {goal.name}
+            </h3>
+            <p className="text-white/80 text-sm line-clamp-2">
+              {goal.description}
+            </p>
+            
+            {/* VAD Profile */}
+            <p className="text-white/60 text-xs font-mono">
+              VAD Profile: V:{goal.vadProfile.valence.toFixed(1)}A:{goal.vadProfile.arousal.toFixed(1)}D:{goal.vadProfile.dominance.toFixed(1)}
+            </p>
+            
+            {/* BPM Range and Effectiveness */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {showBpmRange && (
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs">
+                  {goal.bpmRange.min}-{goal.bpmRange.max} BPM
+                </Badge>
+              )}
+              
+              {effectiveness !== undefined && (
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs">
+                  {effectiveness}% effective
+                </Badge>
+              )}
             </div>
           </div>
-        )}
-        
-        {/* Progress */}
-        {showProgress && goal.progress !== undefined && (
-          <div className="mb-3">
-            <div className="flex items-center justify-between text-sm mb-1">
-              <span className="text-muted-foreground">Progress</span>
-              <span className="font-medium text-foreground">{goal.progress}%</span>
-            </div>
-            <Progress 
-              value={goal.progress} 
-              className="h-2"
-            />
-          </div>
-        )}
-        
-        {/* VAD Profile (for advanced users) */}
-        <div className="text-xs text-muted-foreground">
-          <span>VAD Profile: </span>
-          <span className="font-mono">
-            V:{goal.vadProfile.valence.toFixed(1)} 
-            A:{goal.vadProfile.arousal.toFixed(1)} 
-            D:{goal.vadProfile.dominance.toFixed(1)}
-          </span>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
-}
+};
