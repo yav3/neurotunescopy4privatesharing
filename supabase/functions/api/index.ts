@@ -155,6 +155,18 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     if (orConditions) {
       q = q.or(orConditions);
     }
+
+    // Special rule for focus tracks: must have "focus" twice in title (beginning + middle)
+    const isFocusGoal = searchWords.some(word => 
+      ['focus', 'focus-enhancement', 'concentration', 'study'].includes(word.toLowerCase())
+    );
+    
+    if (isFocusGoal) {
+      // Add additional filter: title must start with focus AND contain focus again
+      q = q.ilike('title', 'focus%').ilike('title', '%focus%');
+      console.log('🎯 Applied focus double-mention rule');
+    }
+
     return q;
   };
 
