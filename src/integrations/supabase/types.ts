@@ -1848,6 +1848,7 @@ export type Database = {
           bpm: number | null
           bpm_est: number | null
           camelot: string | null
+          camelot_code: string | null
           channels: number | null
           cognitive_load: number | null
           comprehensive_analysis: Json | null
@@ -1952,6 +1953,7 @@ export type Database = {
           bpm?: number | null
           bpm_est?: number | null
           camelot?: string | null
+          camelot_code?: string | null
           channels?: number | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
@@ -2056,6 +2058,7 @@ export type Database = {
           bpm?: number | null
           bpm_est?: number | null
           camelot?: string | null
+          camelot_code?: string | null
           channels?: number | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
