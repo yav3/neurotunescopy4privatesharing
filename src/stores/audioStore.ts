@@ -437,16 +437,56 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log('🎵 No audio source, loading current track:', currentTrack.title);
         const success = await loadTrack(currentTrack);
         if (!success) {
-          set({ error: "Current track not available" });
+          console.log('🎵 Current track failed, finding next working track in queue');
+          let { queue, index } = get();
+          
+          // Try to find a working track starting from current index
+          for (let i = index; i < queue.length; i++) {
+            const trackToTry = queue[i];
+            console.log('🎵 Trying track at index', i, ':', trackToTry.title);
+            const trackSuccess = await loadTrack(trackToTry);
+            if (trackSuccess) {
+              set({ index: i });
+              console.log('🎵 Found working track at index', i, ':', trackToTry.title);
+              return;
+            }
+            
+            // Remove broken track and announce skip
+            console.log('🎵 Removing broken track from queue:', trackToTry.title);
+            announceSkip();
+            queue = removeAt(queue, i);
+            i--; // Adjust index since we removed an item
+            set({ queue });
+          }
+          
+          set({ error: "No working tracks available" });
           return;
         }
       } else if (!audio.src && queue.length > 0) {
-        console.log('🎵 No audio source, loading first track from queue:', queue[0].title);
-        const success = await loadTrack(queue[0]);
-        if (!success) {
-          set({ error: "Track not available" });
-          return;
+        console.log('🎵 No audio source, finding working track from queue');
+        let { queue, index } = get();
+        
+        // Try to find a working track starting from current index
+        for (let i = index; i < queue.length; i++) {
+          const trackToTry = queue[i];
+          console.log('🎵 Trying track at index', i, ':', trackToTry.title);
+          const trackSuccess = await loadTrack(trackToTry);
+          if (trackSuccess) {
+            set({ index: i });
+            console.log('🎵 Found working track at index', i, ':', trackToTry.title);
+            return;
+          }
+          
+          // Remove broken track and announce skip
+          console.log('🎵 Removing broken track from queue:', trackToTry.title);
+          announceSkip();
+          queue = removeAt(queue, i);
+          i--; // Adjust index since we removed an item
+          set({ queue });
         }
+        
+        set({ error: "No working tracks available" });
+        return;
       } else if (!audio.src) {
         set({ error: "No audio track available to play" });
         return;
