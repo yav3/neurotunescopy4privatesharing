@@ -112,114 +112,78 @@ function json(body: Record<string, unknown>, status = 200) {
 async function handlePlaylistRequest(req: Request): Promise<Response> {
   const supabase = sb();
   const url = new URL(req.url);
+
   const rawGoal = (url.searchParams.get("goal") || "").toString();
   const limit  = Math.max(1, Math.min(parseInt(url.searchParams.get("limit")  || "50", 10), 200));
   const offset = Math.max(0,       parseInt(url.searchParams.get("offset") || "0",  10));
   const to = offset + limit - 1;
 
-  console.log(`🎵 /playlist goal="${rawGoal}" limit=${limit} offset=${offset}`);
+  // Robust tokenization: slug + aliases -> split on space/hyphen, dedupe, discard empties
+  const words = Array.from(
+    new Set(
+      wordsFor(rawGoal)                   // e.g. ["sleep-preparation","sleep","deep sleep","delta"]
+        .flatMap(w => w.toLowerCase().split(/[\s-]+/)) // ["sleep","preparation","sleep","deep","sleep","delta"]
+        .filter(Boolean)
+    )
+  );
 
-  // Words to match (your alias map feeds wordsFor)
-  const searchWords = wordsFor(rawGoal);
-
-  // Build an OR string with chosen operator per column list
-  const buildOr = (colsCS: string[], colsILIKE: string[]) => {
-    const conditions: string[] = [];
-    for (const w of searchWords) {
-      // Add array containment checks for CS columns
-      for (const c of colsCS) {
-        conditions.push(`${c}.cs.{${w}}`);
-      }
-      // Add ILIKE checks for text columns  
-      for (const c of colsILIKE) {
-        conditions.push(`${c}.ilike.%${w}%`);
-      }
+  // Build a SAFE .or() with only text columns: mood/genre
+  const buildOr = () => {
+    if (!words.length) return "";
+    const parts: string[] = [];
+    for (const w of words) {
+      const star = `*${w}*`;            // PostgREST wildcard for .ilike
+      parts.push(`mood.ilike.${star}`, `genre.ilike.${star}`);
     }
-    return conditions.length ? conditions.join(",") : "";
+    // supabase-js will wrap it into or=(...)
+    return parts.join(",");
   };
 
-  // One query runner that uses ONLY range() for paging (no .limit())
-  const run = async (colsCS: string[], colsILIKE: string[]) => {
-    const orConditions = rawGoal.trim() ? buildOr(colsCS, colsILIKE) : "";
-    let q = supabase
-      .from("tracks")
-      .select("id,title,genre,mood,storage_key,audio_status,bpm", { count: "exact" })
-      .eq("audio_status", "working")  // Only return working tracks
-      .eq("storage_bucket", "audio")  // Only return tracks from audio bucket
-      .not("camelot", "is", null)     // Only tracks with Camelot keys
-      .not("bpm", "is", null)         // Only tracks with BPM (eliminates the 118 problematic tracks)
-      .gt("bpm", 0)                   // Ensure BPM is actually set
-      .is("last_error", null)         // Exclude tracks with ObjectNotFound errors
-      .not("storage_key","is",null)
-      .neq("storage_key","")
-      // Use a stable column to sort; 'id' is safest across schemas
-      .order("id", { ascending: true })
-      .range(offset, to);
+  const baseSelect = 'id,title,genre,mood,storage_key,audio_status';
 
-    // Apply OR filtering if we have conditions
-    if (orConditions) {
-      q = q.or(orConditions);
-    }
+  // First attempt: safe filter on mood/genre only
+  const orExpr = buildOr();
+  let q = supabase
+    .from("tracks")
+    .select(baseSelect, { count: "exact" })
+    .eq("audio_status", "working")
+    .not("storage_key", "is", null).neq("storage_key", "")
+    .order("id", { ascending: true })
+    .range(offset, to);
 
-    // Apply advanced VAD-based therapeutic filtering
-    if (rawGoal === 'focus-enhancement') {
-      // Focus: 78-100 BPM, instrumental preferred
-      q = q.gte('bpm', 78).lte('bpm', 100);
-      console.log('🧠 Applied focus-enhancement BPM filter: 78-100 BPM (optimal cognitive range)');
-    } else if (rawGoal === 'anxiety-relief') {
-      // Anxiety relief: 40-80 BPM, calming tracks
-      q = q.gte('bpm', 40).lte('bpm', 80);
-      console.log('🧘 Applied anxiety-relief BPM filter: 40-80 BPM (calming range)');
-    } else if (rawGoal === 'stress-reduction') {
-      // Stress reduction: 45-80 BPM, relaxing tracks  
-      q = q.gte('bpm', 45).lte('bpm', 80);
-      console.log('🌊 Applied stress-reduction BPM filter: 45-80 BPM (relaxing range)');
-    } else if (rawGoal === 'sleep-preparation') {
-      // Sleep: 40-60 BPM, ultra slow
-      q = q.gte('bpm', 40).lte('bmp', 60);
-      console.log('😴 Applied sleep-preparation BPM filter: 40-60 BPM (ultra slow range)');
-    } else if (rawGoal === 'mood-boost') {
-      // Mood boost: 90-140 BPM, energetic tracks
-      q = q.gte('bpm', 90).lte('bpm', 140);
-      console.log('⚡ Applied mood-boost BPM filter: 90-140 BPM (energetic range)');
-    } else {
-      console.log(`🎵 Processing goal: ${rawGoal} (no specific BPM filter)`);
-    }
+  if (orExpr) q = q.or(orExpr);
 
-    return q;
-  };
-
-  // Try array/jsonb matches first; fall back to pure ILIKE if schema doesn't support cs.{}
-  const plans: Array<[string[], string[]]> = [
-    // Plan A: arrays/jsonb present → cs.{word} on tags-like cols + ilike on mood/genre
-    [["tags","therapeutic_use","emotion_tags"], ["mood","genre"]],
-    // Plan B: everything via ILIKE (if tags-like aren't arrays)
-    [[], ["mood","genre","tags","therapeutic_use","emotion_tags"]],
-    // Plan C: minimal filter (mood/genre only)
-    [[], ["mood","genre"]],
-    // Plan D: no filter → just return playable tracks
-    [[], []],
-  ];
-
-  for (const [csCols, ilikeCols] of plans) {
-    const { data, error } = await run(csCols, ilikeCols);
-    if (!error) {
-      const tracks = data ?? [];
-      console.log(`✅ /playlist using cs=[${csCols.join(",")}] ilike=[${ilikeCols.join(",")}] -> ${tracks.length}`);
-      console.log('📊 Sample track data:', tracks.slice(0, 2));
-      console.log('🔍 Raw response being sent:', JSON.stringify({ tracks: tracks.slice(0, 1), total: tracks.length, nextOffset: offset + tracks.length }));
-      return new Response(
-        JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-    // Schema/operator mismatch? Try the next plan.
-    console.warn(`/playlist plan cs=[${csCols.join(",")}] ilike=[${ilikeCols.join(",")}] failed: ${error.message}`);
+  // Try the safe query; on error, fall back to no-goal filter (still playable)
+  let data, error;
+  try {
+    ({ data, error } = await q);
+  } catch (e:any) {
+    error = { message: e?.message || String(e) };
   }
 
+  if (error) {
+    console.warn(`[playlist:safe-filter] ${error.message} — falling back to playable-only`);
+    const fb = await supabase
+      .from("tracks")
+      .select(baseSelect, { count: "exact" })
+      .eq("audio_status","working")
+      .not("storage_key","is",null).neq("storage_key","")
+      .order("id",{ ascending:true })
+      .range(offset, to);
+
+    if (fb.error) {
+      console.error(`[playlist:fallback] ${fb.error.message}`);
+      return new Response(JSON.stringify({ ok:false, error:"PlaylistQueryFailed" }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+    data = fb.data;
+  }
+
+  const tracks = data ?? [];
   return new Response(
-    JSON.stringify({ ok:false, error: "PlaylistQueryFailed" }),
-    { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    JSON.stringify({ tracks, total: tracks.length, nextOffset: offset + tracks.length }),
+    { headers: { ...corsHeaders, "Content-Type": "application/json" } }
   );
 }
 
