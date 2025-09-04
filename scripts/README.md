@@ -2,6 +2,68 @@
 
 This directory contains scripts to repair storage paths for music tracks in the database.
 
+## NEW: Audio Analysis Pipeline
+
+**`audio_analysis_client.py`** and **`integrated_audio_processor.py`** - Complete audio analysis system for processing 367 tracks in the audio bucket.
+
+### Features
+- **Comprehensive Analysis**: Musical key, Camelot wheel, BPM, mood analysis, spectral features
+- **Supabase Integration**: Direct upload to database via Edge Function
+- **Batch Processing**: Handles large datasets efficiently
+- **Progress Tracking**: Real-time status reporting
+- **Error Handling**: Robust error recovery and logging
+
+### Quick Start
+
+1. **Install Dependencies:**
+   ```bash
+   pip install httpx asyncio asyncpg pandas librosa essentia-tensorflow
+   ```
+
+2. **Configure Settings in `integrated_audio_processor.py`:**
+   ```python
+   DATABASE_URL = "postgresql://postgres:[YOUR-PASSWORD]@db.pbtgvcjniayedqlajjzz.supabase.co:5432/postgres"
+   EDGE_FUNCTION_URL = "https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/audio-analysis"
+   API_KEY = "your_supabase_anon_key"
+   AUDIO_FILES_DIR = "/path/to/your/audio/files"
+   ```
+
+3. **Run Analysis Pipeline:**
+   ```bash
+   python integrated_audio_processor.py
+   ```
+
+### What It Analyzes
+- **Musical Key & Camelot**: For harmonic mixing compatibility
+- **BPM & Rhythm**: Precise tempo detection and danceability
+- **Mood Profile**: Happy, sad, relaxed, aggressive scores
+- **Spectral Features**: Brightness, bandwidth, centroid analysis
+- **Psychoacoustic Properties**: Loudness, roughness, dynamic complexity
+- **Tonal Characteristics**: Pitch, tuning, harmonicity
+
+### Expected Results
+After completion, all 367 tracks will have complete therapeutic music metadata for:
+- ✅ Perfect harmonic mixing via Camelot wheel
+- ✅ Mood-based therapeutic recommendations
+- ✅ Energy progression planning
+- ✅ Personalized music delivery
+
+### Monitor Progress
+```bash
+# Check Edge Function logs
+supabase functions logs audio-analysis --follow
+
+# Query completion status
+SELECT 
+  COUNT(*) as total,
+  COUNT(CASE WHEN comprehensive_analysis IS NOT NULL THEN 1 END) as analyzed,
+  COUNT(CASE WHEN camelot IS NOT NULL THEN 1 END) as camelot_detected
+FROM tracks 
+WHERE storage_bucket = 'audio';
+```
+
+---
+
 ## NEW: Production Storage Key Repair Script
 
 **`repairStorageKeysAndFlagDuplicates.ts`** - Advanced repair script that:
