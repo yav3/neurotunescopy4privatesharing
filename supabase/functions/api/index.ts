@@ -165,13 +165,13 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     )
   );
 
-  // Build a SAFE .or() with only text columns: mood/genre + BPM filtering for therapeutic goals
+  // Build a SAFE .or() with text columns including title: title/mood/genre + BPM filtering for therapeutic goals
   const buildOr = () => {
     if (!words.length) return "";
     const parts: string[] = [];
     for (const w of words) {
       const star = `*${w}*`;            // PostgREST wildcard for .ilike
-      parts.push(`mood.ilike.${star}`, `genre.ilike.${star}`);
+      parts.push(`title.ilike.${star}`, `mood.ilike.${star}`, `genre.ilike.${star}`);
     }
     // supabase-js will wrap it into or=(...)
     return parts.join(",");
