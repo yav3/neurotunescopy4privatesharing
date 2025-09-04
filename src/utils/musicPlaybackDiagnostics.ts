@@ -1,6 +1,7 @@
 // Diagnostic utilities for music playback debugging
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
+import { AUDIO_ELEMENT_ID } from '@/player/constants';
 
 export const diagnoseMusicPlayback = () => {
   console.group('🎵 Music Playback Diagnostics');
@@ -16,7 +17,7 @@ export const diagnoseMusicPlayback = () => {
   });
   
   // Check audio element
-  const audioElement = document.getElementById('unified-audio-element') as HTMLAudioElement;
+  const audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
   if (audioElement) {
     console.log('Audio Element:', {
       src: audioElement.src,
