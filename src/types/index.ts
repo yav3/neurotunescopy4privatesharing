@@ -1,23 +1,26 @@
-// Unified Track interface for the entire application
+// Unified Track interface for the entire application - matches database schema
 export interface Track {
-  id: string;
+  id: string;                    // Primary UUID identifier (matches database)
+  unique_id?: string;           // Legacy field for backward compatibility  
   title: string;
+  artist?: string;
   file_name?: string;
-  file_path?: string;
-  storage_key?: string;
-  src?: string;
+  file_path?: string;           // Legacy field
+  storage_key?: string;         // Actual storage path (matches database)
+  storage_bucket?: string;      // Storage bucket name (matches database)
+  src?: string;                 // Computed stream URL
   duration?: number;
   goal?: string;
   therapeutic_use?: string;
   eeg_targets?: string;
   genre?: string;
-  artist?: string;
   album?: string;
-  bucket_name?: string;
   upload_status?: 'pending' | 'uploading' | 'completed' | 'failed';
+  audio_status?: 'working' | 'missing' | 'unknown' | 'bad';  // Matches database
   file_size?: number;
   created_at?: string;
   updated_at?: string;
+  
   // Audio analysis properties
   energy?: number;
   valence?: number;
@@ -28,14 +31,19 @@ export interface Track {
   loudness?: number;
   speechiness?: number;
   key_signature?: string;
+  camelot_key?: string;         // Camelot wheel notation
   mode?: string;
   file_type?: string;
   original_title?: string;
   mood?: string;
+  
+  // Visual properties
   album_art_url?: string;
   album_art_thumbnail?: string;
   album_art_color?: string;
   album_art_credits?: string;
+  
+  // Related data
   therapeutic_applications?: TherapeuticApplication[];
   spectral_analysis?: SpectralAnalysis[];
 }
@@ -117,3 +125,31 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+// VAD (Valence, Arousal, Dominance) model  
+export interface VAD {
+  valence: number;     // 0..1 (negative to positive)
+  arousal: number;     // 0..1 (calm to energetic)
+  dominance?: number;  // 0..1 (submissive to dominant)
+}
+
+// Therapeutic goals
+export type TherapeuticGoal =
+  | "anxiety_down"
+  | "pain_down"
+  | "focus_up" 
+  | "sleep"
+  | "mood_up";
+
+// ID normalization utilities for consistent handling
+export const normalizeTrackId = (track: any): string => {
+  return track.id || track.unique_id || '';
+};
+
+export const ensureTrackId = (track: any): Track => {
+  return {
+    ...track,
+    id: normalizeTrackId(track),
+    unique_id: track.unique_id || track.id
+  };
+};

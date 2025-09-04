@@ -1,15 +1,54 @@
 project_id = "pbtgvcjniayedqlajjzz"
 
-[functions.api]
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+port = 54325
+
+[auth]
+enabled = true
+port = 54326
+
+[edge_runtime]
+enabled = true
+port = 54327
+
+[functions.audio-analysis]
 verify_jwt = false
 
 [functions.brainwave-stream]
 verify_jwt = false
 
-[functions.audio-analysis]
+[functions.api]
+verify_jwt = false
+
+[functions.compile-audio-data]
+verify_jwt = false
+
+[functions.complete-audio-analysis]
 verify_jwt = false
 
 [functions.storage-audit]
+verify_jwt = false
+
+[functions.comprehensive-audio-analyzer]
 verify_jwt = false
 
 [functions.api.env]
@@ -23,5 +62,9 @@ SUPABASE_URL = "SUPABASE_URL"
 SUPABASE_SERVICE_ROLE_KEY = "SUPABASE_SERVICE_ROLE_KEY"
 
 [functions.storage-audit.env]
+SUPABASE_URL = "SUPABASE_URL"
+SUPABASE_SERVICE_ROLE_KEY = "SUPABASE_SERVICE_ROLE_KEY"
+
+[functions.comprehensive-audio-analyzer.env]
 SUPABASE_URL = "SUPABASE_URL"
 SUPABASE_SERVICE_ROLE_KEY = "SUPABASE_SERVICE_ROLE_KEY"

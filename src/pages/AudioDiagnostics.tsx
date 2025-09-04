@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AudioTester from '@/components/AudioTester'
 import AudioAnalysisRunner from '@/components/AudioAnalysisRunner'
-import { StorageAudit } from '@/components/StorageAudit'
+import { StorageAudit } from "@/components/StorageAudit";
+import { ComprehensiveAudioAnalyzer } from "@/components/ComprehensiveAudioAnalyzer";
 import { useAudioStore } from '../stores';
 import { API } from '../lib/api';
 import { buildStreamUrl, headOk } from '../lib/stream';
@@ -88,7 +89,8 @@ const AudioDiagnostics: React.FC = () => {
       <AudioAnalysisRunner />
       
       {/* Storage Audit */}
-      <StorageAudit />
+          <ComprehensiveAudioAnalyzer />
+          <StorageAudit />
       
       {/* Front-to-Back Audio Testing */}
       <AudioTester />
