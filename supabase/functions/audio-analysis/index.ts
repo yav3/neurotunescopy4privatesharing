@@ -10,35 +10,78 @@ const corsHeaders = {
 
 interface AnalysisResult {
   track_id: string;
-  musical_key?: string;
-  camelot_key?: string;
+  
+  // Core musical features
+  bpm?: number;
+  tempo_bpm?: number;
+  key?: string;
+  scale?: string;
+  camelot?: string;
+  key_strength?: number;
   key_confidence?: number;
-  bpm_multifeature?: number;
+  tuning_frequency?: number;
+  
+  // Energy and dynamics
+  energy_level?: number;
+  energy?: number;
+  valence?: number;
+  arousal?: number;
+  dominance?: number;
+  danceability?: number;
   danceability_score?: number;
-  onset_rate_per_second?: number;
-  spectral_centroid_mean?: number;
-  spectral_rolloff_mean?: number;
-  spectral_bandwidth_mean?: number;
-  zero_crossing_rate_mean?: number;
-  loudness_integrated_lufs?: number;
+  
+  // Audio characteristics
+  acousticness?: number;
+  instrumentalness?: number;
+  speechiness?: number;
+  loudness_lufs?: number;
+  dynamic_range?: number;
   dynamic_complexity?: number;
+  crest_factor?: number;
+  rms_energy?: number;
+  
+  // Spectral features
+  spectral_centroid?: number;
+  spectral_rolloff?: number;
+  spectral_bandwidth?: number;
+  zero_crossing_rate?: number;
   roughness?: number;
+  inharmonicity?: number;
+  
+  // Rhythm and timing
+  onset_rate?: number;
+  pitch_mean?: number;
+  
+  // Mood scores
   mood_happy?: number;
   mood_sad?: number;
   mood_aggressive?: number;
   mood_relaxed?: number;
   mood_acoustic?: number;
   mood_electronic?: number;
-  pitch_mean_hz?: number;
-  tuning_frequency_hz?: number;
-  inharmonicity?: number;
-  rms_energy_mean?: number;
-  dynamic_range_db?: number;
-  crest_factor?: number;
+  
+  // Complex feature structures
+  mood_scores?: Record<string, number>;
+  spectral_features?: Record<string, any>;
+  harmonic_features?: Record<string, any>;
+  rhythmic_features?: Record<string, any>;
+  psychoacoustic_features?: Record<string, any>;
+  tonal_features?: Record<string, any>;
+  dynamic_features?: Record<string, any>;
+  structural_features?: Record<string, any>;
+  
+  // Analysis metadata
   comprehensive_analysis?: Record<string, any>;
-  analysis_timestamp?: string;
   analysis_version?: string;
-  analysis_error?: string;
+  analyzed_at?: string;
+  tags?: string[];
+  emotion_tags?: string[];
+  therapeutic_use?: string[];
+  eeg_targets?: string[];
+  
+  // Error handling
+  error?: string;
+  timestamp?: string;
 }
 
 serve(async (req: Request) => {
@@ -82,11 +125,15 @@ serve(async (req: Request) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Parse request body
+    // Parse request body - expect array of results directly
+    let results: AnalysisResult[];
     const body = await req.json();
-    const { results, batch_id, processing_info } = body;
-
-    if (!results || !Array.isArray(results)) {
+    
+    if (Array.isArray(body)) {
+      results = body;
+    } else if (body.results && Array.isArray(body.results)) {
+      results = body.results;
+    } else {
       return new Response(
         JSON.stringify({ 
           error: 'Invalid request format',
@@ -99,26 +146,26 @@ serve(async (req: Request) => {
       );
     }
 
-    console.log(`Processing batch ${batch_id} with ${results.length} tracks`);
+    console.log(`🔬 Processing ${results.length} comprehensive analysis results`);
 
     // Process each analysis result
     const processed = [];
     const errors = [];
 
-    for (const result of results as AnalysisResult[]) {
+    for (const result of results) {
       try {
-        if (result.analysis_error) {
+        if (result.error) {
           // Handle analysis errors
           const { error: updateError } = await supabase
             .from('tracks')
             .update({
-              last_error: result.analysis_error,
-              analysis_timestamp: new Date().toISOString()
+              last_error: result.error,
+              analyzed_at: new Date().toISOString()
             })
             .eq('id', result.track_id);
 
           if (updateError) {
-            console.error(`Error updating track ${result.track_id} with error status:`, updateError);
+            console.error(`❌ Error updating track ${result.track_id} with error status:`, updateError);
             errors.push({ track_id: result.track_id, error: updateError.message });
           } else {
             processed.push({ track_id: result.track_id, status: 'error_recorded' });
@@ -128,28 +175,48 @@ serve(async (req: Request) => {
 
         // Update track with comprehensive analysis
         const updateData = {
-          // Harmonic Analysis
-          key: result.musical_key || null,
-          camelot: result.camelot_key || null,
+          // Core musical features
+          bpm: result.bpm || null,
+          tempo_bpm: result.tempo_bpm || null,
+          key: result.key || null,
+          scale: result.scale || null,
+          camelot: result.camelot || null,
+          key_strength: result.key_strength || null,
           key_confidence: result.key_confidence || null,
+          tuning_frequency: result.tuning_frequency || null,
           
-          // Rhythmic Analysis
-          bpm: result.bpm_multifeature || null,
-          danceability: result.danceability_score || null,
-          onset_rate: result.onset_rate_per_second || null,
+          // Energy and dynamics  
+          energy_level: result.energy_level || null,
+          energy: result.energy || null,
+          valence: result.valence || null,
+          arousal: result.arousal || null,
+          dominance: result.dominance || null,
+          danceability: result.danceability || null,
+          danceability_score: result.danceability_score || null,
           
-          // Spectral Analysis
-          spectral_centroid: result.spectral_centroid_mean || null,
-          spectral_rolloff: result.spectral_rolloff_mean || null,
-          spectral_bandwidth: result.spectral_bandwidth_mean || null,
-          zero_crossing_rate: result.zero_crossing_rate_mean || null,
-          
-          // Psychoacoustic Analysis
-          loudness_lufs: result.loudness_integrated_lufs || null,
+          // Audio characteristics
+          acousticness: result.acousticness || null,
+          instrumentalness: result.instrumentalness || null,
+          speechiness: result.speechiness || null,
+          loudness_lufs: result.loudness_lufs || null,
+          dynamic_range: result.dynamic_range || null,
           dynamic_complexity: result.dynamic_complexity || null,
-          roughness: result.roughness || null,
+          crest_factor: result.crest_factor || null,
+          rms_energy: result.rms_energy || null,
           
-          // Mood Analysis
+          // Spectral features
+          spectral_centroid: result.spectral_centroid || null,
+          spectral_rolloff: result.spectral_rolloff || null,
+          spectral_bandwidth: result.spectral_bandwidth || null,
+          zero_crossing_rate: result.zero_crossing_rate || null,
+          roughness: result.roughness || null,
+          inharmonicity: result.inharmonicity || null,
+          
+          // Rhythm and timing
+          onset_rate: result.onset_rate || null,
+          pitch_mean: result.pitch_mean || null,
+          
+          // Mood scores
           mood_happy: result.mood_happy || null,
           mood_sad: result.mood_sad || null,
           mood_aggressive: result.mood_aggressive || null,
@@ -157,23 +224,29 @@ serve(async (req: Request) => {
           mood_acoustic: result.mood_acoustic || null,
           mood_electronic: result.mood_electronic || null,
           
-          // Tonal Analysis
-          pitch_mean: result.pitch_mean_hz || null,
-          tuning_frequency: result.tuning_frequency_hz || null,
-          inharmonicity: result.inharmonicity || null,
+          // Complex feature structures (stored as JSONB)
+          mood_scores: result.mood_scores || null,
+          spectral_features: result.spectral_features || null,
+          harmonic_features: result.harmonic_features || null,
+          rhythmic_features: result.rhythmic_features || null,
+          psychoacoustic_features: result.psychoacoustic_features || null,
+          tonal_features: result.tonal_features || null,
+          dynamic_features: result.dynamic_features || null,
+          structural_features: result.structural_features || null,
           
-          // Dynamic Analysis
-          rms_energy: result.rms_energy_mean || null,
-          dynamic_range: result.dynamic_range_db || null,
-          crest_factor: result.crest_factor || null,
-          
-          // Full Analysis JSON
+          // Full comprehensive analysis
           comprehensive_analysis: result.comprehensive_analysis || null,
-          analysis_timestamp: result.analysis_timestamp || new Date().toISOString(),
-          analysis_version: result.analysis_version || '2.0',
+          analysis_version: result.analysis_version || 'v2024_comprehensive',
+          analyzed_at: result.analyzed_at || new Date().toISOString(),
+          
+          // Tags and metadata
+          tags: result.tags || null,
+          emotion_tags: result.emotion_tags || null, 
+          therapeutic_use: result.therapeutic_use || null,
+          eeg_targets: result.eeg_targets || null,
           
           // Update audio status
-          audio_status: 'analyzed',
+          audio_status: 'working',
           last_verified_at: new Date().toISOString()
         };
 
@@ -183,20 +256,20 @@ serve(async (req: Request) => {
           .eq('id', result.track_id);
 
         if (updateError) {
-          console.error(`Error updating track ${result.track_id}:`, updateError);
+          console.error(`❌ Error updating track ${result.track_id}:`, updateError);
           errors.push({ track_id: result.track_id, error: updateError.message });
         } else {
-          console.log(`✅ Updated track ${result.track_id}: ${result.camelot_key} @ ${result.bpm_multifeature || 0} BPM`);
+          console.log(`✅ Updated track ${result.track_id}: ${result.camelot || 'No key'} @ ${result.bpm || 0} BPM`);
           processed.push({ 
             track_id: result.track_id, 
             status: 'updated',
-            camelot_key: result.camelot_key,
-            bpm: result.bpm_multifeature
+            camelot_key: result.camelot,
+            bpm: result.bpm
           });
         }
 
       } catch (error) {
-        console.error(`Error processing track ${result.track_id}:`, error);
+        console.error(`❌ Error processing track ${result.track_id}:`, error);
         errors.push({ 
           track_id: result.track_id, 
           error: error instanceof Error ? error.message : 'Unknown error' 
@@ -205,17 +278,16 @@ serve(async (req: Request) => {
     }
 
     // Log batch completion
-    console.log(`Batch ${batch_id} completed: ${processed.length} successful, ${errors.length} errors`);
+    console.log(`🎵 Analysis batch completed: ${processed.length} successful, ${errors.length} errors`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        batch_id,
         processed_count: processed.length,
         error_count: errors.length,
         processed_tracks: processed,
         errors: errors,
-        processing_info
+        timestamp: new Date().toISOString()
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -223,7 +295,7 @@ serve(async (req: Request) => {
     );
 
   } catch (error) {
-    console.error('Analysis processing error:', error);
+    console.error('❌ Analysis processing error:', error);
     
     return new Response(
       JSON.stringify({ 
