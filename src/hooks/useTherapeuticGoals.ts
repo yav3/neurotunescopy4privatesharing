@@ -4,6 +4,7 @@ import {
   type TherapeuticGoal 
 } from '@/config/therapeuticGoals';
 import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
+import { filterTracksForGoal } from '@/utils/therapeuticFiltering';
 import { API } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';
 
@@ -90,10 +91,18 @@ export function useTherapeuticGoals(options: UseTherapeuticGoalsOptions = {}) {
             const response = await API.playlist(goal.slug as any, 1000); // Get all tracks
             const trackCount = response.tracks?.length || 0;
             
-            // Calculate effectiveness based on BPM matching
-            const matchingTracks = response.tracks?.filter((track: any) => 
-              track.bpm >= goal.bpmRange.min && track.bpm <= goal.bpmRange.max
-            ) || [];
+            // Calculate effectiveness based on BPM matching using new therapeutic filtering
+            const matchingTracks = filterTracksForGoal(
+              response.tracks?.map((t: any) => ({
+                id: t.id,
+                bpm: t.bpm,
+                valence: t.valence,
+                energy_level: t.energy_level,
+                musical_key_est: t.musical_key_est,
+                camelot: t.camelot
+              })) || [], 
+              goal.slug as any
+            );
             
             const effectiveness = trackCount > 0 
               ? Math.round((matchingTracks.length / trackCount) * 100)
