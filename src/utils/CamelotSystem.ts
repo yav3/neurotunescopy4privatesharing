@@ -1,156 +1,105 @@
-import { supabase } from "@/integrations/supabase/client";
+// src/utils/CamelotSystem.ts
+// Simple, non-recursive, no-conditional-generic Camelot helpers
 
-// Camelot Wheel harmonic mixing system
-export class CamelotSystem {
-  // Camelot wheel mapping
-  private static readonly CAMELOT_WHEEL = {
-    '1A': ['12A', '2A', '1B'],
-    '2A': ['1A', '3A', '2B'],
-    '3A': ['2A', '4A', '3B'],
-    '4A': ['3A', '5A', '4B'],
-    '5A': ['4A', '6A', '5B'],
-    '6A': ['5A', '7A', '6B'],
-    '7A': ['6A', '8A', '7B'],
-    '8A': ['7A', '9A', '8B'],
-    '9A': ['8A', '10A', '9B'],
-    '10A': ['9A', '11A', '10B'],
-    '11A': ['10A', '12A', '11B'],
-    '12A': ['11A', '1A', '12B'],
-    '1B': ['12B', '2B', '1A'],
-    '2B': ['1B', '3B', '2A'],
-    '3B': ['2B', '4B', '3A'],
-    '4B': ['3B', '5B', '4A'],
-    '5B': ['4B', '6B', '5A'],
-    '6B': ['5B', '7B', '6A'],
-    '7B': ['6B', '8B', '7A'],
-    '8B': ['7B', '9B', '8A'],
-    '9B': ['8B', '10B', '9A'],
-    '10B': ['9B', '11B', '10A'],
-    '11B': ['10B', '12B', '11A'],
-    '12B': ['11B', '1B', '12A']
+export type Camelot = `${1|2|3|4|5|6|7|8|9|10|11|12}${'A'|'B'}`;
+
+type KeyAlias = Record<string, Camelot>;
+
+// Normalizes musical key strings like:
+// "C", "C major", "Cmaj", "C Major", "Am", "A minor", "Amin", "A Minor", "C# minor", "Db major", etc.
+export function normalizeKeyName(input: string): string {
+  const s = input.trim().toLowerCase();
+  // unify whitespace and symbols
+  let k = s
+    .replace(/\s+/g, ' ')
+    .replace(/[-_]/g, ' ')
+    .replace(/maj(or)?/g, 'major')
+    .replace(/min(or)?|m(?!aj)/g, 'minor') // 'm' → minor, but not 'maj'
+    .replace(/^\s+|\s+$/g, '');
+
+  // common compact forms
+  k = k
+    .replace(/^([a-g])b\b/, (_, p1) => `${p1}♭`)  // infer flat symbol
+    .replace(/^([a-g])#\b/, (_, p1) => `${p1}♯`);
+
+  // canonical token order: NOTE + (major|minor), default major if none
+  // tokens might be ['c','minor'] or ['a','minor'] etc.
+  const tokens = k.split(' ');
+  let note = tokens[0] || '';
+  let qual = (tokens[1] || '').toLowerCase();
+
+  // fallback: if 'minor' or 'major' absent but original had trailing 'm'
+  if (!qual && /(^|\s)[a-g][#b♯♭]?m(\s|$)/.test(s)) qual = 'minor';
+  if (!qual && /(^|\s)[a-g][#b♯♭]?(\s|$)/.test(s))  qual = 'major';
+
+  // normalize accidentals to ♯ / ♭ and canonical enharmonics for the map
+  note = note
+    .replace(/#/g, '♯')
+    .replace(/b/g, '♭');
+
+  // map enharmonics to one canonical spelling set
+  const enh: Record<string,string> = {
+    'db': 'c♯','d♭':'c♯', 'eb':'d♯','e♭':'d♯', 'gb':'f♯','g♭':'f♯',
+    'ab': 'g♯','a♭':'g♯', 'bb':'a♯','b♭':'a♯',
   };
+  const raw = (note || '').replace('♭','b').replace('♯','#');
+  const base = enh[raw] ?? raw;
 
-  /**
-   * Get harmonic neighbors for a Camelot key
-   */
-  static getNeighbors(camelotKey: string): string[] {
-    return this.CAMELOT_WHEEL[camelotKey as keyof typeof this.CAMELOT_WHEEL] || [];
-  }
+  return `${base} ${qual || 'major'}`.trim();
+}
 
-  /**
-   * Get harmonic neighbors using database function
-   */
-  static async getNeighborsFromDB(camelotKey: string): Promise<string[]> {
-    try {
-      const { data, error } = await supabase
-        .rpc('get_camelot_neighbors', { input_camelot: camelotKey });
+// Canonical mapping (aliases → Camelot). Include common enharmonics & spellings.
+const KEY_TO_CAMELOT: KeyAlias = {
+  // Major (B)
+  'c major':'8B','g major':'9B','d major':'10B','a major':'11B','e major':'12B','b major':'1B',
+  'f# major':'2B','c# major':'3B','g# major':'4B','d# major':'5B','a# major':'6B','f major':'7B',
+  // Minor (A)
+  'a minor':'8A','e minor':'9A','b minor':'10A','f# minor':'11A','c# minor':'12A','g# minor':'1A',
+  'd# minor':'2A','a# minor':'3A','f minor':'4A','c minor':'5A','g minor':'6A','d minor':'7A',
 
-      if (error) {
-        console.error('Error getting Camelot neighbors:', error);
-        return this.getNeighbors(camelotKey); // Fallback to local
-      }
+  // Extra aliases (enharmonics)
+  'db major':'3B','eb major':'5B','gb major':'2B','ab major':'4B','bb major':'6B',
+  'bb minor':'3A','eb minor':'1A','ab minor':'11A',
+};
 
-      return data || [];
-    } catch (error) {
-      console.error('Database error:', error);
-      return this.getNeighbors(camelotKey); // Fallback to local
-    }
-  }
+export function toCamelot(musicalKey: string | null | undefined): Camelot | null {
+  if (!musicalKey) return null;
+  const norm = normalizeKeyName(musicalKey);
+  return (KEY_TO_CAMELOT[norm] ?? null) as Camelot | null;
+}
 
-  /**
-   * Find tracks with compatible Camelot keys
-   */
-  static async findCompatibleTracks(currentKey: string, limit = 10): Promise<any[]> {
-    try {
-      const neighbors = await this.getNeighborsFromDB(currentKey);
-      const allKeys = [currentKey, ...neighbors];
+export function compatibleKeys(c: Camelot): Camelot[] {
+  const n = parseInt(c, 10) as 1|2|3|4|5|6|7|8|9|10|11|12;
+  const mode = c.endsWith('A') ? 'A' : 'B';
+  const plus1 = ((n % 12) + 1) as 1|2|3|4|5|6|7|8|9|10|11|12;
+  const minus1 = (((n + 10) % 12) + 1) as 1|2|3|4|5|6|7|8|9|10|11|12;
+  const switchMode = `${n}${mode === 'A' ? 'B' : 'A'}` as Camelot;
+  return [
+    c,
+    `${plus1}${mode}` as Camelot,
+    `${minus1}${mode}` as Camelot,
+    switchMode,
+  ];
+}
 
-      const { data: tracks, error } = await supabase
-        .from('tracks')
-        .select('*')
-        .eq('audio_status', 'working')
-        .in('camelot', allKeys)
-        .limit(limit);
+// Minimal track shape this module needs. (Extend your app's Track with this.)
+export interface TrackLike {
+  id: string;
+  bpm_est?: number | null;
+  musical_key_est?: string | null;
+  camelot_key?: Camelot | null; // optional, computed if absent
+}
 
-      if (error) {
-        console.error('Error finding compatible tracks:', error);
-        return [];
-      }
+/** Ensure a track has camelot_key (prefer existing; else compute from musical_key_est). */
+export function ensureCamelot<T extends TrackLike>(t: T): T & { camelot_key: Camelot | null } {
+  const ck = t.camelot_key ?? toCamelot(t.musical_key_est ?? null);
+  return { ...t, camelot_key: ck };
+}
 
-      return tracks || [];
-    } catch (error) {
-      console.error('Error in findCompatibleTracks:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Get the next harmonic track in sequence
-   */
-  static async getNextHarmonicTrack(currentTrack: any): Promise<any | null> {
-    if (!currentTrack?.camelot) {
-      console.warn('Current track has no Camelot key');
-      return null;
-    }
-
-    const compatibleTracks = await this.findCompatibleTracks(currentTrack.camelot, 50);
-    
-    // Filter out the current track
-    const nextTracks = compatibleTracks.filter(track => track.id !== currentTrack.id);
-    
-    if (nextTracks.length === 0) {
-      return null;
-    }
-
-    // Prioritize tracks with exact key match, then neighbors
-    const neighbors = await this.getNeighborsFromDB(currentTrack.camelot);
-    
-    const exactMatches = nextTracks.filter(track => track.camelot === currentTrack.camelot);
-    const neighborMatches = nextTracks.filter(track => neighbors.includes(track.camelot));
-    
-    const prioritized = [...exactMatches, ...neighborMatches];
-    
-    // Return random track from prioritized list
-    return prioritized[Math.floor(Math.random() * prioritized.length)] || nextTracks[0];
-  }
-
-  /**
-   * Validate if two tracks are harmonically compatible
-   */
-  static async areCompatible(track1Key: string, track2Key: string): Promise<boolean> {
-    const neighbors = await this.getNeighborsFromDB(track1Key);
-    return track1Key === track2Key || neighbors.includes(track2Key);
-  }
-
-  /**
-   * Get all tracks grouped by Camelot key
-   */
-  static async getTracksByKey(): Promise<Record<string, any[]>> {
-    try {
-      const { data: tracks, error } = await supabase
-        .from('tracks')
-        .select('*')
-        .eq('audio_status', 'working')
-        .not('camelot', 'is', null);
-
-      if (error) {
-        console.error('Error getting tracks by key:', error);
-        return {};
-      }
-
-      const grouped: Record<string, any[]> = {};
-      tracks?.forEach(track => {
-        const key = track.camelot;
-        if (!grouped[key]) {
-          grouped[key] = [];
-        }
-        grouped[key].push(track);
-      });
-
-      return grouped;
-    } catch (error) {
-      console.error('Error in getTracksByKey:', error);
-      return {};
-    }
-  }
+/** Score compatibility between two Camelot keys (0..1). Same/switch/adjacent get higher scores. */
+export function camelotCompatibility(a: Camelot | null, b: Camelot | null): number {
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+  const comp = new Set(compatibleKeys(a));
+  return comp.has(b) ? 0.8 : 0;
 }
