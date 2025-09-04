@@ -1835,6 +1835,7 @@ export type Database = {
           album_art_credits: string | null
           album_art_thumbnail: string | null
           album_art_url: string | null
+          analysis_status: string | null
           analysis_timestamp: string | null
           analysis_version: string | null
           analyzed_at: string | null
@@ -1842,14 +1843,18 @@ export type Database = {
           artist: string | null
           artwork_path: string | null
           audio_status: string | null
+          bitrate_kbps: number | null
           bpm: number | null
+          bpm_est: number | null
           camelot: string | null
+          channels: number | null
           comprehensive_analysis: Json | null
           created_date: string | null
           crest_factor: number | null
           danceability: number | null
           danceability_score: number | null
           dominance: number | null
+          duration_sec: number | null
           duration_seconds: number | null
           dynamic_complexity: number | null
           dynamic_features: Json | null
@@ -1862,6 +1867,7 @@ export type Database = {
           file_name: string | null
           file_path: string | null
           file_size_bytes: number | null
+          format: string | null
           genre: string | null
           harmonic_features: Json | null
           id: string
@@ -1871,9 +1877,11 @@ export type Database = {
           key: string | null
           key_confidence: number | null
           key_strength: number | null
+          last_analyzed_at: string | null
           last_error: string | null
           last_verified_at: string | null
           loudness_lufs: number | null
+          md5_hex: string | null
           mood: string | null
           mood_acoustic: number | null
           mood_aggressive: number | null
@@ -1882,6 +1890,7 @@ export type Database = {
           mood_relaxed: number | null
           mood_sad: number | null
           mood_scores: Json | null
+          musical_key_est: string | null
           onset_rate: number | null
           pitch_mean: number | null
           play_count: number | null
@@ -1890,6 +1899,7 @@ export type Database = {
           rhythmic_features: Json | null
           rms_energy: number | null
           roughness: number | null
+          sample_rate_hz: number | null
           scale: string | null
           skip_count: number | null
           spectral_bandwidth: number | null
@@ -1918,6 +1928,7 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
           analyzed_at?: string | null
@@ -1925,14 +1936,18 @@ export type Database = {
           artist?: string | null
           artwork_path?: string | null
           audio_status?: string | null
+          bitrate_kbps?: number | null
           bpm?: number | null
+          bpm_est?: number | null
           camelot?: string | null
+          channels?: number | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
           crest_factor?: number | null
           danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
+          duration_sec?: number | null
           duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
@@ -1945,6 +1960,7 @@ export type Database = {
           file_name?: string | null
           file_path?: string | null
           file_size_bytes?: number | null
+          format?: string | null
           genre?: string | null
           harmonic_features?: Json | null
           id?: string
@@ -1954,9 +1970,11 @@ export type Database = {
           key?: string | null
           key_confidence?: number | null
           key_strength?: number | null
+          last_analyzed_at?: string | null
           last_error?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
+          md5_hex?: string | null
           mood?: string | null
           mood_acoustic?: number | null
           mood_aggressive?: number | null
@@ -1965,6 +1983,7 @@ export type Database = {
           mood_relaxed?: number | null
           mood_sad?: number | null
           mood_scores?: Json | null
+          musical_key_est?: string | null
           onset_rate?: number | null
           pitch_mean?: number | null
           play_count?: number | null
@@ -1973,6 +1992,7 @@ export type Database = {
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
+          sample_rate_hz?: number | null
           scale?: string | null
           skip_count?: number | null
           spectral_bandwidth?: number | null
@@ -2001,6 +2021,7 @@ export type Database = {
           album_art_credits?: string | null
           album_art_thumbnail?: string | null
           album_art_url?: string | null
+          analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
           analyzed_at?: string | null
@@ -2008,14 +2029,18 @@ export type Database = {
           artist?: string | null
           artwork_path?: string | null
           audio_status?: string | null
+          bitrate_kbps?: number | null
           bpm?: number | null
+          bpm_est?: number | null
           camelot?: string | null
+          channels?: number | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
           crest_factor?: number | null
           danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
+          duration_sec?: number | null
           duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
@@ -2028,6 +2053,7 @@ export type Database = {
           file_name?: string | null
           file_path?: string | null
           file_size_bytes?: number | null
+          format?: string | null
           genre?: string | null
           harmonic_features?: Json | null
           id?: string
@@ -2037,9 +2063,11 @@ export type Database = {
           key?: string | null
           key_confidence?: number | null
           key_strength?: number | null
+          last_analyzed_at?: string | null
           last_error?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
+          md5_hex?: string | null
           mood?: string | null
           mood_acoustic?: number | null
           mood_aggressive?: number | null
@@ -2048,6 +2076,7 @@ export type Database = {
           mood_relaxed?: number | null
           mood_sad?: number | null
           mood_scores?: Json | null
+          musical_key_est?: string | null
           onset_rate?: number | null
           pitch_mean?: number | null
           play_count?: number | null
@@ -2056,6 +2085,7 @@ export type Database = {
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
+          sample_rate_hz?: number | null
           scale?: string | null
           skip_count?: number | null
           spectral_bandwidth?: number | null
