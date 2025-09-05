@@ -114,14 +114,14 @@ export default function DatabaseStorageRepairer() {
     }
   };
 
-  // Phase 2: Rebuild Database-Storage Connection
+  // Phase 2: Rebuild Database-Storage Connection  
   const phase2_rebuild = async () => {
     setCurrentPhase('Phase 2: Rebuild');
     addResult('phase2', 'RUNNING', 'Starting database-storage connection rebuild...');
 
     try {
-      // Option A: Use tracks_id_mapping if it exists and has the right structure
-      addResult('phase2', 'INFO', 'Attempting Option A: Using tracks_id_mapping table...');
+      // First, check what tracks_id_mapping actually contains
+      addResult('phase2', 'INFO', 'Checking tracks_id_mapping table structure...');
       
       const { data: mappings } = await supabase
         .from('tracks_id_mapping')
@@ -130,103 +130,124 @@ export default function DatabaseStorageRepairer() {
 
       if (mappings && mappings.length > 0) {
         const mapping = mappings[0];
-        const hasTrackId = 'new_id' in mapping;
-        const hasFileName = 'actual_filename' in mapping || 'real_filename' in mapping;
+        const fields = Object.keys(mapping);
+        
+        addResult('phase2', 'INFO', `tracks_id_mapping contains: ${fields.join(', ')}`, {
+          sampleMapping: mapping,
+          containsFilenames: fields.some(f => f.includes('filename') || f.includes('file') || f.includes('storage'))
+        });
 
-        if (hasTrackId) {
-          addResult('phase2', 'INFO', 'Mapping table found with track IDs. Attempting batch update...');
-          
-          // Get actual files list first
-          const { data: files } = await supabase.storage
-            .from('neuralpositivemusic')
-            .list('', { limit: 1000 });
-
-          const audioFiles = files?.filter(f => f.name.match(/\.(mp3|wav|m4a|flac|ogg)$/i)) || [];
-          const fileNames = audioFiles.map(f => f.name);
-
-          addResult('phase2', 'SUCCESS', `Found ${fileNames.length} actual audio files to work with`);
-
-          // For tracks with mapping, update to neuralpositivemusic bucket
-          // This is a simulated update - in reality you'd need proper SQL access
-          let updatedCount = 0;
-          const sampleUpdates = [];
-
-          for (const mapping of mappings.slice(0, 10)) {
-            const trackId = mapping.new_id;
-            
-            if (trackId) {
-              // Find the corresponding track
-              const { data: track } = await supabase
-                .from('tracks')
-                .select('id, title')
-                .eq('id', trackId)
-                .single();
-
-              if (track) {
-                // Try to match track title to existing files
-                const matchedFile = findBestFileMatch(track.title, fileNames);
-                
-                if (matchedFile) {
-                  sampleUpdates.push({
-                    trackId: track.id,
-                    title: track.title,
-                    matchedFile,
-                    confidence: calculateMatchConfidence(track.title, matchedFile)
-                  });
-                  updatedCount++;
-                }
-              }
-            }
-          }
-
-          addResult('phase2', 'SUCCESS', `Option A analysis: ${updatedCount} potential matches found`, {
-            sampleMatches: sampleUpdates,
-            totalProcessed: mappings.length
-          });
-
-        } else {
-          addResult('phase2', 'WARNING', 'Mapping table lacks required fields, trying Option B...');
-        }
+        // Since it only has ID conversions, skip this approach
+        addResult('phase2', 'WARNING', 'tracks_id_mapping only has ID conversions, not filename mappings. Skipping to direct matching.');
       }
 
-      // Option B: Title-based fuzzy matching
-      addResult('phase2', 'INFO', 'Executing Option B: Title-based fuzzy matching...');
+      // Get actual files from neuralpositivemusic bucket
+      addResult('phase2', 'INFO', 'Getting actual files from neuralpositivemusic bucket...');
       
       const { data: files } = await supabase.storage
         .from('neuralpositivemusic')
         .list('', { limit: 1000 });
 
-      const audioFiles = files?.filter(f => f.name.match(/\.(mp3|wav|m4a|flac|ogg)$/i)) || [];
+      if (!files) {
+        addResult('phase2', 'ERROR', 'Failed to list files from neuralpositivemusic bucket');
+        return;
+      }
+
+      const audioFiles = files.filter(f => f.name.match(/\.(mp3|wav|m4a|flac|ogg)$/i));
       const fileNames = audioFiles.map(f => f.name);
 
-      const { data: unmatchedTracks } = await supabase
+      addResult('phase2', 'SUCCESS', `Found ${audioFiles.length} audio files in neuralpositivemusic`, {
+        totalFiles: files.length,
+        audioFiles: audioFiles.length,
+        sampleFiles: fileNames.slice(0, 10)
+      });
+
+      // Get sample track titles to see naming patterns
+      addResult('phase2', 'INFO', 'Analyzing track title patterns...');
+      
+      const { data: sampleTracks } = await supabase
         .from('tracks')
-        .select('id, title, storage_bucket, storage_key')
-        .neq('storage_bucket', 'neuralpositivemusic')
+        .select('id, title, storage_key')
         .limit(20);
 
+      if (!sampleTracks) {
+        addResult('phase2', 'ERROR', 'Failed to fetch sample tracks');
+        return;
+      }
+
+      // Build title-to-filename matching
+      addResult('phase2', 'INFO', 'Building title-to-filename matches...');
+      
       const matches = [];
-      for (const track of unmatchedTracks || []) {
-        const bestMatch = findBestFileMatch(track.title, fileNames);
-        if (bestMatch) {
-          const confidence = calculateMatchConfidence(track.title, bestMatch);
-          if (confidence > 0.6) { // Only high-confidence matches
-            matches.push({
-              trackId: track.id,
-              title: track.title,
-              matchedFile: bestMatch,
-              confidence
-            });
+      const exactMatches = [];
+      
+      for (const track of sampleTracks) {
+        // Method 1: Clean title matching
+        const cleanTitle = track.title.toLowerCase()
+          .replace(/[^a-z0-9]/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+        
+        // Method 2: First 20 characters matching
+        const titleStart = cleanTitle.substring(0, 20);
+        
+        // Method 3: Look for exact filename match
+        const exactMatch = fileNames.find(fileName => 
+          fileName.toLowerCase().replace(/\.(mp3|wav|m4a|flac|ogg)$/i, '') === cleanTitle
+        );
+        
+        if (exactMatch) {
+          exactMatches.push({
+            trackId: track.id,
+            title: track.title,
+            matchedFile: exactMatch,
+            confidence: 1.0,
+            method: 'exact'
+          });
+        } else {
+          // Partial matching
+          const partialMatch = fileNames.find(fileName => 
+            fileName.toLowerCase().includes(titleStart) && titleStart.length > 5
+          );
+          
+          if (partialMatch) {
+            const confidence = calculateMatchConfidence(track.title, partialMatch);
+            if (confidence > 0.3) {
+              matches.push({
+                trackId: track.id,
+                title: track.title,
+                matchedFile: partialMatch,
+                confidence,
+                method: 'partial'
+              });
+            }
           }
         }
       }
 
-      addResult('phase2', 'SUCCESS', `Option B: Found ${matches.length} high-confidence matches`, {
-        matches: matches.slice(0, 10),
-        totalProcessed: unmatchedTracks?.length
+      const allMatches = [...exactMatches, ...matches.slice(0, 10)];
+      
+      addResult('phase2', 'SUCCESS', `Found ${exactMatches.length} exact matches and ${matches.length} partial matches`, {
+        exactMatches,
+        partialMatches: matches.slice(0, 5),
+        totalProcessed: sampleTracks.length,
+        matchRate: Math.round((allMatches.length / sampleTracks.length) * 100)
       });
 
-      addResult('phase2', 'COMPLETE', `Rebuild analysis completed. Ready for batch update with ${matches.length} matches`);
+      // Simulate what the SQL updates would look like
+      addResult('phase2', 'INFO', 'Generating update statements for high-confidence matches...');
+      
+      const sqlUpdates = exactMatches.slice(0, 5).map(match => ({
+        trackId: match.trackId,
+        title: match.title,
+        sqlStatement: `UPDATE tracks SET storage_bucket = 'neuralpositivemusic', storage_key = '${match.matchedFile}', audio_status = 'working' WHERE id = '${match.trackId}';`
+      }));
+
+      addResult('phase2', 'SUCCESS', `Generated ${sqlUpdates.length} SQL update statements`, {
+        sampleUpdates: sqlUpdates
+      });
+
+      addResult('phase2', 'COMPLETE', `Rebuild analysis completed. Found ${allMatches.length} total matches ready for database update`);
 
     } catch (error) {
       addResult('phase2', 'ERROR', `Rebuild failed: ${error.message}`);
