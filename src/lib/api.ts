@@ -111,19 +111,16 @@ export const streamUrl = (track: any): string => {
     return '#no-supabase-url';
   }
   
-  // OVERRIDE: Database has wrong bucket name "audio", files are actually in "neuralpositivemusic"
-  const correctBucket = 'neuralpositivemusic';
+  // Use the database bucket (don't override - respect what's in the database)
+  const bucket = track.storage_bucket || 'audio';
   
-  // Remove "tracks/" prefix from storage_key since files are directly in neuralpositivemusic bucket
-  const cleanFileName = track.storage_key.replace(/^tracks\//, '');
+  // Properly encode the storage key to handle special characters
+  const encodedStorageKey = track.storage_key.split('/').map(encodeURIComponent).join('/');
+  const url = `${supabaseUrl}/storage/v1/object/public/${bucket}/${encodedStorageKey}`;
   
-  // Properly encode the filename to handle special characters
-  const encodedFileName = encodeURIComponent(cleanFileName);
-  const url = `${supabaseUrl}/storage/v1/object/public/${correctBucket}/${encodedFileName}`;
-  
-  console.log('🎵 Fixed URL generation:');
-  console.log('  📁 Database bucket:', track.storage_bucket, '→ Corrected to:', correctBucket);
-  console.log('  📂 Database key:', track.storage_key, '→ Cleaned to:', cleanFileName);
+  console.log('🎵 Generated storage URL:', url);
+  console.log('  📁 Bucket:', bucket);
+  console.log('  📂 Storage key:', track.storage_key);
   console.log('  🔗 Final URL:', url);
   
   return url;
