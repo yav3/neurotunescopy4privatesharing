@@ -98,8 +98,16 @@ export const streamUrl = (id: string): string => {
     return '#invalid-id';
   }
   
-  const url = `${API_BASE_URL}/stream?id=${encodeURIComponent(id.trim())}`;
-  console.log('🎵 Generated stream URL:', url);
+  // Generate direct Supabase storage URL instead of broken /api/stream endpoint
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  if (!supabaseUrl) {
+    console.error('❌ VITE_SUPABASE_URL not configured');
+    return '#no-supabase-url';
+  }
+  
+  // Use direct storage URL with the track ID as filename
+  const url = `${supabaseUrl}/storage/v1/object/public/neuralpositivemusic/${encodeURIComponent(id.trim())}.mp3`;
+  console.log('🎵 Generated direct storage URL:', url);
   return url;
 };
 
@@ -113,18 +121,7 @@ export const API = {
   debugStorage: () => req<any>("/debug/storage"),
   streamUrl: (id: string) => {
     console.warn('⚠️ Using legacy API.streamUrl - consider using streamUrl function instead');
-    if (!id) {
-      console.error('[STREAM URL] No track ID provided:', id);
-      throw new Error('Track ID is required for streaming');
-    }
-    // Validate UUID format
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    if (!isUUID) {
-      throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
-    }
-    const url = join(API_BASE_URL, `/stream?id=${encodeURIComponent(id)}`);
-    console.log("[STREAM URL]", { id, url });
-    return url;
+    return streamUrl(id); // Use the fixed streamUrl function
   },
   
   searchTracks: (params: Record<string, any>) => {
