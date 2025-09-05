@@ -31,7 +31,7 @@ export const StorageAudit: React.FC = () => {
     
     try {
       const { data, error } = await supabase.functions.invoke('storage-audit', {
-        body: { bucket: 'audio', limit: 50 }
+        body: { bucket: 'neuralpositivemusic', limit: 50 }
       });
       
       if (error) throw error;

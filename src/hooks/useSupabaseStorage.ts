@@ -68,7 +68,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
 
   const getPublicUrl = useCallback((
     path: string, 
-    bucket: string = 'audio'
+    bucket: string = 'neuralpositivemusic'  // Fixed: was 'audio'
   ): string => {
     const { data } = supabase.storage.from(bucket).getPublicUrl(path);
     return data.publicUrl;
