@@ -1,4 +1,5 @@
 import { TherapeuticGoalCard } from "./ui/TherapeuticGoalCard";
+import { TrendingCard } from "./TrendingCard";
 import { useTherapeuticGoals } from "@/hooks/useTherapeuticGoals";
 import { useAudioStore } from "@/stores";
 import { toast } from "sonner";
@@ -52,6 +53,11 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-foreground mb-2">Therapeutic Music</h2>
           <p className="text-muted-foreground">Scientifically ordered tracks using VAD and Camelot wheel harmonic progression</p>
+        </div>
+        
+        {/* Trending Card */}
+        <div className="mb-6">
+          <TrendingCard className="max-w-md" />
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
