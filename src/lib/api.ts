@@ -154,7 +154,14 @@ export const API = {
   },
   
   // Legacy compatibility methods
-  buildSession: (body: { goal: string; durationMin: number; intensity: number; limit?: number }) =>
+  buildSession: (body: { 
+    goal: string; 
+    durationMin: number; 
+    intensity: number; 
+    limit?: number;
+    exclude?: string;
+    randomSeed?: string;
+  }) =>
     req<{ tracks: any[]; sessionId: string }>("/session/build", {
       method: "POST", 
       body: JSON.stringify(body)

@@ -78,12 +78,29 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
         intensity: intensity[0]
       });
 
-      // 🔄 MIRROR BACKEND: Use API.buildSession endpoint exactly as backend expects
+      // 🎲 VARIETY SYSTEM: Get recently played tracks to avoid repetition
+      const getRecentlyPlayed = (): string[] => {
+        const recentTracks = localStorage.getItem('recentlyPlayedTracks');
+        return recentTracks ? JSON.parse(recentTracks) : [];
+      };
+
+      const updateRecentlyPlayed = (trackIds: string[]) => {
+        const recent = getRecentlyPlayed();
+        const updated = [...trackIds, ...recent].slice(0, 100); // Keep last 100 tracks
+        localStorage.setItem('recentlyPlayedTracks', JSON.stringify(updated));
+      };
+
+      const recentlyPlayed = getRecentlyPlayed();
+      console.log('🚫 Excluding recently played tracks:', recentlyPlayed.length);
+
+      // 🔄 MIRROR BACKEND: Use API.buildSession endpoint with variety parameters
       const session = await API.buildSession({
         goal: selectedGoal.backendKey, // Use backend key
         durationMin: duration[0],
         intensity: intensity[0],
-        limit: 50
+        limit: 200, // Request more tracks to allow for variety filtering
+        exclude: recentlyPlayed.join(','), // Exclude recently played tracks
+        randomSeed: Math.random().toString(36) // Add randomization
       });
       
       // Add defensive null checking to prevent "Cannot read properties of undefined" errors
@@ -99,12 +116,37 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
         throw new Error('Session returned empty tracks array');
       }
       
-      console.log('✅ Backend session built:', session.sessionId, 'with', session.tracks.length, 'tracks');
+      // Add client-side variety filtering as fallback
+      let availableTracks = session.tracks.filter((t: any) => t && t.id);
+      
+      // Client-side exclusion if backend doesn't support it
+      if (recentlyPlayed.length > 0) {
+        const beforeFilter = availableTracks.length;
+        availableTracks = availableTracks.filter((t: any) => !recentlyPlayed.includes(t.id));
+        console.log(`🎲 Variety filter: ${beforeFilter} → ${availableTracks.length} tracks (excluded ${beforeFilter - availableTracks.length} recent)`);
+      }
+      
+      if (availableTracks.length === 0) {
+        // If all tracks are recently played, clear history and try again
+        console.log('🔄 All tracks recently played, clearing history for variety');
+        localStorage.removeItem('recentlyPlayedTracks');
+        availableTracks = session.tracks.filter((t: any) => t && t.id);
+      }
+
+      // 🎲 SHUFFLE for variety: Randomize track order before selection
+      const shuffledTracks = [...availableTracks].sort(() => Math.random() - 0.5);
+      
+      // Calculate needed tracks
+      const averageTrackLength = 4; // minutes
+      const tracksNeeded = Math.max(3, Math.ceil(duration[0] / averageTrackLength));
+      
+      // Select diverse tracks (not just the first ones)
+      const selectedTracks = shuffledTracks.slice(0, Math.min(tracksNeeded, shuffledTracks.length));
+
+      console.log('✅ Backend session built:', session.sessionId, 'with', selectedTracks.length, 'diverse tracks');
 
       // Convert backend tracks to frontend format with additional null checking
-      const tracks = session.tracks
-        .filter((t: any) => t && t.id) // Filter out null/undefined tracks
-        .map((t: any) => ({
+      const tracks = selectedTracks.map((t: any) => ({
         id: t.id,
         title: t.title || "",
         artist: t.genre || "Unknown",
@@ -115,6 +157,11 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
         acousticness: t.acousticness,
         instrumentalness: t.instrumentalness
       }));
+
+      // 🎲 VARIETY TRACKING: Update recently played list
+      const trackIds = tracks.map((t: any) => t.id);
+      updateRecentlyPlayed(trackIds);
+      console.log('📝 Updated recently played list with', trackIds.length, 'new tracks');
 
       // 🔄 MIRROR BACKEND: Start session tracking
       if (tracks.length > 0) {
