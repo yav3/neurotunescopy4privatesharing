@@ -226,6 +226,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       const url = streamUrl(track);
       console.log('🎵 Stream URL generated:', url);
+      console.log('🔧 Track object being passed to streamUrl:', JSON.stringify(track, null, 2));
+      console.log('🔧 Call stack for URL generation:', new Error().stack);
       
       // Check if URL is valid
       if (url === '#invalid-id' || !url.startsWith('http')) {

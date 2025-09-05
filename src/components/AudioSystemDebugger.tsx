@@ -25,7 +25,7 @@ export const logTrackId = (track: any, context: string) => {
 };
 
 // 3. Stream URL Debug Function
-export const debugStreamUrl = (track: any) => {
+export const debugStreamUrl = async (track: any) => {
   console.group('🌐 Stream URL Generation Debug');
   
   const trackId = track.id || track._id || track.uuid;
@@ -37,17 +37,22 @@ export const debugStreamUrl = (track: any) => {
   const api_base = import.meta.env.VITE_API_BASE_URL || 'https://pbtgvcjniayedqlajjzz.functions.supabase.co';
   console.log('API_BASE from env:', api_base);
   
-  // Method 1: Using ID
+  // Method 1: Using ID - DEPRECATED, should not be used
   const urlById = `${api_base}/api/stream?id=${trackId}`;
-  console.log('URL by ID:', urlById);
+  console.log('⚠️ DEPRECATED URL by ID:', urlById);
   
-  // Method 2: Using file_path
+  // Method 2: Using file_path - DEPRECATED, should not be used  
   const file_path = track.file_path || track.file_name || track.src;
   const urlByFile = `${api_base}/api/stream?file=${encodeURIComponent(file_path || '')}`;
-  console.log('URL by file:', urlByFile);
+  console.log('⚠️ DEPRECATED URL by file:', urlByFile);
+  
+  // Method 3: Using new streamUrl function
+  const { streamUrl } = await import('@/lib/api');
+  const newUrl = streamUrl(track);
+  console.log('✅ NEW streamUrl result:', newUrl);
   
   console.groupEnd();
-  return { urlById, urlByFile, trackId, isValidUUID: isValidUUID(trackId?.toString() || '') };
+  return { urlById, urlByFile, newUrl, trackId, isValidUUID: isValidUUID(trackId?.toString() || '') };
 };
 
 // 4. Audio Store Conflict Detector
