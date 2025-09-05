@@ -12,6 +12,8 @@ let sessionManager: { trackProgress: (t: number, d: number) => void; completeSes
 
 // Race condition protection
 let loadSeq = 0;
+let isNexting = false;
+let isPlaying = false;
 
 // Network hang protection  
 let currentAbort: AbortController | null = null;
@@ -133,7 +135,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        await get().next();
+        // Prevent racing by checking if already nexting
+        if (!isNexting) {
+          await get().next();
+        }
       });
       
       // Auto-skip on audio error
@@ -141,7 +146,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.warn('🎵 Audio error event — skipping to next track');
         set({ isPlaying: false });
         announceSkip();
-        await get().next();
+        // Prevent racing by checking if already nexting
+        if (!isNexting) {
+          await get().next();
+        }
       });
       
       // Honest state tracking
@@ -491,21 +499,33 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Media format/source not supported
           set({ error: "Audio format not supported" });
           toast.error("Track format not supported - trying next track");
-          // Auto-skip to next track
-          setTimeout(() => get().next(), 1000);
+          // Auto-skip to next track (debounced)
+          if (!isNexting) {
+            setTimeout(() => {
+              if (!isNexting) get().next();
+            }, 1000);
+          }
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error
           set({ error: "Network error loading track" });
           toast.error("Network error - checking next track");
-          // Auto-skip to next track  
-          setTimeout(() => get().next(), 1000);
+          // Auto-skip to next track (debounced)
+          if (!isNexting) {
+            setTimeout(() => {
+              if (!isNexting) get().next();
+            }, 1000);
+          }
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
           toast.error("Playback issue - trying next track");
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Auto-skip to next track
-          setTimeout(() => get().next(), 1000);
+          // Auto-skip to next track (debounced)
+          if (!isNexting) {
+            setTimeout(() => {
+              if (!isNexting) get().next();
+            }, 1000);
+          }
         }
       }
     },
@@ -516,36 +536,46 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      let { queue, index } = get();
-      
-      for (let i = index + 1; i < queue.length; i++) {
-        console.log('🎵 Trying next track at index', i, ':', queue[i].title);
-        const success = await loadTrack(queue[i]);
-        if (success) {
-          set({ index: i });
-          await get().play();
-          return;
-        }
-        
-        // Drop broken track from queue and announce skip
-        console.log('🎵 Removing broken track from queue:', queue[i].title);
-        announceSkip();
-        queue = removeAt(queue, i);
-        i--; // Adjust index since we removed an item
-        set({ queue });
-      }
-      
-      // If no more tracks in current queue, try to reload the last goal
-      const { lastGoal } = get();
-      if (lastGoal) {
-        console.log('🎵 Queue exhausted, reloading tracks for goal:', lastGoal);
-        await get().playFromGoal(lastGoal);
+      // Prevent concurrent next operations
+      if (isNexting) {
+        console.log('🎵 Next already in progress, skipping');
         return;
       }
       
-      console.log('🎵 No more working tracks in queue and no goal to reload');
-      set({ isLoading: false, error: "No more tracks available" });
-      return;
+      isNexting = true;
+      try {
+        let { queue, index } = get();
+        
+        for (let i = index + 1; i < queue.length; i++) {
+          console.log('🎵 Trying next track at index', i, ':', queue[i].title);
+          const success = await loadTrack(queue[i]);
+          if (success) {
+            set({ index: i });
+            await get().play();
+            return;
+          }
+          
+          // Drop broken track from queue and announce skip
+          console.log('🎵 Removing broken track from queue:', queue[i].title);
+          announceSkip();
+          queue = removeAt(queue, i);
+          i--; // Adjust index since we removed an item
+          set({ queue });
+        }
+        
+        // If no more tracks in current queue, try to reload the last goal
+        const { lastGoal } = get();
+        if (lastGoal) {
+          console.log('🎵 Queue exhausted, reloading tracks for goal:', lastGoal);
+          await get().playFromGoal(lastGoal);
+          return;
+        }
+        
+        console.log('🎵 No more working tracks in queue and no goal to reload');
+        set({ isLoading: false, error: "No more tracks available" });
+      } finally {
+        isNexting = false;
+      }
     },
 
     prev: async () => {
