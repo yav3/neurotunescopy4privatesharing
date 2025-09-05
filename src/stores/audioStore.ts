@@ -547,7 +547,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       isNexting = true;
       try {
-        let { queue, index } = get();
+        let { queue, index, lastGoal } = get();
+        console.log('🎵 Skip button pressed - current index:', index, 'queue length:', queue.length, 'lastGoal:', lastGoal);
         
         for (let i = index + 1; i < queue.length; i++) {
           console.log('🎵 Trying next track at index', i, ':', queue[i].title);
@@ -555,6 +556,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           if (success) {
             set({ index: i });
             await get().play();
+            console.log('🎵 Successfully skipped to track:', queue[i].title);
             return;
           }
           
@@ -567,14 +569,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         // If no more tracks in current queue, try to reload the last goal
-        const { lastGoal } = get();
-        if (lastGoal) {
-          console.log('🎵 Queue exhausted, reloading tracks for goal:', lastGoal);
-          await get().playFromGoal(lastGoal);
+        const currentState = get();
+        if (currentState.lastGoal) {
+          console.log('🎵 Queue exhausted, reloading tracks for goal:', currentState.lastGoal);
+          toast.info("Loading more tracks...");
+          await get().playFromGoal(currentState.lastGoal);
           return;
         }
         
         console.log('🎵 No more working tracks in queue and no goal to reload');
+        toast.error("No more tracks available. Please select a new category.");
         set({ isLoading: false, error: "No more tracks available" });
       } finally {
         isNexting = false;
