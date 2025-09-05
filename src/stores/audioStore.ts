@@ -13,9 +13,6 @@ let sessionManager: { trackProgress: (t: number, d: number) => void; completeSes
 // Race condition protection
 let loadSeq = 0;
 
-// HEAD request throttling
-let headFailures = 0;
-
 // Network hang protection  
 let currentAbort: AbortController | null = null;
 
@@ -101,46 +98,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
   
-  // Helper: Throttled HEAD check with timeout and abort control + Range fallback
-  const headCheck = async (url: string, ms = 3000): Promise<boolean> => {
-    // After N failures, skip HEAD and let stream self-heal
-    if (headFailures >= 3) {
-      console.log('🎵 Skipping HEAD check (too many failures), letting stream self-heal');
-      return true;
-    }
-    
-    // Cancel any prior probe
-    currentAbort?.abort();
-    const controller = new AbortController();
-    currentAbort = controller;
-    
-    const timeout = setTimeout(() => controller.abort(), ms);
-    
-    try {
-      const response = await fetch(url, { method: 'HEAD', signal: controller.signal });
-      clearTimeout(timeout);
-      headFailures = response.ok ? 0 : headFailures + 1;
-      if (response.ok) return true;
-    } catch {
-      clearTimeout(timeout);
-    }
-    
-    // Fallback: 1-byte range GET (some CDNs 403 on HEAD)
-    try {
-      const response = await fetch(url, { 
-        method: 'GET', 
-        headers: { Range: 'bytes=0-0' },
-        signal: controller.signal 
-      });
-      headFailures = response.ok ? 0 : headFailures + 1;
-      return response.ok;
-    } catch {
-      headFailures++;
-      return false;
-    } finally {
-      // Clean up controller reference
-      if (currentAbort === controller) currentAbort = null;
-    }
+  // Simplified: Just try to play the track directly, no pre-validation
+  const canPlay = async (url: string): Promise<boolean> => {
+    console.log('🎵 Testing stream URL:', url);
+    return true; // Let the audio element handle validation
   };
   
   // Helper: Announce skips with smart UX (don't spam)
@@ -219,35 +180,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
     return audio;
   };
 
-  // Fast parallel validation of multiple tracks
+  // Simplified: Skip pre-validation, let tracks fail gracefully during playback
   const validateTracks = async (tracks: Track[]): Promise<{ working: Track[], broken: Track[] }> => {
-    if (tracks.length === 0) return { working: [], broken: [] };
+    console.log(`🎵 Using all ${tracks.length} tracks without pre-validation`);
     
-    console.log(`🎵 Validating ${tracks.length} tracks in parallel...`);
+    // Just check for basic track ID
+    const working = tracks.filter(track => track.id);
+    const broken = tracks.filter(track => !track.id);
     
-    // Validate all tracks in parallel with 1 second timeout each
-    const results = await Promise.allSettled(
-      tracks.map(async (track) => {
-        if (!track.id || (!track.storage_key && !track.file_path)) return { track, valid: false };
-        
-        const url = buildStreamUrl(track.id);
-        const valid = await headCheck(url, 1000); // Faster timeout for batch validation
-        return { track, valid };
-      })
-    );
+    if (broken.length > 0) {
+      console.log(`🎵 Filtered out ${broken.length} tracks without IDs`);
+    }
     
-    const working: Track[] = [];
-    const broken: Track[] = [];
-    
-    results.forEach((result, index) => {
-      if (result.status === 'fulfilled' && result.value.valid) {
-        working.push(result.value.track);
-      } else {
-        broken.push(tracks[index]);
-      }
-    });
-    
-    console.log(`🎵 Validation complete: ${working.length} working, ${broken.length} broken`);
     return { working, broken };
   };
 
