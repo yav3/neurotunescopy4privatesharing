@@ -3,10 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Play, Music } from "lucide-react";
-import { fetchPlaylist } from "@/lib/api";
-import { excludeQS, newSeed } from "@/state/playlistSession";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
+import { streamUrl } from "@/lib/api";
 
 interface TrendingCardProps {
   className?: string;
@@ -20,16 +19,19 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   useEffect(() => {
     const loadTrendingTracks = async () => {
       try {
-        // Fetch trending tracks using focus-enhancement as a popular goal
-        const { tracks, error } = await fetchPlaylist('focus-enhancement', 20, newSeed(), excludeQS());
+        // Fetch trending tracks directly from the API endpoint
+        const apiUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/v1/playlist?goal=focus-enhancement&count=20';
+        const response = await fetch(apiUrl, {
+          headers: {
+            'Accept': 'application/json',
+          }
+        });
         
-        if (error) {
-          console.warn('Trending tracks fallback/error:', error);
-        }
+        const data = await response.json();
         
-        if (tracks?.length) {
+        if (data.tracks?.length) {
           // Take first 5 tracks for the trending preview
-          setTrendingTracks(tracks.slice(0, 5));
+          setTrendingTracks(data.tracks.slice(0, 5));
         }
       } catch (error) {
         console.error('Failed to load trending tracks:', error);
