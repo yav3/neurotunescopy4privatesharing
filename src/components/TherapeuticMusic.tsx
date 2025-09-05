@@ -64,7 +64,6 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
             <TherapeuticGoalCard
               key={goal.id}
               goal={goal}
-              trackCount={goal.trackCount}
               showBpmRange={false}
               onClick={() => handleCategoryClick(goal.id)}
               className="h-full"

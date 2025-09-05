@@ -68,21 +68,11 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         
         {/* Content */}
         <div className="absolute inset-0 p-4 flex flex-col justify-between">
-          {/* Top Section - Icon and Status */}
+          {/* Top Section - Icon */}
           <div className="flex items-start justify-between">
             <div className={`p-2 rounded-full bg-gradient-to-br ${goal.gradient} text-white shadow-lg`}>
               <goal.icon size={20} />
             </div>
-            
-            {/* Track Count Badge */}
-            {trackCount !== undefined && (
-              <Badge 
-                variant="secondary" 
-                className="bg-background/90 text-foreground border-0 shadow-sm"
-              >
-                {trackCount} tracks available
-              </Badge>
-            )}
           </div>
           
           {/* Bottom Section - Title and Details */}
