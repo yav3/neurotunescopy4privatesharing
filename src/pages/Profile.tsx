@@ -4,6 +4,7 @@ import { Navigation } from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StorageAudit } from "@/components/StorageAudit";
+import { BulkStatusFixer } from "@/components/BulkStatusFixer";
 import { User, Settings, Music, Clock } from "lucide-react";
 
 const Profile = () => {
@@ -111,9 +112,12 @@ const Profile = () => {
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-4">System Diagnostics</h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Run storage audit to check for mismatches between database records and actual files
+              Tools to diagnose and fix audio streaming issues
             </p>
-            <StorageAudit />
+            <div className="space-y-6">
+              <BulkStatusFixer />
+              <StorageAudit />
+            </div>
           </Card>
         </div>
       </div>
