@@ -42,15 +42,29 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
   }
 }
 
-// Deterministic artwork selection to prevent race conditions
+// Deterministic artwork selection to give each song a unique image
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Musical instrument variations for different genres/moods
-  const musicalArtwork = [
+  // Expanded album art collection for individual songs
+  const albumArtwork = [
+    '/lovable-uploads/19ca5ad8-bc5b-45c7-b13f-f3182585ae23.png', // Garden path with sunlight
+    '/lovable-uploads/67cfdc0c-339d-48e8-776-13ce34bf1a4f.png', // White piano with musical notes
+    '/lovable-uploads/d8b56c80-98c4-4a08-be13-deb891d9ecee.png', // Guitars in meadow with flowers
+    '/lovable-uploads/9e1bc0cb-0051-4860-86be-69529a277181.png', // Field of pink/white flowers
+    '/lovable-uploads/0f6c961c-91b2-4686-b3fe-3a6064af4bc7.png', // Field with butterflies and wildflowers
+    '/lovable-uploads/dbaf206d-bc29-4f4c-aeed-34b611a6dc64.png', // Colorful flowers (orange, yellow, pink)
+    '/lovable-uploads/e9f49ad3-57da-487a-9db7-f3dafba05e56.png', // Colorful electric guitar
+    '/lovable-uploads/3c8ddd8c-7d5a-4d6a-a985-e6509d4fdcbf.png', // Starry/cosmic sky scene
+    '/lovable-uploads/fb52f9d9-56f9-4dc4-81c4-f06dd182984b.png', // Forest scene with lights and guitar
     '/lovable-uploads/folk-instruments-meadow.png',
     '/lovable-uploads/classical-meadow-ensemble.png', 
     '/lovable-uploads/string-quartet-studio.png',
     '/lovable-uploads/european-classical-terrace.png',
-    '/lovable-uploads/acoustic-sunset-field.png'
+    '/lovable-uploads/acoustic-sunset-field.png',
+    '/lovable-uploads/delta-moonlit-lake.png',
+    '/lovable-uploads/theta-misty-path.png',
+    '/lovable-uploads/alpha-mountain-lake.png',
+    '/lovable-uploads/beta-waterfall.png',
+    '/lovable-uploads/gamma-sunbeam-forest.png'
   ]
   
   // Create deterministic seed from trackId to prevent race conditions
@@ -64,39 +78,24 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
     return Math.abs(hash)
   }
   
+  // Each track gets a unique image based on its ID
   const seed = createSeed(trackId)
-  const usePrimary = (seed % 2) === 0
-  const musicalIndex = seed % musicalArtwork.length
+  const artworkIndex = seed % albumArtwork.length
   
-  const artworkMap = {
-    delta: { 
-      url: usePrimary ? '/lovable-uploads/delta-moonlit-lake.png' : musicalArtwork[musicalIndex],
-      position: 'object-cover', // Moonlit scenes for deep sleep & healing
-      gradient: 'from-blue-900/80 via-slate-800/60 to-blue-800/80'
-    },
-    theta: { 
-      url: usePrimary ? '/lovable-uploads/theta-misty-path.png' : musicalArtwork[musicalIndex],
-      position: 'object-cover', // Misty forest paths for meditation
-      gradient: 'from-amber-700/80 via-yellow-600/60 to-orange-700/80'
-    },
-    alpha: { 
-      url: usePrimary ? '/lovable-uploads/alpha-mountain-lake.png' : musicalArtwork[musicalIndex],
-      position: 'object-cover', // Serene mountain lakes for focus
-      gradient: 'from-blue-800/80 via-cyan-600/60 to-teal-700/80'
-    },
-    beta: { 
-      url: usePrimary ? '/lovable-uploads/beta-waterfall.png' : musicalArtwork[musicalIndex],
-      position: 'object-cover', // Energetic waterfalls for concentration
-      gradient: 'from-green-700/80 via-emerald-600/60 to-teal-700/80'
-    },
-    gamma: { 
-      url: usePrimary ? '/lovable-uploads/gamma-sunbeam-forest.png' : musicalArtwork[musicalIndex],
-      position: 'object-cover', // Golden sunbeam forests for peak performance
-      gradient: 'from-yellow-600/80 via-orange-500/60 to-red-600/80'
-    }
+  // Gradient based on frequency band for therapeutic visual cues
+  const gradientMap = {
+    delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70', // Deep sleep & healing
+    theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70', // Meditation
+    alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70', // Focus
+    beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70', // Concentration
+    gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70' // Peak performance
   }
   
-  return artworkMap[frequencyBand as keyof typeof artworkMap] || artworkMap.alpha
+  return {
+    url: albumArtwork[artworkIndex],
+    position: 'object-cover',
+    gradient: gradientMap[frequencyBand as keyof typeof gradientMap] || gradientMap.alpha
+  }
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
