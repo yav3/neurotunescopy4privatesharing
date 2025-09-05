@@ -217,7 +217,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      const url = streamUrl(track.id);
+      const url = streamUrl(track);
       console.log('🎵 Stream URL generated:', url);
       
       // Check if URL is valid

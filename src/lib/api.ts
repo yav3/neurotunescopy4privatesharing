@@ -92,21 +92,21 @@ export async function fetchTrending(minutes = 60, count = 50, seed?: string, exc
   return r.ok ? body : { tracks: [], error: body?.error || `status ${r.status}` };
 }
 
-export const streamUrl = (id: string): string => {
-  if (!id || typeof id !== 'string' || id.trim() === '') {
-    console.warn('⚠️ Invalid track ID provided to streamUrl:', id);
-    return '#invalid-id';
+export const streamUrl = (track: any): string => {
+  if (!track || !track.storage_bucket || !track.storage_key) {
+    console.warn('⚠️ Invalid track data provided to streamUrl:', track);
+    return '#invalid-track-data';
   }
   
-  // Generate direct Supabase storage URL instead of broken /api/stream endpoint
+  // Generate direct Supabase storage URL using actual storage_bucket and storage_key
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   if (!supabaseUrl) {
     console.error('❌ VITE_SUPABASE_URL not configured');
     return '#no-supabase-url';
   }
   
-  // Use direct storage URL with the track ID as filename
-  const url = `${supabaseUrl}/storage/v1/object/public/neuralpositivemusic/${encodeURIComponent(id.trim())}.mp3`;
+  // Use the track's actual storage bucket and key
+  const url = `${supabaseUrl}/storage/v1/object/public/${track.storage_bucket}/${track.storage_key}`;
   console.log('🎵 Generated direct storage URL:', url);
   return url;
 };
@@ -119,9 +119,9 @@ export const API = {
     return req<{ tracks: Array<{ id: string; title: string; artist?: string; genre?: string }> }>(url);
   },
   debugStorage: () => req<any>("/debug/storage"),
-  streamUrl: (id: string) => {
+  streamUrl: (track: any) => {
     console.warn('⚠️ Using legacy API.streamUrl - consider using streamUrl function instead');
-    return streamUrl(id); // Use the fixed streamUrl function
+    return streamUrl(track); // Use the fixed streamUrl function
   },
   
   searchTracks: (params: Record<string, any>) => {
