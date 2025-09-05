@@ -3,14 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { TrendingTabs } from "@/components/TrendingTabs";
 import { TherapeuticMusic } from "@/components/TherapeuticMusic";
-import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilder";
-import { AudioDataCompiler } from "@/components/AudioDataCompiler";
-import { AudioSystemAudit } from "@/components/AudioSystemAudit";
-import DatabaseSchemaInspector from "@/components/DatabaseSchemaInspector";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
-import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
 import SoundCloudFallback from "@/components/SoundCloudFallback";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
@@ -72,8 +67,7 @@ const Index = () => {
   };
 
   const handleSessionStart = async (tracks: any[]) => {
-    // Session is already handled in TherapeuticSessionBuilder
-    // Just ensure the modal player is closed since NowPlaying will show
+    // Session handling removed - only goals tab remains
     setShowPlayer(false);
   };
 
@@ -90,9 +84,7 @@ const Index = () => {
     
     // Show feedback for tab changes
     const tabNames = {
-      "goals": "Therapeutic Goals",
-      "sessions": "Session Builder",
-      "data": "Audio Data Management"
+      "goals": "Therapeutic Goals"
     };
     
     toast({
@@ -108,32 +100,6 @@ const Index = () => {
       
       {activeTab === "goals" && (
         <TherapeuticMusic onCategorySelect={handleCategorySelect} />
-      )}
-      
-      {activeTab === "sessions" && (
-        <div className="px-4 md:px-8 mb-24">
-          <div className="max-w-4xl mx-auto">
-            <TherapeuticSessionBuilder onSessionStart={handleSessionStart} />
-          </div>
-        </div>
-      )}
-      
-      {activeTab === "data" && (
-        <div className="px-4 md:px-8 mb-24">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <AudioDataCompiler />
-            
-            {/* Add the new Audio System Audit */}
-            <div className="border-t pt-6">
-              <AudioSystemAudit />
-            </div>
-            
-            {/* Add the Database Schema Inspector */}
-            <div className="border-t pt-6">
-              <DatabaseSchemaInspector />
-            </div>
-          </div>
-        </div>
       )}
       
       <Navigation activeTab={activeNavTab} onTabChange={handleNavTabChange} />
