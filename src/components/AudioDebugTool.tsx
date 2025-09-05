@@ -72,12 +72,8 @@ export default function AudioDebugTool() {
   // Test 3: Supabase Storage Access
   const testSupabaseStorage = async () => {
     try {
-      // Test creating a signed URL
-      const { createClient } = await import('@supabase/supabase-js');
-      const supabase = createClient(
-        import.meta.env.VITE_SUPABASE_URL,
-        import.meta.env.VITE_SUPABASE_ANON_KEY
-      );
+      // Use the existing Supabase client
+      const { supabase } = await import('@/integrations/supabase/client');
       
       addResult('Supabase Client', '✅ PASS', 'Client created');
       
