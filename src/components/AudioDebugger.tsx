@@ -18,18 +18,18 @@ export const AudioDebugger = () => {
       
       // Check storage files
       const { data: files, error: storageError } = await supabase.storage
-        .from('audio')
+        .from('neuralpositivemusic')
         .list('', { limit: 20 });
       
       if (storageError) throw storageError;
       
       setStorageFiles(files?.map(f => f.name) || []);
       
-      // Get sample tracks
+      // Get sample tracks (database still has storage_bucket='audio' but files are in neuralpositivemusic)
       const { data: tracks, error: dbError } = await supabase
         .from('tracks')
-        .select('id, title, file_path, storage_key')
-        .eq('storage_bucket', 'audio')
+        .select('id, title, storage_key, storage_bucket')
+        .eq('storage_bucket', 'audio')  // This is what database has (wrong)
         .not('camelot', 'is', null)
         .eq('audio_status', 'working')
         .limit(5);
