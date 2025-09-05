@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Navigation } from '@/components/Navigation';
 import { NowPlaying } from '@/components/NowPlaying';
 import AudioDebugTool from '@/components/AudioDebugTool';
+import TracksIdMappingInspector from '@/components/TracksIdMappingInspector';
 import { 
   LineChart, 
   Line, 
@@ -561,6 +562,7 @@ export function UnifiedDashboard() {
           {/* Debug Tab */}
           <TabsContent value="debug" className="space-y-8">
             <AudioDebugTool />
+            <TracksIdMappingInspector />
           </TabsContent>
         </Tabs>
       </div>
