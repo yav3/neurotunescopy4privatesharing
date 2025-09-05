@@ -211,11 +211,47 @@ export const useAudioStore = create<AudioState>((set, get) => {
     try {
       console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
       
+      // Validate track ID first
+      if (!track.id || typeof track.id !== 'string' || track.id.trim() === '') {
+        console.error('❌ Invalid track ID:', track.id);
+        return false;
+      }
+      
       const url = streamUrl(track.id);
+      console.log('🎵 Stream URL generated:', url);
+      
+      // Check if URL is valid
+      if (url === '#invalid-id' || !url.startsWith('http')) {
+        console.error('❌ Invalid stream URL generated:', url);
+        return false;
+      }
       
       // If a newer load started, ignore this one
       if (mySeq !== loadSeq) {
         console.log('🎵 Load sequence outdated, ignoring:', mySeq, 'vs', loadSeq);
+        return false;
+      }
+      
+      // Test the stream URL first with a HEAD request
+      try {
+        console.log('🎵 Testing stream URL with HEAD request...');
+        const headResponse = await fetch(url, { method: 'HEAD' });
+        console.log('🎵 HEAD response:', headResponse.status, headResponse.statusText);
+        
+        if (!headResponse.ok) {
+          console.error('❌ Stream URL not accessible:', headResponse.status, headResponse.statusText);
+          return false;
+        }
+        
+        const contentType = headResponse.headers.get('content-type');
+        console.log('🎵 Content-Type:', contentType);
+        
+        if (!contentType?.includes('audio/')) {
+          console.error('❌ Not an audio stream:', contentType);
+          return false;
+        }
+      } catch (headError) {
+        console.error('❌ HEAD request failed:', headError);
         return false;
       }
       
