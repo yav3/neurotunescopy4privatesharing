@@ -30,6 +30,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Navigation } from '@/components/Navigation';
 import { NowPlaying } from '@/components/NowPlaying';
+import AudioDebugTool from '@/components/AudioDebugTool';
 import { 
   LineChart, 
   Line, 
@@ -192,12 +193,13 @@ export function UnifiedDashboard() {
 
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="mood">Mood Tracking</TabsTrigger>
             <TabsTrigger value="progress">Progress</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="debug">Debug</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -554,6 +556,11 @@ export function UnifiedDashboard() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          {/* Debug Tab */}
+          <TabsContent value="debug" className="space-y-8">
+            <AudioDebugTool />
           </TabsContent>
         </Tabs>
       </div>
