@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { buildStreamUrl } from "@/lib/stream";
+import { streamUrl } from "@/lib/api";
 import { API } from "@/lib/api";
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
@@ -211,7 +211,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     try {
       console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
       
-      const url = buildStreamUrl(track.id);
+      const url = streamUrl(track.id);
       
       // If a newer load started, ignore this one
       if (mySeq !== loadSeq) {
@@ -220,6 +220,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       audio.src = url;
+      audio.crossOrigin = 'anonymous';
+      (audio as any).playsInline = true;
+      audio.load();
       console.log('🎵 Audio src set, attempting to play...');
       
       try { 

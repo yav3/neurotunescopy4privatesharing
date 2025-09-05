@@ -97,6 +97,11 @@ Deno.serve(async (req) => {
       return handlePlaylistRequest(req);
     }
 
+    // Trending endpoint
+    if (['/trending','/api/trending','/v1/trending','/api/v1/trending'].includes(path)) {
+      return handleTrending(req);
+    }
+
     // Stream endpoints - handle both direct and v1 paths
     if (path === '/stream' || path === '/api/stream' || path.startsWith('/api/v1/stream/')) {
       return handleStreamRequest(req);
@@ -765,4 +770,103 @@ async function handleAuditVerifyRequest(req: Request): Promise<Response> {
     console.log('❌ Audit verify error:', error);
     return json({ error: 'Audit verification failed' }, 500);
   }
+}
+
+// ---- Trending (last hour by default) ----
+function mulberry32(a: number) { 
+  return function() { 
+    let t = a += 0x6D2B79F5; 
+    t = Math.imul(t^t>>>15,t|1); 
+    t ^= t + Math.imul(t^t>>>7,t|61); 
+    return ((t^t>>>14)>>>0)/4294967296; 
+  } 
+}
+
+function seededShuffle<T>(arr: T[], seed: number) { 
+  const r = mulberry32(seed); 
+  for(let i = arr.length-1; i > 0; i--) { 
+    const j = Math.floor(r()*(i+1)); 
+    [arr[i], arr[j]] = [arr[j], arr[i]]; 
+  } 
+  return arr; 
+}
+
+function parseExclude(q: string | null) { 
+  const s = new Set<string>(); 
+  if(!q) return s; 
+  q.split(',').map(x=>x.trim()).filter(Boolean).forEach(x=>s.add(x)); 
+  return s; 
+}
+
+async function handleTrending(req: Request): Promise<Response> {
+  const s = sb();
+  const u = new URL(req.url);
+  const minutes = Math.max(1, Math.min(parseInt(u.searchParams.get('minutes')||'60',10), 24*60));
+  const limit   = Math.max(1, Math.min(parseInt(u.searchParams.get('limit')  ||'50',10), 200));
+  const seedQS  = u.searchParams.get('seed') || `${Date.now()}`;
+  const seed    = Array.from(seedQS).reduce((h,c)=>((h<<5)-h + c.charCodeAt(0))|0, 0x9e3779b9);
+  const exclude = parseExclude(u.searchParams.get('exclude'));
+
+  const sinceISO = new Date(Date.now() - minutes*60*1000).toISOString();
+
+  // Try rich select; fall back to minimal if schema differs
+  let rows: any[] = [];
+  try {
+    const { data, error } = await s.from('tracks')
+      .select('id,title,storage_key,storage_bucket,audio_status,bpm_est,valence,arousal,energy,energy_level,dominance,last_verified_at,last_analyzed_at,created_at')
+      .eq('audio_status','working')
+      .not('storage_key','is',null).neq('storage_key','')
+      .or(`last_verified_at.gte.${sinceISO},last_analyzed_at.gte.${sinceISO},created_at.gte.${sinceISO}`)
+      .order('last_verified_at', { ascending:false })
+      .limit(2000);
+    if (error) throw error;
+    rows = data || [];
+  } catch (e: any) {
+    const { data, error } = await s.from('tracks')
+      .select('id,title,storage_key,storage_bucket,audio_status,last_verified_at,created_at')
+      .eq('audio_status','working')
+      .not('storage_key','is',null).neq('storage_key','')
+      .or(`last_verified_at.gte.${sinceISO},created_at.gte.${sinceISO}`)
+      .order('last_verified_at', { ascending:false })
+      .limit(2000);
+    if (error) return json({ ok:false, error:error.message, tracks:[] }, 200);
+    rows = data || [];
+  }
+
+  // Apply exclude and uniqueness
+  const filtered = rows.filter(r => r?.id && !exclude.has(r.id));
+  const seen = new Set<string>();
+  const uniq   = filtered.filter(r => (seen.has(r.id) ? false : (seen.add(r.id), true)));
+
+  // Add a simple recency score, then seed-shuffle for variety
+  const scored = uniq.map(r => {
+    const t = new Date(r.last_verified_at || r.last_analyzed_at || r.created_at || Date.now()).getTime();
+    const recency = Math.max(0, 1 - (Date.now() - t) / (minutes*60*1000)); // 0..1
+    return { r, recency };
+  }).sort((a,b)=> b.recency - a.recency);
+
+  const oversample = Math.max(limit*2, 60);
+  const pool = scored.slice(0, oversample);
+  seededShuffle(pool, seed);
+
+  const picked = pool.slice(0, limit).map(x => x.r);
+
+  // If empty, widen the window automatically to 6h, then 24h
+  if (!picked.length) {
+    const widen = async (mins: number) => {
+      const { data } = await s.from('tracks')
+        .select('id,title,storage_key,storage_bucket,audio_status,last_verified_at,created_at')
+        .eq('audio_status','working')
+        .not('storage_key','is',null).neq('storage_key','')
+        .or(`last_verified_at.gte.${new Date(Date.now()-mins*60*1000).toISOString()},created_at.gte.${new Date(Date.now()-mins*60*1000).toISOString()}`)
+        .order('last_verified_at', { ascending:false })
+        .limit(limit);
+      return (data||[]).filter(r => !exclude.has(r.id));
+    };
+    let alt = await widen(360);
+    if (!alt.length) alt = await widen(1440);
+    return json({ ok:true, mode:'trending', minutes, widened: alt.length ? (alt===undefined?0: (alt.length && alt.length<=limit ? (alt.length===0?0:(alt.length)) : 0)) : 0, seed:seedQS, exclude_count: exclude.size, count: alt.length, tracks: alt });
+  }
+
+  return json({ ok:true, mode:'trending', minutes, seed: seedQS, exclude_count: exclude.size, count: picked.length, tracks: picked });
 }
