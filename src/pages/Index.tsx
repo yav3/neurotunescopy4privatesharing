@@ -6,6 +6,7 @@ import { TherapeuticMusic } from "@/components/TherapeuticMusic";
 import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilder";
 import { AudioDataCompiler } from "@/components/AudioDataCompiler";
 import { AudioSystemAudit } from "@/components/AudioSystemAudit";
+import DatabaseSchemaInspector from "@/components/DatabaseSchemaInspector";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
@@ -125,6 +126,11 @@ const Index = () => {
             {/* Add the new Audio System Audit */}
             <div className="border-t pt-6">
               <AudioSystemAudit />
+            </div>
+            
+            {/* Add the Database Schema Inspector */}
+            <div className="border-t pt-6">
+              <DatabaseSchemaInspector />
             </div>
           </div>
         </div>
