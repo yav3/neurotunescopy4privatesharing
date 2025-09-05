@@ -1,6 +1,13 @@
-import { API_BASE } from "./env";
 import { logger } from "@/services/logger";
 import type { GoalSlug } from "@/domain/goals";
+
+// Environment configuration with validation
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '')
+  || (import.meta.env.VITE_SUPABASE_URL ? `${new URL(import.meta.env.VITE_SUPABASE_URL).origin}/functions/v1/api` : '');
+
+if (!API_BASE_URL) {
+  throw new Error('[API_BASE] not set — set VITE_API_BASE_URL to https://<project>.functions.supabase.co/api');
+}
 
 function join(base: string, path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -11,7 +18,7 @@ function join(base: string, path: string) {
 export async function apiFetch(path: string, init?: RequestInit) {
   // strip a single leading /api
   const normalized = path.replace(/^\/api(\/|$)/, "/");
-  const url = join(API_BASE, normalized);
+  const url = join(API_BASE_URL, normalized);
   const res = await fetch(url, {
     ...init,
     headers: {
@@ -52,14 +59,60 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   throw lastErr;
 }
 
+// New API functions using absolute URLs
+export async function fetchPlaylist(goal: string, count = 50, seed?: string, excludeCsv?: string) {
+  const qs = new URLSearchParams({ 
+    goal, 
+    count: String(count), 
+    ...(seed ? { seed } : {}), 
+    ...(excludeCsv ? { exclude: excludeCsv } : {}) 
+  });
+  
+  const r = await fetch(`${API_BASE_URL}/v1/playlist?${qs}`, { 
+    headers: { Accept: 'application/json' }
+  });
+  
+  const body = await r.json().catch(() => ({}));
+  return r.ok ? body : { tracks: [], error: body?.error || `status ${r.status}` };
+}
+
+export async function fetchTrending(minutes = 60, count = 50, seed?: string, excludeCsv?: string) {
+  const qs = new URLSearchParams({ 
+    minutes: String(minutes), 
+    limit: String(count), 
+    ...(seed ? { seed } : {}), 
+    ...(excludeCsv ? { exclude: excludeCsv } : {}) 
+  });
+  
+  const r = await fetch(`${API_BASE_URL}/v1/trending?${qs}`, { 
+    headers: { Accept: 'application/json' }
+  });
+  
+  const body = await r.json().catch(() => ({}));
+  return r.ok ? body : { tracks: [], error: body?.error || `status ${r.status}` };
+}
+
+export const streamUrl = (id: string): string => {
+  if (!id || typeof id !== 'string' || id.trim() === '') {
+    console.warn('⚠️ Invalid track ID provided to streamUrl:', id);
+    return '#invalid-id';
+  }
+  
+  const url = `${API_BASE_URL}/stream?id=${encodeURIComponent(id.trim())}`;
+  console.log('🎵 Generated stream URL:', url);
+  return url;
+};
+
 export const API = {
   health: () => req<{ ok: true }>("/health"),
   async playlist(goal: GoalSlug, limit = 50, offset = 0) {
+    console.warn('⚠️ Using legacy API.playlist - consider using fetchPlaylist instead');
     const url = `/playlist?goal=${encodeURIComponent(goal)}&limit=${limit}&offset=${offset}`;
     return req<{ tracks: Array<{ id: string; title: string; artist?: string; genre?: string }> }>(url);
   },
   debugStorage: () => req<any>("/debug/storage"),
   streamUrl: (id: string) => {
+    console.warn('⚠️ Using legacy API.streamUrl - consider using streamUrl function instead');
     if (!id) {
       console.error('[STREAM URL] No track ID provided:', id);
       throw new Error('Track ID is required for streaming');
@@ -69,7 +122,7 @@ export const API = {
     if (!isUUID) {
       throw new Error(`Invalid track ID format: "${id}". Expected UUID format.`);
     }
-    const url = join(API_BASE, `/stream?id=${encodeURIComponent(id)}`);
+    const url = join(API_BASE_URL, `/stream?id=${encodeURIComponent(id)}`);
     console.log("[STREAM URL]", { id, url });
     return url;
   },

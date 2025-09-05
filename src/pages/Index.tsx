@@ -12,8 +12,9 @@ import { AudioSystemDebugger } from "@/components/AudioSystemDebugger";
 import SoundCloudFallback from "@/components/SoundCloudFallback";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
-import { API } from "@/lib/api";
+import { fetchPlaylist } from "@/lib/api";
 import { toGoalSlug } from "@/domain/goals";
+import { excludeQS, newSeed, remember } from "@/state/playlistSession";
 import "@/utils/startCompilation"; // Auto-start compilation
 
 const Index = () => {
@@ -27,9 +28,13 @@ const Index = () => {
     console.log('🎵 Category selected:', category);
     
     try {
-      // Get tracks for the selected category (deterministic API call)
+      // Get tracks for the selected category using new API with seeding and exclusions
       const goalSlug = toGoalSlug(category.toLowerCase());
-      const { tracks } = await API.playlist(goalSlug, 50);
+      const { tracks, error } = await fetchPlaylist(goalSlug, 50, newSeed(), excludeQS());
+      
+      if (error) {
+        console.warn('Playlist fallback/error:', error);
+      }
       
       if (!tracks?.length) {
         toast({
@@ -39,6 +44,9 @@ const Index = () => {
         });
         return;
       }
+      
+      // Remember played tracks for future exclusion
+      tracks.slice(0, 5).forEach(track => remember(track.id));
       
       // GUARANTEE track selection and playback start
       await setQueue(tracks, 0);
