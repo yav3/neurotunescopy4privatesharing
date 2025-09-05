@@ -1,6 +1,6 @@
 import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
 import type { TherapeuticGoal } from '@/config/therapeuticGoals';
-import type { Track } from '@/types/music';
+import type { Track } from '@/types/index';
 
 /**
  * Comprehensive Therapeutic Use Cases System
@@ -518,7 +518,7 @@ export class TherapeuticUseCaseManager {
   ): Track[] {
     return tracks.filter(track => {
       // Check if track has required metadata
-      if (!track.bpm || !track.vad) return false;
+      if (!track.bpm || !track.valence || !track.arousal) return false;
       
       // Find appropriate phase based on intensity
       const phaseIndex = Math.min(
@@ -533,7 +533,8 @@ export class TherapeuticUseCaseManager {
       }
       
       // Check VAD compatibility
-      const { valence, arousal } = track.vad;
+      const valence = track.valence || 0;
+      const arousal = track.arousal || 0;
       const vadTargets = targetPhase.vadTargets;
       
       if (valence < vadTargets.valence.min || valence > vadTargets.valence.max) {
@@ -568,10 +569,10 @@ export class TherapeuticUseCaseManager {
       // Filter tracks suitable for this phase
       const phaseTracks = tracks.filter(track => {
         const vadTargets = phase.vadTargets;
-        return track.vad.valence >= vadTargets.valence.min &&
-               track.vad.valence <= vadTargets.valence.max &&
-               track.vad.arousal >= vadTargets.arousal.min &&
-               track.vad.arousal <= vadTargets.arousal.max &&
+        return (track.valence || 0) >= vadTargets.valence.min &&
+               (track.valence || 0) <= vadTargets.valence.max &&
+               (track.arousal || 0) >= vadTargets.arousal.min &&
+               (track.arousal || 0) <= vadTargets.arousal.max &&
                (track.bpm || 0) >= phase.bpmRange.min &&
                (track.bpm || 0) <= phase.bpmRange.max;
       });
@@ -593,8 +594,8 @@ export class TherapeuticUseCaseManager {
    */
   private static calculatePhaseCompatibility(track: Track, phase: TherapeuticPhase): number {
     const vadTargets = phase.vadTargets;
-    const valenceScore = 1 - Math.abs(track.vad.valence - vadTargets.valence.target);
-    const arousalScore = 1 - Math.abs(track.vad.arousal - vadTargets.arousal.target);
+    const valenceScore = 1 - Math.abs((track.valence || 0) - vadTargets.valence.target);
+    const arousalScore = 1 - Math.abs((track.arousal || 0) - vadTargets.arousal.target);
     const bpmScore = 1 - Math.abs((track.bpm || 0) - (phase.bpmRange.min + phase.bpmRange.max) / 2) / 50;
     
     return (valenceScore + arousalScore + Math.max(0, bpmScore)) / 3;

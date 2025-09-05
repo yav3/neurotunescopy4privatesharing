@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { TherapeuticUseCaseManager, type TherapeuticSession, type TherapeuticUseCase } from '@/services/therapeuticUseCases';
 import { useAudioStore } from '@/stores/audioStore';
 import { toast } from 'sonner';
-import type { Track } from '@/types';
+import type { Track } from '@/types/index';
 
 interface UseTherapeuticSessionOptions {
   autoTrackProgress?: boolean;
@@ -360,7 +360,7 @@ export function useTherapeuticSession(options: UseTherapeuticSessionOptions = {}
       useCaseId: state.currentSession.useCase.id,
       duration: state.currentSession.duration,
       intensity: state.currentSession.intensity,
-      tracks: state.currentSession.tracks.map(t => t.id),
+      tracks: state.currentSession.tracks.map(track => track.id),
       vadJourney: state.vadJourney,
       outcomes: state.outcomes,
       effectiveness: calculateSessionEffectiveness(),

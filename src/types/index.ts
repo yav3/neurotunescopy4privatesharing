@@ -24,6 +24,8 @@ export interface Track {
   // Audio analysis properties
   energy?: number;
   valence?: number;
+  arousal?: number;
+  dominance?: number;
   bpm?: number;
   acousticness?: number;
   danceability?: number;
