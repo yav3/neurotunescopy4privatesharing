@@ -86,10 +86,25 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
         limit: 50
       });
       
+      // Add defensive null checking to prevent "Cannot read properties of undefined" errors
+      if (!session) {
+        throw new Error('Session response is empty');
+      }
+      
+      if (!session.tracks || !Array.isArray(session.tracks)) {
+        throw new Error('No tracks returned in session');
+      }
+      
+      if (session.tracks.length === 0) {
+        throw new Error('Session returned empty tracks array');
+      }
+      
       console.log('✅ Backend session built:', session.sessionId, 'with', session.tracks.length, 'tracks');
 
-      // Convert backend tracks to frontend format 
-      const tracks = session.tracks.map((t: any) => ({
+      // Convert backend tracks to frontend format with additional null checking
+      const tracks = session.tracks
+        .filter((t: any) => t && t.id) // Filter out null/undefined tracks
+        .map((t: any) => ({
         id: t.id,
         title: t.title || "",
         artist: t.genre || "Unknown",
