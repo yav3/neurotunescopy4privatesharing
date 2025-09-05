@@ -14,11 +14,11 @@ import sleepArtwork from '@/assets/sleep-artwork.jpg';
 const getGoalArtwork = (goalId: string): string => {
   const artworkMap: Record<string, string> = {
     'focus-enhancement': focusArtwork,
-    'anxiety-relief': acousticArtwork,
-    'stress-reduction': acousticArtwork,
+    'anxiety-relief': '/lovable-uploads/alpha-mountain-lake.png',
+    'stress-reduction': '/lovable-uploads/beta-waterfall.png',
     'sleep-preparation': sleepArtwork,
     'mood-boost': moodBoostArtwork,
-    'meditation-support': acousticArtwork,
+    'meditation-support': '/lovable-uploads/gamma-sunbeam-forest.png',
   };
   
   return artworkMap[goalId] || acousticArtwork;
@@ -67,14 +67,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         
         {/* Content */}
-        <div className="absolute inset-0 p-4 flex flex-col justify-between">
-          {/* Top Section - Icon */}
-          <div className="flex items-start justify-between">
-            <div className={`p-2 rounded-full bg-gradient-to-br ${goal.gradient} text-white shadow-lg`}>
-              <goal.icon size={20} />
-            </div>
-          </div>
-          
+        <div className="absolute inset-0 p-4 flex flex-col justify-end">
           {/* Bottom Section - Title and Details */}
           <div className="space-y-2">
             <h3 className="text-white font-semibold text-lg leading-tight">
