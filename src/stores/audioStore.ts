@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { streamUrl } from "@/lib/api";
 import { API } from "@/lib/api";
+import { SmartAudioResolver } from '@/utils/smartAudioResolver';
 import type { Track } from "@/types";
 import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
 import { toGoalSlug } from '@/domain/goals';
@@ -224,43 +225,33 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      const url = streamUrl(track);
-      console.log('🎵 Stream URL generated:', url);
-      console.log('🔧 Track object being passed to streamUrl:', JSON.stringify(track, null, 2));
-      console.log('🔧 Call stack for URL generation:', new Error().stack);
+      // Use Smart Audio Resolver to find working URL
+      console.log('🔍 Using SmartAudioResolver to find working URL...');
+      const resolution = await SmartAudioResolver.resolveAudioUrl({
+        id: track.id,
+        title: track.title || 'Untitled',
+        storage_bucket: track.storage_bucket,
+        storage_key: track.storage_key
+      });
       
-      // Check if URL is valid
-      if (url === '#invalid-id' || !url.startsWith('http')) {
-        console.error('❌ Invalid stream URL generated:', url);
+      console.log('🎯 Resolution result:', resolution);
+      
+      if (!resolution.success || !resolution.url) {
+        console.error('❌ SmartAudioResolver could not find working URL');
+        console.log('📝 Attempted URLs:', resolution.attempts);
+        set({ 
+          error: `Audio file not found. Tried ${resolution.attempts.length} different locations.`,
+          isLoading: false 
+        });
         return false;
       }
       
-      // If a newer load started, ignore this one
+      const url = resolution.url;
+      console.log(`✅ Found working URL via ${resolution.method}: ${url}`);
+      
+      // If a newer load started while we were resolving, ignore this one
       if (mySeq !== loadSeq) {
-        console.log('🎵 Load sequence outdated, ignoring:', mySeq, 'vs', loadSeq);
-        return false;
-      }
-      
-      // Test the stream URL first with a HEAD request
-      try {
-        console.log('🎵 Testing stream URL with HEAD request...');
-        const headResponse = await fetch(url, { method: 'HEAD' });
-        console.log('🎵 HEAD response:', headResponse.status, headResponse.statusText);
-        
-        if (!headResponse.ok) {
-          console.error('❌ Stream URL not accessible:', headResponse.status, headResponse.statusText);
-          return false;
-        }
-        
-        const contentType = headResponse.headers.get('content-type');
-        console.log('🎵 Content-Type:', contentType);
-        
-        if (!contentType?.includes('audio/')) {
-          console.error('❌ Not an audio stream:', contentType);
-          return false;
-        }
-      } catch (headError) {
-        console.error('❌ HEAD request failed:', headError);
+        console.log('🎵 Load sequence outdated after resolution, ignoring:', mySeq, 'vs', loadSeq);
         return false;
       }
       
