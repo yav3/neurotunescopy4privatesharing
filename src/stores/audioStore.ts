@@ -71,6 +71,7 @@ if (typeof window !== "undefined") {
 let audioElement: HTMLAudioElement | null = null;
 
 const ensureAudioElement = (): HTMLAudioElement => {
+  console.log('🔧 ensureAudioElement called - current element exists:', !!audioElement);
   if (audioElement && document.body.contains(audioElement)) return audioElement;
   
   // Clean up any existing audio elements first
@@ -90,12 +91,18 @@ const ensureAudioElement = (): HTMLAudioElement => {
     audioElement.style.display = "none";
     document.body.appendChild(audioElement);
     console.log(`🎵 Created unified audio element #${AUDIO_ELEMENT_ID}`);
+  } else {
+    console.log(`🎵 Found existing audio element #${AUDIO_ELEMENT_ID}`);
   }
   return audioElement;
 };
 
 export const useAudioStore = create<AudioState>((set, get) => {
   let eventListenersAdded = false;
+  
+  // Force audio element creation on store initialization
+  console.log('🎵 Audio store initializing - creating audio element...');
+  ensureAudioElement();
   
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));

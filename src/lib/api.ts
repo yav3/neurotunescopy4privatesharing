@@ -93,6 +93,12 @@ export async function fetchTrending(minutes = 60, count = 50, seed?: string, exc
 }
 
 export const streamUrl = (track: any): string => {
+  console.log('🔧 streamUrl called with track:', { 
+    id: track?.id, 
+    storage_bucket: track?.storage_bucket, 
+    storage_key: track?.storage_key 
+  });
+  
   if (!track || !track.storage_bucket || !track.storage_key) {
     console.warn('⚠️ Invalid track data provided to streamUrl:', track);
     return '#invalid-track-data';
@@ -109,6 +115,8 @@ export const streamUrl = (track: any): string => {
   const encodedStorageKey = track.storage_key.split('/').map(encodeURIComponent).join('/');
   const url = `${supabaseUrl}/storage/v1/object/public/${track.storage_bucket}/${encodedStorageKey}`;
   console.log('🎵 Generated encoded storage URL:', url);
+  console.log('🔧 Original storage_key:', track.storage_key);
+  console.log('🔧 Encoded storage_key:', encodedStorageKey);
   return url;
 };
 
