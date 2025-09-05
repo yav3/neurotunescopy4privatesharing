@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { TrendingTabs } from "@/components/TrendingTabs";
 import { TherapeuticMusic } from "@/components/TherapeuticMusic";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
@@ -15,7 +14,6 @@ import { excludeQS, newSeed, remember } from "@/state/playlistSession";
 import "@/utils/startCompilation"; // Auto-start compilation
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("goals");
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
@@ -78,29 +76,10 @@ const Index = () => {
     }
   };
 
-  const handleTabChange = (tab: string) => {
-    console.log('🔄 Tab changed to:', tab);
-    setActiveTab(tab);
-    
-    // Show feedback for tab changes
-    const tabNames = {
-      "goals": "Therapeutic Goals"
-    };
-    
-    toast({
-      title: "Section Changed",
-      description: `Switched to ${tabNames[tab as keyof typeof tabNames] || tab}`,
-    });
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <TrendingTabs activeTab={activeTab} onTabChange={handleTabChange} />
-      
-      {activeTab === "goals" && (
-        <TherapeuticMusic onCategorySelect={handleCategorySelect} />
-      )}
+      <TherapeuticMusic onCategorySelect={handleCategorySelect} />
       
       <Navigation activeTab={activeNavTab} onTabChange={handleNavTabChange} />
       

@@ -50,10 +50,6 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   return (
     <section className="px-4 md:px-8 mb-24">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Therapeutic Music</h2>
-        </div>
-        
         {/* Trending Card */}
         <div className="mb-6">
           <TrendingCard className="max-w-md" />
