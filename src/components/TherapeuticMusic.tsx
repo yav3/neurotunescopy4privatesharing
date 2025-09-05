@@ -52,7 +52,6 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-foreground mb-2">Therapeutic Music</h2>
-          <p className="text-muted-foreground">Scientifically ordered tracks using VAD and Camelot wheel harmonic progression</p>
         </div>
         
         {/* Trending Card */}
