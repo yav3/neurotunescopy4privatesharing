@@ -105,9 +105,10 @@ export const streamUrl = (track: any): string => {
     return '#no-supabase-url';
   }
   
-  // Use the track's actual storage bucket and key
-  const url = `${supabaseUrl}/storage/v1/object/public/${track.storage_bucket}/${track.storage_key}`;
-  console.log('🎵 Generated direct storage URL:', url);
+  // Properly encode the storage key to handle special characters
+  const encodedStorageKey = track.storage_key.split('/').map(encodeURIComponent).join('/');
+  const url = `${supabaseUrl}/storage/v1/object/public/${track.storage_bucket}/${encodedStorageKey}`;
+  console.log('🎵 Generated encoded storage URL:', url);
   return url;
 };
 
