@@ -5,6 +5,7 @@ import { TrendingTabs } from "@/components/TrendingTabs";
 import { TherapeuticMusic } from "@/components/TherapeuticMusic";
 import { TherapeuticSessionBuilder } from "@/components/TherapeuticSessionBuilder";
 import { AudioDataCompiler } from "@/components/AudioDataCompiler";
+import { AudioSystemAudit } from "@/components/AudioSystemAudit";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { NowPlaying } from "@/components/NowPlaying";
@@ -118,8 +119,13 @@ const Index = () => {
       
       {activeTab === "data" && (
         <div className="px-4 md:px-8 mb-24">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto space-y-6">
             <AudioDataCompiler />
+            
+            {/* Add the new Audio System Audit */}
+            <div className="border-t pt-6">
+              <AudioSystemAudit />
+            </div>
           </div>
         </div>
       )}
