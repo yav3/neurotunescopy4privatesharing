@@ -32,6 +32,7 @@ import { Navigation } from '@/components/Navigation';
 import { NowPlaying } from '@/components/NowPlaying';
 import AudioDebugTool from '@/components/AudioDebugTool';
 import TracksIdMappingInspector from '@/components/TracksIdMappingInspector';
+import DatabaseStorageRepairer from '@/components/DatabaseStorageRepairer';
 import { 
   LineChart, 
   Line, 
@@ -563,6 +564,7 @@ export function UnifiedDashboard() {
           <TabsContent value="debug" className="space-y-8">
             <AudioDebugTool />
             <TracksIdMappingInspector />
+            <DatabaseStorageRepairer />
           </TabsContent>
         </Tabs>
       </div>
