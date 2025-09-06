@@ -201,7 +201,7 @@ if (typeof window !== 'undefined') {
   (window as any).testCurrentQueue = async () => {
     const audio = (window as any).useAudioStore?.getState();
     if (!audio?.queue?.length) {
-      console.log('❌ No queue to test');
+      console.log('❌ No queue to test - try starting a playlist first');
       return;
     }
     
@@ -218,16 +218,52 @@ if (typeof window !== 'undefined') {
       });
       
       if (result.success) {
-        console.log(`✅ WORKING: ${track.title}`);
+        console.log(`✅ WORKING: ${track.title} via ${result.method}`);
         working++;
       } else {
         console.log(`❌ BROKEN: ${track.title}`);
-        console.log(`📝 Attempts:`, result.attempts.map(a => `${a.method}=${a.status}`));
+        console.log(`📝 Failed attempts:`, result.attempts.map(a => `${a.method}=${a.status}`));
         broken++;
       }
     }
     
     console.log(`\n📊 Results: ${working} working, ${broken} broken`);
     return { working, broken, total: working + broken };
+  };
+  
+  // Quick test of a single track from latest API response
+  (window as any).testSingleTrack = async (trackId = "327d9580-9eb3-460c-9059-b2ee16d1d2fe") => {
+    console.log(`🧪 Testing single track: ${trackId}`);
+    
+    // Test the example track from your logs
+    const testTrack = {
+      id: trackId,
+      title: "constantinople of the sephardim. movement 5", 
+      storage_bucket: "audio",
+      storage_key: "tracks/constantinople-of-the-sephardim.-movement-5.mp3"
+    };
+    
+    console.log('🔍 Track data:', testTrack);
+    const result = await SmartAudioResolver.resolveAudioUrl(testTrack);
+    
+    if (result.success) {
+      console.log(`✅ SUCCESS: Found working URL via ${result.method}`);
+      console.log(`🔗 Working URL: ${result.url}`);
+      
+      // Test if we can actually play it
+      const audio = new Audio(result.url);
+      try {
+        await audio.play();
+        console.log('🎵 Audio playback test: SUCCESS');
+        audio.pause();
+      } catch (e) {
+        console.log('❌ Audio playback test: FAILED', e.message);
+      }
+    } else {
+      console.log(`❌ FAILED: No working URL found`);
+      console.log('📝 All attempts:', result.attempts);
+    }
+    
+    return result;
   };
 }
