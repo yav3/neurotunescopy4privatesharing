@@ -77,10 +77,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
               {goal.description}
             </p>
             
-            {/* VAD Profile */}
-            <p className="text-white/60 text-xs font-mono">
-              VAD Profile: V:{goal.vadProfile.valence.toFixed(1)}A:{goal.vadProfile.arousal.toFixed(1)}D:{goal.vadProfile.dominance.toFixed(1)}
-            </p>
+            {/* VAD Profile removed */}
             
             {/* BPM Range and Effectiveness */}
             <div className="flex items-center gap-2 flex-wrap">
