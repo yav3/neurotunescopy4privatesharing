@@ -99,7 +99,7 @@ export function useTherapeuticGoals(options: UseTherapeuticGoalsOptions = {}) {
                 valence: t.valence,
                 energy_level: t.energy_level,
                 musical_key_est: t.musical_key_est,
-                camelot: t.camelot
+                camelot: t.camelot,
               })) || [], 
               goal.slug as any
             );
