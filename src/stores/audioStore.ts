@@ -237,8 +237,20 @@ export const useAudioStore = create<AudioState>((set, get) => {
       console.log('🎯 Resolution result:', resolution);
       
       if (!resolution.success || !resolution.url) {
-        console.error('❌ SmartAudioResolver could not find working URL');
+        console.error('❌ SmartAudioResolver could not find working URL for:', track.title);
+        console.log('📝 Track data:', { 
+          id: track.id, 
+          title: track.title, 
+          storage_bucket: track.storage_bucket, 
+          storage_key: track.storage_key 
+        });
         console.log('📝 Attempted URLs:', resolution.attempts);
+        
+        // Save failure info for debugging
+        if (typeof window !== 'undefined') {
+          (window as any).lastBrokenTrack = { track, resolution };
+        }
+        
         set({ 
           error: `Audio file not found. Tried ${resolution.attempts.length} different locations.`,
           isLoading: false 

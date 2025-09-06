@@ -146,6 +146,14 @@ export class SmartAudioResolver {
 
     // All strategies failed
     console.log(`❌ All resolution strategies failed for "${track.title}"`);
+    console.log(`📊 Failed attempts summary:`, attempts.map(a => `${a.method}: ${a.status}`));
+    console.log(`🔗 Database had: bucket="${track.storage_bucket}" key="${track.storage_key}"`);
+    
+    // Log this failure for debugging
+    if (typeof window !== 'undefined') {
+      (window as any).lastFailedTrack = { track, attempts };
+    }
+    
     const result = { success: false, attempts };
     this.cache.set(cacheKey, result);
     return result;
@@ -188,4 +196,38 @@ declare global {
 
 if (typeof window !== 'undefined') {
   window.SmartAudioResolver = SmartAudioResolver;
+  
+  // Add debugging command to test current queue
+  (window as any).testCurrentQueue = async () => {
+    const audio = (window as any).useAudioStore?.getState();
+    if (!audio?.queue?.length) {
+      console.log('❌ No queue to test');
+      return;
+    }
+    
+    console.log(`🧪 Testing ${audio.queue.length} tracks from current queue...`);
+    let working = 0, broken = 0;
+    
+    for (const track of audio.queue.slice(0, 5)) { // Test first 5
+      console.log(`\n🔍 Testing: ${track.title}`);
+      const result = await SmartAudioResolver.resolveAudioUrl({
+        id: track.id,
+        title: track.title,
+        storage_bucket: track.storage_bucket,
+        storage_key: track.storage_key
+      });
+      
+      if (result.success) {
+        console.log(`✅ WORKING: ${track.title}`);
+        working++;
+      } else {
+        console.log(`❌ BROKEN: ${track.title}`);
+        console.log(`📝 Attempts:`, result.attempts.map(a => `${a.method}=${a.status}`));
+        broken++;
+      }
+    }
+    
+    console.log(`\n📊 Results: ${working} working, ${broken} broken`);
+    return { working, broken, total: working + broken };
+  };
 }
