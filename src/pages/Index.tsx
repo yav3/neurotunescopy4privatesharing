@@ -4,7 +4,6 @@ import { Header } from "@/components/Header";
 import { TherapeuticMusic } from "@/components/TherapeuticMusic";
 import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
-import { NowPlaying } from "@/components/NowPlaying";
 import SoundCloudFallback from "@/components/SoundCloudFallback";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
@@ -91,8 +90,6 @@ const Index = () => {
       )}
       
       <MusicPlayer open={showPlayer} onOpenChange={setShowPlayer} />
-      
-      {currentTrack && <NowPlaying />}
     </div>
   );
 };
