@@ -15,12 +15,27 @@ let sessionManager: { trackProgress: (t: number, d: number) => void; completeSes
 let loadSeq = 0;
 let isNexting = false;
 let isPlaying = false;
+let isTransitioning = false; // Global transition lock
 
 // Network hang protection  
 let currentAbort: AbortController | null = null;
 
 // Skip tracking for UX
 let skipped = 0;
+
+// Debounced auto-skip protection
+let autoSkipTimeout: NodeJS.Timeout | null = null;
+
+const scheduleAutoSkip = (reason: string) => {
+  if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
+  autoSkipTimeout = setTimeout(() => {
+    console.log(`🎵 Auto-skip triggered: ${reason}`);
+    if (!isNexting && !isTransitioning) {
+      const store = (window as any).useAudioStore?.getState();
+      if (store) store.next();
+    }
+  }, 1000);
+};
 
 type AudioState = {
   // Playback state
@@ -134,7 +149,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     if (!eventListenersAdded) {
       // Auto-next on track end
       audio.addEventListener('ended', async () => {
-        console.log('🎵 Audio ended - auto-next');
+        console.log('🎵 Audio ended - scheduling auto-next');
         set({ isPlaying: false });
         
         // Complete session when queue ends
@@ -146,21 +161,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        // Prevent racing by checking if already nexting
-        if (!isNexting) {
-          await get().next();
-        }
+        // Use debounced auto-skip to prevent racing
+        scheduleAutoSkip('track ended');
       });
       
       // Auto-skip on audio error
       audio.addEventListener('error', async () => {
-        console.warn('🎵 Audio error event — skipping to next track');
+        console.warn('🎵 Audio error event — scheduling skip');
         set({ isPlaying: false });
         announceSkip();
-        // Prevent racing by checking if already nexting
-        if (!isNexting) {
-          await get().next();
-        }
+        
+        // Use debounced auto-skip to prevent racing
+        scheduleAutoSkip('audio error');
       });
       
       // Honest state tracking
@@ -216,11 +228,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
   const loadTrack = async (track: Track): Promise<boolean> => {
     const mySeq = ++loadSeq;
+    const startTime = Date.now();
     const audio = initAudio();
     set({ isLoading: true, error: undefined });
     
+    // Enhanced sequence validation with timeout
+    const isValid = () => mySeq === loadSeq && (Date.now() - startTime) < 30000;
+    
     try {
       console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
+      
+      // Early validation
+      if (!isValid()) {
+        console.log('🎵 Load sequence invalidated early:', mySeq);
+        return false;
+      }
       
       // Validate track ID first
       if (!track.id || typeof track.id !== 'string' || track.id.trim() === '') {
@@ -236,6 +258,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         storage_bucket: track.storage_bucket,
         storage_key: track.storage_key
       });
+      
+      // Check sequence after async operation
+      if (!isValid()) {
+        console.log('🎵 Load sequence outdated after resolution:', mySeq, 'vs', loadSeq);
+        return false;
+      }
       
       console.log('🎯 Resolution result:', resolution);
       
@@ -264,9 +292,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const url = resolution.url;
       console.log(`✅ Found working URL via ${resolution.method}: ${url}`);
       
-      // If a newer load started while we were resolving, ignore this one
-      if (mySeq !== loadSeq) {
-        console.log('🎵 Load sequence outdated after resolution, ignoring:', mySeq, 'vs', loadSeq);
+      // Final sequence check before setting audio source
+      if (!isValid()) {
+        console.log('🎵 Load sequence outdated before setting src:', mySeq, 'vs', loadSeq);
         return false;
       }
       
@@ -282,8 +310,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log('🎵 Autoplay blocked (expected), waiting for user gesture');
       }
       
-      if (mySeq !== loadSeq) {
-        console.log('🎵 Load sequence outdated after play attempt, ignoring:', mySeq, 'vs', loadSeq);
+      // Final validation
+      if (!isValid()) {
+        console.log('🎵 Load sequence outdated after play attempt:', mySeq, 'vs', loadSeq);
         return false;
       }
       
@@ -292,7 +321,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       return true;
     } catch (error) {
       console.error('🎵 Load track failed:', error);
-      if (mySeq === loadSeq) {
+      if (isValid()) {
         set({ isLoading: false });
       }
       return false;
@@ -553,33 +582,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Media format/source not supported
           set({ error: "Audio format not supported" });
           toast.error("Track format not supported - trying next track");
-          // Auto-skip to next track (debounced)
-          if (!isNexting) {
-            setTimeout(() => {
-              if (!isNexting) get().next();
-            }, 1000);
-          }
+          // Use debounced auto-skip to prevent racing
+          scheduleAutoSkip('format not supported');
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error
           set({ error: "Network error loading track" });
           toast.error("Network error - checking next track");
-          // Auto-skip to next track (debounced)
-          if (!isNexting) {
-            setTimeout(() => {
-              if (!isNexting) get().next();
-            }, 1000);
-          }
+          // Use debounced auto-skip to prevent racing
+          scheduleAutoSkip('network error');
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
           toast.error("Playback issue - trying next track");
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Auto-skip to next track (debounced)
-          if (!isNexting) {
-            setTimeout(() => {
-              if (!isNexting) get().next();
-            }, 1000);
-          }
+          // Use debounced auto-skip to prevent racing
+          scheduleAutoSkip('unknown error');
         }
       }
     },
@@ -590,16 +607,24 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      // Prevent concurrent next operations
-      if (isNexting) {
-        console.log('🎵 Next already in progress, skipping');
+      // Prevent concurrent operations with double lock
+      if (isNexting || isTransitioning) {
+        console.log('🎵 Next already in progress or system transitioning, skipping');
         return;
       }
       
       isNexting = true;
+      isTransitioning = true;
+      
       try {
+        // Clear any pending auto-skip timeouts
+        if (autoSkipTimeout) {
+          clearTimeout(autoSkipTimeout);
+          autoSkipTimeout = null;
+        }
+        
         let { queue, index, lastGoal } = get();
-        console.log('🎵 Skip button pressed - current index:', index, 'queue length:', queue.length, 'lastGoal:', lastGoal);
+        console.log('🎵 Next operation starting - current index:', index, 'queue length:', queue.length, 'lastGoal:', lastGoal);
         
         for (let i = index + 1; i < queue.length; i++) {
           console.log('🎵 Trying next track at index', i, ':', queue[i].title);
@@ -633,6 +658,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ isLoading: false, error: "No more tracks available" });
       } finally {
         isNexting = false;
+        isTransitioning = false;
+        console.log('🎵 Next operation completed');
       }
     },
 
