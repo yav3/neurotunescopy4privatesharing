@@ -34,6 +34,7 @@ import AudioDebugTool from '@/components/AudioDebugTool';
 import TracksIdMappingInspector from '@/components/TracksIdMappingInspector';
 import DatabaseStorageRepairer from '@/components/DatabaseStorageRepairer';
 import AudioResolverTester from '@/components/AudioResolverTester';
+import { DirectURLTester } from '@/components/DirectURLTester';
 import { 
   LineChart, 
   Line, 
@@ -563,6 +564,7 @@ export function UnifiedDashboard() {
           
           {/* Debug Tab */}
           <TabsContent value="debug" className="space-y-8">
+            <DirectURLTester />
             <AudioDebugTool />
             <AudioResolverTester />
             <TracksIdMappingInspector />
