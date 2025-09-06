@@ -111,7 +111,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Simplified: Just try to play the track directly, no pre-validation
   const canPlay = async (url: string): Promise<boolean> => {
     console.log('🎵 Testing stream URL:', url);
-    return true; // Let the audio element handle validation
+    
+    // TEMPORARY: Always return true to prevent tracks from being marked as broken
+    // Let the audio element handle validation during actual playback
+    return true;
   };
   
   // Helper: Announce skips with smart UX (don't spam)
