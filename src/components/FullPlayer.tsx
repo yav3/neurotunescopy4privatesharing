@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
-import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Zap, Heart } from "lucide-react";
+import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Zap, Heart, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,14 @@ export default function FullPlayer() {
       title: isFavorited ? "Removed from favorites" : "Added to favorites",
       description: track?.title,
     });
+  };
+
+  const handleThumbsDown = async () => {
+    toast({
+      title: "Track disliked",
+      description: "Skipping to next track",
+    });
+    await next();
   };
 
   if (!track) {
@@ -107,6 +115,16 @@ export default function FullPlayer() {
             )}
           >
             <Heart size={20} className={cn(isFavorited && "fill-current")} />
+          </Button>
+
+          {/* Thumbs Down */}
+          <Button 
+            variant="ghost" 
+            size="lg"
+            onClick={handleThumbsDown}
+            className="transition-colors duration-200 p-4 rounded-full text-muted-foreground hover:text-destructive"
+          >
+            <ThumbsDown size={20} />
           </Button>
 
           {/* Lightning Mode */}
