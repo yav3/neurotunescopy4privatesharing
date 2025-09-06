@@ -131,14 +131,6 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
             />
             {/* Therapeutic Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
-            {/* Frequency Band Indicator */}
-            <div className="absolute top-1 right-1">
-              <div className="w-3 h-3 rounded-full bg-white/80 flex items-center justify-center">
-                <span className="text-[8px] font-bold text-gray-800">
-                  {frequencyBand.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            </div>
           </div>
           
           {/* Play button overlay */}
@@ -166,28 +158,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
             </span>
           </div>
 
-          {/* Therapeutic info inline */}
-          {primaryApp && (
-            <div className="mb-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Brain size={14} className="text-primary" />
-                <span className="text-xs text-foreground capitalize">
-                  {primaryApp.frequency_band_primary} Band
-                </span>
-              </div>
-              
-              <div className="flex flex-wrap gap-1">
-                {primaryApp.condition_targets?.slice(0, 2).map((condition) => (
-                  <span 
-                    key={condition} 
-                    className="px-2 py-0.5 bg-secondary text-xs rounded-full text-secondary-foreground"
-                  >
-                    {condition.replace('_', ' ')}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Removed VAD profile information */}
 
         </div>
       </div>
