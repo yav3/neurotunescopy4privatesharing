@@ -197,6 +197,36 @@ declare global {
 if (typeof window !== 'undefined') {
   window.SmartAudioResolver = SmartAudioResolver;
   
+  // Simple direct test function
+  (window as any).testDirectURL = async () => {
+    const testUrl = "https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/audio/tracks/constantinople-of-the-sephardim.-movement-5.mp3";
+    
+    console.log('🧪 Testing direct storage URL:', testUrl);
+    
+    try {
+      const response = await fetch(testUrl, { method: 'HEAD' });
+      console.log('📊 Response:', response.status, response.statusText);
+      
+      if (response.ok) {
+        console.log('✅ URL EXISTS - File is accessible');
+        
+        // Try to play it
+        const audio = new Audio(testUrl);
+        try {
+          await audio.play();
+          console.log('🎵 PLAYBACK SUCCESS');
+          audio.pause();
+        } catch (e) {
+          console.log('❌ PLAYBACK FAILED:', e.message);
+        }
+      } else {
+        console.log('❌ URL FAILED:', response.status);
+      }
+    } catch (error) {
+      console.log('❌ NETWORK ERROR:', error.message);
+    }
+  };
+
   // Add debugging command to test current queue
   (window as any).testCurrentQueue = async () => {
     const audio = (window as any).useAudioStore?.getState();
