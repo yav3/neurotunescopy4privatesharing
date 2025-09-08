@@ -2,40 +2,104 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BarChart3, Users, Music, Activity, TrendingUp, Clock, Headphones, Target } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { BarChart3, Users, Music, Activity, TrendingUp, Clock, Headphones, Target, AlertTriangle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-// Sample data - in a real app, this would come from your analytics system
-const userGrowthData = [
-  { month: 'Jan', users: 1200, sessions: 3400 },
-  { month: 'Feb', users: 1350, sessions: 3800 },
-  { month: 'Mar', users: 1500, sessions: 4200 },
-  { month: 'Apr', users: 1800, sessions: 4800 },
-  { month: 'May', users: 2100, sessions: 5400 },
-  { month: 'Jun', users: 2543, sessions: 6200 },
-];
-
-const contentUsageData = [
-  { category: 'Focus Enhancement', plays: 8500, percentage: 35 },
-  { category: 'Anxiety Relief', plays: 6200, percentage: 25 },
-  { category: 'Sleep Aid', plays: 4800, percentage: 20 },
-  { category: 'Mood Boost', plays: 3600, percentage: 15 },
-  { category: 'Meditation', plays: 1200, percentage: 5 },
-];
-
-const sessionData = [
-  { hour: '00:00', sessions: 45 },
-  { hour: '04:00', sessions: 12 },
-  { hour: '08:00', sessions: 180 },
-  { hour: '12:00', sessions: 240 },
-  { hour: '16:00', sessions: 320 },
-  { hour: '20:00', sessions: 280 },
-];
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+interface AnalyticsData {
+  totalUsers: number;
+  totalTracks: number;
+  workingTracks: number;
+  missingTracks: number;
+  totalPlaylists: number;
+  avgBpm: number;
+  tracksByStatus: Record<string, number>;
+}
 
 export default function Analytics() {
   const [timeRange, setTimeRange] = useState('30d');
+  const [analytics, setAnalytics] = useState<AnalyticsData>({
+    totalUsers: 0,
+    totalTracks: 0,
+    workingTracks: 0,
+    missingTracks: 0,
+    totalPlaylists: 0,
+    avgBpm: 0,
+    tracksByStatus: {}
+  });
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [timeRange]);
+
+  const fetchAnalytics = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch user count
+      const { count: userCount, error: userError } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+      if (userError) throw userError;
+
+      // Fetch track data
+      const { data: tracks, error: trackError } = await supabase
+        .from('tracks')
+        .select('audio_status, bpm');
+
+      if (trackError) throw trackError;
+
+      // Fetch playlist count
+      const { count: playlistCount, error: playlistError } = await supabase
+        .from('playlists')
+        .select('*', { count: 'exact', head: true });
+
+      if (playlistError) throw playlistError;
+
+      // Process track data
+      const tracksByStatus: Record<string, number> = {};
+      let totalBpm = 0;
+      let validBpm = 0;
+
+      tracks?.forEach(track => {
+        tracksByStatus[track.audio_status] = (tracksByStatus[track.audio_status] || 0) + 1;
+        if (track.bpm && track.bpm > 0) {
+          totalBpm += track.bpm;
+          validBpm++;
+        }
+      });
+
+      setAnalytics({
+        totalUsers: userCount || 0,
+        totalTracks: tracks?.length || 0,
+        workingTracks: tracksByStatus['working'] || 0,
+        missingTracks: tracksByStatus['missing'] || 0,
+        totalPlaylists: playlistCount || 0,
+        avgBpm: validBpm > 0 ? totalBpm / validBpm : 0,
+        tracksByStatus
+      });
+
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch analytics: ' + error.message,
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-6">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -43,7 +107,7 @@ export default function Analytics() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Analytics & Reporting</h1>
           <p className="text-muted-foreground">
-            Insights into user behavior, content performance, and system metrics.
+            Real-time insights into your application's data and performance.
           </p>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
@@ -67,345 +131,246 @@ export default function Analytics() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2,543</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">+18.2%</span> from last month
-            </p>
+            <div className="text-2xl font-bold">{analytics.totalUsers.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">Registered users</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Tracks</CardTitle>
+            <Music className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{analytics.totalTracks.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">{analytics.workingTracks} working</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Missing Files</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-destructive">{analytics.missingTracks.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">Require attention</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Avg BPM</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,247</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">+12.5%</span> from yesterday
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Content Plays</CardTitle>
-            <Headphones className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">24,300</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">+8.4%</span> from last week
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Session Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">24m 32s</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">+3.2%</span> from last week
-            </p>
+            <div className="text-2xl font-bold">{Math.round(analytics.avgBpm)}</div>
+            <p className="text-xs text-muted-foreground">Beats per minute</p>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs defaultValue="users" className="space-y-4">
+      <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="users">User Analytics</TabsTrigger>
-          <TabsTrigger value="content">Content Performance</TabsTrigger>
-          <TabsTrigger value="engagement">Engagement</TabsTrigger>
-          <TabsTrigger value="therapeutic">Therapeutic Outcomes</TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="content">Content Status</TabsTrigger>
+          <TabsTrigger value="database">Database Stats</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="users" className="space-y-4">
+        <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>User Growth</CardTitle>
-                <CardDescription>Monthly active users and sessions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={userGrowthData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="users" stroke="#8884d8" strokeWidth={2} />
-                    <Line type="monotone" dataKey="sessions" stroke="#82ca9d" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Session Pattern</CardTitle>
-                <CardDescription>Sessions by time of day</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={sessionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="hour" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="sessions" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>User Demographics</CardTitle>
-              <CardDescription>Key user insights and segments</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-2">
-                  <h4 className="font-medium">New Users (7d)</h4>
-                  <p className="text-2xl font-bold">324</p>
-                  <p className="text-sm text-muted-foreground">+15% vs previous week</p>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-medium">Return Rate</h4>
-                  <p className="text-2xl font-bold">68%</p>
-                  <p className="text-sm text-muted-foreground">7-day return rate</p>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-medium">Premium Users</h4>
-                  <p className="text-2xl font-bold">456</p>
-                  <p className="text-sm text-muted-foreground">18% conversion rate</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="content" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Content Category Performance</CardTitle>
-                <CardDescription>Plays by therapeutic goal</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={contentUsageData}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="plays"
-                      label={({ name, percentage }) => `${name} ${percentage}%`}
-                    >
-                      {contentUsageData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Performing Tracks</CardTitle>
-                <CardDescription>Most played content this month</CardDescription>
+                <CardTitle>Track Status Distribution</CardTitle>
+                <CardDescription>Audio file status breakdown</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {[
-                    { title: "Peaceful Morning", plays: 1250, category: "Focus Enhancement" },
-                    { title: "Ocean Waves", plays: 980, category: "Sleep Aid" },
-                    { title: "Forest Rain", plays: 876, category: "Anxiety Relief" },
-                    { title: "Meditation Bell", plays: 743, category: "Meditation" },
-                    { title: "Sunrise Energy", plays: 654, category: "Mood Boost" },
-                  ].map((track, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{track.title}</p>
-                        <p className="text-sm text-muted-foreground">{track.category}</p>
+                  {Object.entries(analytics.tracksByStatus).map(([status, count]) => (
+                    <div key={status} className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-2 h-2 rounded-full ${
+                          status === 'working' ? 'bg-green-500' :
+                          status === 'missing' ? 'bg-red-500' :
+                          status === 'problematic' ? 'bg-yellow-500' :
+                          'bg-gray-500'
+                        }`}></div>
+                        <span className="text-sm font-medium capitalize">{status}</span>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium">{track.plays.toLocaleString()}</p>
-                        <p className="text-sm text-muted-foreground">plays</p>
-                      </div>
+                      <span className="text-sm text-muted-foreground">{count}</span>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>System Health</CardTitle>
+                <CardDescription>Current system status</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Database Connection</span>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Healthy</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Storage Access</span>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Operational</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Working Tracks Ratio</span>
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        analytics.totalTracks > 0 && (analytics.workingTracks / analytics.totalTracks) > 0.8 
+                          ? 'bg-green-500' : 'bg-yellow-500'
+                      }`}></div>
+                      <span className="text-sm text-muted-foreground">
+                        {analytics.totalTracks > 0 
+                          ? Math.round((analytics.workingTracks / analytics.totalTracks) * 100) 
+                          : 0}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 
-        <TabsContent value="engagement" className="space-y-4">
+        <TabsContent value="content" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Session Completion</CardTitle>
-                <CardDescription>Users completing full sessions</CardDescription>
+                <CardTitle>Working Tracks</CardTitle>
+                <CardDescription>Audio files ready for playback</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">82%</div>
+                <div className="text-3xl font-bold text-green-600">{analytics.workingTracks}</div>
                 <p className="text-sm text-muted-foreground">
-                  <span className="text-green-600">+5.2%</span> from last month
+                  {analytics.totalTracks > 0 
+                    ? Math.round((analytics.workingTracks / analytics.totalTracks) * 100) 
+                    : 0}% of total
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Skip Rate</CardTitle>
-                <CardDescription>Tracks skipped before completion</CardDescription>
+                <CardTitle>Missing Files</CardTitle>
+                <CardDescription>Audio files that need attention</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">12%</div>
+                <div className="text-3xl font-bold text-red-600">{analytics.missingTracks}</div>
                 <p className="text-sm text-muted-foreground">
-                  <span className="text-red-600">+1.2%</span> from last month
+                  {analytics.totalTracks > 0 
+                    ? Math.round((analytics.missingTracks / analytics.totalTracks) * 100) 
+                    : 0}% of total
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Favorite Rate</CardTitle>
-                <CardDescription>Tracks added to favorites</CardDescription>
+                <CardTitle>Average BPM</CardTitle>
+                <CardDescription>Typical track tempo</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">34%</div>
-                <p className="text-sm text-muted-foreground">
-                  <span className="text-green-600">+2.1%</span> from last month
-                </p>
+                <div className="text-3xl font-bold">{Math.round(analytics.avgBpm)}</div>
+                <p className="text-sm text-muted-foreground">Beats per minute</p>
               </CardContent>
             </Card>
           </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>User Engagement Trends</CardTitle>
-              <CardDescription>How users interact with the platform over time</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span>Daily Active Users</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-16 bg-muted rounded-full h-2">
-                      <div className="w-12 bg-primary h-2 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">75%</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Weekly Active Users</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-16 bg-muted rounded-full h-2">
-                      <div className="w-14 bg-primary h-2 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">88%</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Monthly Active Users</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-16 bg-muted rounded-full h-2">
-                      <div className="w-15 bg-primary h-2 rounded-full"></div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">94%</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
-        <TabsContent value="therapeutic" className="space-y-4">
+        <TabsContent value="database" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Mood Improvement</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle>Total Users</CardTitle>
+                <CardDescription>Registered user accounts</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">78%</div>
-                <p className="text-xs text-muted-foreground">Users report positive change</p>
+                <div className="text-2xl font-bold">{analytics.totalUsers.toLocaleString()}</div>
+                <p className="text-xs text-muted-foreground">Profiles in database</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Sleep Quality</CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle>Total Tracks</CardTitle>
+                <CardDescription>Music files in catalog</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">85%</div>
-                <p className="text-xs text-muted-foreground">Better sleep reported</p>
+                <div className="text-2xl font-bold">{analytics.totalTracks.toLocaleString()}</div>
+                <p className="text-xs text-muted-foreground">Audio entries</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Focus Sessions</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle>Playlists</CardTitle>
+                <CardDescription>Curated collections</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">92%</div>
-                <p className="text-xs text-muted-foreground">Session completion rate</p>
+                <div className="text-2xl font-bold">{analytics.totalPlaylists.toLocaleString()}</div>
+                <p className="text-xs text-muted-foreground">Active playlists</p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Anxiety Relief</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+              <CardHeader>
+                <CardTitle>Data Health</CardTitle>
+                <CardDescription>Overall data quality</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">73%</div>
-                <p className="text-xs text-muted-foreground">Stress reduction reported</p>
+                <div className="text-2xl font-bold text-green-600">Good</div>
+                <p className="text-xs text-muted-foreground">All systems operational</p>
               </CardContent>
             </Card>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>Therapeutic Outcomes</CardTitle>
-              <CardDescription>User-reported benefits by category</CardDescription>
+              <CardTitle>Detailed Status Breakdown</CardTitle>
+              <CardDescription>Track status distribution</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[
-                  { goal: "Improved Sleep Quality", users: 1247, percentage: 85 },
-                  { goal: "Reduced Anxiety", users: 1108, percentage: 73 },
-                  { goal: "Better Focus", users: 1456, percentage: 92 },
-                  { goal: "Mood Enhancement", users: 987, percentage: 78 },
-                  { goal: "Stress Relief", users: 876, percentage: 68 },
-                ].map((outcome, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{outcome.goal}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {outcome.users} users ({outcome.percentage}%)
-                      </span>
+                {Object.entries(analytics.tracksByStatus).map(([status, count]) => {
+                  const percentage = analytics.totalTracks > 0 
+                    ? Math.round((count / analytics.totalTracks) * 100) 
+                    : 0;
+                  
+                  return (
+                    <div key={status} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium capitalize">{status} Tracks</span>
+                        <span className="text-sm text-muted-foreground">
+                          {count} ({percentage}%)
+                        </span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2">
+                        <div 
+                          className={`h-2 rounded-full transition-all ${
+                            status === 'working' ? 'bg-green-500' :
+                            status === 'missing' ? 'bg-red-500' :
+                            status === 'problematic' ? 'bg-yellow-500' :
+                            'bg-gray-500'
+                          }`}
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div 
-                        className="bg-primary h-2 rounded-full transition-all"
-                        style={{ width: `${outcome.percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
