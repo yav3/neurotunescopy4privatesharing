@@ -11,6 +11,15 @@ interface UserProfile {
   display_name: string | null;
   created_at: string;
   updated_at: string;
+  bio?: string;
+  avatar_url?: string;
+  default_session_duration?: number;
+  favorite_goals?: string[];
+  notification_preferences?: {
+    email?: boolean;
+    push?: boolean;
+    [key: string]: any;
+  };
 }
 
 interface ExtendedUser extends User {
