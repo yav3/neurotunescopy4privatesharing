@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Music, Loader2, Play, Pause, SkipForward } from 'lucide-react';
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
+import { Card } from "@/components/ui/card";
 import { supabase } from '@/integrations/supabase/client';
 
 const AIDJ = () => {
@@ -334,53 +335,81 @@ const AIDJ = () => {
       )}
 
       {/* Cards Grid */}
-      <div className="px-4 pb-32">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="px-4 md:px-8 pb-32">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 gap-6">
           {/* Focus Enhancement Card */}
-          <div 
+          <Card 
             onClick={() => generateFlowPlaylist('focus')}
-            className={`relative overflow-hidden rounded-2xl h-48 cursor-pointer transition-all duration-300 bg-gradient-to-br from-primary to-primary/70 ${
-              loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105 hover:shadow-lg'
+            className={`relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-br from-card to-card/80 border-border/50 ${
+              loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : ''
             }`}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-            <div className="relative p-6 h-full flex flex-col justify-end">
-              {loading === 'focus' ? (
-                <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Loading from storage...</span>
+            <div className="aspect-[4/3] relative">
+              {/* Background Image */}
+              <img 
+                src="/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png"
+                alt="Focus Enhancement"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <div className="space-y-2">
+                  {loading === 'focus' ? (
+                    <div className="flex items-center gap-2 mb-2">
+                      <Loader2 className="w-5 h-5 text-white animate-spin" />
+                      <span className="text-white font-semibold">Loading from storage...</span>
+                    </div>
+                  ) : (
+                    <h3 className="text-white font-semibold text-lg leading-tight">Focus Enhancement</h3>
+                  )}
+                  <p className="text-white/80 text-sm">
+                    Instrumental tracks for deep concentration
+                  </p>
                 </div>
-              ) : (
-                <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">Focus Enhancement</h3>
-              )}
-              <p className="text-white/90 text-sm drop-shadow-md">
-                Instrumental tracks for deep concentration
-              </p>
+              </div>
             </div>
-          </div>
+          </Card>
 
           {/* Energy Boost Card */}
-          <div 
+          <Card 
             onClick={() => generateFlowPlaylist('energy')}
-            className={`relative overflow-hidden rounded-2xl h-48 cursor-pointer transition-all duration-300 bg-gradient-to-br from-secondary to-secondary/70 ${
-              loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105 hover:shadow-lg'
+            className={`relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-br from-card to-card/80 border-border/50 ${
+              loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : ''
             }`}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-            <div className="relative p-6 h-full flex flex-col justify-end">
-              {loading === 'energy' ? (
-                <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Loading from storage...</span>
+            <div className="aspect-[4/3] relative">
+              {/* Background Image */}
+              <img 
+                src="/lovable-uploads/262b2035-e633-446a-a217-97d2ec10d8a1.png"
+                alt="Energy Boost"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <div className="space-y-2">
+                  {loading === 'energy' ? (
+                    <div className="flex items-center gap-2 mb-2">
+                      <Loader2 className="w-5 h-5 text-white animate-spin" />
+                      <span className="text-white font-semibold">Loading from storage...</span>
+                    </div>
+                  ) : (
+                    <h3 className="text-white font-semibold text-lg leading-tight">Energy Boost</h3>
+                  )}
+                  <p className="text-white/80 text-sm">
+                    High-energy tracks for motivation
+                  </p>
                 </div>
-              ) : (
-                <h3 className="text-white text-2xl font-bold mb-2 drop-shadow-lg">Energy Boost</h3>
-              )}
-              <p className="text-white/90 text-sm drop-shadow-md">
-                High-energy tracks for motivation
-              </p>
+              </div>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
 
