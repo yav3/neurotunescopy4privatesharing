@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Play, CheckCircle, XCircle, AlertCircle, RefreshCw, Database, FileAudio, Download } from 'lucide-react'
-import { supabase } from '@/integrations/supabase/client'
+import { serviceSupabase } from '@/integrations/supabase/service-client'
 
 interface AnalysisResult {
   name: string
@@ -60,7 +60,7 @@ export const AudioAnalysisRunner: React.FC = () => {
       steps[0].message = 'Testing Supabase connection...'
       setResults([...steps])
 
-      const { count, error: countError } = await supabase
+      const { count, error: countError } = await serviceSupabase
         .from('tracks')
         .select('*', { count: 'exact', head: true })
         .eq('storage_bucket', 'audio')
@@ -77,9 +77,9 @@ export const AudioAnalysisRunner: React.FC = () => {
       setResults([...steps])
 
       // Use a simpler query approach to avoid OR syntax issues - only audio bucket tracks
-      const { data: allTracks, error: tracksError } = await supabase
+      const { data: allTracks, error: tracksError } = await serviceSupabase
         .from('tracks')
-        .select('id, bpm, musical_key_est, analysis_status, storage_bucket')
+        .select('id, bpm, camelot, analysis_status, storage_bucket')
         .eq('storage_bucket', 'audio')
         .limit(1000)
 
@@ -88,7 +88,7 @@ export const AudioAnalysisRunner: React.FC = () => {
       // Filter in JavaScript to find tracks needing analysis
       const needsAnalysis = allTracks?.filter(track => 
         !track.bpm || 
-        !track.musical_key_est || 
+        !track.camelot || 
         !track.analysis_status || 
         track.analysis_status !== 'complete'
       ) || []
@@ -101,7 +101,7 @@ export const AudioAnalysisRunner: React.FC = () => {
         needsAnalysis: needsAnalysisCount, 
         total: count || 0,
         missingBPM: needsAnalysis.filter(t => !t.bpm).length,
-        missingKey: needsAnalysis.filter(t => !t.musical_key_est).length,
+        missingKey: needsAnalysis.filter(t => !t.camelot).length,
         incompleteAnalysis: needsAnalysis.filter(t => !t.analysis_status || t.analysis_status !== 'complete').length
       }
       setResults([...steps])
@@ -157,7 +157,7 @@ export const AudioAnalysisRunner: React.FC = () => {
         steps[2].message = `Running comprehensive analysis on ${needsAnalysisCount} tracks...`
         setResults([...steps])
 
-        const response = await supabase.functions.invoke('complete-audio-analysis', {
+        const response = await serviceSupabase.functions.invoke('complete-audio-analysis', {
           body: {}
         })
 
