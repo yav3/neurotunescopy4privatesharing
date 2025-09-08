@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Heart, Moon, Zap, Waves, Flower2 } from 'lucide-react';
+import { LucideIcon, Brain, Heart, Zap, Waves, Flower2 } from 'lucide-react';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -83,20 +83,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['stress', 'relaxation', 'stress_reduction', 'chill']
   },
   {
-    id: 'sleep-preparation',
-    slug: 'sleep-preparation',
-    backendKey: 'sleep-preparation',
-    name: 'Sleep Preparation',
-    shortName: 'Sleep',
-    description: 'Prepare for restful sleep',
-    icon: Moon,
-    color: 'indigo',
-    gradient: 'from-indigo-500 to-purple-500',
-    bpmRange: { min: 40, max: 60, optimal: 45 },
-    vadProfile: { valence: 0.1, arousal: -0.8, dominance: -0.6 },
-    synonyms: ['sleep', 'deep-sleep', 'delta', 'sleep_preparation']
-  },
-  {
     id: 'mood-boost',
     slug: 'mood-boost',
     backendKey: 'mood-boost',
@@ -160,7 +146,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility
-export type GoalSlug = 'anxiety-relief' | 'focus-enhancement' | 'sleep-preparation' | 'mood-boost' | 'stress-reduction' | 'meditation-support';
+export type GoalSlug = 'anxiety-relief' | 'focus-enhancement' | 'mood-boost' | 'stress-reduction' | 'meditation-support';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
