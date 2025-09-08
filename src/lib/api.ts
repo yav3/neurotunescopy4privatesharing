@@ -53,7 +53,14 @@ export const API = {
   
   // Direct database access for home page therapeutic goals
   async playlist(goal: GoalSlug, limit = 50, offset = 0, excludeIds: string[] = []) {
-    console.log(`🎵 Direct database query for goal: ${goal}, limit: ${limit}, excluding: ${excludeIds.length} tracks`);
+    const { adminLog, userLog } = await import('@/utils/adminLogging');
+    adminLog(`🎵 Direct database query for goal: ${goal}, limit: ${limit}, excluding: ${excludeIds.length} tracks`);
+    if (excludeIds.length > 0) {
+      userLog(`🔄 Loading fresh ${goal} tracks for variety...`);
+    } else {
+      userLog(`🎵 Loading ${goal} music collection...`);
+    }
+    
     const { tracks, error } = await getTherapeuticTracks(goal, limit, excludeIds);
     if (error) {
       console.error('❌ Database query error:', error);

@@ -93,10 +93,13 @@ export async function getTherapeuticTracks(
   excludeIds: string[] = []
 ): Promise<{ tracks: Track[]; error?: string }> {
   try {
-    console.log(`🎵 Fetching ${count} tracks for goal: ${goal}`);
+    const { adminLog, userLog } = await import('@/utils/adminLogging');
+    
+    adminLog(`🎵 Fetching ${count} tracks for goal: ${goal}`);
+    userLog(`🎵 Loading music for ${goal}...`);
     
     const profile = VAD_PROFILES[goal as keyof typeof VAD_PROFILES] || VAD_PROFILES['mood-boost'];
-    console.log('📊 Using VAD profile:', profile);
+    adminLog('📊 Using VAD profile:', profile);
     
     // Build the query
     let query = supabase
@@ -110,12 +113,13 @@ export async function getTherapeuticTracks(
       query = query
         .gte('bpm', profile.bpm_min)
         .lte('bpm', profile.bpm_max);
-      console.log(`📊 BPM filter: ${profile.bpm_min} - ${profile.bpm_max}`);
+      adminLog(`📊 BPM filter: ${profile.bpm_min} - ${profile.bpm_max}`);
     }
 
     // Exclude specified tracks
     if (excludeIds.length > 0) {
       query = query.not('id', 'in', `(${excludeIds.join(',')})`);
+      adminLog(`🎵 Excluding ${excludeIds.length} recently played tracks`);
     }
 
     // Get more tracks than needed for filtering
@@ -133,7 +137,7 @@ export async function getTherapeuticTracks(
       return { tracks: [] };
     }
 
-    console.log(`📊 Retrieved ${tracks.length} tracks from database`);
+    adminLog(`📊 Retrieved ${tracks.length} tracks from database`);
 
     // Apply VAD scoring and filtering
     const scored = tracks
@@ -144,8 +148,10 @@ export async function getTherapeuticTracks(
 
     const finalTracks = scored.map(item => item.track) as Track[];
     
-    console.log(`✅ Filtered to ${finalTracks.length} high-quality tracks`);
-    console.log('🎵 Sample tracks:', finalTracks.slice(0, 3).map(t => ({ title: t.title, bpm: t.bpm, score: calculateVADScore(t, profile, goal).score })));
+    adminLog(`✅ Filtered to ${finalTracks.length} high-quality tracks`);
+    adminLog('🎵 Sample tracks:', finalTracks.slice(0, 3).map(t => ({ title: t.title, bpm: t.bpm, score: calculateVADScore(t, profile, goal).score })));
+    
+    userLog(`✅ Found ${finalTracks.length} tracks perfect for your session`);
     
     return { tracks: finalTracks };
 

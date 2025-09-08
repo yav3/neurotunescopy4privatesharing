@@ -134,10 +134,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
   };
   
   // Helper: Announce skips with smart UX (don't spam)
-  const announceSkip = () => {
+  const announceSkip = async () => {
     skipped++;
-    if (skipped === 1) toast.info("Skipping broken tracks…");
-    if (skipped % 5 === 0) toast.info(`Skipped ${skipped} broken tracks`);
+    const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+    if (shouldShowTechnicalLogs()) {
+      if (skipped === 1) toast.info("Skipping broken tracks…");
+      if (skipped % 5 === 0) toast.info(`Skipped ${skipped} broken tracks`);
+    } else {
+      // Simple user-friendly message for non-admins
+      if (skipped === 1) toast.info("Finding the perfect tracks for you...");
+    }
   };
   
   // Initialize audio element and events
@@ -365,7 +371,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
     playFromGoal: async (goal: string) => {
       set({ isLoading: true, error: undefined, lastGoal: goal });
       try {
-        console.log('🎵 Starting therapeutic session for goal:', goal);
+        const { adminLog, userLog } = await import('@/utils/adminLogging');
+        
+        adminLog('🎵 Starting therapeutic session for goal:', goal);
+        userLog('🎵 Preparing your therapeutic music session...');
         
         // Use your existing therapeutic goal mapper
         const therapeuticGoal = TherapeuticGoalMapper.findGoal(goal);
@@ -373,7 +382,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           throw new Error(`Unknown therapeutic goal: ${goal}`);
         }
         
-        console.log('🎯 Found therapeutic goal:', therapeuticGoal.name, 'with backend key:', therapeuticGoal.backendKey);
+        adminLog('🎯 Found therapeutic goal:', therapeuticGoal.name, 'with backend key:', therapeuticGoal.backendKey);
         
         // Use the goal slug for API call (not backendKey, since API expects GoalSlug)
         const goalSlug = therapeuticGoal.slug;
@@ -384,10 +393,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
         // Get recently played tracks to exclude for variety
         const { excludeQS } = await import('@/state/playlistSession');
         const excludeIds = excludeQS().split(',').filter(Boolean);
-        console.log('🎵 Excluding recently played tracks:', excludeIds.length);
+        adminLog('🎵 Excluding recently played tracks:', excludeIds.length);
+        if (excludeIds.length > 0) {
+          userLog('🔄 Loading fresh tracks for variety...');
+        }
         
         const response = await API.playlist(goalSlug as GoalSlug, 50, 0, excludeIds);
-        console.log('🎵 Database response received:', response?.tracks?.length, 'tracks');
+        adminLog('🎵 Database response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {
           throw new Error(`No tracks available for goal "${goal}"`);
@@ -413,7 +425,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
         }));
 
-        console.log('🎵 Converted to therapeutic format:', therapeuticTracks.length, 'tracks');
+        adminLog('🎵 Converted to therapeutic format:', therapeuticTracks.length, 'tracks');
 
         // Use your existing filtering system
         if (!['anxiety-relief', 'focus-enhancement', 'mood-boost', 'stress-reduction', 'meditation-support'].includes(goalSlug)) {
@@ -421,7 +433,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         const filteredTracks = filterTracksForGoal(therapeuticTracks, goalSlug as GoalSlug);
-        console.log('🎯 Therapeutically filtered tracks:', filteredTracks.length);
+        adminLog('🎯 Therapeutically filtered tracks:', filteredTracks.length);
         
         if (!filteredTracks.length) {
           throw new Error(`No tracks match the therapeutic requirements for "${therapeuticGoal.name}"`);
@@ -429,7 +441,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
         // Sort by therapeutic effectiveness using your existing system
         const therapeuticallyOrderedTracks = sortByTherapeuticEffectiveness(filteredTracks, goalSlug as GoalSlug);
-        console.log('✅ Tracks ordered by therapeutic effectiveness');
+        adminLog('✅ Tracks ordered by therapeutic effectiveness');
 
         // Convert back to audio store Track format
         const orderedTracks: Track[] = therapeuticallyOrderedTracks.map(t => ({
@@ -450,8 +462,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         set({ isLoading: false });
         
-        console.log('🎵 Therapeutic playlist set using existing system:', orderedTracks.length, 'tracks');
-        console.log('🧠 Using VAD profile:', therapeuticGoal.vadProfile, 'BPM range:', therapeuticGoal.bpmRange);
+        adminLog('🎵 Therapeutic playlist set using existing system:', orderedTracks.length, 'tracks');
+        adminLog('🧠 Using VAD profile:', therapeuticGoal.vadProfile, 'BPM range:', therapeuticGoal.bpmRange);
+        userLog(`✅ Your ${therapeuticGoal.name} session is ready with ${orderedTracks.length} curated tracks`);
+        
         return orderedTracks.length;
       } catch (error: any) {
         console.error('❌ Therapeutic playFromGoal error:', error);
@@ -469,12 +483,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       // Remove broken tracks and announce skips
       if (broken.length > 0) {
-        console.log(`🎵 Removing ${broken.length} broken tracks`);
+        const { adminLog, userLog } = await import('@/utils/adminLogging');
+        adminLog(`🎵 Removing ${broken.length} broken tracks`);
         for (let i = 0; i < Math.min(broken.length, 3); i++) {
           announceSkip();
         }
         if (broken.length > 3) {
-          toast.info(`Skipped ${broken.length} broken tracks`);
+          const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+          if (shouldShowTechnicalLogs()) {
+            toast.info(`Skipped ${broken.length} broken tracks`);
+          } else {
+            userLog('🎵 Optimizing your playlist...');
+          }
         }
       }
       

@@ -200,6 +200,11 @@ export function useAuth() {
         setSession(session);
         setUser(null); // Will be set properly by profile fetch
         
+        // Update admin logging role
+        import('@/utils/adminLogging').then(({ updateUserRole }) => {
+          updateUserRole(null);
+        });
+        
         // Defer profile fetching to avoid deadlock
         if (session?.user) {
           setTimeout(() => {
@@ -208,6 +213,10 @@ export function useAuth() {
                 if (mounted) {
                   console.log('✅ Profile loaded via timeout:', !!userWithProfile);
                   setUser(userWithProfile);
+                  // Update admin logging with user role
+                  import('@/utils/adminLogging').then(({ updateUserRole }) => {
+                    updateUserRole(userWithProfile?.role || 'user');
+                  });
                 }
               });
             }
@@ -234,6 +243,10 @@ export function useAuth() {
           if (mounted) {
             setUser(userWithProfile);
             setSession(session);
+            // Update admin logging with user role
+            import('@/utils/adminLogging').then(({ updateUserRole }) => {
+              updateUserRole(userWithProfile?.role || 'user');
+            });
             console.log('✅ Auth initialization complete');
           }
         } else {
@@ -241,6 +254,10 @@ export function useAuth() {
           if (mounted) {
             setUser(null);
             setSession(null);
+            // Clear admin logging role
+            import('@/utils/adminLogging').then(({ updateUserRole }) => {
+              updateUserRole(null);
+            });
           }
         }
       } catch (error) {
