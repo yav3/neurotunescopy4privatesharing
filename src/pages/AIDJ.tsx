@@ -22,86 +22,60 @@ const AIDJ = () => {
     try {
       console.log(`Generating ${flowType} playlist...`);
 
-      // Step 1: List files directly from storage bucket
-      const { data: files, error: listError } = await supabase.storage
-        .from('audio')
-        .list('', {
-          limit: 1000,
-          offset: 0
-        });
+      // Step 1: Query database for working tracks
+      let query = supabase
+        .from('tracks')
+        .select('*')
+        .eq('audio_status', 'working')
+        .not('id', 'is', null);
 
-      if (listError) {
-        throw new Error(`Storage list failed: ${listError.message}`);
-      }
-
-      console.log(`Found ${files?.length || 0} files in storage`);
-
-      if (!files || files.length === 0) {
-        throw new Error('No audio files found in storage');
-      }
-
-      // Step 2: Filter files based on flow type
-      let filteredFiles = [];
-      
+      // Step 2: Filter tracks based on flow type
       if (flowType === 'focus') {
-        // Look for focus-related files
-        filteredFiles = files.filter(file => {
-          const name = file.name.toLowerCase();
-          return (
-            name.includes('focus') || 
-            name.includes('ambient') || 
-            name.includes('instrumental') ||
-            name.includes('concentration') ||
-            name.includes('study')
-          );
-        });
+        query = query
+          .gte('bpm', 60)
+          .lte('bpm', 100)
+          .or('therapeutic_use.cs.{meditation,mindfulness,focus},genre.ilike.%instrumental%,genre.ilike.%ambient%,genre.ilike.%classical%');
       } else if (flowType === 'energy') {
-        // Look for energy-related files
-        filteredFiles = files.filter(file => {
-          const name = file.name.toLowerCase();
-          return (
-            name.includes('energy') || 
-            name.includes('upbeat') || 
-            name.includes('motivation') ||
-            name.includes('workout') ||
-            name.includes('boost')
-          );
-        });
+        query = query
+          .gte('bpm', 90)
+          .lte('bpm', 140)
+          .or('therapeutic_use.cs.{energy,motivation},genre.ilike.%electronic%,genre.ilike.%pop%,genre.ilike.%house%');
       }
 
-      console.log(`Filtered to ${filteredFiles.length} ${flowType} files`);
+      const { data: tracks, error: queryError } = await query.limit(50);
 
-      if (filteredFiles.length === 0) {
-        // Fallback: use any audio files
-        filteredFiles = files.filter(file => 
-          file.name.toLowerCase().match(/\.(mp3|wav|m4a|flac|ogg)$/i)
-        );
+      if (queryError) {
+        throw new Error(`Database query failed: ${queryError.message}`);
+      }
+
+      console.log(`Found ${tracks?.length || 0} tracks in database`);
+
+      if (!tracks || tracks.length === 0) {
+        throw new Error('No matching tracks found in database');
       }
 
       // Step 3: Randomize and select tracks
-      const shuffled = filteredFiles
+      const shuffled = tracks
         .sort(() => Math.random() - 0.5)
         .slice(0, 8); // Take up to 8 tracks
 
       // Step 4: Generate signed URLs and create playlist
       const playlistTracks = await Promise.all(
-        shuffled.map(async (file, index) => {
+        shuffled.map(async (track, index) => {
           const { data: urlData } = await supabase.storage
             .from('audio')
-            .createSignedUrl(file.name, 3600); // 1 hour expiry
+            .createSignedUrl(track.storage_key, 3600); // 1 hour expiry
 
-          // Extract basic info from filename
-          const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-          const parts = nameWithoutExt.split(' - ');
-          
           return {
-            id: file.id || index,
-            title: parts[1] || nameWithoutExt,
-            artist: parts[0] || 'Unknown Artist',
-            fileName: file.name,
+            id: track.id,
+            title: track.title || 'Unknown Title',
+            artist: track.genre || 'Unknown Artist',
+            fileName: track.storage_key?.split('/').pop() || 'unknown.mp3',
             stream_url: urlData?.signedUrl,
             duration: null,
-            index: index + 1
+            index: index + 1,
+            bpm: track.bpm,
+            genre: track.genre
           };
         })
       );
@@ -287,10 +261,12 @@ const AIDJ = () => {
                     {index + 1}
                   </div>
                   
-                  <div className="flex-grow min-w-0">
-                    <h3 className="font-medium text-foreground truncate">{track.title}</h3>
-                    <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
-                  </div>
+                   <div className="flex-grow min-w-0">
+                     <h3 className="font-medium text-foreground truncate">{track.title}</h3>
+                     <p className="text-sm text-muted-foreground truncate">
+                       {track.artist} {track.bpm && `• ${track.bpm} BPM`}
+                     </p>
+                   </div>
                   
                   <div className="text-xs text-muted-foreground">
                     {track.fileName}
