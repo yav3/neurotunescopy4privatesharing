@@ -382,7 +382,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
         // Convert API response to TherapeuticTrack format for filtering
         const therapeuticTracks = response.tracks.map((t: any) => ({
-          id: parseInt(t.id) || parseInt(t.unique_id) || 0,
+          id: parseInt(t.id) || 0,
           bpm: t.bpm,
           valence: t.valence,
           energy_level: t.energy_level || t.energy,

@@ -67,15 +67,6 @@ function calculateVADScore(track: Track, profile: any, goalType: string): { scor
   const d = track.dominance ?? 0.5;
   const bpm = track.bpm ?? track.bpm_est ?? 60;
 
-  // Special validation for focus tracks - must have "FOCUS" twice in title (lyric-free validation)
-  if (goalType === 'focus-enhancement') {
-    const title = (track.title || '').toUpperCase();
-    const focusCount = (title.match(/FOCUS/g) || []).length;
-    if (focusCount < 2) {
-      return { score: -1, v, a, d }; // Reject tracks without double FOCUS validation
-    }
-  }
-
   // BPM filtering
   if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
 
@@ -97,6 +88,7 @@ export async function getTherapeuticTracks(
     console.log(`🎵 Fetching ${count} tracks for goal: ${goal}`);
     
     const profile = VAD_PROFILES[goal as keyof typeof VAD_PROFILES] || VAD_PROFILES['mood-boost'];
+    console.log('📊 Using VAD profile:', profile);
     
     // Build the query
     let query = supabase
@@ -110,6 +102,7 @@ export async function getTherapeuticTracks(
       query = query
         .gte('bpm', profile.bpm_min)
         .lte('bpm', profile.bpm_max);
+      console.log(`📊 BPM filter: ${profile.bpm_min} - ${profile.bpm_max}`);
     }
 
     // Exclude specified tracks
@@ -144,6 +137,7 @@ export async function getTherapeuticTracks(
     const finalTracks = scored.map(item => item.track) as Track[];
     
     console.log(`✅ Filtered to ${finalTracks.length} high-quality tracks`);
+    console.log('🎵 Sample tracks:', finalTracks.slice(0, 3).map(t => ({ title: t.title, bpm: t.bpm, score: calculateVADScore(t, profile, goal).score })));
     
     return { tracks: finalTracks };
 
