@@ -11,6 +11,8 @@ import { TherapeuticDebugPanel } from "@/components/TherapeuticDebugPanel";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";
+import { useAuthContext } from "@/components/auth/AuthProvider";
+import { AuthPage } from "@/components/auth/AuthPage";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
@@ -21,6 +23,8 @@ import Profile from "./pages/Profile";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const { user, loading } = useAuthContext();
+
   useEffect(() => {
     initializeDebugging();
     
@@ -38,6 +42,21 @@ const App = () => {
     
     return cleanup;
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthPage />;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
