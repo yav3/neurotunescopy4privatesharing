@@ -384,7 +384,7 @@ const AIDJ = () => {
             <div className="aspect-[4/3] relative">
               {/* Background Image */}
               <img 
-                src="/lovable-uploads/262b2035-e633-446a-a217-97d2ec10d8a1.png"
+                src="/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png"
                 alt="Energy Boost"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
