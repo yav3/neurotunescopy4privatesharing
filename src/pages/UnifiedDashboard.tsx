@@ -541,7 +541,7 @@ export function UnifiedDashboard() {
                 <div>
                   <label className="block text-sm font-medium mb-2">Therapeutic Goals</label>
                   <div className="flex flex-wrap gap-2">
-                    {["Focus", "Relaxation", "Sleep", "Anxiety Relief", "Mood Boost", "Creativity"].map((goal) => (
+                    {["Focus", "Relaxation", "Sleep", "Anxiety Support", "Mood Boost", "Creativity"].map((goal) => (
                       <Badge key={goal} variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
                         {goal}
                       </Badge>

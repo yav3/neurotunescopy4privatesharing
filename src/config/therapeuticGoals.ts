@@ -58,7 +58,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     id: 'anxiety-relief',
     slug: 'anxiety-relief',
     backendKey: 'anxiety-relief', 
-    name: 'Anxiety Relief',
+    name: 'Anxiety Support',
     shortName: 'Calm',
     description: 'Calm your mind and reduce anxiety',
     icon: Heart,

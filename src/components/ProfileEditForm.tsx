@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const therapeuticGoals = [
   'Focus Enhancement',
-  'Anxiety Relief', 
+  'Anxiety Support', 
   'Stress Reduction',
   'Mood Boost',
   'Sleep Aid',
