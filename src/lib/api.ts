@@ -47,18 +47,39 @@ export const streamUrl = (track: any): string => {
   return data.publicUrl;
 };
 
-// Legacy API object for backward compatibility - now uses direct database queries
+// Legacy API object for backward compatibility - now uses proper API endpoints for home page
 export const API = {
   health: () => Promise.resolve({ ok: true }),
   
+  // Use actual API endpoints for home page therapeutic goals
   async playlist(goal: GoalSlug, limit = 50, offset = 0) {
-    console.log(`🎵 Direct database query for goal: ${goal}, limit: ${limit}`);
-    const { tracks, error } = await getTherapeuticTracks(goal, limit);
-    if (error) {
-      console.error('❌ Database query error:', error);
-      return { tracks: [] };
+    console.log(`🎵 API call for goal: ${goal}, limit: ${limit}`);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('api', {
+        body: { 
+          endpoint: 'playlist',
+          goal: goal,
+          count: limit 
+        }
+      });
+
+      if (error) {
+        console.error('❌ API endpoint error:', error);
+        // Fallback to direct database only if API fails
+        console.log('🔄 Falling back to direct database access');
+        const { tracks } = await getTherapeuticTracks(goal, limit);
+        return { tracks };
+      }
+
+      return data;
+    } catch (err) {
+      console.error('❌ API call failed:', err);
+      // Fallback to direct database access
+      console.log('🔄 Falling back to direct database access');
+      const { tracks } = await getTherapeuticTracks(goal, limit);
+      return { tracks };
     }
-    return { tracks };
   },
   
   debugStorage: () => Promise.resolve({ status: 'Direct database access - no API needed' }),

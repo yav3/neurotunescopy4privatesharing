@@ -194,12 +194,11 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       const d = track.dominance ?? 0.5;
       const bpm = track.bpm ?? track.bpm_est ?? 60;
 
-      // Special validation for focus tracks - must have "FOCUS" twice in title (lyric-free validation)
+      // Special validation for focus tracks - must contain "FOCUS" in title (lyric-free validation)
       if (goalType === 'focus-enhancement') {
         const title = (track.title || '').toUpperCase();
-        const focusCount = (title.match(/FOCUS/g) || []).length;
-        if (focusCount < 2) {
-          return { score: -1, v, a, d }; // Reject tracks without double FOCUS validation
+        if (!title.includes('FOCUS')) {
+          return { score: -1, v, a, d }; // Reject tracks without FOCUS in title
         }
       }
 
