@@ -65,7 +65,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
-    vadProfile: { valence: 0.3, arousal: -0.4, dominance: -0.2 },
+    vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
     synonyms: ['anxiety', 'calm', 'relax', 'anxiety_relief', 'anxiety-down']
   },
   {
