@@ -35,6 +35,7 @@ export function useAuth() {
       console.log('🔍 Getting profile for user:', authUser.id);
       
       // Get profile
+      console.log('📋 Fetching profile...');
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -43,23 +44,34 @@ export function useAuth() {
 
       if (profileError) {
         console.log('⚠️ Profile error (might be normal for new users):', profileError);
+      } else {
+        console.log('✅ Profile fetched successfully:', profile);
       }
 
       // Get role
+      console.log('👑 Fetching role...');
       const { data: roleData, error: roleError } = await supabase
         .rpc('get_user_role', { _user_id: authUser.id });
 
       if (roleError) {
         console.error('❌ Role error:', roleError);
+      } else {
+        console.log('✅ Role fetched successfully:', roleData);
       }
 
-      console.log('✅ User profile loaded:', { profile, role: roleData });
-
-      return {
+      const result = {
         ...authUser,
         profile: profile || undefined,
         role: roleData || 'user'
       };
+
+      console.log('✅ User profile loaded completely:', { 
+        hasProfile: !!result.profile, 
+        role: result.role,
+        userId: result.id 
+      });
+
+      return result;
     } catch (error) {
       console.error('❌ Error fetching user profile:', error);
       return {
@@ -181,17 +193,22 @@ export function useAuth() {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔄 Auth state changed:', event, !!session?.user);
         if (!mounted) return;
 
         setSession(session);
         
         if (session?.user) {
+          console.log('👤 Getting user with profile from auth state change...');
           const userWithProfile = await getUserWithProfile(session.user);
+          console.log('✅ Setting user from auth state change:', !!userWithProfile);
           setUser(userWithProfile);
         } else {
+          console.log('🚪 No user, setting null');
           setUser(null);
         }
         
+        console.log('⏰ Setting loading to false from auth state change');
         setLoading(false);
       }
     );
