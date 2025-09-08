@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Play, CheckCircle, XCircle, AlertCircle, RefreshCw } from 'lucide-react'
 import { API } from '@/lib/api'
+import { getTherapeuticTracks } from '@/services/therapeuticDatabase';
 
 interface TestResult {
   name: string
@@ -141,9 +142,10 @@ export const AudioTester: React.FC = () => {
       })
       setResults([...newResults])
 
-      // Try to get a sample track from database
-      const data = await API.playlist('focus-enhancement')
-      const tracks = data.tracks || []
+      // Use direct database query instead of API call
+      const { tracks } = await getTherapeuticTracks('focus-enhancement', 5);
+      console.log('Database Response:', tracks);
+      
       if (tracks.length > 0) {
           const sampleTrack = tracks[0]
           
@@ -273,4 +275,4 @@ export const AudioTester: React.FC = () => {
   )
 }
 
-export default AudioTester
+export default AudioTester;

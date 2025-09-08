@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Bot, Sparkles, AlertCircle, Loader2 } from 'lucide-react';
 import { pipeline } from '@huggingface/transformers';
 import { API } from '@/lib/api';
+import { getTherapeuticTracks } from "@/services/therapeuticDatabase";
 import { useAudioStore } from '@/stores';
 
 interface ClassificationResult {
@@ -158,10 +159,9 @@ const HuggingFaceClassifier: React.FC = () => {
     if (!results?.recommendedMood) return;
 
     try {
-      const playlist = await API.playlistByGoal(results.recommendedMood);
-      const tracks = playlist.tracks || [];
+      const { tracks } = await getTherapeuticTracks(results.recommendedMood, 20);
       if (tracks.length > 0) {
-        await setQueue(tracks, 0);
+        await setQueue(tracks as any, 0);
       }
     } catch (error) {
       console.error('Error generating playlist:', error);

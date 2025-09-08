@@ -3,6 +3,7 @@
  * Run in browser console: testPlaybackInvariants()
  */
 
+import { getTherapeuticTracks } from '@/services/therapeuticDatabase';
 import { API } from '@/lib/api';
 import { useAudioStore } from '@/stores';
 
@@ -17,9 +18,9 @@ export async function testPlaybackInvariants() {
     
     // 2. Get playlist  
     console.log('2️⃣ Fetching playlist...');
-    const { tracks } = await API.playlist('focus-enhancement', 1);
-    if (!tracks?.length) throw new Error('No tracks returned');
-    console.log('✅ Playlist:', tracks[0]);
+    const { tracks } = await getTherapeuticTracks('focus-enhancement', 1);
+    if (!tracks?.length) throw new Error('No tracks returned from database');
+    console.log('✅ Database query:', tracks[0]);
     
     // 3. Test stream URL generation
     console.log('3️⃣ Testing stream URL...');

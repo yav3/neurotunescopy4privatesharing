@@ -1,5 +1,4 @@
-// Audio System UUID Debug Tool
-// Add this to your app to trace UUID format issues and audio conflicts
+import { getTherapeuticTracks } from '@/services/therapeuticDatabase';
 
 // 1. UUID Format Validator
 const isValidUUID = (str: string): boolean => {
@@ -127,13 +126,13 @@ export const checkDatabaseIdFormats = async () => {
   console.group('🗃️ Database ID Format Check');
   
   try {
-    // Use the proper API method instead of direct fetch to avoid URL issues
-    const { API } = await import('@/lib/api');
-    const response = await API.playlist('focus-enhancement', 5);
-    console.log('API Response:', response);
+    // Use direct database query instead of API
+    const { tracks } = await getTherapeuticTracks('focus-enhancement', 5);
+    console.log('Database Response:', tracks);
     
-    if (response.tracks && Array.isArray(response.tracks)) {
-      response.tracks.forEach((track: any, index: number) => {
+    if (tracks && Array.isArray(tracks)) {
+      console.log('✅ Got tracks from database:', tracks.length);
+      tracks.forEach((track: any, index: number) => {
         console.log(`Track ${index + 1}:`, {
           id: track.id,
           type: typeof track.id,
@@ -144,12 +143,15 @@ export const checkDatabaseIdFormats = async () => {
           track: track
         });
       });
+      return tracks[0];
+    } else {
+      console.error('❌ No tracks found in database');
+      throw new Error('No tracks found');
     }
+    console.groupEnd();
   } catch (error) {
     console.error('Database check failed:', error);
   }
-  
-  console.groupEnd();
 };
 
 // 7. Audio Element State Monitor

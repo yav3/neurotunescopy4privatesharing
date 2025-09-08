@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
+import { getTherapeuticTracks } from "@/services/therapeuticDatabase";
 import { PlayCircle, XCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 interface TestResult {
@@ -80,14 +80,14 @@ export function DirectURLTester() {
     setResults([]);
     
     try {
-      // Get tracks from API (bypass database types issue)
-      const response = await fetch('https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/playlist?goal=sleep-preparation&limit=10');
-      const data = await response.json();
+      // Use direct database query instead of API call  
+      const { tracks } = await getTherapeuticTracks('sleep-preparation', 10);
+      console.log('🎵 Direct database tracks:', tracks.length);
       
-      if (!data.tracks?.length) throw new Error('No tracks found');
+      if (!tracks?.length) throw new Error('No tracks found');
 
       // Initialize results with direct storage URLs
-      const initialResults: TestResult[] = data.tracks.slice(0, 10).map((track: any) => ({
+      const initialResults: TestResult[] = tracks.slice(0, 10).map((track: any) => ({
         id: track.id,
         title: track.title,
         directUrl: `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${track.storage_bucket || 'audio'}/${track.storage_key}`,

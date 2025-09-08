@@ -6,6 +6,7 @@ import {
 import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
 import { filterTracksForGoal } from '@/utils/therapeuticFiltering';
 import { API } from '@/lib/api';
+import { getTherapeuticTracks } from "@/services/therapeuticDatabase";
 import { toast } from '@/hooks/use-toast';
 
 interface UseTherapeuticGoalsOptions {
@@ -86,14 +87,14 @@ export function useTherapeuticGoals(options: UseTherapeuticGoalsOptions = {}) {
             return { ...goal, ...cached };
           }
           
-          try {
-            // Load tracks for this goal
-            const response = await API.playlist(goal.slug as any, 1000); // Get all tracks
-            const trackCount = response.tracks?.length || 0;
+            try {
+              // Use direct database query
+              const { tracks } = await getTherapeuticTracks(goal.slug as any, 1000);
+              const trackCount = tracks?.length || 0;
             
             // Calculate effectiveness based on BPM matching using new therapeutic filtering
             const matchingTracks = filterTracksForGoal(
-              response.tracks?.map((t: any) => ({
+              tracks?.map((t: any) => ({
                 id: t.id,
                 bpm: t.bpm,
                 valence: t.valence,
