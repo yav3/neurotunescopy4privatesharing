@@ -1552,23 +1552,41 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
+          bio: string | null
           created_at: string
+          default_session_duration: number | null
           display_name: string | null
+          favorite_goals: string[] | null
           id: string
+          notification_preferences: Json | null
+          therapeutic_preferences: Json | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
+          default_session_duration?: number | null
           display_name?: string | null
+          favorite_goals?: string[] | null
           id?: string
+          notification_preferences?: Json | null
+          therapeutic_preferences?: Json | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
+          default_session_duration?: number | null
           display_name?: string | null
+          favorite_goals?: string[] | null
           id?: string
+          notification_preferences?: Json | null
+          therapeutic_preferences?: Json | null
           updated_at?: string
           user_id?: string
         }
