@@ -8,6 +8,73 @@ import { formatTime, cn } from '@/lib/utils';
 import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
 
+// Deterministic artwork selection to give each song a unique image
+const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
+  // Expanded album art collection for individual songs
+  const albumArtwork = [
+    '/lovable-uploads/19ca5ad8-bc5b-45c7-b13f-f3182585ae23.png', // Garden path with sunlight
+    '/lovable-uploads/67cfdc0c-339d-48e8-776-13ce34bf1a4f.png', // White piano with musical notes
+    '/lovable-uploads/d8b56c80-98c4-4a08-be13-deb891d9ecee.png', // Guitars in meadow with flowers
+    '/lovable-uploads/9e1bc0cb-0051-4860-86be-69529a277181.png', // Field of pink/white flowers
+    '/lovable-uploads/0f6c961c-91b2-4686-b3fe-3a6064af4bc7.png', // Field with butterflies and wildflowers
+    '/lovable-uploads/dbaf206d-bc29-4f4c-aeed-34b611a6dc64.png', // Colorful flowers (orange, yellow, pink)
+    '/lovable-uploads/e9f49ad3-57da-487a-9db7-f3dafba05e56.png', // Colorful electric guitar
+    '/lovable-uploads/3c8ddd8c-7d5a-4d6a-a985-e6509d4fdcbf.png', // Starry/cosmic sky scene
+    '/lovable-uploads/fb52f9d9-56f9-4dc4-81c4-f06dd182984b.png', // Forest scene with lights and guitar
+    '/lovable-uploads/folk-instruments-meadow.png',
+    '/lovable-uploads/classical-meadow-ensemble.png', 
+    '/lovable-uploads/string-quartet-studio.png',
+    '/lovable-uploads/european-classical-terrace.png',
+    '/lovable-uploads/acoustic-sunset-field.png',
+    '/lovable-uploads/delta-moonlit-lake.png',
+    '/lovable-uploads/theta-misty-path.png',
+    '/lovable-uploads/alpha-mountain-lake.png',
+    '/lovable-uploads/beta-waterfall.png',
+    '/lovable-uploads/gamma-sunbeam-forest.png'
+  ];
+  
+  // Create deterministic seed from trackId to prevent race conditions
+  const createSeed = (str: string): number => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash);
+  };
+  
+  // Each track gets a unique image based on its ID
+  const seed = createSeed(trackId);
+  const artworkIndex = seed % albumArtwork.length;
+  
+  // Gradient based on frequency band for therapeutic visual cues
+  const gradientMap = {
+    delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70', // Deep sleep & healing
+    theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70', // Meditation
+    alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70', // Focus
+    beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70', // Concentration
+    gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70' // Peak performance
+  };
+  
+  return {
+    url: albumArtwork[artworkIndex],
+    position: 'object-cover',
+    gradient: gradientMap[frequencyBand as keyof typeof gradientMap] || gradientMap.alpha
+  };
+};
+
+// Helper function to determine frequency band from BPM
+const getFrequencyBandFromBPM = (bpm?: number): string => {
+  if (!bpm) return 'alpha'; // Default to alpha band
+  
+  if (bpm < 60) return 'delta';
+  if (bpm < 90) return 'theta';  
+  if (bpm < 120) return 'alpha';
+  if (bpm < 150) return 'beta';
+  return 'gamma';
+};
+
 export const NowPlaying: React.FC = () => {
   const navigate = useNavigate();
   const { 
@@ -74,6 +141,10 @@ export const NowPlaying: React.FC = () => {
   }
 
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
+  
+  // Get therapeutic artwork for current track
+  const frequencyBand = getFrequencyBandFromBPM(track.bpm);
+  const artwork = getTherapeuticArtwork(frequencyBand, track.id);
 
   return (
     <Card className="fixed bottom-0 left-0 right-0 z-40 rounded-none border-t bg-card/95 backdrop-blur-sm">
@@ -85,12 +156,32 @@ export const NowPlaying: React.FC = () => {
         >
           <div className="flex items-center gap-3">
             <div className={cn(
-              "w-12 h-12 rounded-lg bg-gradient-to-br flex items-center justify-center text-xl transition-all duration-300",
+              "w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br flex items-center justify-center transition-all duration-300 relative",
               lightningMode 
                 ? "from-yellow-400/80 to-orange-500/80 animate-pulse" 
                 : "from-primary/60 to-secondary/60"
             )}>
-              {lightningMode ? "⚡" : "🧠"}
+              {lightningMode ? (
+                <div className="text-xl">⚡</div>
+              ) : (
+                <>
+                  <img 
+                    src={artwork.url} 
+                    alt={track.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to brain emoji if image fails to load
+                      e.currentTarget.style.display = 'none';
+                      const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden w-full h-full items-center justify-center text-xl">
+                    🧠
+                  </div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light`} />
+                </>
+              )}
             </div>
             <div className="min-w-0">
               <h4 className="font-medium truncate">{track.title}</h4>
