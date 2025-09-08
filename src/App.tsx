@@ -19,6 +19,13 @@ import "@/utils/fixApiConfig";
 import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import UserManagement from "./pages/admin/UserManagement";
+import ContentManagement from "./pages/admin/ContentManagement";
+import Analytics from "./pages/admin/Analytics";
+import SystemSettings from "./pages/admin/SystemSettings";
+import DataMonitoring from "./pages/admin/DataMonitoring";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +75,14 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="users" element={<UserManagement />} />
+                <Route path="content" element={<ContentManagement />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="settings" element={<SystemSettings />} />
+                <Route path="monitoring" element={<DataMonitoring />} />
+              </Route>
               <Route path="*" element={<Index />} />
             </Routes>
             {/* Global Music Player - Always visible when music is playing */}
