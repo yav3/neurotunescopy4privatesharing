@@ -56,7 +56,6 @@ export interface Track {
   audio_status?: "working" | "bad" | "unknown" | "missing";
   storage_bucket?: string;
   storage_key?: string;
-  unique_id?: string;
   camelot_key?: string;
   duration_seconds?: number;
 }
@@ -104,7 +103,7 @@ export async function getTherapeuticTracks(
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
-      .not('unique_id', 'is', null);
+      .not('id', 'is', null);
 
     // Add BPM filtering at database level for performance
     if (profile.bpm_min && profile.bpm_max) {
@@ -115,7 +114,7 @@ export async function getTherapeuticTracks(
 
     // Exclude specified tracks
     if (excludeIds.length > 0) {
-      query = query.not('unique_id', 'in', `(${excludeIds.join(',')})`);
+      query = query.not('id', 'in', `(${excludeIds.join(',')})`);
     }
 
     // Get more tracks than needed for filtering
@@ -170,7 +169,7 @@ export async function getTrendingTracks(
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
-      .not('unique_id', 'is', null)
+      .not('id', 'is', null)
       .gte('created_at', cutoffTime)
       .order('created_at', { ascending: false })
       .limit(count);

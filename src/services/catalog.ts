@@ -14,7 +14,7 @@ export type SearchCriteria = {
 // Transform database track to music track format
 function transformTrack(dbTrack: DBTrack): MusicTrack {
   return {
-    unique_id: dbTrack.unique_id || dbTrack.id,
+    unique_id: dbTrack.id,
     title: dbTrack.title,
     artist: dbTrack.artist,
     file_path: dbTrack.storage_key || `tracks/${dbTrack.id}.mp3`,
