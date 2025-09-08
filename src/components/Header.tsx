@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +15,7 @@ import { useAuthContext } from "@/components/auth/AuthProvider";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, userRole, signOut } = useAuthContext();
 
   const handleSignOut = async () => {
@@ -22,12 +23,35 @@ export const Header = () => {
     navigate('/');
   };
 
+  // Dynamic title and subtitle based on current route
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case '/ai-dj':
+        return {
+          title: 'Flow State',
+          subtitle: 'Direct storage playlists for peak performance'
+        };
+      case '/profile':
+        return {
+          title: 'Profile',
+          subtitle: 'Manage your account settings'
+        };
+      default:
+        return {
+          title: 'NeuroTunes',
+          subtitle: 'please select your therapeutic goal'
+        };
+    }
+  };
+
+  const { title, subtitle } = getPageTitle();
+
   return (
     <header className="px-4 py-4 md:px-8 border-b">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <div className="text-center flex-1">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-1">NeuroTunes</h1>
-          <p className="text-sm text-muted-foreground">please select your therapeutic goal</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-1">{title}</h1>
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
         
         {user && (
