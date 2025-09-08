@@ -1499,6 +1499,57 @@ export type Database = {
         }
         Relationships: []
       }
+      precomputed_playlists: {
+        Row: {
+          avg_compatibility_score: number | null
+          camelot_data: Json | null
+          created_at: string
+          direction: string
+          duration: number
+          expires_at: string
+          generated_at: string
+          goal: string
+          id: string
+          intensity: number
+          playlist_id: string
+          track_count: number
+          tracks: Json
+          vad_profile: Json
+        }
+        Insert: {
+          avg_compatibility_score?: number | null
+          camelot_data?: Json | null
+          created_at?: string
+          direction: string
+          duration: number
+          expires_at?: string
+          generated_at?: string
+          goal: string
+          id?: string
+          intensity: number
+          playlist_id: string
+          track_count?: number
+          tracks: Json
+          vad_profile: Json
+        }
+        Update: {
+          avg_compatibility_score?: number | null
+          camelot_data?: Json | null
+          created_at?: string
+          direction?: string
+          duration?: number
+          expires_at?: string
+          generated_at?: string
+          goal?: string
+          id?: string
+          intensity?: number
+          playlist_id?: string
+          track_count?: number
+          tracks?: Json
+          vad_profile?: Json
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -1828,87 +1879,48 @@ export type Database = {
       }
       tracks: {
         Row: {
-          acousticness: number | null
           ai_score: number | null
-          album: string | null
-          album_art_color: string | null
-          album_art_credits: string | null
-          album_art_thumbnail: string | null
-          album_art_url: string | null
           analysis_status: string | null
           analysis_timestamp: string | null
           analysis_version: string | null
-          analyzed_at: string | null
           arousal: number | null
-          arousal_energy_mapped: number | null
-          artist: string | null
-          artwork_path: string | null
           audio_status: string | null
-          bitrate_kbps: number | null
           bpm: number | null
-          bpm_est: number | null
           camelot: string | null
-          camelot_code: string | null
-          channels: number | null
           cognitive_load: number | null
           comprehensive_analysis: Json | null
           created_date: string | null
           crest_factor: number | null
-          danceability: number | null
           danceability_score: number | null
           dominance: number | null
-          duration_sec: number | null
-          duration_seconds: number | null
           dynamic_complexity: number | null
           dynamic_features: Json | null
           dynamic_range: number | null
-          eeg_targets: string[] | null
           emotion_tags: string[] | null
           emotional_stability: number | null
-          energy: number | null
-          energy_level: number | null
-          file_format: string | null
-          file_name: string | null
-          file_path: string | null
-          file_size_bytes: number | null
-          format: string | null
           genre: string | null
           harmonic_complexity: number | null
           harmonic_features: Json | null
           id: string
           inharmonicity: number | null
-          instrumentalness: number | null
           investigation_notes: string | null
-          key: string | null
           key_confidence: number | null
           key_strength: number | null
           last_analyzed_at: string | null
           last_error: string | null
           last_verified_at: string | null
           loudness_lufs: number | null
-          md5_hex: string | null
           mode: string | null
-          mood: string | null
-          mood_acoustic: number | null
-          mood_aggressive: number | null
-          mood_electronic: number | null
-          mood_happy: number | null
-          mood_relaxed: number | null
-          mood_sad: number | null
           mood_scores: Json | null
-          mood_valence_mapped: number | null
-          musical_key_est: string | null
           neural_entrainment_potential: number | null
           onset_rate: number | null
           pitch_mean: number | null
           play_count: number | null
           psychoacoustic_features: Json | null
-          release_year: number | null
           rhythmic_complexity: number | null
           rhythmic_features: Json | null
           rms_energy: number | null
           roughness: number | null
-          sample_rate_hz: number | null
           scale: string | null
           skip_count: number | null
           spectral_bandwidth: number | null
@@ -1916,13 +1928,9 @@ export type Database = {
           spectral_complexity: number | null
           spectral_features: Json | null
           spectral_rolloff: number | null
-          speechiness: number | null
           storage_bucket: string | null
           storage_key: string | null
           structural_features: Json | null
-          tags: string[] | null
-          tempo: number | null
-          tempo_bpm: number | null
           tempo_stability: number | null
           therapeutic_effectiveness: number | null
           therapeutic_use: string[] | null
@@ -1933,87 +1941,48 @@ export type Database = {
           zero_crossing_rate: number | null
         }
         Insert: {
-          acousticness?: number | null
           ai_score?: number | null
-          album?: string | null
-          album_art_color?: string | null
-          album_art_credits?: string | null
-          album_art_thumbnail?: string | null
-          album_art_url?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
-          analyzed_at?: string | null
           arousal?: number | null
-          arousal_energy_mapped?: number | null
-          artist?: string | null
-          artwork_path?: string | null
           audio_status?: string | null
-          bitrate_kbps?: number | null
           bpm?: number | null
-          bpm_est?: number | null
           camelot?: string | null
-          camelot_code?: string | null
-          channels?: number | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
           crest_factor?: number | null
-          danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
-          duration_sec?: number | null
-          duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
-          eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
-          energy?: number | null
-          energy_level?: number | null
-          file_format?: string | null
-          file_name?: string | null
-          file_path?: string | null
-          file_size_bytes?: number | null
-          format?: string | null
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
           id?: string
           inharmonicity?: number | null
-          instrumentalness?: number | null
           investigation_notes?: string | null
-          key?: string | null
           key_confidence?: number | null
           key_strength?: number | null
           last_analyzed_at?: string | null
           last_error?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
-          md5_hex?: string | null
           mode?: string | null
-          mood?: string | null
-          mood_acoustic?: number | null
-          mood_aggressive?: number | null
-          mood_electronic?: number | null
-          mood_happy?: number | null
-          mood_relaxed?: number | null
-          mood_sad?: number | null
           mood_scores?: Json | null
-          mood_valence_mapped?: number | null
-          musical_key_est?: string | null
           neural_entrainment_potential?: number | null
           onset_rate?: number | null
           pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
-          release_year?: number | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
-          sample_rate_hz?: number | null
           scale?: string | null
           skip_count?: number | null
           spectral_bandwidth?: number | null
@@ -2021,13 +1990,9 @@ export type Database = {
           spectral_complexity?: number | null
           spectral_features?: Json | null
           spectral_rolloff?: number | null
-          speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
           structural_features?: Json | null
-          tags?: string[] | null
-          tempo?: number | null
-          tempo_bpm?: number | null
           tempo_stability?: number | null
           therapeutic_effectiveness?: number | null
           therapeutic_use?: string[] | null
@@ -2038,87 +2003,48 @@ export type Database = {
           zero_crossing_rate?: number | null
         }
         Update: {
-          acousticness?: number | null
           ai_score?: number | null
-          album?: string | null
-          album_art_color?: string | null
-          album_art_credits?: string | null
-          album_art_thumbnail?: string | null
-          album_art_url?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
-          analyzed_at?: string | null
           arousal?: number | null
-          arousal_energy_mapped?: number | null
-          artist?: string | null
-          artwork_path?: string | null
           audio_status?: string | null
-          bitrate_kbps?: number | null
           bpm?: number | null
-          bpm_est?: number | null
           camelot?: string | null
-          camelot_code?: string | null
-          channels?: number | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
           created_date?: string | null
           crest_factor?: number | null
-          danceability?: number | null
           danceability_score?: number | null
           dominance?: number | null
-          duration_sec?: number | null
-          duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
-          eeg_targets?: string[] | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
-          energy?: number | null
-          energy_level?: number | null
-          file_format?: string | null
-          file_name?: string | null
-          file_path?: string | null
-          file_size_bytes?: number | null
-          format?: string | null
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
           id?: string
           inharmonicity?: number | null
-          instrumentalness?: number | null
           investigation_notes?: string | null
-          key?: string | null
           key_confidence?: number | null
           key_strength?: number | null
           last_analyzed_at?: string | null
           last_error?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
-          md5_hex?: string | null
           mode?: string | null
-          mood?: string | null
-          mood_acoustic?: number | null
-          mood_aggressive?: number | null
-          mood_electronic?: number | null
-          mood_happy?: number | null
-          mood_relaxed?: number | null
-          mood_sad?: number | null
           mood_scores?: Json | null
-          mood_valence_mapped?: number | null
-          musical_key_est?: string | null
           neural_entrainment_potential?: number | null
           onset_rate?: number | null
           pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
-          release_year?: number | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
-          sample_rate_hz?: number | null
           scale?: string | null
           skip_count?: number | null
           spectral_bandwidth?: number | null
@@ -2126,13 +2052,9 @@ export type Database = {
           spectral_complexity?: number | null
           spectral_features?: Json | null
           spectral_rolloff?: number | null
-          speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
           structural_features?: Json | null
-          tags?: string[] | null
-          tempo?: number | null
-          tempo_bpm?: number | null
           tempo_stability?: number | null
           therapeutic_effectiveness?: number | null
           therapeutic_use?: string[] | null
@@ -2335,6 +2257,10 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_expired_playlists: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       decode_error_level: {
         Args: { elevel: number }
         Returns: string
@@ -2386,6 +2312,10 @@ export type Database = {
       mark_likely_missing_tracks: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      mark_track_as_missing: {
+        Args: { error_message?: string; track_uuid: string }
+        Returns: undefined
       }
       pg_stat_monitor_internal: {
         Args: { showtext: boolean }
