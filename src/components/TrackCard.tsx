@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
+import { useAuthContext } from '@/components/auth/AuthProvider'
 import type { Track } from '@/types'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
@@ -101,6 +102,7 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
   const { playTrack } = useAudioStore()
+  const { isAdmin } = useAuthContext()
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
@@ -152,10 +154,12 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
             <span className="capitalize bg-secondary px-2 py-1 rounded-full text-xs">
               {track.genre}
             </span>
-            <span className="flex items-center gap-1">
-              <Clock size={14} />
-              {track.bpm || 'N/A'} BPM
-            </span>
+            {isAdmin() && (
+              <span className="flex items-center gap-1">
+                <Clock size={14} />
+                {track.bpm || 'N/A'} BPM
+              </span>
+            )}
           </div>
 
           {/* Removed VAD profile information */}

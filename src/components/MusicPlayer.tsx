@@ -6,6 +6,7 @@ import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-re
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTime } from "@/lib/utils";
+import { useAuthContext } from "@/components/auth/AuthProvider";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 
 interface MusicPlayerProps {
@@ -16,6 +17,7 @@ interface MusicPlayerProps {
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const { play, pause, next, prev, isPlaying, currentTrack: track } = useAudioStore();
+  const { isAdmin } = useAuthContext();
 
   if (!track) {
     return null;
@@ -52,10 +54,12 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-foreground mb-2">{track.title}</h2>
             <p className="text-lg text-muted-foreground mb-1">{track.genre || 'Therapeutic Music'}</p>
-            <p className="text-sm text-muted-foreground">
-              {track.bpm && `${Math.round(track.bpm)} BPM • `}
-              Relaxation & Focus
-            </p>
+            {isAdmin() && (
+              <p className="text-sm text-muted-foreground">
+                {track.bpm && `${Math.round(track.bpm)} BPM • `}
+                Relaxation & Focus
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
