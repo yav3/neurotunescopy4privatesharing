@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAudioStore } from '@/stores';
+import { useAuthContext } from '@/components/auth/AuthProvider';
+import { shouldShowTechnicalLogs, updateUserRole } from '@/utils/adminLogging';
 
 interface DebugInfo {
   audioElements: number;
@@ -20,6 +22,16 @@ export const DevDebugPanel = () => {
   });
 
   const audioStore = useAudioStore();
+  const { user } = useAuthContext();
+
+  // Update user role for admin logging
+  useEffect(() => {
+    if (user?.user_metadata?.role) {
+      updateUserRole(user.user_metadata.role);
+    } else {
+      updateUserRole(null);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -49,7 +61,8 @@ export const DevDebugPanel = () => {
     return () => clearInterval(interval);
   }, [isOpen, audioStore]);
 
-  if (import.meta.env.PROD) {
+  // Only show debug panel for admin users in development
+  if (import.meta.env.PROD || !shouldShowTechnicalLogs()) {
     return null;
   }
 
