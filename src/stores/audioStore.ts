@@ -179,6 +179,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // Honest state tracking
       audio.addEventListener('play', () => {
         console.log('🎵 Audio play event fired');
+        const { currentTrack } = get();
+        if (currentTrack) {
+          // Remember played track for variety
+          import('@/state/playlistSession').then(({ remember }) => {
+            remember(currentTrack.id);
+            console.log('🎵 Remembered track for exclusion:', currentTrack.title);
+          });
+        }
         set({ isPlaying: true });
       });
       
@@ -373,7 +381,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
           throw new Error(`Invalid goal slug: ${goalSlug}`);
         }
         
-        const response = await API.playlist(goalSlug as GoalSlug, 50);
+        // Get recently played tracks to exclude for variety
+        const { excludeQS } = await import('@/state/playlistSession');
+        const excludeIds = excludeQS().split(',').filter(Boolean);
+        console.log('🎵 Excluding recently played tracks:', excludeIds.length);
+        
+        const response = await API.playlist(goalSlug as GoalSlug, 50, 0, excludeIds);
         console.log('🎵 Database response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {

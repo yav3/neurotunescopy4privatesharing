@@ -52,9 +52,9 @@ export const API = {
   health: () => Promise.resolve({ ok: true }),
   
   // Direct database access for home page therapeutic goals
-  async playlist(goal: GoalSlug, limit = 50, offset = 0) {
-    console.log(`🎵 Direct database query for goal: ${goal}, limit: ${limit}`);
-    const { tracks, error } = await getTherapeuticTracks(goal, limit);
+  async playlist(goal: GoalSlug, limit = 50, offset = 0, excludeIds: string[] = []) {
+    console.log(`🎵 Direct database query for goal: ${goal}, limit: ${limit}, excluding: ${excludeIds.length} tracks`);
+    const { tracks, error } = await getTherapeuticTracks(goal, limit, excludeIds);
     if (error) {
       console.error('❌ Database query error:', error);
       return { tracks: [] };
