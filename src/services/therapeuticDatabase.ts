@@ -67,14 +67,6 @@ function calculateVADScore(track: Track, profile: any, goalType: string): { scor
   const d = track.dominance ?? 0.5;
   const bpm = track.bpm ?? track.bpm_est ?? 60;
 
-  // Special validation for focus tracks - must contain "FOCUS" in title (lyric-free validation)
-  if (goalType === 'focus-enhancement') {
-    const title = (track.title || '').toUpperCase();
-    if (!title.includes('FOCUS')) {
-      return { score: -1, v, a, d }; // Reject tracks without FOCUS in title
-    }
-  }
-
   // BPM filtering
   if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
 
