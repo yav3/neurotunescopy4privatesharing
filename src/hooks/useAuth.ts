@@ -27,16 +27,28 @@ export function useAuth() {
   // Get user with profile and role
   const getUserWithProfile = async (authUser: User): Promise<ExtendedUser | null> => {
     try {
+      console.log('🔍 Getting profile for user:', authUser.id);
+      
       // Get profile
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', authUser.id)
         .single();
 
+      if (profileError) {
+        console.log('⚠️ Profile error (might be normal for new users):', profileError);
+      }
+
       // Get role
-      const { data: roleData } = await supabase
+      const { data: roleData, error: roleError } = await supabase
         .rpc('get_user_role', { _user_id: authUser.id });
+
+      if (roleError) {
+        console.error('❌ Role error:', roleError);
+      }
+
+      console.log('✅ User profile loaded:', { profile, role: roleData });
 
       return {
         ...authUser,
@@ -44,8 +56,11 @@ export function useAuth() {
         role: roleData || 'user'
       };
     } catch (error) {
-      console.error('Error fetching user profile:', error);
-      return null;
+      console.error('❌ Error fetching user profile:', error);
+      return {
+        ...authUser,
+        role: 'user'
+      };
     }
   };
 
@@ -179,23 +194,31 @@ export function useAuth() {
     // Check for existing session
     const initializeAuth = async () => {
       try {
+        console.log('🚀 Initializing auth...');
         const { data: { session } } = await supabase.auth.getSession();
         if (!mounted) return;
 
+        console.log('📋 Session found:', !!session?.user);
         setSession(session);
         
         if (session?.user) {
+          console.log('👤 Loading user profile...');
           const userWithProfile = await getUserWithProfile(session.user);
           setUser(userWithProfile);
+          console.log('✅ Auth initialization complete');
         } else {
+          console.log('📭 No session found');
           setUser(null);
         }
       } catch (error) {
-        console.error('Auth initialization error:', error);
+        console.error('❌ Auth initialization error:', error);
         setUser(null);
         setSession(null);
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          console.log('🏁 Auth loading complete');
+          setLoading(false);
+        }
       }
     };
 
