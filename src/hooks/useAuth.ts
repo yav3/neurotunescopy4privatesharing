@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -24,10 +24,10 @@ interface ExtendedUser extends User {
 }
 
 export function useAuth() {
-  const [user, setUser] = React.useState<ExtendedUser | null>(null);
-  const [session, setSession] = React.useState<Session | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Get user with profile and role
   const getUserWithProfile = async (authUser: User): Promise<ExtendedUser | null> => {
@@ -175,7 +175,7 @@ export function useAuth() {
   const clearError = () => setError(null);
 
   // Initialize auth state
-  React.useEffect(() => {
+  useEffect(() => {
     let mounted = true;
 
     // Set up auth state listener
