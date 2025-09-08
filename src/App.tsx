@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
 import { NowPlaying } from "@/components/NowPlaying";
+import { MusicPlayer } from "@/components/MusicPlayer";
 import { TherapeuticDebugPanel } from "@/components/TherapeuticDebugPanel";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
@@ -32,6 +33,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const { user, loading } = useAuthContext();
+  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
 
   useEffect(() => {
     initializeDebugging();
@@ -87,8 +89,10 @@ const App = () => {
               </Route>
               <Route path="*" element={<Index />} />
             </Routes>
-            {/* Global Music Player - Always visible when music is playing */}
+            
+            {/* Global Music Players - Always available */}
             <NowPlaying />
+            <MusicPlayer open={showMusicPlayer} onOpenChange={setShowMusicPlayer} />
           </div>
           <DevDebugPanel />
         </ErrorBoundary>

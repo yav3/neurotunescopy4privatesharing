@@ -88,8 +88,6 @@ const Index = () => {
           <SoundCloudFallback goal={lastGoal} />
         </div>
       )}
-      
-      <MusicPlayer open={showPlayer} onOpenChange={setShowPlayer} />
     </div>
   );
 };
