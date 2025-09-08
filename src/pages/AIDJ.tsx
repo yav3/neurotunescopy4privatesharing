@@ -60,25 +60,37 @@ const AIDJ = () => {
         .slice(0, 8); // Take up to 8 tracks
 
       // Step 4: Generate signed URLs and create playlist
-      const playlistTracks = await Promise.all(
-        shuffled.map(async (track, index) => {
-          const { data: urlData } = await supabase.storage
+      const playlistTracks = [];
+      
+      for (let i = 0; i < shuffled.length; i++) {
+        const track = shuffled[i];
+        try {
+          console.log(`Trying to create signed URL for track: ${track.title}, storage_key: ${track.storage_key}`);
+          
+          const { data: urlData, error: urlError } = await supabase.storage
             .from('audio')
             .createSignedUrl(track.storage_key, 3600); // 1 hour expiry
 
-          return {
-            id: track.id,
-            title: track.title || 'Unknown Title',
-            artist: track.genre || 'Unknown Artist',
-            fileName: track.storage_key?.split('/').pop() || 'unknown.mp3',
-            stream_url: urlData?.signedUrl,
-            duration: null,
-            index: index + 1,
-            bpm: track.bpm,
-            genre: track.genre
-          };
-        })
-      );
+          if (urlData?.signedUrl) {
+            console.log(`✅ Successfully created signed URL for: ${track.title}`);
+            playlistTracks.push({
+              id: track.id,
+              title: track.title || 'Unknown Title',
+              artist: track.genre || 'Unknown Artist',
+              fileName: track.storage_key?.split('/').pop() || 'unknown.mp3',
+              stream_url: urlData.signedUrl,
+              duration: null,
+              index: playlistTracks.length + 1,
+              bpm: track.bpm,
+              genre: track.genre
+            });
+          } else {
+            console.warn(`❌ Failed to create signed URL for track ${track.title}:`, urlError);
+          }
+        } catch (err) {
+          console.warn(`❌ Error creating signed URL for track ${track.title}:`, err);
+        }
+      }
 
       const result = {
         goal: flowType,
@@ -86,7 +98,7 @@ const AIDJ = () => {
         description: flowType === 'focus' 
           ? 'Curated instrumental tracks for deep concentration'
           : 'High-energy tracks to boost motivation and performance',
-        playlist: playlistTracks.filter(track => track.stream_url)
+        playlist: playlistTracks
       };
 
       console.log(`Generated playlist with ${result.playlist.length} tracks`);
