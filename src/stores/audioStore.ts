@@ -373,8 +373,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           throw new Error(`Invalid goal slug: ${goalSlug}`);
         }
         
-        const response = await API.playlist(goalSlug as GoalSlug);
-        console.log('🎵 API response received:', response?.tracks?.length, 'tracks');
+        const response = await API.playlist(goalSlug as GoalSlug, 50);
+        console.log('🎵 Database response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {
           throw new Error(`No tracks available for goal "${goal}"`);
