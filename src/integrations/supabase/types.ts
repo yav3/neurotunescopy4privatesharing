@@ -2347,6 +2347,15 @@ export type Database = {
           track_id: string
         }[]
       }
+      get_track_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          missing_tracks: number
+          total_tracks: number
+          unknown_tracks: number
+          working_tracks: number
+        }[]
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

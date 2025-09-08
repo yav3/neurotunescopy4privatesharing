@@ -37,14 +37,22 @@ export default function AdminDashboard() {
 
       if (userError) throw userError;
 
-      // Fetch track stats with efficient aggregation
+      // Fetch track stats with efficient aggregation  
       const { data: trackStats, error: trackError } = await supabase
-        .rpc('get_track_stats');
+        .from('tracks')
+        .select('audio_status')
+        .limit(1);
 
       if (trackError) {
         console.error('Track stats error:', trackError);
         throw trackError;
       }
+
+      // Get counts using direct query
+      const [totalResult, workingResult] = await Promise.all([
+        supabase.from('tracks').select('*', { count: 'exact', head: true }),
+        supabase.from('tracks').select('*', { count: 'exact', head: true }).eq('audio_status', 'working')
+      ]);
 
       // Fetch playlist count
       const { count: playlistCount, error: playlistError } = await supabase
@@ -53,12 +61,13 @@ export default function AdminDashboard() {
 
       if (playlistError) throw playlistError;
 
-      const stats = trackStats?.[0] || { total_tracks: 0, working_tracks: 0 };
+      const totalTracks = totalResult.count || 0;
+      const workingTracks = workingResult.count || 0;
 
       setStats({
         totalUsers: userCount || 0,
-        totalTracks: stats.total_tracks || 0,
-        workingTracks: stats.working_tracks || 0,
+        totalTracks: totalTracks,
+        workingTracks: workingTracks,
         totalPlaylists: playlistCount || 0
       });
 
