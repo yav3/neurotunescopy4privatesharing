@@ -190,22 +190,28 @@ export function useAuth() {
   useEffect(() => {
     let mounted = true;
 
-    // Set up auth state listener
+    // Set up auth state listener FIRST - but avoid calling Supabase functions inside
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('🔄 Auth state changed:', event, !!session?.user);
         if (!mounted) return;
 
+        // Only synchronous state updates here
         setSession(session);
+        setUser(null); // Will be set properly by profile fetch
         
+        // Defer profile fetching to avoid deadlock
         if (session?.user) {
-          console.log('👤 Getting user with profile from auth state change...');
-          const userWithProfile = await getUserWithProfile(session.user);
-          console.log('✅ Setting user from auth state change:', !!userWithProfile);
-          setUser(userWithProfile);
-        } else {
-          console.log('🚪 No user, setting null');
-          setUser(null);
+          setTimeout(() => {
+            if (mounted) {
+              getUserWithProfile(session.user).then(userWithProfile => {
+                if (mounted) {
+                  console.log('✅ Profile loaded via timeout:', !!userWithProfile);
+                  setUser(userWithProfile);
+                }
+              });
+            }
+          }, 0);
         }
         
         console.log('⏰ Setting loading to false from auth state change');
@@ -221,21 +227,28 @@ export function useAuth() {
         if (!mounted) return;
 
         console.log('📋 Session found:', !!session?.user);
-        setSession(session);
         
         if (session?.user) {
           console.log('👤 Loading user profile...');
           const userWithProfile = await getUserWithProfile(session.user);
-          setUser(userWithProfile);
-          console.log('✅ Auth initialization complete');
+          if (mounted) {
+            setUser(userWithProfile);
+            setSession(session);
+            console.log('✅ Auth initialization complete');
+          }
         } else {
           console.log('📭 No session found');
-          setUser(null);
+          if (mounted) {
+            setUser(null);
+            setSession(null);
+          }
         }
       } catch (error) {
         console.error('❌ Auth initialization error:', error);
-        setUser(null);
-        setSession(null);
+        if (mounted) {
+          setUser(null);
+          setSession(null);
+        }
       } finally {
         if (mounted) {
           console.log('🏁 Auth loading complete');
