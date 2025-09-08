@@ -3,8 +3,9 @@ import { streamUrl } from "@/lib/api";
 import { API } from "@/lib/api";
 import { SmartAudioResolver } from '@/utils/smartAudioResolver';
 import type { Track } from "@/types";
-import { TherapeuticEngine, type TherapeuticGoal, type SessionConfig } from "@/services/therapeuticEngine";
-import { toGoalSlug } from '@/domain/goals';
+import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
+import { filterTracksForGoal, sortByTherapeuticEffectiveness } from '@/utils/therapeuticFiltering';
+import type { GoalSlug } from '@/config/therapeuticGoals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
 
@@ -358,89 +359,86 @@ export const useAudioStore = create<AudioState>((set, get) => {
       try {
         console.log('🎵 Starting therapeutic session for goal:', goal);
         
-        // Fetch tracks from API
-        const goalSlug = toGoalSlug(goal);
-        const response = await API.playlist(goalSlug);
+        // Use your existing therapeutic goal mapper
+        const therapeuticGoal = TherapeuticGoalMapper.findGoal(goal);
+        if (!therapeuticGoal) {
+          throw new Error(`Unknown therapeutic goal: ${goal}`);
+        }
+        
+        console.log('🎯 Found therapeutic goal:', therapeuticGoal.name, 'with backend key:', therapeuticGoal.backendKey);
+        
+        // Use the goal slug for API call (not backendKey, since API expects GoalSlug)
+        const goalSlug = therapeuticGoal.slug;
+        if (!['anxiety-relief', 'focus-enhancement', 'mood-boost', 'stress-reduction', 'meditation-support'].includes(goalSlug)) {
+          throw new Error(`Invalid goal slug: ${goalSlug}`);
+        }
+        
+        const response = await API.playlist(goalSlug as GoalSlug);
         console.log('🎵 API response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {
           throw new Error(`No tracks available for goal "${goal}"`);
         }
 
-        // Convert API response to MusicTrack format for therapeutic engine
-        const musicTracks = response.tracks.map((t: any) => ({
-          id: t.id,
-          title: t.title || "",
-          artist: t.genre || "Unknown",
-          genre: t.genre || "",
+        // Convert API response to TherapeuticTrack format for filtering
+        const therapeuticTracks = response.tracks.map((t: any) => ({
+          id: parseInt(t.id) || parseInt(t.unique_id) || 0,
+          bpm: t.bpm,
+          valence: t.valence,
+          energy_level: t.energy_level || t.energy,
+          musical_key_est: t.musical_key_est || t.key,
+          camelot: t.camelot_key || t.camelot,
+          // Keep original data for conversion back to Track
+          _original: {
+            id: String(t.id || t.unique_id),
+            unique_id: String(t.unique_id || t.id),
+            title: t.title || t.name || "",
+            artist: t.artist || t.genre || "Unknown",
+            file_path: t.file_path || "",
+            storage_bucket: t.storage_bucket,
+            storage_key: t.storage_key
+          }
+        }));
+
+        console.log('🎵 Converted to therapeutic format:', therapeuticTracks.length, 'tracks');
+
+        // Use your existing filtering system
+        if (!['anxiety-relief', 'focus-enhancement', 'mood-boost', 'stress-reduction', 'meditation-support'].includes(goalSlug)) {
+          throw new Error(`Invalid goal slug: ${goalSlug}`);
+        }
+        
+        const filteredTracks = filterTracksForGoal(therapeuticTracks, goalSlug as GoalSlug);
+        console.log('🎯 Therapeutically filtered tracks:', filteredTracks.length);
+        
+        if (!filteredTracks.length) {
+          throw new Error(`No tracks match the therapeutic requirements for "${therapeuticGoal.name}"`);
+        }
+
+        // Sort by therapeutic effectiveness using your existing system
+        const therapeuticallyOrderedTracks = sortByTherapeuticEffectiveness(filteredTracks, goalSlug as GoalSlug);
+        console.log('✅ Tracks ordered by therapeutic effectiveness');
+
+        // Convert back to audio store Track format
+        const orderedTracks: Track[] = therapeuticallyOrderedTracks.map(t => ({
+          id: (t as any)._original.id,
+          title: (t as any)._original.title,
+          artist: (t as any)._original.artist,
           duration: 0, // Will be set when track loads
-          // VAD and Camelot data from API
-          energy: t.energy || 0.5,
-          valence: t.valence || 0.5,
-          acousticness: t.acousticness || 0.5,
-          danceability: t.danceability || 0.5,
-          instrumentalness: t.instrumentalness || 0.5,
-          loudness: t.loudness || -10,
-          speechiness: t.speechiness || 0.1,
-          bpm: t.bpm
+          storage_bucket: (t as any)._original.storage_bucket,
+          storage_key: (t as any)._original.storage_key
         }));
 
-        console.log('🎵 Converted to therapeutic format:', musicTracks.length, 'tracks');
-
-        // Apply therapeutic ordering using VAD and Camelot wheel
-        const goalMapping: Record<string, TherapeuticGoal> = {
-          'focus': 'focus_enhancement',
-          'focus enhancement': 'focus_enhancement',
-          'focus_enhancement': 'focus_enhancement',
-          'relax': 'stress_reduction', 
-          'stress reduction': 'stress_reduction',
-          'stress_reduction': 'stress_reduction',
-          'sleep': 'sleep_preparation',
-          'sleep preparation': 'sleep_preparation',
-          'sleep_preparation': 'sleep_preparation',
-          'energy': 'mood_boost',
-          'mood boost': 'mood_boost',
-          'mood_boost': 'mood_boost',
-          'anxiety relief': 'anxiety_relief',
-          'anxiety_relief': 'anxiety_relief',
-          'meditation support': 'meditation_support',
-          'meditation_support': 'meditation_support',
-          'pain management': 'pain_management',
-          'pain_management': 'pain_management'
-        };
-        
-        const therapeuticGoal = goalMapping[goal.toLowerCase()] || 'focus_enhancement';
-        const sessionConfig: SessionConfig = {
-          goal: therapeuticGoal,
-          duration: 15, // Default 15 minute session
-          intensityLevel: 3 // Medium intensity
-        };
-
-        console.log('🧠 Creating therapeutic session with config:', sessionConfig);
-        
-        // Use TherapeuticEngine for proper VAD and Camelot ordering
-        const therapeuticSession = await TherapeuticEngine.createSession(sessionConfig, musicTracks);
-        
-        console.log('✅ Therapeutic session created with', therapeuticSession.tracks.length, 'properly ordered tracks');
-        
-        // Convert back to Track format for audio store
-        const orderedTracks: Track[] = therapeuticSession.tracks.map(t => ({
-          id: t.id,
-          title: t.title,
-          artist: t.artist || t.genre || "Unknown",
-          duration: t.duration || 0
-        }));
-
-        if (!orderedTracks.length) throw new Error(`No suitable tracks for therapeutic goal "${goal}"`);
+        if (!orderedTracks.length) {
+          throw new Error(`No suitable tracks for therapeutic goal "${goal}"`);
+        }
         
         await get().setQueue(orderedTracks, 0);
-        
-        // Auto-play the first track after setting queue
         await get().play();
         
         set({ isLoading: false });
         
-        console.log('🎵 Therapeutic playlist set with VAD/Camelot ordering:', orderedTracks.length, 'tracks');
+        console.log('🎵 Therapeutic playlist set using existing system:', orderedTracks.length, 'tracks');
+        console.log('🧠 Using VAD profile:', therapeuticGoal.vadProfile, 'BPM range:', therapeuticGoal.bpmRange);
         return orderedTracks.length;
       } catch (error: any) {
         console.error('❌ Therapeutic playFromGoal error:', error);
