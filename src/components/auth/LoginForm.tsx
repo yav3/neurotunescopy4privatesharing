@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, LogIn, AlertTriangle } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 interface LoginFormProps {
   onToggleMode: () => void;
@@ -20,10 +22,40 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address first",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/`,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Password Reset Email Sent",
+        description: "Check your email for password reset instructions",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error", 
+        description: error.message || "Failed to send reset email",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mb-4">
           <LogIn className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
@@ -84,13 +116,20 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         <button
           type="submit"
           disabled={loading || !email || !password}
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          className="w-full bg-gradient-primary text-white py-3 px-4 rounded-lg font-medium hover:from-primary hover:to-accent focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
 
-      <div className="text-center">
+      <div className="text-center space-y-3">
+        <button
+          type="button"
+          onClick={handleForgotPassword}
+          className="text-blue-400 hover:text-blue-300 text-sm font-medium block w-full"
+        >
+          Forgot your password?
+        </button>
         <p className="text-gray-400 text-sm">
           Don't have an account?{' '}
           <button
