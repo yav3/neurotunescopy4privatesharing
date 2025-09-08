@@ -13,19 +13,19 @@ import { useToast } from '@/hooks/use-toast';
 interface Track {
   id: string;
   title: string;
-  artist: string;
-  duration: number;
-  bpm: number;
+  artist?: string;
+  duration?: number;
+  bpm?: number;
   audio_status: string;
-  storage_bucket: string;
-  storage_key: string;
-  created_at: string;
+  storage_bucket?: string;
+  storage_key?: string;
+  created_at?: string;
   valence?: number;
   energy_level?: number;
 }
 
 interface Playlist {
-  id: string;
+  id: number;
   name: string;
   description: string;
   track_count: number;

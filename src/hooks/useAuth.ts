@@ -240,6 +240,7 @@ export function useAuth() {
     session,
     loading,
     error,
+    userRole: user?.role || 'user',
     signUp,
     signIn,
     signOut,

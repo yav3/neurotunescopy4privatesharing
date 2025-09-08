@@ -84,7 +84,7 @@ export function AdminSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.url === '/admin'}
-                      className={({ isActive }) => getNavCls({ isActive: isActive || isActive(item.url) })}
+                      className={({ isActive }) => getNavCls({ isActive })}
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}

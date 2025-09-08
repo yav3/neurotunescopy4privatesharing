@@ -84,7 +84,7 @@ export default function UserManagement() {
     try {
       const { error } = await supabase
         .from('user_roles')
-        .upsert({ user_id: userId, role: newRole }, { onConflict: 'user_id' });
+        .upsert({ user_id: userId, role: newRole as any }, { onConflict: 'user_id' });
 
       if (error) throw error;
 

@@ -98,10 +98,10 @@ export default function DataMonitoring() {
       ];
 
       // Get actual database table info
-      const tables = ['tracks', 'profiles', 'playlists', 'user_roles', 'blocked_tracks'];
+      const knownTables = ['profiles', 'user_roles', 'blocked_tracks', 'playlists', 'precomputed_playlists'] as const;
       const healthData: DatabaseHealth[] = [];
 
-      for (const table of tables) {
+      for (const table of knownTables) {
         try {
           const { count, error } = await supabase
             .from(table)
@@ -221,7 +221,7 @@ export default function DataMonitoring() {
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" onClick={refreshData}>
-            <Refresh className="mr-2 h-4 w-4" />
+            <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
           <Button variant="outline" onClick={exportLogs}>
@@ -442,7 +442,7 @@ export default function DataMonitoring() {
                   Run Health Check
                 </Button>
                 <Button variant="outline" className="justify-start">
-                  <Refresh className="mr-2 h-4 w-4" />
+                  <RefreshCw className="mr-2 h-4 w-4" />
                   Refresh Statistics
                 </Button>
               </div>
