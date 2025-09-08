@@ -78,8 +78,8 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     icon: Waves,
     color: 'emerald',
     gradient: 'from-emerald-500 to-green-500',
-    bpmRange: { min: 40, max: 80, optimal: 65 },
-    vadProfile: { valence: 0.4, arousal: -0.3, dominance: 0.1 },
+    bpmRange: { min: 50, max: 80, optimal: 65 },
+    vadProfile: { valence: 0.6, arousal: 0.3, dominance: 0.4 },
     synonyms: ['stress', 'relaxation', 'stress_reduction', 'chill']
   },
   {
@@ -106,8 +106,8 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     icon: Flower2,
     color: 'purple',
     gradient: 'from-purple-500 to-pink-500',
-    bpmRange: { min: 50, max: 75, optimal: 60 },
-    vadProfile: { valence: 0.2, arousal: -0.2, dominance: 0.3 },
+    bpmRange: { min: 50, max: 70, optimal: 60 },
+    vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
     synonyms: ['meditation', 'mindfulness', 'theta', 'meditation_support']
   }
 ];
