@@ -313,9 +313,8 @@ const AIDJ = () => {
       
       {/* Header */}
       <div className="text-center pt-12 pb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Flow State</h1>
         <p className="text-lg text-muted-foreground">
-          Direct storage playlists for peak performance
+          Powering Peak performance with our patented closed loop methods.
         </p>
       </div>
 
