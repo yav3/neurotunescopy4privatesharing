@@ -188,11 +188,20 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     }
 
     // VAD scoring function
-    const vadScore = (track: any, profile: any) => {
+    const vadScore = (track: any, profile: any, goalType: string) => {
       const v = track.valence ?? (track.energy_level ? (track.energy_level - 1) / 9 * 0.8 + 0.1 : 0.5);
       const a = track.arousal ?? track.energy ?? (track.energy_level ? (track.energy_level - 1) / 9 : 0.5);
       const d = track.dominance ?? 0.5;
       const bpm = track.bpm ?? track.bpm_est ?? 60;
+
+      // Special validation for focus tracks - must have "FOCUS" twice in title (lyric-free validation)
+      if (goalType === 'focus-enhancement') {
+        const title = (track.title || '').toUpperCase();
+        const focusCount = (title.match(/FOCUS/g) || []).length;
+        if (focusCount < 2) {
+          return { score: -1, v, a, d }; // Reject tracks without double FOCUS validation
+        }
+      }
 
       // BPM filtering
       if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
@@ -219,7 +228,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     const profile = profiles[goal] || profiles['mood-boost'];
 
     // Score and filter tracks
-    const scored = rows.map(r => ({ r, s: vadScore(r, profile) }))
+    const scored = rows.map(r => ({ r, s: vadScore(r, profile, goal) }))
       .filter(x => x.s.score >= 0)
       .sort((a, b) => b.s.score - a.s.score);
 
