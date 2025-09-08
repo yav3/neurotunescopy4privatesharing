@@ -100,6 +100,12 @@ export async function getTherapeuticTracks(
       .eq('audio_status', 'working')
       .not('id', 'is', null);
 
+    // For focus goals, ONLY serve tracks with "focus" in the title
+    if (goal === 'focus-enhancement') {
+      query = query.ilike('title', '%focus%');
+      adminLog('🎯 Focus filter: Only tracks with "focus" in title');
+    }
+
     // Add BPM filtering at database level for performance
     if (profile.bpm_min && profile.bpm_max) {
       query = query
