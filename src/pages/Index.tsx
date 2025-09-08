@@ -16,7 +16,25 @@ const Index = () => {
   const [activeNavTab, setActiveNavTab] = useState("home");
   const [showPlayer, setShowPlayer] = useState(false);
   const navigate = useNavigate();
-  const { currentTrack, setQueue, error, lastGoal } = useAudioStore();
+  const { currentTrack, setQueue, error, lastGoal, playTrack } = useAudioStore();
+  
+  // Auto-play Cantata della Sposa on load
+  React.useEffect(() => {
+    const cantataTrack = {
+      id: "f6be5239-5d79-4fd3-952f-85a047798f92",
+      title: "Cantata della Sposa, Cantata, Classical, FOCUS, COFFEE, MORNING BREAK",
+      bpm: 82,
+      valence: 0.74,
+      arousal: 0.57,
+      dominance: 0.71,
+      storage_bucket: "audio",
+      storage_key: "tracks/cantata_della_sposa_cantata_classical_focus_coffee_morning_break_3_10430.mp3",
+      audio_status: "working" as const
+    };
+    
+    playTrack(cantataTrack);
+    setShowPlayer(true);
+  }, [playTrack]);
 
   const handleCategorySelect = async (category: string) => {
     console.log('🎵 Category selected:', category);
