@@ -49,7 +49,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group",
-        "bg-gradient-card shadow-card border-border/30",
+        "bg-gradient-card shadow-card",
         "transition-all duration-500 ease-out",
         "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
         "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
@@ -74,10 +74,9 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
         
         {/* Content */}
-        <div className="absolute inset-0 p-4 flex flex-col justify-end">
-          {/* Bottom Section - Title and Details */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-            <h3 className="text-white font-semibold text-lg leading-tight text-left drop-shadow-lg">
+            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg">
               {goal.name}
             </h3>
             <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">

@@ -92,13 +92,13 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
     return (
       <Card className={cn(
         "relative overflow-hidden cursor-pointer group",
-        "bg-gradient-card shadow-card border-border/30 animate-pulse",
+        "bg-gradient-card shadow-card animate-pulse",
         "transition-all duration-500 ease-out",
         className
       )}>
         <div className="aspect-[4/3] relative bg-muted/30">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-          <div className="absolute inset-0 p-4 flex flex-col justify-end">
+          <div className="absolute bottom-0 left-0 right-0 p-4">
             <div className="space-y-3">
               <div className="h-6 w-32 bg-white/20 rounded animate-pulse" />
               <div className="h-4 w-full bg-white/10 rounded animate-pulse" />
@@ -114,7 +114,7 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group",
-        "bg-gradient-card shadow-card border-border/30",
+        "bg-gradient-card shadow-card",
         "transition-all duration-500 ease-out",
         "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
         "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
@@ -143,10 +143,9 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
         </div>
         
         {/* Content */}
-        <div className="absolute inset-0 p-4 flex flex-col justify-end">
-          {/* Bottom Section - Title and Details */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-            <h3 className="text-white font-semibold text-lg leading-tight text-left drop-shadow-lg">
+            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg">
               Trending Now
             </h3>
             <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">

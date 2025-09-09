@@ -14,7 +14,7 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group",
-        "bg-gradient-card shadow-card border-border/30",
+        "bg-gradient-card shadow-card",
         "transition-all duration-500 ease-out",
         "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
         "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
@@ -34,7 +34,7 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
         {/* Animated glow effect on hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/50 to-transparent" />
         
-        <div className="absolute bottom-4 left-4 right-4 transform transition-transform duration-300 group-hover:translate-y-[-2px]">
+        <div className="absolute bottom-0 left-0 right-0 p-4 transform transition-transform duration-300 group-hover:translate-y-[-2px]">
           <h3 className="text-foreground font-semibold text-lg drop-shadow-lg">{title}</h3>
         </div>
       </div>
