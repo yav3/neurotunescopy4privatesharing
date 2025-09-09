@@ -47,6 +47,9 @@ type AudioState = {
   duration: number;
   volume: number;
   
+  // Spatial audio state
+  spatialAudioEnabled: boolean;
+  
   // Queue
   queue: Track[];
   index: number;
@@ -66,6 +69,7 @@ type AudioState = {
   prev: () => Promise<void>;
   seek: (time: number) => void;
   setVolume: (volume: number) => void;
+  toggleSpatialAudio: () => void;
   
   // Internal
   setPlaying: (playing: boolean) => void;
@@ -351,6 +355,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     currentTime: 0,
     duration: 0,
     volume: 0.8,
+    spatialAudioEnabled: false,
     queue: [],
     index: -1,
     sessionManager: null,
@@ -729,6 +734,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const audio = initAudio();
       audio.volume = volume;
       set({ volume });
+    },
+
+    toggleSpatialAudio: () => {
+      set((state) => ({ spatialAudioEnabled: !state.spatialAudioEnabled }));
     },
 
     // Internal setters

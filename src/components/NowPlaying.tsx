@@ -89,12 +89,13 @@ export const NowPlaying: React.FC = () => {
     play, 
     pause, 
     seek, 
-    setVolume: handleVolumeChange 
+    setVolume: handleVolumeChange,
+    spatialAudioEnabled,
+    toggleSpatialAudio
   } = useAudioStore();
 
   // Local state for enhanced features
   const [isFavorited, setIsFavorited] = useState(false);
-  const [spatialAudioEnabled, setSpatialAudioEnabled] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
 
   const toggle = () => {
@@ -122,10 +123,11 @@ export const NowPlaying: React.FC = () => {
   };
 
   const handleSpatialAudio = () => {
-    setSpatialAudioEnabled(!spatialAudioEnabled);
+    const willBeEnabled = !spatialAudioEnabled;
+    toggleSpatialAudio();
     toast({
-      title: spatialAudioEnabled ? "Spatial Audio disabled" : "Spatial Audio enabled",
-      description: "Enhanced audio experience",
+      title: willBeEnabled ? "Spatial Audio enabled for session" : "Spatial Audio disabled", 
+      description: willBeEnabled ? "Enhanced audio experience active" : "Spatial audio turned off",
     });
   };
 

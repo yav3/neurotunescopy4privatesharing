@@ -8,18 +8,18 @@ import { cn } from "@/lib/utils";
 
 export default function FullPlayer() {
   const navigate = useNavigate();
-  const { play, pause, next, prev, isPlaying, currentTrack: track } = useAudioStore();
+  const { play, pause, next, prev, isPlaying, currentTrack: track, spatialAudioEnabled, toggleSpatialAudio } = useAudioStore();
 
   // Local state for enhanced features
-  const [spatialAudioEnabled, setSpatialAudioEnabled] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleSpatialAudio = () => {
-    setSpatialAudioEnabled(!spatialAudioEnabled);
+    const willBeEnabled = !spatialAudioEnabled;
+    toggleSpatialAudio();
     toast({
-      title: spatialAudioEnabled ? "Spatial Audio disabled" : "Spatial Audio enabled",
-      description: "Enhanced audio experience",
+      title: willBeEnabled ? "Spatial Audio enabled for session" : "Spatial Audio disabled",
+      description: willBeEnabled ? "Enhanced audio experience active" : "Spatial audio turned off",
     });
   };
 
