@@ -136,12 +136,12 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
             <h3 className="text-white font-semibold text-lg leading-tight">
               Trending Now
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2">
+            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Popular tracks trending with our community
             </p>
             
             {/* Track Preview */}
-            <p className="text-white/60 text-xs">
+            <p className="text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               {trendingTracks.slice(0, 2).map(track => track.title || 'Untitled').join(', ')}
               {trendingTracks.length > 2 && ` +${trendingTracks.length - 2} more`}
             </p>
