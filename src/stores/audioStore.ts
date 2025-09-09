@@ -403,41 +403,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
           audio_status: 'working' as const,
         }));
 
-        // For manually curated buckets (focus-music, ENERGYBOOST), skip ALL filtering
+        // For manually curated buckets, use all tracks directly (user validated)
         if (goal === 'focus-enhancement' || goal === 'mood-boost') {
-          adminLog(`✅ Using all ${tracks.length} curated tracks without filtering for ${goal}`);
-          // Just shuffle curated tracks since they're manually validated
+          adminLog(`✅ Using all ${tracks.length} curated tracks from your validated bucket for ${goal}`);
+          // Shuffle for variety since tracks are pre-validated
           tracks = tracks.sort(() => Math.random() - 0.5);
         } else {
-          // Apply therapeutic filtering for other goals
-          const therapeuticGoal = TherapeuticGoalMapper.findGoal(goal);
-          if (!therapeuticGoal) {
-            throw new Error(`Unknown therapeutic goal: ${goal}`);
-          }
-          
-          const goalSlug = therapeuticGoal.slug as GoalSlug;
-          
-          // Convert to therapeutic format for filtering
-          const therapeuticTracks = tracks.map((t) => ({
-            id: parseInt(t.id) || 0,
-            bpm: undefined, // Storage tracks don't have BPM
-            valence: undefined,
-            energy_level: undefined,
-            musical_key_est: undefined,
-            camelot: undefined
-          }));
-          
-          const filteredTracks = filterTracksForGoal(therapeuticTracks, goalSlug);
-          adminLog('🎯 Therapeutically filtered tracks:', filteredTracks.length);
-          
-          if (filteredTracks.length === 0) {
-            adminLog('⚠️ No tracks passed filtering, using all tracks');
-            // Use all tracks if filtering is too strict
-          } else {
-            // Map filtered indices back to original tracks
-            const filteredIndices = new Set(filteredTracks.map(t => t.id));
-            tracks = tracks.filter((_, index) => filteredIndices.has(index));
-          }
+          // For other goals, still use neuralpositivemusic with basic shuffling
+          adminLog(`🎯 Using ${tracks.length} tracks with shuffle for ${goal}`);
+          tracks = tracks.sort(() => Math.random() - 0.5);
         }
 
         if (tracks.length === 0) {
