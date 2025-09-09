@@ -675,16 +675,57 @@ export const useAudioStore = create<AudioState>((set, get) => {
           set({ queue });
         }
         
-        // If no more tracks in current queue, try to reload the last goal
+        // If no more tracks in current queue, try to reload the last goal or load more trending
         const currentState = get();
         if (currentState.lastGoal) {
           console.log('🎵 Queue exhausted, reloading tracks for goal:', currentState.lastGoal);
           toast.info("Loading more tracks...");
           await get().playFromGoal(currentState.lastGoal);
           return;
+        } else {
+          // No goal set - this might be trending tracks, try to load more
+          console.log('🎵 No goal set, attempting to load more trending tracks');
+          toast.info("Loading more trending tracks...");
+          try {
+            const { fetchTrending } = await import('@/lib/api');
+            const { tracks, error } = await fetchTrending(60, 50); // Get more trending tracks
+            
+            if (!error && tracks?.length) {
+              // Format tracks for audio store
+              const formattedTracks = tracks.map((track: any) => ({
+                id: String(track.id),
+                title: track.title || 'Untitled',
+                artist: track.genre || 'Unknown Artist',
+                duration: 0,
+                storage_bucket: track.storage_bucket || 'audio',
+                storage_key: track.storage_key,
+                bpm: track.bpm,
+                genre: track.genre
+              }));
+              
+              // Add new tracks to queue and continue playing
+              const { queue: currentQueue } = get();
+              const newQueue = [...currentQueue, ...formattedTracks];
+              set({ queue: newQueue });
+              
+              // Try to play the next track
+              const nextIndex = index + 1;
+              if (nextIndex < newQueue.length) {
+                const success = await loadTrack(newQueue[nextIndex]);
+                if (success) {
+                  set({ index: nextIndex });
+                  await get().play();
+                  console.log('🎵 Successfully loaded more trending tracks');
+                  return;
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Failed to load more trending tracks:', error);
+          }
         }
         
-        console.log('🎵 No more working tracks in queue and no goal to reload');
+        console.log('🎵 No more working tracks available');
         toast.error("No more tracks available. Please select a new category.");
         set({ isLoading: false, error: "No more tracks available" });
       } finally {
