@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Music, Loader2, Play, Pause, SkipForward } from 'lucide-react';
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
+import { fetchPlaylist } from "@/lib/api";
+import { newSeed, remember, excludeQS } from "@/state/playlistSession";
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("ai-dj");
@@ -23,71 +25,55 @@ const AIDJ = () => {
     try {
       console.log(`Generating ${flowType} playlist...`);
 
-      // Create demo playlist for now (replace with your actual logic)
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate loading
+      // Map flow types to therapeutic goals
+      const goalMap = {
+        'focus': 'focus-enhancement',
+        'energy': 'mood-boost' // Use mood-boost for energy since it's high energy
+      };
 
-      const demoTracks = flowType === 'focus' ? [
-        {
-          id: 'focus1',
-          title: 'Deep Focus Ambient',
-          artist: 'Focus Artist',
-          fileName: 'focus1.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 1
-        },
-        {
-          id: 'focus2',
-          title: 'Concentration Flow',
-          artist: 'Ambient Sounds',
-          fileName: 'focus2.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 2
-        },
-        {
-          id: 'focus3',
-          title: 'Study Session',
-          artist: 'Instrumental Vibes',
-          fileName: 'focus3.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 3
-        }
-      ] : [
-        {
-          id: 'energy1',
-          title: 'High Energy Boost',
-          artist: 'Energy Artist',
-          fileName: 'energy1.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 1
-        },
-        {
-          id: 'energy2',
-          title: 'Motivation Drive',
-          artist: 'Upbeat Sounds',
-          fileName: 'energy2.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 2
-        },
-        {
-          id: 'energy3',
-          title: 'Power Session',
-          artist: 'Dynamic Beats',
-          fileName: 'energy3.mp3',
-          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
-          index: 3
-        }
-      ];
+      const goalSlug = goalMap[flowType];
+      if (!goalSlug) {
+        throw new Error(`Unknown flow type: ${flowType}`);
+      }
+
+      // Fetch real tracks from your music library
+      const { tracks, error } = await fetchPlaylist(goalSlug, 20, newSeed(), excludeQS());
+      
+      if (error) {
+        console.warn('Playlist error:', error);
+      }
+      
+      if (!tracks?.length) {
+        throw new Error(`No ${flowType} tracks found in your music library`);
+      }
+
+      console.log(`✅ Loaded ${tracks.length} real ${flowType} tracks from library`);
+
+      // Format tracks for the playlist interface
+      const formattedTracks = tracks.map((track, index) => ({
+        id: track.id,
+        title: track.title || 'Untitled',
+        artist: track.genre || 'Unknown Artist',
+        fileName: track.storage_key,
+        stream_url: track.stream_url || null,
+        index: index + 1,
+        bpm: track.bpm,
+        genre: track.genre
+      }));
 
       const result = {
         goal: flowType,
-        count: demoTracks.length,
+        count: formattedTracks.length,
         description: flowType === 'focus' 
-          ? 'Curated instrumental tracks for deep concentration'
-          : 'High-energy tracks to boost motivation and performance',
-        playlist: demoTracks
+          ? 'Curated tracks from your library for deep concentration'
+          : 'High-energy tracks from your library to boost motivation and performance',
+        playlist: formattedTracks
       };
 
       setPlaylist(result);
+
+      // Remember played tracks for future exclusion
+      tracks.slice(0, 5).forEach(track => remember(track.id));
 
     } catch (err) {
       console.error("Playlist generation error:", err);
