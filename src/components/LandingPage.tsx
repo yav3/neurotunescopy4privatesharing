@@ -103,25 +103,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-6 py-20 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl font-bold text-foreground mb-6">
-            Ready to Transform Your Performance?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of users who have enhanced their cognitive performance through our evidence-based music therapy platform.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={handleSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
-              Get Started
-            </Button>
-            <Button variant="outline" size="lg" onClick={handleLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
-              Sign In
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-card/50 backdrop-blur-sm border-t">
