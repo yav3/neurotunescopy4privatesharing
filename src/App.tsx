@@ -72,6 +72,13 @@ const App = () => {
     if (showAuth) {
       return <AuthPage onBack={() => setShowAuth(false)} />;
     }
+    
+    // Handle unauthenticated password reset routes
+    const currentPath = window.location.pathname;
+    if (currentPath === '/reset-password' || currentPath === '/verify') {
+      return <ResetPasswordForm />;
+    }
+    
     return (
       <NeuralPositiveLanding 
         onSignIn={() => setShowAuth(true)} 
@@ -92,8 +99,6 @@ const App = () => {
               <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/landing" element={<LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />} />
-              <Route path="/reset-password" element={<ResetPasswordForm />} />
-              <Route path="/verify" element={<ResetPasswordForm />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="users" element={<UserManagement />} />
