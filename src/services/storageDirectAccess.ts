@@ -59,25 +59,22 @@ export async function getTracksFromStorage(
   count: number = 50,
   buckets?: string[] // Will be determined based on goal
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
-  // Determine buckets based on goal
+  // Determine buckets based on goal - direct mapping
   if (!buckets) {
     console.log(`🎯 Goal received: "${goal}"`);
-    console.log(`🎯 Goal type: ${typeof goal}`);
-    console.log(`🎯 Goal length: ${goal.length}`);
-    console.log(`🎯 Goal chars:`, Array.from(goal).map(c => c.charCodeAt(0)));
-    console.log(`🎯 Is focus-enhancement? ${goal === 'focus-enhancement'}`);
-    console.log(`🎯 Is mood-boost? ${goal === 'mood-boost'}`);
-    console.log(`🎯 Trimmed comparison: ${goal.trim() === 'focus-enhancement'}`);
     
     // Use trim() and toLowerCase() for comparison to handle any whitespace/case issues
     const normalizedGoal = goal.trim().toLowerCase();
     
     if (normalizedGoal === 'focus-enhancement') {
       buckets = ['focus-music'];
+      console.log(`🎯 Using focus-music bucket for focus enhancement`);
     } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
+      console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
     } else {
       buckets = ['neuralpositivemusic'];
+      console.log(`🎯 Using neuralpositivemusic bucket for other goals`);
     }
     
     console.log(`🗂️ Selected buckets:`, buckets);
@@ -121,16 +118,7 @@ export async function getTracksFromStorage(
 
       if (!files || files.length === 0) {
         console.log(`📁 No files found in bucket: ${bucket}`);
-        
-        // Temporary fallback: if focus-music is empty, try neuralpositivemusic with focus filtering
-        if (bucket === 'focus-music') {
-          console.log(`🔄 focus-music bucket is empty, falling back to neuralpositivemusic for focus tracks`);
-          // Restart with neuralpositivemusic bucket
-          const fallbackResult = await getTracksFromStorage(goal, count, ['neuralpositivemusic']);
-          return fallbackResult;
-        } else {
-          continue;
-        }
+        continue;
       }
 
       console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
@@ -175,14 +163,20 @@ export async function getTracksFromStorage(
       return { tracks: [], error: 'No audio files found in storage buckets' };
     }
 
-    // Filter by goal
-    let filteredTracks = filterByGoal(allTracks, goal);
-    console.log(`🎯 After goal filtering (${goal}): ${filteredTracks.length} tracks`);
-
-    // If no matches for specific goal, fall back to all tracks
-    if (filteredTracks.length === 0) {
-      console.log(`🔄 No matches for ${goal}, using all available tracks`);
+    // Filter by goal (skip filtering for manually curated buckets)
+    let filteredTracks = allTracks;
+    if (goal === 'focus-enhancement' || goal === 'mood-boost') {
+      console.log(`🎯 Using all tracks from curated ${buckets[0]} bucket: ${allTracks.length} tracks`);
       filteredTracks = allTracks;
+    } else {
+      filteredTracks = filterByGoal(allTracks, goal);
+      console.log(`🎯 After goal filtering (${goal}): ${filteredTracks.length} tracks`);
+      
+      // If no matches for specific goal, fall back to all tracks
+      if (filteredTracks.length === 0) {
+        console.log(`🔄 No matches for ${goal}, using all available tracks`);
+        filteredTracks = allTracks;
+      }
     }
 
     // Shuffle and limit
