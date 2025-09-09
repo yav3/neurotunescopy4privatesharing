@@ -114,7 +114,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   console.log('🎵 Audio store initializing - creating audio element...');
   ensureAudioElement();
   
-  // Debounced auto-skip function with proper store access
+  // Immediate auto-skip function for seamless playback
   const scheduleAutoSkip = (reason: string) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
@@ -122,7 +122,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (!isNexting && !isTransitioning) {
         get().next();
       }
-    }, 1000);
+    }, 50); // Minimal delay for seamless playback
   };
   
   // Helper: Remove item from array at index
