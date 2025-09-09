@@ -63,12 +63,18 @@ export async function getTracksFromStorage(
   if (!buckets) {
     console.log(`🎯 Goal received: "${goal}"`);
     console.log(`🎯 Goal type: ${typeof goal}`);
+    console.log(`🎯 Goal length: ${goal.length}`);
+    console.log(`🎯 Goal chars:`, Array.from(goal).map(c => c.charCodeAt(0)));
     console.log(`🎯 Is focus-enhancement? ${goal === 'focus-enhancement'}`);
     console.log(`🎯 Is mood-boost? ${goal === 'mood-boost'}`);
+    console.log(`🎯 Trimmed comparison: ${goal.trim() === 'focus-enhancement'}`);
     
-    if (goal === 'focus-enhancement') {
+    // Use trim() and toLowerCase() for comparison to handle any whitespace/case issues
+    const normalizedGoal = goal.trim().toLowerCase();
+    
+    if (normalizedGoal === 'focus-enhancement') {
       buckets = ['focus-music'];
-    } else if (goal === 'mood-boost') {
+    } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
     } else {
       buckets = ['neuralpositivemusic'];
@@ -119,9 +125,9 @@ export async function getTracksFromStorage(
         // Temporary fallback: if focus-music is empty, try neuralpositivemusic with focus filtering
         if (bucket === 'focus-music') {
           console.log(`🔄 focus-music bucket is empty, falling back to neuralpositivemusic for focus tracks`);
-          buckets = ['neuralpositivemusic'];
-          console.log(`🗂️ Fallback buckets:`, buckets);
-          // Don't continue, let it try the fallback bucket
+          // Restart with neuralpositivemusic bucket
+          const fallbackResult = await getTracksFromStorage(goal, count, ['neuralpositivemusic']);
+          return fallbackResult;
         } else {
           continue;
         }
