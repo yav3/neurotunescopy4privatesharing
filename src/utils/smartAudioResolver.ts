@@ -37,6 +37,15 @@ export class SmartAudioResolver {
 
     const attempts: AudioResolutionResult['attempts'] = [];
     const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
+    
+    // Enhanced debugging for bucket resolution
+    console.log(`🏷️ Track details:`, {
+      id: track.id,
+      title: track.title,
+      bucket: track.storage_bucket,
+      key: track.storage_key,
+      hasDatabase: !!(track.storage_bucket && track.storage_key)
+    });
 
     // Strategy 1: Try database URL as-is
     if (track.storage_bucket && track.storage_key) {
@@ -52,7 +61,26 @@ export class SmartAudioResolver {
         this.cache.set(cacheKey, result);
         console.log(`✅ Database URL works!`);
         return result;
+      } else {
+        console.log(`❌ Database URL failed with status ${dbResult.status}`);
+        
+        // Try with URL encoding for the storage key
+        const encodedDbUrl = `${baseUrl}/${track.storage_bucket}/${encodeURIComponent(track.storage_key)}`;
+        if (encodedDbUrl !== dbUrl) {
+          console.log(`🔗 Strategy 1b: Encoded Database URL - ${encodedDbUrl}`);
+          const encodedResult = await this.testUrl(encodedDbUrl, 'database_encoded');
+          attempts.push(encodedResult);
+          
+          if (encodedResult.status === 200) {
+            const result = { success: true, url: encodedDbUrl, method: 'database_encoded', attempts };
+            this.cache.set(cacheKey, result);
+            console.log(`✅ Encoded Database URL works!`);
+            return result;
+          }
+        }
       }
+    } else {
+      console.log(`⚠️ No database storage info available for "${track.title}"`);
     }
 
     // Strategy 2: Try neuralpositivemusic bucket with exact title match
@@ -150,9 +178,18 @@ export class SmartAudioResolver {
     console.log(`📊 Failed attempts summary:`, attempts.map(a => `${a.method}: ${a.status}`));
     console.log(`🔗 Database had: bucket="${track.storage_bucket}" key="${track.storage_key}"`);
     
+    // Enhanced failure analysis
+    const statusCounts = attempts.reduce((acc, a) => {
+      acc[a.status] = (acc[a.status] || 0) + 1;
+      return acc;
+    }, {} as Record<number, number>);
+    
+    console.log(`📊 Status code analysis:`, statusCounts);
+    console.log(`🔍 Common issues: 404=file not found, 403=access denied, 0=network/CORS error`);
+    
     // Log this failure for debugging
     if (typeof window !== 'undefined') {
-      (window as any).lastFailedTrack = { track, attempts };
+      (window as any).lastFailedTrack = { track, attempts, statusCounts };
     }
     
     const result = { success: false, attempts };
@@ -231,7 +268,68 @@ if (typeof window !== 'undefined') {
     }
   };
 
-  // Add debugging command to test current queue
+  // Add debugging command to test broken tracks from queue
+  (window as any).debugBrokenTracks = async (limit = 10) => {
+    const audio = (window as any).useAudioStore?.getState();
+    if (!audio?.queue?.length) {
+      console.log('❌ No queue to test - try starting a playlist first');
+      return;
+    }
+    
+    console.log(`🔍 Testing first ${limit} tracks from queue for broken URLs...`);
+    
+    const results = {
+      working: [] as any[],
+      broken: [] as any[],
+      statusCodes: {} as Record<number, number>
+    };
+    
+    for (const track of audio.queue.slice(0, limit)) {
+      console.log(`\n🎵 Testing: "${track.title}"`);
+      console.log(`   ID: ${track.id}`);
+      console.log(`   Bucket: ${track.storage_bucket}`);
+      console.log(`   Key: ${track.storage_key}`);
+      
+      const result = await SmartAudioResolver.resolveAudioUrl({
+        id: track.id,
+        title: track.title,
+        storage_bucket: track.storage_bucket,
+        storage_key: track.storage_key
+      });
+      
+      if (result.success) {
+        console.log(`   ✅ WORKING via ${result.method}: ${result.url}`);
+        results.working.push({ track: track.title, method: result.method, url: result.url });
+      } else {
+        console.log(`   ❌ BROKEN - all ${result.attempts.length} attempts failed`);
+        results.broken.push({ 
+          track: track.title, 
+          bucket: track.storage_bucket,
+          key: track.storage_key,
+          attempts: result.attempts.map(a => `${a.method}:${a.status}`)
+        });
+        
+        // Count status codes
+        result.attempts.forEach(attempt => {
+          results.statusCodes[attempt.status] = (results.statusCodes[attempt.status] || 0) + 1;
+        });
+      }
+    }
+    
+    console.log(`\n📊 SUMMARY:`);
+    console.log(`   ✅ Working: ${results.working.length}`);
+    console.log(`   ❌ Broken: ${results.broken.length}`);
+    console.log(`   📈 Status codes:`, results.statusCodes);
+    
+    if (results.broken.length > 0) {
+      console.log(`\n🔍 Broken track analysis:`);
+      results.broken.forEach(b => {
+        console.log(`   "${b.track}": ${b.bucket}/${b.key} -> [${b.attempts.join(', ')}]`);
+      });
+    }
+    
+    return results;
+  };
   (window as any).testCurrentQueue = async () => {
     const audio = (window as any).useAudioStore?.getState();
     if (!audio?.queue?.length) {
