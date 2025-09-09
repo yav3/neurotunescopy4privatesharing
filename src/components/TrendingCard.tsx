@@ -26,7 +26,8 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
         console.log('🔥 Loading trending tracks...');
         
         // Use the proper API function to get trending tracks - get more for continuous play
-        const { tracks, error } = await fetchTrending(60, 100); // Last 60 minutes, max 100 tracks
+        // For 45+ minutes of continuous play, get 200+ tracks (assuming ~3min avg per track)
+        const { tracks, error } = await fetchTrending(180, 250); // Last 3 hours, max 250 tracks
         
         if (error) {
           console.warn('Trending tracks error:', error);
@@ -75,6 +76,10 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
       }));
       
       console.log('🔥 Formatted tracks for audio store:', formattedTracks);
+      
+      // Set a trending goal so the system can auto-reload more tracks when needed
+      const audioStore = useAudioStore.getState();
+      audioStore.lastGoal = 'trending';
       
       await setQueue(formattedTracks, 0);
       toast({
