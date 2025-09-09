@@ -169,58 +169,49 @@ export async function getTrendingTracks(
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
   try {
-    console.log(`🔥 Fetching ${count} trending tracks based on engagement and quality`);
+    console.log(`🔥 Fetching ${count} random trending tracks from audio storage`);
     
-    // Strategy: Get high-quality tracks and mix in any played tracks
-    const { data: highQualityTracks, error: qualityError } = await supabase
+    // Get all working tracks from the audio storage bucket's tracks folder
+    const { data: tracks, error } = await supabase
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
       .not('id', 'is', null)
-      .not('therapeutic_effectiveness', 'is', null)
-      .gte('therapeutic_effectiveness', 0.8) // Higher threshold for trending
-      .order('therapeutic_effectiveness', { ascending: false })
-      .limit(count);
+      .not('storage_key', 'is', null)
+      .in('storage_bucket', ['audio', 'neuralpositivemusic'])
+      .ilike('storage_key', 'tracks/%') // Only tracks in the tracks folder
+      .limit(count * 3); // Get more than needed for random selection
 
-    if (qualityError) {
-      console.error('❌ High quality tracks query error:', qualityError);
-      return { tracks: [], error: qualityError.message };
+    if (error) {
+      console.error('❌ Database query error:', error);
+      return { tracks: [], error: error.message };
     }
 
-    // Also get any tracks that have been played (engagement)
-    const { data: playedTracks, error: playedError } = await supabase
-      .from('tracks')
-      .select('*')
-      .eq('audio_status', 'working')
-      .not('id', 'is', null)
-      .not('play_count', 'is', null)
-      .gt('play_count', 0)
-      .order('play_count', { ascending: false })
-      .limit(10); // Just get top 10 played tracks
-
-    if (playedError) {
-      console.warn('⚠️ Played tracks query failed:', playedError);
+    if (!tracks || tracks.length === 0) {
+      console.warn('⚠️ No tracks found in storage buckets');
+      return { tracks: [] };
     }
 
-    // Combine and dedupe tracks
-    const allTracks = [...(highQualityTracks || [])];
-    const playedTrackIds = new Set(allTracks.map(t => t.id));
-    
-    // Add played tracks that aren't already in the list
-    if (playedTracks) {
-      playedTracks.forEach(track => {
-        if (!playedTrackIds.has(track.id)) {
-          allTracks.unshift(track); // Put played tracks at the beginning
-        }
-      });
+    console.log(`📦 Found ${tracks.length} tracks in storage buckets`);
+
+    // Randomly shuffle the tracks using Fisher-Yates shuffle
+    const shuffledTracks = [...tracks];
+    for (let i = shuffledTracks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledTracks[i], shuffledTracks[j]] = [shuffledTracks[j], shuffledTracks[i]];
     }
 
-    // Limit to requested count
-    const finalTracks = allTracks.slice(0, count);
+    // Take the requested count
+    const randomTracks = shuffledTracks.slice(0, count);
     
-    console.log(`✅ Retrieved ${finalTracks.length} trending tracks (${playedTracks?.length || 0} played + ${highQualityTracks?.length || 0} high-quality)`);
+    console.log(`✅ Retrieved ${randomTracks.length} randomly selected trending tracks`);
+    console.log(`🎵 Sample tracks:`, randomTracks.slice(0, 3).map(t => ({ 
+      title: t.title, 
+      storage_bucket: t.storage_bucket,
+      storage_key: t.storage_key?.substring(0, 50) + '...' 
+    })));
     
-    return { tracks: finalTracks as Track[] };
+    return { tracks: randomTracks as Track[] };
 
   } catch (error) {
     console.error('❌ Error fetching trending tracks:', error);
