@@ -50,16 +50,36 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   }, []);
 
   const handlePlayTrending = async () => {
-    if (!trendingTracks.length) return;
+    if (!trendingTracks.length) {
+      console.warn('🔥 No trending tracks available to play');
+      return;
+    }
     
     try {
-      await setQueue(trendingTracks, 0);
+      console.log('🔥 Playing trending tracks:', trendingTracks.length, 'tracks');
+      console.log('🔥 First trending track:', trendingTracks[0]);
+      
+      // Convert trending tracks to proper audio store format
+      const formattedTracks = trendingTracks.map(track => ({
+        id: String(track.id),
+        title: track.title || 'Untitled',
+        artist: track.genre || 'Unknown Artist',
+        duration: 0,
+        storage_bucket: track.storage_bucket || 'audio',
+        storage_key: track.storage_key,
+        bpm: track.bpm,
+        genre: track.genre
+      }));
+      
+      console.log('🔥 Formatted tracks for audio store:', formattedTracks);
+      
+      await setQueue(formattedTracks, 0);
       toast({
         title: "Playing Trending",
         description: `Started trending playlist with ${trendingTracks.length} tracks`,
       });
     } catch (error) {
-      console.error('Failed to play trending tracks:', error);
+      console.error('❌ Failed to play trending tracks:', error);
       toast({
         title: "Playback Error",
         description: "Failed to play trending music. Please try again.",
