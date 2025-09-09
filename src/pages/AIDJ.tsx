@@ -84,7 +84,7 @@ const AIDJ = () => {
       {/* Cards Grid - Same as Home Page */}
       <div className="px-4 pb-32">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center place-content-center">
             
             {/* Focus Enhancement Card */}
             <MusicCategoryCard
