@@ -96,8 +96,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">About NeuralPositive</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              NeuralPositive spun out of the prestigious <strong>Postdoctoral Runway Program at Jacobs Cornell Technion Institute (JCTI)</strong> at Cornell Tech. 
-              We've received significant funding, partnership, research collaboration, and ongoing support from JCTI, positioning us at the forefront of therapeutic music technology.
+              NeuralPositive spun out of <strong>Stanford University Medical School and partners from other leading US institutions and companies</strong>. 
+              We've received significant funding, partnership, research collaboration, and ongoing support, positioning us at the forefront of therapeutic music technology.
             </p>
           </div>
         </div>
