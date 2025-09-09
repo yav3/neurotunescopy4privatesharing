@@ -40,7 +40,8 @@ export class SmartAudioResolver {
 
     // Strategy 1: Try database URL as-is
     if (track.storage_bucket && track.storage_key) {
-      const dbUrl = `${baseUrl}/${track.storage_bucket}/${encodeURIComponent(track.storage_key)}`;
+      // Don't encode the entire storage_key since it may contain path separators
+      const dbUrl = `${baseUrl}/${track.storage_bucket}/${track.storage_key}`;
       console.log(`🔗 Strategy 1: Database URL - ${dbUrl}`);
       
       const dbResult = await this.testUrl(dbUrl, 'database');
@@ -168,6 +169,9 @@ export class SmartAudioResolver {
       console.log(`❌ ${method}: ERROR - ${url}`);
       return { url, status: 0, method };
     }
+    // Clear cache for failed resolutions and try fresh
+    this.cache.clear();
+    console.log('🗑️ Audio resolver cache cleared due to URL fix');
   }
 
   static clearCache() {
