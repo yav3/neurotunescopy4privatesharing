@@ -113,9 +113,12 @@ const AIDJ = () => {
   };
 
   const playTrack = (track, index) => {
+    // Clean up existing audio properly
     if (audio) {
       audio.pause();
-      const existingHandlers = audio.cloneNode ? [] : audio.removeEventListener('ended', () => {});
+      audio.currentTime = 0;
+      // Remove all event listeners by setting src to empty
+      audio.src = '';
     }
 
     if (track.stream_url) {
@@ -132,18 +135,20 @@ const AIDJ = () => {
       });
 
       newAudio.addEventListener('error', (e) => {
-        console.error('Audio playbook error:', e);
+        console.error('Audio playback error:', e);
         setError('Playback failed for this track');
       });
+      
+      // Update state immediately before play attempt
+      setAudio(newAudio);
+      setCurrentTrack(index);
+      setIsPlaying(true);
       
       newAudio.play().catch(err => {
         console.error('Play failed:', err);
         setError('Could not play track');
+        setIsPlaying(false);
       });
-      
-      setAudio(newAudio);
-      setCurrentTrack(index);
-      setIsPlaying(true);
     }
   };
 
