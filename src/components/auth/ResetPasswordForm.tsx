@@ -19,24 +19,70 @@ export function ResetPasswordForm() {
       const accessToken = searchParams.get('access_token');
       const refreshToken = searchParams.get('refresh_token');
       const type = searchParams.get('type');
+      const error = searchParams.get('error');
+      const errorDescription = searchParams.get('error_description');
+
+      console.log('🔐 Reset Password Debug:', {
+        accessToken: accessToken ? 'present' : 'missing',
+        refreshToken: refreshToken ? 'present' : 'missing',
+        type,
+        error,
+        errorDescription,
+        fullURL: window.location.href
+      });
+
+      // Handle error from URL params first
+      if (error) {
+        toast({
+          title: "Reset Password Error",
+          description: errorDescription || error,
+          variant: "destructive",
+        });
+        console.error('🔐 Reset password error from URL:', { error, errorDescription });
+        return;
+      }
 
       if (type === 'recovery' && accessToken && refreshToken) {
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
+        try {
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
 
-        if (error) {
+          if (error) {
+            console.error('🔐 Session set error:', error);
+            toast({
+              title: "Error",
+              description: "Invalid or expired reset link",
+              variant: "destructive",
+            });
+            navigate('/');
+          } else {
+            console.log('🔐 Session set successfully for password reset');
+            toast({
+              title: "Ready to Reset",
+              description: "Please enter your new password below",
+            });
+          }
+        } catch (sessionError) {
+          console.error('🔐 Exception setting session:', sessionError);
           toast({
             title: "Error",
-            description: "Invalid or expired reset link",
+            description: "Failed to process reset link",
             variant: "destructive",
           });
           navigate('/');
         }
-      } else if (!type) {
-        // If no type parameter, redirect to home
+      } else if (!type && !accessToken && !refreshToken) {
+        console.log('🔐 No reset parameters found, redirecting to home');
         navigate('/');
+      } else {
+        console.warn('🔐 Incomplete reset parameters:', { type, hasAccess: !!accessToken, hasRefresh: !!refreshToken });
+        toast({
+          title: "Invalid Reset Link",
+          description: "This reset link appears to be invalid or incomplete",
+          variant: "destructive",
+        });
       }
     };
 

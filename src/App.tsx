@@ -93,6 +93,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/landing" element={<LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />} />
               <Route path="/reset-password" element={<ResetPasswordForm />} />
+              <Route path="/verify" element={<ResetPasswordForm />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="users" element={<UserManagement />} />
