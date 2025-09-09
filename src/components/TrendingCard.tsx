@@ -16,6 +16,7 @@ interface TrendingCardProps {
 
 export const TrendingCard = ({ className }: TrendingCardProps) => {
   const [trendingTracks, setTrendingTracks] = useState<any[]>([]);
+  const [allTrendingTracks, setAllTrendingTracks] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { setQueue } = useAudioStore();
 
@@ -24,8 +25,8 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
       try {
         console.log('🔥 Loading trending tracks...');
         
-        // Use the proper API function to get trending tracks
-        const { tracks, error } = await fetchTrending(60, 20); // Last 60 minutes, max 20 tracks
+        // Use the proper API function to get trending tracks - get more for continuous play
+        const { tracks, error } = await fetchTrending(60, 100); // Last 60 minutes, max 100 tracks
         
         if (error) {
           console.warn('Trending tracks error:', error);
@@ -34,7 +35,9 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
         
         if (tracks?.length) {
           console.log(`✅ Loaded ${tracks.length} trending tracks`);
-          // Take first 5 tracks for the trending preview
+          // Store all tracks for playback
+          setAllTrendingTracks(tracks);
+          // Take first 5 tracks for the trending preview display
           setTrendingTracks(tracks.slice(0, 5));
         } else {
           console.log('ℹ️ No trending tracks available');
@@ -50,17 +53,17 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   }, []);
 
   const handlePlayTrending = async () => {
-    if (!trendingTracks.length) {
+    if (!allTrendingTracks.length) {
       console.warn('🔥 No trending tracks available to play');
       return;
     }
     
     try {
-      console.log('🔥 Playing trending tracks:', trendingTracks.length, 'tracks');
-      console.log('🔥 First trending track:', trendingTracks[0]);
+      console.log('🔥 Playing trending tracks:', allTrendingTracks.length, 'tracks');
+      console.log('🔥 First trending track:', allTrendingTracks[0]);
       
-      // Convert trending tracks to proper audio store format
-      const formattedTracks = trendingTracks.map(track => ({
+      // Convert ALL trending tracks to proper audio store format for continuous play
+      const formattedTracks = allTrendingTracks.map(track => ({
         id: String(track.id),
         title: track.title || 'Untitled',
         artist: track.genre || 'Unknown Artist',
@@ -76,7 +79,7 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
       await setQueue(formattedTracks, 0);
       toast({
         title: "Playing Trending",
-        description: `Started trending playlist with ${trendingTracks.length} tracks`,
+        description: `Started trending playlist with ${allTrendingTracks.length} tracks`,
       });
     } catch (error) {
       console.error('❌ Failed to play trending tracks:', error);
