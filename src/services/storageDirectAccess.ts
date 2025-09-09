@@ -61,7 +61,7 @@ export async function getTracksFromStorage(
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
   // Determine buckets based on goal
   if (!buckets) {
-    buckets = goal === 'focus-enhancement' ? ['Focus Music'] : ['neuralpositivemusic'];
+    buckets = ['neuralpositivemusic']; // Use neuralpositivemusic for all goals since it has the content
   }
   try {
     console.log(`🗂️ Fetching ${count} tracks directly from storage buckets:`, buckets);
