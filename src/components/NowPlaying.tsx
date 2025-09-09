@@ -91,7 +91,8 @@ export const NowPlaying: React.FC = () => {
     seek, 
     setVolume: handleVolumeChange,
     spatialAudioEnabled,
-    toggleSpatialAudio
+    toggleSpatialAudio,
+    queue
   } = useAudioStore();
 
   // Local state for enhanced features
@@ -139,6 +140,21 @@ export const NowPlaying: React.FC = () => {
     });
   };
 
+  // Enhanced logging with navigation context
+  useEffect(() => {
+    const logPlayerState = () => {
+      console.log('🎵 NowPlaying: Navigation detected, current state:', {
+        hasTrack: !!track,
+        trackTitle: track?.title,
+        isPlaying,
+        queueLength: queue?.length || 0,
+        currentPath: window.location.pathname
+      });
+    };
+    
+    logPlayerState();
+  }, [track, isPlaying, queue]);
+
   if (!track) {
     const storeState = useAudioStore.getState();
     console.log('🎵 NowPlaying: currentTrack is null, hiding player. Store state:', {
@@ -146,7 +162,8 @@ export const NowPlaying: React.FC = () => {
       isLoading: storeState.isLoading, 
       queueLength: storeState.queue.length,
       currentIndex: storeState.index,
-      error: storeState.error
+      error: storeState.error,
+      currentPath: window.location.pathname
     });
     return null;
   }
