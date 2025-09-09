@@ -56,6 +56,7 @@ export interface Track {
   audio_status?: "working" | "bad" | "unknown" | "missing";
   storage_bucket?: string;
   storage_key?: string;
+  stream_url?: string;
   camelot_key?: string;
   duration_seconds?: number;
   play_count?: number;
@@ -87,6 +88,7 @@ export async function getTherapeuticTracks(
   excludeIds: string[] = []
 ): Promise<{ tracks: Track[]; error?: string }> {
   console.log(`🎯 DIRECT STORAGE ACCESS: Fetching ${count} tracks for goal: ${goal}`);
+  console.log(`🗂️ This will pull directly from storage buckets (no database dependency)`);
   
   try {
     // Call storage buckets directly as primary source
@@ -98,6 +100,8 @@ export async function getTherapeuticTracks(
       return { tracks: [], error };
     }
     
+    console.log(`📁 Raw storage tracks found: ${storageTracks.length}`);
+    
     // Convert storage tracks to Track interface with stream URLs
     const tracks: Track[] = storageTracks.map(storageTrack => ({
       id: storageTrack.id,
@@ -105,12 +109,17 @@ export async function getTherapeuticTracks(
       storage_bucket: storageTrack.storage_bucket,
       storage_key: storageTrack.storage_key,
       audio_status: 'working' as const,
-      stream_url: storageTrack.stream_url,
-      file_size: storageTrack.file_size,
-      last_modified: storageTrack.last_modified
+      stream_url: storageTrack.stream_url
     }));
     
-    console.log(`✅ Direct storage: Found ${tracks.length} tracks for ${goal}`);
+    console.log(`✅ Direct storage: Converted ${tracks.length} tracks for ${goal}`);
+    console.log(`🎵 Sample converted track:`, tracks[0] ? {
+      id: tracks[0].id,
+      title: tracks[0].title,
+      bucket: tracks[0].storage_bucket,
+      hasUrl: !!tracks[0].stream_url
+    } : 'No tracks');
+    
     return { tracks };
 
   } catch (error) {
@@ -126,17 +135,20 @@ export async function getTrendingTracks(
   minutes: number = 60,
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
+  console.log(`🔥 DIRECT STORAGE ACCESS: Fetching ${count} trending tracks from trendingnow bucket`);
+  console.log(`🗂️ This bypasses database completely - pulling directly from storage`);
+  
   // Use direct storage access for trending tracks too
   const { getTracksFromStorage } = await import('./storageDirectAccess');
-  
-  console.log(`🗂️ DIRECT STORAGE ACCESS: Fetching ${count} trending tracks`);
   
   const { tracks: storageTracks, error } = await getTracksFromStorage('trending', count);
   
   if (error) {
-    console.error('❌ Storage access error:', error);
+    console.error('❌ Trending storage access error:', error);
     return { tracks: [], error };
   }
+
+  console.log(`📁 Raw trending storage tracks: ${storageTracks.length}`);
 
   // Convert storage tracks to Track interface
   const tracks: Track[] = storageTracks.map(storageTrack => ({
@@ -148,6 +160,13 @@ export async function getTrendingTracks(
     stream_url: storageTrack.stream_url
   }));
 
-  console.log(`✅ Direct storage: Found ${tracks.length} trending tracks`);
+  console.log(`✅ Direct storage: Converted ${tracks.length} trending tracks`);
+  console.log(`🔥 Sample trending track:`, tracks[0] ? {
+    id: tracks[0].id,
+    title: tracks[0].title,
+    bucket: tracks[0].storage_bucket,
+    hasUrl: !!tracks[0].stream_url
+  } : 'No trending tracks');
+  
   return { tracks };
 }

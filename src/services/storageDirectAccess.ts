@@ -143,7 +143,7 @@ export async function getTracksFromStorage(
 
           if (urlData?.publicUrl) {
             const track: StorageTrack = {
-              id: `${bucket}-${file.name}`,
+              id: `${bucket}-${file.name.replace(/\.[^/.]+$/, '')}`, // Remove extension from ID
               title: cleanTitle(file.name),
               storage_bucket: bucket,
               storage_key: file.name,
@@ -153,6 +153,16 @@ export async function getTracksFromStorage(
             };
             
             allTracks.push(track);
+            
+            // Enhanced debugging for first few tracks
+            if (allTracks.length <= 3) {
+              console.log(`🎵 Sample track from ${bucket}:`, {
+                id: track.id,
+                title: track.title,
+                url: track.stream_url,
+                size: track.file_size
+              });
+            }
           }
         } catch (fileError) {
           console.warn(`⚠️ Failed to process file ${file.name}:`, fileError);
