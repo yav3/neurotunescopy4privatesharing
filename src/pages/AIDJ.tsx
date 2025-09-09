@@ -53,8 +53,11 @@ const AIDJ = () => {
         }
 
         // Filter for audio files and convert to track format
-        tracks = files
-          .filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.m4a'))
+        const audioFiles = files.filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.m4a'));
+        console.log('🎵 Found audio files:', audioFiles.length);
+        console.log('🎵 First few files:', audioFiles.slice(0, 3).map(f => f.name));
+        
+        tracks = audioFiles
           .slice(0, 20)
           .map((file, index) => ({
             id: `samba-${index}-${file.name}`,
@@ -67,6 +70,14 @@ const AIDJ = () => {
             storage_key: file.name,
             stream_url: supabase.storage.from('samba').getPublicUrl(file.name).data.publicUrl
           }));
+        
+        console.log('🎵 Created tracks:', tracks.slice(0, 3).map(t => ({
+          title: t.title,
+          fileName: t.storage_key,
+          streamUrl: t.stream_url,
+          hasSpecialChars: /[^\w\s.-]/.test(t.storage_key)
+        })));
+        
         fetchError = null;
       } else {
         // Map flow types to therapeutic goals
