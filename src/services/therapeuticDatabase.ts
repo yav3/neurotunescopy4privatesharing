@@ -4,11 +4,11 @@ import type { TherapeuticGoal } from "@/types/music";
 // VAD profiles for each therapeutic goal (matching backend logic)
 const VAD_PROFILES = {
   'focus-enhancement': {
-    valence: { min: 0.5, max: 0.8, target: 0.6 },
-    arousal: { min: 0.6, max: 0.8, target: 0.7 },
-    dominance: { min: 0.5, max: 0.8, target: 0.6 },
-    bpm_min: 78,
-    bpm_max: 100
+    valence: { min: 0.4, max: 0.9, target: 0.6 },
+    arousal: { min: 0.3, max: 0.8, target: 0.6 },
+    dominance: { min: 0.3, max: 0.9, target: 0.6 },
+    bpm_min: 60,
+    bpm_max: 130
   },
   'stress-reduction': {
     valence: { min: 0.4, max: 0.7, target: 0.6 },
