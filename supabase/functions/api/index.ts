@@ -48,11 +48,13 @@ const normalizeGoal = (goal: string): string => {
 
 const SUPABASE_URL  = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+const ANON_KEY      = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'audio';
 
 console.log('🔧 Environment check:', {
   hasUrl: !!SUPABASE_URL,
-  hasKey: !!SERVICE_KEY,
+  hasServiceKey: !!SERVICE_KEY,
+  hasAnonKey: !!ANON_KEY,
   bucket: DEFAULT_BUCKET
 });
 
@@ -72,9 +74,24 @@ function wordsFor(goal: string): string[] {
   return words;
 }
 
-function sb() {
+function sb(req?: Request, forceServiceRole = false) {
   if (!SUPABASE_URL || !SERVICE_KEY) throw new Error('Missing SUPABASE_URL or SERVICE_ROLE key');
-  return createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false }});
+  
+  // For read-only operations or when forced, use service role
+  if (forceServiceRole) {
+    return createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false }});
+  }
+  
+  // For client requests, respect the Authorization header if present
+  const authHeader = req?.headers.get('Authorization');
+  const anonKey = ANON_KEY || SERVICE_KEY;
+  
+  const options: any = { auth: { persistSession: false }};
+  if (authHeader) {
+    options.global = { headers: { Authorization: authHeader }};
+  }
+  
+  return createClient(SUPABASE_URL, anonKey, options);
 }
 
 Deno.serve(async (req) => {
@@ -149,7 +166,8 @@ function json(body: Record<string, unknown>, status = 200) {
 
 // ---------- Handlers ----------
 async function handlePlaylistRequest(req: Request): Promise<Response> {
-  const supabase = sb();
+  // Use service role for read-only playlist requests to avoid auth issues
+  const supabase = sb(req, true);
   const url = new URL(req.url);
   const rid = Math.random().toString(36).substring(2, 18);
 
@@ -194,24 +212,29 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       const d = track.dominance ?? 0.5;
       const bpm = track.bpm ?? track.bpm_est ?? 60;
 
-      // Special validation for focus tracks - must contain "FOCUS" in title (lyric-free validation)
-      if (goalType === 'focus-enhancement') {
-        const title = (track.title || '').toUpperCase();
-        if (!title.includes('FOCUS')) {
-          return { score: -1, v, a, d }; // Reject tracks without FOCUS in title
-        }
-      }
-
-      // BPM filtering
+      // BPM filtering first
       if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
 
       // VAD distance scoring
       const vDist = Math.abs(v - profile.valence);
       const aDist = Math.abs(a - profile.arousal);
       const dDist = Math.abs(d - profile.dominance);
-      const score = 1 - (vDist + aDist + dDist) / 3;
+      const baseScore = 1 - (vDist + aDist + dDist) / 3;
+      
+      // Special validation for focus tracks - relax requirements for broader selection
+      if (goalType === 'focus-enhancement') {
+        const title = (track.title || '').toLowerCase();
+        const focusTerms = ['focus', 'concentration', 'study', 'attention', 'productivity', 'clarity'];
+        const hasFocusTerm = focusTerms.some(term => title.includes(term));
+        
+        // Boost score for tracks with focus terms, but don't reject others entirely
+        if (!hasFocusTerm) {
+          // Apply a penalty rather than complete rejection to increase variety
+          return { score: Math.max(0, baseScore * 0.6), v, a, d };
+        }
+      }
 
-      return { score: Math.max(0, score), v, a, d };
+      return { score: Math.max(0, baseScore), v, a, d };
     };
 
     // Therapeutic profiles
