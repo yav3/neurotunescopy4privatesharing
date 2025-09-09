@@ -17,11 +17,11 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <Brain className="h-8 w-8 text-primary" />
           <span className="text-2xl font-bold text-foreground">NeuralPositive</span>
         </div>
-        <div className="space-x-4">
-          <Button variant="ghost" onClick={onLogin}>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+          <Button variant="ghost" onClick={onLogin} className="w-full sm:w-auto">
             Sign In
           </Button>
-          <Button onClick={onSignup}>
+          <Button onClick={onSignup} className="w-full sm:w-auto">
             Get Started
           </Button>
         </div>
@@ -36,11 +36,11 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
             Patented closed-loop personalization designed to enhance your performance through scientifically-proven therapeutic music experiences.
           </p>
-          <div className="space-x-4">
-            <Button size="lg" onClick={onSignup} className="px-8 py-4 text-lg">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" onClick={onSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
               Start Your Journey
             </Button>
-            <Button variant="outline" size="lg" onClick={onLogin} className="px-8 py-4 text-lg">
+            <Button variant="outline" size="lg" onClick={onLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
               Sign In
             </Button>
           </div>
@@ -108,11 +108,11 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <p className="text-xl text-muted-foreground mb-8">
             Join thousands of users who have enhanced their cognitive performance through our evidence-based music therapy platform.
           </p>
-          <div className="space-x-4">
-            <Button size="lg" onClick={onSignup} className="px-8 py-4 text-lg">
-              Get Started Free
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" onClick={onSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
+              Get Started
             </Button>
-            <Button variant="outline" size="lg" onClick={onLogin} className="px-8 py-4 text-lg">
+            <Button variant="outline" size="lg" onClick={onLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
               Sign In
             </Button>
           </div>
