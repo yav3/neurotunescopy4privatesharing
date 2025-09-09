@@ -26,23 +26,32 @@ function cleanTitle(filename: string): string {
 // Filter tracks by therapeutic goal based on filename/title keywords
 function filterByGoal(tracks: StorageTrack[], goal: string): StorageTrack[] {
   const keywords: Record<string, string[]> = {
-    'meditation-support': ['meditation', 'zen', 'mindful', 'peaceful', 'calm', 'serene'],
-    'focus-enhancement': ['focus', 'concentration', 'study', 'work', 'productivity', 'attention'],
-    'stress-reduction': ['relax', 'stress', 'relief', 'unwind', 'sooth', 'comfort'],
-    'mood-boost': ['happy', 'upbeat', 'positive', 'joy', 'energy', 'boost', 'mood'],
-    'anxiety-relief': ['anxiety', 'relief', 'comfort', 'peace', 'tranquil', 'gentle']
+    'meditation-support': ['meditation', 'zen', 'mindful', 'peaceful', 'calm', 'serene', 'relax', 'tranquil', 'soothing', 'ambient', 'classical', 'spa', 'healing', 'therapy'],
+    'focus-enhancement': ['focus', 'concentration', 'study', 'work', 'productivity', 'attention', 'brain', 'cognitive', 'mental', 'clarity', 'sharp', 'alert'],
+    'stress-reduction': ['relax', 'stress', 'relief', 'unwind', 'sooth', 'comfort', 'calm', 'peaceful', 'gentle', 'soft', 'quiet', 'slow'],
+    'mood-boost': ['happy', 'upbeat', 'positive', 'joy', 'energy', 'boost', 'mood', 'cheerful', 'bright', 'lively', 'motivational'],
+    'anxiety-relief': ['anxiety', 'relief', 'comfort', 'peace', 'tranquil', 'gentle', 'soft', 'calm', 'soothing', 'quiet']
   };
 
   const goalKeywords = keywords[goal] || [];
   
+  // If no keywords or goal not found, return all tracks (like trending)
   if (goalKeywords.length === 0) {
-    return tracks; // Return all if no specific keywords
+    return tracks; 
   }
 
-  return tracks.filter(track => {
+  const filtered = tracks.filter(track => {
     const titleLower = track.title.toLowerCase();
     return goalKeywords.some(keyword => titleLower.includes(keyword));
   });
+
+  // If filtering results in too few tracks (less than 10), return all tracks
+  if (filtered.length < 10) {
+    console.log(`⚠️ Only ${filtered.length} tracks matched keywords for ${goal}, returning all tracks instead`);
+    return tracks;
+  }
+
+  return filtered;
 }
 
 export async function getTracksFromStorage(
