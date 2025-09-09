@@ -27,6 +27,9 @@ let skipped = 0;
 // Debounced auto-skip protection
 let autoSkipTimeout: NodeJS.Timeout | null = null;
 
+// Proactive queue loading timeout
+let loadMoreTracksTimeout: NodeJS.Timeout | null = null;
+
 type AudioState = {
   // Playback state
   isPlaying: boolean;
@@ -215,6 +218,53 @@ export const useAudioStore = create<AudioState>((set, get) => {
         // Track session progress
         if (sessionManager && duration > 0) {
           sessionManager.trackProgress(currentTime, duration);
+        }
+        
+        // Proactive queue management - load more tracks when running low
+        const { queue, index, lastGoal, isLoading } = get();
+        const tracksRemaining = queue.length - (index + 1);
+        const timeRemaining = duration - currentTime;
+        
+        // Load more tracks if we're near the end of both the current track and queue
+        if (!isLoading && lastGoal && tracksRemaining <= 3 && timeRemaining <= 30 && timeRemaining > 0) {
+          console.log(`🔄 Proactively loading more tracks - ${tracksRemaining} tracks remaining, ${Math.round(timeRemaining)}s left in current track`);
+          
+          // Debounce to prevent multiple simultaneous loads
+          if (!loadMoreTracksTimeout) {
+            loadMoreTracksTimeout = setTimeout(async () => {
+              try {
+                const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
+                const excludeIds = queue.map(t => t.id);
+                const { tracks: newTracks, error } = await getTherapeuticTracks(lastGoal, 20, excludeIds);
+                
+                if (!error && newTracks?.length) {
+                  console.log(`✅ Loaded ${newTracks.length} additional tracks for seamless playback`);
+                  
+                  // Convert to proper format and add to queue
+                  const formattedTracks = newTracks.map((track: any) => ({
+                    id: track.id,
+                    title: track.title,
+                    artist: 'Neural Positive Music',
+                    duration: 0,
+                    storage_bucket: track.storage_bucket,
+                    storage_key: track.storage_key,
+                    stream_url: track.stream_url,
+                    audio_status: 'working' as const,
+                  }));
+                  
+                  // Add new tracks to the end of the current queue
+                  const { queue: currentQueue } = get();
+                  set({ queue: [...currentQueue, ...formattedTracks] });
+                } else {
+                  console.log('⚠️ No additional tracks available for', lastGoal);
+                }
+              } catch (error) {
+                console.error('Failed to load additional tracks:', error);
+              } finally {
+                loadMoreTracksTimeout = null;
+              }
+            }, 2000); // 2 second debounce
+          }
         }
       });
       
