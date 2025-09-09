@@ -131,7 +131,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <span className="text-lg font-semibold text-foreground">NeuralPositive</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 NeuralPositive. All rights reserved.
+              © 2025 NeuralPositive. All rights reserved.
             </p>
           </div>
         </div>
