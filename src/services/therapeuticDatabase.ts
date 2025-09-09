@@ -169,52 +169,58 @@ export async function getTrendingTracks(
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
   try {
-    console.log(`🔥 Fetching ${count} trending tracks based on engagement metrics`);
+    console.log(`🔥 Fetching ${count} trending tracks based on engagement and quality`);
     
-    // Get tracks ordered by play count and therapeutic effectiveness
-    // This gives us truly "trending" tracks based on user engagement
-    const { data: tracks, error } = await supabase
+    // Strategy: Get high-quality tracks and mix in any played tracks
+    const { data: highQualityTracks, error: qualityError } = await supabase
+      .from('tracks')
+      .select('*')
+      .eq('audio_status', 'working')
+      .not('id', 'is', null)
+      .not('therapeutic_effectiveness', 'is', null)
+      .gte('therapeutic_effectiveness', 0.8) // Higher threshold for trending
+      .order('therapeutic_effectiveness', { ascending: false })
+      .limit(count);
+
+    if (qualityError) {
+      console.error('❌ High quality tracks query error:', qualityError);
+      return { tracks: [], error: qualityError.message };
+    }
+
+    // Also get any tracks that have been played (engagement)
+    const { data: playedTracks, error: playedError } = await supabase
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
       .not('id', 'is', null)
       .not('play_count', 'is', null)
-      .gte('play_count', 1)
+      .gt('play_count', 0)
       .order('play_count', { ascending: false })
-      .order('therapeutic_effectiveness', { ascending: false })
-      .limit(count);
+      .limit(10); // Just get top 10 played tracks
 
-    if (error) {
-      console.error('❌ Database query error:', error);
-      return { tracks: [], error: error.message };
+    if (playedError) {
+      console.warn('⚠️ Played tracks query failed:', playedError);
     }
 
-    // If no tracks with play counts, fall back to high-quality tracks
-    if (!tracks || tracks.length === 0) {
-      console.log('ℹ️ No tracks with play counts, falling back to high-quality tracks');
-      
-      const { data: fallbackTracks, error: fallbackError } = await supabase
-        .from('tracks')
-        .select('*')
-        .eq('audio_status', 'working')
-        .not('id', 'is', null)
-        .not('therapeutic_effectiveness', 'is', null)
-        .gte('therapeutic_effectiveness', 0.7)
-        .order('therapeutic_effectiveness', { ascending: false })
-        .limit(count);
-        
-      if (fallbackError) {
-        console.error('❌ Fallback query error:', fallbackError);
-        return { tracks: [], error: fallbackError.message };
-      }
-      
-      console.log(`✅ Retrieved ${fallbackTracks?.length || 0} high-quality tracks as trending`);
-      return { tracks: (fallbackTracks || []) as Track[] };
-    }
-
-    console.log(`✅ Retrieved ${tracks.length} trending tracks based on engagement`);
+    // Combine and dedupe tracks
+    const allTracks = [...(highQualityTracks || [])];
+    const playedTrackIds = new Set(allTracks.map(t => t.id));
     
-    return { tracks: tracks as Track[] };
+    // Add played tracks that aren't already in the list
+    if (playedTracks) {
+      playedTracks.forEach(track => {
+        if (!playedTrackIds.has(track.id)) {
+          allTracks.unshift(track); // Put played tracks at the beginning
+        }
+      });
+    }
+
+    // Limit to requested count
+    const finalTracks = allTracks.slice(0, count);
+    
+    console.log(`✅ Retrieved ${finalTracks.length} trending tracks (${playedTracks?.length || 0} played + ${highQualityTracks?.length || 0} high-quality)`);
+    
+    return { tracks: finalTracks as Track[] };
 
   } catch (error) {
     console.error('❌ Error fetching trending tracks:', error);
