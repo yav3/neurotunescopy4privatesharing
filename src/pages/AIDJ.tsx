@@ -43,19 +43,37 @@ const AIDJ = () => {
         throw new Error(`Unknown flow type: ${flowType}`);
       }
 
+      console.log(`🎯 Mapped "${flowType}" to goal slug: "${goalSlug}"`);
+
       // Fetch real tracks from your music library
       const { tracks, error: fetchError } = await fetchPlaylist(goalSlug, 20, newSeed(), excludeQS());
       
+      console.log(`📦 FetchPlaylist result:`, { 
+        tracksFound: tracks?.length || 0, 
+        error: fetchError,
+        goalSlug,
+        flowType 
+      });
+      
       if (fetchError) {
         console.warn('Playlist error:', fetchError);
+        setError(`Error loading ${flowType} tracks: ${fetchError}`);
+        return;
       }
       
       if (!tracks?.length) {
-        setError(`No ${flowType} tracks found in your music library. Please try another category.`);
+        console.error(`❌ No tracks returned for ${flowType} (${goalSlug})`);
+        setError(`No ${flowType} tracks found. The music buckets may be empty or inaccessible.`);
         return;
       }
 
       console.log(`✅ Loaded ${tracks.length} real ${flowType} tracks from library`);
+      console.log(`🎵 Sample tracks:`, tracks.slice(0, 3).map(t => ({ 
+        id: t.id, 
+        title: t.title, 
+        bucket: t.storage_bucket,
+        hasStreamUrl: !!t.stream_url 
+      })));
 
       const result = {
         goal: flowType,
