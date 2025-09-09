@@ -169,33 +169,57 @@ export async function getTrendingTracks(
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
   try {
-    console.log(`🔥 Fetching ${count} random trending tracks from audio storage`);
+    console.log(`🔥 Fetching ${count} random trending tracks with bucket priority`);
     
-    // Get all working tracks from the audio storage bucket's tracks folder
-    const { data: tracks, error } = await supabase
+    // First priority: Get tracks from the 'audio' bucket
+    const { data: audioTracks, error: audioError } = await supabase
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
       .not('id', 'is', null)
       .not('storage_key', 'is', null)
-      .in('storage_bucket', ['audio', 'neuralpositivemusic'])
-      .ilike('storage_key', 'tracks/%') // Only tracks in the tracks folder
-      .limit(count * 3); // Get more than needed for random selection
+      .eq('storage_bucket', 'audio')
+      .ilike('storage_key', 'tracks/%'); // Only tracks in the tracks folder
 
-    if (error) {
-      console.error('❌ Database query error:', error);
-      return { tracks: [], error: error.message };
+    if (audioError) {
+      console.error('❌ Audio bucket query error:', audioError);
+      return { tracks: [], error: audioError.message };
     }
 
-    if (!tracks || tracks.length === 0) {
-      console.warn('⚠️ No tracks found in storage buckets');
+    console.log(`📦 Found ${audioTracks?.length || 0} tracks in 'audio' bucket`);
+
+    let allTracks = [...(audioTracks || [])];
+
+    // If we need more tracks to reach the requested count, get from neuralpositivemusic bucket
+    if (allTracks.length < count) {
+      console.log(`🔄 Need ${count - allTracks.length} more tracks, fetching from 'neuralpositivemusic' bucket`);
+      
+      const { data: neuralTracks, error: neuralError } = await supabase
+        .from('tracks')
+        .select('*')
+        .eq('audio_status', 'working')
+        .not('id', 'is', null)
+        .not('storage_key', 'is', null)
+        .eq('storage_bucket', 'neuralpositivemusic')
+        .ilike('storage_key', 'tracks/%'); // Only tracks in the tracks folder
+
+      if (neuralError) {
+        console.warn('⚠️ Neural bucket query failed:', neuralError);
+      } else {
+        console.log(`📦 Found ${neuralTracks?.length || 0} tracks in 'neuralpositivemusic' bucket`);
+        allTracks = [...allTracks, ...(neuralTracks || [])];
+      }
+    }
+
+    if (allTracks.length === 0) {
+      console.warn('⚠️ No tracks found in either storage bucket');
       return { tracks: [] };
     }
 
-    console.log(`📦 Found ${tracks.length} tracks in storage buckets`);
+    console.log(`📦 Total available tracks: ${allTracks.length} (audio: ${audioTracks?.length || 0}, neural: ${allTracks.length - (audioTracks?.length || 0)})`);
 
     // Randomly shuffle the tracks using Fisher-Yates shuffle
-    const shuffledTracks = [...tracks];
+    const shuffledTracks = [...allTracks];
     for (let i = shuffledTracks.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledTracks[i], shuffledTracks[j]] = [shuffledTracks[j], shuffledTracks[i]];
@@ -204,7 +228,12 @@ export async function getTrendingTracks(
     // Take the requested count
     const randomTracks = shuffledTracks.slice(0, count);
     
+    // Count tracks by bucket for logging
+    const audioBucketCount = randomTracks.filter(t => t.storage_bucket === 'audio').length;
+    const neuralBucketCount = randomTracks.filter(t => t.storage_bucket === 'neuralpositivemusic').length;
+    
     console.log(`✅ Retrieved ${randomTracks.length} randomly selected trending tracks`);
+    console.log(`📊 Bucket distribution: audio=${audioBucketCount}, neural=${neuralBucketCount}`);
     console.log(`🎵 Sample tracks:`, randomTracks.slice(0, 3).map(t => ({ 
       title: t.title, 
       storage_bucket: t.storage_bucket,
