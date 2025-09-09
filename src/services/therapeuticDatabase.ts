@@ -32,8 +32,8 @@ const VAD_PROFILES = {
     bpm_max: 75
   },
   'meditation-support': {
-    valence: { min: 0.3, max: 0.6, target: 0.5 },
-    arousal: { min: 0.1, max: 0.3, target: 0.2 },
+    valence: { min: 0.7, max: 0.9, target: 0.8 },
+    arousal: { min: 0.1, max: 0.4, target: 0.2 },
     dominance: { min: 0.2, max: 0.5, target: 0.3 },
     bpm_min: 40,
     bpm_max: 70
