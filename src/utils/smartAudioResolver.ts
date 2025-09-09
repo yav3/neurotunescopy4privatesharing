@@ -101,6 +101,34 @@ export class SmartAudioResolver {
       return result;
     }
 
+    // Strategy 2b: Try trendingnow bucket with exact title match
+    console.log(`🔗 Strategy 2b: trendingnow exact match`);
+    const trendingUrl = `${baseUrl}/trendingnow/${cleanTitle}.mp3`;
+    const trendingResult = await this.testUrl(trendingUrl, 'trending_exact');
+    attempts.push(trendingResult);
+    
+    if (trendingResult.status === 200) {
+      const result = { success: true, url: trendingUrl, method: 'trending_exact', attempts };
+      this.cache.set(cacheKey, result);
+      console.log(`✅ Trending exact match works!`);
+      return result;
+    }
+
+    // Strategy 2c: Try trendingnow bucket with original file name (for direct storage tracks)
+    if (track.storage_bucket === 'trendingnow' && track.storage_key) {
+      console.log(`🔗 Strategy 2c: trendingnow direct file`);
+      const directTrendingUrl = `${baseUrl}/trendingnow/${track.storage_key}`;
+      const directTrendingResult = await this.testUrl(directTrendingUrl, 'trending_direct');
+      attempts.push(directTrendingResult);
+      
+      if (directTrendingResult.status === 200) {
+        const result = { success: true, url: directTrendingUrl, method: 'trending_direct', attempts };
+        this.cache.set(cacheKey, result);
+        console.log(`✅ Trending direct file works!`);
+        return result;
+      }
+    }
+
     // Strategy 3: Search neuralpositivemusic bucket for partial matches
     console.log(`🔗 Strategy 3: neuralpositivemusic file search`);
     try {
@@ -155,6 +183,62 @@ export class SmartAudioResolver {
       }
     } catch (error) {
       console.log(`❌ Error searching files: ${error}`);
+    }
+
+    // Strategy 3b: Search trendingnow bucket for partial matches
+    console.log(`🔗 Strategy 3b: trendingnow file search`);
+    try {
+      const { data: trendingFiles } = await supabase.storage
+        .from('trendingnow')
+        .list('', { limit: 1000 });
+
+      if (trendingFiles) {
+        const audioFiles = trendingFiles.filter(f => f.name.match(/\.(mp3|wav|m4a|flac|ogg)$/i));
+        
+        // Try fuzzy matching
+        const titleWords = track.title.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        let bestMatch = null;
+        let highestScore = 0;
+
+        for (const file of audioFiles) {
+          const fileName = file.name.toLowerCase();
+          let score = 0;
+          
+          // Count matching words
+          for (const word of titleWords) {
+            if (fileName.includes(word)) {
+              score += word.length;
+            }
+          }
+          
+          // Bonus for title start match
+          if (titleWords.length > 0 && fileName.startsWith(titleWords[0])) {
+            score += 10;
+          }
+          
+          if (score > highestScore && score > 5) {
+            highestScore = score;
+            bestMatch = file.name;
+          }
+        }
+
+        if (bestMatch) {
+          const fuzzyTrendingUrl = `${baseUrl}/trendingnow/${encodeURIComponent(bestMatch)}`;
+          console.log(`🎯 Found trending match: ${bestMatch} (score: ${highestScore})`);
+          
+          const fuzzyTrendingResult = await this.testUrl(fuzzyTrendingUrl, 'trending_fuzzy');
+          attempts.push(fuzzyTrendingResult);
+          
+          if (fuzzyTrendingResult.status === 200) {
+            const result = { success: true, url: fuzzyTrendingUrl, method: 'trending_fuzzy', attempts };
+            this.cache.set(cacheKey, result);
+            console.log(`✅ Trending fuzzy match works!`);
+            return result;
+          }
+        }
+      }
+    } catch (error) {
+      console.log(`❌ Error searching trending files: ${error}`);
     }
 
     // Strategy 4: Try audio bucket with UUID format
@@ -214,6 +298,12 @@ export class SmartAudioResolver {
   static clearCache() {
     this.cache.clear();
     console.log('🗑️ Audio resolver cache cleared');
+  }
+
+  // Clear cache immediately when file is loaded to use new trending strategies
+  static {
+    this.cache.clear();
+    console.log('🔄 Audio resolver cache cleared - trending strategies added');
   }
 
   static getCacheStats() {
