@@ -146,10 +146,10 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
         {/* Content - Fixed positioning for perfect alignment */}
         <div className="absolute bottom-4 left-4 right-4">
           <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-0">
+            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-1">
               Trending Now
             </h3>
-            <div className="space-y-2 mt-2">
+            <div className="space-y-1.5 mt-1">
               <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
                 Popular tracks trending with our community
               </p>

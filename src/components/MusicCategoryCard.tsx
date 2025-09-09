@@ -37,7 +37,7 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
         {/* Content - Fixed positioning for perfect alignment */}
         <div className="absolute bottom-4 left-4 right-4">
           <div className="transform transition-transform duration-300 group-hover:translate-y-[-2px]">
-            <h3 className="text-foreground font-semibold text-lg drop-shadow-lg mb-0">{title}</h3>
+            <h3 className="text-foreground font-semibold text-lg leading-tight drop-shadow-lg">{title}</h3>
           </div>
         </div>
       </div>
