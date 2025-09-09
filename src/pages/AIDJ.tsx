@@ -36,28 +36,20 @@ const AIDJ = () => {
       let tracks, fetchError;
 
       if (flowType === 'samba') {
-        // Fetch directly from samba storage bucket
-        const { data: storageFiles, error: storageError } = await supabase.storage
-          .from('samba')
-          .list('', { limit: 20 });
+        // Fetch from samba bucket using edge function
+        const { data: sambaData, error: sambaError } = await supabase.functions.invoke('samba-stream', {
+          body: { action: 'list' }
+        });
 
-        if (storageError) {
-          throw new Error(`Storage error: ${storageError.message}`);
+        if (sambaError) {
+          throw new Error(`Samba fetch error: ${sambaError.message}`);
         }
 
-        // Convert storage files to track format
-        tracks = storageFiles
-          .filter(file => file.name.endsWith('.mp3'))
-          .slice(0, 20)
-          .map((file, index) => ({
-            id: `samba-${index}`,
-            title: file.name.replace('.mp3', '').replace(/[-_]/g, ' '),
-            artist: 'Samba & Jazz Collection',
-            storage_bucket: 'samba',
-            storage_key: file.name,
-            stream_url: `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/samba/${file.name}`
-          }));
+        if (!sambaData?.tracks) {
+          throw new Error('No samba tracks returned from edge function');
+        }
 
+        tracks = sambaData.tracks.slice(0, 20);
         fetchError = null;
       } else {
         // Map flow types to therapeutic goals
