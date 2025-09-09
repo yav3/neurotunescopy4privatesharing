@@ -1,7 +1,6 @@
 // Session management hook that mirrors backend session lifecycle
 import { useEffect, useCallback, useRef } from 'react'
 import { API } from '@/lib/api'
-import { API_BASE } from '@/lib/env'
 
 interface SessionManager {
   trackProgress: (currentTime: number, duration: number) => void
@@ -98,9 +97,10 @@ export const useSessionManager = (): SessionManager => {
     const handleBeforeUnload = () => {
       const sessionId = sessionStorage.getItem('currentSessionId')
       if (sessionId && !sessionCompletedRef.current) {
-        // Use navigator.sendBeacon for reliable completion on page exit
-        const data = JSON.stringify({ sessionId })
-        navigator.sendBeacon(`${API_BASE}/api/sessions/complete`, new Blob([data], { type: 'application/json' }))
+        // Use API.complete for reliable completion on page exit
+        API.complete(sessionId).catch(error => {
+          console.warn('Failed to complete session on unload:', error)
+        })
       }
     }
 
