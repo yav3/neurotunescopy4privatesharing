@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { StorageVerifier } from '@/components/StorageVerifier';
 import { 
   Settings, 
   Shield, 
@@ -473,6 +474,8 @@ export default function SystemSettings() {
               </div>
             </CardContent>
           </Card>
+
+          <StorageVerifier />
         </TabsContent>
 
         <TabsContent value="maintenance" className="space-y-4">
