@@ -336,7 +336,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       console.log('🎵 Track loaded successfully:', track.title);
+      console.log('🎵 Setting currentTrack in store:', track.id, track.title);
       set({ currentTrack: track, isLoading: false, error: undefined });
+      console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       return true;
     } catch (error) {
       console.error('🎵 Load track failed:', error);
@@ -375,6 +377,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     playFromGoal: async (goal: string) => {
       set({ isLoading: true, error: undefined, lastGoal: goal });
+      console.log('🎵 playFromGoal started for:', goal);
       try {
         const { adminLog, userLog } = await import('@/utils/adminLogging');
         
@@ -420,11 +423,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
 
         if (tracks.length === 0) {
+          console.log('🎵 playFromGoal: No tracks found for goal:', goal);
           throw new Error(`No suitable tracks for goal "${goal}"`);
         }
         
+        console.log('🎵 playFromGoal: Setting queue with', tracks.length, 'tracks');
         await get().setQueue(tracks, 0);
+        console.log('🎵 playFromGoal: Queue set, attempting to play...');
         await get().play();
+        console.log('🎵 playFromGoal: Play called, currentTrack:', get().currentTrack?.title);
         
         set({ isLoading: false });
         
@@ -433,9 +440,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         return tracks.length;
       } catch (error: any) {
-        console.error('❌ playFromGoal error:', error);
-        set({ error: error.message, isLoading: false });
-        throw error;
+        console.error('🎵 playFromGoal error:', error);
+        set({ 
+          isLoading: false, 
+          error: error instanceof Error ? error.message : "Failed to load tracks" 
+        });
+        return 0;
       }
     },
 

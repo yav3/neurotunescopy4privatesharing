@@ -140,6 +140,14 @@ export const NowPlaying: React.FC = () => {
   };
 
   if (!track) {
+    const storeState = useAudioStore.getState();
+    console.log('🎵 NowPlaying: currentTrack is null, hiding player. Store state:', {
+      isPlaying, 
+      isLoading: storeState.isLoading, 
+      queueLength: storeState.queue.length,
+      currentIndex: storeState.index,
+      error: storeState.error
+    });
     return null;
   }
 
