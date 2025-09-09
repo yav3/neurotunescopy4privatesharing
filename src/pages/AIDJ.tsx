@@ -243,51 +243,54 @@ const AIDJ = () => {
       <div className="min-h-screen bg-gradient-to-b from-background to-muted">
         <Header />
         
-        {/* Header */}
-        <div className="p-4 border-b border-border/50">
-          <div className="flex items-center justify-between max-w-6xl mx-auto">
+        {/* Back Navigation */}
+        <div className="px-4 pt-4">
+          <div className="max-w-6xl mx-auto">
             <button 
               onClick={goBack}
-              className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Back</span>
+              <span>Back to Flow State</span>
             </button>
-            <h1 className="text-2xl font-bold text-foreground">
-              {playlist.goal === 'focus' ? 'Focus Enhancement' : 'Energy Boost'} Playlist
-            </h1>
-            <div className="w-20"></div>
           </div>
+        </div>
+
+        {/* Page Title and Description */}
+        <div className="text-center px-4 pb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-2">
+            {playlist.goal === 'focus' ? 'Focus Enhancement' : 'Energy Boost'} Playlist
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            {playlist.count} tracks • {playlist.description}
+          </p>
         </div>
 
         {/* Player Controls */}
         {playlist.playlist && playlist.playlist.length > 0 && (
-          <div className="p-4 bg-muted/50 border-b border-border/50">
-            <div className="max-w-6xl mx-auto flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
-                {playlist.count} tracks • {playlist.description}
-              </div>
-              <div className="flex items-center gap-3">
+          <div className="px-4 pb-6">
+            <div className="max-w-6xl mx-auto flex items-center justify-center">
+              <div className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-card">
                 {isPlaying ? (
                   <button
                     onClick={pauseTrack}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-3 rounded-full transition-colors"
                   >
-                    <Pause className="w-5 h-5" />
+                    <Pause className="w-6 h-6" />
                   </button>
                 ) : (
                   <button
                     onClick={currentTrack !== null ? resumeTrack : () => playTrack(playlist.playlist[0], 0)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-3 rounded-full transition-colors"
                   >
-                    <Play className="w-5 h-5" />
+                    <Play className="w-6 h-6" />
                   </button>
                 )}
                 <button
                   onClick={skipTrack}
-                  className="bg-secondary hover:bg-secondary/80 text-secondary-foreground p-2 rounded-full transition-colors"
+                  className="bg-muted hover:bg-muted/80 text-muted-foreground p-3 rounded-full transition-colors"
                 >
-                  <SkipForward className="w-5 h-5" />
+                  <SkipForward className="w-6 h-6" />
                 </button>
               </div>
             </div>
@@ -310,32 +313,36 @@ const AIDJ = () => {
         )}
 
         {/* Track List */}
-        <div className="p-4 pb-20">
+        <div className="px-4 pb-32">
           <div className="max-w-6xl mx-auto">
-            <div className="space-y-2">
+            <div className="grid gap-3">
               {playlist.playlist && playlist.playlist.map((track, index) => (
                 <div
                   key={track.id}
                   onClick={() => playTrack(track, index)}
-                  className={`flex items-center gap-4 p-4 rounded-lg cursor-pointer transition-all ${
+                  className={`bg-card hover:bg-accent rounded-xl p-4 cursor-pointer transition-all duration-300 shadow-card ${
                     currentTrack === index
-                      ? 'bg-primary/20 border-l-4 border-primary'
-                      : 'bg-card hover:bg-accent'
+                      ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_20px_hsl(var(--primary)_/_0.3)]'
+                      : 'hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]'
                   }`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    currentTrack === index ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {index + 1}
-                  </div>
-                  
-                  <div className="flex-grow min-w-0">
-                    <h3 className="font-medium text-foreground truncate">{track.title}</h3>
-                    <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
-                  </div>
-                  
-                  <div className="text-xs text-muted-foreground">
-                    {track.stream_url ? 'Ready' : 'No audio'}
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-medium ${
+                      currentTrack === index 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-muted text-muted-foreground'
+                    }`}>
+                      {index + 1}
+                    </div>
+                    
+                    <div className="flex-grow min-w-0">
+                      <h3 className="font-semibold text-foreground truncate text-lg">{track.title}</h3>
+                      <p className="text-muted-foreground truncate">{track.artist}</p>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
+                      {track.stream_url ? 'Ready' : 'No audio'}
+                    </div>
                   </div>
                 </div>
               ))}
