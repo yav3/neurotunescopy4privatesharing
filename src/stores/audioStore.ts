@@ -27,17 +27,6 @@ let skipped = 0;
 // Debounced auto-skip protection
 let autoSkipTimeout: NodeJS.Timeout | null = null;
 
-const scheduleAutoSkip = (reason: string) => {
-  if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
-  autoSkipTimeout = setTimeout(() => {
-    console.log(`🎵 Auto-skip triggered: ${reason}`);
-    if (!isNexting && !isTransitioning) {
-      const store = (window as any).useAudioStore?.getState();
-      if (store) store.next();
-    }
-  }, 1000);
-};
-
 type AudioState = {
   // Playback state
   isPlaying: boolean;
@@ -124,6 +113,17 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Force audio element creation on store initialization
   console.log('🎵 Audio store initializing - creating audio element...');
   ensureAudioElement();
+  
+  // Debounced auto-skip function with proper store access
+  const scheduleAutoSkip = (reason: string) => {
+    if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
+    autoSkipTimeout = setTimeout(() => {
+      console.log(`🎵 Auto-skip triggered: ${reason}`);
+      if (!isNexting && !isTransitioning) {
+        get().next();
+      }
+    }, 1000);
+  };
   
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
