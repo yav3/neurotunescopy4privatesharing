@@ -1,63 +1,65 @@
-import { supabase } from "@/integrations/supabase/client";
-import { useSupabaseStorage } from "@/hooks/useSupabaseStorage";
+import { supabase } from '@/integrations/supabase/client';
+import { serviceSupabase } from '@/integrations/supabase/service-client';
 
-export interface StorageTrack {
+interface StorageTrack {
   id: string;
   title: string;
   storage_bucket: string;
   storage_key: string;
-  stream_url: string;
+  stream_url?: string;
   file_size?: number;
   last_modified?: string;
 }
 
-// Extract title from filename
+// Helper function to format filenames into human-readable titles
 function cleanTitle(filename: string): string {
   return filename
-    .replace(/\.[^/.]+$/, '') // Remove extension
-    .replace(/[-_]/g, ' ') // Replace dashes and underscores with spaces
-    .replace(/\s+/g, ' ') // Collapse multiple spaces
-    .trim()
+    .replace(/\.[^/.]+$/, '') // Remove file extension
+    .replace(/[_-]/g, ' ') // Replace underscores and dashes with spaces
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+    .join(' ')
+    .trim();
 }
 
-// Filter tracks by therapeutic goal based on filename/title keywords
+// Filter tracks based on therapeutic goal keywords
 function filterByGoal(tracks: StorageTrack[], goal: string): StorageTrack[] {
-  const keywords: Record<string, string[]> = {
-    'meditation-support': ['meditation', 'zen', 'mindful', 'peaceful', 'calm', 'serene', 'relax', 'tranquil', 'soothing', 'ambient', 'classical', 'spa', 'healing', 'therapy'],
-    'focus-enhancement': ['focus', 'concentration', 'study', 'work', 'productivity', 'attention', 'brain', 'cognitive', 'mental', 'clarity', 'sharp', 'alert'],
-    'stress-reduction': ['relax', 'stress', 'relief', 'unwind', 'sooth', 'comfort', 'calm', 'peaceful', 'gentle', 'soft', 'quiet', 'slow'],
-    'mood-boost': ['happy', 'upbeat', 'positive', 'joy', 'energy', 'boost', 'mood', 'cheerful', 'bright', 'lively', 'motivational'],
-    'anxiety-relief': ['anxiety', 'relief', 'comfort', 'peace', 'tranquil', 'gentle', 'soft', 'calm', 'soothing', 'quiet']
+  const goalKeywords: Record<string, string[]> = {
+    'focus-enhancement': ['focus', 'concentration', 'study', 'work', 'productivity', 'attention', 'classical', 'instrumental'],
+    'stress-anxiety-support': ['calm', 'relax', 'peace', 'tranquil', 'soothe', 'meditation', 'zen', 'ambient'],
+    'mood-boost': ['energy', 'upbeat', 'happy', 'positive', 'boost', 'motivate', 'dance', 'pop'],
+    'pain-support': ['healing', 'therapy', 'gentle', 'soft', 'comfort', 'relief', 'nature'],
+    'sleep-aid': ['sleep', 'dream', 'night', 'lullaby', 'peaceful', 'quiet', 'rest']
   };
 
-  const goalKeywords = keywords[goal] || [];
-  
-  // If no keywords or goal not found, return all tracks (like trending)
-  if (goalKeywords.length === 0) {
-    return tracks; 
+  const keywords = goalKeywords[goal];
+  if (!keywords) {
+    console.log(`🎯 No specific keywords for goal "${goal}", returning all tracks`);
+    return tracks;
   }
 
   const filtered = tracks.filter(track => {
     const titleLower = track.title.toLowerCase();
-    return goalKeywords.some(keyword => titleLower.includes(keyword));
+    return keywords.some(keyword => titleLower.includes(keyword));
   });
 
-  // If filtering results in too few tracks (less than 10), return all tracks
-  if (filtered.length < 10) {
-    console.log(`⚠️ Only ${filtered.length} tracks matched keywords for ${goal}, returning all tracks instead`);
+  console.log(`🎯 Filtered ${tracks.length} tracks to ${filtered.length} for goal "${goal}"`);
+  
+  // If filtering results in too few tracks, return original set
+  if (filtered.length < 10 && tracks.length >= 10) {
+    console.log(`🔄 Too few filtered tracks (${filtered.length}), returning all ${tracks.length} tracks`);
     return tracks;
   }
-
+  
   return filtered;
 }
 
+// Main function to get tracks from storage buckets
 export async function getTracksFromStorage(
   goal: string = 'mood-boost',
   count: number = 50,
-  buckets?: string[] // Will be determined based on goal
+  buckets?: string[]
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
   // Determine buckets based on goal - direct mapping
   if (!buckets) {
@@ -82,105 +84,92 @@ export async function getTracksFromStorage(
     
     console.log(`🗂️ Selected buckets:`, buckets);
   }
+  
   try {
-    console.log(`🗂️ Fetching ${count} tracks directly from storage buckets:`, buckets);
-    
-    const allTracks: StorageTrack[] = [];
-    
+    let allTracks: StorageTrack[] = [];
+
     for (const bucket of buckets) {
-      console.log(`📁 Scanning bucket: ${bucket}`);
+      console.log(`🗂️ Processing bucket: ${bucket}`);
       
-      // List all files in the bucket with retry logic
-      let files, error;
-      try {
-        const result = await supabase.storage
-          .from(bucket)
-          .list('', {
-            limit: 1000,
-            sortBy: { column: 'name', order: 'asc' }
-          });
-        files = result.data;
-        error = result.error;
+      // Try to get bucket info using service client for elevated permissions
+      const bucketInfo = await serviceSupabase.storage.getBucket(bucket);
+      console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
+      
+      if (bucketInfo.error) {
+        console.error(`❌ Error accessing bucket ${bucket}:`, bucketInfo.error);
+        console.error(`❌ Error details:`, { 
+          message: bucketInfo.error.message, 
+          name: bucketInfo.error.name,
+          stack: bucketInfo.error.stack 
+        });
         
-        // Add additional debugging for empty results
-        if (files && files.length === 0) {
-          console.warn(`⚠️ Bucket "${bucket}" returned empty list. Checking if bucket exists...`);
-          // Try a different approach - get bucket info
-          const bucketInfo = await supabase.storage.getBucket(bucket);
-    console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
-    
-    if (bucketInfo.error) {
-      console.error(`❌ Error accessing bucket ${bucket}:`, bucketInfo.error);
-      console.error(`❌ Error details:`, { 
-        message: bucketInfo.error.message, 
-        name: bucketInfo.error.name,
-        stack: bucketInfo.error.stack 
-      });
-      
-      // If bucket not found, let's try to get more info about available buckets
-      if (bucketInfo.error.message?.includes('not found') || bucketInfo.error.message?.includes('Bucket not found')) {
-        console.log('🔍 Trying to list all available buckets...');
-        const allBuckets = await supabase.storage.listBuckets();
-        console.log('🔍 Available buckets:', allBuckets.data?.map(b => b.name) || 'none');
-        console.log('🔍 Bucket list error (if any):', allBuckets.error);
-      }
-      continue; // Skip this bucket and try the next one
-    }
+        // If bucket not found, let's try to get more info about available buckets
+        if (bucketInfo.error.message?.includes('not found') || bucketInfo.error.message?.includes('Bucket not found')) {
+          console.log('🔍 Trying to list all available buckets with service client...');
+          const allBuckets = await serviceSupabase.storage.listBuckets();
+          console.log('🔍 Available buckets:', allBuckets.data?.map(b => b.name) || 'none');
+          console.log('🔍 Bucket list error (if any):', allBuckets.error);
         }
-      } catch (fetchError) {
-        console.error(`❌ Network error accessing bucket ${bucket}:`, fetchError);
-        error = fetchError;
+        continue; // Skip this bucket and try the next one
       }
 
-      if (error) {
-        console.error(`❌ Error listing files in bucket ${bucket}:`, error);
+      // List files in bucket using service client
+      const { data: files, error: listError } = await serviceSupabase.storage.from(bucket).list('', {
+        limit: 1000,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+
+      if (listError) {
+        console.error(`❌ Error listing files in bucket ${bucket}:`, listError);
         continue;
       }
 
       if (!files || files.length === 0) {
-        console.log(`📁 No files found in bucket: ${bucket}`);
+        console.log(`📂 No files found in bucket ${bucket}`);
         continue;
       }
 
       console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
-
+      
       // Filter for audio files and create track objects
-      const audioFiles = files.filter(file => {
-        const ext = file.name.toLowerCase().split('.').pop();
-        return ['mp3', 'wav', 'm4a', 'flac', 'ogg', 'aac'].includes(ext || '');
-      });
-
+      const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+      const audioFiles = files.filter(file => 
+        audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+      );
+      
       console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`);
 
       for (const file of audioFiles) {
         try {
-          // Generate signed URL
-          const { data: urlData } = supabase.storage
-            .from(bucket)
-            .getPublicUrl(file.name);
+          // Generate public URL using service client
+          const { data: urlData } = serviceSupabase.storage.from(bucket).getPublicUrl(file.name);
+          
+          if (!urlData?.publicUrl) {
+            console.warn(`⚠️ Could not generate URL for ${file.name}`);
+            continue;
+          }
 
-          if (urlData?.publicUrl) {
-            const track: StorageTrack = {
-              id: `${bucket}-${file.name.replace(/\.[^/.]+$/, '')}`, // Remove extension from ID
-              title: cleanTitle(file.name),
-              storage_bucket: bucket,
-              storage_key: file.name,
-              stream_url: urlData.publicUrl,
-              file_size: file.metadata?.size,
-              last_modified: file.metadata?.lastModified
-            };
-            
-            allTracks.push(track);
-            
-            // Enhanced debugging for first few tracks
-            if (allTracks.length <= 3) {
-              console.log(`🎵 Sample track from ${bucket}:`, {
-                id: track.id,
-                title: track.title,
-                url: track.stream_url,
-                size: track.file_size
-              });
-            }
+          const track: StorageTrack = {
+            id: `${bucket}-${file.name.replace(/[^a-zA-Z0-9]/g, '-')}`,
+            title: cleanTitle(file.name),
+            storage_bucket: bucket,
+            storage_key: file.name,
+            stream_url: urlData.publicUrl,
+            file_size: file.metadata?.size,
+            last_modified: file.metadata?.lastModified
+          };
+          
+          allTracks.push(track);
+          
+          // Enhanced debugging for first few tracks
+          if (allTracks.length <= 3) {
+            console.log(`🎵 Sample track from ${bucket}:`, {
+              id: track.id,
+              title: track.title,
+              url: track.stream_url,
+              size: track.file_size
+            });
           }
         } catch (fileError) {
           console.warn(`⚠️ Failed to process file ${file.name}:`, fileError);
