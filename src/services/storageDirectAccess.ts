@@ -64,7 +64,16 @@ export async function getTracksFromStorage(
     console.log(`🎯 Goal received: "${goal}"`);
     console.log(`🎯 Goal type: ${typeof goal}`);
     console.log(`🎯 Is focus-enhancement? ${goal === 'focus-enhancement'}`);
-    buckets = goal === 'focus-enhancement' ? ['focus-music'] : ['neuralpositivemusic'];
+    console.log(`🎯 Is mood-boost? ${goal === 'mood-boost'}`);
+    
+    if (goal === 'focus-enhancement') {
+      buckets = ['focus-music'];
+    } else if (goal === 'mood-boost') {
+      buckets = ['ENERGYBOOST'];
+    } else {
+      buckets = ['neuralpositivemusic'];
+    }
+    
     console.log(`🗂️ Selected buckets:`, buckets);
   }
   try {
