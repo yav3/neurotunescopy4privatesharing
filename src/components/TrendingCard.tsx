@@ -98,8 +98,9 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
       )}>
         <div className="aspect-[4/3] relative bg-muted/30">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <div className="space-y-3">
+          {/* Loading content - Fixed positioning for consistency */}
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="space-y-2">
               <div className="h-6 w-32 bg-white/20 rounded animate-pulse" />
               <div className="h-4 w-full bg-white/10 rounded animate-pulse" />
               <div className="h-3 w-3/4 bg-white/10 rounded animate-pulse" />
@@ -142,21 +143,23 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
           <TrendingUp className="w-6 h-6 text-white drop-shadow-lg animate-pulse" />
         </div>
         
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg">
+        {/* Content - Fixed positioning for perfect alignment */}
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-0">
               Trending Now
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
-              Popular tracks trending with our community
-            </p>
-            
-            {/* Track Preview */}
-            <p className="text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 transform translate-y-2 group-hover:translate-y-0">
-              {trendingTracks.slice(0, 2).map(track => track.title || 'Untitled').join(', ')}
-              {trendingTracks.length > 2 && ` +${trendingTracks.length - 2} more`}
-            </p>
+            <div className="space-y-2 mt-2">
+              <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
+                Popular tracks trending with our community
+              </p>
+              
+              {/* Track Preview */}
+              <p className="text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 transform translate-y-2 group-hover:translate-y-0">
+                {trendingTracks.slice(0, 2).map(track => track.title || 'Untitled').join(', ')}
+                {trendingTracks.length > 2 && ` +${trendingTracks.length - 2} more`}
+              </p>
+            </div>
           </div>
         </div>
       </div>

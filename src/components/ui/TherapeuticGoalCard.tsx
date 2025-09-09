@@ -73,29 +73,31 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         {/* Animated glow effect on hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
         
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg">
+        {/* Content - Fixed positioning for perfect alignment */}
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+            <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-0">
               {goal.name}
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
-              {goal.description}
-            </p>
-            
-            {/* BPM Range and Effectiveness */}
-            <div className="flex items-center gap-2 flex-wrap opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-              {showBpmRange && (
-                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs backdrop-blur-sm hover:bg-white/20 transition-colors duration-200">
-                  {goal.bpmRange.min}-{goal.bpmRange.max} BPM
-                </Badge>
-              )}
+            <div className="space-y-2 mt-2">
+              <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
+                {goal.description}
+              </p>
               
-              {effectiveness !== undefined && (
-                <Badge variant="outline" className="bg-primary/20 text-white border-primary/30 text-xs backdrop-blur-sm hover:bg-primary/30 transition-colors duration-200">
-                  {effectiveness}% effective
-                </Badge>
-              )}
+              {/* BPM Range and Effectiveness */}
+              <div className="flex items-center gap-2 flex-wrap opacity-90 group-hover:opacity-100 transition-opacity duration-300">
+                {showBpmRange && (
+                  <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs backdrop-blur-sm hover:bg-white/20 transition-colors duration-200">
+                    {goal.bpmRange.min}-{goal.bpmRange.max} BPM
+                  </Badge>
+                )}
+                
+                {effectiveness !== undefined && (
+                  <Badge variant="outline" className="bg-primary/20 text-white border-primary/30 text-xs backdrop-blur-sm hover:bg-primary/30 transition-colors duration-200">
+                    {effectiveness}% effective
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
         </div>
