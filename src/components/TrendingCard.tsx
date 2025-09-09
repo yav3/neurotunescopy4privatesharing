@@ -92,7 +92,7 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
     return (
       <Card className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "bg-gradient-to-br from-card to-card/80 border-border/50 animate-pulse",
+        "bg-gradient-to-br from-card to-card/80 animate-pulse",
         className
       )}>
         <div className="aspect-[4/3] relative bg-muted/50">
@@ -113,7 +113,7 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "bg-gradient-to-br from-card to-card/80 border-border/50",
+        "bg-gradient-to-br from-card to-card/80",
         className
       )}
       onClick={handlePlayTrending}
