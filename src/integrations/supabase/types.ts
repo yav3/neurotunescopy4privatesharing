@@ -2299,6 +2299,10 @@ export type Database = {
       }
     }
     Functions: {
+      clean_track_title_from_filename: {
+        Args: { storage_key: string }
+        Returns: string
+      }
       cleanup_expired_playlists: {
         Args: Record<PropertyKey, never>
         Returns: number
