@@ -86,6 +86,14 @@ export async function getTracksFromStorage(
           });
         files = result.data;
         error = result.error;
+        
+        // Add additional debugging for empty results
+        if (files && files.length === 0) {
+          console.warn(`⚠️ Bucket "${bucket}" returned empty list. Checking if bucket exists...`);
+          // Try a different approach - get bucket info
+          const bucketInfo = await supabase.storage.getBucket(bucket);
+          console.log(`🔍 Bucket info:`, bucketInfo);
+        }
       } catch (fetchError) {
         console.error(`❌ Network error accessing bucket ${bucket}:`, fetchError);
         error = fetchError;
@@ -98,7 +106,16 @@ export async function getTracksFromStorage(
 
       if (!files || files.length === 0) {
         console.log(`📁 No files found in bucket: ${bucket}`);
-        continue;
+        
+        // Temporary fallback: if Focus Music is empty, try neuralpositivemusic with focus filtering
+        if (bucket === 'Focus Music') {
+          console.log(`🔄 Focus Music bucket is empty, falling back to neuralpositivemusic for focus tracks`);
+          buckets = ['neuralpositivemusic'];
+          console.log(`🗂️ Fallback buckets:`, buckets);
+          // Don't continue, let it try the fallback bucket
+        } else {
+          continue;
+        }
       }
 
       console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
