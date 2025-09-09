@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ArrowLeft, Music, Loader2, Play, Pause, SkipForward } from 'lucide-react';
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
@@ -13,11 +13,26 @@ const AIDJ = () => {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
+  
+  // Refs for cleanup and event handlers
+  const isMountedRef = useRef(true);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const audioHandlersRef = useRef<{ended?: () => void, error?: (e: any) => void}>({});
 
-  const generateFlowPlaylist = async (flowType) => {
-    setLoading(flowType);
-    setError(null);
-    setPlaylist(null);
+  const generateFlowPlaylist = useCallback(async (flowType) => {
+    if (!isMountedRef.current) return;
+    
+    // Abort any pending requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+    
+    if (isMountedRef.current) {
+      setLoading(flowType);
+      setError(null);
+      setPlaylist(null);
+    }
 
     try {
       console.log(`Generating ${flowType} playlist...`);
@@ -44,6 +59,9 @@ const AIDJ = () => {
 
       const { data: tracks, error: queryError } = await query.limit(50);
 
+      // Check if component is still mounted
+      if (!isMountedRef.current) return;
+
       if (queryError) {
         throw new Error(`Database query failed: ${queryError.message}`);
       }
@@ -51,7 +69,7 @@ const AIDJ = () => {
       console.log(`Found ${tracks?.length || 0} tracks in database`);
 
       if (!tracks || tracks.length === 0) {
-        throw new Error('No matching tracks found in database');
+        throw new Error('No matching tracks found for this flow type');
       }
 
       // Step 3: Randomize and select tracks
@@ -102,104 +120,190 @@ const AIDJ = () => {
       };
 
       console.log(`Generated playlist with ${result.playlist.length} tracks`);
-      setPlaylist(result);
+      
+      // Only update state if component is still mounted
+      if (isMountedRef.current) {
+        setPlaylist(result);
+      }
 
     } catch (err) {
-      console.error("Direct storage playlist generation error:", err);
-      setError(err.message);
+      console.error("FlowState playlist generation error:", err);
+      if (isMountedRef.current && !abortControllerRef.current?.signal.aborted) {
+        setError(err.message || 'Failed to generate playlist. Please try again.');
+      }
     } finally {
-      setLoading(null);
+      if (isMountedRef.current) {
+        setLoading(null);
+      }
     }
-  };
+  }, []);
 
-  const playTrack = (track, index) => {
+  const playTrack = useCallback((track, index) => {
+    if (!isMountedRef.current) return;
+    
     // Clean up existing audio properly
     if (audio) {
       audio.pause();
       audio.currentTime = 0;
-      // Remove all event listeners by setting src to empty
+      
+      // Remove stored event listeners
+      if (audioHandlersRef.current.ended) {
+        audio.removeEventListener('ended', audioHandlersRef.current.ended);
+      }
+      if (audioHandlersRef.current.error) {
+        audio.removeEventListener('error', audioHandlersRef.current.error);
+      }
+      
       audio.src = '';
     }
 
-    if (track.stream_url) {
-      const newAudio = new Audio(track.stream_url);
+    if (track?.stream_url && isMountedRef.current) {
+      const newAudio = new Audio();
       
-      newAudio.addEventListener('ended', () => {
+      // Create and store event handlers for proper cleanup
+      const endedHandler = () => {
+        if (!isMountedRef.current) return;
+        
         const nextIndex = index + 1;
-        if (nextIndex < playlist.playlist.length) {
+        if (nextIndex < playlist?.playlist?.length) {
           playTrack(playlist.playlist[nextIndex], nextIndex);
         } else {
-          setIsPlaying(false);
-          setCurrentTrack(null);
+          if (isMountedRef.current) {
+            setIsPlaying(false);
+            setCurrentTrack(null);
+          }
         }
-      });
+      };
 
-      newAudio.addEventListener('error', (e) => {
+      const errorHandler = (e) => {
         console.error('Audio playback error:', e);
-        setError('Playback failed for this track');
-      });
-      
-      // Update state immediately before play attempt
-      setAudio(newAudio);
-      setCurrentTrack(index);
-      setIsPlaying(true);
-      
-      newAudio.play().catch(err => {
-        console.error('Play failed:', err);
-        setError('Could not play track');
-        setIsPlaying(false);
-      });
-    }
-  };
+        if (isMountedRef.current) {
+          setError('Audio playback failed. Please try another track.');
+          setIsPlaying(false);
+        }
+      };
 
-  const pauseTrack = () => {
-    if (audio) {
+      // Store handlers for cleanup
+      audioHandlersRef.current = { ended: endedHandler, error: errorHandler };
+      
+      newAudio.addEventListener('ended', endedHandler);
+      newAudio.addEventListener('error', errorHandler);
+      
+      // Set source and update state
+      newAudio.src = track.stream_url.trim();
+      
+      if (isMountedRef.current) {
+        setAudio(newAudio);
+        setCurrentTrack(index);
+        setIsPlaying(true);
+      }
+      
+      // Handle play promise for cross-browser compatibility
+      const playPromise = newAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.error('Play failed:', err);
+          if (isMountedRef.current) {
+            setError('Could not start audio playback');
+            setIsPlaying(false);
+          }
+        });
+      }
+    }
+  }, [audio, playlist?.playlist]);
+
+  const pauseTrack = useCallback(() => {
+    if (audio && isMountedRef.current) {
       audio.pause();
       setIsPlaying(false);
     }
-  };
+  }, [audio]);
 
-  const resumeTrack = () => {
-    if (audio) {
-      audio.play().catch(err => {
-        console.error('Resume failed:', err);
-        setError('Could not resume playbook');
-      });
+  const resumeTrack = useCallback(() => {
+    if (audio && isMountedRef.current) {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.error('Resume failed:', err);
+          if (isMountedRef.current) {
+            setError('Could not resume playback');
+            setIsPlaying(false);
+          }
+        });
+      }
       setIsPlaying(true);
     }
-  };
+  }, [audio]);
 
-  const skipTrack = () => {
-    if (currentTrack !== null && currentTrack + 1 < playlist.playlist.length) {
+  const skipTrack = useCallback(() => {
+    if (currentTrack !== null && playlist?.playlist && currentTrack + 1 < playlist.playlist.length) {
       playTrack(playlist.playlist[currentTrack + 1], currentTrack + 1);
     }
-  };
+  }, [currentTrack, playlist?.playlist, playTrack]);
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     if (audio) {
       audio.pause();
-      audio.removeEventListener('ended', () => {});
+      audio.currentTime = 0;
+      
+      // Properly remove stored event listeners
+      if (audioHandlersRef.current.ended) {
+        audio.removeEventListener('ended', audioHandlersRef.current.ended);
+      }
+      if (audioHandlersRef.current.error) {
+        audio.removeEventListener('error', audioHandlersRef.current.error);
+      }
+      
+      audio.src = '';
     }
-    setPlaylist(null);
-    setCurrentTrack(null);
-    setIsPlaying(false);
-    setError(null);
-    setAudio(null);
-  };
+    
+    // Clear handlers reference
+    audioHandlersRef.current = {};
+    
+    if (isMountedRef.current) {
+      setPlaylist(null);
+      setCurrentTrack(null);
+      setIsPlaying(false);
+      setError(null);
+      setAudio(null);
+    }
+  }, [audio]);
 
-  const handleNavTabChange = (tab: string) => {
-    setActiveNavTab(tab);
-  };
+  const handleNavTabChange = useCallback((tab) => {
+    if (isMountedRef.current) {
+      setActiveNavTab(tab);
+    }
+  }, []);
 
   // Cleanup on unmount
-  React.useEffect(() => {
+  useEffect(() => {
+    isMountedRef.current = true;
+    
     return () => {
+      isMountedRef.current = false;
+      
+      // Abort any pending requests
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      
+      // Clean up audio
       if (audio) {
         audio.pause();
-        audio.removeEventListener('ended', () => {});
+        audio.currentTime = 0;
+        
+        // Remove stored event listeners
+        if (audioHandlersRef.current.ended) {
+          audio.removeEventListener('ended', audioHandlersRef.current.ended);
+        }
+        if (audioHandlersRef.current.error) {
+          audio.removeEventListener('error', audioHandlersRef.current.error);
+        }
+        
+        audio.src = '';
       }
     };
-  }, []);
+  }, [audio]);
 
   // Playlist view
   if (playlist) {
@@ -232,25 +336,28 @@ const AIDJ = () => {
                 {playlist.count} tracks • Direct from storage
               </div>
               <div className="flex items-center gap-3">
-                {isPlaying ? (
-                  <button
-                    onClick={pauseTrack}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
-                  >
-                    <Pause className="w-5 h-5" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={currentTrack !== null ? resumeTrack : () => playTrack(playlist.playlist[0], 0)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
-                  >
-                    <Play className="w-5 h-5" />
-                  </button>
-                )}
-                <button
-                  onClick={skipTrack}
-                  className="bg-secondary hover:bg-secondary/80 text-secondary-foreground p-2 rounded-full transition-colors"
-                >
+                 {isPlaying ? (
+                   <button
+                     onClick={pauseTrack}
+                     disabled={!audio}
+                     className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-full transition-colors"
+                   >
+                     <Pause className="w-5 h-5" />
+                   </button>
+                 ) : (
+                   <button
+                     onClick={currentTrack !== null ? resumeTrack : () => playlist?.playlist?.[0] && playTrack(playlist.playlist[0], 0)}
+                     disabled={!playlist?.playlist?.length}
+                     className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-full transition-colors"
+                   >
+                     <Play className="w-5 h-5" />
+                   </button>
+                 )}
+                 <button
+                   onClick={skipTrack}
+                   disabled={currentTrack === null || !playlist?.playlist || currentTrack + 1 >= playlist.playlist.length}
+                   className="bg-secondary hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed text-secondary-foreground p-2 rounded-full transition-colors"
+                 >
                   <SkipForward className="w-5 h-5" />
                 </button>
               </div>
