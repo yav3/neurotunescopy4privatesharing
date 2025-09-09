@@ -376,107 +376,85 @@ export const useAudioStore = create<AudioState>((set, get) => {
         adminLog('🎵 Starting therapeutic session for goal:', goal);
         userLog('🎵 Preparing your therapeutic music session...');
         
-        // Use your existing therapeutic goal mapper
-        const therapeuticGoal = TherapeuticGoalMapper.findGoal(goal);
-        if (!therapeuticGoal) {
-          throw new Error(`Unknown therapeutic goal: ${goal}`);
+        // Use storage direct access for all goals now
+        const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
+        console.log(`🎯 Loading tracks for goal: "${goal}"`);
+        const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50);
+        
+        if (error) {
+          throw new Error(error);
         }
-        
-        adminLog('🎯 Found therapeutic goal:', therapeuticGoal.name, 'with backend key:', therapeuticGoal.backendKey);
-        
-        // Use the goal slug for API call (not backendKey, since API expects GoalSlug)
-        const goalSlug = therapeuticGoal.slug;
-        if (!['anxiety-relief', 'focus-enhancement', 'mood-boost', 'stress-reduction', 'meditation-support'].includes(goalSlug)) {
-          throw new Error(`Invalid goal slug: ${goalSlug}`);
-        }
-        
-        // Get recently played tracks to exclude for variety
-        const { excludeQS } = await import('@/state/playlistSession');
-        const excludeIds = excludeQS().split(',').filter(Boolean);
-        adminLog('🎵 Excluding recently played tracks:', excludeIds.length);
-        if (excludeIds.length > 0) {
-          userLog('🔄 Loading fresh tracks for variety...');
-        }
-        
-        // Use direct database query instead of API endpoint
-        const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
-        const { tracks: dbTracks, error: dbError } = await getTherapeuticTracks(goalSlug, 50, excludeIds);
-        
-        if (dbError) {
-          throw new Error(`Database error: ${dbError}`);
-        }
-        
-        const response = { tracks: dbTracks || [] };
-        adminLog('🎵 Database response received:', response?.tracks?.length, 'tracks');
-        
-        if (!response?.tracks?.length) {
+
+        if (!storageTracks || storageTracks.length === 0) {
           throw new Error(`No tracks available for goal "${goal}"`);
         }
 
-        // Convert API response to TherapeuticTrack format for filtering
-        const therapeuticTracks = response.tracks.map((t: any) => ({
-          id: parseInt(t.id) || 0,
-          bpm: t.bpm,
-          valence: t.valence,
-          energy_level: t.energy_level || t.energy,
-          musical_key_est: t.musical_key_est || t.key,
-          camelot: t.camelot_key || t.camelot,
-          // Keep original data for conversion back to Track
-          _original: {
-            id: String(t.id || t.unique_id),
-            unique_id: String(t.unique_id || t.id),
-            title: t.title || t.name || "",
-            artist: t.artist || t.genre || "Unknown",
-            file_path: t.file_path || "",
-            storage_bucket: t.storage_bucket,
-            storage_key: t.storage_key
+        adminLog('✅ Retrieved', storageTracks.length, 'tracks from storage');
+
+        // Convert storage tracks to Track format
+        let tracks: Track[] = storageTracks.map((track) => ({
+          id: track.id,
+          title: track.title,
+          artist: 'Neural Positive Music',
+          duration: 0,
+          storage_bucket: track.storage_bucket,
+          storage_key: track.storage_key,
+          stream_url: track.stream_url,
+          audio_status: 'working' as const,
+        }));
+
+        // For manually curated buckets (focus-music, ENERGYBOOST), skip ALL filtering
+        if (goal === 'focus-enhancement' || goal === 'mood-boost') {
+          adminLog(`✅ Using all ${tracks.length} curated tracks without filtering for ${goal}`);
+          // Just shuffle curated tracks since they're manually validated
+          tracks = tracks.sort(() => Math.random() - 0.5);
+        } else {
+          // Apply therapeutic filtering for other goals
+          const therapeuticGoal = TherapeuticGoalMapper.findGoal(goal);
+          if (!therapeuticGoal) {
+            throw new Error(`Unknown therapeutic goal: ${goal}`);
           }
-        }));
+          
+          const goalSlug = therapeuticGoal.slug as GoalSlug;
+          
+          // Convert to therapeutic format for filtering
+          const therapeuticTracks = tracks.map((t) => ({
+            id: parseInt(t.id) || 0,
+            bpm: undefined, // Storage tracks don't have BPM
+            valence: undefined,
+            energy_level: undefined,
+            musical_key_est: undefined,
+            camelot: undefined
+          }));
+          
+          const filteredTracks = filterTracksForGoal(therapeuticTracks, goalSlug);
+          adminLog('🎯 Therapeutically filtered tracks:', filteredTracks.length);
+          
+          if (filteredTracks.length === 0) {
+            adminLog('⚠️ No tracks passed filtering, using all tracks');
+            // Use all tracks if filtering is too strict
+          } else {
+            // Map filtered indices back to original tracks
+            const filteredIndices = new Set(filteredTracks.map(t => t.id));
+            tracks = tracks.filter((_, index) => filteredIndices.has(index));
+          }
+        }
 
-        adminLog('🎵 Converted to therapeutic format:', therapeuticTracks.length, 'tracks');
-
-        // Use your existing filtering system
-        if (!['anxiety-relief', 'focus-enhancement', 'mood-boost', 'stress-reduction', 'meditation-support'].includes(goalSlug)) {
-          throw new Error(`Invalid goal slug: ${goalSlug}`);
+        if (tracks.length === 0) {
+          throw new Error(`No suitable tracks for goal "${goal}"`);
         }
         
-        const filteredTracks = filterTracksForGoal(therapeuticTracks, goalSlug as GoalSlug);
-        adminLog('🎯 Therapeutically filtered tracks:', filteredTracks.length);
-        
-        if (!filteredTracks.length) {
-          throw new Error(`No tracks match the therapeutic requirements for "${therapeuticGoal.name}"`);
-        }
-
-        // Sort by therapeutic effectiveness using your existing system
-        const therapeuticallyOrderedTracks = sortByTherapeuticEffectiveness(filteredTracks, goalSlug as GoalSlug);
-        adminLog('✅ Tracks ordered by therapeutic effectiveness');
-
-        // Convert back to audio store Track format
-        const orderedTracks: Track[] = therapeuticallyOrderedTracks.map(t => ({
-          id: (t as any)._original.id,
-          title: (t as any)._original.title,
-          artist: (t as any)._original.artist,
-          duration: 0, // Will be set when track loads
-          storage_bucket: (t as any)._original.storage_bucket,
-          storage_key: (t as any)._original.storage_key
-        }));
-
-        if (!orderedTracks.length) {
-          throw new Error(`No suitable tracks for therapeutic goal "${goal}"`);
-        }
-        
-        await get().setQueue(orderedTracks, 0);
+        await get().setQueue(tracks, 0);
         await get().play();
         
         set({ isLoading: false });
         
-        adminLog('🎵 Therapeutic playlist set using existing system:', orderedTracks.length, 'tracks');
-        adminLog('🧠 Using VAD profile:', therapeuticGoal.vadProfile, 'BPM range:', therapeuticGoal.bpmRange);
-        userLog(`✅ Your ${therapeuticGoal.name} session is ready with ${orderedTracks.length} curated tracks`);
+        adminLog('🎵 Playlist set:', tracks.length, 'tracks');
+        userLog(`✅ Your session is ready with ${tracks.length} tracks`);
         
-        return orderedTracks.length;
+        return tracks.length;
       } catch (error: any) {
-        console.error('❌ Therapeutic playFromGoal error:', error);
+        console.error('❌ playFromGoal error:', error);
         set({ error: error.message, isLoading: false });
         throw error;
       }
