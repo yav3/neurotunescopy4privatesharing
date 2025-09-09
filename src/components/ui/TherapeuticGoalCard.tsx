@@ -81,7 +81,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
             </h3>
             <div className="space-y-1.5 mt-1">
               <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
-                {goal.description}
+                Curated music designed to enhance your {goal.name.toLowerCase()} experience
               </p>
               
               {/* BPM Range and Effectiveness */}
