@@ -55,32 +55,18 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement']
   },
   {
-    id: 'anxiety-relief',
-    slug: 'anxiety-relief',
-    backendKey: 'anxiety-relief', 
-    name: 'Anxiety Support',
+    id: 'stress-anxiety-support',
+    slug: 'stress-anxiety-support',
+    backendKey: 'stress-anxiety-support',
+    name: 'Stress & Anxiety Support',
     shortName: 'Calm',
-    description: 'Calm your mind and reduce anxiety',
+    description: 'Calm your mind and reduce stress and anxiety',
     icon: Heart,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    synonyms: ['anxiety', 'calm', 'relax', 'anxiety_relief', 'anxiety-down']
-  },
-  {
-    id: 'stress-reduction',
-    slug: 'stress-reduction',
-    backendKey: 'stress-reduction',
-    name: 'Stress Reduction', 
-    shortName: 'Relax',
-    description: 'Relieve tension and stress',
-    icon: Waves,
-    color: 'emerald',
-    gradient: 'from-emerald-500 to-green-500',
-    bpmRange: { min: 50, max: 80, optimal: 65 },
-    vadProfile: { valence: 0.6, arousal: 0.3, dominance: 0.4 },
-    synonyms: ['stress', 'relaxation', 'stress_reduction', 'chill']
+    synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
     id: 'mood-boost',
@@ -97,18 +83,18 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
-    id: 'meditation-support',
-    slug: 'meditation-support',
-    backendKey: 'meditation-support',
-    name: 'Meditation Support',
-    shortName: 'Meditate',
-    description: 'Enhance mindfulness and meditation',
+    id: 'pain-support',
+    slug: 'pain-support',
+    backendKey: 'pain-support',
+    name: 'Pain Support',
+    shortName: 'Relief',
+    description: 'Provide comfort and pain relief support',
     icon: Flower2,
     color: 'purple',
     gradient: 'from-purple-500 to-pink-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    synonyms: ['meditation', 'mindfulness', 'theta', 'meditation_support']
+    synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   }
 ];
 
@@ -146,7 +132,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility
-export type GoalSlug = 'anxiety-relief' | 'focus-enhancement' | 'mood-boost' | 'stress-reduction' | 'meditation-support';
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);

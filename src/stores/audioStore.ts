@@ -404,7 +404,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }));
 
         // For manually curated buckets, use all tracks directly (user validated)
-        if (goal === 'focus-enhancement' || goal === 'mood-boost') {
+        if (goal === 'focus-enhancement' || goal === 'mood-boost' || goal === 'stress-anxiety-support') {
           adminLog(`✅ Using all ${tracks.length} curated tracks from your validated bucket for ${goal}`);
           // Shuffle for variety since tracks are pre-validated
           tracks = tracks.sort(() => Math.random() - 0.5);

@@ -12,13 +12,11 @@ export interface TherapeuticSession {
 }
 
 export type TherapeuticGoal = 
-  | 'anxiety_relief'
+  | 'stress_anxiety_support'
   | 'focus_enhancement' 
   | 'sleep_preparation'
   | 'mood_boost'
-  | 'stress_reduction'
-  | 'pain_management'
-  | 'meditation_support'
+  | 'pain_support'
 
 export interface SessionConfig {
   goal: TherapeuticGoal
@@ -33,23 +31,19 @@ export interface SessionConfig {
 
 export class TherapeuticEngine {
   private static readonly GOAL_TO_FREQUENCY_MAP: Record<TherapeuticGoal, FrequencyBand[]> = {
-    anxiety_relief: ['alpha', 'theta'],
+    stress_anxiety_support: ['alpha', 'theta'],
     focus_enhancement: ['beta', 'gamma'],
     sleep_preparation: ['delta', 'theta'],
     mood_boost: ['beta', 'alpha'],
-    stress_reduction: ['alpha', 'theta'],
-    pain_management: ['theta', 'alpha'],
-    meditation_support: ['theta', 'alpha']
+    pain_support: ['theta', 'alpha']
   }
 
   private static readonly ENERGY_PROGRESSIONS: Record<string, number[]> = {
-    anxiety_relief: [4, 3, 2, 2, 1], // High to low energy
+    stress_anxiety_support: [4, 3, 2, 2, 1], // High to low energy for stress & anxiety relief
     focus_enhancement: [2, 3, 4, 4, 3], // Build to peak focus
     sleep_preparation: [3, 2, 1, 1, 1], // Gradual wind down
     mood_boost: [2, 3, 4, 5, 4], // Build energy and mood
-    stress_reduction: [4, 3, 2, 2, 2], // Release tension
-    pain_management: [3, 2, 2, 1, 1], // Deep relaxation
-    meditation_support: [2, 2, 2, 2, 2] // Consistent calm state
+    pain_support: [3, 2, 2, 1, 1] // Deep relaxation for pain relief
   }
 
   /**
@@ -144,7 +138,7 @@ export class TherapeuticEngine {
 
       // Apply therapeutic criteria based on audio features
       switch (goal) {
-        case 'anxiety_relief':
+        case 'stress_anxiety_support':
           return (track.valence || 0) < 0.6 && (track.energy || 0) < 0.5
         case 'focus_enhancement':
           return (track.energy || 0) > 0.4 && (track.energy || 0) < 0.8
@@ -152,7 +146,7 @@ export class TherapeuticEngine {
           return (track.energy || 0) < 0.4 && (track.valence || 0) < 0.7
         case 'mood_boost':
           return (track.valence || 0) > 0.5 && (track.energy || 0) > 0.3
-        case 'stress_reduction':
+        case 'pain_support':
           return (track.valence || 0) < 0.7 && (track.energy || 0) < 0.6
         default:
           return true
@@ -287,15 +281,12 @@ export class TherapeuticEngine {
    */
   private static determineProgression(goal: TherapeuticGoal): 'gradual' | 'maintain' | 'boost' {
     switch (goal) {
-      case 'anxiety_relief':
+      case 'stress_anxiety_support':
       case 'sleep_preparation':
-      case 'stress_reduction':
-      case 'pain_management':
+      case 'pain_support':
         return 'gradual'
       case 'mood_boost':
         return 'boost'
-      case 'meditation_support':
-        return 'maintain'
       default:
         return 'gradual'
     }
