@@ -130,7 +130,7 @@ const AIDJ = () => {
   // Playlist view
   if (playlist) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5">
+      <div className="min-h-screen bg-background">
         {/* Header */}
         <div className="p-4 border-b border-border/50 bg-background/80 backdrop-blur-sm">
           <div className="flex items-center justify-between max-w-6xl mx-auto">
@@ -241,7 +241,7 @@ const AIDJ = () => {
 
   // Main selection screen
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-primary/5">
+    <div className="min-h-screen bg-background">
       <Header />
       
       {/* Header */}
