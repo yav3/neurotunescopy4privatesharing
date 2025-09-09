@@ -382,56 +382,80 @@ const AIDJ = () => {
           {/* Focus Enhancement Card */}
           <div 
             onClick={() => generateFlowPlaylist('focus')}
-            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
-              loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
+            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer group transition-all duration-500 ease-out ${
+              loading === 'focus' 
+                ? 'opacity-75 pointer-events-none scale-95' 
+                : 'hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)] hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]'
             }`}
-            style={{
-              backgroundImage: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--primary)) 100%)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              {loading === 'focus' ? (
-                <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Generating...</span>
-                </div>
-              ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Focus Enhancement</h3>
-              )}
-              <p className="text-white/90 text-sm drop-shadow-md">
-                Instrumental tracks for deep concentration
-              </p>
+            {/* Background Image */}
+            <img 
+              src="/lovable-uploads/acoustic-sunset-field.png"
+              alt="Focus Enhancement"
+              className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
+            />
+            
+            {/* Enhanced Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 group-hover:from-black/70 transition-all duration-500" />
+            
+            {/* Animated glow effect on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
+            
+            {/* Content - Fixed positioning for perfect alignment */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+                {loading === 'focus' ? (
+                  <div className="flex items-center gap-2 mb-1">
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    <span className="text-white font-semibold">Generating...</span>
+                  </div>
+                ) : (
+                  <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-1">Focus Enhancement</h3>
+                )}
+                <p className="text-white/90 text-sm drop-shadow-md">
+                  Instrumental tracks for deep concentration
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Energy Boost Card */}
           <div 
             onClick={() => generateFlowPlaylist('energy')}
-            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
-              loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
+            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer group transition-all duration-500 ease-out ${
+              loading === 'energy' 
+                ? 'opacity-75 pointer-events-none scale-95' 
+                : 'hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)] hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]'
             }`}
-            style={{
-              backgroundImage: 'linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.8) 50%, hsl(var(--secondary)) 100%)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              {loading === 'energy' ? (
-                <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Generating...</span>
-                </div>
-              ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Energy Boost</h3>
-              )}
-              <p className="text-white/90 text-sm drop-shadow-md">
-                High arousal, high valence for motivation and power
-              </p>
+            {/* Background Image */}
+            <img 
+              src="/lovable-uploads/gamma-sunbeam-forest.png"
+              alt="Energy Boost"
+              className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
+            />
+            
+            {/* Enhanced Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 group-hover:from-black/70 transition-all duration-500" />
+            
+            {/* Animated glow effect on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
+            
+            {/* Content - Fixed positioning for perfect alignment */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+                {loading === 'energy' ? (
+                  <div className="flex items-center gap-2 mb-1">
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    <span className="text-white font-semibold">Generating...</span>
+                  </div>
+                ) : (
+                  <h3 className="text-white font-semibold text-lg leading-tight drop-shadow-lg mb-1">Energy Boost</h3>
+                )}
+                <p className="text-white/90 text-sm drop-shadow-md">
+                  High arousal, high valence for motivation and power
+                </p>
+              </div>
             </div>
           </div>
         </div>
