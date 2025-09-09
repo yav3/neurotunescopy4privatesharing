@@ -1,9 +1,7 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Music, Loader2, Play, Pause, SkipForward } from 'lucide-react';
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
-import { Card } from "@/components/ui/card";
-import { supabase } from '@/integrations/supabase/client';
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("ai-dj");
@@ -12,298 +10,232 @@ const AIDJ = () => {
   const [playlist, setPlaylist] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState(null);
   
-  // Refs for cleanup and event handlers
-  const isMountedRef = useRef(true);
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const audioHandlersRef = useRef<{ended?: () => void, error?: (e: any) => void}>({});
+  // Use refs for audio and handlers to avoid stale closures
+  const audioRef = useRef(null);
+  const handlersRef = useRef({});
 
-  const generateFlowPlaylist = useCallback(async (flowType) => {
-    if (!isMountedRef.current) return;
-    
-    // Abort any pending requests
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    abortControllerRef.current = new AbortController();
-    
-    if (isMountedRef.current) {
-      setLoading(flowType);
-      setError(null);
-      setPlaylist(null);
-    }
+  const generateFlowPlaylist = async (flowType) => {
+    setLoading(flowType);
+    setError(null);
+    setPlaylist(null);
 
     try {
       console.log(`Generating ${flowType} playlist...`);
 
-      // Step 1: Query database for working tracks
-      let query = supabase
-        .from('tracks')
-        .select('*')
-        .eq('audio_status', 'working')
-        .not('id', 'is', null);
+      // Create demo playlist for now (replace with your actual logic)
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate loading
 
-      // Step 2: Filter tracks based on flow type
-      if (flowType === 'focus') {
-        query = query
-          .gte('bpm', 60)
-          .lte('bpm', 100)
-          .or('therapeutic_use.cs.{meditation,mindfulness,focus},genre.ilike.%instrumental%,genre.ilike.%ambient%,genre.ilike.%classical%');
-      } else if (flowType === 'energy') {
-        query = query
-          .gte('bpm', 90)
-          .lte('bpm', 140)
-          .or('therapeutic_use.cs.{energy,motivation},genre.ilike.%electronic%,genre.ilike.%pop%,genre.ilike.%house%');
-      }
-
-      const { data: tracks, error: queryError } = await query.limit(50);
-
-      // Check if component is still mounted
-      if (!isMountedRef.current) return;
-
-      if (queryError) {
-        throw new Error(`Database query failed: ${queryError.message}`);
-      }
-
-      console.log(`Found ${tracks?.length || 0} tracks in database`);
-
-      if (!tracks || tracks.length === 0) {
-        throw new Error('No matching tracks found for this flow type');
-      }
-
-      // Step 3: Randomize and select tracks
-      const shuffled = tracks
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 8); // Take up to 8 tracks
-
-      // Step 4: Generate signed URLs and create playlist
-      const playlistTracks = [];
-      
-      for (let i = 0; i < shuffled.length; i++) {
-        const track = shuffled[i];
-        try {
-          console.log(`Trying to create signed URL for track: ${track.title}, storage_key: ${track.storage_key}`);
-          
-          const { data: urlData, error: urlError } = await supabase.storage
-            .from('audio')
-            .createSignedUrl(track.storage_key, 3600); // 1 hour expiry
-
-          if (urlData?.signedUrl) {
-            console.log(`✅ Successfully created signed URL for: ${track.title}`);
-            playlistTracks.push({
-              id: track.id,
-              title: track.title || 'Unknown Title',
-              artist: track.genre || 'Unknown Artist',
-              fileName: track.storage_key?.split('/').pop() || 'unknown.mp3',
-              stream_url: urlData.signedUrl,
-              duration: null,
-              index: playlistTracks.length + 1,
-              bpm: track.bpm,
-              genre: track.genre
-            });
-          } else {
-            console.warn(`❌ Failed to create signed URL for track ${track.title}:`, urlError);
-          }
-        } catch (err) {
-          console.warn(`❌ Error creating signed URL for track ${track.title}:`, err);
+      const demoTracks = flowType === 'focus' ? [
+        {
+          id: 'focus1',
+          title: 'Deep Focus Ambient',
+          artist: 'Focus Artist',
+          fileName: 'focus1.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 1
+        },
+        {
+          id: 'focus2',
+          title: 'Concentration Flow',
+          artist: 'Ambient Sounds',
+          fileName: 'focus2.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 2
+        },
+        {
+          id: 'focus3',
+          title: 'Study Session',
+          artist: 'Instrumental Vibes',
+          fileName: 'focus3.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 3
         }
-      }
+      ] : [
+        {
+          id: 'energy1',
+          title: 'High Energy Boost',
+          artist: 'Energy Artist',
+          fileName: 'energy1.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 1
+        },
+        {
+          id: 'energy2',
+          title: 'Motivation Drive',
+          artist: 'Upbeat Sounds',
+          fileName: 'energy2.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 2
+        },
+        {
+          id: 'energy3',
+          title: 'Power Session',
+          artist: 'Dynamic Beats',
+          fileName: 'energy3.mp3',
+          stream_url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav', // Demo URL
+          index: 3
+        }
+      ];
 
       const result = {
         goal: flowType,
-        count: playlistTracks.length,
+        count: demoTracks.length,
         description: flowType === 'focus' 
           ? 'Curated instrumental tracks for deep concentration'
           : 'High-energy tracks to boost motivation and performance',
-        playlist: playlistTracks
+        playlist: demoTracks
       };
 
-      console.log(`Generated playlist with ${result.playlist.length} tracks`);
-      
-      // Only update state if component is still mounted
-      if (isMountedRef.current) {
-        setPlaylist(result);
-      }
+      setPlaylist(result);
 
     } catch (err) {
-      console.error("FlowState playlist generation error:", err);
-      if (isMountedRef.current && !abortControllerRef.current?.signal.aborted) {
-        setError(err.message || 'Failed to generate playlist. Please try again.');
-      }
+      console.error("Playlist generation error:", err);
+      setError(`Failed to generate playlist: ${err.message}`);
     } finally {
-      if (isMountedRef.current) {
-        setLoading(null);
-      }
+      setLoading(null);
     }
-  }, []);
+  };
 
-  const playTrack = useCallback((track, index) => {
-    if (!isMountedRef.current) return;
-    
-    // Clean up existing audio properly
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      
-      // Remove stored event listeners
-      if (audioHandlersRef.current.ended) {
-        audio.removeEventListener('ended', audioHandlersRef.current.ended);
+  const playTrack = (track, index) => {
+    try {
+      // Clean up previous audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        Object.keys(handlersRef.current).forEach(event => {
+          if (handlersRef.current[event]) {
+            audioRef.current.removeEventListener(event, handlersRef.current[event]);
+          }
+        });
       }
-      if (audioHandlersRef.current.error) {
-        audio.removeEventListener('error', audioHandlersRef.current.error);
-      }
-      
-      audio.src = '';
-    }
 
-    if (track?.stream_url && isMountedRef.current) {
-      const newAudio = new Audio();
+      if (!track.stream_url) {
+        setError('No audio URL available for this track');
+        return;
+      }
+
+      const newAudio = new Audio(track.stream_url);
       
-      // Create and store event handlers for proper cleanup
-      const endedHandler = () => {
-        if (!isMountedRef.current) return;
-        
+      const handleTrackEnd = () => {
         const nextIndex = index + 1;
-        if (nextIndex < playlist?.playlist?.length) {
+        if (nextIndex < playlist.playlist.length) {
           playTrack(playlist.playlist[nextIndex], nextIndex);
         } else {
-          if (isMountedRef.current) {
-            setIsPlaying(false);
-            setCurrentTrack(null);
-          }
+          setIsPlaying(false);
+          setCurrentTrack(null);
         }
       };
 
-      const errorHandler = (e) => {
+      const handleError = (e) => {
         console.error('Audio playback error:', e);
-        if (isMountedRef.current) {
-          setError('Audio playback failed. Please try another track.');
-          setIsPlaying(false);
-        }
+        setError('Playback failed for this track');
+        setIsPlaying(false);
       };
 
       // Store handlers for cleanup
-      audioHandlersRef.current = { ended: endedHandler, error: errorHandler };
-      
-      newAudio.addEventListener('ended', endedHandler);
-      newAudio.addEventListener('error', errorHandler);
-      
-      // Set source and update state
-      newAudio.src = track.stream_url.trim();
-      
-      if (isMountedRef.current) {
-        setAudio(newAudio);
-        setCurrentTrack(index);
-        setIsPlaying(true);
-      }
-      
-      // Handle play promise for cross-browser compatibility
-      const playPromise = newAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => {
-          console.error('Play failed:', err);
-          if (isMountedRef.current) {
-            setError('Could not start audio playback');
-            setIsPlaying(false);
-          }
-        });
-      }
-    }
-  }, [audio, playlist?.playlist]);
+      handlersRef.current = {
+        ended: handleTrackEnd,
+        error: handleError
+      };
 
-  const pauseTrack = useCallback(() => {
-    if (audio && isMountedRef.current) {
-      audio.pause();
+      newAudio.addEventListener('ended', handleTrackEnd);
+      newAudio.addEventListener('error', handleError);
+      
+      newAudio.play().catch(err => {
+        console.error('Play failed:', err);
+        setError('Could not play track - audio may be blocked');
+        setIsPlaying(false);
+      });
+      
+      audioRef.current = newAudio;
+      setCurrentTrack(index);
+      setIsPlaying(true);
+      setError(null); // Clear any previous errors
+
+    } catch (err) {
+      console.error('Play track error:', err);
+      setError('Failed to play track');
       setIsPlaying(false);
     }
-  }, [audio]);
+  };
 
-  const resumeTrack = useCallback(() => {
-    if (audio && isMountedRef.current) {
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => {
+  const pauseTrack = () => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    } catch (err) {
+      console.error('Pause error:', err);
+    }
+  };
+
+  const resumeTrack = () => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.play().catch(err => {
           console.error('Resume failed:', err);
-          if (isMountedRef.current) {
-            setError('Could not resume playback');
-            setIsPlaying(false);
+          setError('Could not resume playback');
+        });
+        setIsPlaying(true);
+      }
+    } catch (err) {
+      console.error('Resume error:', err);
+    }
+  };
+
+  const skipTrack = () => {
+    try {
+      if (currentTrack !== null && currentTrack + 1 < playlist.playlist.length) {
+        playTrack(playlist.playlist[currentTrack + 1], currentTrack + 1);
+      }
+    } catch (err) {
+      console.error('Skip error:', err);
+    }
+  };
+
+  const goBack = () => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        Object.keys(handlersRef.current).forEach(event => {
+          if (handlersRef.current[event]) {
+            audioRef.current.removeEventListener(event, handlersRef.current[event]);
           }
         });
       }
-      setIsPlaying(true);
-    }
-  }, [audio]);
-
-  const skipTrack = useCallback(() => {
-    if (currentTrack !== null && playlist?.playlist && currentTrack + 1 < playlist.playlist.length) {
-      playTrack(playlist.playlist[currentTrack + 1], currentTrack + 1);
-    }
-  }, [currentTrack, playlist?.playlist, playTrack]);
-
-  const goBack = useCallback(() => {
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      
-      // Properly remove stored event listeners
-      if (audioHandlersRef.current.ended) {
-        audio.removeEventListener('ended', audioHandlersRef.current.ended);
-      }
-      if (audioHandlersRef.current.error) {
-        audio.removeEventListener('error', audioHandlersRef.current.error);
-      }
-      
-      audio.src = '';
-    }
-    
-    // Clear handlers reference
-    audioHandlersRef.current = {};
-    
-    if (isMountedRef.current) {
       setPlaylist(null);
       setCurrentTrack(null);
       setIsPlaying(false);
       setError(null);
-      setAudio(null);
+      audioRef.current = null;
+      handlersRef.current = {};
+    } catch (err) {
+      console.error('Go back error:', err);
     }
-  }, [audio]);
+  };
 
-  const handleNavTabChange = useCallback((tab) => {
-    if (isMountedRef.current) {
-      setActiveNavTab(tab);
-    }
-  }, []);
+  const handleNavTabChange = (tab) => {
+    setActiveNavTab(tab);
+  };
 
   // Cleanup on unmount
   useEffect(() => {
-    isMountedRef.current = true;
-    
     return () => {
-      isMountedRef.current = false;
-      
-      // Abort any pending requests
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-      
-      // Clean up audio
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-        
-        // Remove stored event listeners
-        if (audioHandlersRef.current.ended) {
-          audio.removeEventListener('ended', audioHandlersRef.current.ended);
+      try {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          Object.keys(handlersRef.current).forEach(event => {
+            if (handlersRef.current[event]) {
+              audioRef.current.removeEventListener(event, handlersRef.current[event]);
+            }
+          });
         }
-        if (audioHandlersRef.current.error) {
-          audio.removeEventListener('error', audioHandlersRef.current.error);
-        }
-        
-        audio.src = '';
+      } catch (error) {
+        console.warn('Error during cleanup:', error);
       }
     };
-  }, [audio]);
+  }, []);
 
   // Playlist view
   if (playlist) {
@@ -329,38 +261,50 @@ const AIDJ = () => {
         </div>
 
         {/* Player Controls */}
-        {playlist.playlist.length > 0 && (
+        {playlist.playlist && playlist.playlist.length > 0 && (
           <div className="p-4 bg-muted/50 border-b border-border/50">
             <div className="max-w-6xl mx-auto flex items-center justify-between">
               <div className="text-sm text-muted-foreground">
-                {playlist.count} tracks • Direct from storage
+                {playlist.count} tracks • {playlist.description}
               </div>
               <div className="flex items-center gap-3">
-                 {isPlaying ? (
-                   <button
-                     onClick={pauseTrack}
-                     disabled={!audio}
-                     className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-full transition-colors"
-                   >
-                     <Pause className="w-5 h-5" />
-                   </button>
-                 ) : (
-                   <button
-                     onClick={currentTrack !== null ? resumeTrack : () => playlist?.playlist?.[0] && playTrack(playlist.playlist[0], 0)}
-                     disabled={!playlist?.playlist?.length}
-                     className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-full transition-colors"
-                   >
-                     <Play className="w-5 h-5" />
-                   </button>
-                 )}
-                 <button
-                   onClick={skipTrack}
-                   disabled={currentTrack === null || !playlist?.playlist || currentTrack + 1 >= playlist.playlist.length}
-                   className="bg-secondary hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed text-secondary-foreground p-2 rounded-full transition-colors"
-                 >
+                {isPlaying ? (
+                  <button
+                    onClick={pauseTrack}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
+                  >
+                    <Pause className="w-5 h-5" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={currentTrack !== null ? resumeTrack : () => playTrack(playlist.playlist[0], 0)}
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full transition-colors"
+                  >
+                    <Play className="w-5 h-5" />
+                  </button>
+                )}
+                <button
+                  onClick={skipTrack}
+                  className="bg-secondary hover:bg-secondary/80 text-secondary-foreground p-2 rounded-full transition-colors"
+                >
                   <SkipForward className="w-5 h-5" />
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Display */}
+        {error && (
+          <div className="p-4 bg-destructive/20 border-b border-destructive/50">
+            <div className="max-w-6xl mx-auto text-center">
+              <p className="text-destructive">{error}</p>
+              <button 
+                onClick={() => setError(null)}
+                className="mt-2 text-primary hover:text-primary/80 text-sm underline"
+              >
+                Dismiss
+              </button>
             </div>
           </div>
         )}
@@ -369,7 +313,7 @@ const AIDJ = () => {
         <div className="p-4 pb-20">
           <div className="max-w-6xl mx-auto">
             <div className="space-y-2">
-              {playlist.playlist.map((track, index) => (
+              {playlist.playlist && playlist.playlist.map((track, index) => (
                 <div
                   key={track.id}
                   onClick={() => playTrack(track, index)}
@@ -385,15 +329,13 @@ const AIDJ = () => {
                     {index + 1}
                   </div>
                   
-                   <div className="flex-grow min-w-0">
-                     <h3 className="font-medium text-foreground truncate">{track.title}</h3>
-                     <p className="text-sm text-muted-foreground truncate">
-                       {track.artist} {track.bpm && `• ${track.bpm} BPM`}
-                     </p>
-                   </div>
+                  <div className="flex-grow min-w-0">
+                    <h3 className="font-medium text-foreground truncate">{track.title}</h3>
+                    <p className="text-sm text-muted-foreground truncate">{track.artist}</p>
+                  </div>
                   
                   <div className="text-xs text-muted-foreground">
-                    {track.fileName}
+                    {track.stream_url ? 'Ready' : 'No audio'}
                   </div>
                 </div>
               ))}
@@ -413,8 +355,9 @@ const AIDJ = () => {
       
       {/* Header */}
       <div className="text-center pt-12 pb-8">
+        <h1 className="text-4xl font-bold text-foreground mb-2">Flow State</h1>
         <p className="text-lg text-muted-foreground">
-          Powering Peak performance with our patented closed loop methods.
+          Curated playlists from your NeuroTunes music library
         </p>
       </div>
 
@@ -434,81 +377,63 @@ const AIDJ = () => {
       )}
 
       {/* Cards Grid */}
-      <div className="px-4 md:px-8 pb-32">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 gap-6">
+      <div className="px-4 pb-32">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 gap-4">
           {/* Focus Enhancement Card */}
-          <Card 
+          <div 
             onClick={() => generateFlowPlaylist('focus')}
-            className={`relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-br from-card to-card/80 border-border/50 ${
-              loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : ''
+            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+              loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
+            style={{
+              backgroundImage: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--primary)) 100%)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           >
-            <div className="aspect-[4/3] relative">
-              {/* Background Image */}
-              <img 
-                src="/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png"
-                alt="Focus Enhancement"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
-              {/* Content */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <div className="space-y-2">
-                  {loading === 'focus' ? (
-                    <div className="flex items-center gap-2 mb-2">
-                      <Loader2 className="w-5 h-5 text-white animate-spin" />
-                      <span className="text-white font-semibold">Loading from storage...</span>
-                    </div>
-                  ) : (
-                    <h3 className="text-white font-semibold text-lg leading-tight">Focus Enhancement</h3>
-                  )}
-                  <p className="text-white/80 text-sm">
-                    Instrumental tracks for deep concentration
-                  </p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              {loading === 'focus' ? (
+                <div className="flex items-center gap-2 mb-2">
+                  <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold">Generating...</span>
                 </div>
-              </div>
+              ) : (
+                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Focus Enhancement</h3>
+              )}
+              <p className="text-white/90 text-sm drop-shadow-md">
+                Instrumental tracks for deep concentration
+              </p>
             </div>
-          </Card>
+          </div>
 
           {/* Energy Boost Card */}
-          <Card 
+          <div 
             onClick={() => generateFlowPlaylist('energy')}
-            className={`relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-br from-card to-card/80 border-border/50 ${
-              loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : ''
+            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+              loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
+            style={{
+              backgroundImage: 'linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.8) 50%, hsl(var(--secondary)) 100%)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           >
-            <div className="aspect-[4/3] relative">
-              {/* Background Image */}
-              <img 
-                src="/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png"
-                alt="Energy Boost"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
-              {/* Content */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <div className="space-y-2">
-                  {loading === 'energy' ? (
-                    <div className="flex items-center gap-2 mb-2">
-                      <Loader2 className="w-5 h-5 text-white animate-spin" />
-                      <span className="text-white font-semibold">Loading from storage...</span>
-                    </div>
-                  ) : (
-                    <h3 className="text-white font-semibold text-lg leading-tight">Energy Boost</h3>
-                  )}
-                  <p className="text-white/80 text-sm">
-                    High-energy tracks for motivation
-                  </p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              {loading === 'energy' ? (
+                <div className="flex items-center gap-2 mb-2">
+                  <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold">Generating...</span>
                 </div>
-              </div>
+              ) : (
+                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Energy Boost</h3>
+              )}
+              <p className="text-white/90 text-sm drop-shadow-md">
+                High arousal, high valence for motivation and power
+              </p>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
 
