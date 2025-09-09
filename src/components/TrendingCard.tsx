@@ -5,6 +5,7 @@ import { TrendingUp } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { fetchTrending } from "@/lib/api";
 
 // Import artwork for trending (use delta moonlit lake)
 const trendingArtwork = '/lovable-uploads/delta-moonlit-lake.png';
@@ -21,19 +22,22 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   useEffect(() => {
     const loadTrendingTracks = async () => {
       try {
-        // Fetch trending tracks directly from the API endpoint
-        const apiUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/v1/playlist?goal=focus-enhancement&count=20';
-        const response = await fetch(apiUrl, {
-          headers: {
-            'Accept': 'application/json',
-          }
-        });
+        console.log('🔥 Loading trending tracks...');
         
-        const data = await response.json();
+        // Use the proper API function to get trending tracks
+        const { tracks, error } = await fetchTrending(60, 20); // Last 60 minutes, max 20 tracks
         
-        if (data.tracks?.length) {
+        if (error) {
+          console.warn('Trending tracks error:', error);
+          return;
+        }
+        
+        if (tracks?.length) {
+          console.log(`✅ Loaded ${tracks.length} trending tracks`);
           // Take first 5 tracks for the trending preview
-          setTrendingTracks(data.tracks.slice(0, 5));
+          setTrendingTracks(tracks.slice(0, 5));
+        } else {
+          console.log('ℹ️ No trending tracks available');
         }
       } catch (error) {
         console.error('Failed to load trending tracks:', error);
