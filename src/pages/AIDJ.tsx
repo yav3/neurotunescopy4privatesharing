@@ -142,7 +142,7 @@ const AIDJ = () => {
               <span>Back</span>
             </button>
             <h1 className="text-2xl font-bold text-foreground">
-              {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 'Energy Boost'} Playlist
+              {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 'Cardio'} Playlist
             </h1>
             <div className="w-20"></div>
           </div>
@@ -318,7 +318,7 @@ const AIDJ = () => {
                   <span className="text-white font-semibold">Generating...</span>
                 </div>
               ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Energy Boost</h3>
+                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Cardio</h3>
               )}
               <p className="text-white/90 text-sm drop-shadow-md">
                 High arousal, high valence for motivation and power
