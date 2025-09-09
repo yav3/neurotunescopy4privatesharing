@@ -109,6 +109,20 @@ export async function getTherapeuticTracks(
       adminLog('🎯 Focus filter: Only tracks with "focus" in title');
     }
 
+    // For meditation, exclude inappropriate high-energy tracks
+    if (goal === 'meditation-support') {
+      baseQuery = baseQuery
+        .not('title', 'ilike', '%festival%')
+        .not('title', 'ilike', '%party%')
+        .not('title', 'ilike', '%dance%')
+        .not('title', 'ilike', '%club%')
+        .not('title', 'ilike', '%rave%')
+        .not('title', 'ilike', '%electric%')
+        .not('title', 'ilike', '%techno%')
+        .not('title', 'ilike', '%house%');
+      adminLog('🧘 Meditation filter: Excluding high-energy track types');
+    }
+
     // Add BPM filtering at database level for performance
     if (profile.bpm_min && profile.bpm_max) {
       baseQuery = baseQuery
