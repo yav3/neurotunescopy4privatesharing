@@ -15,6 +15,7 @@ import { initializeDebugging } from "@/utils/debugInit";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
 import { LandingPage } from "@/components/LandingPage";
+import NeuralPositiveLanding from "@/components/NeuralPositiveLanding";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
@@ -72,9 +73,9 @@ const App = () => {
       return <AuthPage onBack={() => setShowAuth(false)} />;
     }
     return (
-      <LandingPage 
-        onLogin={() => setShowAuth(true)} 
-        onSignup={() => setShowAuth(true)} 
+      <NeuralPositiveLanding 
+        onSignIn={() => setShowAuth(true)} 
+        onGetStarted={() => setShowAuth(true)} 
       />
     );
   }
