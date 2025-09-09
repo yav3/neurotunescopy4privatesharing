@@ -73,8 +73,8 @@ export async function getTracksFromStorage(
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
     } else if (normalizedGoal === 'trending') {
-      buckets = ['neuralpositivemusic']; // Fall back to main bucket since trendingnow doesn't exist
-      console.log(`🎯 Using neuralpositivemusic bucket for trending tracks (trendingnow bucket not found)`);
+      buckets = ['trendingnow'];
+      console.log(`🎯 Using trendingnow bucket for trending tracks`);
     } else {
       buckets = ['neuralpositivemusic'];
       console.log(`🎯 Using neuralpositivemusic bucket for other goals`);
@@ -107,7 +107,25 @@ export async function getTracksFromStorage(
           console.warn(`⚠️ Bucket "${bucket}" returned empty list. Checking if bucket exists...`);
           // Try a different approach - get bucket info
           const bucketInfo = await supabase.storage.getBucket(bucket);
-          console.log(`🔍 Bucket info:`, bucketInfo);
+    console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
+    
+    if (bucketInfo.error) {
+      console.error(`❌ Error accessing bucket ${bucket}:`, bucketInfo.error);
+      console.error(`❌ Error details:`, { 
+        message: bucketInfo.error.message, 
+        name: bucketInfo.error.name,
+        stack: bucketInfo.error.stack 
+      });
+      
+      // If bucket not found, let's try to get more info about available buckets
+      if (bucketInfo.error.message?.includes('not found') || bucketInfo.error.message?.includes('Bucket not found')) {
+        console.log('🔍 Trying to list all available buckets...');
+        const allBuckets = await supabase.storage.listBuckets();
+        console.log('🔍 Available buckets:', allBuckets.data?.map(b => b.name) || 'none');
+        console.log('🔍 Bucket list error (if any):', allBuckets.error);
+      }
+      continue; // Skip this bucket and try the next one
+    }
         }
       } catch (fetchError) {
         console.error(`❌ Network error accessing bucket ${bucket}:`, fetchError);
