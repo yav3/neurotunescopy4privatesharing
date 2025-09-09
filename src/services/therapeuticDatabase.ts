@@ -58,6 +58,8 @@ export interface Track {
   storage_key?: string;
   camelot_key?: string;
   duration_seconds?: number;
+  play_count?: number;
+  therapeutic_effectiveness?: number;
 }
 
 // VAD scoring function (matching backend logic)
@@ -167,17 +169,19 @@ export async function getTrendingTracks(
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
   try {
-    console.log(`🔥 Fetching ${count} trending tracks from last ${minutes} minutes`);
+    console.log(`🔥 Fetching ${count} trending tracks based on engagement metrics`);
     
-    const cutoffTime = new Date(Date.now() - minutes * 60 * 1000).toISOString();
-    
+    // Get tracks ordered by play count and therapeutic effectiveness
+    // This gives us truly "trending" tracks based on user engagement
     const { data: tracks, error } = await supabase
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
       .not('id', 'is', null)
-      .gte('created_at', cutoffTime)
-      .order('created_at', { ascending: false })
+      .not('play_count', 'is', null)
+      .gte('play_count', 1)
+      .order('play_count', { ascending: false })
+      .order('therapeutic_effectiveness', { ascending: false })
       .limit(count);
 
     if (error) {
@@ -185,9 +189,32 @@ export async function getTrendingTracks(
       return { tracks: [], error: error.message };
     }
 
-    console.log(`✅ Retrieved ${tracks?.length || 0} trending tracks`);
+    // If no tracks with play counts, fall back to high-quality tracks
+    if (!tracks || tracks.length === 0) {
+      console.log('ℹ️ No tracks with play counts, falling back to high-quality tracks');
+      
+      const { data: fallbackTracks, error: fallbackError } = await supabase
+        .from('tracks')
+        .select('*')
+        .eq('audio_status', 'working')
+        .not('id', 'is', null)
+        .not('therapeutic_effectiveness', 'is', null)
+        .gte('therapeutic_effectiveness', 0.7)
+        .order('therapeutic_effectiveness', { ascending: false })
+        .limit(count);
+        
+      if (fallbackError) {
+        console.error('❌ Fallback query error:', fallbackError);
+        return { tracks: [], error: fallbackError.message };
+      }
+      
+      console.log(`✅ Retrieved ${fallbackTracks?.length || 0} high-quality tracks as trending`);
+      return { tracks: (fallbackTracks || []) as Track[] };
+    }
+
+    console.log(`✅ Retrieved ${tracks.length} trending tracks based on engagement`);
     
-    return { tracks: (tracks || []) as Track[] };
+    return { tracks: tracks as Track[] };
 
   } catch (error) {
     console.error('❌ Error fetching trending tracks:', error);
