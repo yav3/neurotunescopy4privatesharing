@@ -69,8 +69,9 @@ export async function getTracksFromStorage(
     const normalizedGoal = goal.trim().toLowerCase();
     
     if (normalizedGoal === 'focus-enhancement') {
-      buckets = ['focus-music'];
-      console.log(`🎯 Using focus-music bucket for focus enhancement`);
+      // Try focus-music first, fallback to neuralpositivemusic if auth issues
+      buckets = ['focus-music', 'neuralpositivemusic'];
+      console.log(`🎯 Using focus-music and neuralpositivemusic buckets for focus enhancement`);
     } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
@@ -91,89 +92,109 @@ export async function getTracksFromStorage(
     for (const bucket of buckets) {
       console.log(`🗂️ Processing bucket: ${bucket}`);
       
-      // Try to get bucket info using service client for elevated permissions
-      const bucketInfo = await serviceSupabase.storage.getBucket(bucket);
-      console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
-      
-      if (bucketInfo.error) {
-        console.error(`❌ Error accessing bucket ${bucket}:`, bucketInfo.error);
-        console.error(`❌ Error details:`, { 
-          message: bucketInfo.error.message, 
-          name: bucketInfo.error.name,
-          stack: bucketInfo.error.stack 
-        });
+      try {
+        // Try service client first, fallback to regular client if auth issues
+        let client = serviceSupabase;
+        let bucketInfo = await client.storage.getBucket(bucket);
         
-        // If bucket not found, let's try to get more info about available buckets
-        if (bucketInfo.error.message?.includes('not found') || bucketInfo.error.message?.includes('Bucket not found')) {
-          console.log('🔍 Trying to list all available buckets with service client...');
-          const allBuckets = await serviceSupabase.storage.listBuckets();
-          console.log('🔍 Available buckets:', allBuckets.data?.map(b => b.name) || 'none');
-          console.log('🔍 Bucket list error (if any):', allBuckets.error);
+        if (bucketInfo.error && bucketInfo.error.message?.includes('signature verification failed')) {
+          console.log(`⚠️ Service client auth failed for ${bucket}, trying regular client...`);
+          client = supabase;
+          bucketInfo = await client.storage.getBucket(bucket);
         }
-        continue; // Skip this bucket and try the next one
-      }
-
-      // List files in bucket using service client
-      const { data: files, error: listError } = await serviceSupabase.storage.from(bucket).list('', {
-        limit: 1000,
-        offset: 0,
-        sortBy: { column: 'name', order: 'asc' }
-      });
-
-      if (listError) {
-        console.error(`❌ Error listing files in bucket ${bucket}:`, listError);
-        continue;
-      }
-
-      if (!files || files.length === 0) {
-        console.log(`📂 No files found in bucket ${bucket}`);
-        continue;
-      }
-
-      console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
-      
-      // Filter for audio files and create track objects
-      const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
-      const audioFiles = files.filter(file => 
-        audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-      );
-      
-      console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`);
-
-      for (const file of audioFiles) {
-        try {
-          // Generate public URL using service client
-          const { data: urlData } = serviceSupabase.storage.from(bucket).getPublicUrl(file.name);
+        
+        console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
+        
+        if (bucketInfo.error) {
+          console.error(`❌ Error accessing bucket ${bucket}:`, bucketInfo.error);
+          console.error(`❌ Error details:`, { 
+            message: bucketInfo.error.message, 
+            name: bucketInfo.error.name,
+            stack: bucketInfo.error.stack 
+          });
           
-          if (!urlData?.publicUrl) {
-            console.warn(`⚠️ Could not generate URL for ${file.name}`);
-            continue;
+          // If bucket not found, let's try to get more info about available buckets
+          if (bucketInfo.error.message?.includes('not found') || bucketInfo.error.message?.includes('Bucket not found')) {
+            console.log('🔍 Trying to list all available buckets...');
+            const allBuckets = await client.storage.listBuckets();
+            console.log('🔍 Available buckets:', allBuckets.data?.map(b => b.name) || 'none');
+            console.log('🔍 Bucket list error (if any):', allBuckets.error);
           }
-
-          const track: StorageTrack = {
-            id: `${bucket}-${file.name.replace(/[^a-zA-Z0-9]/g, '-')}`,
-            title: cleanTitle(file.name),
-            storage_bucket: bucket,
-            storage_key: file.name,
-            stream_url: urlData.publicUrl,
-            file_size: file.metadata?.size,
-            last_modified: file.metadata?.lastModified
-          };
-          
-          allTracks.push(track);
-          
-          // Enhanced debugging for first few tracks
-          if (allTracks.length <= 3) {
-            console.log(`🎵 Sample track from ${bucket}:`, {
-              id: track.id,
-              title: track.title,
-              url: track.stream_url,
-              size: track.file_size
-            });
-          }
-        } catch (fileError) {
-          console.warn(`⚠️ Failed to process file ${file.name}:`, fileError);
+          continue; // Skip this bucket and try the next one
         }
+
+        // List files in bucket using the same client that worked for bucket info
+        const { data: files, error: listError } = await client.storage.from(bucket).list('', {
+          limit: 1000,
+          offset: 0,
+          sortBy: { column: 'name', order: 'asc' }
+        });
+
+        if (listError) {
+          console.error(`❌ Error listing files in bucket ${bucket}:`, listError);
+          continue;
+        }
+
+        if (!files || files.length === 0) {
+          console.log(`📂 No files found in bucket ${bucket}`);
+          continue;
+        }
+
+        console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
+        
+        // Filter for audio files and create track objects
+        const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+        const audioFiles = files.filter(file => 
+          audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+        );
+        
+        console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`);
+
+        for (const file of audioFiles) {
+          try {
+            // Generate public URL using the same client
+            const { data: urlData } = client.storage.from(bucket).getPublicUrl(file.name);
+            
+            if (!urlData?.publicUrl) {
+              console.warn(`⚠️ Could not generate URL for ${file.name}`);
+              continue;
+            }
+
+            const track: StorageTrack = {
+              id: `${bucket}-${file.name.replace(/[^a-zA-Z0-9]/g, '-')}`,
+              title: cleanTitle(file.name),
+              storage_bucket: bucket,
+              storage_key: file.name,
+              stream_url: urlData.publicUrl,
+              file_size: file.metadata?.size,
+              last_modified: file.metadata?.lastModified
+            };
+            
+            allTracks.push(track);
+            
+            // Enhanced debugging for first few tracks
+            if (allTracks.length <= 3) {
+              console.log(`🎵 Sample track from ${bucket}:`, {
+                id: track.id,
+                title: track.title,
+                url: track.stream_url,
+                size: track.file_size
+              });
+            }
+          } catch (fileError) {
+            console.warn(`⚠️ Failed to process file ${file.name}:`, fileError);
+          }
+        }
+        
+        // If we got tracks from this bucket, we can stop trying other buckets for focus-enhancement
+        if (allTracks.length > 0 && goal === 'focus-enhancement') {
+          console.log(`✅ Got ${allTracks.length} tracks from ${bucket}, stopping here for focus-enhancement`);
+          break;
+        }
+        
+      } catch (bucketError) {
+        console.error(`❌ Error processing bucket ${bucket}:`, bucketError);
+        continue;
       }
     }
 
