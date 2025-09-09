@@ -6,6 +6,8 @@ import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { fetchPlaylist } from "@/lib/api";
 import { newSeed, remember, excludeQS } from "@/state/playlistSession";
+import focusArtwork from "@/assets/focus-enhancement-artwork.jpg";
+import energyArtwork from "@/assets/energy-boost-artwork.jpg";
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("flow");
@@ -277,7 +279,7 @@ const AIDJ = () => {
               loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
             style={{
-              backgroundImage: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.8) 50%, hsl(var(--primary)) 100%)',
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${focusArtwork})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
@@ -305,7 +307,7 @@ const AIDJ = () => {
               loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
             style={{
-              backgroundImage: 'linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent)/0.8) 50%, hsl(var(--accent)) 100%)',
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${energyArtwork})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
