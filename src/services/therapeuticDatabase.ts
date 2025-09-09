@@ -86,92 +86,35 @@ export async function getTherapeuticTracks(
   count: number = 50, 
   excludeIds: string[] = []
 ): Promise<{ tracks: Track[]; error?: string }> {
-  console.log(`🎯 SMART THERAPEUTIC ACCESS: Fetching ${count} tracks for goal: ${goal}`);
+  console.log(`🎯 DIRECT STORAGE ACCESS: Fetching ${count} tracks for goal: ${goal}`);
   
   try {
-    const profile = VAD_PROFILES[goal as keyof typeof VAD_PROFILES] || VAD_PROFILES['mood-boost'];
-    console.log('📊 Using VAD profile:', profile);
-    
-    // First, try to get tracks with proper VAD data from database
-    let baseQuery = supabase
-      .from('tracks')
-      .select('id, title, storage_bucket, storage_key, valence, arousal, dominance, bpm, audio_status')
-      .eq('audio_status', 'working')
-      .eq('storage_bucket', 'neuralpositivemusic')
-      .not('valence', 'is', null)
-      .not('bpm', 'is', null);
-
-    // Apply VAD filtering
-    baseQuery = baseQuery
-      .gte('valence', profile.valence.min)
-      .lte('valence', profile.valence.max)
-      .gte('arousal', profile.arousal.min) 
-      .lte('arousal', profile.arousal.max)
-      .gte('dominance', profile.dominance.min)
-      .lte('dominance', profile.dominance.max)
-      .gte('bpm', profile.bpm_min)
-      .lte('bpm', profile.bpm_max);
-
-    if (excludeIds.length > 0) {
-      baseQuery = baseQuery.not('id', 'in', `(${excludeIds.join(',')})`);
-    }
-
-    const { data: therapeuticTracks, error: dbError } = await baseQuery.limit(count);
-
-    if (dbError) {
-      console.error('❌ Database VAD query error:', dbError);
-      // Fallback to storage direct access
-      const { getTracksFromStorage } = await import('./storageDirectAccess');
-      const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count);
-      if (error) return { tracks: [], error };
-      
-      const tracks: Track[] = storageTracks.map(storageTrack => ({
-        id: storageTrack.id,
-        title: storageTrack.title,
-        storage_bucket: storageTrack.storage_bucket,
-        storage_key: storageTrack.storage_key,
-        audio_status: 'working' as const,
-        stream_url: storageTrack.stream_url
-      }));
-      return { tracks };
-    }
-
-    if (therapeuticTracks && therapeuticTracks.length > 0) {
-      console.log(`✅ Found ${therapeuticTracks.length} tracks with proper VAD filtering for ${goal}`);
-      
-      // Add public URLs to tracks
-      const tracksWithUrls = therapeuticTracks.map(track => {
-        const { data } = supabase.storage.from(track.storage_bucket!).getPublicUrl(track.storage_key!);
-        return {
-          ...track,
-          stream_url: data.publicUrl
-        } as Track;
-      });
-      
-      return { tracks: tracksWithUrls };
-    }
-
-    // Fallback: use storage direct access if no VAD tracks found
-    console.log(`⚠️ No VAD tracks found for ${goal}, falling back to storage access`);
+    // Call storage buckets directly as primary source
     const { getTracksFromStorage } = await import('./storageDirectAccess');
-    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count);
+    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count, ['neuralpositivemusic', 'audio']);
     
-    if (error) return { tracks: [], error };
+    if (error) {
+      console.error('❌ Storage access error:', error);
+      return { tracks: [], error };
+    }
     
+    // Convert storage tracks to Track interface with stream URLs
     const tracks: Track[] = storageTracks.map(storageTrack => ({
       id: storageTrack.id,
       title: storageTrack.title,
       storage_bucket: storageTrack.storage_bucket,
       storage_key: storageTrack.storage_key,
       audio_status: 'working' as const,
-      stream_url: storageTrack.stream_url
+      stream_url: storageTrack.stream_url,
+      file_size: storageTrack.file_size,
+      last_modified: storageTrack.last_modified
     }));
     
-    console.log(`✅ Direct storage fallback: Found ${tracks.length} tracks for ${goal}`);
+    console.log(`✅ Direct storage: Found ${tracks.length} tracks for ${goal}`);
     return { tracks };
 
   } catch (error) {
-    console.error('❌ Error in smart therapeutic access:', error);
+    console.error('❌ Error in direct storage access:', error);
     return { 
       tracks: [], 
       error: error instanceof Error ? error.message : 'Unknown error' 
