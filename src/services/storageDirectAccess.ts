@@ -57,8 +57,12 @@ function filterByGoal(tracks: StorageTrack[], goal: string): StorageTrack[] {
 export async function getTracksFromStorage(
   goal: string = 'mood-boost',
   count: number = 50,
-  buckets: string[] = ['neuralpositivemusic'] // Only use working bucket
+  buckets?: string[] // Will be determined based on goal
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
+  // Determine buckets based on goal
+  if (!buckets) {
+    buckets = goal === 'focus-enhancement' ? ['Focus Music'] : ['neuralpositivemusic'];
+  }
   try {
     console.log(`🗂️ Fetching ${count} tracks directly from storage buckets:`, buckets);
     

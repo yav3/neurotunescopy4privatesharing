@@ -91,7 +91,7 @@ export async function getTherapeuticTracks(
   try {
     // Call storage buckets directly as primary source
     const { getTracksFromStorage } = await import('./storageDirectAccess');
-    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count, ['neuralpositivemusic', 'audio']);
+    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count);
     
     if (error) {
       console.error('❌ Storage access error:', error);
