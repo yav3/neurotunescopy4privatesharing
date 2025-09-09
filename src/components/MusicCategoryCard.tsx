@@ -13,7 +13,12 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-card bg-gradient-card border-border/50",
+        "relative overflow-hidden cursor-pointer group",
+        "bg-gradient-card shadow-card border-border/30",
+        "transition-all duration-500 ease-out",
+        "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
+        "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
+        "animate-fade-in",
         className
       )}
       onClick={onClick}
@@ -22,11 +27,15 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
         <img 
           src={image} 
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-foreground font-semibold text-lg">{title}</h3>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 group-hover:from-black/70 transition-all duration-500" />
+        
+        {/* Animated glow effect on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/50 to-transparent" />
+        
+        <div className="absolute bottom-4 left-4 right-4 transform transition-transform duration-300 group-hover:translate-y-[-2px]">
+          <h3 className="text-foreground font-semibold text-lg drop-shadow-lg">{title}</h3>
         </div>
       </div>
     </Card>

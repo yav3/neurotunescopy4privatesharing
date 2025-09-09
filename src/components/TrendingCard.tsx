@@ -91,14 +91,15 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   if (isLoading) {
     return (
       <Card className={cn(
-        "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "bg-gradient-to-br from-card to-card/80 animate-pulse",
+        "relative overflow-hidden cursor-pointer group",
+        "bg-gradient-card shadow-card border-border/30 animate-pulse",
+        "transition-all duration-500 ease-out",
         className
       )}>
-        <div className="aspect-[4/3] relative bg-muted/50">
+        <div className="aspect-[4/3] relative bg-muted/30">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute inset-0 p-4 flex flex-col justify-end">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="h-6 w-32 bg-white/20 rounded animate-pulse" />
               <div className="h-4 w-full bg-white/10 rounded animate-pulse" />
               <div className="h-3 w-3/4 bg-white/10 rounded animate-pulse" />
@@ -112,8 +113,12 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "bg-gradient-to-br from-card to-card/80",
+        "relative overflow-hidden cursor-pointer group",
+        "bg-gradient-card shadow-card border-border/30",
+        "transition-all duration-500 ease-out",
+        "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
+        "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
+        "animate-fade-in",
         className
       )}
       onClick={handlePlayTrending}
@@ -123,25 +128,33 @@ export const TrendingCard = ({ className }: TrendingCardProps) => {
         <img 
           src={trendingArtwork} 
           alt="Trending Music"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
         />
         
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        {/* Enhanced Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 group-hover:from-black/70 transition-all duration-500" />
+        
+        {/* Animated glow effect on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
+        
+        {/* Trending indicator */}
+        <div className="absolute top-4 right-4 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+          <TrendingUp className="w-6 h-6 text-white drop-shadow-lg animate-pulse" />
+        </div>
         
         {/* Content */}
         <div className="absolute inset-0 p-4 flex flex-col justify-end">
           {/* Bottom Section - Title and Details */}
-          <div className="space-y-2">
-            <h3 className="text-white font-semibold text-lg leading-tight text-left">
+          <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+            <h3 className="text-white font-semibold text-lg leading-tight text-left drop-shadow-lg">
               Trending Now
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
               Popular tracks trending with our community
             </p>
             
             {/* Track Preview */}
-            <p className="text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p className="text-white/60 text-xs opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 transform translate-y-2 group-hover:translate-y-0">
               {trendingTracks.slice(0, 2).map(track => track.title || 'Untitled').join(', ')}
               {trendingTracks.length > 2 && ` +${trendingTracks.length - 2} more`}
             </p>

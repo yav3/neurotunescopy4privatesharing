@@ -48,9 +48,13 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg",
-        "bg-gradient-to-br from-card to-card/80 border-border/50",
-        isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
+        "relative overflow-hidden cursor-pointer group",
+        "bg-gradient-card shadow-card border-border/30",
+        "transition-all duration-500 ease-out",
+        "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
+        "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
+        "animate-fade-in",
+        isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_30px_hsl(217_91%_60%_/_0.4)]",
         className
       )}
       onClick={onClick}
@@ -60,35 +64,36 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         <img 
           src={artwork} 
           alt={goal.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
         />
         
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        {/* Enhanced Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 group-hover:from-black/70 transition-all duration-500" />
+        
+        {/* Animated glow effect on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
         
         {/* Content */}
         <div className="absolute inset-0 p-4 flex flex-col justify-end">
           {/* Bottom Section - Title and Details */}
-          <div className="space-y-2">
-            <h3 className="text-white font-semibold text-lg leading-tight text-left">
+          <div className="space-y-3 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+            <h3 className="text-white font-semibold text-lg leading-tight text-left drop-shadow-lg">
               {goal.name}
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 transform translate-y-2 group-hover:translate-y-0">
               {goal.description}
             </p>
             
-            {/* VAD Profile removed */}
-            
             {/* BPM Range and Effectiveness */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap opacity-90 group-hover:opacity-100 transition-opacity duration-300">
               {showBpmRange && (
-                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs">
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs backdrop-blur-sm hover:bg-white/20 transition-colors duration-200">
                   {goal.bpmRange.min}-{goal.bpmRange.max} BPM
                 </Badge>
               )}
               
               {effectiveness !== undefined && (
-                <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs">
+                <Badge variant="outline" className="bg-primary/20 text-white border-primary/30 text-xs backdrop-blur-sm hover:bg-primary/30 transition-colors duration-200">
                   {effectiveness}% effective
                 </Badge>
               )}
