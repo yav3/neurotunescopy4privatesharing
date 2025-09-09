@@ -14,6 +14,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const tabs = [
     { id: "home", label: "Home", icon: Home, path: "/" },
     { id: "ai-dj", label: "FlowState", icon: Heart, path: "/ai-dj" },
+    { id: "landing", label: "Landing", icon: Home, path: "/landing" },
     { id: "profile", label: "Profile", icon: User, path: "/profile" },
   ];
 
