@@ -398,7 +398,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
           userLog('🔄 Loading fresh tracks for variety...');
         }
         
-        const response = await API.playlist(goalSlug as GoalSlug, 50, 0, excludeIds);
+        // Use direct database query instead of API endpoint
+        const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
+        const { tracks: dbTracks, error: dbError } = await getTherapeuticTracks(goalSlug, 50, excludeIds);
+        
+        if (dbError) {
+          throw new Error(`Database error: ${dbError}`);
+        }
+        
+        const response = { tracks: dbTracks || [] };
         adminLog('🎵 Database response received:', response?.tracks?.length, 'tracks');
         
         if (!response?.tracks?.length) {
