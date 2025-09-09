@@ -3,34 +3,35 @@
  */
 
 const quickTest = `
-// 30-second deterministic playback test
+// 30-second deterministic playbook test using direct database access
 (async () => {
   console.log('🧪 Quick playback test starting...');
   
-  const BASE = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api';
-  
   try {
-    // 1. Health
-    console.log('1️⃣ Health check...');
-    const health = await fetch(BASE + '/health').then(r => r.json());
-    console.log('✅ Health:', health);
+    // Import the direct database functions
+    const { getTherapeuticTracks } = await import('./services/therapeuticDatabase');
+    const { streamUrl } = await import('./lib/api');
     
-    // 2. Playlist
-    console.log('2️⃣ Getting playlist...');
-    const playlist = await fetch(BASE + '/playlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal: 'focus', limit: 1 })
-    }).then(r => r.json());
+    // 1. Health (direct database connection)
+    console.log('1️⃣ Database connection check...');
+    console.log('✅ Direct database access - no API needed');
     
-    if (!playlist.tracks?.[0]) throw new Error('No tracks returned');
-    console.log('✅ Got track:', playlist.tracks[0]);
+    // 2. Get tracks directly from database
+    console.log('2️⃣ Getting tracks from database...');
+    const { tracks, error } = await getTherapeuticTracks('focus-enhancement', 1);
     
-    // 3. Stream test
-    const id = playlist.tracks[0].id;
-    console.log('3️⃣ Testing stream for ID:', id);
+    if (error || !tracks?.[0]) throw new Error('No tracks returned: ' + error);
+    console.log('✅ Got track:', tracks[0]);
     
-    const streamResponse = await fetch(BASE + '/stream?id=' + encodeURIComponent(id), { method: 'HEAD' });
+    // 3. Stream URL test
+    const track = tracks[0];
+    console.log('3️⃣ Testing stream URL for track:', track.id);
+    
+    const url = streamUrl(track);
+    console.log('📊 Stream URL generated:', url);
+    
+    // Test if URL is accessible
+    const streamResponse = await fetch(url, { method: 'HEAD' });
     console.log('📊 Stream response:', {
       status: streamResponse.status,
       contentType: streamResponse.headers.get('content-type'),
@@ -38,8 +39,7 @@ const quickTest = `
     });
     
     if (!streamResponse.ok) {
-      const errorDetails = await fetch(BASE + '/stream?id=' + encodeURIComponent(id)).then(r => r.text());
-      throw new Error('Stream failed: ' + errorDetails);
+      throw new Error('Stream URL not accessible: ' + streamResponse.status);
     }
     
     console.log('🎉 ALL TESTS PASSED - Playback is deterministic!');

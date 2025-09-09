@@ -143,18 +143,18 @@ export const checkDatabaseIdFormats = async () => {
   console.group('🗃️ Database ID Format Check');
   
   try {
-    const api_base = import.meta.env.VITE_API_BASE_URL || 'https://pbtgvcjniayedqlajjzz.functions.supabase.co';
-    const response = await fetch(`${api_base}/api/playlist`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal: 'focus', limit: 5 })
-    });
+    // Use direct database access instead of HTTP API
+    const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
+    const { tracks, error } = await getTherapeuticTracks('focus-enhancement', 5);
     
-    const data = await response.json();
-    console.log('API Response:', data);
+    if (error) {
+      throw new Error(`Database query failed: ${error}`);
+    }
     
-    if (data.tracks && Array.isArray(data.tracks)) {
-      data.tracks.forEach((track: any, index: number) => {
+    console.log('Database Query Response:', { tracks: tracks?.length, error });
+    
+    if (tracks && Array.isArray(tracks)) {
+      tracks.forEach((track: any, index: number) => {
         console.log(`Track ${index + 1}:`, {
           id: track.id,
           type: typeof track.id,
