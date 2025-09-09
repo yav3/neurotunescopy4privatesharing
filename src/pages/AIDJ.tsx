@@ -6,6 +6,7 @@ import { useAudioStore } from "@/stores";
 import { toast } from "@/hooks/use-toast";
 import { fetchPlaylist } from "@/lib/api";
 import { newSeed, remember, excludeQS } from "@/state/playlistSession";
+import { supabase } from "@/integrations/supabase/client";
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("flow");
@@ -32,27 +33,57 @@ const AIDJ = () => {
     try {
       console.log(`🎵 Generating ${flowType} playlist...`);
 
-      // Map flow types to therapeutic goals
-      const goalMap = {
-        'focus': 'focus-enhancement',
-        'energy': 'mood-boost'
-      };
+      let tracks, fetchError;
 
-      const goalSlug = goalMap[flowType];
-      if (!goalSlug) {
-        throw new Error(`Unknown flow type: ${flowType}`);
+      if (flowType === 'samba') {
+        // Fetch directly from samba storage bucket
+        const { data: storageFiles, error: storageError } = await supabase.storage
+          .from('samba')
+          .list('', { limit: 20 });
+
+        if (storageError) {
+          throw new Error(`Storage error: ${storageError.message}`);
+        }
+
+        // Convert storage files to track format
+        tracks = storageFiles
+          .filter(file => file.name.endsWith('.mp3'))
+          .slice(0, 20)
+          .map((file, index) => ({
+            id: `samba-${index}`,
+            title: file.name.replace('.mp3', '').replace(/[-_]/g, ' '),
+            artist: 'Samba & Jazz Collection',
+            storage_bucket: 'samba',
+            storage_key: file.name,
+            stream_url: `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/samba/${file.name}`
+          }));
+
+        fetchError = null;
+      } else {
+        // Map flow types to therapeutic goals
+        const goalMap = {
+          'focus': 'focus-enhancement',
+          'energy': 'mood-boost'
+        };
+
+        const goalSlug = goalMap[flowType];
+        if (!goalSlug) {
+          throw new Error(`Unknown flow type: ${flowType}`);
+        }
+
+        console.log(`🎯 Mapped "${flowType}" to goal slug: "${goalSlug}"`);
+
+        // Fetch real tracks from your music library
+        const result = await fetchPlaylist(goalSlug, 20, newSeed(), excludeQS());
+        tracks = result.tracks;
+        fetchError = result.error;
       }
-
-      console.log(`🎯 Mapped "${flowType}" to goal slug: "${goalSlug}"`);
-
-      // Fetch real tracks from your music library
-      const { tracks, error: fetchError } = await fetchPlaylist(goalSlug, 20, newSeed(), excludeQS());
       
       console.log(`📦 FetchPlaylist result:`, { 
         tracksFound: tracks?.length || 0, 
         error: fetchError,
-        goalSlug,
-        flowType 
+        flowType,
+        source: flowType === 'samba' ? 'samba-bucket' : 'therapeutic-goals'
       });
       
       if (fetchError) {
@@ -62,7 +93,7 @@ const AIDJ = () => {
       }
       
       if (!tracks?.length) {
-        console.error(`❌ No tracks returned for ${flowType} (${goalSlug})`);
+        console.error(`❌ No tracks returned for ${flowType}`);
         setError(`No ${flowType} tracks found. The music buckets may be empty or inaccessible.`);
         return;
       }
@@ -80,7 +111,9 @@ const AIDJ = () => {
         count: tracks.length,
         description: flowType === 'focus' 
           ? 'Curated instrumental tracks for deep concentration'
-          : 'High-energy tracks to boost motivation and performance',
+          : flowType === 'energy'
+          ? 'High-energy tracks to boost motivation and power'
+          : 'Smooth samba and jazz rhythms for relaxation',
         playlist: tracks
       };
 
@@ -142,7 +175,8 @@ const AIDJ = () => {
               <span>Back</span>
             </button>
             <h1 className="text-2xl font-bold text-foreground">
-              {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 'Cardio'} Playlist
+              {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 
+               playlist.goal === 'energy' ? 'Cardio' : 'Samba & Jazz'} Playlist
             </h1>
             <div className="w-20"></div>
           </div>
@@ -269,7 +303,7 @@ const AIDJ = () => {
 
       {/* Cards Grid */}
       <div className="px-4 pb-32">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 gap-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
           {/* Focus Enhancement Card */}
           <div 
             onClick={() => generateFlowPlaylist('focus')}
@@ -322,6 +356,34 @@ const AIDJ = () => {
               )}
               <p className="text-white/90 text-sm drop-shadow-md">
                 High arousal, high valence for motivation and power
+              </p>
+            </div>
+          </div>
+
+          {/* Samba & Jazz Card */}
+          <div 
+            onClick={() => generateFlowPlaylist('samba')}
+            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+              loading === 'samba' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
+            }`}
+            style={{
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="relative p-6 h-full flex flex-col justify-end">
+              {loading === 'samba' ? (
+                <div className="flex items-center gap-2 mb-2">
+                  <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold">Generating...</span>
+                </div>
+              ) : (
+                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Samba & Jazz</h3>
+              )}
+              <p className="text-white/90 text-sm drop-shadow-md">
+                Smooth rhythms for relaxation and enjoyment
               </p>
             </div>
           </div>
