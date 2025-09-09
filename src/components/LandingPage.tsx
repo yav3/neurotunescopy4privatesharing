@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 interface LandingPageProps {
   onLogin: () => void;
@@ -8,6 +9,18 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/');
+    onLogin();
+  };
+
+  const handleSignup = () => {
+    navigate('/');
+    onSignup();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-card to-background">
       {/* Navigation */}
@@ -16,10 +29,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <span className="text-2xl font-bold text-foreground">NeuralPositive</span>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-          <Button variant="ghost" onClick={onLogin} className="w-full sm:w-auto">
+          <Button variant="ghost" onClick={handleLogin} className="w-full sm:w-auto">
             Sign In
           </Button>
-          <Button onClick={onSignup} className="w-full sm:w-auto">
+          <Button onClick={handleSignup} className="w-full sm:w-auto">
             Get Started
           </Button>
         </div>
@@ -35,10 +48,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             Patented closed-loop personalization designed to enhance your performance through scientifically-proven therapeutic music experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={onSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
+            <Button size="lg" onClick={handleSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
               Start Your Journey
             </Button>
-            <Button variant="outline" size="lg" onClick={onLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
+            <Button variant="outline" size="lg" onClick={handleLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
               Sign In
             </Button>
           </div>
@@ -100,10 +113,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             Join thousands of users who have enhanced their cognitive performance through our evidence-based music therapy platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={onSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
+            <Button size="lg" onClick={handleSignup} className="w-full sm:w-auto px-8 py-4 text-lg">
               Get Started
             </Button>
-            <Button variant="outline" size="lg" onClick={onLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
+            <Button variant="outline" size="lg" onClick={handleLogin} className="w-full sm:w-auto px-8 py-4 text-lg">
               Sign In
             </Button>
           </div>
