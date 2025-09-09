@@ -51,7 +51,7 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
     <section className="px-4 md:px-8 mb-24">
       <div className="max-w-6xl mx-auto">
         {/* Trending Card */}
-        <div className="mb-6">
+        <div className="mb-8">
           <TrendingCard className="max-w-md" />
         </div>
         

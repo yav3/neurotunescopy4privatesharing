@@ -147,7 +147,7 @@ export const NowPlaying: React.FC = () => {
   const artwork = getTherapeuticArtwork(frequencyBand, track.id);
 
   return (
-    <Card className="fixed bottom-0 left-0 right-0 z-40 rounded-none border-t bg-card/95 backdrop-blur-sm">
+    <Card className="fixed bottom-16 left-0 right-0 z-50 rounded-none border-t bg-card/95 backdrop-blur-sm">
       <div className="flex items-center gap-2 p-4">
         {/* Track Info */}
         <div 
