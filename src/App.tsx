@@ -14,6 +14,7 @@ import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
+import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
@@ -79,6 +80,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/reset-password" element={<ResetPasswordForm />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="users" element={<UserManagement />} />
