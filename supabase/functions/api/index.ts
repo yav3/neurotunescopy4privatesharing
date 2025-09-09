@@ -270,10 +270,13 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       title: t.r.title,
       artist: t.r.artist,
       storage_key: t.r.storage_key,
+      storage_bucket: t.r.storage_bucket,
       vad_score: t.s.score,
       valence: t.s.v,
       arousal: t.s.a,
-      dominance: t.s.d
+      dominance: t.s.d,
+      // Add stream URL pointing to our signed URL endpoint
+      stream_url: `${SUPABASE_URL.replace('/rest/v1', '')}/functions/v1/api/stream/${t.r.id}`
     }));
 
     return { tracks: final, total: top.length };

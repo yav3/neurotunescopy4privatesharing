@@ -19,7 +19,8 @@ export const streamUrl = (track: any): string => {
   console.log('🔧 streamUrl called with track:', { 
     id: track?.id, 
     storage_bucket: track?.storage_bucket, 
-    storage_key: track?.storage_key 
+    storage_key: track?.storage_key,
+    stream_url: track?.stream_url 
   });
 
   if (!track) {
@@ -27,24 +28,22 @@ export const streamUrl = (track: any): string => {
     return '';
   }
 
-  // Handle both string IDs and track objects
-  if (typeof track === 'string') {
-    const { data } = supabase.storage.from('audio').getPublicUrl(`tracks/${track}.mp3`);
-    return data.publicUrl;
+  // If track already has a signed stream URL from Edge function, use it
+  if (track.stream_url) {
+    console.log('✅ Using pre-signed URL from Edge function');
+    return track.stream_url;
   }
 
-  // Use storage_bucket and storage_key if available
-  if (track.storage_bucket && track.storage_key) {
-    const { data } = supabase.storage
-      .from(track.storage_bucket)
-      .getPublicUrl(track.storage_key);
-    return data.publicUrl;
+  // Fallback: Use Edge function to generate signed URL
+  const trackId = typeof track === 'string' ? track : (track.id || track.unique_id);
+  if (trackId) {
+    const edgeUrl = `${import.meta.env.VITE_SUPABASE_FUNCTIONS_URL}/api/stream/${trackId}`;
+    console.log('🔄 Fallback to Edge function URL:', edgeUrl);
+    return edgeUrl;
   }
 
-  // Fallback using track ID
-  const trackId = track.id || track.unique_id || 'unknown';
-  const { data } = supabase.storage.from('audio').getPublicUrl(`tracks/${trackId}.mp3`);
-  return data.publicUrl;
+  console.warn('⚠️ No valid track ID found');
+  return '';
 };
 
 // Legacy API object for backward compatibility - now uses direct database access

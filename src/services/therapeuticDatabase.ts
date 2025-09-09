@@ -195,6 +195,37 @@ export async function getTherapeuticTracks(
       .sort((a, b) => b.score.score - a.score.score)
       .slice(0, count);
 
+    // Use Edge function to get tracks with signed URLs first
+    const functionsUrl = import.meta.env.VITE_SUPABASE_FUNCTIONS_URL;
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    
+    if (functionsUrl && anonKey) {
+      try {
+        const response = await fetch(`${functionsUrl}/api/playlist?goal=${goal}&limit=${count}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': anonKey
+          }
+        });
+
+        if (response.ok) {
+          const edgeResult = await response.json();
+          if (edgeResult.tracks?.length > 0) {
+            adminLog('✅ Using Edge function tracks with signed URLs:', edgeResult.tracks.length);
+            // Transform to add missing properties for compatibility
+            const enhancedTracks = edgeResult.tracks.map((track: any) => ({
+              ...track,
+              therapeutic_applications: [], 
+              spectral_analysis: []
+            })) as Track[];
+            return { tracks: enhancedTracks, error: null };
+          }
+        }
+      } catch (fetchError) {
+        adminLog('⚠️ Edge function fallback failed, using direct DB:', fetchError);
+      }
+    }
+
     const finalTracks = scored.map(item => item.track) as Track[];
     
     // Count tracks by bucket for logging
