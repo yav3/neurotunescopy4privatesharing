@@ -109,18 +109,14 @@ export async function getTherapeuticTracks(
       adminLog('🎯 Focus filter: Only tracks with "focus" in title');
     }
 
-    // For meditation, exclude inappropriate high-energy tracks
+    // For meditation, use strict VAD filtering for therapeutic effectiveness
     if (goal === 'meditation-support') {
       baseQuery = baseQuery
-        .not('title', 'ilike', '%festival%')
-        .not('title', 'ilike', '%party%')
-        .not('title', 'ilike', '%dance%')
-        .not('title', 'ilike', '%club%')
-        .not('title', 'ilike', '%rave%')
-        .not('title', 'ilike', '%electric%')
-        .not('title', 'ilike', '%techno%')
-        .not('title', 'ilike', '%house%');
-      adminLog('🧘 Meditation filter: Excluding high-energy track types');
+        .gte('arousal', profile.arousal.min)
+        .lte('arousal', profile.arousal.max)
+        .gte('valence', profile.valence.min)
+        .lte('valence', profile.valence.max);
+      adminLog('🧘 Meditation VAD filter: arousal 0.1-0.3, valence 0.3-0.6');
     }
 
     // Add BPM filtering at database level for performance
