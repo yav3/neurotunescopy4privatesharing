@@ -73,8 +73,8 @@ export async function getTracksFromStorage(
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
     } else if (normalizedGoal === 'trending') {
-      buckets = ['trendingnow'];
-      console.log(`🎯 Using trendingnow bucket for trending tracks`);
+      buckets = ['neuralpositivemusic']; // Fall back to main bucket since trendingnow doesn't exist
+      console.log(`🎯 Using neuralpositivemusic bucket for trending tracks (trendingnow bucket not found)`);
     } else {
       buckets = ['neuralpositivemusic'];
       console.log(`🎯 Using neuralpositivemusic bucket for other goals`);
