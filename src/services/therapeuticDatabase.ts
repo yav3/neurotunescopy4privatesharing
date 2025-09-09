@@ -89,28 +89,29 @@ export async function getTherapeuticTracks(
   try {
     const { adminLog, userLog } = await import('@/utils/adminLogging');
     
-    adminLog(`🎵 Fetching ${count} tracks for goal: ${goal}`);
+    adminLog(`🎵 Fetching ${count} tracks for goal: ${goal} with bucket prioritization`);
     userLog(`🎵 Loading music for ${goal}...`);
     
     const profile = VAD_PROFILES[goal as keyof typeof VAD_PROFILES] || VAD_PROFILES['mood-boost'];
     adminLog('📊 Using VAD profile:', profile);
     
-    // Build the query
-    let query = supabase
+    // First priority: Get tracks from the 'neuralpositivemusic' bucket (more content)
+    let baseQuery = supabase
       .from('tracks')
       .select('*')
       .eq('audio_status', 'working')
-      .not('id', 'is', null);
+      .not('id', 'is', null)
+      .eq('storage_bucket', 'neuralpositivemusic');
 
     // For focus goals, ONLY serve tracks with "focus" in the title
     if (goal === 'focus-enhancement') {
-      query = query.ilike('title', '%focus%');
+      baseQuery = baseQuery.ilike('title', '%focus%');
       adminLog('🎯 Focus filter: Only tracks with "focus" in title');
     }
 
     // Add BPM filtering at database level for performance
     if (profile.bpm_min && profile.bpm_max) {
-      query = query
+      baseQuery = baseQuery
         .gte('bpm', profile.bpm_min)
         .lte('bpm', profile.bpm_max);
       adminLog(`📊 BPM filter: ${profile.bpm_min} - ${profile.bpm_max}`);
@@ -118,29 +119,67 @@ export async function getTherapeuticTracks(
 
     // Exclude specified tracks
     if (excludeIds.length > 0) {
-      query = query.not('id', 'in', `(${excludeIds.join(',')})`);
+      baseQuery = baseQuery.not('id', 'in', `(${excludeIds.join(',')})`);
       adminLog(`🎵 Excluding ${excludeIds.length} recently played tracks`);
     }
 
-    // Get more tracks than needed for filtering
-    query = query.limit(count * 3);
+    // Get more tracks than needed for filtering from neuralpositivemusic
+    const { data: neuralTracks, error: neuralError } = await baseQuery.limit(count * 3);
 
-    const { data: tracks, error } = await query;
-
-    if (error) {
-      console.error('❌ Database query error:', error);
-      return { tracks: [], error: error.message };
+    if (neuralError) {
+      console.error('❌ Neural bucket query error:', neuralError);
+      return { tracks: [], error: neuralError.message };
     }
 
-    if (!tracks || tracks.length === 0) {
+    adminLog(`📦 Found ${neuralTracks?.length || 0} tracks in 'neuralpositivemusic' bucket`);
+
+    let allTracks = [...(neuralTracks || [])];
+
+    // If we need more tracks to reach the requested count, get from audio bucket
+    if (allTracks.length < count * 2) { // Get fallback tracks if we don't have enough
+      adminLog(`🔄 Need more variety, fetching additional tracks from 'audio' bucket`);
+      
+      let audioQuery = supabase
+        .from('tracks')
+        .select('*')
+        .eq('audio_status', 'working')
+        .not('id', 'is', null)
+        .eq('storage_bucket', 'audio');
+
+      // Apply same filters as neural tracks
+      if (goal === 'focus-enhancement') {
+        audioQuery = audioQuery.ilike('title', '%focus%');
+      }
+
+      if (profile.bpm_min && profile.bpm_max) {
+        audioQuery = audioQuery
+          .gte('bpm', profile.bpm_min)
+          .lte('bpm', profile.bpm_max);
+      }
+
+      if (excludeIds.length > 0) {
+        audioQuery = audioQuery.not('id', 'in', `(${excludeIds.join(',')})`);
+      }
+
+      const { data: audioTracks, error: audioError } = await audioQuery.limit(count);
+
+      if (audioError) {
+        adminLog('⚠️ Audio bucket query failed:', audioError);
+      } else {
+        adminLog(`📦 Found ${audioTracks?.length || 0} additional tracks in 'audio' bucket`);
+        allTracks = [...allTracks, ...(audioTracks || [])];
+      }
+    }
+
+    if (!allTracks || allTracks.length === 0) {
       console.warn('⚠️ No tracks found for goal:', goal);
       return { tracks: [] };
     }
 
-    adminLog(`📊 Retrieved ${tracks.length} tracks from database`);
+    adminLog(`📦 Total available tracks: ${allTracks.length} (neural: ${neuralTracks?.length || 0}, audio: ${allTracks.length - (neuralTracks?.length || 0)})`);
 
     // Apply VAD scoring and filtering
-    const scored = tracks
+    const scored = allTracks
       .map(track => ({ track: track as Track, score: calculateVADScore(track as Track, profile, goal) }))
       .filter(item => item.score.score >= 0)
       .sort((a, b) => b.score.score - a.score.score)
@@ -148,8 +187,13 @@ export async function getTherapeuticTracks(
 
     const finalTracks = scored.map(item => item.track) as Track[];
     
+    // Count tracks by bucket for logging
+    const neuralBucketCount = finalTracks.filter(t => t.storage_bucket === 'neuralpositivemusic').length;
+    const audioBucketCount = finalTracks.filter(t => t.storage_bucket === 'audio').length;
+    
     adminLog(`✅ Filtered to ${finalTracks.length} high-quality tracks`);
-    adminLog('🎵 Sample tracks:', finalTracks.slice(0, 3).map(t => ({ title: t.title, bpm: t.bpm, score: calculateVADScore(t, profile, goal).score })));
+    adminLog(`📊 Bucket distribution: neural=${neuralBucketCount}, audio=${audioBucketCount}`);
+    adminLog('🎵 Sample tracks:', finalTracks.slice(0, 3).map(t => ({ title: t.title, bpm: t.bpm, bucket: t.storage_bucket, score: calculateVADScore(t, profile, goal).score })));
     
     userLog(`✅ Found ${finalTracks.length} tracks perfect for your session`);
     
