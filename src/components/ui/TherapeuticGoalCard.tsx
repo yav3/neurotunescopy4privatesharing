@@ -73,7 +73,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
             <h3 className="text-white font-semibold text-lg leading-tight">
               {goal.name}
             </h3>
-            <p className="text-white/80 text-sm line-clamp-2">
+            <p className="text-white/80 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               {goal.description}
             </p>
             
