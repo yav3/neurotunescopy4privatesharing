@@ -64,7 +64,7 @@ export async function getTracksFromStorage(
     console.log(`🎯 Goal received: "${goal}"`);
     console.log(`🎯 Goal type: ${typeof goal}`);
     console.log(`🎯 Is focus-enhancement? ${goal === 'focus-enhancement'}`);
-    buckets = goal === 'focus-enhancement' ? ['Focus Music'] : ['neuralpositivemusic'];
+    buckets = goal === 'focus-enhancement' ? ['focus-music'] : ['neuralpositivemusic'];
     console.log(`🗂️ Selected buckets:`, buckets);
   }
   try {
@@ -107,9 +107,9 @@ export async function getTracksFromStorage(
       if (!files || files.length === 0) {
         console.log(`📁 No files found in bucket: ${bucket}`);
         
-        // Temporary fallback: if Focus Music is empty, try neuralpositivemusic with focus filtering
-        if (bucket === 'Focus Music') {
-          console.log(`🔄 Focus Music bucket is empty, falling back to neuralpositivemusic for focus tracks`);
+        // Temporary fallback: if focus-music is empty, try neuralpositivemusic with focus filtering
+        if (bucket === 'focus-music') {
+          console.log(`🔄 focus-music bucket is empty, falling back to neuralpositivemusic for focus tracks`);
           buckets = ['neuralpositivemusic'];
           console.log(`🗂️ Fallback buckets:`, buckets);
           // Don't continue, let it try the fallback bucket
