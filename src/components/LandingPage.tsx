@@ -86,9 +86,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               NeuralPositive spun out of the prestigious <strong>Postdoctoral Runway Program at Jacobs Cornell Technion Institute (JCTI)</strong> at Cornell Tech. 
               We've received significant funding, partnership, research collaboration, and ongoing support from JCTI, positioning us at the forefront of therapeutic music technology.
             </p>
-            <div className="flex items-center justify-center text-muted-foreground">
-              <span className="font-medium">Trusted by researchers and practitioners worldwide</span>
-            </div>
           </div>
         </div>
       </section>
