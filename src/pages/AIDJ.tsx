@@ -142,7 +142,7 @@ const AIDJ = () => {
               <span>Back</span>
             </button>
             <h1 className="text-2xl font-bold text-foreground">
-              {playlist.goal === 'focus' ? 'Focus Enhancement' : 'Energy Boost'} Playlist
+              {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 'Energy Boost'} Playlist
             </h1>
             <div className="w-20"></div>
           </div>
@@ -290,7 +290,7 @@ const AIDJ = () => {
                   <span className="text-white font-semibold">Generating...</span>
                 </div>
               ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Focus Enhancement</h3>
+                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Stretch & Cool Down</h3>
               )}
               <p className="text-white/90 text-sm drop-shadow-md">
                 Instrumental tracks for deep concentration
