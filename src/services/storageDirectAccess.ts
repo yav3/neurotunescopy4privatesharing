@@ -48,7 +48,7 @@ function filterByGoal(tracks: StorageTrack[], goal: string): StorageTrack[] {
 export async function getTracksFromStorage(
   goal: string = 'mood-boost',
   count: number = 50,
-  buckets: string[] = ['neuralpositivemusic', 'audio']
+  buckets: string[] = ['neuralpositivemusic'] // Only use working bucket
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
   try {
     console.log(`🗂️ Fetching ${count} tracks directly from storage buckets:`, buckets);
@@ -58,13 +58,21 @@ export async function getTracksFromStorage(
     for (const bucket of buckets) {
       console.log(`📁 Scanning bucket: ${bucket}`);
       
-      // List all files in the bucket
-      const { data: files, error } = await supabase.storage
-        .from(bucket)
-        .list('', {
-          limit: 1000,
-          sortBy: { column: 'name', order: 'asc' }
-        });
+      // List all files in the bucket with retry logic
+      let files, error;
+      try {
+        const result = await supabase.storage
+          .from(bucket)
+          .list('', {
+            limit: 1000,
+            sortBy: { column: 'name', order: 'asc' }
+          });
+        files = result.data;
+        error = result.error;
+      } catch (fetchError) {
+        console.error(`❌ Network error accessing bucket ${bucket}:`, fetchError);
+        error = fetchError;
+      }
 
       if (error) {
         console.error(`❌ Error listing files in bucket ${bucket}:`, error);
