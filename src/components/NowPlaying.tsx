@@ -7,6 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { formatTime, cn } from '@/lib/utils';
 import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
+import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 // Deterministic artwork selection to give each song a unique image
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
@@ -184,7 +185,7 @@ export const NowPlaying: React.FC = () => {
               )}
             </div>
             <div className="min-w-0">
-              <h4 className="font-medium truncate">{track.title}</h4>
+              <h4 className="font-medium truncate">{formatTrackTitleForDisplay(track.title)}</h4>
               <p className="text-sm text-muted-foreground truncate">
                 {spatialAudioEnabled && "🌐 "} THERAPEUTIC MUSIC
               </p>

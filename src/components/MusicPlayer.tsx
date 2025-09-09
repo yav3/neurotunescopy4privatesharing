@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTime } from "@/lib/utils";
 import { useAuthContext } from "@/components/auth/AuthProvider";
+import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 
 interface MusicPlayerProps {
@@ -52,7 +53,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
           </div>
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">{track.title}</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-2">{formatTrackTitleForDisplay(track.title)}</h2>
             <p className="text-lg text-muted-foreground mb-1">{track.genre || 'Therapeutic Music'}</p>
             {isAdmin() && (
               <p className="text-sm text-muted-foreground">
