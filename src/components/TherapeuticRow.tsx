@@ -165,12 +165,6 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
       {/* Row header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className={cn(
-            "w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-r",
-            goal.gradient
-          )}>
-            <goal.icon className="w-5 h-5 text-white" />
-          </div>
           <div>
             <h2 className="text-xl font-semibold text-foreground">{goal.name}</h2>
           </div>
