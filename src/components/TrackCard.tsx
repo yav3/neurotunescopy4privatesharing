@@ -43,7 +43,7 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
   }
 }
 
-// Deterministic artwork selection to give each song a unique image
+// Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
   // Expanded album art collection with beautiful nature imagery
   const albumArtwork = [
@@ -72,22 +72,34 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
     '/lovable-uploads/theta-misty-path.png',
     '/lovable-uploads/alpha-mountain-lake.png',
     '/lovable-uploads/beta-waterfall.png',
-    '/lovable-uploads/gamma-sunbeam-forest.png'
+    '/lovable-uploads/gamma-sunbeam-forest.png',
+    '/lovable-uploads/262b2035-e633-446a-a217-97d2ec10d8a1.png',
+    '/lovable-uploads/4e6f957d-a660-4a2e-9019-364f45cebb99.png',
+    '/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png',
+    '/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png',
+    '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
+    '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
+    '/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png'
   ]
   
-  // Create deterministic seed from trackId to prevent race conditions
-  const createSeed = (str: string): number => {
-    let hash = 0
+  // Enhanced seed generation for better distribution
+  const createEnhancedSeed = (str: string): number => {
+    let hash = 5381
+    let hash2 = 5381
+    
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i)
-      hash = ((hash << 5) - hash) + char
-      hash = hash & hash // Convert to 32-bit integer
+      hash = ((hash << 5) + hash) + char // hash * 33 + char
+      hash2 = ((hash2 << 5) + hash2) + char * 17 // Different multiplier for variation
     }
-    return Math.abs(hash)
+    
+    // Combine both hashes for better distribution
+    return Math.abs(hash ^ hash2)
   }
   
-  // Each track gets a unique image based on its ID
-  const seed = createSeed(trackId)
+  // Use enhanced seeding with track ID and frequency band for more variety
+  const combinedSeed = trackId + frequencyBand
+  const seed = createEnhancedSeed(combinedSeed)
   const artworkIndex = seed % albumArtwork.length
   
   // Gradient based on frequency band for therapeutic visual cues
