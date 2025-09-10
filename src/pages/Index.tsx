@@ -111,17 +111,9 @@ const Index = () => {
                    {/* Content */}
                    <div className="relative z-10 p-4 md:p-5 h-full flex flex-col justify-between items-center text-center">
                      <div className="flex flex-col items-center space-y-4 flex-1 justify-center">
-                       <div className={cn(
-                         "p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
-                         "bg-gradient-to-br", theme.gradient,
-                         "shadow-lg group-hover:shadow-xl"
-                       )}>
-                         <IconComponent className="w-6 h-6 text-white" />
-                       </div>
-                       
-                        <h3 className="text-base md:text-lg font-bold text-white group-hover:text-white transition-colors leading-tight">
-                          {goal.name}
-                        </h3>
+                       <h3 className="text-base md:text-lg font-bold text-white group-hover:text-white transition-colors leading-tight">
+                         {goal.name}
+                       </h3>
                      </div>
 
                      {/* Action */}
