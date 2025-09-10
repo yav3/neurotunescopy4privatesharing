@@ -10,10 +10,10 @@ import { cn } from '@/lib/utils';
 // Enhanced color themes for each goal
 const goalThemes = {
   'focus-enhancement': {
-    gradient: 'from-blue-600 via-cyan-500 to-teal-400',
-    bg: 'from-blue-900/80 via-cyan-900/60 to-teal-800/40',
-    accent: 'text-blue-400',
-    border: 'border-blue-500/20 hover:border-blue-400/40'
+    gradient: 'from-cyan-600 via-teal-500 to-blue-400',
+    bg: 'from-cyan-900/80 via-teal-900/60 to-blue-800/40',
+    accent: 'text-cyan-400',
+    border: 'border-cyan-500/20 hover:border-cyan-400/40'
   },
   'stress-anxiety-support': {
     gradient: 'from-green-600 via-emerald-500 to-teal-400',
