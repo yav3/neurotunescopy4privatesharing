@@ -14,7 +14,7 @@ interface TherapeuticRowProps {
 // Icon mapping for each therapeutic goal
 const goalIcons = {
   'focus-enhancement': Brain,
-  'stress-anxiety': Heart,
+  'stress-anxiety-support': Heart,
   'sleep-support': Moon,
   'mood-boost': Zap,
   'pain-support': Target,
@@ -30,7 +30,7 @@ const goalThemes = {
     accent: 'text-blue-500',
     border: 'border-blue-500/20 hover:border-blue-400/40'
   },
-  'stress-anxiety': {
+  'stress-anxiety-support': {
     gradient: 'from-green-600 to-emerald-400',
     bg: 'from-green-900/20 to-emerald-900/10',
     accent: 'text-green-500',
@@ -82,8 +82,17 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
       )}
       onClick={handleGoalClick}
     >
-      {/* Background gradient */}
-      <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
+      {/* Background Image */}
+      <div className="absolute inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-500">
+        <img 
+          src={goal.artwork} 
+          alt={goal.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      {/* Background gradient overlay */}
+      <div className={cn("absolute inset-0 opacity-90 group-hover:opacity-95 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
       
       {/* Content */}
       <div className="relative z-10 p-6">

@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 // Enhanced icons for each therapeutic goal
 const goalIcons = {
   'focus-enhancement': Focus,
-  'stress-anxiety': Heart,
+  'stress-anxiety-support': Heart,
   'sleep-support': Moon,
   'mood-boost': Zap,
   'pain-support': Target,
@@ -26,7 +26,7 @@ const goalThemes = {
     accent: 'text-blue-400',
     border: 'border-blue-500/20 hover:border-blue-400/40'
   },
-  'stress-anxiety': {
+  'stress-anxiety-support': {
     gradient: 'from-green-600 via-emerald-500 to-teal-400',
     bg: 'from-green-900/80 via-emerald-900/60 to-teal-800/40',
     accent: 'text-green-400',
@@ -125,8 +125,17 @@ export default function TherapeuticGoalsPage() {
                   )}
                   onClick={() => handleGoalSelect(goal)}
                 >
-                  {/* Background gradient */}
-                  <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
+                  {/* Background Image */}
+                  <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                    <img 
+                      src={goal.artwork} 
+                      alt={goal.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Background gradient overlay */}
+                  <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
                   {/* Content */}
                   <div className="relative z-10 p-6 md:p-8">
