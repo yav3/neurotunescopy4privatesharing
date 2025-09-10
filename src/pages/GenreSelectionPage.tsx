@@ -27,7 +27,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '60+ tracks',
         gradient: 'from-purple-500 to-indigo-400',
-        image: '/lovable-uploads/acoustic-sunset-field.png'
+        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1%20(1).jpeg'
       },
       {
         id: 'electronic',
