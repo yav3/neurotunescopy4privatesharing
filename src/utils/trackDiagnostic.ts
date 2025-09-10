@@ -1,6 +1,7 @@
 // Quick diagnostic for checking track URLs
 import { useAudioStore } from '@/stores';
 import { headOk } from '@/lib/stream';
+import { diagnoseSongPlayability } from './trackUrlDiagnostic';
 
 export const checkCurrentTracks = async () => {
   const state = useAudioStore.getState();
@@ -43,4 +44,5 @@ export const checkCurrentTracks = async () => {
 // Make available globally for debugging
 if (typeof window !== 'undefined') {
   (window as any).checkCurrentTracks = checkCurrentTracks;
+  (window as any).diagnoseSongPlayability = diagnoseSongPlayability;
 }
