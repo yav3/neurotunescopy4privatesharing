@@ -93,9 +93,9 @@ const Index = () => {
       </div>
 
       {/* Goals Grid */}
-      <div className="px-2 md:px-4 -mt-2">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 scale-75">
+      <div className="px-4 py-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal) => {
               const IconComponent = goalIcons[goal.id as keyof typeof goalIcons] || goalIcons.default;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
@@ -104,7 +104,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-square",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-48 md:h-56",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
@@ -124,49 +124,49 @@ const Index = () => {
                   <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-2 md:p-3 h-full flex flex-col">
-                     <div className="flex flex-col items-center text-center flex-grow">
+                   <div className="relative z-10 p-4 md:p-6 h-full flex flex-col justify-center items-center text-center">
+                     <div className="flex flex-col items-center space-y-3">
                        <div className={cn(
-                         "p-1.5 md:p-2 rounded-xl transition-all duration-300 group-hover:scale-110 mb-1.5 md:mb-2",
+                         "p-3 md:p-4 rounded-2xl transition-all duration-300 group-hover:scale-110",
                          "bg-gradient-to-br", theme.gradient,
                          "shadow-lg group-hover:shadow-xl"
                        )}>
-                         <IconComponent className="w-3 h-3 md:w-5 md:h-5 text-white" />
+                         <IconComponent className="w-6 h-6 md:w-8 md:h-8 text-white" />
                        </div>
                        
-                       <h3 className="text-base md:text-lg font-bold mb-1 group-hover:text-foreground transition-colors text-center leading-tight w-full">
+                       <h3 className="text-lg md:text-xl font-bold group-hover:text-foreground transition-colors leading-tight">
                          {goal.name}
                        </h3>
-                       <p className="text-[10px] md:text-xs text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-tight line-clamp-2 text-center mb-1">
+                       
+                       <p className="text-sm md:text-base text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed line-clamp-3 max-w-xs">
                          {goal.description}
                        </p>
 
                        {/* Features */}
-                       <div className="space-y-0.5 mb-2">
-                         <div className="flex items-center justify-center text-[9px] md:text-[10px] text-muted-foreground">
-                           <div className={cn("w-0.5 h-0.5 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
+                       <div className="flex flex-col space-y-1">
+                         <div className="flex items-center justify-center text-sm text-muted-foreground">
+                           <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
                            Science-backed
                          </div>
-                         <div className="flex items-center justify-center text-[9px] md:text-[10px] text-muted-foreground">
-                           <div className={cn("w-0.5 h-0.5 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
+                         <div className="flex items-center justify-center text-sm text-muted-foreground">
+                           <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
                            Multiple genres
                          </div>
                        </div>
-                     </div>
 
-                     {/* Action */}
-                     <Button
-                       variant="outline"
-                       size="sm"
-                       className={cn(
-                         "w-full transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
-                         "border-border hover:border-primary text-[10px] md:text-xs h-5 md:h-6 px-1 md:px-2 mt-auto"
-                       )}
-                     >
-                       <span className="hidden sm:inline">Explore Genres</span>
-                       <span className="sm:hidden">Explore</span>
-                       <ArrowLeft className="w-2 h-2 md:w-3 md:h-3 ml-0.5 md:ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
-                     </Button>
+                       {/* Action */}
+                       <Button
+                         variant="outline"
+                         size="sm"
+                         className={cn(
+                           "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
+                           "border-border hover:border-primary px-6 py-2 mt-4"
+                         )}
+                       >
+                         <span>Explore Genres</span>
+                         <ArrowLeft className="w-4 h-4 ml-2 rotate-180 transition-transform group-hover:translate-x-1" />
+                       </Button>
+                     </div>
                    </div>
 
                   {/* Hover Effect */}
