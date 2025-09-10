@@ -112,6 +112,12 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
           backgroundImage: `url(${artwork.url})`,
           backgroundPosition: artwork.position
         }}
+        onError={(e) => {
+          console.warn('❌ Failed to load track card artwork:', artwork.url);
+          // Fallback to a solid gradient when image fails
+          e.currentTarget.style.backgroundImage = 'none';
+          e.currentTarget.style.background = 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))';
+        }}
       />
       
       {/* Gradient overlay */}

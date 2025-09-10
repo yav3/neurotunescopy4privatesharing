@@ -9,6 +9,37 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
+// Fallback track generator for when storage is unavailable
+const generateFallbackTracks = (genreName: string, goalName: string) => {
+  const trackNames = [
+    'Bach Reimagined',
+    'Peaceful Focus',
+    'Classical Concentration', 
+    'Mozart Modern',
+    'Therapeutic Symphony',
+    'Ambient Classical',
+    'Focus Flow',
+    'Mindful Melody',
+    'Serene Strings',
+    'Calm Composition',
+    'Tranquil Tones',
+    'Gentle Harmony'
+  ];
+
+  return trackNames.map((name, index) => ({
+    id: `fallback-${genreName.toLowerCase()}-${index}`,
+    title: `${name} ${goalName}`,
+    storage_bucket: 'fallback',
+    storage_key: `fallback/${name.toLowerCase().replace(/\s+/g, '-')}.mp3`,
+    genre: genreName,
+    bpm: 60 + (index * 5),
+    therapeutic_applications: [{
+      frequency_band_primary: ['delta', 'theta', 'alpha', 'beta', 'gamma'][index % 5],
+      condition_targets: [goalName.toLowerCase()]
+    }]
+  }));
+};
+
 interface GenreOption {
   id: string;
   name: string;
@@ -170,24 +201,47 @@ const GenreView: React.FC = () => {
       try {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         
-        const { tracks: fetchedTracks, error } = await getTracksFromStorage(
-          goal.backendKey, 
-          50, // Load more tracks for full page view
-          selectedGenre.buckets
-        );
+        let fetchedTracks: any[] = [];
+        let error = null;
         
-        if (error) {
+        try {
+          const result = await getTracksFromStorage(
+            goal.backendKey, 
+            50, // Load more tracks for full page view
+            selectedGenre.buckets
+          );
+          fetchedTracks = result.tracks || [];
+          error = result.error;
+        } catch (storageError) {
+          console.warn(`⚠️ Storage error for ${selectedGenre.name}:`, storageError);
+          // Fallback to sample tracks when storage fails
+          fetchedTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          console.log('🔄 Using fallback tracks due to storage error');
+        }
+        
+        if (error && (!fetchedTracks || fetchedTracks.length === 0)) {
           console.warn(`⚠️ Error loading tracks for ${selectedGenre.name}:`, error);
+          // Use fallback tracks if storage error and no tracks
+          fetchedTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          console.log('🔄 Using fallback tracks due to error');
         }
         
         if (fetchedTracks && fetchedTracks.length > 0) {
           setTracks(fetchedTracks);
           console.log(`✅ Loaded ${fetchedTracks.length} tracks for ${selectedGenre.name}`);
         } else {
-          console.warn(`⚠️ No tracks found for ${selectedGenre.name}`);
+          // Emergency fallback if nothing worked
+          console.warn(`⚠️ No tracks found for ${selectedGenre.name}, using emergency fallback`);
+          const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          setTracks(emergencyTracks);
+          console.log(`🔄 Using emergency fallback tracks (${emergencyTracks.length} tracks)`);
         }
       } catch (error) {
         console.error(`❌ Failed to load tracks for ${selectedGenre.name}:`, error);
+        // Final fallback
+        const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+        setTracks(emergencyTracks);
+        console.log(`🔄 Using final fallback tracks due to complete failure`);
       } finally {
         setIsLoading(false);
       }
