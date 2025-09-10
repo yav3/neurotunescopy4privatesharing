@@ -134,7 +134,7 @@ const Index = () => {
                          <IconComponent className="w-3 h-3 md:w-5 md:h-5 text-white" />
                        </div>
                        
-                       <h3 className="text-sm md:text-base font-semibold mb-1 group-hover:text-foreground transition-colors text-center leading-tight w-full">
+                       <h3 className="text-base md:text-lg font-bold mb-1 group-hover:text-foreground transition-colors text-center leading-tight w-full">
                          {goal.name}
                        </h3>
                        <p className="text-[10px] md:text-xs text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-tight line-clamp-2 text-center mb-1">
