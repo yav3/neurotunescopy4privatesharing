@@ -1,22 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Brain, Target, Zap, Moon, Heart, Focus, Headphones } from 'lucide-react';
+import { ArrowLeft, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
-
-// Enhanced icons for each therapeutic goal
-const goalIcons = {
-  'focus-enhancement': Focus,
-  'stress-anxiety-support': Heart,
-  'cardio-support': Moon,
-  'mood-boost': Zap,
-  'pain-support': Target,
-  'energy-boost': Headphones,
-  'default': Brain
-};
 
 // Enhanced color themes for each goal
 const goalThemes = {
@@ -97,7 +86,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal) => {
-              const IconComponent = goalIcons[goal.id as keyof typeof goalIcons] || goalIcons.default;
+              const IconComponent = goal.icon;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
               
               return (
