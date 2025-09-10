@@ -6,7 +6,7 @@ import { Navigation } from "@/components/Navigation";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import SoundCloudFallback from "@/components/SoundCloudFallback";
 import { useAudioStore } from "@/stores";
-import "@/utils/startCompilation"; // Auto-start compilation
+// import "@/utils/startCompilation"; // DISABLED - Skip metadata compilation and play songs directly
 
 const Index = () => {
   const [activeNavTab, setActiveNavTab] = useState("home");
