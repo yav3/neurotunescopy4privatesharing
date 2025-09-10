@@ -38,8 +38,8 @@ export const Header = () => {
         };
       default:
         return {
-          title: 'NeuroTunes',
-          subtitle: 'please select your therapeutic goal'
+          title: 'Therapeutic Music Library',
+          subtitle: 'Select a goal and a genre to begin; closed-loop recommendation will enable personalization after you have "favorited" 30 songs.'
         };
     }
   };
