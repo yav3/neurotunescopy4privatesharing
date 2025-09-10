@@ -60,8 +60,62 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           buckets: ['neuralpositivemusic']
         }
       ];
+    } else if (goalId === 'mood-boost') {
+      return [
+        {
+          id: 'classical-crossover',
+          name: 'Classical Crossover',
+          description: 'Modern classical music with contemporary elements',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'electronic',
+          name: 'Electronic',
+          description: 'Uplifting electronic beats and rhythms',
+          buckets: ['ENERGYBOOST']
+        },
+        {
+          id: 'new-age-world',
+          name: 'New Age & World',
+          description: 'Soothing world music and new age sounds',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'samba-jazz',
+          name: 'Samba & Jazz',
+          description: 'Smooth jazz and Brazilian rhythms',
+          buckets: ['neuralpositivemusic']
+        }
+      ];
+    } else if (goalId === 'energy-boost') {
+      return [
+        {
+          id: 'classical-crossover',
+          name: 'Classical Crossover',
+          description: 'Energizing classical music with modern elements',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'electronic',
+          name: 'Electronic',
+          description: 'High-energy electronic music and beats',
+          buckets: ['ENERGYBOOST']
+        },
+        {
+          id: 'new-age-world',
+          name: 'New Age & World',
+          description: 'Motivational world music and new age sounds',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'samba-jazz',
+          name: 'Samba & Jazz',
+          description: 'Energetic jazz and Brazilian rhythms',
+          buckets: ['ENERGYBOOST']
+        }
+      ];
     } else {
-      // For all other goals: stress-anxiety-support, mood-boost, pain-support
+      // For stress-anxiety-support and pain-support
       return [
         {
           id: 'classical-crossover',
