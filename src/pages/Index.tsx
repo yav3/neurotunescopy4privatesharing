@@ -34,10 +34,10 @@ const goalThemes = {
     border: 'border-cyan-500/20 hover:border-cyan-400/40'
   },
   'pain-support': {
-    gradient: 'from-slate-600 via-gray-500 to-blue-400',
-    bg: 'from-slate-900/80 via-gray-900/60 to-blue-800/40',
-    accent: 'text-slate-400',
-    border: 'border-slate-500/20 hover:border-slate-400/40'
+    gradient: 'from-blue-600 via-indigo-500 to-cyan-400',
+    bg: 'from-blue-900/80 via-indigo-900/60 to-cyan-800/40',
+    accent: 'text-blue-400',
+    border: 'border-blue-500/20 hover:border-blue-400/40'
   },
   'energy-boost': {
     gradient: 'from-teal-600 via-cyan-500 to-blue-400',
@@ -101,7 +101,7 @@ const Index = () => {
                   onClick={() => handleGoalSelect(goal)}
                 >
                   {/* Background Image */}
-                  <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                  <div className="absolute inset-0 opacity-10 group-hover:opacity-15 transition-opacity duration-500">
                     <img 
                       src={goal.artwork} 
                       alt={goal.name}
