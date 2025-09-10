@@ -50,7 +50,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     backendKey: 'focus-enhancement',
     name: 'Focus Enhancement',
     shortName: 'Focus',
-    description: 'Improve concentration and mental clarity',
+    description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
     icon: Brain,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/88FFA6BC5B10A0E6E897C0101091826567A6D486894E501D7F618023F51E15DC_sk_6_cid_1%20(1).jpeg',
     color: 'blue',
