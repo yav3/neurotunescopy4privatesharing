@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { TrackRowCard } from './TrackRowCard';
 import { TherapeuticGoal } from '@/config/therapeuticGoals';
@@ -29,6 +30,7 @@ interface Track {
 }
 
 export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className }) => {
+  const navigate = useNavigate();
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -297,7 +299,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           {genreOptions.map((genre) => (
             <button
               key={genre.id}
-              onClick={() => setSelectedGenre(genre.id)}
+              onClick={() => navigate(`/genre/${goal.id}/${genre.id}`)}
               className="group relative overflow-hidden rounded-lg border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
             >
               <div className="aspect-square relative">
