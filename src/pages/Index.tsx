@@ -22,10 +22,10 @@ const goalThemes = {
     border: 'border-green-500/20 hover:border-green-400/40'
   },
   'cardio-support': {
-    gradient: 'from-indigo-600 via-blue-500 to-cyan-400',
-    bg: 'from-indigo-900/80 via-blue-900/60 to-cyan-800/40',
-    accent: 'text-indigo-400',
-    border: 'border-indigo-500/20 hover:border-indigo-400/40'
+    gradient: 'from-teal-600 via-cyan-500 to-blue-400',
+    bg: 'from-teal-900/80 via-cyan-900/60 to-blue-800/40',
+    accent: 'text-teal-400',
+    border: 'border-teal-500/20 hover:border-teal-400/40'
   },
   'mood-boost': {
     gradient: 'from-cyan-500 via-teal-500 to-green-400',
