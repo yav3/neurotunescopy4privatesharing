@@ -139,6 +139,13 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
+          id: 'electronic',
+          name: 'Electronic',
+          description: 'Ambient electronic textures for healing',
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
+        },
+        {
           id: 'new-age-world',
           name: 'New Age & World',
           description: 'Soothing world music and new age sounds',
