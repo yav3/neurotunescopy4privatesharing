@@ -140,13 +140,13 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container max-w-4xl mx-auto px-4 py-8 mb-24">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container max-w-4xl mx-auto px-4 py-6 sm:py-8 mb-20 sm:mb-24">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
           <div className="flex items-center gap-3">
-            <User className="h-8 w-8 text-primary" />
+            <User className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Profile</h1>
-              <p className="text-lg text-muted-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Profile</h1>
+              <p className="text-base sm:text-lg text-muted-foreground">
                 Manage your therapeutic music journey
               </p>
             </div>
@@ -172,29 +172,29 @@ const Profile = () => {
           />
 
           {/* Stats Cards */}
-          <div className="grid md:grid-cols-4 gap-4">
-            <Card className="p-4 text-center">
-              <Music className="h-6 w-6 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.total_sessions}</div>
-              <div className="text-sm text-muted-foreground">Sessions Complete</div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <Card className="p-3 sm:p-4 text-center">
+              <Music className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
+              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.total_sessions}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Sessions Complete</div>
             </Card>
             
-            <Card className="p-4 text-center">
-              <Clock className="h-6 w-6 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.total_listen_time}h</div>
-              <div className="text-sm text-muted-foreground">Total Listen Time</div>
+            <Card className="p-3 sm:p-4 text-center">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
+              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.total_listen_time}h</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Total Listen Time</div>
             </Card>
             
-            <Card className="p-4 text-center">
-              <Settings className="h-6 w-6 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.favorite_goals_count}</div>
-              <div className="text-sm text-muted-foreground">Preferred Goals</div>
+            <Card className="p-3 sm:p-4 text-center">
+              <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
+              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.favorite_goals_count}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Preferred Goals</div>
             </Card>
             
-            <Card className="p-4 text-center">
-              <TrendingUp className="h-6 w-6 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.current_streak}</div>
-              <div className="text-sm text-muted-foreground">Day Streak</div>
+            <Card className="p-3 sm:p-4 text-center">
+              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
+              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.current_streak}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Day Streak</div>
             </Card>
           </div>
 

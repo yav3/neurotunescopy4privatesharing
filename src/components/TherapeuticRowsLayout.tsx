@@ -31,10 +31,10 @@ interface TherapeuticRowsLayoutProps {
 
 export const TherapeuticRowsLayout: React.FC<TherapeuticRowsLayoutProps> = ({ className }) => {
   return (
-    <section className={cn("px-4 md:px-8 mb-32 pt-12", className)}>
+    <section className={cn("px-4 md:px-8 mb-32 pt-8 sm:pt-12", className)}>
       <div className="max-w-7xl mx-auto">
         {/* Therapeutic rows */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {THERAPEUTIC_GOALS.map((goal) => (
             <TherapeuticRow 
               key={goal.id} 

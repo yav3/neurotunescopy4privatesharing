@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { fetchPlaylist } from "@/lib/api";
 import { newSeed, remember, excludeQS } from "@/state/playlistSession";
 import { supabase } from "@/integrations/supabase/client";
+import { handleImageError } from "@/utils/imageUtils";
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("flow");
@@ -191,22 +192,22 @@ const AIDJ = () => {
               onClick={goBack}
               className="flex items-center gap-2 text-primary hover:text-foreground transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back</span>
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-sm sm:text-base">Back</span>
             </button>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-lg sm:text-2xl font-bold text-foreground text-center flex-1 mx-4">
               {playlist.goal === 'focus' ? 'Stretch & Cool Down' : 
                playlist.goal === 'energy' ? 'Cardio' : 'Samba & Jazz'} Playlist
             </h1>
-            <div className="w-20"></div>
+            <div className="w-16 sm:w-20"></div>
           </div>
         </div>
 
         {/* Player Controls */}
         {playlist.playlist && playlist.playlist.length > 0 && (
           <div className="p-4 bg-muted/30 border-b border-border/50">
-            <div className="max-w-6xl mx-auto flex items-center justify-between">
-              <div className="text-sm text-muted-foreground">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {playlist.count} tracks • {playlist.description}
               </div>
               <div className="flex items-center gap-3">
@@ -215,21 +216,21 @@ const AIDJ = () => {
                     onClick={pause}
                     className="bg-primary hover:bg-primary/80 p-2 rounded-full transition-colors text-primary-foreground"
                   >
-                    <Pause className="w-5 h-5" />
+                    <Pause className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 ) : (
                   <button
                     onClick={queue.length > 0 ? play : () => playTrack(playlist.playlist[0], 0)}
                     className="bg-primary hover:bg-primary/80 p-2 rounded-full transition-colors text-primary-foreground"
                   >
-                    <Play className="w-5 h-5" />
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 )}
                 <button
                   onClick={next}
                   className="bg-muted hover:bg-muted/80 p-2 rounded-full transition-colors text-foreground"
                 >
-                  <SkipForward className="w-5 h-5" />
+                  <SkipForward className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
@@ -261,24 +262,24 @@ const AIDJ = () => {
                   <div
                     key={track.id}
                     onClick={() => playTrack(track, trackIndex)}
-                    className={`flex items-center gap-4 p-4 rounded-lg cursor-pointer transition-all ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg cursor-pointer transition-all ${
                       isCurrentTrack
                         ? 'bg-primary/20 border-l-4 border-primary'
                         : 'bg-muted/30 hover:bg-muted/50'
                     }`}
                   >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
                       isCurrentTrack ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                     }`}>
                       {trackIndex + 1}
                     </div>
                     
                     <div className="flex-grow min-w-0">
-                      <h3 className="font-medium text-foreground truncate">{track.title}</h3>
-                      <p className="text-sm text-muted-foreground truncate">{track.artist || 'Unknown Artist'}</p>
+                      <h3 className="font-medium text-foreground truncate text-sm sm:text-base">{track.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">{track.artist || 'Unknown Artist'}</p>
                     </div>
                     
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-muted-foreground shrink-0">
                       Ready
                     </div>
                   </div>
@@ -299,9 +300,9 @@ const AIDJ = () => {
       <Header />
       
       {/* Header */}
-      <div className="text-center pt-12 pb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Flow State</h1>
-        <p className="text-lg text-muted-foreground">
+      <div className="text-center pt-8 sm:pt-12 pb-6 sm:pb-8 px-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Flow State</h1>
+        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           patented closed loop personalization designed to enhance your performance
         </p>
       </div>
@@ -323,30 +324,31 @@ const AIDJ = () => {
 
       {/* Cards Grid */}
       <div className="px-4 pb-32">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Focus Enhancement Card */}
           <div 
             onClick={() => generateFlowPlaylist('focus')}
-            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+            className={`relative overflow-hidden rounded-2xl h-48 sm:h-40 lg:h-44 cursor-pointer transition-all duration-300 ${
               loading === 'focus' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
+            <img 
+              src="/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png"
+              alt="Stretch & Cool Down"
+              className="w-full h-full object-cover"
+              onError={handleImageError}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            <div className="relative p-6 h-full flex flex-col justify-end">
+            <div className="relative p-4 sm:p-6 h-full flex flex-col justify-end">
               {loading === 'focus' ? (
                 <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Generating...</span>
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold text-sm sm:text-base">Generating...</span>
                 </div>
               ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Stretch & Cool Down</h3>
+                <h3 className="text-white text-lg sm:text-xl font-bold mb-2 drop-shadow-lg">Stretch & Cool Down</h3>
               )}
-              <p className="text-white/90 text-sm drop-shadow-md">
+              <p className="text-white/90 text-xs sm:text-sm drop-shadow-md line-clamp-2">
                 Instrumental tracks for deep concentration
               </p>
             </div>
@@ -355,26 +357,27 @@ const AIDJ = () => {
           {/* Energy Boost Card */}
           <div 
             onClick={() => generateFlowPlaylist('energy')}
-            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+            className={`relative overflow-hidden rounded-2xl h-48 sm:h-40 lg:h-44 cursor-pointer transition-all duration-300 ${
               loading === 'energy' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/lovable-uploads/4e6f957d-a660-4a2e-9019-364f45cebb99.png)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
+            <img 
+              src="/lovable-uploads/4e6f957d-a660-4a2e-9019-364f45cebb99.png"
+              alt="Cardio"
+              className="w-full h-full object-cover"
+              onError={handleImageError}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            <div className="relative p-6 h-full flex flex-col justify-end">
+            <div className="relative p-4 sm:p-6 h-full flex flex-col justify-end">
               {loading === 'energy' ? (
                 <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Generating...</span>
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold text-sm sm:text-base">Generating...</span>
                 </div>
               ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Cardio</h3>
+                <h3 className="text-white text-lg sm:text-xl font-bold mb-2 drop-shadow-lg">Cardio</h3>
               )}
-              <p className="text-white/90 text-sm drop-shadow-md">
+              <p className="text-white/90 text-xs sm:text-sm drop-shadow-md line-clamp-2">
                 High arousal, high valence for motivation and power
               </p>
             </div>
@@ -383,26 +386,27 @@ const AIDJ = () => {
           {/* Samba & Jazz Card */}
           <div 
             onClick={() => generateFlowPlaylist('samba')}
-            className={`relative overflow-hidden rounded-2xl h-40 cursor-pointer transition-all duration-300 ${
+            className={`relative overflow-hidden rounded-2xl h-48 sm:h-40 lg:h-44 cursor-pointer transition-all duration-300 ${
               loading === 'samba' ? 'opacity-75 pointer-events-none scale-95' : 'hover:scale-105'
             }`}
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
+            <img 
+              src="/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png"
+              alt="Samba & Jazz"
+              className="w-full h-full object-cover"
+              onError={handleImageError}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-            <div className="relative p-6 h-full flex flex-col justify-end">
+            <div className="relative p-4 sm:p-6 h-full flex flex-col justify-end">
               {loading === 'samba' ? (
                 <div className="flex items-center gap-2 mb-2">
-                  <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  <span className="text-white font-semibold">Generating...</span>
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-spin" />
+                  <span className="text-white font-semibold text-sm sm:text-base">Generating...</span>
                 </div>
               ) : (
-                <h3 className="text-white text-xl font-bold mb-2 drop-shadow-lg">Samba & Jazz</h3>
+                <h3 className="text-white text-lg sm:text-xl font-bold mb-2 drop-shadow-lg">Samba & Jazz</h3>
               )}
-              <p className="text-white/90 text-sm drop-shadow-md">
+              <p className="text-white/90 text-xs sm:text-sm drop-shadow-md line-clamp-2">
                 Smooth rhythms for relaxation and enjoyment
               </p>
             </div>

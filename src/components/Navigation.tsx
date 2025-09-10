@@ -30,7 +30,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border px-4 py-2 md:px-8">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border px-2 py-2 sm:px-4 md:px-8">
       <div className="flex justify-around items-center max-w-md mx-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -41,12 +41,12 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               key={tab.id}
               onClick={() => handleTabClick(tab)}
               className={cn(
-                "flex flex-col items-center gap-1 py-2 px-3 transition-colors duration-200",
+                "flex flex-col items-center gap-1 py-2 px-2 sm:px-3 transition-colors duration-200 min-w-0",
                 isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Icon className="w-6 h-6" />
-              <span className="text-xs font-medium">{tab.label}</span>
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="text-xs font-medium truncate max-w-full">{tab.label}</span>
             </button>
           );
         })}

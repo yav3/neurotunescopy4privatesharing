@@ -368,4 +368,50 @@ All colors MUST be HSL.
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.5);
   }
+
+  /* Line clamp utilities for text truncation */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Mobile-first responsive fixes */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    /* Ensure cards don't overflow */
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    /* Fix navigation spacing */
+    nav {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  /* Ensure images don't cause horizontal scroll */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix for mobile viewport units */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
 }
