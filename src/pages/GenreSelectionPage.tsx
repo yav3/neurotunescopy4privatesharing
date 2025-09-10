@@ -36,7 +36,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '75+ tracks',
         gradient: 'from-cyan-500 to-teal-400',
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/BEF904AA9C4B80018215E6C082AA7FEAA1E0D5E6E2EAE4B836FE28AB6FB66243_sk_6_cid_1%20(1).jpeg'
       },
       {
         id: 'peaceful-piano',
