@@ -133,9 +133,9 @@ const GenreView: React.FC = () => {
         },
         {
           id: 'electronic',
-          name: 'Electronic',
+          name: 'EDM & House',
           description: 'High-energy electronic music and beats',
-          buckets: ['ENERGYBOOST'],
+          buckets: ['HIIT', 'ENERGYBOOST'],
           artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
         },
         {
