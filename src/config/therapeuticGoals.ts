@@ -77,20 +77,20 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
-    id: 'sleep-support',
-    slug: 'sleep-support',
-    backendKey: 'sleep-support',
-    name: 'Sleep Support',
-    shortName: 'Sleep',
-    description: 'Peaceful music to help you relax and fall asleep naturally',
+    id: 'cardio-support',
+    slug: 'cardio-support',
+    backendKey: 'cardio-support',
+    name: 'Cardio',
+    shortName: 'Cardio',
+    description: 'Energizing beats to power your cardio workouts and training',
     icon: Waves,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/d37bdb73-8ea1-4150-a35d-e08dbd929ff2.png',
     color: 'indigo',
     gradient: 'from-indigo-500 to-purple-500',
-    bpmRange: { min: 30, max: 60, optimal: 45 },
-    vadProfile: { valence: 0.5, arousal: 0.1, dominance: 0.2 },
-    musicBuckets: ['neuralpositivemusic'],
-    synonyms: ['sleep', 'rest', 'bedtime', 'peaceful', 'calm', 'sleep_support', 'insomnia']
+    bpmRange: { min: 120, max: 160, optimal: 140 },
+    vadProfile: { valence: 0.7, arousal: 0.8, dominance: 0.6 },
+    musicBuckets: ['ENERGYBOOST'],
+    synonyms: ['cardio', 'workout', 'training', 'exercise', 'fitness', 'running', 'cycling']
   },
   {
     id: 'mood-boost',
