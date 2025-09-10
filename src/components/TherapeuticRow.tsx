@@ -293,25 +293,25 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {genreOptions.map((genre) => (
             <button
               key={genre.id}
               onClick={() => setSelectedGenre(genre.id)}
               className="group relative overflow-hidden rounded-lg border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
             >
-              <div className="aspect-[4/3] relative">
+              <div className="aspect-square relative">
                 <img 
                   src={genre.artwork} 
                   alt={genre.name}
                   className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-primary-foreground">
+                <div className="absolute bottom-2 left-2 right-2">
+                  <h3 className="text-sm font-semibold text-white mb-0.5 group-hover:text-primary-foreground">
                     {genre.name}
                   </h3>
-                  <p className="text-sm text-white/80">
+                  <p className="text-xs text-white/80 line-clamp-2">
                     {genre.description}
                   </p>
                 </div>
