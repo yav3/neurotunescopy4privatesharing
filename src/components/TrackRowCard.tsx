@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 interface TrackRowCardProps {
   track: {
@@ -83,18 +84,6 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
   onPlay, 
   className 
 }) => {
-  const formatTrackTitle = (title: string): string => {
-    return title
-      .replace(/^\d+[\s\-\.]*/, '') // Remove leading numbers
-      .replace(/\.(mp3|wav|m4a|flac|ogg)$/i, '') // Remove file extensions
-      .replace(/[\-_]/g, ' ') // Replace hyphens and underscores
-      .replace(/\s+/g, ' ') // Normalize spaces
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ')
-      .trim();
-  };
-
   // Generate frequency band from track properties for artwork selection
   const getFrequencyBand = (track: any): string => {
     const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
@@ -104,7 +93,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
 
   const frequencyBand = getFrequencyBand(track);
   const artwork = getTherapeuticArtwork(frequencyBand, track.id);
-  const formattedTitle = formatTrackTitle(track.title);
+  const formattedTitle = formatTrackTitleForDisplay(track.title);
 
   return (
     <Card 

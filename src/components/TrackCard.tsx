@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
 import { useAuthContext } from '@/components/auth/AuthProvider'
 import type { Track } from '@/types'
+import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
   therapeutic_applications?: Array<{
@@ -167,7 +168,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
         {/* Track Info */}
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors truncate">
-            {track.title}
+            {formatTrackTitleForDisplay(track.title)}
           </h3>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
             <span className="capitalize bg-secondary px-2 py-1 rounded-full text-xs">
