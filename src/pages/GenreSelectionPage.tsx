@@ -17,7 +17,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '50+ tracks',
         gradient: 'from-blue-600 to-cyan-400',
-        bgPattern: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/european-classical-terrace.png'
       },
       {
         id: 'new-age',
@@ -26,7 +26,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '60+ tracks',
         gradient: 'from-purple-500 to-indigo-400',
-        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/acoustic-sunset-field.png'
       },
       {
         id: 'electronic',
@@ -35,7 +35,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '75+ tracks',
         gradient: 'from-cyan-500 to-teal-400',
-        bgPattern: 'radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       },
       {
         id: 'peaceful-piano',
@@ -44,7 +44,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['Chopin'],
         trackCount: '45+ tracks',
         gradient: 'from-indigo-500 to-blue-400',
-        bgPattern: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/string-quartet-studio.png'
       }
     ],
     'stress-anxiety': [
@@ -55,7 +55,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '60+ tracks',
         gradient: 'from-green-600 to-emerald-400',
-        bgPattern: 'radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/delta-moonlit-lake.png'
       },
       {
         id: 'meditative-strings',
@@ -64,7 +64,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '45+ tracks',
         gradient: 'from-emerald-500 to-teal-400',
-        bgPattern: 'radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/classical-meadow-ensemble.png'
       }
     ],
     'sleep-support': [
@@ -75,7 +75,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '35+ tracks',
         gradient: 'from-indigo-600 to-purple-400',
-        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/theta-misty-path.png'
       },
       {
         id: 'nocturnal-classical',
@@ -84,7 +84,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '30+ tracks',
         gradient: 'from-purple-600 to-indigo-400',
-        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/folk-instruments-meadow.png'
       }
     ],
     'mood-boost': [
@@ -95,7 +95,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '55+ tracks',
         gradient: 'from-yellow-500 to-orange-400',
-        bgPattern: 'radial-gradient(circle at 25% 75%, rgba(245, 158, 11, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/beta-waterfall.png'
       },
       {
         id: 'positive-electronic',
@@ -104,7 +104,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '70+ tracks',
         gradient: 'from-orange-500 to-red-400',
-        bgPattern: 'radial-gradient(circle at 75% 25%, rgba(249, 115, 22, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/alpha-mountain-lake.png'
       }
     ],
     'pain-support': [
@@ -115,7 +115,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '40+ tracks',
         gradient: 'from-purple-600 to-pink-400',
-        bgPattern: 'radial-gradient(circle at 50% 30%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/acoustic-sunset-field.png'
       },
       {
         id: 'gentle-classical',
@@ -124,7 +124,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '35+ tracks',
         gradient: 'from-pink-500 to-rose-400',
-        bgPattern: 'radial-gradient(circle at 70% 70%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/european-classical-terrace.png'
       }
     ],
     'energy-boost': [
@@ -135,7 +135,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '50+ tracks',
         gradient: 'from-red-600 to-orange-400',
-        bgPattern: 'radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       },
       {
         id: 'motivational-beats',
@@ -144,7 +144,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '65+ tracks',
         gradient: 'from-orange-600 to-amber-400',
-        bgPattern: 'radial-gradient(circle at 80% 60%, rgba(249, 115, 22, 0.2) 0%, transparent 50%)'
+        image: '/lovable-uploads/string-quartet-studio.png'
       }
     ]
   };
@@ -186,31 +186,31 @@ export default function GenreSelectionPage() {
         <div 
           className="absolute inset-0 opacity-30"
           style={{
-            background: `linear-gradient(135deg, hsl(var(--primary)/0.1), hsl(var(--secondary)/0.1)), ${genres[0]?.bgPattern || ''}`
+            background: `linear-gradient(135deg, hsl(var(--primary)/0.1), hsl(var(--secondary)/0.1))`
           }}
         />
         
-        <div className="relative z-10 px-4 py-6 md:px-8 md:py-12">
+        <div className="relative z-10 px-4 py-4 md:px-8 md:py-8">
           <div className="max-w-4xl mx-auto">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="mb-6 text-muted-foreground hover:text-foreground"
+              className="mb-4 text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Goals
             </Button>
             
-            <div className="text-center mb-8 md:mb-12">
-              <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            <div className="text-center mb-6 md:mb-8">
+              <h1 className="text-2xl md:text-4xl font-bold mb-3">
                 {goal.name}
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+              <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-4">
                 {goal.description}
               </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-medium">
-                <Music className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full text-primary font-medium text-sm">
+                <Music className="w-3.5 h-3.5" />
                 Choose your preferred music genre
               </div>
             </div>
@@ -219,9 +219,9 @@ export default function GenreSelectionPage() {
       </div>
 
       {/* Genres Grid */}
-      <div className="px-4 py-8 md:px-8 md:py-16">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      <div className="px-4 py-4 md:px-8 md:py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {genres.map((genre, index) => (
               <Card
                 key={genre.id}
@@ -233,43 +233,44 @@ export default function GenreSelectionPage() {
                 onClick={() => handleGenreSelect(genre.id)}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Background gradient */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+                {/* Album Art */}
+                <div className="aspect-[3/2] relative overflow-hidden">
+                  <img 
+                    src={genre.image}
+                    alt={genre.name}
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 group-hover:from-black/70 transition-all duration-500" />
+                  
+                  {/* Genre icon overlay */}
+                  <div className={cn(
+                    "absolute top-3 right-3 p-2 rounded-full transition-all duration-300 group-hover:scale-110",
+                    "bg-gradient-to-br opacity-80 group-hover:opacity-100"
+                  )}
                   style={{
                     background: `linear-gradient(135deg, ${genre.gradient.split(' ').join(', ')})`
-                  }}
-                />
+                  }}>
+                    <Headphones className="w-4 h-4 text-white" />
+                  </div>
+                </div>
                 
                 {/* Content */}
-                <div className="relative z-10 p-6 md:p-8">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl md:text-2xl font-semibold mb-2 group-hover:text-foreground transition-colors">
-                        {genre.name}
-                      </h3>
-                      <p className="text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed mb-4">
-                        {genre.description}
-                      </p>
-                    </div>
-                    
-                    <div className={cn(
-                      "p-3 rounded-full transition-all duration-300 group-hover:scale-110 ml-4",
-                      "bg-gradient-to-br opacity-80 group-hover:opacity-100"
-                    )}
-                    style={{
-                      background: `linear-gradient(135deg, ${genre.gradient.split(' ').join(', ')})`
-                    }}>
-                      <Headphones className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                    </div>
+                <div className="relative z-10 p-4">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold mb-1 group-hover:text-foreground transition-colors">
+                      {genre.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed">
+                      {genre.description}
+                    </p>
                   </div>
 
                   {/* Stats */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-xs text-muted-foreground">
                       {genre.trackCount}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs text-muted-foreground">
                       Ready to play
                     </div>
                   </div>
@@ -277,12 +278,13 @@ export default function GenreSelectionPage() {
                   {/* Action */}
                   <Button
                     variant="outline"
+                    size="sm"
                     className={cn(
                       "w-full group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
                       "transition-all duration-300"
                     )}
                   >
-                    <Play className="w-4 h-4 mr-2" />
+                    <Play className="w-3.5 h-3.5 mr-2" />
                     Start Listening
                   </Button>
                 </div>
