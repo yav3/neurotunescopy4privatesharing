@@ -718,88 +718,17 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         // If no more tracks in current queue, handle goal reloading
         const currentState = get();
-        if (currentState.lastGoal === 'trending') {
-          console.log('🎵 Trending queue exhausted, loading more trending tracks');
-          toast.info("Loading more trending tracks...");
-          try {
-            const { fetchTrending } = await import('@/lib/api');
-            const { tracks, error } = await fetchTrending(180, 200); // Get more trending tracks (3 hours, 200 tracks)
-            
-            if (!error && tracks?.length) {
-              // Format tracks for audio store
-              const formattedTracks = tracks.map((track: any) => ({
-                id: String(track.id),
-                title: track.title || 'Untitled',
-                artist: track.genre || 'Unknown Artist',
-                duration: 0,
-                storage_bucket: track.storage_bucket || 'audio',
-                storage_key: track.storage_key,
-                bpm: track.bpm,
-                genre: track.genre,
-                audio_status: 'working' as const
-              }));
-              
-              // Replace queue with fresh trending tracks and continue playing
-              set({ queue: formattedTracks, index: -1 });
-              
-              // Try to play the first track
-              const success = await loadTrack(formattedTracks[0]);
-              if (success) {
-                set({ index: 0 });
-                await get().play();
-                console.log('🎵 Successfully reloaded trending tracks for continuous play');
-                return;
-              }
-            }
-          } catch (error) {
-            console.error('Failed to reload trending tracks:', error);
-          }
-        } else if (currentState.lastGoal) {
+        if (currentState.lastGoal && currentState.lastGoal !== 'trending') {
           console.log('🎵 Queue exhausted, reloading tracks for goal:', currentState.lastGoal);
           toast.info("Loading more tracks...");
           await get().playFromGoal(currentState.lastGoal);
           return;
         } else {
-          // No goal set - this might be trending tracks, try to load more
-          console.log('🎵 No goal set, attempting to load more trending tracks');
-          toast.info("Loading more trending tracks...");
-          try {
-            const { fetchTrending } = await import('@/lib/api');
-            const { tracks, error } = await fetchTrending(60, 50); // Get more trending tracks
-            
-            if (!error && tracks?.length) {
-              // Format tracks for audio store
-              const formattedTracks = tracks.map((track: any) => ({
-                id: String(track.id),
-                title: track.title || 'Untitled',
-                artist: track.genre || 'Unknown Artist',
-                duration: 0,
-                storage_bucket: track.storage_bucket || 'audio',
-                storage_key: track.storage_key,
-                bpm: track.bpm,
-                genre: track.genre
-              }));
-              
-              // Add new tracks to queue and continue playing
-              const { queue: currentQueue } = get();
-              const newQueue = [...currentQueue, ...formattedTracks];
-              set({ queue: newQueue });
-              
-              // Try to play the next track
-              const nextIndex = index + 1;
-              if (nextIndex < newQueue.length) {
-                const success = await loadTrack(newQueue[nextIndex]);
-                if (success) {
-                  set({ index: nextIndex });
-                  await get().play();
-                  console.log('🎵 Successfully loaded more trending tracks');
-                  return;
-                }
-              }
-            }
-          } catch (error) {
-            console.error('Failed to load more trending tracks:', error);
-          }
+          // No valid goal set - load focus enhancement as default
+          console.log('🎵 No valid goal set, loading focus enhancement as default');
+          toast.info("Loading focus enhancement tracks...");
+          await get().playFromGoal('focus-enhancement');
+          return;
         }
         
         console.log('🎵 No more working tracks available');

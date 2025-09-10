@@ -35,6 +35,9 @@ export interface TherapeuticGoal {
   isActive?: boolean;
   progress?: number;
   
+  // Music bucket configuration  
+  musicBuckets: string[];
+  
   // Synonyms for flexible mapping
   synonyms: string[];
 }
@@ -52,6 +55,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
     vadProfile: { valence: 0.6, arousal: 0.7, dominance: 0.6 },
+    musicBuckets: ['focus-music', 'neuralpositivemusic'],
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement']
   },
   {
@@ -66,6 +70,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
+    musicBuckets: ['neuralpositivemusic'],
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
@@ -80,6 +85,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-orange-500 to-yellow-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
+    musicBuckets: ['ENERGYBOOST'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
@@ -94,6 +100,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-purple-500 to-pink-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
+    musicBuckets: ['neuralpositivemusic'],
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   }
 ];

@@ -75,9 +75,9 @@ export async function getTracksFromStorage(
     } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
-    } else if (normalizedGoal === 'trending') {
+    } else if (normalizedGoal === 'sleep') {
       buckets = ['neuralpositivemusic'];
-      console.log(`🎯 Using neuralpositivemusic bucket for trending tracks (trendingnow removed)`);
+      console.log(`🎯 Using neuralpositivemusic bucket for sleep`);
     } else {
       buckets = ['neuralpositivemusic'];
       console.log(`🎯 Using neuralpositivemusic bucket for other goals`);
@@ -206,7 +206,7 @@ export async function getTracksFromStorage(
 
     // Filter by goal (skip filtering for manually curated buckets)
     let filteredTracks = allTracks;
-    if (goal === 'focus-enhancement' || goal === 'mood-boost' || goal === 'trending') {
+    if (goal === 'focus-enhancement' || goal === 'mood-boost') {
       console.log(`🎯 Using all tracks from curated ${buckets[0]} bucket: ${allTracks.length} tracks`);
       filteredTracks = allTracks;
     } else {

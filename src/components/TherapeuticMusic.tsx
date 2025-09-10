@@ -1,5 +1,4 @@
 import { TherapeuticGoalCard } from "./ui/TherapeuticGoalCard";
-import { TrendingCard } from "./TrendingCard";
 import { useTherapeuticGoals } from "@/hooks/useTherapeuticGoals";
 import { useAudioStore } from "@/stores";
 import { toast } from "sonner";
@@ -50,11 +49,6 @@ export const TherapeuticMusic = ({ onCategorySelect }: TherapeuticMusicProps) =>
   return (
     <section className="px-4 md:px-8 mb-24">
       <div className="max-w-6xl mx-auto">
-        {/* Trending Card */}
-        <div className="mb-8">
-          <TrendingCard className="max-w-md" />
-        </div>
-        
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {goals.map((goal) => (
             <TherapeuticGoalCard

@@ -1,17 +1,12 @@
 import { logger } from "@/services/logger";
 import type { GoalSlug } from "@/domain/goals";
-import { getTherapeuticTracks, getTrendingTracks } from "@/services/therapeuticDatabase";
+import { getTherapeuticTracks } from "@/services/therapeuticDatabase";
 import { supabase } from "@/integrations/supabase/client";
 
 // Direct database queries - no more API endpoints needed
 export async function fetchPlaylist(goal: string, count = 50, seed?: string, excludeCsv?: string) {
   const excludeIds = excludeCsv ? excludeCsv.split(',') : [];
   const { tracks, error } = await getTherapeuticTracks(goal, count, excludeIds);
-  return error ? { tracks: [], error } : { tracks };
-}
-
-export async function fetchTrending(minutes = 60, count = 50, seed?: string, excludeCsv?: string) {
-  const { tracks, error } = await getTrendingTracks(minutes, count);
   return error ? { tracks: [], error } : { tracks };
 }
 
