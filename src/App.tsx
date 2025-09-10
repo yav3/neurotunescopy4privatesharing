@@ -24,6 +24,7 @@ import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
+import AIDJ from "./pages/AIDJ";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import UserManagement from "./pages/admin/UserManagement";
@@ -93,6 +94,7 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/landing" element={<LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />} />
