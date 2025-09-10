@@ -355,45 +355,49 @@ const GenreView: React.FC = () => {
               </p>
               
               {/* Play/Pause Button */}
-              <div className="flex items-center gap-4 mt-4 md:mt-8">
+              <div className="mt-6 md:mt-8">
                 <Button
                   size="lg"
                   className="h-12 md:h-14 px-6 md:px-8 text-base md:text-lg"
                   onClick={currentTrack ? handleTogglePlay : handleAutoPlay}
                   disabled={audioLoading || isLoading}
                 >
-                  {isPlaying ? (
-                    <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                  {audioLoading ? (
+                    <>
+                      <div className="w-5 h-5 md:w-6 md:h-6 mr-2 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      Loading
+                    </>
+                  ) : isPlaying ? (
+                    <>
+                      <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                      Pause
+                    </>
                   ) : (
-                    <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                    <>
+                      <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                      Play
+                    </>
                   )}
-                  {isPlaying ? 'Pause' : 'Play'}
                 </Button>
-                
-                {isLoading && (
-                  <div className="text-white/60 text-sm md:text-base">Loading tracks...</div>
-                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Tracks Grid */}
-      <div className="px-4 md:px-8 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto">
+      {/* Tracks Section */}
+      <div className="px-4 md:px-8 py-6 md:py-8 pb-24">
+        <div className="max-w-6xl mx-auto">
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 md:gap-4">
-              {Array.from({ length: 24 }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className="aspect-[3/4] bg-muted animate-pulse rounded-lg" 
-                />
-              ))}
+            <div className="text-center py-12">
+              <div className="inline-flex items-center gap-2 text-muted-foreground">
+                <div className="w-4 h-4 rounded-full bg-primary animate-pulse"></div>
+                <span>Loading music collection...</span>
+              </div>
             </div>
           ) : tracks.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 md:gap-4">
-              {tracks.map((track) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {tracks.slice(0, 12).map((track) => (
                 <TrackRowCard
                   key={track.id}
                   track={track}
@@ -404,9 +408,9 @@ const GenreView: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground text-base md:text-lg">
-                No tracks available for {selectedGenre.name}
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                No tracks available
               </p>
             </div>
           )}
