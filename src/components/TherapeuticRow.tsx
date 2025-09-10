@@ -49,7 +49,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Crossover Classical',
           description: 'Modern classical compositions for concentration',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/207F8B9460FD5779D21A95D5281F8AF00C6107AA38D3738DC7E89CBE55A51BBA_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
           id: 'electronic',
@@ -73,7 +73,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Classical Crossover',
           description: 'Modern classical music with contemporary elements',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
           id: 'electronic',
@@ -104,7 +104,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Classical Crossover',
           description: 'Energizing classical music with modern elements',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/347EC9E5775E3CBCF6EEE551C869493DFA6A8C89E35F07583AFA34E3E9366B21_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
           id: 'electronic',
@@ -136,7 +136,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Classical Crossover',
           description: 'Modern classical music with contemporary elements',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
           id: 'new-age-world',
