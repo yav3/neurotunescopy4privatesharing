@@ -31,7 +31,7 @@ interface TherapeuticRowsLayoutProps {
 
 export const TherapeuticRowsLayout: React.FC<TherapeuticRowsLayoutProps> = ({ className }) => {
   return (
-    <section className={cn("px-4 md:px-8 mb-24 pt-12", className)}>
+    <section className={cn("px-4 md:px-8 mb-32 pt-12", className)}>
       <div className="max-w-7xl mx-auto">
         {/* Therapeutic rows */}
         <div className="space-y-8">
