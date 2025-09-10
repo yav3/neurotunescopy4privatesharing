@@ -264,7 +264,7 @@ const GenreView: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden">
+      <div className="relative h-72 md:h-96 overflow-hidden">
         {/* Background Image */}
         <img 
           src={selectedGenre.artwork} 
@@ -281,7 +281,7 @@ const GenreView: React.FC = () => {
             {/* Back Button */}
             <Button 
               variant="ghost" 
-              className="text-white hover:bg-white/20 mb-8"
+              className="text-white hover:bg-white/20 mb-4 md:mb-8"
               onClick={() => navigate('/')}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -289,35 +289,35 @@ const GenreView: React.FC = () => {
             </Button>
             
             {/* Genre Info */}
-            <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
+            <div className="space-y-2 md:space-y-4">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 {selectedGenre.name}
               </h1>
-              <p className="text-xl text-white/80 max-w-2xl">
+              <p className="text-base md:text-xl text-white/80 max-w-2xl">
                 {selectedGenre.description}
               </p>
-              <p className="text-lg text-white/60">
+              <p className="text-sm md:text-lg text-white/60">
                 {goal.name} • {tracks.length} tracks
               </p>
               
               {/* Play/Pause Button */}
-              <div className="flex items-center gap-4 mt-8">
+              <div className="flex items-center gap-4 mt-4 md:mt-8">
                 <Button
                   size="lg"
-                  className="h-14 px-8 text-lg"
+                  className="h-12 md:h-14 px-6 md:px-8 text-base md:text-lg"
                   onClick={currentTrack ? handleTogglePlay : handleAutoPlay}
                   disabled={audioLoading || isLoading}
                 >
                   {isPlaying ? (
-                    <Pause className="w-6 h-6 mr-2" />
+                    <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                   ) : (
-                    <Play className="w-6 h-6 mr-2" />
+                    <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                   )}
                   {isPlaying ? 'Pause' : 'Play'}
                 </Button>
                 
                 {isLoading && (
-                  <div className="text-white/60">Loading tracks...</div>
+                  <div className="text-white/60 text-sm md:text-base">Loading tracks...</div>
                 )}
               </div>
             </div>
@@ -326,31 +326,32 @@ const GenreView: React.FC = () => {
       </div>
       
       {/* Tracks Grid */}
-      <div className="px-4 md:px-8 py-12">
+      <div className="px-4 md:px-8 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 md:gap-4">
               {Array.from({ length: 24 }).map((_, i) => (
                 <div 
                   key={i} 
-                  className="aspect-square bg-muted animate-pulse rounded-lg" 
+                  className="aspect-[3/4] bg-muted animate-pulse rounded-lg" 
                 />
               ))}
             </div>
           ) : tracks.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 md:gap-4">
               {tracks.map((track) => (
                 <TrackRowCard
                   key={track.id}
                   track={track}
                   isPlaying={isTrackPlaying(track)}
                   onPlay={() => handleTrackPlay(track)}
+                  className="w-full h-auto aspect-[3/4]"
                 />
               ))}
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg">
+              <p className="text-muted-foreground text-base md:text-lg">
                 No tracks available for {selectedGenre.name}
               </p>
             </div>

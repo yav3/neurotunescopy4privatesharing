@@ -109,8 +109,9 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
   return (
     <Card 
       className={cn(
-        "group relative w-48 h-64 flex-shrink-0 overflow-hidden cursor-pointer transition-all duration-300",
+        "group relative overflow-hidden cursor-pointer transition-all duration-300",
         "hover:scale-105 hover:shadow-xl",
+        "w-full h-full",
         className
       )}
       onClick={onPlay}
@@ -146,7 +147,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
         
         {/* Track info */}
         <div className="text-center">
-          <h3 className="font-medium text-sm leading-tight line-clamp-2 mb-1">
+          <h3 className="font-medium text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
             {formattedTitle}
           </h3>
           <p className="text-xs text-white/70 capitalize">
