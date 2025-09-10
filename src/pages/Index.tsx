@@ -114,7 +114,7 @@ const Index = () => {
                   
                    {/* Content */}
                    <div className="relative z-10 p-4 md:p-6 h-full flex flex-col justify-center items-center text-center">
-                     <div className="flex flex-col items-center space-y-3">
+                     <div className="flex flex-col items-center space-y-4">
                        <div className={cn(
                          "p-3 md:p-4 rounded-2xl transition-all duration-300 group-hover:scale-110",
                          "bg-gradient-to-br", theme.gradient,
@@ -130,18 +130,6 @@ const Index = () => {
                        <p className="text-sm md:text-base text-foreground/80 group-hover:text-foreground transition-colors leading-relaxed line-clamp-3 max-w-xs">
                          {goal.description}
                        </p>
-
-                       {/* Features */}
-                       <div className="flex flex-col space-y-1">
-                         <div className="flex items-center justify-center text-sm text-foreground/70">
-                           <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
-                           Science-backed
-                         </div>
-                         <div className="flex items-center justify-center text-sm text-foreground/70">
-                           <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
-                           Multiple genres
-                         </div>
-                       </div>
 
                        {/* Action */}
                        <Button
