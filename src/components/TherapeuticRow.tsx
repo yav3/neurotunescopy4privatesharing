@@ -300,13 +300,13 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
             <button
               key={genre.id}
               onClick={() => navigate(`/genre/${goal.id}/${genre.id}`)}
-              className="group relative overflow-hidden rounded-md border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
+              className="group relative overflow-hidden rounded-md border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg w-full"
             >
-              <div className="aspect-square relative">
+              <div className="aspect-square relative w-full h-0 pb-[100%]">
                 <img 
                   src={genre.artwork} 
                   alt={genre.name}
-                  className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
                 <div className="absolute bottom-1 left-1 right-1">
