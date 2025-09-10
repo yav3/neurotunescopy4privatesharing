@@ -94,7 +94,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Samba & Jazz',
           description: 'Smooth jazz and Brazilian rhythms',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/97C5C02513BFA6AD3D0CDC1C512840EA792FBD12DC992D536C556CD40FE31E19_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
         }
       ];
     } else if (goalId === 'energy-boost') {
@@ -125,7 +125,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Samba & Jazz',
           description: 'Energetic jazz and Brazilian rhythms',
           buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/99BE3D3797F87CE9A6CD4EDF860ED60E194A89125A96A92434A2E67ADC2AB52F_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
         }
       ];
     } else {
@@ -150,7 +150,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Samba & Jazz',
           description: 'Smooth jazz and Brazilian rhythms',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/89C29BE0159665B8CE7F212E30C03CAB8D9E3A90F7D1F90C7E4615F97659919B_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
         }
       ];
     }
