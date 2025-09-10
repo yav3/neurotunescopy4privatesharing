@@ -116,7 +116,7 @@ const Index = () => {
                     <img 
                       src={goal.artwork} 
                       alt={goal.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain object-center"
                     />
                   </div>
                   
