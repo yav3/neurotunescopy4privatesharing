@@ -63,12 +63,6 @@ const Index = () => {
         <div className="relative z-10 px-4 py-3 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-4 md:mb-6">
-              <div className="flex items-center justify-center mb-2">
-                <div className="p-2 rounded-full bg-primary/10 border border-primary/20">
-                  <Brain className="w-6 h-6 text-primary" />
-                </div>
-              </div>
-              
               <h1 className="text-lg md:text-2xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                 Therapeutic Goals
               </h1>
