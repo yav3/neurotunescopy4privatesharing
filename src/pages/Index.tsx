@@ -93,7 +93,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-48 md:h-56",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-40 md:h-48",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
@@ -113,37 +113,38 @@ const Index = () => {
                   <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-4 md:p-6 h-full flex flex-col justify-center items-center text-center">
-                     <div className="flex flex-col items-center space-y-4">
+                   <div className="relative z-10 p-3 md:p-4 h-full flex flex-col justify-between items-center text-center">
+                     <div className="flex flex-col items-center space-y-2">
                        <div className={cn(
-                         "p-3 md:p-4 rounded-2xl transition-all duration-300 group-hover:scale-110",
+                         "p-2 md:p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
                          "bg-gradient-to-br", theme.gradient,
                          "shadow-lg group-hover:shadow-xl"
                        )}>
-                         <IconComponent className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                         <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-white" />
                        </div>
                        
-                       <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
+                       <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                          {goal.name}
                        </h3>
                        
                        {/* Description - hidden by default, visible on hover */}
-                       <p className="text-sm md:text-base text-foreground/80 transition-all duration-300 leading-relaxed line-clamp-3 max-w-xs opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
+                       <p className="text-xs md:text-sm text-foreground/80 transition-all duration-300 leading-tight line-clamp-2 max-w-xs opacity-0 group-hover:opacity-100 transform translate-y-1 group-hover:translate-y-0 absolute">
                          {goal.description}
                        </p>
-
-                       {/* Action */}
-                       <Button
-                         variant="outline"
-                         className={cn(
-                           "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
-                           "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-6 py-2 font-semibold"
-                         )}
-                       >
-                         Explore Genres
-                         <ArrowLeft className="w-4 h-4 ml-2 rotate-180 transition-transform group-hover:translate-x-1" />
-                       </Button>
                      </div>
+
+                     {/* Action */}
+                     <Button
+                       variant="outline"
+                       size="sm"
+                       className={cn(
+                         "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
+                         "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-4 py-1.5 text-sm font-semibold mt-auto"
+                       )}
+                     >
+                       Explore Genres
+                       <ArrowLeft className="w-3 h-3 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
+                     </Button>
                    </div>
 
                   {/* Hover Effect */}
