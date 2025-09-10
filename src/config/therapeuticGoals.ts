@@ -1,12 +1,5 @@
 import { LucideIcon, Brain, Heart, Zap, Waves, Flower2 } from 'lucide-react';
 
-// Import artwork for each therapeutic goal
-import focusArtwork from '@/assets/focus-enhancement-artwork.jpg';
-import stressAnxietyArtwork from '@/assets/stress-anxiety-artwork.jpg';
-import moodBoostArtwork from '@/assets/mood-boost-artwork.jpg';
-import energyBoostArtwork from '@/assets/energy-boost-artwork.jpg';
-import painSupportArtwork from '@/assets/pain-support-artwork.jpg';
-
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
   // Core identifiers
@@ -59,7 +52,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Focus',
     description: 'Improve concentration and mental clarity',
     icon: Brain,
-    artwork: focusArtwork,
+    artwork: '/lovable-uploads/classical-meadow-ensemble.png',
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
@@ -75,7 +68,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Calm your mind and reduce stress and anxiety',
     icon: Heart,
-    artwork: stressAnxietyArtwork,
+    artwork: '/lovable-uploads/alpha-mountain-lake.png',
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
@@ -91,7 +84,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
     icon: Zap,
-    artwork: moodBoostArtwork,
+    artwork: '/lovable-uploads/acoustic-sunset-field.png',
     color: 'orange',
     gradient: 'from-orange-500 to-yellow-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
@@ -107,7 +100,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Energize and motivate your day',
     icon: Zap,
-    artwork: energyBoostArtwork,
+    artwork: '/lovable-uploads/gamma-sunbeam-forest.png',
     color: 'yellow',
     gradient: 'from-yellow-500 to-orange-500',
     bpmRange: { min: 100, max: 160, optimal: 130 },
@@ -123,7 +116,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
     icon: Flower2,
-    artwork: painSupportArtwork,
+    artwork: '/lovable-uploads/delta-moonlit-lake.png',
     color: 'purple',
     gradient: 'from-purple-500 to-pink-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
