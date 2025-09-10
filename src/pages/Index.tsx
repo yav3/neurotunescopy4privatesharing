@@ -93,7 +93,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-48 md:h-56",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-square",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
