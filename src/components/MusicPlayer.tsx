@@ -9,6 +9,7 @@ import { formatTime } from "@/lib/utils";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 
 interface MusicPlayerProps {
   open: boolean;
@@ -17,8 +18,15 @@ interface MusicPlayerProps {
 
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const { play, pause, next, prev, isPlaying, currentTrack: track } = useAudioStore();
+  const { play, pause, next, prev, isPlaying, currentTrack: track, lastGoal } = useAudioStore();
   const { isAdmin } = useAuthContext();
+
+  // Get therapeutic goal display name
+  const getTherapeuticGoalName = () => {
+    if (!lastGoal) return 'Therapeutic Music';
+    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
+    return goal ? goal.name : 'Therapeutic Music';
+  };
 
   if (!track) {
     return null;
@@ -54,7 +62,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
 
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-foreground mb-2">{formatTrackTitleForDisplay(track.title)}</h2>
-            <p className="text-lg text-muted-foreground mb-1">{track.genre || 'Therapeutic Music'}</p>
+            <p className="text-lg text-muted-foreground mb-1">{getTherapeuticGoalName()}</p>
             {isAdmin() && (
               <p className="text-sm text-muted-foreground">
                 {track.bpm && `${Math.round(track.bpm)} BPM • `}

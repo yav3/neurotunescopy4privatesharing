@@ -8,6 +8,7 @@ import { formatTime, cn } from '@/lib/utils';
 import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
@@ -113,12 +114,20 @@ export const NowPlaying: React.FC = () => {
     toggleSpatialAudio,
     queue,
     playerMode,
-    setPlayerMode
+    setPlayerMode,
+    lastGoal
   } = useAudioStore();
 
   // Local state for enhanced features
   const [isFavorited, setIsFavorited] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
+
+  // Get therapeutic goal display name
+  const getTherapeuticGoalName = () => {
+    if (!lastGoal) return 'THERAPEUTIC MUSIC';
+    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
+    return goal ? goal.name.toUpperCase() : 'THERAPEUTIC MUSIC';
+  };
 
   const toggle = () => {
     if (isPlaying) {
@@ -228,7 +237,7 @@ export const NowPlaying: React.FC = () => {
             {/* Track info */}
             <div className="text-center mb-6 sm:mb-8 px-4">
               <h3 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">{formatTrackTitleForDisplay(track.title)}</h3>
-              <p className="text-base sm:text-lg text-muted-foreground">THERAPEUTIC MUSIC</p>
+              <p className="text-base sm:text-lg text-muted-foreground">{getTherapeuticGoalName()}</p>
             </div>
 
             {/* Progress */}
@@ -380,7 +389,7 @@ export const NowPlaying: React.FC = () => {
             <div className="min-w-0">
               <h4 className="font-medium truncate">{formatTrackTitleForDisplay(track.title)}</h4>
               <p className="text-sm text-muted-foreground truncate">
-                {spatialAudioEnabled && "🌐 "} THERAPEUTIC MUSIC
+                {spatialAudioEnabled && "🌐 "} {getTherapeuticGoalName()}
               </p>
             </div>
           </div>

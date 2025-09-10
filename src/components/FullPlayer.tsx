@@ -5,10 +5,18 @@ import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Zap, Heart, Thumb
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 
 export default function FullPlayer() {
   const navigate = useNavigate();
-  const { play, pause, next, prev, isPlaying, currentTrack: track, spatialAudioEnabled, toggleSpatialAudio } = useAudioStore();
+  const { play, pause, next, prev, isPlaying, currentTrack: track, spatialAudioEnabled, toggleSpatialAudio, lastGoal } = useAudioStore();
+
+  // Get therapeutic goal display name
+  const getTherapeuticGoalName = () => {
+    if (!lastGoal) return 'Therapeutic Music';
+    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
+    return goal ? goal.name : 'Therapeutic Music';
+  };
 
   // Local state for enhanced features
   const [lightningMode, setLightningMode] = useState(false);
@@ -81,7 +89,7 @@ export default function FullPlayer() {
         <div className="text-center mb-12 max-w-md">
           <h1 className="text-3xl font-bold mb-2">{track.title}</h1>
           <p className="text-xl text-muted-foreground mb-2">
-            {spatialAudioEnabled && "🌐 "}{track.genre || 'Therapeutic Music'}
+            {spatialAudioEnabled && "🌐 "}{getTherapeuticGoalName()}
           </p>
         </div>
 
