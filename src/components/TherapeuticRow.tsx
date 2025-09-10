@@ -56,7 +56,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Electronic',
           description: 'Ambient electronic music for focus',
           buckets: ['focus-music'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/241F64A3035F4873DDECA5B3F913F9FA9B13EA7CBD1E568152E113519DB472BB_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
         },
         {
           id: 'world-new-age',
@@ -80,7 +80,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Electronic',
           description: 'Uplifting electronic beats and rhythms',
           buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
         },
         {
           id: 'new-age-world',
@@ -111,7 +111,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'Electronic',
           description: 'High-energy electronic music and beats',
           buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/341FC8389CC6512FE7F09A03DA617996E167E0D2D642355A24537D37DF6B5997_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
         },
         {
           id: 'new-age-world',
