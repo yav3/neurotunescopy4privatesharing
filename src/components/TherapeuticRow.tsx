@@ -37,32 +37,60 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
   
   const { currentTrack, setQueue, playFromGoal, isLoading: audioLoading } = useAudioStore();
 
-  // Focus Enhancement genre options
-  const focusGenreOptions: GenreOption[] = [
-    {
-      id: 'crossover-classical',
-      name: 'Crossover Classical',
-      description: 'Modern classical compositions for concentration',
-      buckets: ['neuralpositivemusic']
-    },
-    {
-      id: 'electronic',
-      name: 'Electronic',
-      description: 'Ambient electronic music for focus',
-      buckets: ['focus-music']
-    },
-    {
-      id: 'world-new-age',
-      name: 'World & New Age',
-      description: 'Global sounds and new age music',
-      buckets: ['neuralpositivemusic']
+  // Genre options for each therapeutic goal
+  const getGenreOptions = (goalId: string): GenreOption[] => {
+    if (goalId === 'focus-enhancement') {
+      return [
+        {
+          id: 'crossover-classical',
+          name: 'Crossover Classical',
+          description: 'Modern classical compositions for concentration',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'electronic',
+          name: 'Electronic',
+          description: 'Ambient electronic music for focus',
+          buckets: ['focus-music']
+        },
+        {
+          id: 'world-new-age',
+          name: 'World & New Age',
+          description: 'Global sounds and new age music',
+          buckets: ['neuralpositivemusic']
+        }
+      ];
+    } else {
+      // For all other goals: stress-anxiety-support, mood-boost, pain-support
+      return [
+        {
+          id: 'classical-crossover',
+          name: 'Classical Crossover',
+          description: 'Modern classical music with contemporary elements',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'new-age-world',
+          name: 'New Age & World',
+          description: 'Soothing world music and new age sounds',
+          buckets: ['neuralpositivemusic']
+        },
+        {
+          id: 'samba-jazz',
+          name: 'Samba & Jazz',
+          description: 'Smooth jazz and Brazilian rhythms',
+          buckets: ['neuralpositivemusic']
+        }
+      ];
     }
-  ];
+  };
+
+  const genreOptions = getGenreOptions(goal.id);
 
   // Load tracks for this therapeutic goal
   useEffect(() => {
-    // For Focus Enhancement, only load tracks after genre selection
-    if (goal.id === 'focus-enhancement' && !selectedGenre) {
+    // Only load tracks after genre selection
+    if (!selectedGenre) {
       setIsLoading(false);
       return;
     }
@@ -73,9 +101,9 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
         let buckets = goal.musicBuckets;
         let searchKey = goal.backendKey;
         
-        // Use genre-specific buckets for Focus Enhancement
-        if (goal.id === 'focus-enhancement' && selectedGenre) {
-          const genreOption = focusGenreOptions.find(g => g.id === selectedGenre);
+        // Use genre-specific buckets for selected genre
+        if (selectedGenre) {
+          const genreOption = genreOptions.find(g => g.id === selectedGenre);
           if (genreOption) {
             buckets = genreOption.buckets;
             console.log(`🎵 Loading ${genreOption.name} tracks from buckets:`, buckets);
@@ -109,7 +137,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
     };
 
     loadTracks();
-  }, [goal, selectedGenre, focusGenreOptions]);
+  }, [goal, selectedGenre, genreOptions]);
 
   // Check scroll buttons visibility
   const updateScrollButtons = () => {
@@ -162,8 +190,8 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
 
     try {
       let genreName = '';
-      if (goal.id === 'focus-enhancement' && selectedGenre) {
-        const genreOption = focusGenreOptions.find(g => g.id === selectedGenre);
+      if (selectedGenre) {
+        const genreOption = genreOptions.find(g => g.id === selectedGenre);
         genreName = genreOption ? ` ${genreOption.name.toLowerCase()}` : '';
       }
       
@@ -183,8 +211,8 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
     return currentTrack?.id === track.id;
   };
 
-  // Genre selection interface for Focus Enhancement
-  if (goal.id === 'focus-enhancement' && !selectedGenre) {
+  // Genre selection interface for all therapeutic goals
+  if (!selectedGenre) {
     return (
       <div className={cn("mb-8", className)}>
         <div className="flex items-center justify-between mb-4">
@@ -197,7 +225,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {focusGenreOptions.map((genre) => (
+          {genreOptions.map((genre) => (
             <button
               key={genre.id}
               onClick={() => setSelectedGenre(genre.id)}
@@ -255,13 +283,13 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           <div>
             <h2 className="text-xl font-semibold text-foreground">
               {goal.name}
-              {goal.id === 'focus-enhancement' && selectedGenre && (
+              {selectedGenre && (
                 <span className="text-primary ml-2">
-                  • {focusGenreOptions.find(g => g.id === selectedGenre)?.name}
+                  • {genreOptions.find(g => g.id === selectedGenre)?.name}
                 </span>
               )}
             </h2>
-            {goal.id === 'focus-enhancement' && selectedGenre && (
+            {selectedGenre && (
               <button
                 onClick={() => setSelectedGenre(null)}
                 className="text-xs text-muted-foreground hover:text-foreground mt-1"
