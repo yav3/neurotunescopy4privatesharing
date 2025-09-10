@@ -126,11 +126,6 @@ const Index = () => {
                        <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                          {goal.name}
                        </h3>
-                       
-                       {/* Description - hidden by default, visible on hover */}
-                       <p className="text-sm text-foreground/90 transition-all duration-300 leading-relaxed px-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 absolute top-20 left-0 right-0">
-                         {goal.description}
-                       </p>
                      </div>
 
                      {/* Action */}
