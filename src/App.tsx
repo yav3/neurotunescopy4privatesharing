@@ -25,6 +25,8 @@ import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
 import AIDJ from "./pages/AIDJ";
+import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
+import GenreSelectionPage from "./pages/GenreSelectionPage";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import UserManagement from "./pages/admin/UserManagement";
@@ -94,6 +96,8 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/goals" element={<TherapeuticGoalsPage />} />
+              <Route path="/goals/:goalId/genres" element={<GenreSelectionPage />} />
               <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />

@@ -1,433 +1,144 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { TrackRowCard } from './TrackRowCard';
+import { ArrowRight, Target, Heart, Brain, Moon, Zap, Headphones } from 'lucide-react';
 import { TherapeuticGoal } from '@/config/therapeuticGoals';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { getTracksFromStorage } from '@/services/storageDirectAccess';
-import { useAudioStore } from '@/stores';
-import { toast } from 'sonner';
 
 interface TherapeuticRowProps {
   goal: TherapeuticGoal;
   className?: string;
 }
 
-interface GenreOption {
-  id: string;
-  name: string;
-  description: string;
-  buckets: string[];
-  artwork: string;
-}
+// Icon mapping for each therapeutic goal
+const goalIcons = {
+  'focus-enhancement': Brain,
+  'stress-anxiety': Heart,
+  'sleep-support': Moon,
+  'mood-boost': Zap,
+  'pain-support': Target,
+  'energy-boost': Headphones,
+  'default': Brain
+};
 
-interface Track {
-  id: string;
-  title: string;
-  storage_bucket?: string;
-  storage_key?: string;
-}
+// Theme colors for each goal
+const goalThemes = {
+  'focus-enhancement': {
+    gradient: 'from-blue-600 to-cyan-400',
+    bg: 'from-blue-900/20 to-cyan-900/10',
+    accent: 'text-blue-500',
+    border: 'border-blue-500/20 hover:border-blue-400/40'
+  },
+  'stress-anxiety': {
+    gradient: 'from-green-600 to-emerald-400',
+    bg: 'from-green-900/20 to-emerald-900/10',
+    accent: 'text-green-500',
+    border: 'border-green-500/20 hover:border-green-400/40'
+  },
+  'sleep-support': {
+    gradient: 'from-indigo-600 to-purple-400',
+    bg: 'from-indigo-900/20 to-purple-900/10',
+    accent: 'text-indigo-500',
+    border: 'border-indigo-500/20 hover:border-indigo-400/40'
+  },
+  'mood-boost': {
+    gradient: 'from-yellow-500 to-orange-400',
+    bg: 'from-yellow-900/20 to-orange-900/10',
+    accent: 'text-yellow-600',
+    border: 'border-yellow-500/20 hover:border-yellow-400/40'
+  },
+  'pain-support': {
+    gradient: 'from-purple-600 to-pink-400',
+    bg: 'from-purple-900/20 to-pink-900/10',
+    accent: 'text-purple-500',
+    border: 'border-purple-500/20 hover:border-purple-400/40'
+  },
+  'energy-boost': {
+    gradient: 'from-red-600 to-orange-400',
+    bg: 'from-red-900/20 to-orange-900/10',
+    accent: 'text-red-500',
+    border: 'border-red-500/20 hover:border-red-400/40'
+  }
+};
 
 export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className }) => {
   const navigate = useNavigate();
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  const { currentTrack, setQueue, playFromGoal, isLoading: audioLoading } = useAudioStore();
-
-  // Genre options for each therapeutic goal
-  const getGenreOptions = (goalId: string): GenreOption[] => {
-    if (goalId === 'focus-enhancement') {
-      return [
-        {
-          id: 'crossover-classical',
-          name: 'Crossover Classical',
-          description: 'Modern classical compositions for concentration',
-          buckets: ['classicalfocus', 'neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'Ambient electronic music for focus',
-          buckets: ['focus-music'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'world-new-age',
-          name: 'World & New Age',
-          description: 'Global sounds and new age music',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        }
-      ];
-    } else if (goalId === 'mood-boost') {
-      return [
-        {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Modern classical music with contemporary elements',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'Uplifting electronic beats and rhythms',
-          buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Soothing world music and new age sounds',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
-        }
-      ];
-    } else if (goalId === 'energy-boost') {
-      return [
-        {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Energizing classical music with modern elements',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'High-energy electronic music and beats',
-          buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Motivational world music and new age sounds',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Energetic jazz and Brazilian rhythms',
-          buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
-        }
-      ];
-    } else {
-      // For stress-anxiety-support and pain-support
-      return [
-        {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Modern classical music with contemporary elements',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'Ambient electronic textures for healing',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Soothing world music and new age sounds',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
-        }
-      ];
-    }
+  const handleGoalClick = () => {
+    navigate(`/goals/${goal.id}/genres`);
   };
 
-  const genreOptions = getGenreOptions(goal.id);
-
-  // Load tracks for this therapeutic goal
-  useEffect(() => {
-    // Only load tracks after genre selection
-    if (!selectedGenre) {
-      setIsLoading(false);
-      return;
-    }
-
-    const loadTracks = async () => {
-      setIsLoading(true);
-      try {
-        let buckets = goal.musicBuckets;
-        let searchKey = goal.backendKey;
-        
-        // Use genre-specific buckets for selected genre
-        if (selectedGenre) {
-          const genreOption = genreOptions.find(g => g.id === selectedGenre);
-          if (genreOption) {
-            buckets = genreOption.buckets;
-            console.log(`🎵 Loading ${genreOption.name} tracks from buckets:`, buckets);
-          }
-        }
-        
-        console.log(`🎵 Loading tracks for ${goal.name} from buckets:`, buckets);
-        
-        // Try to get tracks from the specified buckets
-        const { tracks: fetchedTracks, error } = await getTracksFromStorage(
-          searchKey, 
-          20, // Load 20 tracks per row
-          buckets
-        );
-        
-        if (error) {
-          console.warn(`⚠️ Error loading tracks for ${goal.name}:`, error);
-        }
-        
-        if (fetchedTracks && fetchedTracks.length > 0) {
-          setTracks(fetchedTracks);
-          console.log(`✅ Loaded ${fetchedTracks.length} tracks for ${goal.name}`);
-        } else {
-          console.warn(`⚠️ No tracks found for ${goal.name}`);
-        }
-      } catch (error) {
-        console.error(`❌ Failed to load tracks for ${goal.name}:`, error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTracks();
-  }, [goal, selectedGenre, genreOptions]);
-
-  // Check scroll buttons visibility
-  const updateScrollButtons = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    
-    setCanScrollLeft(container.scrollLeft > 0);
-    setCanScrollRight(
-      container.scrollLeft < container.scrollWidth - container.clientWidth - 1
-    );
-  };
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', updateScrollButtons);
-      updateScrollButtons(); // Initial check
-      
-      // Check after content loads
-      const resizeObserver = new ResizeObserver(updateScrollButtons);
-      resizeObserver.observe(container);
-      
-      return () => {
-        container.removeEventListener('scroll', updateScrollButtons);
-        resizeObserver.disconnect();
-      };
-    }
-  }, [tracks]);
-
-  const scroll = (direction: 'left' | 'right') => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    
-    const scrollAmount = 400; // Scroll by ~2 card widths
-    const newScrollLeft = direction === 'left' 
-      ? container.scrollLeft - scrollAmount
-      : container.scrollLeft + scrollAmount;
-      
-    container.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth'
-    });
-  };
-
-  const handleTrackPlay = async (track: Track) => {
-    if (audioLoading) {
-      toast.error("Already loading music, please wait...");
-      return;
-    }
-
-    try {
-      let genreName = '';
-      if (selectedGenre) {
-        const genreOption = genreOptions.find(g => g.id === selectedGenre);
-        genreName = genreOption ? ` ${genreOption.name.toLowerCase()}` : '';
-      }
-      
-      toast.loading(`Starting ${goal.name.toLowerCase()}${genreName} session...`, { id: "row-play" });
-      
-      // Start playing from this therapeutic goal with all tracks
-      await playFromGoal(goal.backendKey);
-      
-      toast.success(`Playing ${goal.name.toLowerCase()}${genreName} music`, { id: "row-play" });
-    } catch (error) {
-      console.error('❌ Failed to play track:', error);
-      toast.error("Failed to start playback", { id: "row-play" });
-    }
-  };
-
-  const isTrackPlaying = (track: Track): boolean => {
-    return currentTrack?.id === track.id;
-  };
-
-  // Genre selection interface for all therapeutic goals
-  if (!selectedGenre) {
-    return (
-      <div className={cn("mb-8", className)}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div>
-              <h2 className="text-xl font-semibold text-foreground">{goal.name}</h2>
-              <p className="text-sm text-muted-foreground">Choose your preferred genre</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
-          {genreOptions.map((genre) => (
-            <button
-              key={genre.id}
-              onClick={() => navigate(`/genre/${goal.id}/${genre.id}`)}
-              className="group relative overflow-hidden rounded-md border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg w-full"
-            >
-              <div className="aspect-square relative w-full h-0 pb-[100%]">
-                <img 
-                  src={genre.artwork} 
-                  alt={genre.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
-                <div className="absolute bottom-1 left-1 right-1">
-                  <h3 className="text-xs font-semibold text-white mb-0.5 group-hover:text-primary-foreground line-clamp-1">
-                    {genre.name}
-                  </h3>
-                  <p className="text-[10px] text-white/70 line-clamp-1">
-                    {genre.description}
-                  </p>
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className={cn("mb-8", className)}>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-foreground">{goal.name}</h2>
-        </div>
-        <div className="flex gap-4 overflow-hidden">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div 
-              key={i} 
-              className="w-48 h-64 bg-muted animate-pulse rounded-lg flex-shrink-0" 
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (!tracks.length) {
-    return (
-      <div className={cn("mb-8", className)}>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-foreground">{goal.name}</h2>
-        </div>
-        <div className="text-center py-8 text-muted-foreground">
-          No tracks available for {goal.name}
-        </div>
-      </div>
-    );
-  }
+  const IconComponent = goalIcons[goal.id as keyof typeof goalIcons] || goalIcons.default;
+  const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
 
   return (
-    <div className={cn("mb-8", className)}>
-      {/* Row header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">
-              {goal.name}
-              {selectedGenre && (
-                <span className="text-primary ml-2">
-                  • {genreOptions.find(g => g.id === selectedGenre)?.name}
-                </span>
-              )}
-            </h2>
-            {selectedGenre && (
-              <button
-                onClick={() => setSelectedGenre(null)}
-                className="text-xs text-muted-foreground hover:text-foreground mt-1"
-              >
-                ← Change genre
-              </button>
-            )}
+    <Card
+      className={cn(
+        "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] overflow-hidden",
+        "bg-card/90 backdrop-blur-sm",
+        theme.border,
+        className
+      )}
+      onClick={handleGoalClick}
+    >
+      {/* Background gradient */}
+      <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
+      
+      {/* Content */}
+      <div className="relative z-10 p-6">
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-4 flex-1">
+            {/* Icon */}
+            <div className={cn(
+              "p-3 rounded-2xl transition-all duration-300 group-hover:scale-110",
+              "bg-gradient-to-br", theme.gradient,
+              "shadow-lg group-hover:shadow-xl"
+            )}>
+              <IconComponent className="w-6 h-6 text-white" />
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-foreground transition-colors">
+                {goal.name}
+              </h3>
+              <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed mb-4">
+                {goal.description}
+              </p>
+              
+              {/* Features */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                  <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
+                  Science-backed
+                </div>
+                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                  <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
+                  Multiple genres
+                </div>
+                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                  <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
+                  Personalized
+                </div>
+              </div>
+              
+              {/* Action text */}
+              <div className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+                Explore music genres →
+              </div>
+            </div>
           </div>
-        </div>
-        
-        {/* Scroll controls */}
-        <div className="flex gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => scroll('left')}
-            disabled={!canScrollLeft}
-            className="h-8 w-8"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => scroll('right')}
-            disabled={!canScrollRight}
-            className="h-8 w-8"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </Button>
+          
+          {/* Arrow */}
+          <div className="flex items-center">
+            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+          </div>
         </div>
       </div>
       
-      {/* Scrollable track container */}
-      <div className="relative">
-        <div 
-          ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide pb-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {tracks.map((track) => (
-            <TrackRowCard
-              key={track.id}
-              track={track}
-              isPlaying={isTrackPlaying(track)}
-              onPlay={() => handleTrackPlay(track)}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+      {/* Hover effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+    </Card>
   );
 };

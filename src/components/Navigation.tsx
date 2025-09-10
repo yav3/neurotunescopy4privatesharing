@@ -1,4 +1,4 @@
-import { Home, Heart, User } from "lucide-react";
+import { Home, Heart, User, Target } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   
   const tabs = [
     { id: "home", label: "Home", icon: Home, path: "/" },
+    { id: "goals", label: "Goals", icon: Target, path: "/goals" },
     { id: "ai-dj", label: "FlowState", icon: Heart, path: "/ai-dj" },
     { id: "profile", label: "Profile", icon: User, path: "/profile" },
   ];
@@ -25,6 +26,11 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const getCurrentActiveTab = () => {
     if (activeTab) return activeTab;
     const currentPath = location.pathname;
+    
+    // Check for goals-related paths
+    if (currentPath.startsWith('/goals')) return "goals";
+    if (currentPath.startsWith('/genre')) return "goals"; // Genre view is part of goals flow
+    
     const currentTab = tabs.find(tab => tab.path === currentPath);
     return currentTab?.id || "home";
   };
