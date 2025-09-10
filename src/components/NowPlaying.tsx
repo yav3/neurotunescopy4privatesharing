@@ -280,50 +280,50 @@ export const NowPlaying: React.FC = () => {
 
             {/* Enhanced controls - responsive layout */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4">
-              <div className="flex items-center gap-2 justify-center sm:justify-start">
+              <div className="flex items-center gap-3 justify-center sm:justify-start">
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={handleFavorite}
                   className={cn(
-                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
-                    isFavorited ? "text-red-500" : "text-muted-foreground"
+                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
+                    isFavorited ? "text-red-500 hover:text-red-400" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Heart size={14} className={cn(isFavorited && "fill-current")} />
+                  <Heart size={20} className={cn(isFavorited && "fill-current")} />
                 </Button>
 
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={handleThumbsDown}
-                  className="text-muted-foreground hover:text-destructive h-8 w-8 sm:h-9 sm:w-9"
+                  className="text-muted-foreground hover:text-destructive h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50"
                 >
-                  <ThumbsDown size={14} />
+                  <ThumbsDown size={20} />
                 </Button>
 
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={handleLightningMode}
                   className={cn(
-                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
-                    lightningMode ? "text-yellow-500" : "text-muted-foreground"
+                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
+                    lightningMode ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Zap size={14} className={cn(lightningMode && "fill-current")} />
+                  <Zap size={20} className={cn(lightningMode && "fill-current")} />
                 </Button>
 
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={handleSpatialAudio}
                   className={cn(
-                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
-                    spatialAudioEnabled ? "text-blue-500" : "text-muted-foreground"
+                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
+                    spatialAudioEnabled ? "text-blue-500 hover:text-blue-400" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Radio size={14} />
+                  <Radio size={20} />
                 </Button>
               </div>
 
@@ -400,24 +400,50 @@ export const NowPlaying: React.FC = () => {
           {/* Favorite */}
           <Button 
             variant="ghost" 
-            size="sm" 
+            size="icon" 
             onClick={handleFavorite}
             className={cn(
-              "transition-colors duration-200",
-              isFavorited ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
+              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50",
+              isFavorited ? "text-red-500 hover:text-red-400" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Heart size={14} className={cn(isFavorited && "fill-current")} />
+            <Heart size={18} className={cn(isFavorited && "fill-current")} />
           </Button>
 
           {/* Thumbs Down */}
           <Button 
             variant="ghost" 
-            size="sm" 
+            size="icon" 
             onClick={handleThumbsDown}
-            className="text-muted-foreground hover:text-destructive"
+            className="text-muted-foreground hover:text-destructive h-9 w-9 hover:bg-accent/50"
           >
-            <ThumbsDown size={14} />
+            <ThumbsDown size={18} />
+          </Button>
+
+          {/* Lightning Mode */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleLightningMode}
+            className={cn(
+              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50",
+              lightningMode ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Zap size={18} className={cn(lightningMode && "fill-current")} />
+          </Button>
+
+          {/* Spatial Audio */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleSpatialAudio}
+            className={cn(
+              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50",
+              spatialAudioEnabled ? "text-blue-500 hover:text-blue-400" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Radio size={18} />
           </Button>
 
           {/* Skip Back */}
@@ -442,32 +468,6 @@ export const NowPlaying: React.FC = () => {
           {/* Skip Forward */}
           <Button variant="ghost" size="sm" onClick={next}>
             <SkipForward size={16} />
-          </Button>
-
-          {/* Lightning Mode */}
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleLightningMode}
-            className={cn(
-              "transition-colors duration-200",
-              lightningMode ? "text-yellow-500 hover:text-yellow-600" : "text-muted-foreground"
-            )}
-          >
-            <Zap size={14} className={cn(lightningMode && "fill-current")} />
-          </Button>
-
-          {/* Spatial Audio */}
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleSpatialAudio}
-            className={cn(
-              "transition-colors duration-200",
-              spatialAudioEnabled ? "text-blue-500 hover:text-blue-600" : "text-muted-foreground"
-            )}
-          >
-            <Radio size={14} />
           </Button>
         </div>
 
