@@ -97,16 +97,16 @@ const Index = () => {
                   onClick={() => handleGoalSelect(goal)}
                 >
                   {/* Background Image */}
-                  <div className="absolute inset-0 opacity-10 group-hover:opacity-15 transition-opacity duration-500">
+                  <div className="absolute inset-0">
                     <img 
                       src={goal.artwork} 
                       alt={goal.name}
-                      className="w-full h-full object-contain object-center"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
                   
-                  {/* Background gradient overlay */}
-                  <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
+                  {/* Dark overlay for text readability */}
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all duration-500" />
                   
                    {/* Content */}
                    <div className="relative z-10 p-4 md:p-5 h-full flex flex-col justify-between items-center text-center">
@@ -119,19 +119,19 @@ const Index = () => {
                          <IconComponent className="w-6 h-6 text-white" />
                        </div>
                        
-                       <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
-                         {goal.name}
-                       </h3>
+                        <h3 className="text-base md:text-lg font-bold text-white group-hover:text-white transition-colors leading-tight">
+                          {goal.name}
+                        </h3>
                      </div>
 
                      {/* Action */}
-                     <Button
-                       variant="outline"
-                       className={cn(
-                         "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
-                         "border-foreground/40 hover:border-primary text-foreground bg-background/90 hover:bg-primary/5 px-4 py-2 text-sm font-medium w-full max-w-[140px]"
-                       )}
-                     >
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "transition-all duration-300 group-hover:border-white group-hover:text-black group-hover:bg-white",
+                          "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-4 py-2 text-sm font-medium w-full max-w-[140px] backdrop-blur-sm"
+                        )}
+                      >
                        Explore Genres
                        <ArrowLeft className="w-4 h-4 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
                      </Button>
