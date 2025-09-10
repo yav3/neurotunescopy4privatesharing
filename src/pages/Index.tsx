@@ -71,20 +71,20 @@ const Index = () => {
       <div className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-primary/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent)] pointer-events-none" />
         
-        <div className="relative z-10 px-4 py-6 md:px-8 md:py-12">
+        <div className="relative z-10 px-4 py-3 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <div className="flex items-center justify-center mb-4">
-                <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
-                  <Brain className="w-8 h-8 text-primary" />
+            <div className="text-center mb-4 md:mb-6">
+              <div className="flex items-center justify-center mb-2">
+                <div className="p-2 rounded-full bg-primary/10 border border-primary/20">
+                  <Brain className="w-6 h-6 text-primary" />
                 </div>
               </div>
               
-              <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+              <h1 className="text-xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                 Therapeutic Music Goals
               </h1>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Choose your therapeutic goal and discover scientifically-crafted music designed to enhance your mental state and wellbeing
               </p>
             </div>
