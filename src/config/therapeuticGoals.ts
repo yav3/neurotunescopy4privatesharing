@@ -1,4 +1,4 @@
-import { LucideIcon, Target, Heart, Battery, Activity, Flower2, Shield, Sun } from 'lucide-react';
+import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-react';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -51,7 +51,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Focus Enhancement',
     shortName: 'Focus',
     description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
-    icon: Target,
+    icon: Brain,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/88FFA6BC5B10A0E6E897C0101091826567A6D486894E501D7F618023F51E15DC_sk_6_cid_1%20(1).jpeg',
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
@@ -67,7 +67,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Stress & Anxiety Support',
     shortName: 'Calm',
     description: 'Calm your mind and reduce stress and anxiety',
-    icon: Heart,
+    icon: Sparkles,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/C88246F2851BBECC71585D1F76802BE14EEDFE1EEFFCE560ED39938CEB786A40_sk_6_cid_1%20(1).jpeg',
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
@@ -83,7 +83,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Cardio',
     shortName: 'Cardio',
     description: 'Energizing beats to power your cardio workouts and training',
-    icon: Activity,
+    icon: Waves,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/d37bdb73-8ea1-4150-a35d-e08dbd929ff2.png',
     color: 'indigo',
     gradient: 'from-indigo-500 to-blue-500',
@@ -99,7 +99,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Mood Boost',
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
-    icon: Sun,
+    icon: Zap,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/189DEAFD638B63F00FC745F99EA22D934A812213C801952B6BC797E0477B2177_sk_6_cid_1%20(1).jpeg',
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',
@@ -115,7 +115,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Energy Boost',
     shortName: 'Energy',
     description: 'Energize and motivate your day',
-    icon: Battery,
+    icon: Shield,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/295D52C785AE7B1EF47C46763D8626FB1AA205B4FE04FD4F599121E76B0DD70B_sk_6_cid_1%20(1).jpeg',
     color: 'teal',
     gradient: 'from-teal-500 to-cyan-500',
@@ -131,7 +131,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Pain Support',
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
-    icon: Flower2,
+    icon: Flower,
     artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/099D20FB1C0036975BE3D9F83AFBE6ED48D5CF012F2D9C10A8770C4049F70AB7_sk_6_cid_1%20(1).jpeg',
     color: 'gray',
     gradient: 'from-gray-500 to-blue-500',
