@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track URL Test</title>
+</head>
+<body>
+    <h2>Testing Track URL</h2>
+    <p>URL: https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/classicalfocus/Autumn%20Twilght;%20Classical;%20Focus;%20Re-Energize%20(1).mp3</p>
+    
+    <audio id="testAudio" controls preload="metadata">
+        <source src="https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/classicalfocus/Autumn%20Twilght;%20Classical;%20Focus;%20Re-Energize%20(1).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <div id="results">
+        <p>Testing...</p>
+    </div>
+
+    <script>
+        const audio = document.getElementById('testAudio');
+        const results = document.getElementById('results');
+        
+        // Test the URL accessibility
+        fetch('https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/classicalfocus/Autumn%20Twilght;%20Classical;%20Focus;%20Re-Energize%20(1).mp3', { 
+            method: 'HEAD' 
+        })
+        .then(response => {
+            results.innerHTML = `
+                <p><strong>HTTP Status:</strong> ${response.status} ${response.statusText}</p>
+                <p><strong>Content-Type:</strong> ${response.headers.get('content-type')}</p>
+                <p><strong>Content-Length:</strong> ${response.headers.get('content-length')} bytes</p>
+                <p><strong>URL Accessible:</strong> ${response.ok ? '✅ YES' : '❌ NO'}</p>
+            `;
+        })
+        .catch(error => {
+            results.innerHTML = `<p><strong>Error:</strong> ${error.message}</p>`;
+        });
+
+        // Audio element events
+        audio.addEventListener('loadedmetadata', () => {
+            results.innerHTML += `<p><strong>Audio Metadata Loaded:</strong> ✅ Duration: ${audio.duration.toFixed(2)}s</p>`;
+        });
+
+        audio.addEventListener('canplay', () => {
+            results.innerHTML += `<p><strong>Audio Can Play:</strong> ✅ Ready to play</p>`;
+        });
+
+        audio.addEventListener('error', (e) => {
+            results.innerHTML += `<p><strong>Audio Error:</strong> ❌ ${e.target.error?.message || 'Unknown error'}</p>`;
+        });
+    </script>
+</body>
+</html>
