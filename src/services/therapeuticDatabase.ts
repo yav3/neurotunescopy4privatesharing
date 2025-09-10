@@ -135,8 +135,8 @@ export async function getTrendingTracks(
   minutes: number = 60,
   count: number = 50
 ): Promise<{ tracks: Track[]; error?: string }> {
-  console.log(`🔥 DIRECT STORAGE ACCESS: Fetching ${count} trending tracks from trendingnow bucket`);
-  console.log(`🗂️ This bypasses database completely - pulling directly from storage`);
+  console.log(`🔥 DIRECT STORAGE ACCESS: Fetching ${count} trending tracks from neuralpositivemusic bucket`);
+  console.log(`🗂️ This bypasses database completely - pulling directly from storage (trendingnow removed)`);
   
   // Use direct storage access for trending tracks too
   const { getTracksFromStorage } = await import('./storageDirectAccess');
