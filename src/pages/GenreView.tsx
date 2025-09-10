@@ -42,7 +42,7 @@ const GenreView: React.FC = () => {
           id: 'crossover-classical',
           name: 'Crossover Classical',
           description: 'Modern classical compositions for concentration',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['classicalfocus', 'neuralpositivemusic'],
           artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
         },
         {
