@@ -4,26 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import type { TherapeuticGoal } from '@/config/therapeuticGoals';
 
-// Import the artwork images
-import acousticArtwork from '@/assets/acoustic-artwork.jpg';
-import focusArtwork from '@/assets/focus-artwork.jpg';
-import moodBoostArtwork from '@/assets/mood-boost-artwork.jpg';
-import sleepArtwork from '@/assets/sleep-artwork.jpg';
-
-// Map therapeutic goals to their artwork
-const getGoalArtwork = (goalId: string): string => {
-  const artworkMap: Record<string, string> = {
-    'focus-enhancement': focusArtwork,
-    'anxiety-relief': '/lovable-uploads/alpha-mountain-lake.png',
-    'stress-reduction': '/lovable-uploads/beta-waterfall.png',
-    'sleep-preparation': sleepArtwork,
-    'mood-boost': moodBoostArtwork,
-    'meditation-support': '/lovable-uploads/gamma-sunbeam-forest.png',
-  };
-  
-  return artworkMap[goalId] || acousticArtwork;
-};
-
 interface TherapeuticGoalCardProps {
   goal: TherapeuticGoal;
   isSelected?: boolean;
@@ -43,8 +23,6 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   onClick,
   className
 }) => {
-  const artwork = getGoalArtwork(goal.id);
-  
   return (
     <Card 
       className={cn(
@@ -60,9 +38,9 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
       onClick={onClick}
     >
       <div className="aspect-[4/3] relative">
-        {/* Background Image */}
+        {/* Background Image - Using goal.artwork directly */}
         <img 
-          src={artwork} 
+          src={goal.artwork} 
           alt={goal.name}
           className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
         />
