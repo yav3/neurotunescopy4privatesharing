@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { cn } from '@/lib/utils';
+import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 
 // Genre definitions with enhanced styling
 const getGenreOptions = (goalId: string) => {
@@ -44,7 +45,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['Chopin'],
         trackCount: '45+ tracks',
         gradient: 'from-indigo-500 to-blue-400',
-        image: '/lovable-uploads/string-quartet-studio.png'
+        image: peacefulPianoArt
       }
     ],
     'stress-anxiety': [
