@@ -123,51 +123,51 @@ const Index = () => {
                   {/* Background gradient overlay */}
                   <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
-                  {/* Content */}
-                  <div className="relative z-10 p-3 md:p-4 h-full flex flex-col justify-between">
-                    <div className="flex flex-col items-center text-center">
-                      <div className={cn(
-                        "p-2 md:p-3 rounded-2xl transition-all duration-300 group-hover:scale-110 mb-2 md:mb-3",
-                        "bg-gradient-to-br", theme.gradient,
-                        "shadow-lg group-hover:shadow-xl"
-                      )}>
-                        <IconComponent className="w-4 h-4 md:w-6 md:h-6 text-white" />
-                      </div>
-                      
-                      <h3 className="text-sm md:text-lg font-semibold mb-1 md:mb-2 group-hover:text-foreground transition-colors text-center leading-tight">
-                        {goal.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-tight line-clamp-2 text-center">
-                        {goal.description}
-                      </p>
-                    </div>
+                   {/* Content */}
+                   <div className="relative z-10 p-2 md:p-3 h-full flex flex-col">
+                     <div className="flex flex-col items-center text-center flex-grow">
+                       <div className={cn(
+                         "p-1.5 md:p-2 rounded-xl transition-all duration-300 group-hover:scale-110 mb-1.5 md:mb-2",
+                         "bg-gradient-to-br", theme.gradient,
+                         "shadow-lg group-hover:shadow-xl"
+                       )}>
+                         <IconComponent className="w-3 h-3 md:w-5 md:h-5 text-white" />
+                       </div>
+                       
+                       <h3 className="text-xs md:text-sm font-semibold mb-1 group-hover:text-foreground transition-colors text-center leading-tight">
+                         {goal.name}
+                       </h3>
+                       <p className="text-[10px] md:text-xs text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-tight line-clamp-2 text-center mb-1">
+                         {goal.description}
+                       </p>
 
-                    {/* Features */}
-                    <div className="space-y-0.5 md:space-y-1 my-2">
-                      <div className="flex items-center justify-center text-xs text-muted-foreground">
-                        <div className={cn("w-1 h-1 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
-                        Science-backed
-                      </div>
-                      <div className="flex items-center justify-center text-xs text-muted-foreground">
-                        <div className={cn("w-1 h-1 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
-                        Multiple genres
-                      </div>
-                    </div>
+                       {/* Features */}
+                       <div className="space-y-0.5 mb-2">
+                         <div className="flex items-center justify-center text-[9px] md:text-[10px] text-muted-foreground">
+                           <div className={cn("w-0.5 h-0.5 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
+                           Science-backed
+                         </div>
+                         <div className="flex items-center justify-center text-[9px] md:text-[10px] text-muted-foreground">
+                           <div className={cn("w-0.5 h-0.5 rounded-full mr-1", theme.accent.replace('text-', 'bg-'))} />
+                           Multiple genres
+                         </div>
+                       </div>
+                     </div>
 
-                    {/* Action */}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={cn(
-                        "w-full transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
-                        "border-border hover:border-primary text-xs h-6 md:h-7 px-2"
-                      )}
-                    >
-                      <span className="hidden sm:inline">Explore Genres</span>
-                      <span className="sm:hidden">Explore</span>
-                      <ArrowLeft className="w-3 h-3 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
-                    </Button>
-                  </div>
+                     {/* Action */}
+                     <Button
+                       variant="outline"
+                       size="sm"
+                       className={cn(
+                         "w-full transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
+                         "border-border hover:border-primary text-[10px] md:text-xs h-5 md:h-6 px-1 md:px-2 mt-auto"
+                       )}
+                     >
+                       <span className="hidden sm:inline">Explore Genres</span>
+                       <span className="sm:hidden">Explore</span>
+                       <ArrowLeft className="w-2 h-2 md:w-3 md:h-3 ml-0.5 md:ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
+                     </Button>
+                   </div>
 
                   {/* Hover Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
