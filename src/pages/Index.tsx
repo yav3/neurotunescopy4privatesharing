@@ -93,7 +93,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-40 md:h-48",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 h-48 md:h-56",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
@@ -113,22 +113,22 @@ const Index = () => {
                   <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-3 md:p-4 h-full flex flex-col justify-between items-center text-center">
-                     <div className="flex flex-col items-center space-y-2">
+                   <div className="relative z-10 p-4 h-full flex flex-col justify-between items-center text-center">
+                     <div className="flex flex-col items-center space-y-3 flex-1 justify-center">
                        <div className={cn(
-                         "p-2 md:p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
+                         "p-2.5 rounded-xl transition-all duration-300 group-hover:scale-110",
                          "bg-gradient-to-br", theme.gradient,
                          "shadow-lg group-hover:shadow-xl"
                        )}>
-                         <IconComponent className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                         <IconComponent className="w-5 h-5 text-white" />
                        </div>
                        
-                       <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
+                       <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-tight px-2">
                          {goal.name}
                        </h3>
                        
                        {/* Description - hidden by default, visible on hover */}
-                       <p className="text-xs md:text-sm text-foreground/80 transition-all duration-300 leading-tight line-clamp-2 max-w-xs opacity-0 group-hover:opacity-100 transform translate-y-1 group-hover:translate-y-0 absolute">
+                       <p className="text-xs text-foreground/80 transition-all duration-300 leading-tight line-clamp-2 px-2 opacity-0 group-hover:opacity-100 transform translate-y-1 group-hover:translate-y-0 absolute top-1/2 left-0 right-0">
                          {goal.description}
                        </p>
                      </div>
@@ -139,7 +139,7 @@ const Index = () => {
                        size="sm"
                        className={cn(
                          "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
-                         "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-4 py-1.5 text-sm font-semibold mt-auto"
+                         "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-3 py-1 text-xs font-semibold w-full"
                        )}
                      >
                        Explore Genres
