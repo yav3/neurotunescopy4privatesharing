@@ -213,10 +213,10 @@ export const NowPlaying: React.FC = () => {
         </div>
 
         {/* Full player content */}
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <div className="w-full max-w-sm">
-            {/* Album artwork */}
-            <div className="aspect-square relative mb-8 rounded-2xl overflow-hidden shadow-2xl">
+        <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
+            {/* Album artwork - responsive sizing */}
+            <div className="aspect-square relative mb-6 sm:mb-8 rounded-2xl overflow-hidden shadow-2xl mx-auto max-w-[280px] sm:max-w-[320px] md:max-w-[400px]">
               <img 
                 src={artwork.url} 
                 alt={track.title}
@@ -226,13 +226,13 @@ export const NowPlaying: React.FC = () => {
             </div>
 
             {/* Track info */}
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold mb-2">{formatTrackTitleForDisplay(track.title)}</h3>
-              <p className="text-lg text-muted-foreground">THERAPEUTIC MUSIC</p>
+            <div className="text-center mb-6 sm:mb-8 px-4">
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">{formatTrackTitleForDisplay(track.title)}</h3>
+              <p className="text-base sm:text-lg text-muted-foreground">THERAPEUTIC MUSIC</p>
             </div>
 
             {/* Progress */}
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8 px-4">
               <Slider
                 value={[currentTime]}
                 max={duration || 0}
@@ -247,50 +247,50 @@ export const NowPlaying: React.FC = () => {
             </div>
 
             {/* Controls */}
-            <div className="flex items-center justify-center gap-6 mb-8">
-              <Button variant="ghost" size="icon" onClick={prev}>
-                <SkipBack className="w-6 h-6" />
+            <div className="flex items-center justify-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <Button variant="ghost" size="icon" onClick={prev} className="h-10 w-10 sm:h-12 sm:w-12">
+                <SkipBack className="w-5 h-5 sm:w-6 sm:h-6" />
               </Button>
               
               <Button
                 size="icon"
-                className="w-16 h-16 rounded-full"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full"
                 onClick={toggle}
               >
                 {isPlaying ? (
-                  <Pause className="w-8 h-8" />
+                  <Pause className="w-7 h-7 sm:w-8 sm:h-8" />
                 ) : (
-                  <Play className="w-8 h-8 ml-1" />
+                  <Play className="w-7 h-7 sm:w-8 sm:h-8 ml-1" />
                 )}
               </Button>
               
-              <Button variant="ghost" size="icon" onClick={next}>
-                <SkipForward className="w-6 h-6" />
+              <Button variant="ghost" size="icon" onClick={next} className="h-10 w-10 sm:h-12 sm:w-12">
+                <SkipForward className="w-5 h-5 sm:w-6 sm:h-6" />
               </Button>
             </div>
 
-            {/* Enhanced controls */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            {/* Enhanced controls - responsive layout */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4">
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={handleFavorite}
                   className={cn(
-                    "transition-colors duration-200",
+                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
                     isFavorited ? "text-red-500" : "text-muted-foreground"
                   )}
                 >
-                  <Heart size={16} className={cn(isFavorited && "fill-current")} />
+                  <Heart size={14} className={cn(isFavorited && "fill-current")} />
                 </Button>
 
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={handleThumbsDown}
-                  className="text-muted-foreground hover:text-destructive"
+                  className="text-muted-foreground hover:text-destructive h-8 w-8 sm:h-9 sm:w-9"
                 >
-                  <ThumbsDown size={16} />
+                  <ThumbsDown size={14} />
                 </Button>
 
                 <Button 
@@ -298,11 +298,11 @@ export const NowPlaying: React.FC = () => {
                   size="sm" 
                   onClick={handleLightningMode}
                   className={cn(
-                    "transition-colors duration-200",
+                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
                     lightningMode ? "text-yellow-500" : "text-muted-foreground"
                   )}
                 >
-                  <Zap size={16} className={cn(lightningMode && "fill-current")} />
+                  <Zap size={14} className={cn(lightningMode && "fill-current")} />
                 </Button>
 
                 <Button 
@@ -310,23 +310,23 @@ export const NowPlaying: React.FC = () => {
                   size="sm" 
                   onClick={handleSpatialAudio}
                   className={cn(
-                    "transition-colors duration-200",
+                    "transition-colors duration-200 h-8 w-8 sm:h-9 sm:w-9",
                     spatialAudioEnabled ? "text-blue-500" : "text-muted-foreground"
                   )}
                 >
-                  <Radio size={16} />
+                  <Radio size={14} />
                 </Button>
               </div>
 
-              {/* Volume */}
-              <div className="flex items-center gap-2">
+              {/* Volume - hide on very small screens */}
+              <div className="hidden sm:flex items-center gap-2">
                 <Volume2 size={16} className="text-muted-foreground" />
                 <Slider
                   value={[volume * 100]}
                   max={100}
                   step={1}
                   onValueChange={([value]) => handleVolumeChange(value / 100)}
-                  className="w-24"
+                  className="w-20 sm:w-24"
                 />
               </div>
             </div>
