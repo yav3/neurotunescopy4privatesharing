@@ -69,22 +69,19 @@ const App = () => {
   }
 
   if (!user) {
-    if (showAuth) {
-      return <AuthPage onBack={() => setShowAuth(false)} />;
-    }
-    
     // Handle unauthenticated password reset routes
     const currentPath = window.location.pathname;
     if (currentPath === '/reset-password' || currentPath === '/verify') {
       return <ResetPasswordForm />;
     }
     
-    return (
-      <NeuralPositiveLanding 
-        onSignIn={() => setShowAuth(true)} 
-        onGetStarted={() => setShowAuth(true)} 
-      />
-    );
+    // Show auth page if explicitly requested
+    if (showAuth) {
+      return <AuthPage onBack={() => setShowAuth(false)} />;
+    }
+    
+    // For unauthenticated users, show the main app with limited features
+    // They can access therapeutic music but not personalization features
   }
 
   return (
