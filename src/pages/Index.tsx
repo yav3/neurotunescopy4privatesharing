@@ -134,21 +134,21 @@ const Index = () => {
                          <IconComponent className="w-6 h-6 md:w-8 md:h-8 text-white" />
                        </div>
                        
-                       <h3 className="text-lg md:text-xl font-bold group-hover:text-foreground transition-colors leading-tight">
+                       <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                          {goal.name}
                        </h3>
                        
-                       <p className="text-sm md:text-base text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed line-clamp-3 max-w-xs">
+                       <p className="text-sm md:text-base text-foreground/80 group-hover:text-foreground transition-colors leading-relaxed line-clamp-3 max-w-xs">
                          {goal.description}
                        </p>
 
                        {/* Features */}
                        <div className="flex flex-col space-y-1">
-                         <div className="flex items-center justify-center text-sm text-muted-foreground">
+                         <div className="flex items-center justify-center text-sm text-foreground/70">
                            <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
                            Science-backed
                          </div>
-                         <div className="flex items-center justify-center text-sm text-muted-foreground">
+                         <div className="flex items-center justify-center text-sm text-foreground/70">
                            <div className={cn("w-1.5 h-1.5 rounded-full mr-2", theme.accent.replace('text-', 'bg-'))} />
                            Multiple genres
                          </div>
@@ -157,13 +157,12 @@ const Index = () => {
                        {/* Action */}
                        <Button
                          variant="outline"
-                         size="sm"
                          className={cn(
-                           "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5",
-                           "border-border hover:border-primary px-6 py-2 mt-4"
+                           "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
+                           "border-foreground/20 hover:border-primary text-foreground bg-background/50 hover:bg-primary/5 px-6 py-2 mt-4"
                          )}
                        >
-                         <span>Explore Genres</span>
+                         Explore Genres
                          <ArrowLeft className="w-4 h-4 ml-2 rotate-180 transition-transform group-hover:translate-x-1" />
                        </Button>
                      </div>
