@@ -113,22 +113,22 @@ const Index = () => {
                   <div className={cn("absolute inset-0 opacity-80 group-hover:opacity-90 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-4 h-full flex flex-col justify-between items-center text-center">
-                     <div className="flex flex-col items-center space-y-3 flex-1 justify-center">
+                   <div className="relative z-10 p-4 md:p-5 h-full flex flex-col justify-between items-center text-center">
+                     <div className="flex flex-col items-center space-y-4 flex-1 justify-center">
                        <div className={cn(
-                         "p-2.5 rounded-xl transition-all duration-300 group-hover:scale-110",
+                         "p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
                          "bg-gradient-to-br", theme.gradient,
                          "shadow-lg group-hover:shadow-xl"
                        )}>
-                         <IconComponent className="w-5 h-5 text-white" />
+                         <IconComponent className="w-6 h-6 text-white" />
                        </div>
                        
-                       <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-tight px-2">
+                       <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
                          {goal.name}
                        </h3>
                        
                        {/* Description - hidden by default, visible on hover */}
-                       <p className="text-xs text-foreground/80 transition-all duration-300 leading-tight line-clamp-2 px-2 opacity-0 group-hover:opacity-100 transform translate-y-1 group-hover:translate-y-0 absolute top-1/2 left-0 right-0">
+                       <p className="text-sm text-foreground/90 transition-all duration-300 leading-relaxed px-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 absolute top-20 left-0 right-0">
                          {goal.description}
                        </p>
                      </div>
@@ -136,14 +136,13 @@ const Index = () => {
                      {/* Action */}
                      <Button
                        variant="outline"
-                       size="sm"
                        className={cn(
                          "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
-                         "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-3 py-1 text-xs font-semibold w-full"
+                         "border-foreground/40 hover:border-primary text-foreground bg-background/90 hover:bg-primary/5 px-4 py-2 text-sm font-medium w-full max-w-[140px]"
                        )}
                      >
                        Explore Genres
-                       <ArrowLeft className="w-3 h-3 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
+                       <ArrowLeft className="w-4 h-4 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
                      </Button>
                    </div>
 
