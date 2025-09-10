@@ -295,12 +295,12 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           </div>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
           {genreOptions.map((genre) => (
             <button
               key={genre.id}
               onClick={() => navigate(`/genre/${goal.id}/${genre.id}`)}
-              className="group relative overflow-hidden rounded-lg border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
+              className="group relative overflow-hidden rounded-md border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
             >
               <div className="aspect-square relative">
                 <img 
@@ -309,11 +309,11 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
                   className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
-                <div className="absolute bottom-2 left-2 right-2">
-                  <h3 className="text-sm font-semibold text-white mb-0.5 group-hover:text-primary-foreground">
+                <div className="absolute bottom-1 left-1 right-1">
+                  <h3 className="text-xs font-semibold text-white mb-0.5 group-hover:text-primary-foreground line-clamp-1">
                     {genre.name}
                   </h3>
-                  <p className="text-xs text-white/80 line-clamp-2">
+                  <p className="text-[10px] text-white/70 line-clamp-1">
                     {genre.description}
                   </p>
                 </div>
