@@ -110,23 +110,25 @@ const Index = () => {
                   
                    {/* Content */}
                    <div className="relative z-10 p-4 md:p-5 h-full flex flex-col justify-between items-center text-center">
-                     <div className="flex flex-col items-center space-y-4 flex-1 justify-center">
+                     <div className="flex flex-col items-center space-y-3 flex-1 justify-center">
                        <h3 className="text-base md:text-lg font-bold text-white group-hover:text-white transition-colors leading-tight">
                          {goal.name}
                        </h3>
                      </div>
 
-                     {/* Action */}
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "transition-all duration-300 group-hover:border-white group-hover:text-black group-hover:bg-white",
-                          "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-4 py-2 text-sm font-medium w-full max-w-[140px] backdrop-blur-sm"
-                        )}
-                      >
-                       Explore Genres
-                       <ArrowLeft className="w-4 h-4 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
-                     </Button>
+                     {/* Action Button - Always visible */}
+                     <div className="mt-auto pt-3">
+                       <Button
+                         variant="outline"
+                         className={cn(
+                           "transition-all duration-300 group-hover:border-white group-hover:text-black group-hover:bg-white",
+                           "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm"
+                         )}
+                       >
+                         Explore Genres
+                         <ArrowLeft className="w-4 h-4 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
+                       </Button>
+                     </div>
                    </div>
 
                   {/* Hover Effect */}
