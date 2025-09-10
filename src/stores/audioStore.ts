@@ -42,6 +42,10 @@ type AudioState = {
   // Spatial audio state
   spatialAudioEnabled: boolean;
   
+  // Player UI state
+  playerMode: 'full' | 'mini';
+  setPlayerMode: (mode: 'full' | 'mini') => void;
+  
   // Queue
   queue: Track[];
   index: number;
@@ -403,7 +407,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 Track loaded successfully:', track.title);
       console.log('🎵 Setting currentTrack in store:', track.id, track.title);
-      set({ currentTrack: track, isLoading: false, error: undefined });
+      set({ currentTrack: track, isLoading: false, error: undefined, playerMode: 'full' });
       console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       return true;
     } catch (error) {
@@ -424,11 +428,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
     duration: 0,
     volume: 0.8,
     spatialAudioEnabled: false,
+    playerMode: 'full',
     queue: [],
     index: -1,
     sessionManager: null,
     error: undefined,
     lastGoal: undefined,
+
+    // Player mode control
+    setPlayerMode: (mode: 'full' | 'mini') => set({ playerMode: mode }),
 
     // Actions
     playTrack: async (track: Track) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Zap, Radio } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Zap, Radio, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -111,7 +111,9 @@ export const NowPlaying: React.FC = () => {
     setVolume: handleVolumeChange,
     spatialAudioEnabled,
     toggleSpatialAudio,
-    queue
+    queue,
+    playerMode,
+    setPlayerMode
   } = useAudioStore();
 
   // Local state for enhanced features
@@ -193,13 +195,154 @@ export const NowPlaying: React.FC = () => {
   const frequencyBand = getFrequencyBandFromBPM(track.bpm);
   const artwork = getTherapeuticArtwork(frequencyBand, track.id);
 
+  // Show full player when playerMode is 'full'
+  if (playerMode === 'full') {
+    return (
+      <div className="fixed inset-0 z-50 bg-background flex flex-col">
+        {/* Header with close button */}
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="text-lg font-semibold">Now Playing</h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setPlayerMode('mini')}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <X className="w-6 h-6" />
+          </Button>
+        </div>
+
+        {/* Full player content */}
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="w-full max-w-sm">
+            {/* Album artwork */}
+            <div className="aspect-square relative mb-8 rounded-2xl overflow-hidden shadow-2xl">
+              <img 
+                src={artwork.url} 
+                alt={track.title}
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient}`} />
+            </div>
+
+            {/* Track info */}
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold mb-2">{formatTrackTitleForDisplay(track.title)}</h3>
+              <p className="text-lg text-muted-foreground">THERAPEUTIC MUSIC</p>
+            </div>
+
+            {/* Progress */}
+            <div className="mb-8">
+              <Slider
+                value={[currentTime]}
+                max={duration || 0}
+                step={0.1}
+                onValueChange={([value]) => seek(value)}
+                className="mb-2"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>{formatTime(currentTime)}</span>
+                <span>{formatTime(duration)}</span>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center justify-center gap-6 mb-8">
+              <Button variant="ghost" size="icon" onClick={prev}>
+                <SkipBack className="w-6 h-6" />
+              </Button>
+              
+              <Button
+                size="icon"
+                className="w-16 h-16 rounded-full"
+                onClick={toggle}
+              >
+                {isPlaying ? (
+                  <Pause className="w-8 h-8" />
+                ) : (
+                  <Play className="w-8 h-8 ml-1" />
+                )}
+              </Button>
+              
+              <Button variant="ghost" size="icon" onClick={next}>
+                <SkipForward className="w-6 h-6" />
+              </Button>
+            </div>
+
+            {/* Enhanced controls */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleFavorite}
+                  className={cn(
+                    "transition-colors duration-200",
+                    isFavorited ? "text-red-500" : "text-muted-foreground"
+                  )}
+                >
+                  <Heart size={16} className={cn(isFavorited && "fill-current")} />
+                </Button>
+
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleThumbsDown}
+                  className="text-muted-foreground hover:text-destructive"
+                >
+                  <ThumbsDown size={16} />
+                </Button>
+
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleLightningMode}
+                  className={cn(
+                    "transition-colors duration-200",
+                    lightningMode ? "text-yellow-500" : "text-muted-foreground"
+                  )}
+                >
+                  <Zap size={16} className={cn(lightningMode && "fill-current")} />
+                </Button>
+
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleSpatialAudio}
+                  className={cn(
+                    "transition-colors duration-200",
+                    spatialAudioEnabled ? "text-blue-500" : "text-muted-foreground"
+                  )}
+                >
+                  <Radio size={16} />
+                </Button>
+              </div>
+
+              {/* Volume */}
+              <div className="flex items-center gap-2">
+                <Volume2 size={16} className="text-muted-foreground" />
+                <Slider
+                  value={[volume * 100]}
+                  max={100}
+                  step={1}
+                  onValueChange={([value]) => handleVolumeChange(value / 100)}
+                  className="w-24"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <Card className="fixed bottom-16 left-0 right-0 z-50 rounded-none border-t bg-card/95 backdrop-blur-sm">
+    <Card className="fixed bottom-16 left-0 right-0 z-50 rounded-none border-t bg-background/98 backdrop-blur-md">
       <div className="flex items-center gap-2 p-4">
         {/* Track Info */}
         <div 
           className="flex-1 min-w-0 cursor-pointer"
-          onClick={() => navigate('/player')}
+          onClick={() => setPlayerMode('full')}
         >
           <div className="flex items-center gap-3">
             <div className={cn(
