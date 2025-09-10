@@ -186,13 +186,7 @@ export async function getTracksFromStorage(
           }
         }
         
-        // If we got tracks from this bucket, we can stop trying other buckets for focus-enhancement
-        if (allTracks.length > 0 && goal === 'focus-enhancement') {
-          console.log(`✅ Got ${allTracks.length} tracks from ${bucket}, stopping here for focus-enhancement`);
-          break;
-        }
-        
-      } catch (bucketError) {
+        } catch (bucketError) {
         console.error(`❌ Error processing bucket ${bucket}:`, bucketError);
         continue;
       }

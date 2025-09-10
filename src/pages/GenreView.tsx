@@ -351,7 +351,7 @@ const GenreView: React.FC = () => {
                 {selectedGenre.description}
               </p>
               <p className="text-sm md:text-lg text-white/60">
-                {goal.name} • {tracks.length} tracks
+                {goal.name}
               </p>
               
               {/* Play/Pause Button */}
