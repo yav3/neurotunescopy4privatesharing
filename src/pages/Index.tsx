@@ -72,7 +72,7 @@ const Index = () => {
       </div>
 
       {/* Goals Grid */}
-      <div className="px-4 -mt-4">
+      <div className="px-4 -mt-4 pb-24">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal) => {
