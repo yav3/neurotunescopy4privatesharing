@@ -33,16 +33,6 @@ export const TherapeuticRowsLayout: React.FC<TherapeuticRowsLayoutProps> = ({ cl
   return (
     <section className={cn("px-4 md:px-8 mb-24", className)}>
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Therapeutic Music Library
-          </h1>
-          <p className="text-muted-foreground">
-            Explore our curated collection of therapeutic music organized by mood and purpose
-          </p>
-        </div>
-        
         {/* Therapeutic rows */}
         <div className="space-y-8">
           {THERAPEUTIC_GOALS.map((goal) => (

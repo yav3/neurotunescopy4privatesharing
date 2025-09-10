@@ -173,7 +173,6 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           </div>
           <div>
             <h2 className="text-xl font-semibold text-foreground">{goal.name}</h2>
-            <p className="text-sm text-muted-foreground">{tracks.length} tracks available</p>
           </div>
         </div>
         
