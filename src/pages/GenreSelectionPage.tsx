@@ -20,22 +20,22 @@ const getGenreOptions = (goalId: string) => {
         bgPattern: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%)'
       },
       {
-        id: 'ambient-electronic',
-        name: 'Ambient Electronic',
-        description: 'Atmospheric electronic soundscapes',
+        id: 'new-age',
+        name: 'New Age',
+        description: 'Ethereal soundscapes for enhanced focus',
+        buckets: ['neuralpositivemusic'],
+        trackCount: '60+ tracks',
+        gradient: 'from-purple-500 to-indigo-400',
+        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)'
+      },
+      {
+        id: 'electronic',
+        name: 'Electronic',
+        description: 'Focused electronic beats and ambient textures',
         buckets: ['neuralpositivemusic'],
         trackCount: '75+ tracks',
         gradient: 'from-cyan-500 to-teal-400',
         bgPattern: 'radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)'
-      },
-      {
-        id: 'minimalist-piano',
-        name: 'Minimalist Piano',
-        description: 'Pure piano compositions for deep focus',
-        buckets: ['neuralpositivemusic'],
-        trackCount: '40+ tracks',
-        gradient: 'from-indigo-500 to-blue-400',
-        bgPattern: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)'
       }
     ],
     'stress-anxiety': [
