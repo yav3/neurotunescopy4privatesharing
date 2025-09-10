@@ -18,6 +18,7 @@ interface GenreOption {
   name: string;
   description: string;
   buckets: string[];
+  artwork: string;
 }
 
 interface Track {
@@ -45,19 +46,22 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           id: 'crossover-classical',
           name: 'Crossover Classical',
           description: 'Modern classical compositions for concentration',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/207F8B9460FD5779D21A95D5281F8AF00C6107AA38D3738DC7E89CBE55A51BBA_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'electronic',
           name: 'Electronic',
           description: 'Ambient electronic music for focus',
-          buckets: ['focus-music']
+          buckets: ['focus-music'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/241F64A3035F4873DDECA5B3F913F9FA9B13EA7CBD1E568152E113519DB472BB_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'world-new-age',
           name: 'World & New Age',
           description: 'Global sounds and new age music',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/86AA1A7D3B84B7D5EA536D984AC2D75F6ECCD149DFF3B665F5D94AECA777AE30_sk_6_cid_1%20(1).jpeg'
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -66,25 +70,29 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           id: 'classical-crossover',
           name: 'Classical Crossover',
           description: 'Modern classical music with contemporary elements',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'electronic',
           name: 'Electronic',
           description: 'Uplifting electronic beats and rhythms',
-          buckets: ['ENERGYBOOST']
+          buckets: ['ENERGYBOOST'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'new-age-world',
           name: 'New Age & World',
           description: 'Soothing world music and new age sounds',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/429A6F36DE97D9EC84D8B6FE222AF037FC120E389CE2148819653E61EC48C50F_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'samba-jazz',
           name: 'Samba & Jazz',
           description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/97C5C02513BFA6AD3D0CDC1C512840EA792FBD12DC992D536C556CD40FE31E19_sk_6_cid_1%20(1).jpeg'
         }
       ];
     } else if (goalId === 'energy-boost') {
@@ -93,25 +101,29 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           id: 'classical-crossover',
           name: 'Classical Crossover',
           description: 'Energizing classical music with modern elements',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/347EC9E5775E3CBCF6EEE551C869493DFA6A8C89E35F07583AFA34E3E9366B21_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'electronic',
           name: 'Electronic',
           description: 'High-energy electronic music and beats',
-          buckets: ['ENERGYBOOST']
+          buckets: ['ENERGYBOOST'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/341FC8389CC6512FE7F09A03DA617996E167E0D2D642355A24537D37DF6B5997_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'new-age-world',
           name: 'New Age & World',
           description: 'Motivational world music and new age sounds',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'samba-jazz',
           name: 'Samba & Jazz',
           description: 'Energetic jazz and Brazilian rhythms',
-          buckets: ['ENERGYBOOST']
+          buckets: ['ENERGYBOOST'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/99BE3D3797F87CE9A6CD4EDF860ED60E194A89125A96A92434A2E67ADC2AB52F_sk_6_cid_1%20(1).jpeg'
         }
       ];
     } else {
@@ -121,19 +133,22 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           id: 'classical-crossover',
           name: 'Classical Crossover',
           description: 'Modern classical music with contemporary elements',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'new-age-world',
           name: 'New Age & World',
           description: 'Soothing world music and new age sounds',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/436AD4981FBCBAA958102476AC118A5FBBC39BC3E584CE80656B411DB5284875_sk_6_cid_1%20(1).jpeg'
         },
         {
           id: 'samba-jazz',
           name: 'Samba & Jazz',
           description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic']
+          buckets: ['neuralpositivemusic'],
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/89C29BE0159665B8CE7F212E30C03CAB8D9E3A90F7D1F90C7E4615F97659919B_sk_6_cid_1%20(1).jpeg'
         }
       ];
     }
@@ -283,14 +298,24 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
             <button
               key={genre.id}
               onClick={() => setSelectedGenre(genre.id)}
-              className="group p-6 bg-card rounded-lg border border-border hover:border-primary/50 hover:bg-accent/5 transition-all duration-200 text-left"
+              className="group relative overflow-hidden rounded-lg border border-border hover:border-primary/50 transition-all duration-200 text-left bg-card hover:shadow-lg"
             >
-              <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary">
-                {genre.name}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {genre.description}
-              </p>
+              <div className="aspect-[4/3] relative">
+                <img 
+                  src={genre.artwork} 
+                  alt={genre.name}
+                  className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/5" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-primary-foreground">
+                    {genre.name}
+                  </h3>
+                  <p className="text-sm text-white/80">
+                    {genre.description}
+                  </p>
+                </div>
+              </div>
             </button>
           ))}
         </div>
