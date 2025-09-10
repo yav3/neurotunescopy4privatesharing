@@ -319,14 +319,30 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      // Use Smart Audio Resolver to find working URL
-      console.log('🔍 Using SmartAudioResolver to find working URL...');
-      const resolution = await SmartAudioResolver.resolveAudioUrl({
-        id: track.id,
-        title: track.title || 'Untitled',
-        storage_bucket: track.storage_bucket,
-        storage_key: track.storage_key
-      });
+      // Check if track already has a stream_url from direct storage
+      let resolution;
+      if (track.stream_url) {
+        console.log('🎵 Using existing stream_url from direct storage:', track.stream_url);
+        resolution = {
+          success: true,
+          url: track.stream_url,
+          method: 'direct_storage',
+          attempts: [{
+            url: track.stream_url,
+            status: 200,
+            method: 'direct_storage'
+          }]
+        };
+      } else {
+        // Use Smart Audio Resolver to find working URL
+        console.log('🔍 Using SmartAudioResolver to find working URL...');
+        resolution = await SmartAudioResolver.resolveAudioUrl({
+          id: track.id,
+          title: track.title || 'Untitled',
+          storage_bucket: track.storage_bucket,
+          storage_key: track.storage_key
+        });
+      }
       
       // Check sequence after async operation
       if (!isValid()) {

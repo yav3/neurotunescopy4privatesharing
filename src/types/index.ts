@@ -9,6 +9,7 @@ export interface Track {
   storage_key?: string;         // Actual storage path (matches database)
   storage_bucket?: string;      // Storage bucket name (matches database)
   src?: string;                 // Computed stream URL
+  stream_url?: string;          // Direct storage stream URL
   duration?: number;
   goal?: string;
   therapeutic_use?: string;
