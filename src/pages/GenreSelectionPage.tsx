@@ -36,6 +36,15 @@ const getGenreOptions = (goalId: string) => {
         trackCount: '75+ tracks',
         gradient: 'from-cyan-500 to-teal-400',
         bgPattern: 'radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)'
+      },
+      {
+        id: 'peaceful-piano',
+        name: 'Peaceful Piano',
+        description: 'Gentle piano melodies for deep concentration',
+        buckets: ['neuralpositivemusic'],
+        trackCount: '45+ tracks',
+        gradient: 'from-indigo-500 to-blue-400',
+        bgPattern: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 50%)'
       }
     ],
     'stress-anxiety': [
