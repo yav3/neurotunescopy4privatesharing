@@ -63,7 +63,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'World & New Age',
           description: 'Global sounds and new age music',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/86AA1A7D3B84B7D5EA536D984AC2D75F6ECCD149DFF3B665F5D94AECA777AE30_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -87,7 +87,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'New Age & World',
           description: 'Soothing world music and new age sounds',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/429A6F36DE97D9EC84D8B6FE222AF037FC120E389CE2148819653E61EC48C50F_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
         },
         {
           id: 'samba-jazz',
@@ -118,7 +118,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'New Age & World',
           description: 'Motivational world music and new age sounds',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
         },
         {
           id: 'samba-jazz',
@@ -143,7 +143,7 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
           name: 'New Age & World',
           description: 'Soothing world music and new age sounds',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/436AD4981FBCBAA958102476AC118A5FBBC39BC3E584CE80656B411DB5284875_sk_6_cid_1%20(1).jpeg'
+          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
         },
         {
           id: 'samba-jazz',
