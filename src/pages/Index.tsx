@@ -80,8 +80,8 @@ const Index = () => {
                 </div>
               </div>
               
-              <h1 className="text-xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-                Therapeutic Music Goals
+              <h1 className="text-lg md:text-2xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                Therapeutic Goals
               </h1>
               
               <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -94,8 +94,8 @@ const Index = () => {
 
       {/* Goals Grid */}
       <div className="px-2 py-2 md:px-4 md:py-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 scale-75">
             {THERAPEUTIC_GOALS.map((goal) => {
               const IconComponent = goalIcons[goal.id as keyof typeof goalIcons] || goalIcons.default;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
