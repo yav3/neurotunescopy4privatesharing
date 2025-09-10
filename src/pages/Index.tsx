@@ -127,7 +127,8 @@ const Index = () => {
                          {goal.name}
                        </h3>
                        
-                       <p className="text-sm md:text-base text-foreground/80 group-hover:text-foreground transition-colors leading-relaxed line-clamp-3 max-w-xs">
+                       {/* Description - hidden by default, visible on hover */}
+                       <p className="text-sm md:text-base text-foreground/80 transition-all duration-300 leading-relaxed line-clamp-3 max-w-xs opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
                          {goal.description}
                        </p>
 
@@ -136,7 +137,7 @@ const Index = () => {
                          variant="outline"
                          className={cn(
                            "transition-all duration-300 group-hover:border-primary group-hover:text-primary group-hover:bg-primary/10",
-                           "border-foreground/20 hover:border-primary text-foreground bg-background/50 hover:bg-primary/5 px-6 py-2 mt-4"
+                           "border-foreground/30 hover:border-primary text-foreground bg-background/80 hover:bg-primary/5 px-6 py-2 font-semibold"
                          )}
                        >
                          Explore Genres
