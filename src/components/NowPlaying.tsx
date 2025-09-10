@@ -11,10 +11,17 @@ import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 // Deterministic artwork selection to give each song a unique image
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Expanded album art collection for individual songs
+  // Expanded album art collection with beautiful nature imagery
   const albumArtwork = [
+    '/lovable-uploads/d37bdb73-8ea1-4150-a35d-e08dbd929ff2.png', // Pink cosmos flowers in field
+    '/lovable-uploads/4d20a0a1-857e-4d94-b1cb-6a9d68ae6910.png', // Field with butterflies and yellow flowers
+    '/lovable-uploads/2526e614-65b3-4f38-8875-49396cbf8334.png', // Colorful daisies (yellow, orange, pink)
+    '/lovable-uploads/d1dc4c39-c585-469c-b524-10ff6f1e6818.png', // Tropical beach with palm trees
+    '/lovable-uploads/c17d43a8-c471-41ec-95d5-1131804b5181.png', // Mountain landscape with river
+    '/lovable-uploads/71121ed8-7b8f-4d60-97d4-282e33ca08b2.png', // Yellow flowers under starry sky
+    '/lovable-uploads/19a2f398-e797-4f64-b18b-ac2e3b736d30.png', // Vintage piano in flowering field
+    '/lovable-uploads/5734dabc-389d-4cdc-9163-5494ea1da3ae.png', // Garden path through flower meadow
     '/lovable-uploads/19ca5ad8-bc5b-45c7-b13f-f3182585ae23.png', // Garden path with sunlight
-    '/lovable-uploads/67cfdc0c-339d-48e8-776-13ce34bf1a4f.png', // White piano with musical notes
     '/lovable-uploads/d8b56c80-98c4-4a08-be13-deb891d9ecee.png', // Guitars in meadow with flowers
     '/lovable-uploads/9e1bc0cb-0051-4860-86be-69529a277181.png', // Field of pink/white flowers
     '/lovable-uploads/0f6c961c-91b2-4686-b3fe-3a6064af4bc7.png', // Field with butterflies and wildflowers
@@ -193,17 +200,21 @@ export const NowPlaying: React.FC = () => {
                 <div className="text-xl">⚡</div>
               ) : (
                 <>
-                  <img 
-                    src={artwork.url} 
-                    alt={track.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback to brain emoji if image fails to load
-                      e.currentTarget.style.display = 'none';
-                      const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
-                      if (fallback) fallback.style.display = 'flex';
-                    }}
-                  />
+                   <img 
+                     src={artwork.url} 
+                     alt={track.title}
+                     className="w-full h-full object-cover"
+                     onLoad={() => {
+                       console.log('🖼️ Album artwork loaded successfully:', artwork.url);
+                     }}
+                     onError={(e) => {
+                       console.warn('❌ Failed to load album artwork:', artwork.url);
+                       // Fallback to brain emoji if image fails to load
+                       e.currentTarget.style.display = 'none';
+                       const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
+                       if (fallback) fallback.style.display = 'flex';
+                     }}
+                   />
                   <div className="hidden w-full h-full items-center justify-center text-xl">
                     🧠
                   </div>
