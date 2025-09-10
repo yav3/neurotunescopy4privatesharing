@@ -191,7 +191,7 @@ export default function GenreSelectionPage() {
           }}
         />
         
-        <div className="relative z-10 px-4 py-4 md:px-8 md:py-8">
+        <div className="relative z-10 px-4 py-4 md:px-8 md:py-6">
           <div className="max-w-4xl mx-auto">
             <Button
               variant="ghost"
@@ -203,7 +203,7 @@ export default function GenreSelectionPage() {
               Back to Goals
             </Button>
             
-            <div className="text-center mb-6 md:mb-8">
+            <div className="text-center mb-4 md:mb-6">
               <h1 className="text-2xl md:text-4xl font-bold mb-3">
                 {goal.name}
               </h1>
@@ -220,7 +220,7 @@ export default function GenreSelectionPage() {
       </div>
 
       {/* Genres Grid */}
-      <div className="px-4 py-4 md:px-8 md:py-8">
+      <div className="px-4 pb-4 md:px-8 md:pb-8">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {genres.map((genre, index) => (
