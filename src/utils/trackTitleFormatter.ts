@@ -1,13 +1,37 @@
+// Common music-related keywords to identify in concatenated titles
+const musicKeywords = [
+  'bach', 'mozart', 'beethoven', 'chopin', 'vivaldi', 'debussy', 'classical',
+  'piano', 'guitar', 'violin', 'mandolin', 'cello', 'flute', 'orchestra',
+  'focus', 'relaxing', 'meditation', 'calm', 'peaceful', 'therapeutic',
+  'ambient', 'nature', 'rain', 'ocean', 'forest', 'birds', 'water',
+  'delta', 'theta', 'alpha', 'beta', 'gamma', 'binaural', 'hz',
+  'jazz', 'blues', 'folk', 'acoustic', 'instrumental', 'solo'
+];
+
 /**
  * Cleans track titles for display by removing metadata and making them human-readable
  */
 export function formatTrackTitleForDisplay(title: string): string {
   if (!title) return '';
   
-  // Handle common concatenated titles by adding spaces before capital letters
-  let cleaned = title
-    // Add spaces before capital letters (for cases like "Bachreimaginedguitarclassicalrelax")
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
+  let cleaned = title.toLowerCase();
+  
+  // Handle concatenated words by inserting spaces before known keywords
+  musicKeywords.forEach(keyword => {
+    const regex = new RegExp(`(?<!^|\\s)${keyword}(?!$|\\s)`, 'gi');
+    cleaned = cleaned.replace(regex, ` ${keyword} `);
+  });
+  
+  // Add spaces before capital letters in original title (for mixed case)
+  cleaned = title.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+  
+  // Re-apply keyword separation on the processed string
+  musicKeywords.forEach(keyword => {
+    const regex = new RegExp(`(?<!^|\\s)${keyword}(?!$|\\s)`, 'gi');
+    cleaned = cleaned.replace(regex, ` ${keyword} `);
+  });
+  
+  cleaned = cleaned
     // Capitalize first letter of each word
     .replace(/\b\w/g, letter => letter.toUpperCase())
     // Remove BPM info (e.g., "118", "120 BPM", etc.)
