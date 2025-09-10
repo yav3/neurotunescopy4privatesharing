@@ -72,17 +72,13 @@ const Index = () => {
               <h1 className="text-lg md:text-2xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                 Therapeutic Goals
               </h1>
-              
-              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Choose your therapeutic goal and discover scientifically-crafted music designed to enhance your mental state and wellbeing
-              </p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Goals Grid */}
-      <div className="px-4 py-4">
+      <div className="px-4 -mt-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal) => {
