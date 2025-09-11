@@ -93,8 +93,8 @@ const Index = () => {
                     
                     {goal.id === 'mood-boost' && (
                       <img 
-                        src="/lovable-uploads/d48fb587-98c5-4e7a-a4fa-a461ef7db8b8.png"
-                        alt="Bright flower field under starry sky"
+                        src="/lovable-uploads/fdeaa1d5-a225-41e6-a556-5a367549a9de.png"
+                        alt="Sunny yellow flowers against bright sky for mood boost"
                         className="w-full h-full object-cover"
                       />
                     )}
