@@ -116,10 +116,11 @@ const Index = () => {
                     )}
                   </div>
 
-                  {/* Subtle glass morphism overlay to blend with nature */}
+                  {/* Subtle glass morphism overlay - light touch */}
                   <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/10" />
+                    <div className="absolute inset-0 bg-white/[0.08] backdrop-blur-[0.5px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-transparent to-black/[0.08]" />
+                    <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
                   {/* Goal name at bottom left with white text */}
