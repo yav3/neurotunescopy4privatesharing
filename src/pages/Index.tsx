@@ -65,118 +65,54 @@ const Index = () => {
                   }}
                   onClick={() => handleGoalSelect(goal)}
                 >
-                  {/* Rich atmospheric nature background inspired by the forest path */}
+                  {/* Beautiful nature scene backgrounds */}
                   <div className="absolute inset-0">
                     {goal.id === 'focus-enhancement' && (
-                      <>
-                        {/* Golden forest clearing with sunbeams */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-amber-300/60 via-yellow-400/70 to-orange-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-amber-900/40 via-yellow-600/20 to-amber-200/10" />
-                        {/* Sunbeam effects */}
-                        <div className="absolute top-0 right-1/4 w-24 h-full bg-gradient-to-b from-yellow-200/30 via-amber-100/20 to-transparent rotate-12 blur-xl" />
-                        <div className="absolute top-0 left-1/3 w-16 h-full bg-gradient-to-b from-white/20 via-yellow-100/15 to-transparent rotate-6 blur-lg" />
-                        {/* Tree shadows and foliage */}
-                        <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-green-800/60 via-amber-700/30 to-transparent" />
-                        <div className="absolute top-1/4 right-4 w-12 h-20 bg-gradient-to-b from-green-700/40 to-amber-800/30 rounded-t-full blur-sm" />
-                        <div className="absolute top-1/3 left-6 w-8 h-16 bg-gradient-to-b from-amber-600/50 to-green-800/40 rounded-t-full blur-sm" />
-                        {/* Floating golden particles */}
-                        <div className="absolute top-1/4 left-1/2 w-2 h-2 bg-yellow-300/60 rounded-full blur-xs animate-pulse" />
-                        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-amber-200/70 rounded-full blur-xs" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/54a0e0a2-925c-4130-b5b8-c2bb438cea82.png"
+                        alt="Electric guitar with radiating light for focus"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     
                     {goal.id === 'stress-anxiety-support' && (
-                      <>
-                        {/* Peaceful misty lake with morning light */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-200/50 via-blue-300/60 to-teal-400/70" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 via-cyan-600/15 to-sky-200/10" />
-                        {/* Misty effects */}
-                        <div className="absolute bottom-1/4 left-0 w-full h-1/3 bg-gradient-to-t from-white/20 via-cyan-100/15 to-transparent blur-md" />
-                        <div className="absolute top-1/3 right-1/4 w-20 h-8 bg-white/15 rounded-full blur-lg" />
-                        {/* Mountain silhouettes */}
-                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-600/40 to-transparent" />
-                        <div className="absolute bottom-0 right-8 w-0 h-0 border-l-[16px] border-l-transparent border-r-[16px] border-r-transparent border-b-[20px] border-b-slate-500/30" />
-                        <div className="absolute bottom-0 left-12 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[16px] border-b-slate-600/35" />
-                        {/* Gentle light rays */}
-                        <div className="absolute top-0 left-1/4 w-16 h-full bg-gradient-to-b from-white/15 via-cyan-100/10 to-transparent rotate-3 blur-lg" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/9e1efaf1-aa12-47f4-9370-f898226802f1.png"
+                        alt="Peaceful sunset over calm water"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     
                     {goal.id === 'cardio-support' && (
-                      <>
-                        {/* Dynamic sunrise beach with energy */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-300/60 via-red-400/70 to-pink-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-red-900/40 via-orange-600/20 to-yellow-300/10" />
-                        {/* Dynamic sun rays */}
-                        <div className="absolute top-0 right-1/3 w-32 h-full bg-gradient-to-b from-yellow-200/40 via-orange-200/25 to-transparent rotate-15 blur-xl animate-pulse" />
-                        <div className="absolute top-0 left-1/4 w-20 h-full bg-gradient-to-b from-white/25 via-yellow-100/15 to-transparent rotate-8 blur-lg" />
-                        {/* Beach waves and energy */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-orange-800/50 via-red-600/30 to-transparent" />
-                        <div className="absolute bottom-4 left-1/4 w-16 h-2 bg-white/30 rounded-full blur-sm" />
-                        <div className="absolute bottom-6 right-1/3 w-12 h-1 bg-yellow-200/40 rounded-full blur-sm" />
-                        {/* Energy particles */}
-                        <div className="absolute top-1/3 left-1/3 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-pulse" />
-                        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-red-300/60 rounded-full" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/3e3d1eea-129c-46ad-9052-38849c266b2b.png"
+                        alt="Palm trees on tropical beach"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     
                     {goal.id === 'mood-boost' && (
-                      <>
-                        {/* Vibrant flower meadow with butterfly effects */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-lime-300/60 via-green-400/70 to-emerald-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-green-800/40 via-lime-600/20 to-yellow-200/15" />
-                        {/* Cheerful sunbeams */}
-                        <div className="absolute top-0 right-1/3 w-28 h-full bg-gradient-to-b from-yellow-200/35 via-lime-100/20 to-transparent rotate-10 blur-xl" />
-                        <div className="absolute top-0 left-1/4 w-20 h-full bg-gradient-to-b from-white/20 via-yellow-100/12 to-transparent rotate-5 blur-lg" />
-                        {/* Flower field */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-green-700/50 via-lime-600/25 to-transparent" />
-                        {/* Scattered flowers */}
-                        <div className="absolute bottom-8 left-6 w-3 h-3 bg-pink-300/60 rounded-full blur-xs" />
-                        <div className="absolute bottom-12 right-8 w-2 h-2 bg-yellow-300/70 rounded-full blur-xs" />
-                        <div className="absolute bottom-6 right-1/3 w-2.5 h-2.5 bg-purple-300/50 rounded-full blur-xs" />
-                        {/* Floating petals */}
-                        <div className="absolute top-1/3 right-1/4 w-2 h-1 bg-pink-200/40 rounded-full rotate-45 blur-xs animate-pulse" />
-                        <div className="absolute top-1/2 left-1/3 w-1.5 h-0.5 bg-white/50 rounded-full rotate-12 blur-xs" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/d48fb587-98c5-4e7a-a4fa-a461ef7db8b8.png"
+                        alt="Bright flower field under starry sky"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     
                     {goal.id === 'pain-support' && (
-                      <>
-                        {/* Tranquil waterfall scene with healing mist */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/50 via-blue-400/60 to-indigo-500/70" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/35 via-blue-700/20 to-cyan-200/10" />
-                        {/* Waterfall mist */}
-                        <div className="absolute top-0 right-8 w-4 h-full bg-gradient-to-b from-white/40 via-cyan-100/25 to-transparent blur-md" />
-                        <div className="absolute top-1/4 right-6 w-8 h-1/2 bg-gradient-to-b from-white/20 via-blue-100/15 to-transparent blur-lg opacity-70" />
-                        {/* Healing pool */}
-                        <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-blue-800/40 via-cyan-600/20 to-transparent" />
-                        {/* Gentle ripples */}
-                        <div className="absolute bottom-6 left-1/4 w-12 h-1 bg-white/20 rounded-full blur-sm opacity-60" />
-                        <div className="absolute bottom-8 right-1/3 w-8 h-0.5 bg-cyan-200/30 rounded-full blur-sm opacity-50" />
-                        {/* Soft light reflections */}
-                        <div className="absolute top-1/3 left-1/4 w-16 h-full bg-gradient-to-b from-white/10 via-cyan-100/8 to-transparent rotate-2 blur-xl" />
-                        {/* Healing particles */}
-                        <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-200/60 rounded-full animate-pulse blur-xs" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/2b0a9067-ec79-46b5-85f2-eb9071f861c9.png"
+                        alt="Flowing blue healing energy"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     
                     {goal.id === 'energy-boost' && (
-                      <>
-                        {/* Powerful mountain summit with aurora effects */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-400/60 via-blue-500/70 to-indigo-600/70" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/40 via-purple-700/20 to-blue-300/12" />
-                        {/* Aurora-like energy streams */}
-                        <div className="absolute top-0 left-1/3 w-24 h-full bg-gradient-to-b from-purple-200/30 via-blue-200/20 to-transparent rotate-8 blur-xl animate-pulse" />
-                        <div className="absolute top-0 right-1/4 w-16 h-full bg-gradient-to-b from-cyan-200/25 via-purple-100/15 to-transparent rotate-12 blur-lg" />
-                        {/* Mountain peaks */}
-                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-800/50 via-indigo-800/25 to-transparent" />
-                        <div className="absolute bottom-0 left-6 w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[18px] border-b-slate-700/40" />
-                        <div className="absolute bottom-0 right-8 w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-b-[22px] border-b-slate-600/45" />
-                        {/* Energy sparkles */}
-                        <div className="absolute top-1/4 right-1/3 w-1.5 h-1.5 bg-purple-300/70 rounded-full animate-pulse blur-xs" />
-                        <div className="absolute top-1/3 left-1/4 w-1 h-1 bg-cyan-300/60 rounded-full blur-xs" />
-                        <div className="absolute top-1/2 right-1/4 w-1.5 h-1.5 bg-blue-300/60 rounded-full animate-pulse blur-xs" />
-                      </>
+                      <img 
+                        src="/lovable-uploads/623bc7fd-5a27-48c0-b677-1ad647aed2e6.png"
+                        alt="Vibrant tropical beach with palm trees"
+                        className="w-full h-full object-cover"
+                      />
                     )}
                   </div>
 
