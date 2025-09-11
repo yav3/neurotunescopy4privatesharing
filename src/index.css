@@ -58,7 +58,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100%; /* White secondary text */
 
     --muted: 217 91% 15%; /* Dark blue muted */
-    --muted-foreground: 217 91% 70%; /* Light blue muted text */
+    --muted-foreground: 0 0% 90%; /* Light gray muted text for better contrast */
 
     --accent: 217 91% 50%; /* Medium blue accent */
     --accent-foreground: 0 0% 100%; /* White accent text */
