@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Zap, Radio } from "lucide-react";
@@ -40,6 +40,31 @@ export const FullPagePlayer = () => {
   // Local state for enhanced features
   const [isFavorited, setIsFavorited] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
+  const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
+
+  // Load album art from Supabase albumart bucket if track has no artwork
+  useEffect(() => {
+    let cancelled = false;
+    const loadAlbumArt = async () => {
+      try {
+        if (!track || (track as any).artwork_url || (track as any).album_art_url) return;
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data: artFiles } = await supabase.storage
+          .from('albumart')
+          .list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+        const images = (artFiles || []).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f.name));
+        if (!images.length) return;
+        const seed = Array.from((track.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
+        const chosen = images[seed % images.length];
+        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
+        if (!cancelled) setAlbumArtUrl(urlData.publicUrl);
+      } catch (e) {
+        console.warn('Album art load failed', e);
+      }
+    };
+    loadAlbumArt();
+    return () => { cancelled = true; };
+  }, [track?.id]);
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -126,13 +151,8 @@ export const FullPagePlayer = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex items-center justify-center">
-      {/* Background with blur effect */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center filter blur-2xl opacity-30"
-        style={{
-          backgroundImage: `linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 50%))`
-        }}
-      />
+      {/* Background - solid clean white */}
+      <div className="absolute inset-0 bg-background" />
       
       {/* Close button */}
       <Button
@@ -279,12 +299,12 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleSpatialAudio}
-              className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200",
-                spatialAudioEnabled
-                  ? "text-blue-500 hover:text-blue-600 bg-blue-500/10"
-                  : "text-muted-foreground hover:text-blue-500"
-              )}
+            className={cn(
+              "w-12 h-12 rounded-full transition-colors duration-200",
+              spatialAudioEnabled
+                ? "text-foreground bg-accent"
+                : "text-muted-foreground hover:text-foreground"
+            )}
             >
               <Radio className="w-6 h-6" />
             </Button>

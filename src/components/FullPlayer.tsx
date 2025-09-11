@@ -57,7 +57,7 @@ export default function FullPlayer() {
 
   if (!track) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <p className="text-muted-foreground">No track playing</p>
           <button
@@ -72,7 +72,7 @@ export default function FullPlayer() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
+    <div className="min-h-screen bg-background">
       <div className="flex items-center gap-4 p-6">
         <button
           onClick={() => navigate("/")}
@@ -87,8 +87,8 @@ export default function FullPlayer() {
 
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-8">
         <div className="text-center mb-12 max-w-md">
-          <h1 className="text-3xl font-bold mb-2">{track.title}</h1>
-          <p className="text-xl text-muted-foreground mb-2">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 leading-snug break-words line-clamp-2">{track.title}</h1>
+          <p className="text-base md:text-xl text-muted-foreground mb-2">
             {spatialAudioEnabled && "🌐 "}{getTherapeuticGoalName()}
           </p>
         </div>
@@ -155,7 +155,7 @@ export default function FullPlayer() {
             onClick={handleSpatialAudio}
             className={cn(
               "transition-colors duration-200 p-4 rounded-full",
-              spatialAudioEnabled ? "text-blue-500 hover:text-blue-600" : "text-muted-foreground"
+              spatialAudioEnabled ? "text-foreground" : "text-muted-foreground hover:text-foreground"
             )}
           >
             <Radio size={20} />
