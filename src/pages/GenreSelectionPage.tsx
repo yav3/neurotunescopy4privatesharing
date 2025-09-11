@@ -201,13 +201,13 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
                 
-                {/* Content - Better styled text */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="backdrop-blur-sm bg-black/20 rounded-2xl p-4 border border-white/10">
-                    <h3 className="font-bold text-xl mb-2 text-white drop-shadow-2xl">
+                {/* Content - Simple, clean text styling */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-black/40 rounded-xl p-3 backdrop-blur-sm border border-white/20">
+                    <h3 className="font-bold text-lg text-white mb-1">
                       {genre.name}
                     </h3>
-                    <p className="text-sm leading-relaxed text-white/0 group-hover:text-white/90 transition-all duration-500 drop-shadow-lg">
+                    <p className="text-sm text-white/0 group-hover:text-white/90 transition-all duration-500">
                       {genre.description}
                     </p>
                   </div>
