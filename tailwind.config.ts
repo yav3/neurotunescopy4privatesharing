@@ -72,11 +72,16 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-card': 'var(--gradient-card)',
-				'gradient-hero': 'var(--gradient-hero)'
+				'gradient-hero': 'var(--gradient-hero)',
+				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+				'glass-border': 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))'
 			},
 			boxShadow: {
 				'card': 'var(--shadow-card)',
-				'player': 'var(--shadow-player)'
+				'player': 'var(--shadow-player)',
+				'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+				'glass-lg': '0 16px 40px 0 rgba(31, 38, 135, 0.4)',
+				'glass-inset': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
