@@ -140,23 +140,97 @@ const Index = () => {
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/10 via-transparent to-transparent opacity-40" />
                   </div>
 
-                  {/* Enhanced abstract geometric shapes */}
+                  {/* Sentiment-specific abstract patterns */}
                   <div className="absolute inset-0 overflow-hidden">
-                    {/* Primary abstract shape with glass effect */}
-                    <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-white/8 backdrop-blur-md border border-white/20 blur-sm group-hover:blur-none transition-all duration-500" />
-                    <div className="absolute top-1/3 -left-6 w-20 h-20 rotate-45 bg-white/6 backdrop-blur-sm border border-white/15 rounded-2xl blur-md group-hover:rotate-12 transition-all duration-700" />
-                    <div className="absolute bottom-1/4 right-1/4 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/25 blur-sm group-hover:scale-110 transition-all duration-500" />
-                    
-                    {/* Secondary geometric elements with enhanced glass */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-36 h-36 border border-white/15 rounded-full opacity-30 backdrop-blur-[0.5px]" />
-                    <div className="absolute top-1/3 right-1/3 w-10 h-2 bg-white/20 rounded-full backdrop-blur-sm border border-white/30 rotate-45" />
-                    <div className="absolute bottom-1/2 left-1/4 w-6 h-12 bg-gradient-to-b from-white/15 to-transparent rounded-full backdrop-blur-sm transform rotate-12" />
-                    
-                    {/* Hexagonal abstract elements */}
-                    <div className="absolute top-6 left-6 w-8 h-8 bg-white/12 backdrop-blur-sm border border-white/25" 
-                         style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
-                    <div className="absolute bottom-8 right-8 w-6 h-6 bg-white/10 backdrop-blur-sm border border-white/20 rotate-12" 
-                         style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+                    {/* Focus Enhancement - Clean geometric patterns */}
+                    {goal.id === 'focus-enhancement' && (
+                      <>
+                        {/* Concentric circles for focus */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-2 border-white/20 rounded-full" />
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 border border-white/30 rounded-full" />
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white/25 rounded-full backdrop-blur-sm" />
+                        {/* Grid pattern */}
+                        <div className="absolute inset-0 opacity-20" style={{
+                          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                          backgroundSize: '20px 20px'
+                        }} />
+                      </>
+                    )}
+
+                    {/* Stress/Anxiety Support - Flowing waves */}
+                    {goal.id === 'stress-anxiety-support' && (
+                      <>
+                        {/* Calming wave patterns */}
+                        <div className="absolute top-1/4 left-0 w-full h-12 bg-gradient-to-r from-transparent via-white/15 to-transparent rounded-full transform -rotate-12 blur-sm" />
+                        <div className="absolute top-1/2 left-0 w-full h-8 bg-gradient-to-r from-white/10 via-transparent to-white/10 rounded-full transform rotate-6 blur-md" />
+                        <div className="absolute top-3/4 left-0 w-full h-10 bg-gradient-to-r from-transparent via-white/12 to-transparent rounded-full transform -rotate-3 blur-sm" />
+                        {/* Floating peaceful bubbles */}
+                        <div className="absolute top-6 right-8 w-16 h-16 bg-white/8 rounded-full backdrop-blur-md animate-pulse" />
+                        <div className="absolute bottom-8 left-6 w-12 h-12 bg-white/10 rounded-full backdrop-blur-sm" />
+                      </>
+                    )}
+
+                    {/* Cardio Support - Pulse and heartbeat patterns */}
+                    {goal.id === 'cardio-support' && (
+                      <>
+                        {/* Heartbeat/pulse wave */}
+                        <div className="absolute top-1/2 left-0 w-full h-1 bg-white/30 transform -translate-y-1/2" />
+                        <div className="absolute top-1/2 left-1/4 w-2 h-8 bg-white/40 transform -translate-y-1/2 -skew-x-12" />
+                        <div className="absolute top-1/2 left-1/3 w-2 h-16 bg-white/50 transform -translate-y-1/2 skew-x-12" />
+                        <div className="absolute top-1/2 left-2/5 w-2 h-12 bg-white/40 transform -translate-y-1/2 -skew-x-12" />
+                        {/* Radiating energy circles */}
+                        <div className="absolute top-1/2 right-6 w-20 h-20 border border-white/20 rounded-full animate-ping" />
+                        <div className="absolute bottom-4 left-4 w-14 h-14 border border-white/15 rounded-full" />
+                      </>
+                    )}
+
+                    {/* Mood Boost - Uplifting stars and light rays */}
+                    {goal.id === 'mood-boost' && (
+                      <>
+                        {/* Star patterns */}
+                        <div className="absolute top-4 right-6 w-8 h-8 bg-yellow-300/30 transform rotate-45" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
+                        <div className="absolute top-1/2 left-4 w-6 h-6 bg-yellow-200/40 transform rotate-12" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
+                        <div className="absolute bottom-6 right-1/3 w-4 h-4 bg-yellow-400/35 transform -rotate-12" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
+                        {/* Radiating light rays */}
+                        <div className="absolute top-1/3 right-1/4 w-24 h-1 bg-gradient-to-r from-yellow-200/30 to-transparent transform rotate-45" />
+                        <div className="absolute top-1/2 right-1/3 w-20 h-1 bg-gradient-to-r from-yellow-300/25 to-transparent transform rotate-12" />
+                        <div className="absolute bottom-1/3 right-1/5 w-18 h-1 bg-gradient-to-r from-yellow-200/20 to-transparent transform -rotate-12" />
+                      </>
+                    )}
+
+                    {/* Pain Support - Soothing water ripples */}
+                    {goal.id === 'pain-support' && (
+                      <>
+                        {/* Gentle ripple effects */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-cyan-200/20 rounded-full animate-pulse" />
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 border border-cyan-300/25 rounded-full" />
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-cyan-400/30 rounded-full" />
+                        {/* Flowing water droplets */}
+                        <div className="absolute top-6 left-6 w-3 h-5 bg-cyan-200/40 rounded-full" />
+                        <div className="absolute top-12 right-8 w-2 h-4 bg-cyan-300/35 rounded-full transform rotate-12" />
+                        <div className="absolute bottom-8 left-1/3 w-4 h-6 bg-cyan-400/30 rounded-full transform -rotate-6" />
+                      </>
+                    )}
+
+                    {/* Energy Boost - Dynamic rays and lightning */}
+                    {goal.id === 'energy-boost' && (
+                      <>
+                        {/* Lightning bolt patterns */}
+                        <div className="absolute top-4 right-4 w-1 h-12 bg-gradient-to-b from-orange-200/40 to-yellow-300/30 transform rotate-12" />
+                        <div className="absolute top-8 right-6 w-1 h-8 bg-gradient-to-b from-yellow-300/35 to-orange-200/25 transform -rotate-45" />
+                        <div className="absolute top-12 right-2 w-1 h-10 bg-gradient-to-b from-orange-300/30 to-yellow-200/20 transform rotate-75" />
+                        {/* Explosive radiating lines */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <div className="w-20 h-0.5 bg-gradient-to-r from-orange-300/40 to-transparent transform rotate-0" />
+                          <div className="w-16 h-0.5 bg-gradient-to-r from-yellow-300/35 to-transparent transform rotate-45" />
+                          <div className="w-18 h-0.5 bg-gradient-to-r from-orange-200/30 to-transparent transform rotate-90" />
+                          <div className="w-14 h-0.5 bg-gradient-to-r from-yellow-400/25 to-transparent transform rotate-135" />
+                        </div>
+                        {/* Energy orbs */}
+                        <div className="absolute bottom-4 left-4 w-6 h-6 bg-orange-300/35 rounded-full blur-sm animate-pulse" />
+                        <div className="absolute top-6 left-8 w-4 h-4 bg-yellow-400/40 rounded-full blur-sm" />
+                      </>
+                    )}
                   </div>
 
                   {/* Enhanced pattern overlays */}
