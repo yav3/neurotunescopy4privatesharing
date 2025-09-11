@@ -34,10 +34,10 @@ const goalCardThemes = {
     shadow: 'shadow-[0_8px_32px_rgba(244,63,94,0.4)]'
   },
   'pain-support': {
-    gradient: 'from-indigo-600/90 via-blue-600/80 to-slate-700/90',
+    gradient: 'from-blue-900/90 via-blue-800/80 to-slate-900/90',
     accent: 'bg-white/20',
     text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(79,70,229,0.4)]'
+    shadow: 'shadow-[0_8px_32px_rgba(30,58,138,0.4)]'
   },
   'energy-boost': {
     gradient: 'from-orange-500/90 via-yellow-500/80 to-amber-500/90',
@@ -56,12 +56,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Clean Background Elements */}
+      {/* Deep Blue Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Subtle blue gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_60%_/_0.03),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.02),transparent_50%)]" />
+        
+        {/* Abstract deep blue shapes */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-900/20 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-800/15 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
       </div>
 
       {/* Compact Header */}
@@ -116,6 +120,18 @@ const Index = () => {
                     theme.gradient,
                     "group-hover:scale-105"
                   )} />
+
+                  {/* Abstract geometric shapes */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    {/* Primary abstract shape */}
+                    <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-xl" />
+                    <div className="absolute top-1/3 -left-8 w-24 h-24 rotate-45 bg-white/8 rounded-2xl blur-lg" />
+                    <div className="absolute bottom-1/4 right-1/4 w-16 h-16 rounded-full bg-white/12 blur-md" />
+                    
+                    {/* Secondary geometric elements */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-white/20 rounded-full opacity-30" />
+                    <div className="absolute bottom-4 left-4 w-8 h-8 bg-white/15 rounded-lg rotate-12 blur-sm" />
+                  </div>
 
                   {/* Subtle pattern overlay */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_0%,transparent_70%)] opacity-60" />
@@ -176,9 +192,9 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Clean Bottom Navigation */}
+      {/* Deep Blue Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-card border-t border-border shadow-card">
+        <div className="bg-gradient-to-r from-slate-900/95 via-blue-900/95 to-slate-900/95 backdrop-blur-lg border-t border-blue-800/30 shadow-2xl">
           <Navigation />
         </div>
       </div>
