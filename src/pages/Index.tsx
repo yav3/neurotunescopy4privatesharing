@@ -109,21 +109,21 @@ const Index = () => {
       {/* Goals grid optimized for viewport fit */}
       <div className="px-3 sm:px-4 pb-20 sm:pb-16 relative z-10 h-full flex items-center">
         <div className="max-w-5xl mx-auto w-full">
-          {/* Responsive cards grid - compact for no-scroll */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4">
+          {/* Responsive cards grid - compact mobile, generous desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[16/9] sm:aspect-[4/3] rounded-lg border-0",
-                    "hover:scale-[1.01] hover:-translate-y-0.5",
+                    "aspect-[16/9] sm:aspect-[4/3] md:aspect-[5/4] rounded-lg border-0",
+                    "hover:scale-[1.01] sm:hover:scale-[1.02] hover:-translate-y-0.5 sm:hover:-translate-y-1",
                     "active:scale-[0.99] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]",
-                    "h-[140px] sm:h-[160px] md:h-[180px]"
+                    "hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] md:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
+                    "h-[140px] sm:h-[180px] md:h-[220px] lg:h-[240px]"
                   )}
                   style={{ 
                     animationDelay: `${index * 100}ms`,
@@ -180,10 +180,10 @@ const Index = () => {
                     </span>
                   </div>
 
-                  {/* Goal title only - compact */}
-                  <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4">
+                  {/* Goal title only - responsive sizing */}
+                  <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4 md:p-6">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-xs sm:text-sm md:text-base leading-tight tracking-wide uppercase"
+                      <h3 className="font-bold text-xs sm:text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase"
                           style={{ 
                             color: '#ffffff',
                             WebkitTextFillColor: '#ffffff',
