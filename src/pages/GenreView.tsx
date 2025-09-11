@@ -53,6 +53,7 @@ interface GenreOption {
   name: string;
   description: string;
   buckets: string[];
+  folder?: string;
   artwork: string;
 }
 
@@ -112,6 +113,30 @@ const GenreView: React.FC = () => {
           description: 'Global sounds and new age music',
           buckets: ['samba'],
           artwork: newAgeArt
+        }
+      ];
+    } else if (goalId === 'mood-boost') {
+      return [
+        {
+          id: 'house-music',
+          name: 'House Music',
+          description: 'Energetic house beats for motivation and energy',
+          buckets: ['HIIT'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'uplifting-orchestral',
+          name: 'Uplifting Orchestral',
+          description: 'Energizing orchestral compositions',
+          buckets: ['classicalfocus'],
+          artwork: crossoverClassicalArt
+        },
+        {
+          id: 'positive-electronic',
+          name: 'Positive Electronic',
+          description: 'Upbeat electronic music for motivation',
+          buckets: ['neuralpositivemusic'],
+          artwork: electronicArt
         }
       ];
     } else {
@@ -204,10 +229,17 @@ const GenreView: React.FC = () => {
         for (const bucketName of selectedGenre.buckets) {
           console.log(`🗂️ Processing bucket: ${bucketName} directly`);
           
-          // List files directly from bucket
+          // Handle folder-specific access for HIIT bucket
+          let folderPath = '';
+          if (bucketName === 'HIIT' && selectedGenre.id === 'house-music') {
+            folderPath = 'HIITHOUSE';
+            console.log(`📁 Using folder: ${folderPath} in bucket ${bucketName}`);
+          }
+          
+          // List files directly from bucket or folder
           const { data: files, error: listError } = await supabase.storage
             .from(bucketName)
-            .list('', {
+            .list(folderPath, {
               limit: 1000,
               sortBy: { column: 'name', order: 'asc' }
             });
@@ -241,7 +273,9 @@ const GenreView: React.FC = () => {
           for (let i = 0; i < limitedFiles.length; i++) {
             const file = limitedFiles[i];
             try {
-              const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
+              // Construct full path for file access
+              const fullPath = folderPath ? `${folderPath}/${file.name}` : file.name;
+              const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(fullPath);
               
               if (!urlData?.publicUrl) {
                 console.warn(`⚠️ No URL generated for ${file.name}`);
@@ -256,11 +290,11 @@ const GenreView: React.FC = () => {
               const selectedArtwork = albumArtUrls[artworkIndex];
 
               const track = {
-                id: `${bucketName}-${file.name}`,
+                id: `${bucketName}-${fullPath}`,
                 title: cleanTitle,
-                artist: 'Neural Positive Music',
+                artist: selectedGenre.id === 'house-music' ? 'House Music Collection' : 'Neural Positive Music',
                 storage_bucket: bucketName,
-                storage_key: file.name,
+                storage_key: fullPath,
                 stream_url: urlData.publicUrl,
                 artwork_url: selectedArtwork,
                 audio_status: 'working' as const,
