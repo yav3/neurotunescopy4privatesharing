@@ -50,7 +50,7 @@ const Index = () => {
     <div className={cn(
       "min-h-screen relative overflow-hidden transition-colors duration-500",
       isDarkMode 
-        ? "bg-slate-950" 
+        ? "bg-blue-950" 
         : "bg-gradient-to-br from-slate-50 to-blue-50"
     )}>
       {/* Background Elements */}
@@ -188,14 +188,12 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
-                  {/* Ultra high contrast text */}
+                  {/* Clean white text with simple shadow */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <h3 className="text-white font-black text-sm md:text-base leading-tight tracking-wider uppercase"
+                      <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
                           style={{
-                            textShadow: '0 0 8px rgba(0,0,0,1), 2px 2px 4px rgba(0,0,0,1), -2px -2px 4px rgba(0,0,0,1), 2px -2px 4px rgba(0,0,0,1), -2px 2px 4px rgba(0,0,0,1)',
-                            WebkitTextStroke: '2px rgba(0,0,0,1)',
-                            filter: 'drop-shadow(0 0 10px rgba(0,0,0,1))'
+                            textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
                           }}>
                         {goal.name}
                       </h3>
@@ -216,7 +214,7 @@ const Index = () => {
         <div className={cn(
           "backdrop-blur-sm border-t transition-colors duration-500",
           isDarkMode 
-            ? "bg-slate-950/98 border-slate-800/50" 
+            ? "bg-blue-950/98 border-blue-900/50" 
             : "bg-white/95 border-slate-200/50"
         )}>
           <Navigation />
