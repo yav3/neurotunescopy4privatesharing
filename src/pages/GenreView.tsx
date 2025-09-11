@@ -115,6 +115,30 @@ const GenreView: React.FC = () => {
           artwork: newAgeArt
         }
       ];
+    } else if (goalId === 'stress-anxiety-support') {
+      return [
+        {
+          id: 'samba',
+          name: 'Samba',
+          description: 'Relaxing Brazilian samba rhythms for stress relief',
+          buckets: ['samba'],
+          artwork: '/lovable-uploads/delta-moonlit-lake.png'
+        },
+        {
+          id: 'nature-sounds',
+          name: 'Nature & Ambient',
+          description: 'Calming nature sounds and ambient textures',
+          buckets: ['samba'],
+          artwork: '/lovable-uploads/theta-misty-path.png'
+        },
+        {
+          id: 'meditative-strings',
+          name: 'Meditative Strings',
+          description: 'Soothing string arrangements for relaxation',
+          buckets: ['classicalfocus'],
+          artwork: '/lovable-uploads/classical-meadow-ensemble.png'
+        }
+      ];
     } else if (goalId === 'mood-boost') {
       return [
         {
