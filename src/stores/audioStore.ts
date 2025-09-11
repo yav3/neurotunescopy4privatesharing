@@ -467,8 +467,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     playFromGoal: async (goal: string) => {
+      // Increment load sequence for race condition protection
+      const myLoadSeq = ++loadSeq;
       set({ isLoading: true, error: undefined, lastGoal: goal });
-      console.log('🎵 playFromGoal started for:', goal);
+      console.log('🎵 playFromGoal started for:', goal, 'seq:', myLoadSeq);
+      
+      const isValidSequence = () => myLoadSeq === loadSeq;
+      
       try {
         const { adminLog, userLog } = await import('@/utils/adminLogging');
         
@@ -477,6 +482,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         // Pull directly from classicalfocus bucket for focus-enhancement
         if (goal === 'focus-enhancement') {
+          if (!isValidSequence()) {
+            console.log('🛑 Load sequence outdated, aborting focus-enhancement load:', myLoadSeq);
+            return 0;
+          }
+          
           console.log(`🎯 Loading tracks directly from classicalfocus bucket for: "${goal}"`);
           
           const { supabase } = await import('@/integrations/supabase/client');
@@ -541,10 +551,22 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
           console.log(`✅ Converted ${tracks.length} classicalfocus tracks for direct playback`);
 
+          // Final sequence check before processing tracks
+          if (!isValidSequence()) {
+            console.log('🛑 Load sequence outdated after track conversion:', myLoadSeq);
+            return 0;
+          }
+
           // Validate and set up queue
           const { working } = await validateTracks(tracks);
           if (working.length === 0) {
             throw new Error('No working tracks found in classicalfocus bucket');
+          }
+
+          // Final sequence check before queue setup
+          if (!isValidSequence()) {
+            console.log('🛑 Load sequence outdated before queue setup:', myLoadSeq);
+            return 0;
           }
 
           // Shuffle tracks for variety

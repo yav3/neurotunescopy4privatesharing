@@ -123,15 +123,23 @@ const GenreView: React.FC = () => {
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
+    // Create abort controller for this effect instance
+    const abortController = new AbortController();
+    let isMounted = true;
+
     const loadTracks = async () => {
+      if (!isMounted) return;
+      
       setIsLoading(true);
       try {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         
         // Start with fallback tracks immediately
         const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-        setTracks(fallbackTracks);
-        setIsLoading(false);
+        if (isMounted) {
+          setTracks(fallbackTracks);
+          setIsLoading(false);
+        }
         
         try {
           // Pull directly from storage buckets
@@ -140,8 +148,13 @@ const GenreView: React.FC = () => {
           const { supabase } = await import('@/integrations/supabase/client');
           let allTracks: any[] = [];
 
-          // Process each bucket directly
+          // Process each bucket directly with race condition protection
           for (const bucketName of selectedGenre.buckets) {
+            if (abortController.signal.aborted || !isMounted) {
+              console.log(`🛑 Aborted loading bucket: ${bucketName}`);
+              break;
+            }
+            
             try {
               console.log(`🗂️ Processing bucket: ${bucketName} directly`);
               
@@ -207,8 +220,8 @@ const GenreView: React.FC = () => {
 
           console.log(`🎯 Total tracks found across all buckets: ${allTracks.length}`);
           
-          // Only replace fallback tracks if we actually found real tracks
-          if (allTracks && allTracks.length > 0) {
+          // Only update state if component is still mounted and not aborted
+          if (allTracks && allTracks.length > 0 && isMounted && !abortController.signal.aborted) {
             // Shuffle and limit results  
             const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
             const limitedTracks = shuffledTracks.slice(0, 100); // Limit to 100 tracks
@@ -222,13 +235,22 @@ const GenreView: React.FC = () => {
         
       } catch (error) {
         console.error(`❌ Failed to load tracks for ${selectedGenre.name}:`, error);
-        const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-        setTracks(emergencyTracks);
-        setIsLoading(false);
+        if (isMounted) {
+          const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          setTracks(emergencyTracks);
+          setIsLoading(false);
+        }
       }
     };
 
     loadTracks();
+
+    // Cleanup function to prevent race conditions
+    return () => {
+      isMounted = false;
+      abortController.abort();
+      console.log(`🛑 Cleaning up track loading for ${selectedGenre?.name}`);
+    };
   }, [goal, selectedGenre]);
 
   const handleTogglePlay = () => {
