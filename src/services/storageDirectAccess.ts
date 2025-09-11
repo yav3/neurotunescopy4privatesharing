@@ -93,15 +93,9 @@ export async function getTracksFromStorage(
       console.log(`🗂️ Processing bucket: ${bucket}`);
       
       try {
-        // Try service client first, fallback to regular client if auth issues
-        let client = serviceSupabase;
+        // Use regular client for public buckets to avoid auth issues
+        let client = supabase;
         let bucketInfo = await client.storage.getBucket(bucket);
-        
-        if (bucketInfo.error && bucketInfo.error.message?.includes('signature verification failed')) {
-          console.log(`⚠️ Service client auth failed for ${bucket}, trying regular client...`);
-          client = supabase;
-          bucketInfo = await client.storage.getBucket(bucket);
-        }
         
         console.log(`🔍 Bucket info for ${bucket}:`, bucketInfo);
         
