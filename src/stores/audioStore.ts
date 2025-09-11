@@ -105,7 +105,7 @@ const ensureAudioElement = (): HTMLAudioElement => {
     audioElement = document.createElement("audio");
     audioElement.id = AUDIO_ELEMENT_ID;
     audioElement.preload = "metadata";
-    audioElement.crossOrigin = "anonymous";
+    // audioElement.crossOrigin intentionally disabled to avoid potential CORS issues
     audioElement.style.display = "none";
     document.body.appendChild(audioElement);
     console.log(`🎵 Created unified audio element #${AUDIO_ELEMENT_ID}`);
@@ -389,7 +389,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       audio.src = url;
-      audio.crossOrigin = 'anonymous';
+      // audio.crossOrigin intentionally disabled to avoid potential CORS issues
       (audio as any).playsInline = true;
       audio.load();
       console.log('🎵 Audio src set, attempting to play...');
