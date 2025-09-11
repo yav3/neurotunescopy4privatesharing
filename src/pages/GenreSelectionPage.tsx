@@ -84,6 +84,14 @@ const getGenreOptions = (goalId: string) => {
     ],
     'mood-boost': [
       {
+        id: 'house-music',
+        name: 'House Music',
+        description: 'Energetic house beats for motivation and energy',
+        buckets: ['HIIT'],
+        folder: 'HIITHOUSE',
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+      },
+      {
         id: 'uplifting-orchestral',
         name: 'Uplifting Orchestral',
         description: 'Energizing orchestral compositions',
