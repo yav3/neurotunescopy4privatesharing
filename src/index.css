@@ -8,73 +8,82 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* White/Blue Only Design System with Deep Blue Backgrounds */
-    --background: 217 91% 8%; /* Deep blue background */
-    --foreground: 0 0% 100%; /* Pure white text */
+    /* White Background with Blue Card Design System */
+    --background: 0 0% 100%; /* Pure white background */
+    --foreground: 217 32% 17%; /* Dark blue text */
 
-    --card: 217 91% 12%; /* Deep blue card background */
-    --card-foreground: 0 0% 100%; /* White card text */
+    --card: 217 91% 95%; /* Very light blue card background */
+    --card-foreground: 217 32% 17%; /* Dark blue card text */
 
-    --popover: 217 91% 12%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%; /* White popover */
+    --popover-foreground: 217 32% 17%; /* Dark blue popover text */
 
     --primary: 217 91% 60%; /* Blue primary */
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 217 91% 18%; /* Deep blue secondary */
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 217 91% 85%; /* Light blue secondary */
+    --secondary-foreground: 217 32% 25%; /* Dark blue secondary text */
 
-    --muted: 217 91% 15%; /* Deep blue muted */
-    --muted-foreground: 217 32% 80%; /* Light blue muted text */
+    --muted: 217 91% 90%; /* Very light blue muted */
+    --muted-foreground: 217 32% 45%; /* Medium blue muted text */
 
-    --accent: 217 91% 70%; /* Light blue accent */
-    --accent-foreground: 0 0% 100%;
+    --accent: 217 91% 70%; /* Medium blue accent */
+    --accent-foreground: 0 0% 100%; /* White accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 91% 20%; /* Blue borders */
-    --input: 217 91% 10%; /* Very deep blue input background */
+    --border: 217 91% 75%; /* Light blue borders */
+    --input: 0 0% 100%; /* White input background */
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Deep blue gradients */
+    /* Blue gradient variations for cards */
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%), hsl(217 91% 50%));
-    --gradient-card: linear-gradient(135deg, hsl(217 91% 12%), hsl(217 91% 18%), hsl(217 91% 15%));
-    --gradient-hero: linear-gradient(180deg, hsl(217 91% 15%), hsl(217 91% 8%));
-    --shadow-card: 0 8px 32px hsl(217 91% 30% / 0.3), 0 4px 16px hsl(217 91% 5% / 0.4);
-    --shadow-player: 0 16px 48px hsl(217 91% 35% / 0.4), 0 8px 24px hsl(217 91% 5% / 0.5);
+    --gradient-card: linear-gradient(135deg, hsl(217 91% 95%), hsl(217 91% 92%), hsl(217 91% 97%));
+    --gradient-card-blue: linear-gradient(135deg, hsl(217 91% 85%), hsl(217 91% 90%), hsl(217 91% 88%));
+    --gradient-card-medium: linear-gradient(135deg, hsl(217 91% 75%), hsl(217 91% 80%), hsl(217 91% 78%));
+    --gradient-card-dark: linear-gradient(135deg, hsl(217 91% 65%), hsl(217 91% 70%), hsl(217 91% 68%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(217 91% 98%));
+    --shadow-card: 0 8px 32px hsl(217 91% 60% / 0.1), 0 4px 16px hsl(217 32% 17% / 0.05);
+    --shadow-player: 0 16px 48px hsl(217 91% 60% / 0.15), 0 8px 24px hsl(217 32% 17% / 0.1);
     
     /* San Francisco font system */
     --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
     
-    /* Approved text colors */
+    /* Approved text colors for white background */
     --text-white: 0 0% 100%;
-    --text-blue-50: 217 100% 97%;
-    --text-blue-100: 217 95% 90%;
-    --text-blue-200: 217 91% 85%;
-    --text-blue-300: 217 91% 70%;
-    --text-blue-400: 217 91% 60%;
-    --text-blue-500: 217 91% 50%;
-    --text-blue-600: 217 91% 40%;
-    --text-blue-700: 217 91% 30%;
-    --text-blue-800: 217 91% 25%;
-    --text-blue-900: 217 91% 20%;
+    --text-blue-50: 217 32% 17%; /* Very dark blue for high contrast */
+    --text-blue-100: 217 32% 25%; /* Dark blue */
+    --text-blue-200: 217 32% 35%; /* Medium dark blue */
+    --text-blue-300: 217 91% 50%; /* Medium blue */
+    --text-blue-400: 217 91% 60%; /* Primary blue */
+    --text-blue-500: 217 91% 55%; /* Slightly darker blue */
+    --text-blue-600: 217 91% 45%; /* Darker blue */
+    --text-blue-700: 217 91% 35%; /* Much darker blue */
+    --text-blue-800: 217 32% 25%; /* Very dark blue */
+    --text-blue-900: 217 32% 17%; /* Almost black blue */
 
-    /* Music categories with blue variants */
-    --music-focus: 217 91% 60%; /* Blue for focus */
-    --music-mood: 217 91% 70%; /* Light blue for mood boost */
-    --music-sleep: 217 91% 40%; /* Dark blue for sleep */
-    --music-energy: 217 91% 80%; /* Bright blue for energy */
+    /* Card color variations - different shades of blue */
+    --card-light: 217 91% 95%; /* Very light blue */
+    --card-medium: 217 91% 85%; /* Medium light blue */
+    --card-darker: 217 91% 75%; /* Medium blue */
+    --card-darkest: 217 91% 65%; /* Darker blue */
 
-    --sidebar-background: 217 91% 10%;
-    --sidebar-foreground: 0 0% 85%;
+    /* Music categories with different blue shades for cards */
+    --music-focus: 217 91% 85%; /* Light blue for focus cards */
+    --music-mood: 217 91% 80%; /* Medium light blue for mood boost cards */
+    --music-sleep: 217 91% 75%; /* Medium blue for sleep cards */
+    --music-energy: 217 91% 70%; /* Medium dark blue for energy cards */
+
+    --sidebar-background: 217 91% 95%;
+    --sidebar-foreground: 217 32% 17%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 91% 20%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 217 91% 25%;
+    --sidebar-accent: 217 91% 85%;
+    --sidebar-accent-foreground: 217 32% 17%;
+    --sidebar-border: 217 91% 75%;
     --sidebar-ring: 217 91% 60%;
   }
 }
@@ -99,9 +108,9 @@ All colors MUST be HSL.
     font-family: var(--font-sf) !important;
   }
 
-  /* Override all text colors to approved palette */
+  /* Override all text colors for white background */
   h1, h2, h3, h4, h5, h6 {
-    color: hsl(var(--text-white)) !important;
+    color: hsl(var(--text-blue-900)) !important;
     font-family: var(--font-sf) !important;
   }
 
@@ -119,7 +128,7 @@ All colors MUST be HSL.
   }
 
   .btn-secondary {
-    color: hsl(var(--text-blue-200)) !important;
+    color: hsl(var(--text-blue-800)) !important;
   }
 
   /* Link colors */
@@ -129,13 +138,14 @@ All colors MUST be HSL.
   }
 
   a:hover {
-    color: hsl(var(--text-blue-300)) !important;
+    color: hsl(var(--text-blue-600)) !important;
   }
 
   /* Form elements */
   input, textarea, select {
     font-family: var(--font-sf) !important;
-    color: hsl(var(--text-white)) !important;
+    color: hsl(var(--text-blue-900)) !important;
+    border: 1px solid hsl(var(--border));
   }
 
   input::placeholder,
@@ -147,19 +157,19 @@ All colors MUST be HSL.
   .text-green-500,
   .text-green-400,
   .text-green-300 {
-    color: hsl(var(--text-blue-400)) !important;
+    color: hsl(var(--text-blue-600)) !important;
   }
 
   .text-red-500,
   .text-red-400,
   .text-red-300 {
-    color: hsl(var(--text-white)) !important;
+    color: hsl(0 84% 60%) !important;
   }
 
   .text-yellow-500,
   .text-yellow-400,
   .text-yellow-300 {
-    color: hsl(var(--text-blue-300)) !important;
+    color: hsl(var(--text-blue-500)) !important;
   }
 
   /* Purple color overrides - force to blue */
@@ -168,30 +178,14 @@ All colors MUST be HSL.
   .text-purple-300,
   .text-purple-600,
   .text-purple-700 {
-    color: hsl(var(--text-blue-400)) !important;
+    color: hsl(var(--text-blue-600)) !important;
   }
 
   .bg-purple-500,
   .bg-purple-400,
   .bg-purple-600 {
-    background-color: transparent !important;
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
-  /* Override any purple colors to blue */
-  .text-purple-500,
-  .text-purple-400,
-  .text-purple-300,
-  .text-purple-600,
-  .text-purple-700 {
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
-  .bg-purple-500,
-  .bg-purple-400,
-  .bg-purple-600 {
-    background-color: transparent !important;
-    color: hsl(var(--text-blue-400)) !important;
+    background-color: hsl(var(--card-medium)) !important;
+    color: hsl(var(--text-blue-800)) !important;
   }
 
   /* Status colors mapped to blue variants */
@@ -234,16 +228,16 @@ All colors MUST be HSL.
 
   /* Component-specific fixes */
   .mood-card {
-    color: hsl(var(--text-white)) !important;
+    color: hsl(var(--text-blue-900)) !important;
     font-family: var(--font-sf) !important;
   }
 
   .mood-card h3 {
-    color: hsl(var(--text-white)) !important;
+    color: hsl(var(--text-blue-900)) !important;
   }
 
   .mood-card p {
-    color: hsl(var(--text-blue-200)) !important;
+    color: hsl(var(--text-blue-600)) !important;
   }
 
   /* Track card fixes */

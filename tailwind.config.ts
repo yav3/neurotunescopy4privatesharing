@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: "media", // Force dark mode always
+	darkMode: "class", // Enable light/dark mode toggle
 	content: [
 		"./index.html",
 		"./src/**/*.{ts,tsx}",
@@ -52,7 +52,11 @@ export default {
 				},
 				card: {
 					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					foreground: 'hsl(var(--card-foreground))',
+					light: 'hsl(var(--card-light))',
+					medium: 'hsl(var(--card-medium))',
+					darker: 'hsl(var(--card-darker))',
+					darkest: 'hsl(var(--card-darkest))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -72,6 +76,9 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-card': 'var(--gradient-card)',
+				'gradient-card-blue': 'var(--gradient-card-blue)',
+				'gradient-card-medium': 'var(--gradient-card-medium)',
+				'gradient-card-dark': 'var(--gradient-card-dark)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
 				'glass-border': 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))'
