@@ -202,20 +202,21 @@ export default function FullPlayer() {
         </div>
 
         {/* Enhanced Controls - Glass Morphism */}
-        <div className="flex items-center justify-center gap-6 mb-8">
+        <div className="flex items-center justify-center gap-4 px-8">
           {/* Favorite */}
           <Button 
             variant="ghost" 
             size="lg"
             onClick={handleFavorite}
             className={cn(
-              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
+              "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
+              "hover:scale-105 hover:shadow-xl",
               isFavorited 
-                ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
-                : "text-foreground/80 hover:text-red-500 hover:bg-red-500/10"
+                ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
+                : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
             )}
           >
-            <Heart size={20} className={cn(isFavorited && "fill-current")} />
+            <Heart size={24} className={cn(isFavorited && "fill-current")} />
           </Button>
 
           {/* Thumbs Down */}
@@ -223,9 +224,9 @@ export default function FullPlayer() {
             variant="ghost" 
             size="lg"
             onClick={handleThumbsDown}
-            className="transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset text-foreground/80 hover:text-destructive hover:bg-destructive/10"
+            className="transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg text-foreground hover:text-orange-400 hover:bg-orange-500/20 hover:border-orange-400/30 hover:scale-105 hover:shadow-xl"
           >
-            <ThumbsDown size={20} />
+            <ThumbsDown size={24} />
           </Button>
 
           {/* Lightning Mode */}
@@ -234,13 +235,14 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleLightningMode}
             className={cn(
-              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
+              "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
+              "hover:scale-105 hover:shadow-xl",
               lightningMode 
-                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/20 border-yellow-500/30" 
-                : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/10"
+                ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20" 
+                : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
             )}
           >
-            <Zap size={20} className={cn(lightningMode && "fill-current")} />
+            <Zap size={24} className={cn(lightningMode && "fill-current")} />
           </Button>
 
           {/* Spatial Audio */}
@@ -249,13 +251,14 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleSpatialAudio}
             className={cn(
-              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
+              "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
+              "hover:scale-105 hover:shadow-xl",
               spatialAudioEnabled 
-                ? "text-primary hover:text-primary bg-primary/20 border-primary/30" 
-                : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+                ? "text-blue-400 bg-blue-500/30 border-blue-400/50 shadow-blue-500/20" 
+                : "text-foreground hover:text-blue-400 hover:bg-blue-500/20 hover:border-blue-400/30"
             )}
           >
-            <Radio size={20} />
+            <Radio size={24} />
           </Button>
         </div>
       </div>

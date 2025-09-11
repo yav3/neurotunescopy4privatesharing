@@ -271,17 +271,17 @@ export const FullPagePlayer = () => {
           </div>
 
           {/* Action buttons with Glass Morphism */}
-          <div className="flex items-center justify-center gap-4 p-4 rounded-2xl backdrop-blur-sm bg-card/20 border border-white/10 shadow-glass-inset">
+          <div className="flex items-center justify-center gap-3 p-3 rounded-2xl backdrop-blur-md bg-card/40 border border-white/20 shadow-lg">
             {/* Favorite */}
             <Button
               variant="ghost"
               size="icon"
               onClick={handleFavorite}
               className={cn(
-                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
                 isFavorited 
-                  ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
-                  : "text-foreground/80 hover:text-red-500 hover:bg-red-500/10"
+                  ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
+                  : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
               )}
             >
               <Heart className={cn("w-6 h-6", isFavorited && "fill-current")} />
@@ -292,7 +292,7 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleThumbsDown}
-              className="w-12 h-12 rounded-full backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset text-foreground/80 hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+              className="w-12 h-12 rounded-full backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg text-foreground hover:text-orange-400 hover:bg-orange-500/20 hover:border-orange-400/30 transition-all duration-200 hover:scale-105"
             >
               <ThumbsDown className="w-6 h-6" />
             </Button>
@@ -303,10 +303,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleLightningMode}
               className={cn(
-                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
                 lightningMode
-                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/20 border-yellow-500/30"
-                  : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/10"
+                  ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20"
+                  : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
               )}
             >
               <Zap className={cn("w-6 h-6", lightningMode && "fill-current")} />
@@ -318,10 +318,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleSpatialAudio}
               className={cn(
-                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
                 spatialAudioEnabled
-                  ? "text-primary hover:text-primary bg-primary/20 border-primary/30"
-                  : "text-foreground/80 hover:text-primary hover:bg-primary/10"
+                  ? "text-blue-400 bg-blue-500/30 border-blue-400/50 shadow-blue-500/20"
+                  : "text-foreground hover:text-blue-400 hover:bg-blue-500/20 hover:border-blue-400/30"
               )}
             >
               <Radio className="w-6 h-6" />
