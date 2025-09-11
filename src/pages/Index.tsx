@@ -140,95 +140,117 @@ const Index = () => {
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/20 via-white/5 to-transparent opacity-70 shadow-xl" />
                   </div>
 
-                  {/* Sentiment-specific abstract patterns */}
+                  {/* Musical instrument-inspired abstract patterns */}
                   <div className="absolute inset-0 overflow-hidden">
-                    {/* Focus Enhancement - Clean geometric patterns */}
+                    {/* Focus Enhancement - Piano keys and sheet music */}
                     {goal.id === 'focus-enhancement' && (
                       <>
-                        {/* Concentric circles for focus */}
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-2 border-white/20 rounded-full" />
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 border border-white/30 rounded-full" />
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white/25 rounded-full backdrop-blur-sm" />
-                        {/* Grid pattern */}
-                        <div className="absolute inset-0 opacity-20" style={{
-                          backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                          backgroundSize: '20px 20px'
-                        }} />
+                        {/* Piano key patterns */}
+                        <div className="absolute top-3 right-6 w-16 h-2 bg-white/30 rounded-sm" />
+                        <div className="absolute top-6 right-6 w-16 h-2 bg-white/25 rounded-sm" />
+                        <div className="absolute top-9 right-6 w-16 h-2 bg-white/35 rounded-sm" />
+                        {/* Black keys */}
+                        <div className="absolute top-3 right-8 w-8 h-4 bg-white/40 rounded-sm" />
+                        <div className="absolute top-3 right-12 w-8 h-4 bg-white/40 rounded-sm" />
+                        {/* Musical notes scattered */}
+                        <div className="absolute bottom-8 left-4 w-4 h-4 bg-white/35 rounded-full" />
+                        <div className="absolute bottom-12 left-8 w-1 h-8 bg-white/30 transform rotate-12" />
+                        <div className="absolute top-1/2 left-6 w-3 h-3 bg-white/25 rounded-full" />
+                        <div className="absolute top-1/3 right-1/4 w-2 h-6 bg-white/20 transform -rotate-6" />
                       </>
                     )}
 
-                    {/* Stress/Anxiety Support - Flowing waves */}
+                    {/* Stress/Anxiety Support - Harp strings and wind chimes */}
                     {goal.id === 'stress-anxiety-support' && (
                       <>
-                        {/* Calming wave patterns */}
-                        <div className="absolute top-1/4 left-0 w-full h-12 bg-gradient-to-r from-transparent via-white/15 to-transparent rounded-full transform -rotate-12 blur-sm" />
-                        <div className="absolute top-1/2 left-0 w-full h-8 bg-gradient-to-r from-white/10 via-transparent to-white/10 rounded-full transform rotate-6 blur-md" />
-                        <div className="absolute top-3/4 left-0 w-full h-10 bg-gradient-to-r from-transparent via-white/12 to-transparent rounded-full transform -rotate-3 blur-sm" />
-                        {/* Floating peaceful bubbles */}
-                        <div className="absolute top-6 right-8 w-16 h-16 bg-white/8 rounded-full backdrop-blur-md animate-pulse" />
-                        <div className="absolute bottom-8 left-6 w-12 h-12 bg-white/10 rounded-full backdrop-blur-sm" />
+                        {/* Flowing harp strings */}
+                        <div className="absolute top-2 left-8 w-0.5 h-20 bg-gradient-to-b from-white/40 to-white/10 transform rotate-12" />
+                        <div className="absolute top-4 left-12 w-0.5 h-18 bg-gradient-to-b from-white/35 to-white/8 transform rotate-6" />
+                        <div className="absolute top-6 left-16 w-0.5 h-16 bg-gradient-to-b from-white/30 to-white/5 transform rotate-3" />
+                        <div className="absolute top-8 left-20 w-0.5 h-14 bg-gradient-to-b from-white/25 to-transparent" />
+                        {/* Wind chime elements */}
+                        <div className="absolute bottom-6 right-8 w-1 h-12 bg-white/20 rounded-full" />
+                        <div className="absolute bottom-4 right-12 w-1 h-10 bg-white/25 rounded-full" />
+                        <div className="absolute bottom-8 right-16 w-1 h-8 bg-white/15 rounded-full" />
+                        {/* Connecting threads */}
+                        <div className="absolute bottom-16 right-6 w-12 h-0.5 bg-white/15 transform rotate-45" />
                       </>
                     )}
 
-                    {/* Cardio Support - Pulse and heartbeat patterns */}
+                    {/* Cardio Support - Drum patterns and percussion */}
                     {goal.id === 'cardio-support' && (
                       <>
-                        {/* Heartbeat/pulse wave */}
-                        <div className="absolute top-1/2 left-0 w-full h-1 bg-white/30 transform -translate-y-1/2" />
-                        <div className="absolute top-1/2 left-1/4 w-2 h-8 bg-white/40 transform -translate-y-1/2 -skew-x-12" />
-                        <div className="absolute top-1/2 left-1/3 w-2 h-16 bg-white/50 transform -translate-y-1/2 skew-x-12" />
-                        <div className="absolute top-1/2 left-2/5 w-2 h-12 bg-white/40 transform -translate-y-1/2 -skew-x-12" />
-                        {/* Radiating energy circles */}
-                        <div className="absolute top-1/2 right-6 w-20 h-20 border border-white/20 rounded-full animate-ping" />
-                        <div className="absolute bottom-4 left-4 w-14 h-14 border border-white/15 rounded-full" />
+                        {/* Drum circles */}
+                        <div className="absolute top-6 right-8 w-14 h-14 border-2 border-white/40 rounded-full" />
+                        <div className="absolute top-8 right-10 w-10 h-10 border border-white/30 rounded-full" />
+                        <div className="absolute bottom-12 left-6 w-12 h-12 border-2 border-white/35 rounded-full" />
+                        {/* Drumstick shapes */}
+                        <div className="absolute top-1/2 left-1/3 w-1 h-16 bg-white/40 rounded-full transform rotate-45" />
+                        <div className="absolute top-1/2 left-1/3 w-2 h-2 bg-white/50 rounded-full transform translate-x-4 -translate-y-6" />
+                        <div className="absolute bottom-1/4 right-1/3 w-1 h-14 bg-white/35 rounded-full transform -rotate-30" />
+                        <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-white/45 rounded-full transform translate-x-2 translate-y-4" />
+                        {/* Rhythmic dots */}
+                        <div className="absolute top-4 left-1/4 w-2 h-2 bg-white/30 rounded-full animate-pulse" />
+                        <div className="absolute top-4 left-1/3 w-2 h-2 bg-white/25 rounded-full" />
                       </>
                     )}
 
-                    {/* Mood Boost - Uplifting stars and light rays */}
+                    {/* Mood Boost - Guitar strings and cheerful notes */}
                     {goal.id === 'mood-boost' && (
                       <>
-                        {/* Star patterns */}
-                        <div className="absolute top-4 right-6 w-8 h-8 bg-yellow-300/30 transform rotate-45" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
-                        <div className="absolute top-1/2 left-4 w-6 h-6 bg-yellow-200/40 transform rotate-12" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
-                        <div className="absolute bottom-6 right-1/3 w-4 h-4 bg-yellow-400/35 transform -rotate-12" style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}} />
-                        {/* Radiating light rays */}
-                        <div className="absolute top-1/3 right-1/4 w-24 h-1 bg-gradient-to-r from-yellow-200/30 to-transparent transform rotate-45" />
-                        <div className="absolute top-1/2 right-1/3 w-20 h-1 bg-gradient-to-r from-yellow-300/25 to-transparent transform rotate-12" />
-                        <div className="absolute bottom-1/3 right-1/5 w-18 h-1 bg-gradient-to-r from-yellow-200/20 to-transparent transform -rotate-12" />
+                        {/* Guitar strings */}
+                        <div className="absolute left-4 top-6 h-0.5 w-24 bg-gradient-to-r from-yellow-300/50 to-yellow-200/20 transform rotate-12" />
+                        <div className="absolute left-4 top-10 h-0.5 w-24 bg-gradient-to-r from-yellow-400/45 to-yellow-300/15 transform rotate-12" />
+                        <div className="absolute left-4 top-14 h-0.5 w-24 bg-gradient-to-r from-yellow-200/40 to-yellow-100/10 transform rotate-12" />
+                        <div className="absolute left-4 top-18 h-0.5 w-24 bg-gradient-to-r from-orange-300/35 to-orange-200/8 transform rotate-12" />
+                        {/* Sound hole */}
+                        <div className="absolute right-6 top-1/3 w-12 h-12 border-2 border-yellow-300/40 rounded-full" />
+                        <div className="absolute right-8 top-1/3 w-8 h-8 border border-yellow-400/30 rounded-full transform translate-x-2 translate-y-2" />
+                        {/* Musical notes floating */}
+                        <div className="absolute bottom-8 left-8 w-3 h-3 bg-yellow-400/40 rounded-full" />
+                        <div className="absolute bottom-6 left-12 w-1 h-6 bg-yellow-300/35 transform rotate-15" />
+                        <div className="absolute bottom-12 right-1/4 w-2 h-2 bg-orange-300/30 rounded-full" />
                       </>
                     )}
 
-                    {/* Pain Support - Soothing water ripples */}
+                    {/* Pain Support - Violin curves and cello strings */}
                     {goal.id === 'pain-support' && (
                       <>
-                        {/* Gentle ripple effects */}
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-cyan-200/20 rounded-full animate-pulse" />
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 border border-cyan-300/25 rounded-full" />
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-cyan-400/30 rounded-full" />
-                        {/* Flowing water droplets */}
-                        <div className="absolute top-6 left-6 w-3 h-5 bg-cyan-200/40 rounded-full" />
-                        <div className="absolute top-12 right-8 w-2 h-4 bg-cyan-300/35 rounded-full transform rotate-12" />
-                        <div className="absolute bottom-8 left-1/3 w-4 h-6 bg-cyan-400/30 rounded-full transform -rotate-6" />
+                        {/* Violin f-holes */}
+                        <div className="absolute top-1/4 right-8 w-1 h-12 bg-cyan-300/40 rounded-full" />
+                        <div className="absolute top-1/4 right-8 w-3 h-2 bg-cyan-400/35 rounded-full transform translate-y-2" />
+                        <div className="absolute top-1/4 right-8 w-3 h-2 bg-cyan-300/30 rounded-full transform translate-y-8" />
+                        <div className="absolute top-1/4 left-6 w-1 h-12 bg-cyan-200/35 rounded-full" />
+                        <div className="absolute top-1/4 left-6 w-3 h-2 bg-cyan-300/30 rounded-full transform translate-y-2" />
+                        <div className="absolute top-1/4 left-6 w-3 h-2 bg-cyan-400/25 rounded-full transform translate-y-8" />
+                        {/* Cello strings */}
+                        <div className="absolute bottom-4 left-1/4 w-0.5 h-16 bg-gradient-to-t from-cyan-400/40 to-cyan-200/10" />
+                        <div className="absolute bottom-4 left-1/3 w-0.5 h-16 bg-gradient-to-t from-cyan-300/35 to-cyan-100/8" />
+                        <div className="absolute bottom-4 left-2/5 w-0.5 h-16 bg-gradient-to-t from-cyan-500/30 to-transparent" />
+                        {/* Bow shape */}
+                        <div className="absolute top-6 right-1/4 w-16 h-1 bg-cyan-200/25 rounded-full transform rotate-30" />
                       </>
                     )}
 
-                    {/* Energy Boost - Dynamic rays and lightning */}
+                    {/* Energy Boost - Electric guitar and dynamic elements */}
                     {goal.id === 'energy-boost' && (
                       <>
-                        {/* Lightning bolt patterns */}
-                        <div className="absolute top-4 right-4 w-1 h-12 bg-gradient-to-b from-orange-200/40 to-yellow-300/30 transform rotate-12" />
-                        <div className="absolute top-8 right-6 w-1 h-8 bg-gradient-to-b from-yellow-300/35 to-orange-200/25 transform -rotate-45" />
-                        <div className="absolute top-12 right-2 w-1 h-10 bg-gradient-to-b from-orange-300/30 to-yellow-200/20 transform rotate-75" />
-                        {/* Explosive radiating lines */}
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                          <div className="w-20 h-0.5 bg-gradient-to-r from-orange-300/40 to-transparent transform rotate-0" />
-                          <div className="w-16 h-0.5 bg-gradient-to-r from-yellow-300/35 to-transparent transform rotate-45" />
-                          <div className="w-18 h-0.5 bg-gradient-to-r from-orange-200/30 to-transparent transform rotate-90" />
-                          <div className="w-14 h-0.5 bg-gradient-to-r from-yellow-400/25 to-transparent transform rotate-135" />
-                        </div>
-                        {/* Energy orbs */}
-                        <div className="absolute bottom-4 left-4 w-6 h-6 bg-orange-300/35 rounded-full blur-sm animate-pulse" />
-                        <div className="absolute top-6 left-8 w-4 h-4 bg-yellow-400/40 rounded-full blur-sm" />
+                        {/* Electric guitar body outline */}
+                        <div className="absolute top-8 right-4 w-16 h-20 border-2 border-orange-300/40 rounded-2xl transform rotate-15" />
+                        <div className="absolute top-12 right-8 w-8 h-12 border border-yellow-400/35 rounded-xl transform rotate-15" />
+                        {/* Guitar pickups */}
+                        <div className="absolute top-16 right-6 w-6 h-2 bg-orange-400/45 rounded-full transform rotate-15" />
+                        <div className="absolute top-20 right-6 w-6 h-2 bg-yellow-300/40 rounded-full transform rotate-15" />
+                        {/* Electric strings with energy */}
+                        <div className="absolute left-6 bottom-12 w-20 h-0.5 bg-gradient-to-r from-orange-400/50 to-yellow-300/20 transform -rotate-12 animate-pulse" />
+                        <div className="absolute left-6 bottom-10 w-20 h-0.5 bg-gradient-to-r from-yellow-500/45 to-orange-200/15 transform -rotate-12" />
+                        <div className="absolute left-6 bottom-8 w-20 h-0.5 bg-gradient-to-r from-orange-300/40 to-yellow-400/10 transform -rotate-12" />
+                        {/* Lightning bolts from strings */}
+                        <div className="absolute bottom-6 left-1/3 w-1 h-8 bg-yellow-400/50 transform rotate-75" />
+                        <div className="absolute bottom-4 left-2/5 w-1 h-6 bg-orange-500/45 transform -rotate-45" />
+                        {/* Amplifier knobs */}
+                        <div className="absolute top-4 left-4 w-3 h-3 border border-orange-300/35 rounded-full" />
+                        <div className="absolute top-8 left-4 w-3 h-3 border border-yellow-400/30 rounded-full" />
                       </>
                     )}
                   </div>
