@@ -5,7 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { cn } from '@/lib/utils';
-import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-enhanced.jpg';
+
+// Import new artwork
+import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
+import newAgeArt from '@/assets/new-age-artwork.jpg';
+import electronicArt from '@/assets/electronic-artwork.jpg';
 
 // Genre definitions with enhanced styling
 const getGenreOptions = (goalId: string) => {
@@ -18,7 +23,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['classicalfocus'],
         trackCount: '50+ tracks',
         gradient: 'from-blue-600 to-cyan-400',
-        image: '/lovable-uploads/european-classical-terrace.png'
+        image: crossoverClassicalArt
       },
       {
         id: 'new-age',
@@ -27,7 +32,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '60+ tracks',
         gradient: 'from-teal-500 to-indigo-400',
-        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1%20(1).jpeg'
+        image: newAgeArt
       },
       {
         id: 'electronic',
@@ -36,7 +41,7 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         trackCount: '75+ tracks',
         gradient: 'from-cyan-500 to-teal-400',
-        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/BEF904AA9C4B80018215E6C082AA7FEAA1E0D5E6E2EAE4B836FE28AB6FB66243_sk_6_cid_1%20(1).jpeg'
+        image: electronicArt
       },
       {
         id: 'peaceful-piano',

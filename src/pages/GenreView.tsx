@@ -9,6 +9,11 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
+// Import new artwork
+import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
+import newAgeArt from '@/assets/new-age-artwork.jpg';
+import electronicArt from '@/assets/electronic-artwork.jpg';
+
 // Fallback track generator for when storage is unavailable
 const generateFallbackTracks = (genreName: string, goalName: string) => {
   const trackNames = [
@@ -74,21 +79,21 @@ const GenreView: React.FC = () => {
           name: 'Crossover Classical',
           description: 'Modern classical compositions for concentration',
           buckets: ['classicalfocus'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
+          artwork: crossoverClassicalArt
         },
         {
           id: 'electronic',
           name: 'Electronic',
           description: 'Ambient electronic music for focus',
           buckets: ['focus-music'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
+          artwork: electronicArt
         },
         {
           id: 'world-new-age',
           name: 'World & New Age',
           description: 'Global sounds and new age music',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
+          artwork: newAgeArt
         }
       ];
     } else if (goalId === 'mood-boost') {
