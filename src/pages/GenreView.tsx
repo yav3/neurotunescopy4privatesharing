@@ -203,7 +203,7 @@ const GenreView: React.FC = () => {
 
               console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
 
-              // Convert to track format with unique artwork
+              // Convert to track format with direct Supabase URLs
               const albumArtworks = [
                 peacefulPianoArt,
                 acousticArt,
@@ -213,6 +213,7 @@ const GenreView: React.FC = () => {
               ];
 
               const bucketTracks = audioFiles.map((file, index) => {
+                // Get direct public URL from Supabase - no API calls
                 const { data: urlData } = supabase.storage
                   .from(bucketName)
                   .getPublicUrl(file.name);
@@ -226,6 +227,8 @@ const GenreView: React.FC = () => {
                   .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                   .join(' ')
                   .trim();
+
+                console.log(`🎵 Direct URL for ${file.name}:`, urlData.publicUrl);
 
                 return {
                   id: `${bucketName}-${file.name}`,
@@ -249,7 +252,7 @@ const GenreView: React.FC = () => {
             }
           }
 
-          console.log(`🎯 Total tracks found across all buckets: ${allTracks.length}`);
+          console.log(`🎯 Total tracks loaded directly from storage: ${allTracks.length}`);
           
           // Only update state if component is still mounted and not aborted
           if (allTracks && allTracks.length > 0 && isMounted && !abortController.signal.aborted) {
@@ -258,7 +261,7 @@ const GenreView: React.FC = () => {
             const limitedTracks = shuffledTracks.slice(0, 100); // Limit to 100 tracks
             
             setTracks(limitedTracks);
-            console.log(`✅ Loaded ${limitedTracks.length} real tracks for ${selectedGenre.name} directly from storage`);
+            console.log(`✅ Ready to play ${limitedTracks.length} tracks directly from ${selectedGenre.name} bucket`);
           }
         } catch (storageError) {
           console.warn(`⚠️ Direct storage access error for ${selectedGenre.name}:`, storageError);
@@ -301,17 +304,14 @@ const GenreView: React.FC = () => {
     try {
       toast.loading(`Starting ${selectedGenre?.name.toLowerCase()} session...`, { id: "track-play" });
       
-      // Load tracks directly from the selected genre's buckets instead of using playFromGoal
-      console.log(`🎵 Loading tracks directly from ${selectedGenre?.name} buckets:`, selectedGenre?.buckets);
+      // Play directly from bucket - bypass all APIs and edge functions
+      console.log(`🎵 Playing directly from ${selectedGenre?.name} bucket:`, track);
       
-      if (tracks.length > 0) {
-        // Use the tracks we already loaded from the genre
-        const { setQueue } = useAudioStore.getState();
-        await setQueue(tracks, 0);
-        toast.success(`Playing ${selectedGenre?.name.toLowerCase()} music`, { id: "track-play" });
-      } else {
-        throw new Error("No tracks available for this genre");
-      }
+      // Get the audio store and play the specific track directly
+      const { playTrack } = useAudioStore.getState();
+      await playTrack(track);
+      
+      toast.success(`Playing ${track.title}`, { id: "track-play" });
     } catch (error) {
       console.error('❌ Failed to play track:', error);
       toast.error("Failed to start playback", { id: "track-play" });

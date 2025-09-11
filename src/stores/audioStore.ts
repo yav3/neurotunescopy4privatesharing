@@ -326,16 +326,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       // Check if track already has a stream_url from direct storage
       let resolution;
-      if (track.stream_url) {
-        console.log('🎵 Using existing stream_url from direct storage:', track.stream_url);
+      if (track.stream_url && track.stream_url.includes('supabase.co')) {
+        console.log('🎵 Using direct Supabase storage URL - bypassing all APIs:', track.stream_url);
         resolution = {
           success: true,
           url: track.stream_url,
-          method: 'direct_storage',
+          method: 'direct_supabase_storage',
           attempts: [{
             url: track.stream_url,
             status: 200,
-            method: 'direct_storage'
+            method: 'direct_supabase_storage'
           }]
         };
       } else {
