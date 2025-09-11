@@ -67,9 +67,9 @@ const GenreView: React.FC = () => {
       return [
         {
           id: 'crossover-classical',
-          name: 'Crossover Classical',
-          description: 'Modern classical compositions for concentration',
-          buckets: ['classicalfocus'],
+          name: 'Peaceful Piano',
+          description: 'Serene piano compositions for deep focus',
+          buckets: ['Chopin', 'classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
