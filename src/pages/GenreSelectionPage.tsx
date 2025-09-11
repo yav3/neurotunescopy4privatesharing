@@ -201,8 +201,8 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
                 
-                {/* Force white text with multiple overrides */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
+                {/* Position text to avoid obscuring pianos */}
+                <div className="absolute top-4 left-4 right-4">
                   <h3 
                     className="font-bold text-xl drop-shadow-2xl"
                     style={{ 
