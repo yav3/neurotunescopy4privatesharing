@@ -250,8 +250,10 @@ const GenreView: React.FC = () => {
               
               const cleanTitle = file.name.replace(/\.[^/.]+$/, ''); // Remove extension only
 
-              // Randomly select album art for each track
-              const randomArtwork = albumArtUrls[Math.floor(Math.random() * albumArtUrls.length)];
+              // Use deterministic but varied selection based on track name + index
+              const artworkSeed = (file.name + i).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+              const artworkIndex = artworkSeed % albumArtUrls.length;
+              const selectedArtwork = albumArtUrls[artworkIndex];
 
               const track = {
                 id: `${bucketName}-${file.name}`,
@@ -260,7 +262,7 @@ const GenreView: React.FC = () => {
                 storage_bucket: bucketName,
                 storage_key: file.name,
                 stream_url: urlData.publicUrl,
-                artwork_url: randomArtwork,
+                artwork_url: selectedArtwork,
                 audio_status: 'working' as const,
               };
               
