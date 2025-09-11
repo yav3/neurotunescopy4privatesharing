@@ -199,7 +199,11 @@ const Index = () => {
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
                       <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
-                          style={{ color: '#ffffff' }}>
+                          style={{ 
+                            color: '#ffffff !important',
+                            textShadow: 'none',
+                            filter: 'none'
+                          }}>
                         {goal.name}
                       </h3>
                     </div>
