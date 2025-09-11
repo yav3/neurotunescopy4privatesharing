@@ -361,6 +361,22 @@ All colors MUST be HSL.
       min-height: 48px;
       min-width: 48px;
     }
+    
+    /* Mobile-specific card improvements */
+    .grid {
+      gap: 0.75rem;
+    }
+    
+    /* Better mobile typography */
+    .text-responsive {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    
+    /* Mobile padding adjustments */
+    .mobile-padding {
+      padding: 0.75rem;
+    }
   }
 
   @media (min-width: 480px) and (max-width: 639px) {

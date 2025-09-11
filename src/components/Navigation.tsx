@@ -40,9 +40,9 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   };
 
   return (
-    <nav className="px-6 py-4">
+    <nav className="px-4 sm:px-6 py-3 sm:py-4">
       {/* Simple icon-only navigation */}
-      <div className="flex justify-center items-center gap-12">
+      <div className="flex justify-center items-center gap-8 sm:gap-12">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = getCurrentActiveTab() === tab.id;
@@ -52,14 +52,14 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               key={tab.id}
               onClick={() => handleTabClick(tab)}
               className={cn(
-                "flex items-center justify-center p-3 transition-all duration-200 rounded-full",
-                "hover:bg-white/10 active:scale-95",
+                "flex items-center justify-center p-2.5 sm:p-3 transition-all duration-200 rounded-full",
+                "hover:bg-white/10 active:scale-95 min-w-[44px] min-h-[44px]",
                 isActive 
                   ? "text-white bg-white/20" 
                   : "text-white/70 hover:text-white"
               )}
             >
-              <Icon className="w-6 h-6" />
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           );
         })}

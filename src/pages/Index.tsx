@@ -77,10 +77,10 @@ const Index = () => {
 
       {/* Header with Theme Toggle */}
       <div className="relative overflow-hidden">        
-        <div className="relative z-10 px-4 py-4 md:px-6 md:py-6">
+        <div className="relative z-10 px-3 sm:px-4 py-3 sm:py-4 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-4 md:mb-6 flex items-center justify-between">
-              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
+            <div className="mb-3 sm:mb-4 md:mb-6 flex items-center justify-between">
+              <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">
                 Home
               </h1>
               <Button
@@ -106,22 +106,23 @@ const Index = () => {
       </div>
 
       {/* Goals grid that better fills the screen */}
-      <div className="container px-4 pb-16 relative z-10 flex-1 flex items-center">
+      <div className="container px-3 sm:px-4 pb-20 sm:pb-16 relative z-10 flex-1 flex items-center">
         <div className="max-w-4xl mx-auto w-full">
-          {/* Larger cards with better proportions */}
-          <div className="grid grid-cols-2 gap-4 md:gap-6">
+          {/* Responsive cards grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[5/4] rounded-xl border-0",
+                    "aspect-[4/3] sm:aspect-[5/4] rounded-lg sm:rounded-xl border-0",
                     "hover:scale-[1.02] hover:-translate-y-1",
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
+                    "hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
+                    "min-h-[200px] sm:min-h-[240px]"
                   )}
                   style={{ 
                     animationDelay: `${index * 100}ms`,
@@ -172,16 +173,16 @@ const Index = () => {
                   </div>
 
                   {/* Hover overlay with select genre text */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
-                    <span className="text-white font-semibold text-lg md:text-xl tracking-wide">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg sm:rounded-xl">
+                    <span className="text-white font-semibold text-sm sm:text-lg md:text-xl tracking-wide">
                       Select Genre
                     </span>
                   </div>
 
                   {/* Goal title only */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase"
+                      <h3 className="font-bold text-sm sm:text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase"
                           style={{ 
                             color: '#ffffff',
                             WebkitTextFillColor: '#ffffff',
