@@ -122,6 +122,7 @@ const GenreView: React.FC = () => {
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
           buckets: ['HIIT'],
+          folder: 'HIITHOUSE',
           artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
         },
         {
@@ -198,41 +199,43 @@ const GenreView: React.FC = () => {
         const { supabase } = await import('@/integrations/supabase/client');
         let allTracks: any[] = [];
 
-        // Fetch available album art first
-        console.log('🎨 Fetching album art from albumart bucket...');
-        const { data: artFiles, error: artError } = await supabase.storage
-          .from('albumart')
-          .list('', {
-            limit: 1000,
-            sortBy: { column: 'name', order: 'asc' }
-          });
-
+        // Determine album art sources
         let albumArtUrls: string[] = [];
-        if (!artError && artFiles?.length) {
-          const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
-          const validArtFiles = artFiles.filter(file => 
-            imageExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-          );
-          
-          albumArtUrls = validArtFiles.map(file => {
-            const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(file.name);
-            return urlData.publicUrl;
-          });
-          
-          console.log(`🎨 Found ${albumArtUrls.length} album art images`);
-        } else {
-          console.log('🎨 No album art found, using default genre artwork');
+        if (selectedGenre.id === 'house-music') {
+          // Strict mode: use only HIIT bucket for audio; use provided artwork only
           albumArtUrls = [selectedGenre.artwork];
+          console.log('🎨 Using provided House Music artwork only');
+        } else {
+          console.log('🎨 Fetching album art from albumart bucket...');
+          const { data: artFiles, error: artError } = await supabase.storage
+            .from('albumart')
+            .list('', {
+              limit: 1000,
+              sortBy: { column: 'name', order: 'asc' }
+            });
+          if (!artError && artFiles?.length) {
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+            const validArtFiles = artFiles.filter(file => 
+              imageExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+            );
+            albumArtUrls = validArtFiles.map(file => {
+              const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(file.name);
+              return urlData.publicUrl;
+            });
+            console.log(`🎨 Found ${albumArtUrls.length} album art images`);
+          } else {
+            console.log('🎨 No album art found, using default genre artwork');
+            albumArtUrls = [selectedGenre.artwork];
+          }
         }
 
         // Process each bucket - simplified
         for (const bucketName of selectedGenre.buckets) {
           console.log(`🗂️ Processing bucket: ${bucketName} directly`);
           
-          // Handle folder-specific access for HIIT bucket
-          let folderPath = '';
-          if (bucketName === 'HIIT' && selectedGenre.id === 'house-music') {
-            folderPath = 'HIITHOUSE';
+          // Handle optional folder per genre
+          let folderPath = (selectedGenre as any).folder || '';
+          if (folderPath) {
             console.log(`📁 Using folder: ${folderPath} in bucket ${bucketName}`);
           }
           
