@@ -294,16 +294,13 @@ const GenreView: React.FC = () => {
 
       {/* Goal and Genre Info */}
       <div className="container mx-auto px-4 py-8">
-        <div className="space-y-2 mb-8">
+        <div className="space-y-3 mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground">
             {goal.name}
           </h1>
-          <p className="text-xl text-primary font-medium">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
             {selectedGenre.name}
-          </p>
-          <p className="text-muted-foreground">
-            {selectedGenre.description}
-          </p>
+          </h2>
         </div>
 
 
