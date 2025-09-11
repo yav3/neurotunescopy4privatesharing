@@ -69,9 +69,9 @@ export async function getTracksFromStorage(
     const normalizedGoal = goal.trim().toLowerCase();
     
     if (normalizedGoal === 'focus-enhancement') {
-      // Try focus-music first, then classicalfocus, fallback to neuralpositivemusic if auth issues
-      buckets = ['focus-music', 'classicalfocus', 'neuralpositivemusic'];
-      console.log(`🎯 Using focus-music, classicalfocus, and neuralpositivemusic buckets for focus enhancement`);
+      // Try focus-music first, then classicalfocus and Chopin, fallback to neuralpositivemusic if auth issues
+      buckets = ['focus-music', 'classicalfocus', 'Chopin', 'neuralpositivemusic'];
+      console.log(`🎯 Using focus-music, classicalfocus, Chopin, and neuralpositivemusic buckets for focus enhancement`);
     } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
