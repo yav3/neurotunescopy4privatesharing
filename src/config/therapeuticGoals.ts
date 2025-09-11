@@ -1,5 +1,13 @@
 import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-react';
 
+// Import the new abstract therapeutic backgrounds
+import focusEnhancementBg from '@/assets/focus-enhancement-bg.jpg';
+import stressAnxietyBg from '@/assets/stress-anxiety-bg.jpg';
+import moodBoostBg from '@/assets/mood-boost-bg.jpg';
+import energyBoostBg from '@/assets/energy-boost-bg.jpg';
+import painSupportBg from '@/assets/pain-support-bg.jpg';
+import sleepSupportBg from '@/assets/sleep-support-bg.jpg';
+
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
   // Core identifiers
@@ -52,7 +60,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Focus',
     description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
     icon: Brain,
-    artwork: '/lovable-uploads/839dfde0-d12a-4c9f-ac38-bd791724eec3.png',
+    artwork: focusEnhancementBg,
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
@@ -68,7 +76,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Calm your mind and reduce stress and anxiety',
     icon: Sparkles,
-    artwork: '/lovable-uploads/ce227c91-36ce-47b0-a45a-7d51c85398a6.png',
+    artwork: stressAnxietyBg,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
@@ -84,7 +92,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Cardio',
     description: 'Energizing beats to power your cardio workouts and training',
     icon: Waves,
-    artwork: '/lovable-uploads/dfdec9b4-d579-4a5d-901c-7c741ab94282.png',
+    artwork: energyBoostBg,
     color: 'indigo',
     gradient: 'from-indigo-500 to-blue-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
@@ -100,7 +108,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
     icon: Zap,
-    artwork: '/lovable-uploads/d7e2c34f-b2a2-4f4e-a1a2-42950dcd4165.png',
+    artwork: moodBoostBg,
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
@@ -116,7 +124,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Energize and motivate your day',
     icon: Shield,
-    artwork: '/lovable-uploads/d6931a87-dfee-4e55-b545-8995ebda22d5.png',
+    artwork: energyBoostBg,
     color: 'teal',
     gradient: 'from-teal-500 to-cyan-500',
     bpmRange: { min: 100, max: 160, optimal: 130 },
@@ -132,7 +140,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
     icon: Flower,
-    artwork: '/lovable-uploads/8c793269-f751-4c9d-8d7b-4d1bcd743426.png',
+    artwork: painSupportBg,
     color: 'gray',
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
