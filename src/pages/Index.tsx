@@ -28,10 +28,10 @@ const goalCardThemes = {
     shadow: 'shadow-[0_8px_32px_rgba(14,165,233,0.4)]'
   },
   'mood-boost': {
-    gradient: 'from-yellow-200/90 via-amber-100/80 to-orange-200/90',
-    accent: 'bg-white/20',
-    text: 'text-gray-800',
-    shadow: 'shadow-[0_8px_32px_rgba(251,191,36,0.4)]'
+    gradient: 'from-blue-600/90 via-indigo-500/85 to-purple-600/90',
+    accent: 'bg-white/25',
+    text: 'text-white',
+    shadow: 'shadow-[0_8px_32px_rgba(79,70,229,0.5)]'
   },
   'pain-support': {
     gradient: 'from-teal-600/90 via-cyan-600/80 to-blue-500/90',
@@ -40,10 +40,10 @@ const goalCardThemes = {
     shadow: 'shadow-[0_8px_32px_rgba(20,184,166,0.4)]'
   },
   'energy-boost': {
-    gradient: 'from-orange-500/90 via-yellow-500/80 to-amber-500/90',
-    accent: 'bg-white/20',
+    gradient: 'from-blue-700/90 via-blue-500/85 to-cyan-500/90',
+    accent: 'bg-white/25',
     text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(245,158,11,0.4)]'
+    shadow: 'shadow-[0_8px_32px_rgba(29,78,216,0.5)]'
   }
 };
 
@@ -118,26 +118,39 @@ const Index = () => {
 
                   {/* Brighter multi-layered glass morphism effects */}
                   <div className="absolute inset-0 overflow-hidden">
-                    {/* Primary bright glass layer */}
-                    <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] border border-white/30" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20" />
+                    {/* Photo-realistic liquid glass base layers */}
+                    <div className="absolute inset-0 bg-white/15 backdrop-blur-[8px] border border-white/25" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-white/10 to-black/20" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent" />
                     
-                    {/* Brighter floating glass bubbles */}
-                    <div className="absolute top-4 right-6 w-20 h-20 bg-white/25 rounded-full backdrop-blur-lg border-2 border-white/40 opacity-80 shadow-lg" />
-                    <div className="absolute top-12 left-8 w-14 h-14 bg-white/20 rounded-full backdrop-blur-md border border-white/35 opacity-70 shadow-md" />
-                    <div className="absolute bottom-8 right-4 w-16 h-16 bg-white/22 rounded-full backdrop-blur-lg border border-white/45 opacity-75 shadow-lg" />
+                    {/* Liquid glass bubbles with realistic refraction */}
+                    <div className="absolute top-4 right-6 w-20 h-20 bg-gradient-radial from-white/40 via-white/25 to-white/10 rounded-full backdrop-blur-xl border-2 border-white/50 shadow-[inset_0_2px_8px_rgba(255,255,255,0.3),0_4px_16px_rgba(0,0,0,0.2)]" />
+                    <div className="absolute top-12 left-8 w-14 h-14 bg-gradient-radial from-white/35 via-white/20 to-white/8 rounded-full backdrop-blur-lg border border-white/40 shadow-[inset_0_1px_4px_rgba(255,255,255,0.4),0_2px_8px_rgba(0,0,0,0.15)]" />
+                    <div className="absolute bottom-8 right-4 w-16 h-16 bg-gradient-radial from-white/30 via-white/18 to-white/6 rounded-full backdrop-blur-lg border border-white/45 shadow-[inset_0_2px_6px_rgba(255,255,255,0.35),0_3px_12px_rgba(0,0,0,0.18)]" />
                     
-                    {/* Sharper abstract geometric glass shapes */}
-                    <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-white/18 backdrop-blur-md border-2 border-white/40 rounded-xl rotate-45 opacity-85 shadow-md" />
-                    <div className="absolute bottom-1/3 left-1/2 w-8 h-16 bg-white/15 backdrop-blur-md border border-white/35 rounded-full transform -rotate-12 opacity-80 shadow-sm" />
+                    {/* Floating water droplets */}
+                    <div className="absolute top-8 left-12 w-6 h-8 bg-gradient-to-b from-white/50 via-white/30 to-white/15 rounded-full backdrop-blur-md border-2 border-white/60 shadow-[inset_0_1px_3px_rgba(255,255,255,0.5),0_1px_4px_rgba(0,0,0,0.2)]" />
+                    <div className="absolute bottom-12 left-6 w-8 h-10 bg-gradient-to-b from-white/45 via-white/25 to-white/10 rounded-full backdrop-blur-md border border-white/55 shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_2px_6px_rgba(0,0,0,0.15)]" />
                     
-                    {/* Brighter floating abstract elements */}
-                    <div className="absolute top-2 left-1/3 w-6 h-6 bg-gradient-to-br from-white/35 to-white/15 rounded-lg rotate-12 backdrop-blur-md border-2 border-white/50 shadow-lg" />
-                    <div className="absolute bottom-6 right-1/3 w-4 h-8 bg-gradient-to-t from-white/25 to-white/10 rounded-full backdrop-blur-md border border-white/40 shadow-md" />
+                    {/* Crystalline geometric shapes */}
+                    <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-gradient-to-br from-white/25 via-white/15 to-white/5 backdrop-blur-lg border-2 border-white/50 rounded-xl rotate-45 shadow-[inset_0_2px_4px_rgba(255,255,255,0.3),0_4px_8px_rgba(0,0,0,0.2)]" />
+                    <div className="absolute bottom-1/3 right-1/4 w-10 h-18 bg-gradient-to-t from-white/30 via-white/18 to-white/8 backdrop-blur-md border border-white/45 rounded-2xl transform rotate-12 shadow-[inset_0_1px_3px_rgba(255,255,255,0.4),0_2px_6px_rgba(0,0,0,0.15)]" />
                     
-                    {/* Enhanced dynamic light rays */}
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-conic from-white/35 via-white/10 to-transparent rounded-full opacity-60 animate-pulse shadow-2xl" />
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/20 via-white/5 to-transparent opacity-70 shadow-xl" />
+                    {/* Liquid glass streams */}
+                    <div className="absolute top-2 right-1/3 w-3 h-24 bg-gradient-to-b from-white/40 via-white/20 to-transparent rounded-full backdrop-blur-sm border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
+                    <div className="absolute bottom-6 left-1/3 w-2 h-20 bg-gradient-to-t from-white/35 via-white/15 to-transparent rounded-full backdrop-blur-sm border border-white/40 shadow-[inset_0_0.5px_1px_rgba(255,255,255,0.4)]" />
+                    
+                    {/* Prismatic light effects */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-conic from-white/25 via-blue-200/15 via-purple-200/10 to-transparent rounded-full opacity-70 blur-sm" />
+                    <div className="absolute bottom-0 left-0 w-28 h-28 bg-gradient-radial from-cyan-200/20 via-white/10 to-transparent opacity-60 blur-xs" />
+                    
+                    {/* Caustic patterns like underwater light */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div className="absolute top-1/4 left-1/3 w-8 h-2 bg-white/40 rounded-full transform rotate-12 blur-[1px]" />
+                      <div className="absolute top-1/3 right-1/4 w-6 h-3 bg-white/30 rounded-full transform -rotate-6 blur-[1px]" />
+                      <div className="absolute bottom-1/3 left-1/4 w-10 h-1.5 bg-white/35 rounded-full transform rotate-8 blur-[1px]" />
+                      <div className="absolute bottom-1/4 right-1/3 w-7 h-2.5 bg-white/25 rounded-full transform -rotate-15 blur-[1px]" />
+                    </div>
                   </div>
 
                   {/* Musical instrument-inspired abstract patterns */}
@@ -195,21 +208,21 @@ const Index = () => {
                       </>
                     )}
 
-                    {/* Mood Boost - Guitar strings and cheerful notes */}
+                    {/* Mood Boost - Guitar strings and cheerful notes in deep blues */}
                     {goal.id === 'mood-boost' && (
                       <>
-                        {/* Guitar strings */}
-                        <div className="absolute left-4 top-6 h-0.5 w-24 bg-gradient-to-r from-yellow-300/50 to-yellow-200/20 transform rotate-12" />
-                        <div className="absolute left-4 top-10 h-0.5 w-24 bg-gradient-to-r from-yellow-400/45 to-yellow-300/15 transform rotate-12" />
-                        <div className="absolute left-4 top-14 h-0.5 w-24 bg-gradient-to-r from-yellow-200/40 to-yellow-100/10 transform rotate-12" />
-                        <div className="absolute left-4 top-18 h-0.5 w-24 bg-gradient-to-r from-orange-300/35 to-orange-200/8 transform rotate-12" />
-                        {/* Sound hole */}
-                        <div className="absolute right-6 top-1/3 w-12 h-12 border-2 border-yellow-300/40 rounded-full" />
-                        <div className="absolute right-8 top-1/3 w-8 h-8 border border-yellow-400/30 rounded-full transform translate-x-2 translate-y-2" />
-                        {/* Musical notes floating */}
-                        <div className="absolute bottom-8 left-8 w-3 h-3 bg-yellow-400/40 rounded-full" />
-                        <div className="absolute bottom-6 left-12 w-1 h-6 bg-yellow-300/35 transform rotate-15" />
-                        <div className="absolute bottom-12 right-1/4 w-2 h-2 bg-orange-300/30 rounded-full" />
+                        {/* Guitar strings with blue tones */}
+                        <div className="absolute left-4 top-6 h-0.5 w-24 bg-gradient-to-r from-blue-300/60 to-blue-200/30 transform rotate-12 shadow-sm" />
+                        <div className="absolute left-4 top-10 h-0.5 w-24 bg-gradient-to-r from-indigo-400/55 to-blue-300/25 transform rotate-12 shadow-sm" />
+                        <div className="absolute left-4 top-14 h-0.5 w-24 bg-gradient-to-r from-blue-200/50 to-indigo-100/20 transform rotate-12 shadow-sm" />
+                        <div className="absolute left-4 top-18 h-0.5 w-24 bg-gradient-to-r from-purple-300/45 to-blue-200/18 transform rotate-12 shadow-sm" />
+                        {/* Sound hole with crystalline effect */}
+                        <div className="absolute right-6 top-1/3 w-12 h-12 border-2 border-blue-300/50 rounded-full shadow-[inset_0_2px_4px_rgba(59,130,246,0.3)]" />
+                        <div className="absolute right-8 top-1/3 w-8 h-8 border border-indigo-400/40 rounded-full transform translate-x-2 translate-y-2 shadow-[inset_0_1px_2px_rgba(99,102,241,0.2)]" />
+                        {/* Musical notes floating with glass effect */}
+                        <div className="absolute bottom-8 left-8 w-3 h-3 bg-blue-400/50 rounded-full shadow-[inset_0_1px_2px_rgba(59,130,246,0.4)]" />
+                        <div className="absolute bottom-6 left-12 w-1 h-6 bg-indigo-300/45 transform rotate-15 shadow-sm" />
+                        <div className="absolute bottom-12 right-1/4 w-2 h-2 bg-purple-300/40 rounded-full shadow-[inset_0_0.5px_1px_rgba(147,51,234,0.3)]" />
                       </>
                     )}
 
@@ -232,25 +245,25 @@ const Index = () => {
                       </>
                     )}
 
-                    {/* Energy Boost - Electric guitar and dynamic elements */}
+                    {/* Energy Boost - Electric guitar and dynamic elements in deep blues */}
                     {goal.id === 'energy-boost' && (
                       <>
-                        {/* Electric guitar body outline */}
-                        <div className="absolute top-8 right-4 w-16 h-20 border-2 border-orange-300/40 rounded-2xl transform rotate-15" />
-                        <div className="absolute top-12 right-8 w-8 h-12 border border-yellow-400/35 rounded-xl transform rotate-15" />
-                        {/* Guitar pickups */}
-                        <div className="absolute top-16 right-6 w-6 h-2 bg-orange-400/45 rounded-full transform rotate-15" />
-                        <div className="absolute top-20 right-6 w-6 h-2 bg-yellow-300/40 rounded-full transform rotate-15" />
-                        {/* Electric strings with energy */}
-                        <div className="absolute left-6 bottom-12 w-20 h-0.5 bg-gradient-to-r from-orange-400/50 to-yellow-300/20 transform -rotate-12 animate-pulse" />
-                        <div className="absolute left-6 bottom-10 w-20 h-0.5 bg-gradient-to-r from-yellow-500/45 to-orange-200/15 transform -rotate-12" />
-                        <div className="absolute left-6 bottom-8 w-20 h-0.5 bg-gradient-to-r from-orange-300/40 to-yellow-400/10 transform -rotate-12" />
-                        {/* Lightning bolts from strings */}
-                        <div className="absolute bottom-6 left-1/3 w-1 h-8 bg-yellow-400/50 transform rotate-75" />
-                        <div className="absolute bottom-4 left-2/5 w-1 h-6 bg-orange-500/45 transform -rotate-45" />
-                        {/* Amplifier knobs */}
-                        <div className="absolute top-4 left-4 w-3 h-3 border border-orange-300/35 rounded-full" />
-                        <div className="absolute top-8 left-4 w-3 h-3 border border-yellow-400/30 rounded-full" />
+                        {/* Electric guitar body outline with blue energy */}
+                        <div className="absolute top-8 right-4 w-16 h-20 border-2 border-blue-300/50 rounded-2xl transform rotate-15 shadow-[inset_0_2px_4px_rgba(59,130,246,0.3)]" />
+                        <div className="absolute top-12 right-8 w-8 h-12 border border-cyan-400/45 rounded-xl transform rotate-15 shadow-[inset_0_1px_2px_rgba(34,211,238,0.2)]" />
+                        {/* Guitar pickups with crystalline effect */}
+                        <div className="absolute top-16 right-6 w-6 h-2 bg-blue-400/55 rounded-full transform rotate-15 shadow-[inset_0_1px_2px_rgba(59,130,246,0.4)]" />
+                        <div className="absolute top-20 right-6 w-6 h-2 bg-cyan-300/50 rounded-full transform rotate-15 shadow-[inset_0_1px_2px_rgba(103,232,249,0.3)]" />
+                        {/* Electric strings with blue energy */}
+                        <div className="absolute left-6 bottom-12 w-20 h-0.5 bg-gradient-to-r from-blue-400/60 to-cyan-300/30 transform -rotate-12 animate-pulse shadow-sm" />
+                        <div className="absolute left-6 bottom-10 w-20 h-0.5 bg-gradient-to-r from-cyan-500/55 to-blue-200/25 transform -rotate-12 shadow-sm" />
+                        <div className="absolute left-6 bottom-8 w-20 h-0.5 bg-gradient-to-r from-blue-300/50 to-cyan-400/20 transform -rotate-12 shadow-sm" />
+                        {/* Electric energy bolts from strings */}
+                        <div className="absolute bottom-6 left-1/3 w-1 h-8 bg-cyan-400/60 transform rotate-75 shadow-[0_0_4px_rgba(34,211,238,0.4)]" />
+                        <div className="absolute bottom-4 left-2/5 w-1 h-6 bg-blue-500/55 transform -rotate-45 shadow-[0_0_3px_rgba(59,130,246,0.4)]" />
+                        {/* Amplifier knobs with glass effect */}
+                        <div className="absolute top-4 left-4 w-3 h-3 border border-blue-300/45 rounded-full shadow-[inset_0_1px_2px_rgba(59,130,246,0.3)]" />
+                        <div className="absolute top-8 left-4 w-3 h-3 border border-cyan-400/40 rounded-full shadow-[inset_0_1px_2px_rgba(34,211,238,0.2)]" />
                       </>
                     )}
                   </div>
