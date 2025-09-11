@@ -4,7 +4,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { VerticalTrackList } from '@/components/VerticalTrackList';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
-import { getTracksFromServiceStorage } from '@/services/serviceStorageAccess';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 
