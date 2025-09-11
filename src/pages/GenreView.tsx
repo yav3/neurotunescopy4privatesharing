@@ -128,7 +128,7 @@ const GenreView: React.FC = () => {
           id: 'folk-americana-bluegrass',
           name: 'Folk, Americana, & Bluegrass',
           description: 'Calming folk and americana music for relaxation',
-          buckets: ['samba'],
+          buckets: ['curated-music-collection'],
           artwork: '/lovable-uploads/folk-instruments-meadow.png'
         },
         {
