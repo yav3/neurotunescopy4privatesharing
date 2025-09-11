@@ -188,10 +188,11 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
-                  {/* Pure white text with no blur */}
+                  {/* Pure white text for all cards */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide uppercase">
+                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
+                          style={{ color: '#ffffff' }}>
                         {goal.name}
                       </h3>
                     </div>
