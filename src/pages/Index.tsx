@@ -73,14 +73,19 @@ const Index = () => {
         <div className="relative z-10 px-4 py-4 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
             <div className="mb-4 md:mb-6 flex items-center justify-between">
-              <h1 className="text-2xl font-semibold text-slate-800 tracking-tight">
+              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
                 Home
               </h1>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleTheme}
-                className="text-slate-700 hover:text-slate-900 hover:bg-slate-100/50"
+                className={cn(
+                  "text-foreground hover:text-foreground transition-all duration-200",
+                  isDarkMode 
+                    ? "hover:bg-white/10" 
+                    : "hover:bg-slate-100"
+                )}
               >
                 {isDarkMode ? (
                   <Sun className="h-5 w-5" />
