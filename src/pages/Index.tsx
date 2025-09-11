@@ -122,14 +122,12 @@ const Index = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/10" />
                   </div>
 
-                  {/* Goal name at bottom left with better contrast */}
+                  {/* Goal name at bottom left with clean text */}
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <div className="relative z-10">
-                      <div className="bg-black/30 backdrop-blur-md rounded-lg px-3 py-2 inline-block border border-white/20">
-                        <h3 className="text-white font-semibold text-base md:text-lg leading-tight drop-shadow-xl tracking-wide">
-                          {goal.name}
-                        </h3>
-                      </div>
+                      <h3 className="text-white font-semibold text-base md:text-lg leading-tight drop-shadow-2xl tracking-wide">
+                        {goal.name}
+                      </h3>
                     </div>
                   </div>
 
