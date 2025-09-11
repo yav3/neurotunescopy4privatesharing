@@ -452,41 +452,42 @@ const GenreView: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Simple Header */}
+      {/* Simple Header - Mobile optimized */}
       <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => navigate('/')}
               className="flex-shrink-0"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
+              <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Back</span>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Goal and Genre Info */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="space-y-3 mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+      {/* Goal and Genre Info - Mobile responsive */}
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
             {goal.name}
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-foreground leading-tight">
             {selectedGenre.name}
           </h2>
         </div>
 
 
-        {/* Vertical Track List */}
+        {/* Vertical Track List - Mobile optimized */}
         {isLoading ? (
-          <div className="flex items-center justify-center py-12">
+          <div className="flex items-center justify-center py-8 sm:py-12">
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-              <span>Loading music collection...</span>
+              <span className="text-sm sm:text-base">Loading music collection...</span>
             </div>
           </div>
         ) : (

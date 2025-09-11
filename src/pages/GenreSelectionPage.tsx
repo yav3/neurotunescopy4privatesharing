@@ -185,39 +185,39 @@ export default function GenreSelectionPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Simple Header */}
-      <div className="px-6 py-6">
+      {/* Simple Header - Mobile optimized */}
+      <div className="px-3 sm:px-6 py-4 sm:py-6">
         <div className="max-w-6xl mx-auto">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleBack}
-            className="mb-6 text-muted-foreground hover:text-foreground"
+            className="mb-4 sm:mb-6 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Button>
           
-          {/* Simple title */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+          {/* Simple title - Mobile responsive */}
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-foreground leading-tight">
               {goal.name}
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               {goal.description}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Clean Genre Grid - All genres visible */}
-      <div className="px-6 pb-12">
+      {/* Clean Genre Grid - Mobile optimized */}
+      <div className="px-3 sm:px-6 pb-12">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {genres.map((genre, index) => (
               <div
                 key={genre.id}
-                className="group relative aspect-square overflow-hidden cursor-pointer rounded-2xl bg-card border border-border/50 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="group relative aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-card border border-border/50 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 onClick={() => handleGenreSelect(genre.id)}
               >
                 {/* Background Image */}
@@ -231,14 +231,13 @@ export default function GenreSelectionPage() {
                 </div>
                 
                 {/* Position text to avoid obscuring pianos */}
-                <div className="absolute top-4 left-4 right-4">
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
                   <h3 
-                    className="font-bold text-xl drop-shadow-2xl"
+                    className="font-bold text-sm sm:text-lg md:text-xl drop-shadow-2xl leading-tight"
                     style={{ 
                       color: '#ffffff !important',
                       textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
                       WebkitTextFillColor: '#ffffff',
-                      fontSize: '1.25rem',
                       fontWeight: '700'
                     }}
                   >

@@ -381,6 +381,22 @@ All colors MUST be HSL.
     .mobile-padding {
       padding: 0.75rem;
     }
+    
+    /* Mobile-friendly track lists */
+    .track-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    
+    /* Admin pages mobile optimization */
+    .admin-card {
+      padding: 0.75rem;
+    }
+    
+    /* Ensure proper spacing on mobile */
+    .page-container {
+      padding: 1rem 0.75rem;
+    }
   }
 
   @media (min-width: 480px) and (max-width: 639px) {
