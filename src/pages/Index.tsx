@@ -72,15 +72,10 @@ const Index = () => {
       <div className="relative overflow-hidden">        
         <div className="relative z-10 px-4 py-6 md:px-6 md:py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-6 md:mb-8">
-              <div className="inline-block">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-foreground tracking-tight">
-                  Therapeutic Goals
-                </h1>
-                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                  Choose your therapeutic goal and discover scientifically-crafted music designed to enhance your mental state and wellbeing
-                </p>
-              </div>
+            <div className="mb-6 md:mb-8">
+              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
+                Home
+              </h1>
             </div>
           </div>
         </div>
@@ -152,22 +147,24 @@ const Index = () => {
 
                     {/* Title - Compact style */}
                     <div className="flex-1 flex flex-col justify-end">
-                      <div className="space-y-1">
-                        <h3 className={cn(
-                          "font-bold text-lg leading-tight tracking-tight", // Smaller title
-                          theme.text,
-                          "drop-shadow-sm transition-all duration-300",
-                          "group-hover:scale-[1.02] group-hover:translate-y-[-1px]"
-                        )}>
-                          {goal.name}
-                        </h3>
-                        
-                        {/* Compact description */}
-                        <p className="text-white/75 text-xs font-medium leading-snug line-clamp-2 drop-shadow-sm">
-                          {goal.description}
-                        </p>
-                      </div>
-                    </div>
+                       <div className="space-y-1">
+                         <h3 className={cn(
+                           "font-bold text-lg leading-tight tracking-tight",
+                           theme.text,
+                           "drop-shadow-sm transition-all duration-300",
+                           "group-hover:scale-[1.02] group-hover:translate-y-[-1px]"
+                         )}>
+                           {goal.name}
+                         </h3>
+                       </div>
+                     </div>
+
+                     {/* Hover text overlay */}
+                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/20 backdrop-blur-[2px] rounded-2xl">
+                       <p className="text-white font-medium text-sm tracking-wide">
+                         Select a genre
+                       </p>
+                     </div>
 
                     {/* Compact play indicator */}
                     <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
@@ -192,9 +189,9 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Deep Blue Bottom Navigation */}
+      {/* Clean Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-gradient-to-r from-slate-900/95 via-blue-900/95 to-slate-900/95 backdrop-blur-lg border-t border-blue-800/30 shadow-2xl">
+        <div className="bg-background/95 backdrop-blur-sm border-t border-border">
           <Navigation />
         </div>
       </div>

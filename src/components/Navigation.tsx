@@ -88,20 +88,18 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
          onTouchStart={handleTouchStart} 
          onTouchEnd={handleTouchEnd}>
       {/* Mobile-first responsive navigation container */}
-      <div className="bg-black/20 backdrop-blur-xl border-t border-white/10 shadow-glass-lg">
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent pointer-events-none" />
+      <div className="bg-background/95 backdrop-blur-sm">
         
         {/* Mobile hamburger menu (hidden on larger screens) */}
         <div className="block sm:hidden px-4 py-3">
           <div className="flex justify-between items-center">
-            <span className="text-white font-medium font-sf">Navigate</span>
+            <span className="text-foreground font-medium">Navigate</span>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setIsMobileMenuOpen(!isMobileMenuOpen);
               }}
-              className="text-white/80 hover:text-white transition-colors p-2"
+              className="text-muted-foreground hover:text-foreground transition-colors p-2"
               aria-label="Toggle navigation menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -110,7 +108,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
           
           {/* Mobile dropdown menu */}
           {isMobileMenuOpen && (
-            <div className="absolute top-full left-0 right-0 bg-black/30 backdrop-blur-xl border-t border-white/10 shadow-glass-lg z-50">
+            <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border z-50">
               <div className="px-4 py-2">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
@@ -122,17 +120,14 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
                       onClick={() => handleTabClick(tab)}
                       className={cn(
                         "w-full flex items-center gap-3 py-3 px-3 rounded-lg transition-all duration-300",
-                        "hover:bg-white/10 active:scale-95",
+                        "hover:bg-muted/20 active:scale-95",
                         isActive 
-                          ? "text-white bg-white/15 backdrop-blur-md border border-white/20" 
-                          : "text-white/70 hover:text-white"
+                          ? "text-foreground bg-muted/30" 
+                          : "text-muted-foreground hover:text-foreground"
                       )}
                     >
                       <Icon className="w-5 h-5" />
-                      <span className="font-medium font-sf">{tab.label}</span>
-                      {isActive && (
-                        <div className="ml-auto w-2 h-2 bg-white/60 rounded-full" />
-                      )}
+                      <span className="font-medium">{tab.label}</span>
                     </button>
                   );
                 })}
@@ -142,7 +137,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
         </div>
 
         {/* Desktop/tablet horizontal navigation (hidden on mobile) */}
-        <div className="hidden sm:flex justify-around items-center max-w-md mx-auto px-2 py-3 md:px-4 relative z-10">
+        <div className="hidden sm:flex justify-center items-center gap-8 max-w-md mx-auto px-2 py-4 relative z-10">
           {tabs.map((tab, index) => {
             const Icon = tab.icon;
             const isActive = getCurrentActiveTab() === tab.id;
@@ -152,50 +147,18 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
                 key={tab.id}
                 onClick={() => handleTabClick(tab)}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 py-2.5 px-3 md:px-4 transition-all duration-300 min-w-0 rounded-xl",
-                  // Enhanced touch targets for tablets
-                  "min-h-[60px] md:min-h-auto",
-                  "hover:bg-white/10 active:scale-95",
+                  "flex items-center justify-center p-3 transition-all duration-200 rounded-full",
+                  "hover:bg-muted/20 active:scale-95",
                   isActive 
-                    ? "text-white bg-white/15 backdrop-blur-md border border-white/20 shadow-glass-inset" 
-                    : "text-white/70 hover:text-white hover:bg-white/8"
+                    ? "text-foreground bg-muted/30" 
+                    : "text-muted-foreground hover:text-foreground"
                 )}
-                style={{ 
-                  animationDelay: `${index * 100}ms`,
-                }}
               >
-                {/* Icon with glassmorphism background */}
-                <div className={cn(
-                  "relative transition-all duration-300",
-                  isActive ? "scale-110" : "group-hover:scale-105"
-                )}>
-                  <Icon className="w-5 h-5 md:w-6 md:h-6 relative z-10" />
-                  {isActive && (
-                    <div className="absolute inset-0 bg-white/10 rounded-full blur-sm scale-150" />
-                  )}
-                </div>
-                
-                {/* Responsive label with San Francisco font */}
-                <span className={cn(
-                  "font-medium truncate max-w-full font-sf transition-all duration-300",
-                  // Responsive text sizing using clamp
-                  isActive ? "text-white font-semibold" : "text-white/80"
-                )}
-                style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
-                  {tab.label}
-                </span>
-                
-                {/* Active indicator dot */}
-                {isActive && (
-                  <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full opacity-60" />
-                )}
+                <Icon className="w-6 h-6" />
               </button>
             );
           })}
         </div>
-        
-        {/* Bottom glow line (only on larger screens) */}
-        <div className="hidden sm:block absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </div>
     </nav>
   );
