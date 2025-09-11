@@ -80,6 +80,7 @@ export default {
 				'gradient-card-medium': 'var(--gradient-card-medium)',
 				'gradient-card-dark': 'var(--gradient-card-dark)',
 				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-dark-bg': 'var(--gradient-dark-bg)',
 				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
 				'glass-border': 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))'
 			},

@@ -53,25 +53,14 @@ const Index = () => {
   return (
     <div className={cn(
       "min-h-screen relative overflow-hidden transition-colors duration-500",
-      isDarkMode 
-        ? "bg-blue-950/95" 
-        : "bg-white"
+      "bg-background"
     )}>
-      {/* Background Elements */}
+      {/* Background Elements - using semantic gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {isDarkMode ? (
-          <>
-            {/* Dark mode - deep blue gradients */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-slate-800/20" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_60%_/_0.08),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.05),transparent_50%)]" />
-            <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-900/30 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-800/25 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
-          </>
+          <div className="absolute inset-0 bg-gradient-dark-bg" />
         ) : (
-          <>
-            {/* Light mode - clean white background only */}
-          </>
+          <div className="absolute inset-0 bg-gradient-hero" />
         )}
       </div>
 
@@ -89,10 +78,7 @@ const Index = () => {
                 size="sm"
                 onClick={toggleTheme}
               className={cn(
-                "text-foreground hover:text-foreground transition-all duration-200",
-                isDarkMode 
-                  ? "hover:bg-white/10" 
-                  : "hover:bg-gray-100"
+                "text-foreground hover:text-foreground transition-all duration-200 hover:bg-accent"
               )}
               >
                 {isDarkMode ? (
@@ -113,18 +99,18 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-6 md:gap-8 lg:gap-10">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
-                <Card
-                  key={goal.id}
-                  className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[16/9] sm:aspect-[4/3] md:aspect-[5/4] rounded-lg border-0",
-                    "hover:scale-[1.01] sm:hover:scale-[1.02] hover:-translate-y-0.5 sm:hover:-translate-y-1",
-                    "active:scale-[0.99] active:duration-100",
-                    "focus:outline-none focus:ring-4 focus:ring-white/20",
-                    "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] md:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
-                    "h-[160px] sm:h-[180px] md:h-[260px] lg:h-[300px] xl:h-[340px]"
-                  )}
+                  <Card
+                    key={goal.id}
+                    className={cn(
+                      "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
+                      "aspect-[16/9] sm:aspect-[4/3] md:aspect-[5/4] rounded-lg border-0",
+                      "hover:scale-[1.01] sm:hover:scale-[1.02] hover:-translate-y-0.5 sm:hover:-translate-y-1",
+                      "active:scale-[0.99] active:duration-100",
+                      "focus:outline-none focus:ring-4 focus:ring-primary/20",
+                      "animate-fade-in bg-card backdrop-blur-xl border border-border/20 shadow-glass",
+                      "hover:shadow-glass-lg hover:border-border/40",
+                      "h-[160px] sm:h-[180px] md:h-[260px] lg:h-[300px] xl:h-[340px]"
+                    )}
                   style={{ 
                     animationDelay: `${index * 100}ms`,
                     animationFillMode: 'both' 
@@ -166,11 +152,11 @@ const Index = () => {
                     )}
                   </div>
 
-                  {/* Subtle glass morphism overlay - light touch */}
+                  {/* Glass morphism overlay with semantic tokens */}
                   <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-white/[0.08] backdrop-blur-[0.5px]" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-transparent to-black/[0.08]" />
-                    <div className="absolute inset-0 border border-white/10 rounded-xl" />
+                    <div className="absolute inset-0 bg-glass-gradient backdrop-blur-[0.5px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-card via-transparent to-muted/20" />
+                    <div className="absolute inset-0 border border-border/30 rounded-xl" />
                   </div>
 
                   {/* Hover overlay with select genre text */}
@@ -207,10 +193,7 @@ const Index = () => {
       {/* Clean Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className={cn(
-          "backdrop-blur-sm border-t transition-colors duration-500",
-          isDarkMode 
-            ? "bg-blue-950/99 border-blue-900/50" 
-            : "bg-white/95 border-gray-200/50"
+          "backdrop-blur-sm border-t transition-colors duration-500 bg-background/80 border-border"
         )}>
           <Navigation />
         </div>
