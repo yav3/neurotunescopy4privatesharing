@@ -41,47 +41,47 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark Mode - Much Darker Blue Background */
-    --background: 217 100% 2%; /* Much darker blue background */
+    /* Dark Mode - Deep Midnight Blue Variants */
+    --background: 240 100% 2.5%; /* #00000D equivalent - Deep midnight */
     --foreground: 0 0% 98%; /* Light text */
 
-    --card: 217 100% 3%; /* Much darker blue card background */
+    --card: 240 100% 5.1%; /* #00001A equivalent - Deep Midnight Blue */
     --card-foreground: 0 0% 98%; /* Light card text */
 
-    --popover: 217 100% 2%; /* Much darker blue popover */
+    --popover: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue */
     --popover-foreground: 0 0% 98%; /* Light popover text */
 
     --primary: 0 0% 15%; /* Dark gray primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 0 0% 10%; /* Dark gray secondary */
+    --secondary: 240 56% 8.8%; /* #0A0A23 equivalent - Charcoal Blue */
     --secondary-foreground: 0 0% 98%; /* Light secondary text */
 
-    --muted: 0 0% 8%; /* Dark gray muted */
+    --muted: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue */
     --muted-foreground: 0 0% 80%; /* Light gray muted text for better contrast */
 
-    --accent: 0 0% 25%; /* Medium gray accent */
+    --accent: 240 56% 8.8%; /* #0A0A23 equivalent - Charcoal Blue */
     --accent-foreground: 0 0% 98%; /* Light accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%; /* Medium dark gray borders */
-    --input: 0 0% 8%; /* Dark gray input background */
+    --border: 240 100% 5.1%; /* #00001A equivalent - Deep Midnight Blue borders */
+    --input: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue input background */
     --ring: 0 0% 15%;
 
-    /* Dark mode gradients */
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 8%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 10%), hsl(0 0% 5%));
+    /* Dark mode gradients using new deep blues */
+    --gradient-hero: linear-gradient(180deg, hsl(240 100% 2.5%), hsl(240 100% 3.3%));
+    --gradient-card: linear-gradient(135deg, hsl(240 100% 3.3%), hsl(240 100% 5.1%), hsl(240 100% 2.5%));
     
-    /* Dark mode sidebar colors */
-    --sidebar-background: 0 0% 8%;
+    /* Dark mode sidebar colors using new palette */
+    --sidebar-background: 240 100% 3.3%; /* #000011 equivalent */
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 0 0% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent: 240 56% 8.8%; /* #0A0A23 equivalent */
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 25%;
+    --sidebar-border: 240 100% 5.1%; /* #00001A equivalent */
     --sidebar-ring: 0 0% 15%;
   }
 
@@ -228,7 +228,7 @@ All colors MUST be HSL.
   /* Dark mode body and text fixes */
   .dark body,
   .dark html {
-    background-color: hsl(217 100% 2%) !important;
+    background-color: hsl(240 100% 2.5%) !important; /* #00000D equivalent */
     color: hsl(0 0% 98%) !important;
   }
   
