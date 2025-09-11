@@ -7,6 +7,14 @@ import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 
+// Import generated nature images
+import focusImage from '@/assets/focus-nature-piano.jpg';
+import stressImage from '@/assets/stress-nature-music.jpg';
+import cardioImage from '@/assets/cardio-nature-energy.jpg';
+import moodImage from '@/assets/mood-nature-guitar.jpg';
+import painImage from '@/assets/pain-nature-harp.jpg';
+import energyImage from '@/assets/energy-nature-electric.jpg';
+
 const Index = () => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = React.useState(() => {
@@ -98,23 +106,23 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Premium Apple Music-inspired Goals Grid */}
-      <div className="container px-4 pb-20 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          {/* Compact grid layout that fits in viewport */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      {/* Compact goals grid that fits in viewport */}
+      <div className="container px-4 pb-16 relative z-10">
+        <div className="max-w-5xl mx-auto">
+          {/* Smaller cards that fit without scrolling */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-square rounded-2xl border-0",
+                    "aspect-[4/3] rounded-xl border-0",
                     "hover:scale-[1.02] hover:-translate-y-1",
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+                    "hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
                   )}
                   style={{ 
                     animationDelay: `${index * 100}ms`,
@@ -122,52 +130,52 @@ const Index = () => {
                   }}
                   onClick={() => handleGoalSelect(goal)}
                 >
-                  {/* Beautiful nature scene backgrounds */}
+                  {/* Consistent nature with instruments backgrounds */}
                   <div className="absolute inset-0">
                     {goal.id === 'focus-enhancement' && (
                       <img 
-                        src="/lovable-uploads/5253757b-f0d2-4a4d-a276-3312f8c25598.png"
-                        alt="Ocean wave with flowers for focus enhancement"
+                        src={focusImage}
+                        alt="Piano in peaceful meadow for focus"
                         className="w-full h-full object-cover"
                       />
                     )}
                     
                     {goal.id === 'stress-anxiety-support' && (
                       <img 
-                        src="/lovable-uploads/2a9f2bc3-a005-44d8-b0b1-44354df8542b.png"
-                        alt="Peaceful fluffy clouds for stress relief"
+                        src={stressImage}
+                        alt="Musical notes over calm lake for stress relief"
                         className="w-full h-full object-cover"
                       />
                     )}
                     
                     {goal.id === 'cardio-support' && (
                       <img 
-                        src="/lovable-uploads/7d0e5a9b-fbdb-421d-bc6e-24647ac93fae.png"
-                        alt="Vibrant colorful wave for cardio energy"
+                        src={cardioImage}
+                        alt="Energetic ocean wave for cardio support"
                         className="w-full h-full object-cover"
                       />
                     )}
                     
                     {goal.id === 'mood-boost' && (
                       <img 
-                        src="/lovable-uploads/fdeaa1d5-a225-41e6-a556-5a367549a9de.png"
-                        alt="Sunny yellow flowers against bright sky for mood boost"
+                        src={moodImage}
+                        alt="Guitar in sunny flower meadow for mood boost"
                         className="w-full h-full object-cover"
                       />
                     )}
                     
                     {goal.id === 'pain-support' && (
                       <img 
-                        src="/lovable-uploads/b65573b5-db1a-48db-ae30-4da9aabef8c3.png"
-                        alt="Beautiful flower field for pain relief"
+                        src={painImage}
+                        alt="Harp in peaceful garden for pain relief"
                         className="w-full h-full object-cover"
                       />
                     )}
                     
                     {goal.id === 'energy-boost' && (
                       <img 
-                        src="/lovable-uploads/623bc7fd-5a27-48c0-b677-1ad647aed2e6.png"
-                        alt="Vibrant tropical beach with palm trees"
+                        src={energyImage}
+                        alt="Electric guitar on tropical beach for energy"
                         className="w-full h-full object-cover"
                       />
                     )}
@@ -180,11 +188,11 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
-                  {/* Goal name with high contrast white text */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                  {/* Goal name with consistent styling */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-2 inline-block">
-                        <h3 className="text-white font-bold text-base md:text-lg leading-tight tracking-wide">
+                      <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1.5 inline-block">
+                        <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide">
                           {goal.name}
                         </h3>
                       </div>
