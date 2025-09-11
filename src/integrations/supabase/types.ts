@@ -532,6 +532,36 @@ export type Database = {
           },
         ]
       }
+      curated_tracks: {
+        Row: {
+          added_at: string
+          curated_storage_key: string
+          id: string
+          metadata: Json | null
+          original_track_id: string
+          quality_score: number | null
+          verification_status: string
+        }
+        Insert: {
+          added_at?: string
+          curated_storage_key: string
+          id?: string
+          metadata?: Json | null
+          original_track_id: string
+          quality_score?: number | null
+          verification_status?: string
+        }
+        Update: {
+          added_at?: string
+          curated_storage_key?: string
+          id?: string
+          metadata?: Json | null
+          original_track_id?: string
+          quality_score?: number | null
+          verification_status?: string
+        }
+        Relationships: []
+      }
       data_sync_jobs: {
         Row: {
           created_at: string | null
