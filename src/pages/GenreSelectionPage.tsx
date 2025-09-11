@@ -3,12 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
-import peacefulPianoArt from '@/assets/peaceful-piano-enhanced.jpg';
 
-// Import artwork
-import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
-import newAgeArt from '@/assets/new-age-artwork.jpg';
-import electronicArt from '@/assets/electronic-artwork.jpg';
+// Import new artwork
+import crossoverClassicalArt from '@/assets/crossover-classical-new.jpg';
+import newAgeArt from '@/assets/new-age-ambient.jpg';
+import electronicArt from '@/assets/electronic-modern.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-moonlit.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -198,29 +198,19 @@ export default function GenreSelectionPage() {
                     alt={genre.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
                 
-                 {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 
-                    className="font-bold text-lg mb-1"
-                    style={{ 
-                      color: '#ffffff !important',
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)'
-                    }}
-                  >
-                    {genre.name}
-                  </h3>
-                  <p 
-                    className="text-sm leading-tight opacity-0 group-hover:opacity-90 transition-opacity duration-300"
-                    style={{ 
-                      color: '#ffffff !important',
-                      textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)'
-                    }}
-                  >
-                    {genre.description}
-                  </p>
+                {/* Content - Better styled text */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="backdrop-blur-sm bg-black/20 rounded-2xl p-4 border border-white/10">
+                    <h3 className="font-bold text-xl mb-2 text-white drop-shadow-2xl">
+                      {genre.name}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-white/0 group-hover:text-white/90 transition-all duration-500 drop-shadow-lg">
+                      {genre.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
