@@ -85,22 +85,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
-    id: 'cardio-support',
-    slug: 'cardio-support',
-    backendKey: 'cardio-support',
-    name: 'Cardio',
-    shortName: 'Cardio',
-    description: 'Energizing beats to power your cardio workouts and training',
-    icon: Waves,
-    artwork: cardioSprite,
-    color: 'blue',
-    gradient: 'from-blue-500 to-cyan-500',
-    bpmRange: { min: 120, max: 160, optimal: 140 },
-    vadProfile: { valence: 0.7, arousal: 0.8, dominance: 0.6 },
-    musicBuckets: ['ENERGYBOOST'],
-    synonyms: ['cardio', 'workout', 'training', 'exercise', 'fitness', 'running', 'cycling']
-  },
-  {
     id: 'mood-boost',
     slug: 'mood-boost',
     backendKey: 'mood-boost',
@@ -115,22 +99,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
     musicBuckets: ['ENERGYBOOST'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
-  },
-  {
-    id: 'energy-boost',
-    slug: 'energy-boost',
-    backendKey: 'energy-boost',
-    name: 'Energy Boost',
-    shortName: 'Energy',
-    description: 'Energize and motivate your day',
-    icon: Shield,
-    artwork: energyBoostSprite,
-    color: 'teal',
-    gradient: 'from-teal-500 to-cyan-500',
-    bpmRange: { min: 100, max: 160, optimal: 130 },
-    vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.6 },
-    musicBuckets: ['ENERGYBOOST'],
-    synonyms: ['energy', 'boost', 'motivate', 'energize', 'pump']
   },
   {
     id: 'pain-support',
@@ -184,7 +152,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'energy-boost' | 'pain-support';
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
