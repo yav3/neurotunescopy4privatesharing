@@ -125,11 +125,11 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/delta-moonlit-lake.png'
         },
         {
-          id: 'nature-sounds',
-          name: 'Nature & Ambient',
-          description: 'Calming nature sounds and ambient textures',
+          id: 'folk-americana-bluegrass',
+          name: 'Folk, Americana, & Bluegrass',
+          description: 'Calming folk and americana music for relaxation',
           buckets: ['samba'],
-          artwork: '/lovable-uploads/theta-misty-path.png'
+          artwork: '/lovable-uploads/folk-instruments-meadow.png'
         },
         {
           id: 'meditative-strings',
@@ -137,6 +137,13 @@ const GenreView: React.FC = () => {
           description: 'Soothing string arrangements for relaxation',
           buckets: ['classicalfocus'],
           artwork: '/lovable-uploads/classical-meadow-ensemble.png'
+        },
+        {
+          id: 'new-age',
+          name: 'New Age',
+          description: 'Ethereal new age sounds for deep relaxation',
+          buckets: ['samba'],
+          artwork: '/lovable-uploads/acoustic-sunset-field.png'
         }
       ];
     } else if (goalId === 'mood-boost') {

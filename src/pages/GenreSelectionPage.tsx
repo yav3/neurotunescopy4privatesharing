@@ -52,11 +52,11 @@ const getGenreOptions = (goalId: string) => {
         image: '/lovable-uploads/delta-moonlit-lake.png'
       },
       {
-        id: 'nature-sounds',
-        name: 'Nature & Ambient',
-        description: 'Calming nature sounds and ambient textures',
+        id: 'folk-americana-bluegrass',
+        name: 'Folk, Americana, & Bluegrass',
+        description: 'Calming folk and americana music for relaxation',
         buckets: ['samba'],
-        image: '/lovable-uploads/theta-misty-path.png'
+        image: '/lovable-uploads/folk-instruments-meadow.png'
       },
       {
         id: 'meditative-strings',
@@ -64,6 +64,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Soothing string arrangements for relaxation',
         buckets: ['classicalfocus'],
         image: '/lovable-uploads/classical-meadow-ensemble.png'
+      },
+      {
+        id: 'new-age',
+        name: 'New Age',
+        description: 'Ethereal new age sounds for deep relaxation',
+        buckets: ['samba'],
+        image: '/lovable-uploads/acoustic-sunset-field.png'
       }
     ],
     'sleep-support': [
