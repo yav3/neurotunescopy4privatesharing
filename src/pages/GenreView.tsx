@@ -180,46 +180,77 @@ const GenreView: React.FC = () => {
 
           console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
 
-          // Convert to tracks with direct URLs
-          const bucketTracks = audioFiles.map((file, index) => {
-            const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
-            
-            const cleanTitle = file.name
-              .replace(/\.[^/.]+$/, '') // Remove extension
-              .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
-              .replace(/\s+/g, ' ') // Clean up multiple spaces
-              .split(' ')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-              .join(' ')
-              .trim();
+          // Process files in smaller batches to avoid performance issues
+          const BATCH_SIZE = 50; // Process only 50 files at a time
+          const limitedFiles = audioFiles.slice(0, BATCH_SIZE);
+          console.log(`📊 Processing first ${limitedFiles.length} files from ${audioFiles.length} total`);
 
-            return {
-              id: `${bucketName}-${file.name}`,
-              title: cleanTitle,
-              artist: 'Neural Positive Music',
-              storage_bucket: bucketName,
-              storage_key: file.name,
-              stream_url: urlData.publicUrl,
-              artwork_url: crossoverClassicalArt,
-              audio_status: 'working' as const,
-            };
-          });
+          // Convert to tracks with direct URLs
+          const bucketTracks: any[] = [];
+          
+          for (let i = 0; i < limitedFiles.length; i++) {
+            const file = limitedFiles[i];
+            try {
+              console.log(`🔄 Processing file ${i + 1}/${limitedFiles.length}: ${file.name}`);
+              
+              const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
+              
+              if (!urlData?.publicUrl) {
+                console.warn(`⚠️ No URL generated for ${file.name}`);
+                continue;
+              }
+              
+              const cleanTitle = file.name
+                .replace(/\.[^/.]+$/, '') // Remove extension
+                .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
+                .replace(/\s+/g, ' ') // Clean up multiple spaces
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ')
+                .trim();
+
+              const track = {
+                id: `${bucketName}-${file.name}`,
+                title: cleanTitle,
+                artist: 'Neural Positive Music',
+                storage_bucket: bucketName,
+                storage_key: file.name,
+                stream_url: urlData.publicUrl,
+                artwork_url: selectedGenre.artwork,
+                audio_status: 'working' as const,
+              };
+              
+              bucketTracks.push(track);
+              
+              if (i % 10 === 0) {
+                console.log(`✅ Processed ${i + 1} tracks so far...`);
+              }
+            } catch (error) {
+              console.error(`❌ Error processing file ${file.name}:`, error);
+              continue;
+            }
+          }
+
+          console.log(`📊 Successfully created ${bucketTracks.length} tracks from ${bucketName}`);
 
           allTracks.push(...bucketTracks);
           console.log(`✅ Added ${bucketTracks.length} tracks from ${bucketName}`);
         }
 
-        console.log(`🎯 Total tracks from storage: ${allTracks.length}`);
+        console.log(`🎯 Total tracks from all buckets: ${allTracks.length}`);
         
         // Set tracks directly - no complex conditions
         if (allTracks.length > 0) {
           const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
           const limitedTracks = shuffledTracks.slice(0, 50);
           setTracks(limitedTracks);
-          console.log(`✅ Set ${limitedTracks.length} tracks for display`);
+          console.log(`✅ Successfully set ${limitedTracks.length} tracks for display`);
+          console.log(`🎵 First track example:`, limitedTracks[0]);
         } else {
-          console.log('📂 No tracks found, using fallback');
-          setTracks(generateFallbackTracks(selectedGenre.name, goal.name));
+          console.log('📂 No tracks found in any bucket, using fallback');
+          const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          setTracks(fallbackTracks);
+          console.log(`🔄 Set ${fallbackTracks.length} fallback tracks`);
         }
         
       } catch (error) {
