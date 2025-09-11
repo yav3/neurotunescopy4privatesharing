@@ -195,14 +195,13 @@ const Index = () => {
                     </span>
                   </div>
 
-                  {/* Pure white text for all cards */}
+                  {/* Guaranteed white text */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
+                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase text-white"
                           style={{ 
-                            color: '#ffffff !important',
-                            textShadow: 'none',
-                            filter: 'none'
+                            color: 'white !important',
+                            WebkitTextFillColor: 'white !important'
                           }}>
                         {goal.name}
                       </h3>

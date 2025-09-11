@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Play, Pause } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TrackRowCard } from '@/components/TrackRowCard';
-import { THERAPEUTIC_GOALS, GOALS_BY_ID } from '@/config/therapeuticGoals';
+import { HorizontalTrackList } from '@/components/HorizontalTrackList';
+import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { getTracksFromStorage } from '@/services/storageDirectAccess';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 
-// Import new artwork
+// Import artwork
 import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
 import newAgeArt from '@/assets/new-age-artwork.jpg';
 import electronicArt from '@/assets/electronic-artwork.jpg';
 
-// Fallback track generator for when storage is unavailable
+// Fallback track generator
 const generateFallbackTracks = (genreName: string, goalName: string) => {
   const trackNames = [
-    'Bach Reimagined',
-    'Peaceful Focus',
-    'Classical Concentration', 
-    'Mozart Modern',
-    'Therapeutic Symphony',
-    'Ambient Classical',
-    'Focus Flow',
-    'Mindful Melody',
-    'Serene Strings',
-    'Calm Composition',
-    'Tranquil Tones',
-    'Gentle Harmony'
+    'Bach Reimagined', 'Peaceful Focus', 'Classical Concentration', 
+    'Mozart Modern', 'Therapeutic Symphony', 'Ambient Classical',
+    'Focus Flow', 'Mindful Melody', 'Serene Strings',
+    'Calm Composition', 'Tranquil Tones', 'Gentle Harmony'
   ];
 
   return trackNames.map((name, index) => ({
@@ -58,6 +49,7 @@ interface Track {
   title: string;
   storage_bucket?: string;
   storage_key?: string;
+  artwork_url?: string;
 }
 
 const GenreView: React.FC = () => {
@@ -96,98 +88,28 @@ const GenreView: React.FC = () => {
           artwork: newAgeArt
         }
       ];
-    } else if (goalId === 'mood-boost') {
-      return [
-        {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Modern classical music with contemporary elements',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'Uplifting electronic beats and rhythms',
-          buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Soothing world music and new age sounds',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
-        }
-      ];
-    } else if (goalId === 'energy-boost') {
-      return [
-        {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Energizing classical music with modern elements',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'electronic',
-          name: 'EDM & House',
-          description: 'High-energy electronic music and beats',
-          buckets: ['HIIT', 'ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Motivational world music and new age sounds',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Energetic jazz and Brazilian rhythms',
-          buckets: ['ENERGYBOOST'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
-        }
-      ];
     } else {
-      // For stress-anxiety-support and pain-support
       return [
         {
-          id: 'classical-crossover',
-          name: 'Classical Crossover',
-          description: 'Modern classical music with contemporary elements',
+          id: 'crossover-classical',
+          name: 'Crossover Classical',
+          description: 'Modern classical compositions',
           buckets: ['classicalfocus', 'neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/117C864AE7A4E7398F43D87FFB1B21C8222AC165161EC128BBE2FEAABFB7C3A0_sk_6_cid_1.jpeg'
+          artwork: crossoverClassicalArt
         },
         {
           id: 'electronic',
           name: 'Electronic',
-          description: 'Ambient electronic textures for healing',
+          description: 'Ambient electronic music',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1.jpeg'
+          artwork: electronicArt
         },
         {
-          id: 'new-age-world',
-          name: 'New Age & World',
-          description: 'Soothing world music and new age sounds',
+          id: 'world-new-age',
+          name: 'World & New Age',
+          description: 'Global sounds and new age music',
           buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/414EBE5027B77577DFEF40EA2823103319D32B7A8261D00D4413FCE57E22FB91_sk_6_cid_1.jpeg'
-        },
-        {
-          id: 'samba-jazz',
-          name: 'Samba & Jazz',
-          description: 'Smooth jazz and Brazilian rhythms',
-          buckets: ['neuralpositivemusic'],
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1.jpeg'
+          artwork: newAgeArt
         }
       ];
     }
@@ -206,24 +128,19 @@ const GenreView: React.FC = () => {
       try {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         
-        // Start with fallback tracks immediately to prevent long loading
+        // Start with fallback tracks immediately
         const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
         setTracks(fallbackTracks);
-        setIsLoading(false); // Stop loading immediately with fallback tracks
-        console.log(`🔄 Using fallback tracks (${fallbackTracks.length} tracks) while checking storage`);
-        
-        let fetchedTracks: any[] = [];
-        let error = null;
+        setIsLoading(false);
         
         try {
-          // Try to get tracks from storage but with shorter timeout
+          // Try to get tracks from storage
           const result = await Promise.race([
             getTracksFromStorage(goal.backendKey, 50, selectedGenre.buckets),
             new Promise((_, reject) => setTimeout(() => reject(new Error('Storage timeout')), 3000))
           ]) as any;
           
-          fetchedTracks = result.tracks || [];
-          error = result.error;
+          const fetchedTracks = result.tracks || [];
           
           // Only replace fallback tracks if we actually found real tracks
           if (fetchedTracks && fetchedTracks.length > 0) {
@@ -232,12 +149,10 @@ const GenreView: React.FC = () => {
           }
         } catch (storageError) {
           console.warn(`⚠️ Storage timeout or error for ${selectedGenre.name}:`, storageError);
-          // Keep using fallback tracks - no need to update state
         }
         
       } catch (error) {
         console.error(`❌ Failed to load tracks for ${selectedGenre.name}:`, error);
-        // Ensure we have fallback tracks
         const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
         setTracks(emergencyTracks);
         setIsLoading(false);
@@ -247,13 +162,6 @@ const GenreView: React.FC = () => {
     loadTracks();
   }, [goal, selectedGenre]);
 
-  // Auto-start playback when tracks load
-  useEffect(() => {
-    if (tracks.length > 0 && goal && !currentTrack) {
-      handleAutoPlay();
-    }
-  }, [tracks, goal]);
-
   const handleTogglePlay = () => {
     if (isPlaying) {
       pause();
@@ -262,18 +170,6 @@ const GenreView: React.FC = () => {
     }
   };
 
-  const handleAutoPlay = async () => {
-    if (!goal || audioLoading) return;
-
-    try {
-      toast.loading(`Starting ${goal.name.toLowerCase()} session...`, { id: "auto-play" });
-      await playFromGoal(goal.backendKey);
-      toast.success(`Playing ${goal.name.toLowerCase()} music`, { id: "auto-play" });
-    } catch (error) {
-      console.error('❌ Failed to auto-start playback:', error);
-      toast.error("Failed to start playback", { id: "auto-play" });
-    }
-  };
   const handleTrackPlay = async (track: Track) => {
     if (audioLoading) {
       toast.error("Already loading music, please wait...");
@@ -288,10 +184,6 @@ const GenreView: React.FC = () => {
       console.error('❌ Failed to play track:', error);
       toast.error("Failed to start playback", { id: "track-play" });
     }
-  };
-
-  const isTrackPlaying = (track: Track): boolean => {
-    return currentTrack?.id === track.id;
   };
 
   if (!goal || !selectedGenre) {
@@ -313,130 +205,66 @@ const GenreView: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/80 relative overflow-hidden">
-      {/* Glassmorphism background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute top-1/4 -right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-secondary/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '4s' }} />
+    <div className="min-h-screen bg-background">
+      {/* Simple Header */}
+      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => navigate('/')}
+              className="flex-shrink-0"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative h-80 md:h-[28rem] overflow-hidden">
-        {/* Background Image with glassmorphism overlay */}
-        <div className="relative w-full h-full">
-          <img 
-            src={selectedGenre.artwork} 
-            alt={selectedGenre.name}
-            className="w-full h-full object-cover opacity-60"
+      {/* Goal and Genre Info */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="space-y-2 mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+            {goal.name}
+          </h1>
+          <p className="text-xl text-primary font-medium">
+            {selectedGenre.name}
+          </p>
+          <p className="text-muted-foreground">
+            {selectedGenre.description}
+          </p>
+        </div>
+
+        {/* Track Count */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-foreground mb-2">
+            {tracks.length}+ tracks available
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Therapeutic grade • Ready to play
+          </p>
+        </div>
+
+        {/* Horizontal Track List */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              <span>Loading music collection...</span>
+            </div>
+          </div>
+        ) : (
+          <HorizontalTrackList
+            tracks={tracks}
+            currentTrack={currentTrack}
+            isPlaying={isPlaying}
+            onTrackPlay={handleTrackPlay}
+            onTogglePlay={handleTogglePlay}
+            isLoading={audioLoading}
           />
-          
-          {/* Glassmorphism overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90 backdrop-blur-sm" />
-          
-          {/* Glass morphism content card */}
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-            <div className="max-w-7xl mx-auto w-full">
-              {/* Back Button - Made More Visible */}
-              <Button 
-                variant="secondary" 
-                className="bg-background/90 hover:bg-background text-foreground hover:text-primary mb-6 md:mb-8 backdrop-blur-md border-2 border-primary/30 hover:border-primary/60 shadow-lg font-medium px-6 py-2.5 transition-all duration-300"
-                onClick={() => navigate('/')}
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Back to Home
-              </Button>
-              
-              {/* Genre Info in glass card */}
-              <div className="glass-morphism p-6 md:p-8 rounded-2xl backdrop-blur-xl border border-border/20 bg-background/10 max-w-3xl">
-                <div className="space-y-3 md:space-y-4">
-                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight font-sf-pro">
-                    {selectedGenre.name}
-                  </h1>
-                  <p className="text-base md:text-xl text-muted-foreground max-w-2xl">
-                    {selectedGenre.description}
-                  </p>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-sm">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                    {goal.name}
-                  </div>
-                  
-                  {/* Play/Pause Button */}
-                  <div className="pt-4">
-                    <Button
-                      size="lg"
-                      className="h-12 md:h-14 px-8 md:px-10 text-base md:text-lg bg-primary/90 hover:bg-primary backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300"
-                      onClick={currentTrack ? handleTogglePlay : handleAutoPlay}
-                      disabled={audioLoading || isLoading}
-                    >
-                      {audioLoading ? (
-                        <>
-                          <div className="w-5 h-5 md:w-6 md:h-6 mr-2 rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground animate-spin" />
-                          Loading
-                        </>
-                      ) : isPlaying ? (
-                        <>
-                          <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-                          Pause Session
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-                          Begin Session
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Tracks Section */}
-      <div className="relative px-4 md:px-8 py-8 md:py-12 pb-32">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="mb-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sf-pro">
-              {tracks.length}+ tracks available
-            </h2>
-            <p className="text-muted-foreground">
-              Therapeutic grade • Ready to play
-            </p>
-          </div>
-
-          {isLoading ? (
-            <div className="text-center py-16">
-              <div className="glass-morphism inline-flex items-center gap-3 px-6 py-4 rounded-full backdrop-blur-xl border border-border/20 bg-background/10">
-                <div className="w-5 h-5 rounded-full bg-primary animate-pulse"></div>
-                <span className="text-foreground">Loading music collection...</span>
-              </div>
-            </div>
-          ) : tracks.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {tracks.slice(0, 12).map((track) => (
-                <div key={track.id} className="glass-morphism-card group">
-                  <TrackRowCard
-                    track={track}
-                    isPlaying={isTrackPlaying(track)}
-                    onPlay={() => handleTrackPlay(track)}
-                    className="w-full h-auto aspect-[3/4] border-0 bg-transparent hover:bg-background/5 transition-all duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <div className="glass-morphism inline-flex items-center gap-3 px-6 py-4 rounded-full backdrop-blur-xl border border-border/20 bg-background/10">
-                <p className="text-muted-foreground">
-                  No tracks available
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
