@@ -142,7 +142,7 @@ const GenreView: React.FC = () => {
           id: 'new-age',
           name: 'New Age',
           description: 'Ethereal new age sounds for deep relaxation',
-          buckets: ['samba'],
+          buckets: ['newageworldstressanxietyreduction'],
           artwork: '/lovable-uploads/acoustic-sunset-field.png'
         },
         {

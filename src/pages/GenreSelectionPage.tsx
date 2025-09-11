@@ -69,7 +69,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'new-age',
         name: 'New Age',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['samba'],
+        buckets: ['newageworldstressanxietyreduction'],
         image: '/lovable-uploads/acoustic-sunset-field.png'
       },
       {
