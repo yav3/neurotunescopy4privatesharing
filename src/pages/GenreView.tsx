@@ -180,10 +180,10 @@ const GenreView: React.FC = () => {
 
           console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
 
-          // Process files in smaller batches to avoid performance issues
-          const BATCH_SIZE = 50; // Process only 50 files at a time
-          const limitedFiles = audioFiles.slice(0, BATCH_SIZE);
-          console.log(`📊 Processing first ${limitedFiles.length} files from ${audioFiles.length} total`);
+          // Process files in smaller initial batches, load more as needed
+          const INITIAL_BATCH_SIZE = 10; // Load only 10 tracks initially
+          const limitedFiles = audioFiles.slice(0, INITIAL_BATCH_SIZE);
+          console.log(`📊 Processing first ${limitedFiles.length} files from ${audioFiles.length} total (lazy loading)`);
 
           // Convert to tracks with direct URLs
           const bucketTracks: any[] = [];
@@ -191,8 +191,6 @@ const GenreView: React.FC = () => {
           for (let i = 0; i < limitedFiles.length; i++) {
             const file = limitedFiles[i];
             try {
-              console.log(`🔄 Processing file ${i + 1}/${limitedFiles.length}: ${file.name}`);
-              
               const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
               
               if (!urlData?.publicUrl) {
@@ -221,17 +219,13 @@ const GenreView: React.FC = () => {
               };
               
               bucketTracks.push(track);
-              
-              if (i % 10 === 0) {
-                console.log(`✅ Processed ${i + 1} tracks so far...`);
-              }
             } catch (error) {
               console.error(`❌ Error processing file ${file.name}:`, error);
               continue;
             }
           }
 
-          console.log(`📊 Successfully created ${bucketTracks.length} tracks from ${bucketName}`);
+          console.log(`📊 Successfully created ${bucketTracks.length} initial tracks from ${bucketName}`);
 
           allTracks.push(...bucketTracks);
           console.log(`✅ Added ${bucketTracks.length} tracks from ${bucketName}`);
