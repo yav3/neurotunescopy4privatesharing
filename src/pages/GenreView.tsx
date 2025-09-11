@@ -274,6 +274,7 @@ const GenreView: React.FC = () => {
       
       const audioStore = useAudioStore.getState();
       await audioStore.setQueue([track], 0);
+      await audioStore.play();
       
       toast.success(`Now playing: ${track.title}`, { id: "track-play" });
     } catch (error) {
