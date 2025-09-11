@@ -140,14 +140,14 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container max-w-4xl mx-auto px-4 py-6 sm:py-8 mb-20 sm:mb-24">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
-          <div className="flex items-center gap-3">
-            <User className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+      <div className="container max-w-4xl mx-auto px-3 py-2 mb-16 sm:mb-20">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2">
+          <div className="flex items-center gap-2">
+            <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Profile</h1>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                Manage your therapeutic music journey
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground">Profile</h1>
+              <p className="text-sm text-muted-foreground hidden sm:block">
+                Your therapeutic music journey
               </p>
             </div>
           </div>
@@ -155,120 +155,107 @@ const Profile = () => {
             <Button
               onClick={() => setIsEditing(true)}
               variant="outline"
-              className="gap-2"
+              size="sm"
+              className="gap-1"
             >
-              <Edit3 className="h-4 w-4" />
-              Edit Profile
+              <Edit3 className="h-3 w-3" />
+              Edit
             </Button>
           )}
         </div>
 
-        <div className="grid gap-6">
-          {/* Profile Info Card */}
+        <div className="grid gap-3 sm:gap-4">
+          {/* Compact Profile Info Card */}
           <ProfileEditForm
             isEditing={isEditing}
             onSave={handleEditComplete}
             onCancel={() => setIsEditing(false)}
           />
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <Card className="p-3 sm:p-4 text-center">
-              <Music className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
-              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.total_sessions}</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Sessions Complete</div>
+          {/* Compact Stats Cards */}
+          <div className="grid grid-cols-4 gap-2 sm:gap-3">
+            <Card className="p-2 sm:p-3 text-center">
+              <Music className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1" />
+              <div className="text-lg sm:text-xl font-bold text-foreground">{stats.total_sessions}</div>
+              <div className="text-xs text-muted-foreground">Sessions</div>
             </Card>
             
-            <Card className="p-3 sm:p-4 text-center">
-              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
-              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.total_listen_time}h</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Total Listen Time</div>
+            <Card className="p-2 sm:p-3 text-center">
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1" />
+              <div className="text-lg sm:text-xl font-bold text-foreground">{stats.total_listen_time}h</div>
+              <div className="text-xs text-muted-foreground">Hours</div>
             </Card>
             
-            <Card className="p-3 sm:p-4 text-center">
-              <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
-              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.favorite_goals_count}</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Preferred Goals</div>
+            <Card className="p-2 sm:p-3 text-center">
+              <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1" />
+              <div className="text-lg sm:text-xl font-bold text-foreground">{stats.favorite_goals_count}</div>
+              <div className="text-xs text-muted-foreground">Goals</div>
             </Card>
             
-            <Card className="p-3 sm:p-4 text-center">
-              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-2" />
-              <div className="text-xl sm:text-2xl font-bold text-foreground">{stats.current_streak}</div>
-              <div className="text-xs sm:text-sm text-muted-foreground">Day Streak</div>
+            <Card className="p-2 sm:p-3 text-center">
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mb-1" />
+              <div className="text-lg sm:text-xl font-bold text-foreground">{stats.current_streak}</div>
+              <div className="text-xs text-muted-foreground">Streak</div>
             </Card>
           </div>
 
-          {/* Therapeutic Goals Overview */}
-          {user?.profile?.favorite_goals?.length > 0 && (
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                Therapeutic Preferences
-              </h3>
-              <div className="space-y-4">
+          {/* Combined Preferences & Activity Card */}
+          <Card className="p-3 sm:p-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              {/* Preferences Section */}
+              {user?.profile?.favorite_goals?.length > 0 && (
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Favorite Goals</label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {user.profile.favorite_goals.map((goal: string) => (
-                      <Badge key={goal} variant="secondary">{goal}</Badge>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Default Session</label>
-                    <p className="text-sm mt-1">
-                      {user.profile?.default_session_duration || 15} minutes
-                    </p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Notifications</label>
-                    <div className="flex gap-2 mt-1">
-                      {user.profile?.notification_preferences?.email && (
-                        <Badge variant="outline" className="text-xs">Email</Badge>
-                      )}
-                      {user.profile?.notification_preferences?.push && (
-                        <Badge variant="outline" className="text-xs">Push</Badge>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          )}
-
-          {/* Recent Activity Card */}
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Recent Activity
-            </h3>
-            <div className="space-y-3">
-              {recentSessions.length > 0 ? (
-                recentSessions.map((session: any, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                  <h3 className="text-sm font-semibold mb-2 flex items-center gap-1">
+                    <Settings className="h-4 w-4" />
+                    Preferences
+                  </h3>
+                  <div className="space-y-2">
                     <div>
-                      <p className="font-medium">Therapeutic Session</p>
-                      <p className="text-sm text-muted-foreground">
-                        {session.session_duration_minutes || 0} minutes • {session.tracks_played || 0} tracks
-                        {session.dominant_genres?.length > 0 && (
-                          <> • {session.dominant_genres.slice(0, 2).join(', ')}</>
+                      <div className="flex flex-wrap gap-1">
+                        {user.profile.favorite_goals.slice(0, 3).map((goal: string) => (
+                          <Badge key={goal} variant="secondary" className="text-xs">{goal}</Badge>
+                        ))}
+                        {user.profile.favorite_goals.length > 3 && (
+                          <Badge variant="outline" className="text-xs">+{user.profile.favorite_goals.length - 3}</Badge>
                         )}
-                      </p>
+                      </div>
                     </div>
-                    <Badge variant="outline">
-                      {formatTimeAgo(session.session_date)}
-                    </Badge>
+                    
+                    <div className="text-xs text-muted-foreground">
+                      {user.profile?.default_session_duration || 15} min sessions
+                      {user.profile?.notification_preferences?.email && " • Email alerts"}
+                    </div>
                   </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Music className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No sessions yet</p>
-                  <p className="text-sm">Start a therapeutic music session to see your activity here</p>
                 </div>
               )}
+              
+              {/* Recent Activity Section */}
+              <div>
+                <h3 className="text-sm font-semibold mb-2 flex items-center gap-1">
+                  <Calendar className="h-4 w-4" />
+                  Recent Activity
+                </h3>
+                <div className="space-y-1">
+                  {recentSessions.length > 0 ? (
+                    recentSessions.slice(0, 3).map((session: any, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-muted/20 rounded text-xs">
+                        <div>
+                          <span className="font-medium">{session.session_duration_minutes || 0} min</span>
+                          <span className="text-muted-foreground ml-1">• {session.tracks_played || 0} tracks</span>
+                        </div>
+                        <span className="text-muted-foreground">
+                          {formatTimeAgo(session.session_date)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-3 text-muted-foreground">
+                      <Music className="h-6 w-6 mx-auto mb-1 opacity-50" />
+                      <p className="text-xs">No sessions yet</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </Card>
         </div>
