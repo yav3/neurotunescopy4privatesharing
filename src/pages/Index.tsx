@@ -113,31 +113,31 @@ const Index = () => {
                   <div className={cn(
                     "absolute inset-0 bg-gradient-to-br transition-all duration-700",
                     theme.gradient,
-                    "group-hover:scale-105"
+                    "group-hover:scale-105 contrast-125 saturate-110"
                   )} />
 
-                  {/* Multi-layered glass morphism effects */}
+                  {/* Brighter multi-layered glass morphism effects */}
                   <div className="absolute inset-0 overflow-hidden">
-                    {/* Primary glass layer */}
-                    <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/10" />
+                    {/* Primary bright glass layer */}
+                    <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] border border-white/30" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20" />
                     
-                    {/* Floating glass bubbles */}
-                    <div className="absolute top-4 right-6 w-20 h-20 bg-white/15 rounded-full backdrop-blur-md border border-white/20 opacity-60" />
-                    <div className="absolute top-12 left-8 w-14 h-14 bg-white/10 rounded-full backdrop-blur-sm border border-white/10 opacity-40" />
-                    <div className="absolute bottom-8 right-4 w-16 h-16 bg-white/12 rounded-full backdrop-blur-md border border-white/15 opacity-50" />
+                    {/* Brighter floating glass bubbles */}
+                    <div className="absolute top-4 right-6 w-20 h-20 bg-white/25 rounded-full backdrop-blur-lg border-2 border-white/40 opacity-80 shadow-lg" />
+                    <div className="absolute top-12 left-8 w-14 h-14 bg-white/20 rounded-full backdrop-blur-md border border-white/35 opacity-70 shadow-md" />
+                    <div className="absolute bottom-8 right-4 w-16 h-16 bg-white/22 rounded-full backdrop-blur-lg border border-white/45 opacity-75 shadow-lg" />
                     
-                    {/* Abstract geometric glass shapes */}
-                    <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-white/8 backdrop-blur-sm border border-white/20 rounded-xl rotate-45 opacity-70" />
-                    <div className="absolute bottom-1/3 left-1/2 w-8 h-16 bg-white/6 backdrop-blur-sm border border-white/15 rounded-full transform -rotate-12 opacity-60" />
+                    {/* Sharper abstract geometric glass shapes */}
+                    <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-white/18 backdrop-blur-md border-2 border-white/40 rounded-xl rotate-45 opacity-85 shadow-md" />
+                    <div className="absolute bottom-1/3 left-1/2 w-8 h-16 bg-white/15 backdrop-blur-md border border-white/35 rounded-full transform -rotate-12 opacity-80 shadow-sm" />
                     
-                    {/* Floating abstract elements */}
-                    <div className="absolute top-2 left-1/3 w-6 h-6 bg-gradient-to-br from-white/20 to-white/5 rounded-lg rotate-12 backdrop-blur-sm border border-white/30" />
-                    <div className="absolute bottom-6 right-1/3 w-4 h-8 bg-gradient-to-t from-white/15 to-transparent rounded-full backdrop-blur-sm" />
+                    {/* Brighter floating abstract elements */}
+                    <div className="absolute top-2 left-1/3 w-6 h-6 bg-gradient-to-br from-white/35 to-white/15 rounded-lg rotate-12 backdrop-blur-md border-2 border-white/50 shadow-lg" />
+                    <div className="absolute bottom-6 right-1/3 w-4 h-8 bg-gradient-to-t from-white/25 to-white/10 rounded-full backdrop-blur-md border border-white/40 shadow-md" />
                     
-                    {/* Dynamic light rays */}
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-conic from-white/20 via-transparent to-transparent rounded-full opacity-30 animate-pulse" />
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/10 via-transparent to-transparent opacity-40" />
+                    {/* Enhanced dynamic light rays */}
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-conic from-white/35 via-white/10 to-transparent rounded-full opacity-60 animate-pulse shadow-2xl" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/20 via-white/5 to-transparent opacity-70 shadow-xl" />
                   </div>
 
                   {/* Sentiment-specific abstract patterns */}
@@ -240,27 +240,15 @@ const Index = () => {
                   {/* Mesh gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-80" />
                   
-                  {/* Compact content layout */}
+                  {/* Compact content layout without icons */}
                   <div className="relative z-10 p-4 h-full flex flex-col">
-                    {/* Icon container */}
-                    <div className="mb-3">
-                      <div className={cn(
-                        "inline-flex items-center justify-center w-10 h-10 rounded-xl", // Smaller icon
-                        theme.accent,
-                        "backdrop-blur-sm border border-white/30",
-                        "transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
-                      )}>
-                        <IconComponent className="w-5 h-5 text-white drop-shadow-sm" />
-                      </div>
-                    </div>
-
                      {/* Title and arrow below it */}
                      <div className="flex-1 flex flex-col justify-end">
                        <div className="space-y-2 text-center">
                          <h3 className={cn(
-                           "font-bold text-lg leading-tight tracking-tight",
+                           "font-bold text-lg leading-tight tracking-tight drop-shadow-lg filter brightness-110",
                            theme.text,
-                           "drop-shadow-sm transition-all duration-300",
+                           "transition-all duration-300",
                            "group-hover:scale-[1.02] group-hover:translate-y-[-1px]"
                          )}>
                            {goal.name}
@@ -268,16 +256,16 @@ const Index = () => {
                          
                          {/* Arrow below the genre name */}
                          <div className="flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                           <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-                             <ArrowLeft className="w-4 h-4 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110" />
+                           <div className="w-8 h-8 rounded-full bg-white/30 backdrop-blur-md border-2 border-white/50 flex items-center justify-center shadow-lg">
+                             <ArrowLeft className="w-4 h-4 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" />
                            </div>
                          </div>
                        </div>
                      </div>
 
-                     {/* Hover text overlay */}
-                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/20 backdrop-blur-[2px] rounded-2xl">
-                       <p className="text-white font-medium text-sm tracking-wide">
+                     {/* Enhanced hover text overlay */}
+                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/30 backdrop-blur-md rounded-2xl border border-white/20">
+                       <p className="text-white font-semibold text-sm tracking-wide drop-shadow-lg">
                          Select a genre
                        </p>
                      </div>
