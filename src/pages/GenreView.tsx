@@ -66,7 +66,7 @@ const GenreView: React.FC = () => {
     if (goalId === 'focus-enhancement') {
       return [
         {
-          id: 'crossover-classical',
+          id: 'peaceful-piano',
           name: 'Peaceful Piano',
           description: 'Serene piano compositions for deep focus',
           buckets: ['Chopin', 'classicalfocus'],
@@ -90,10 +90,10 @@ const GenreView: React.FC = () => {
     } else {
       return [
         {
-          id: 'crossover-classical',
-          name: 'Crossover Classical',
-          description: 'Modern classical compositions',
-          buckets: ['classicalfocus', 'neuralpositivemusic'],
+          id: 'peaceful-piano',
+          name: 'Peaceful Piano',
+          description: 'Serene piano compositions',
+          buckets: ['Chopin', 'classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
