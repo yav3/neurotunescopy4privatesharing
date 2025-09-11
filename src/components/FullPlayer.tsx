@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
 import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Zap, Heart, ThumbsDown } from "lucide-react";
@@ -6,6 +6,51 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+
+// Therapeutic artwork selection (same as TrackCard)
+const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
+  const artworkMap = {
+    alpha: [
+      '/lovable-uploads/alpha-mountain-lake.png',
+      '/lovable-uploads/acoustic-sunset-field.png'
+    ],
+    beta: [
+      '/lovable-uploads/beta-waterfall.png', 
+      '/lovable-uploads/focus-nature-piano.jpg'
+    ],
+    gamma: [
+      '/lovable-uploads/gamma-sunbeam-forest.png',
+      '/lovable-uploads/energy-nature-electric.jpg'
+    ],
+    delta: [
+      '/lovable-uploads/delta-moonlit-lake.png',
+      '/lovable-uploads/sleep-artwork.jpg'
+    ],
+    theta: [
+      '/lovable-uploads/theta-misty-path.png',
+      '/lovable-uploads/peaceful-piano-moonlit.jpg'
+    ]
+  };
+
+  const gradientMap = {
+    alpha: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))',
+    beta: 'linear-gradient(135deg, hsl(262 83% 58% / 0.9), hsl(262 83% 20% / 0.8))', 
+    gamma: 'linear-gradient(135deg, hsl(31 100% 70% / 0.9), hsl(31 100% 25% / 0.8))',
+    delta: 'linear-gradient(135deg, hsl(221 39% 11% / 0.9), hsl(221 39% 5% / 0.8))',
+    theta: 'linear-gradient(135deg, hsl(276 100% 80% / 0.9), hsl(276 100% 25% / 0.8))'
+  };
+
+  const artworks = artworkMap[frequencyBand as keyof typeof artworkMap] || artworkMap.alpha;
+  const gradient = gradientMap[frequencyBand as keyof typeof gradientMap] || gradientMap.alpha;
+  
+  // Use track ID for consistent artwork selection
+  const artworkIndex = Math.abs(trackId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % artworks.length;
+  
+  return {
+    url: artworks[artworkIndex],
+    gradient
+  };
+};
 
 export default function FullPlayer() {
   const navigate = useNavigate();
@@ -17,6 +62,27 @@ export default function FullPlayer() {
     const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
     return goal ? goal.name : 'Therapeutic Music';
   };
+
+  // Get therapeutic artwork for current track
+  const trackArtwork = useMemo(() => {
+    if (!track) return null;
+    
+    // Determine frequency band from therapeutic applications or BPM
+    let frequencyBand = 'alpha'; // default
+    
+    if (track.therapeutic_applications?.[0]?.frequency_band_primary) {
+      frequencyBand = track.therapeutic_applications[0].frequency_band_primary;
+    } else if (track.bpm) {
+      // Fallback: determine from BPM
+      if (track.bpm < 60) frequencyBand = 'delta';
+      else if (track.bpm < 90) frequencyBand = 'theta';
+      else if (track.bpm < 120) frequencyBand = 'alpha';
+      else if (track.bpm < 150) frequencyBand = 'beta';
+      else frequencyBand = 'gamma';
+    }
+    
+    return getTherapeuticArtwork(frequencyBand, track.id);
+  }, [track]);
 
   // Local state for enhanced features
   const [lightningMode, setLightningMode] = useState(false);
@@ -86,11 +152,30 @@ export default function FullPlayer() {
       </div>
 
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-8">
+        {/* Album Artwork */}
+        <div className="relative mb-8 w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-muted to-muted-foreground/10"
+            style={{ background: trackArtwork?.gradient || 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))' }}
+          />
+          {trackArtwork?.url && (
+            <img
+              src={trackArtwork.url}
+              alt="Album artwork"
+              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
+        </div>
+
         <div className="text-center mb-12 max-w-md">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2 leading-snug break-words line-clamp-2">{track.title}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 leading-snug break-words line-clamp-2">{track.title}</h1>
           <p className="text-base md:text-xl text-muted-foreground mb-2">
             {spatialAudioEnabled && "🌐 "}{getTherapeuticGoalName()}
           </p>
+          <p className="text-sm text-muted-foreground">Therapeutic Music</p>
         </div>
 
         <div className="flex items-center justify-center gap-8 mb-8">
