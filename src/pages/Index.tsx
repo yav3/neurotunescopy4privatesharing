@@ -110,18 +110,18 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Compact goals grid that fits in viewport */}
-      <div className="container px-4 pb-16 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          {/* Balanced 2x2 grid for 4 cards */}
-          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-2xl mx-auto">
+      {/* Goals grid that better fills the screen */}
+      <div className="container px-4 pb-16 relative z-10 flex-1 flex items-center">
+        <div className="max-w-4xl mx-auto w-full">
+          {/* Larger cards with better proportions */}
+          <div className="grid grid-cols-2 gap-4 md:gap-6">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-square rounded-xl border-0",
+                    "aspect-[5/4] rounded-xl border-0",
                     "hover:scale-[1.02] hover:-translate-y-1",
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
@@ -183,18 +183,24 @@ const Index = () => {
                     </span>
                   </div>
 
-                  {/* Guaranteed white text */}
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                  {/* Goal title and description */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
+                      <h3 className="font-bold text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase mb-1 md:mb-2"
                           style={{ 
                             color: '#ffffff',
                             WebkitTextFillColor: '#ffffff',
-                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
+                            textShadow: '0 2px 6px rgba(0, 0, 0, 0.9)',
                             fontWeight: '700'
                           }}>
                         {goal.name}
                       </h3>
+                      <p className="text-white/90 text-xs md:text-sm leading-relaxed"
+                         style={{
+                           textShadow: '0 1px 3px rgba(0, 0, 0, 0.8)'
+                         }}>
+                        {goal.description}
+                      </p>
                     </div>
                   </div>
 
