@@ -167,7 +167,7 @@ const GenreView: React.FC = () => {
         {
           id: 'uplifting-orchestral',
           name: 'Uplifting Orchestral',
-          description: 'Energizing orchestral compositions',
+          description: 'Energizing orchestral compositions', 
           buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
@@ -343,10 +343,29 @@ const GenreView: React.FC = () => {
               const seed = Array.from(fullPath).reduce((a, c) => (a + c.charCodeAt(0)) % 2147483647, 0);
               const selectedArtwork = artPool.length ? artPool[seed % artPool.length] : selectedGenre.artwork;
 
+              // Determine correct genre/artist based on bucket and content
+              let artistName = 'Therapeutic Music';
+              let trackGenre = selectedGenre.name;
+              
+              if (selectedGenre.id === 'house-music' && bucketName === 'HIIT') {
+                artistName = 'House Music Collection';
+                trackGenre = 'House Music';
+              } else if (bucketName === 'classicalfocus') {
+                artistName = 'Classical Music';
+                trackGenre = 'Classical Crossover';
+              } else if (bucketName === 'Chopin') {
+                artistName = 'Classical Piano';  
+                trackGenre = 'Peaceful Piano';
+              } else if (bucketName === 'samba') {
+                artistName = 'World Music';
+                trackGenre = 'World & New Age';
+              }
+
               const track = {
                 id: `${bucketName}-${fullPath}-${Date.now()}-${Math.random()}`, // Unique ID each time
                 title: cleanTitle,
-                artist: selectedGenre.id === 'house-music' ? 'House Music Collection' : 'Therapeutic Music',
+                artist: artistName,
+                genre: trackGenre,
                 storage_bucket: bucketName,
                 storage_key: fullPath,
                 stream_url: urlData.publicUrl,

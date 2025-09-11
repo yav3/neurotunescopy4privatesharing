@@ -99,7 +99,7 @@ const getGenreOptions = (goalId: string) => {
     'mood-boost': [
       {
         id: 'house-music',
-        name: 'House Music',
+        name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
         buckets: ['HIIT'],
         folder: 'HIITHOUSE',
@@ -109,8 +109,8 @@ const getGenreOptions = (goalId: string) => {
         id: 'uplifting-orchestral',
         name: 'Uplifting Orchestral',
         description: 'Energizing orchestral compositions',
-        buckets: ['classicalfocus'],
-        image: '/lovable-uploads/beta-waterfall.png'
+        buckets: ['classicalfocus'], 
+        image: '/lovable-uploads/classical-meadow-ensemble.png'
       },
       {
         id: 'positive-electronic',
