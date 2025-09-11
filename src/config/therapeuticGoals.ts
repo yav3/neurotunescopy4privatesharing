@@ -6,7 +6,7 @@ import stressAnxietyBg from '@/assets/stress-anxiety-bg.jpg';
 import moodBoostBg from '@/assets/mood-boost-bg.jpg';
 import energyBoostBg from '@/assets/energy-boost-bg.jpg';
 import painSupportBg from '@/assets/pain-support-bg.jpg';
-import sleepSupportBg from '@/assets/sleep-support-bg.jpg';
+import cardioSupportBg from '@/assets/cardio-support-bg.jpg';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -92,7 +92,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Cardio',
     description: 'Energizing beats to power your cardio workouts and training',
     icon: Waves,
-    artwork: energyBoostBg,
+    artwork: cardioSupportBg,
     color: 'indigo',
     gradient: 'from-indigo-500 to-blue-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
