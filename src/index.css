@@ -373,6 +373,34 @@ All colors MUST be HSL.
     color: hsl(var(--text-blue-200)) !important;
   }
 
+  /* Genre cards - override global styles */
+  .group h3[style*="color: #ffffff"],
+  .group p[style*="color: #ffffff"] {
+    color: #ffffff !important;
+  }
+  
+  /* Dark mode body and text fixes */
+  .dark body,
+  .dark html {
+    background-color: hsl(217 100% 2%) !important;
+    color: hsl(0 0% 98%) !important;
+  }
+  
+  .dark h1,
+  .dark h2, 
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    color: hsl(0 0% 98%) !important;
+  }
+  
+  .dark p,
+  .dark span,
+  .dark div:not([style*="color"]) {
+    color: hsl(0 0% 85%) !important;
+  }
+
   /* Responsive font sizes with San Francisco */
   @media (max-width: 768px) {
     h1 { font-size: 1.5rem; font-family: var(--font-sf) !important; }

@@ -201,19 +201,21 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 </div>
                 
-                {/* Content */}
+                 {/* Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 
-                    className="font-bold text-lg mb-1 text-white"
+                    className="font-bold text-lg mb-1"
                     style={{ 
+                      color: '#ffffff !important',
                       textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)'
                     }}
                   >
                     {genre.name}
                   </h3>
                   <p 
-                    className="text-sm leading-tight text-white opacity-0 group-hover:opacity-90 transition-opacity duration-300"
+                    className="text-sm leading-tight opacity-0 group-hover:opacity-90 transition-opacity duration-300"
                     style={{ 
+                      color: '#ffffff !important',
                       textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)'
                     }}
                   >

@@ -66,8 +66,9 @@ export const GenreCard: React.FC<GenreCardProps> = ({
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="relative z-10">
             <h3 
-              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2 text-white"
+              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2"
               style={{ 
+                color: '#ffffff !important',
                 textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
                 fontWeight: '700'
               }}
@@ -75,8 +76,9 @@ export const GenreCard: React.FC<GenreCardProps> = ({
               {genre.name}
             </h3>
             <p 
-              className="text-sm mb-3 leading-relaxed text-white opacity-0 group-hover:opacity-90 transition-opacity duration-300"
+              className="text-sm mb-3 leading-relaxed opacity-0 group-hover:opacity-90 transition-opacity duration-300"
               style={{ 
+                color: '#ffffff !important',
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)'
               }}
             >
