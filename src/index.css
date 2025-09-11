@@ -8,32 +8,32 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Mode - White Background with Deep Blue Text */
+    /* Light Mode - Pure White Background with Dark Text */
     --background: 0 0% 100%; /* Pure white background */
-    --foreground: 217 91% 15%; /* Very deep blue text */
+    --foreground: 0 0% 9%; /* Almost black text */
 
-    --card: 217 91% 95%; /* Very light blue card background */
-    --card-foreground: 217 91% 15%; /* Deep blue card text */
+    --card: 0 0% 100%; /* Pure white card background */
+    --card-foreground: 0 0% 9%; /* Almost black card text */
 
     --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 217 91% 15%; /* Deep blue popover text */
+    --popover-foreground: 0 0% 9%; /* Almost black popover text */
 
     --primary: 217 91% 60%; /* Blue primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 217 91% 85%; /* Light blue secondary */
-    --secondary-foreground: 217 91% 20%; /* Deep blue secondary text */
+    --secondary: 0 0% 96%; /* Very light gray secondary */
+    --secondary-foreground: 0 0% 15%; /* Dark gray secondary text */
 
-    --muted: 217 91% 90%; /* Very light blue muted */
-    --muted-foreground: 217 91% 35%; /* Deep blue muted text */
+    --muted: 0 0% 96%; /* Very light gray muted */
+    --muted-foreground: 0 0% 45%; /* Medium gray muted text */
 
-    --accent: 217 91% 70%; /* Medium blue accent */
-    --accent-foreground: 0 0% 100%; /* White accent text */
+    --accent: 0 0% 96%; /* Light gray accent */
+    --accent-foreground: 0 0% 15%; /* Dark gray accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 91% 75%; /* Light blue borders */
+    --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
     --ring: 217 91% 60%;
 
@@ -87,51 +87,51 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Blue gradient variations for cards */
+    /* Clean white gradient variations for cards */
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%), hsl(217 91% 50%));
-    --gradient-card: linear-gradient(135deg, hsl(217 91% 95%), hsl(217 91% 92%), hsl(217 91% 97%));
-    --gradient-card-blue: linear-gradient(135deg, hsl(217 91% 85%), hsl(217 91% 90%), hsl(217 91% 88%));
-    --gradient-card-medium: linear-gradient(135deg, hsl(217 91% 75%), hsl(217 91% 80%), hsl(217 91% 78%));
-    --gradient-card-dark: linear-gradient(135deg, hsl(217 91% 65%), hsl(217 91% 70%), hsl(217 91% 68%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(217 91% 98%));
-    --shadow-card: 0 8px 32px hsl(217 91% 60% / 0.1), 0 4px 16px hsl(217 32% 17% / 0.05);
-    --shadow-player: 0 16px 48px hsl(217 91% 60% / 0.15), 0 8px 24px hsl(217 32% 17% / 0.1);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
+    --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 96%), hsl(0 0% 98%));
+    --gradient-card-medium: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 94%), hsl(0 0% 96%));
+    --gradient-card-dark: linear-gradient(135deg, hsl(0 0% 94%), hsl(0 0% 92%), hsl(0 0% 94%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.08), 0 4px 16px hsl(0 0% 0% / 0.04);
+    --shadow-player: 0 16px 48px hsl(0 0% 0% / 0.12), 0 8px 24px hsl(0 0% 0% / 0.06);
     
     /* San Francisco font system */
     --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
     
-    /* Approved text colors for white background */
+    /* Clean neutral text colors for white background */
     --text-white: 0 0% 100%;
-    --text-blue-50: 217 32% 17%; /* Very dark blue for high contrast */
-    --text-blue-100: 217 32% 25%; /* Dark blue */
-    --text-blue-200: 217 32% 35%; /* Medium dark blue */
-    --text-blue-300: 217 91% 50%; /* Medium blue */
-    --text-blue-400: 217 91% 60%; /* Primary blue */
-    --text-blue-500: 217 91% 55%; /* Slightly darker blue */
-    --text-blue-600: 217 91% 45%; /* Darker blue */
-    --text-blue-700: 217 91% 35%; /* Much darker blue */
-    --text-blue-800: 217 32% 25%; /* Very dark blue */
-    --text-blue-900: 217 32% 17%; /* Almost black blue */
+    --text-gray-50: 0 0% 98%;
+    --text-gray-100: 0 0% 90%;
+    --text-gray-200: 0 0% 80%;
+    --text-gray-300: 0 0% 65%;
+    --text-gray-400: 0 0% 50%;
+    --text-gray-500: 0 0% 40%;
+    --text-gray-600: 0 0% 30%;
+    --text-gray-700: 0 0% 20%;
+    --text-gray-800: 0 0% 15%;
+    --text-gray-900: 0 0% 9%;
 
-    /* Card color variations - different shades of blue */
-    --card-light: 217 91% 95%; /* Very light blue */
-    --card-medium: 217 91% 85%; /* Medium light blue */
-    --card-darker: 217 91% 75%; /* Medium blue */
-    --card-darkest: 217 91% 65%; /* Darker blue */
+    /* Card color variations - clean white and light grays */
+    --card-light: 0 0% 100%; /* Pure white */
+    --card-medium: 0 0% 98%; /* Very light gray */
+    --card-darker: 0 0% 96%; /* Light gray */
+    --card-darkest: 0 0% 94%; /* Medium light gray */
 
-    /* Music categories with different blue shades for cards */
-    --music-focus: 217 91% 85%; /* Light blue for focus cards */
-    --music-mood: 217 91% 80%; /* Medium light blue for mood boost cards */
-    --music-sleep: 217 91% 75%; /* Medium blue for sleep cards */
-    --music-energy: 217 91% 70%; /* Medium dark blue for energy cards */
+    /* Music categories with clean white backgrounds */
+    --music-focus: 0 0% 100%; /* White for focus cards */
+    --music-mood: 0 0% 100%; /* White for mood boost cards */
+    --music-sleep: 0 0% 100%; /* White for sleep cards */
+    --music-energy: 0 0% 100%; /* White for energy cards */
 
-    --sidebar-background: 217 91% 95%;
-    --sidebar-foreground: 217 32% 17%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 15%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 91% 85%;
-    --sidebar-accent-foreground: 217 32% 17%;
-    --sidebar-border: 217 91% 75%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 15%;
+    --sidebar-border: 0 0% 90%;
     --sidebar-ring: 217 91% 60%;
   }
 }
@@ -158,7 +158,7 @@ All colors MUST be HSL.
 
   /* Override all text colors for white background */
   h1, h2, h3, h4, h5, h6 {
-    color: hsl(var(--text-blue-900)) !important;
+    color: hsl(var(--text-gray-900)) !important;
     font-family: var(--font-sf) !important;
   }
 
@@ -176,203 +176,49 @@ All colors MUST be HSL.
   }
 
   .btn-secondary {
-    color: hsl(var(--text-blue-800)) !important;
+    color: hsl(var(--text-gray-800)) !important;
   }
 
   /* Link colors */
   a {
-    color: hsl(var(--text-blue-400)) !important;
+    color: hsl(217 91% 60%) !important;
     font-family: var(--font-sf) !important;
   }
 
   a:hover {
-    color: hsl(var(--text-blue-600)) !important;
+    color: hsl(217 91% 45%) !important;
   }
 
   /* Form elements */
   input, textarea, select {
     font-family: var(--font-sf) !important;
-    color: hsl(var(--text-blue-900)) !important;
+    color: hsl(var(--text-gray-900)) !important;
     border: 1px solid hsl(var(--border));
   }
 
   input::placeholder,
   textarea::placeholder {
-    color: hsl(var(--text-blue-300)) !important;
+    color: hsl(var(--text-gray-400)) !important;
   }
 
-  /* Status indicators */
-  .text-green-500,
-  .text-green-400,
-  .text-green-300 {
-    color: hsl(var(--text-blue-600)) !important;
-  }
-
-  .text-red-500,
-  .text-red-400,
-  .text-red-300 {
-    color: hsl(0 84% 60%) !important;
-  }
-
-  .text-yellow-500,
-  .text-yellow-400,
-  .text-yellow-300 {
-    color: hsl(var(--text-blue-500)) !important;
-  }
-
-  /* Purple color overrides - force to blue */
-  .text-purple-500,
-  .text-purple-400,
-  .text-purple-300,
-  .text-purple-600,
-  .text-purple-700 {
-    color: hsl(var(--text-blue-600)) !important;
-  }
-
-  .bg-purple-500,
-  .bg-purple-400,
-  .bg-purple-600 {
-    background-color: hsl(var(--card-medium)) !important;
-    color: hsl(var(--text-blue-800)) !important;
-  }
-
-  /* Status colors mapped to blue variants */
-  .text-green-500,
-  .text-green-400,
-  .text-green-300 {
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
-  .text-red-500,
-  .text-red-400,
-  .text-red-300 {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .text-yellow-500,
-  .text-yellow-400,
-  .text-yellow-300 {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  /* Gray text mapped to blue variants */
-  .text-gray-100,
-  .text-gray-200,
-  .text-gray-300 {
-    color: hsl(var(--text-blue-100)) !important;
-  }
-
-  .text-gray-400,
-  .text-gray-500 {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  .text-gray-600,
-  .text-gray-700,
-  .text-gray-800,
-  .text-gray-900 {
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
+  /* Remove all the blue color overrides and simplify */
+  
   /* Component-specific fixes */
   .mood-card {
-    color: hsl(var(--text-blue-900)) !important;
+    color: hsl(var(--text-gray-900)) !important;
     font-family: var(--font-sf) !important;
   }
 
   .mood-card h3 {
-    color: hsl(var(--text-blue-900)) !important;
+    color: hsl(var(--text-gray-900)) !important;
   }
 
   .mood-card p {
-    color: hsl(var(--text-blue-600)) !important;
+    color: hsl(var(--text-gray-600)) !important;
   }
 
-  /* Track card fixes */
-  .track-card {
-    font-family: var(--font-sf) !important;
-  }
-
-  .track-card .title {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .track-card .artist,
-  .track-card .album {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  /* Navigation fixes */
-  nav, .nav-item {
-    font-family: var(--font-sf) !important;
-    color: hsl(var(--text-white)) !important;
-  }
-
-  /* Status panel fixes */
-  .status-success {
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
-  .status-error {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .status-warning {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  /* Diagnostic panel fixes */
-  .diagnostic-item {
-    font-family: var(--font-sf) !important;
-  }
-
-  .diagnostic-item h4 {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .diagnostic-item p {
-    color: hsl(var(--text-blue-200)) !important;
-  }
-
-  /* Icon colors */
-  .icon-success {
-    color: hsl(var(--text-blue-400)) !important;
-  }
-
-  .icon-error {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .icon-warning {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  /* Connectivity panel fixes */
-  .connectivity-panel {
-    font-family: var(--font-sf) !important;
-  }
-
-  .connectivity-panel .title {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .connectivity-panel .status {
-    color: hsl(var(--text-blue-300)) !important;
-  }
-
-  /* Audio player fixes */
-  .audio-player {
-    font-family: var(--font-sf) !important;
-  }
-
-  .audio-player .track-title {
-    color: hsl(var(--text-white)) !important;
-  }
-
-  .audio-player .track-info {
-    color: hsl(var(--text-blue-200)) !important;
-  }
-
+  /* Clean up remaining overrides - remove blue tints */
+  
   /* Genre cards - override global styles */
   .group h3[style*="color: #ffffff"],
   .group p[style*="color: #ffffff"] {
@@ -408,12 +254,7 @@ All colors MUST be HSL.
     h3 { font-size: 1.125rem; font-family: var(--font-sf) !important; }
   }
 
-  /* Debug - highlight any remaining purple (remove after fixing) */
-  [style*="purple"],
-  [class*="purple"] {
-    outline: 2px solid red !important;
-    color: hsl(var(--text-blue-400)) !important;
-  }
+  /* Remove purple debugging - no longer needed */
 
   /* Apple-style button focus styles */
   button:focus {

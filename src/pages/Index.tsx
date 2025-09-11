@@ -55,7 +55,7 @@ const Index = () => {
       "min-h-screen relative overflow-hidden transition-colors duration-500",
       isDarkMode 
         ? "bg-blue-950/95" 
-        : "bg-gradient-to-br from-slate-50 to-blue-50"
+        : "bg-white"
     )}>
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -70,12 +70,7 @@ const Index = () => {
           </>
         ) : (
           <>
-            {/* Light mode - soft gradients */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-transparent to-slate-100/30" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_90%_/_0.15),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_85%_/_0.1),transparent_50%)]" />
-            <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-200/15 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
+            {/* Light mode - clean white background only */}
           </>
         )}
       </div>
@@ -92,12 +87,12 @@ const Index = () => {
                 variant="ghost"
                 size="sm"
                 onClick={toggleTheme}
-                className={cn(
-                  "text-foreground hover:text-foreground transition-all duration-200",
-                  isDarkMode 
-                    ? "hover:bg-white/10" 
-                    : "hover:bg-slate-100"
-                )}
+              className={cn(
+                "text-foreground hover:text-foreground transition-all duration-200",
+                isDarkMode 
+                  ? "hover:bg-white/10" 
+                  : "hover:bg-gray-100"
+              )}
               >
                 {isDarkMode ? (
                   <Sun className="h-5 w-5" />
@@ -213,7 +208,7 @@ const Index = () => {
           "backdrop-blur-sm border-t transition-colors duration-500",
           isDarkMode 
             ? "bg-blue-950/99 border-blue-900/50" 
-            : "bg-white/95 border-slate-200/50"
+            : "bg-white/95 border-gray-200/50"
         )}>
           <Navigation />
         </div>
