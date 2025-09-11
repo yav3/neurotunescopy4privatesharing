@@ -63,25 +63,30 @@ export const GenreCard: React.FC<GenreCardProps> = ({
         )}
         
         {/* Content - positioned like therapeutic goals */}
+        {/* GLOBAL REQUIREMENT: ALL GENRE CARD TEXT MUST ALWAYS BE WHITE - NEVER BLACK */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="relative z-10">
             <h3 
-              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2 text-white"
+              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2 !text-white"
               style={{ 
                 color: '#ffffff !important',
                 WebkitTextFillColor: '#ffffff !important',
                 textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
-                fontWeight: '700'
+                fontWeight: '700',
+                // Force white text - override any conflicting styles
+                filter: 'brightness(1) contrast(1)'
               }}
             >
               {genre.name}
             </h3>
             <p 
-              className="text-sm mb-3 leading-relaxed opacity-0 group-hover:opacity-90 transition-opacity duration-300 text-white"
+              className="text-sm mb-3 leading-relaxed opacity-0 group-hover:opacity-90 transition-opacity duration-300 !text-white"
               style={{ 
                 color: '#ffffff !important',
                 WebkitTextFillColor: '#ffffff !important',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)'
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
+                // Force white text - override any conflicting styles
+                filter: 'brightness(1) contrast(1)'
               }}
             >
               {genre.description}
