@@ -237,15 +237,6 @@ const GenreView: React.FC = () => {
           </p>
         </div>
 
-        {/* Track Count */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-foreground mb-2">
-            {tracks.length}+ tracks available
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Therapeutic grade • Ready to play
-          </p>
-        </div>
 
         {/* Horizontal Track List */}
         {isLoading ? (
