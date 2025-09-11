@@ -4,11 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 
-// Import new artwork
-import crossoverClassicalArt from '@/assets/crossover-classical-new.jpg';
-import newAgeArt from '@/assets/new-age-ambient.jpg';
-import electronicArt from '@/assets/electronic-modern.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-moonlit.jpg';
+// Import new crisp artwork
+import crossoverClassicalArt from '@/assets/crossover-classical-crisp.jpg';
+import newAgeArt from '@/assets/new-age-nature.jpg';
+import electronicArt from '@/assets/electronic-clean.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-clean.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -201,13 +201,13 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
                 
-                {/* Content - Simple, clean text styling */}
+                {/* Clean content - no blur effects */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="bg-black/40 rounded-xl p-3 backdrop-blur-sm border border-white/20">
-                    <h3 className="font-bold text-lg text-white mb-1">
+                  <div className="bg-black/70 rounded-lg p-3">
+                    <h3 className="font-semibold text-lg text-white mb-1">
                       {genre.name}
                     </h3>
-                    <p className="text-sm text-white/0 group-hover:text-white/90 transition-all duration-500">
+                    <p className="text-sm text-white/0 group-hover:text-white/85 transition-colors duration-300">
                       {genre.description}
                     </p>
                   </div>
