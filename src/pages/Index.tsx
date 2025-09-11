@@ -188,14 +188,16 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
-                  {/* Goal name with consistent styling */}
+                  {/* Clean text with strong contrast */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1.5 inline-block">
-                        <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide">
-                          {goal.name}
-                        </h3>
-                      </div>
+                      <h3 className="text-white font-black text-sm md:text-base leading-tight tracking-wide"
+                          style={{
+                            textShadow: '2px 2px 4px rgba(0,0,0,0.9), -1px -1px 2px rgba(0,0,0,0.8), 1px -1px 2px rgba(0,0,0,0.8), -1px 1px 2px rgba(0,0,0,0.8)',
+                            WebkitTextStroke: '1px rgba(0,0,0,0.5)'
+                          }}>
+                        {goal.name}
+                      </h3>
                     </div>
                   </div>
 
