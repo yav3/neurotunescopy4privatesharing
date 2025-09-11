@@ -64,20 +64,48 @@ Deno.serve(async (req) => {
 
     console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`)
 
-    // Create track objects with public URLs
-    const tracks = audioFiles.map(file => {
-      const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(file.name)
+    // Create track objects with URLs (try public first, then signed)
+    const tracks = await Promise.all(audioFiles.map(async (file) => {
+      let streamUrl: string | undefined;
+      
+      try {
+        // First try public URL
+        const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(file.name)
+        
+        if (publicUrlData.publicUrl) {
+          streamUrl = publicUrlData.publicUrl;
+        }
+      } catch (error) {
+        console.log(`⚠️ Public URL failed for ${file.name}, trying signed URL:`, error);
+      }
+      
+      // If public URL failed, try signed URL (valid for 1 hour)
+      if (!streamUrl) {
+        try {
+          const { data: signedUrlData, error: signedError } = await supabase.storage
+            .from(bucket)
+            .createSignedUrl(file.name, 3600); // 1 hour expiry
+            
+          if (signedError) {
+            console.log(`❌ Signed URL failed for ${file.name}:`, signedError);
+          } else if (signedUrlData?.signedUrl) {
+            streamUrl = signedUrlData.signedUrl;
+          }
+        } catch (error) {
+          console.log(`❌ Error creating signed URL for ${file.name}:`, error);
+        }
+      }
       
       return {
         id: `${bucket}-${file.name}`,
         title: cleanTitle(file.name),
         storage_bucket: bucket,
         storage_key: file.name,
-        stream_url: urlData.publicUrl,
+        stream_url: streamUrl,
         file_size: file.metadata?.size,
         last_modified: file.updated_at || file.created_at
       }
-    })
+    }))
 
     return new Response(
       JSON.stringify({ 
