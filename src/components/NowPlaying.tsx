@@ -280,6 +280,11 @@ export const NowPlaying: React.FC = () => {
 
             {/* Enhanced controls - always visible and well-spaced */}
             <div className="space-y-4 px-4">
+              {/* Debug info */}
+              <div className="text-center text-xs text-muted-foreground bg-red-100 p-2 rounded">
+                DEBUG: Controls should be visible - spatialAudio: {spatialAudioEnabled ? 'ON' : 'OFF'}, lightning: {lightningMode ? 'ON' : 'OFF'}
+              </div>
+              
               {/* Main control buttons row */}
               <div className="flex items-center justify-center gap-4">
                 <Button 
@@ -287,7 +292,7 @@ export const NowPlaying: React.FC = () => {
                   size="icon" 
                   onClick={handleFavorite}
                   className={cn(
-                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-red-500 hover:bg-accent/50 hover:scale-105",
                     isFavorited ? "text-red-500 hover:text-red-400 bg-red-50/10 border-red-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -298,7 +303,7 @@ export const NowPlaying: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   onClick={handleThumbsDown}
-                  className="transition-all duration-200 h-12 w-12 rounded-full border border-border/50 text-muted-foreground hover:text-destructive hover:bg-accent/50 hover:scale-105 hover:border-destructive/30"
+                  className="transition-all duration-200 h-12 w-12 rounded-full border-2 border-blue-500 text-muted-foreground hover:text-destructive hover:bg-accent/50 hover:scale-105 hover:border-destructive/30"
                 >
                   <ThumbsDown size={22} />
                 </Button>
@@ -308,7 +313,7 @@ export const NowPlaying: React.FC = () => {
                   size="icon" 
                   onClick={handleLightningMode}
                   className={cn(
-                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-yellow-500 hover:bg-accent/50 hover:scale-105",
                     lightningMode ? "text-yellow-500 hover:text-yellow-400 bg-yellow-50/10 border-yellow-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -320,7 +325,7 @@ export const NowPlaying: React.FC = () => {
                   size="icon" 
                   onClick={handleSpatialAudio}
                   className={cn(
-                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-green-500 hover:bg-accent/50 hover:scale-105",
                     spatialAudioEnabled ? "text-blue-500 hover:text-blue-400 bg-blue-50/10 border-blue-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
