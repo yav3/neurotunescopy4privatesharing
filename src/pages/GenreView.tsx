@@ -201,48 +201,40 @@ const GenreView: React.FC = () => {
       try {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         
+        // Start with fallback tracks immediately to prevent long loading
+        const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+        setTracks(fallbackTracks);
+        setIsLoading(false); // Stop loading immediately with fallback tracks
+        console.log(`🔄 Using fallback tracks (${fallbackTracks.length} tracks) while checking storage`);
+        
         let fetchedTracks: any[] = [];
         let error = null;
         
         try {
-          const result = await getTracksFromStorage(
-            goal.backendKey, 
-            50, // Load more tracks for full page view
-            selectedGenre.buckets
-          );
+          // Try to get tracks from storage but with shorter timeout
+          const result = await Promise.race([
+            getTracksFromStorage(goal.backendKey, 50, selectedGenre.buckets),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage timeout')), 3000))
+          ]) as any;
+          
           fetchedTracks = result.tracks || [];
           error = result.error;
+          
+          // Only replace fallback tracks if we actually found real tracks
+          if (fetchedTracks && fetchedTracks.length > 0) {
+            setTracks(fetchedTracks);
+            console.log(`✅ Loaded ${fetchedTracks.length} real tracks for ${selectedGenre.name}`);
+          }
         } catch (storageError) {
-          console.warn(`⚠️ Storage error for ${selectedGenre.name}:`, storageError);
-          // Fallback to sample tracks when storage fails
-          fetchedTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-          console.log('🔄 Using fallback tracks due to storage error');
+          console.warn(`⚠️ Storage timeout or error for ${selectedGenre.name}:`, storageError);
+          // Keep using fallback tracks - no need to update state
         }
         
-        if (error && (!fetchedTracks || fetchedTracks.length === 0)) {
-          console.warn(`⚠️ Error loading tracks for ${selectedGenre.name}:`, error);
-          // Use fallback tracks if storage error and no tracks
-          fetchedTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-          console.log('🔄 Using fallback tracks due to error');
-        }
-        
-        if (fetchedTracks && fetchedTracks.length > 0) {
-          setTracks(fetchedTracks);
-          console.log(`✅ Loaded ${fetchedTracks.length} tracks for ${selectedGenre.name}`);
-        } else {
-          // Emergency fallback if nothing worked
-          console.warn(`⚠️ No tracks found for ${selectedGenre.name}, using emergency fallback`);
-          const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-          setTracks(emergencyTracks);
-          console.log(`🔄 Using emergency fallback tracks (${emergencyTracks.length} tracks)`);
-        }
       } catch (error) {
         console.error(`❌ Failed to load tracks for ${selectedGenre.name}:`, error);
-        // Final fallback
+        // Ensure we have fallback tracks
         const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
         setTracks(emergencyTracks);
-        console.log(`🔄 Using final fallback tracks due to complete failure`);
-      } finally {
         setIsLoading(false);
       }
     };
