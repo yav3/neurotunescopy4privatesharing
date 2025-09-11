@@ -201,11 +201,17 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
                 
-                {/* Clean white text only */}
+                {/* Force white text with multiple overrides */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h3 
-                    className="font-bold text-xl text-white drop-shadow-2xl"
-                    style={{ color: 'white !important' }}
+                    className="font-bold text-xl drop-shadow-2xl"
+                    style={{ 
+                      color: '#ffffff !important',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                      WebkitTextFillColor: '#ffffff',
+                      fontSize: '1.25rem',
+                      fontWeight: '700'
+                    }}
                   >
                     {genre.name}
                   </h3>
