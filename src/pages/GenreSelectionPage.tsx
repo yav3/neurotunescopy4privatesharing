@@ -45,11 +45,18 @@ const getGenreOptions = (goalId: string) => {
     ],
     'stress-anxiety': [
       {
+        id: 'samba',
+        name: 'Samba',
+        description: 'Relaxing Brazilian samba rhythms for stress relief',
+        buckets: ['samba'],
+        image: '/lovable-uploads/delta-moonlit-lake.png'
+      },
+      {
         id: 'nature-sounds',
         name: 'Nature & Ambient',
         description: 'Calming nature sounds and ambient textures',
         buckets: ['samba'],
-        image: '/lovable-uploads/delta-moonlit-lake.png'
+        image: '/lovable-uploads/theta-misty-path.png'
       },
       {
         id: 'meditative-strings',
