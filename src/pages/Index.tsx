@@ -28,16 +28,16 @@ const goalCardThemes = {
     shadow: 'shadow-[0_8px_32px_rgba(14,165,233,0.4)]'
   },
   'mood-boost': {
-    gradient: 'from-pink-500/90 via-rose-500/80 to-red-500/90',
+    gradient: 'from-yellow-200/90 via-amber-100/80 to-orange-200/90',
     accent: 'bg-white/20',
-    text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(244,63,94,0.4)]'
+    text: 'text-gray-800',
+    shadow: 'shadow-[0_8px_32px_rgba(251,191,36,0.4)]'
   },
   'pain-support': {
-    gradient: 'from-blue-900/90 via-blue-800/80 to-slate-900/90',
+    gradient: 'from-teal-600/90 via-cyan-600/80 to-blue-500/90',
     accent: 'bg-white/20',
     text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(30,58,138,0.4)]'
+    shadow: 'shadow-[0_8px_32px_rgba(20,184,166,0.4)]'
   },
   'energy-boost': {
     gradient: 'from-orange-500/90 via-yellow-500/80 to-amber-500/90',
@@ -180,9 +180,9 @@ const Index = () => {
                       </div>
                     </div>
 
-                    {/* Title - Compact style */}
-                    <div className="flex-1 flex flex-col justify-end">
-                       <div className="space-y-1">
+                     {/* Title and arrow below it */}
+                     <div className="flex-1 flex flex-col justify-end">
+                       <div className="space-y-2 text-center">
                          <h3 className={cn(
                            "font-bold text-lg leading-tight tracking-tight",
                            theme.text,
@@ -191,6 +191,13 @@ const Index = () => {
                          )}>
                            {goal.name}
                          </h3>
+                         
+                         {/* Arrow below the genre name */}
+                         <div className="flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                           <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
+                             <ArrowLeft className="w-4 h-4 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110" />
+                           </div>
+                         </div>
                        </div>
                      </div>
 
@@ -200,13 +207,6 @@ const Index = () => {
                          Select a genre
                        </p>
                      </div>
-
-                    {/* Compact play indicator */}
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-                        <ArrowLeft className="w-4 h-4 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110" />
-                      </div>
-                    </div>
 
                     {/* Glass morphism overlay on hover */}
                     <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-2xl" />
