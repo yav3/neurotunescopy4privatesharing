@@ -77,9 +77,10 @@ export const GenreCard: React.FC<GenreCardProps> = ({
               {genre.name}
             </h3>
             <p 
-              className="text-sm mb-3 leading-relaxed opacity-0 group-hover:opacity-90 transition-opacity duration-300"
+              className="text-sm mb-3 leading-relaxed opacity-0 group-hover:opacity-90 transition-opacity duration-300 text-white"
               style={{ 
                 color: '#ffffff !important',
+                WebkitTextFillColor: '#ffffff !important',
                 textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)'
               }}
             >

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, X } from "lucide-react";
+import { Play, Pause, SkipForward, X, Heart, Zap } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 
@@ -64,7 +64,31 @@ export const MinimizedPlayer = () => {
         </div>
         
         {/* Controls */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8 text-muted-foreground hover:text-red-500"
+            onClick={(e) => {
+              e.stopPropagation();
+              // TODO: Add favorite functionality
+            }}
+          >
+            <Heart className="w-4 h-4" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8 text-muted-foreground hover:text-yellow-500"
+            onClick={(e) => {
+              e.stopPropagation();
+              // TODO: Add lightning playlist functionality
+            }}
+          >
+            <Zap className="w-4 h-4" />
+          </Button>
+          
           <Button
             variant="ghost"
             size="icon"
