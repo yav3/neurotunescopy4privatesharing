@@ -14,14 +14,21 @@ import electronicArt from '@/assets/electronic-artwork.jpg';
 import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 
-// Fallback track generator
-const generateFallbackTracks = (genreName: string, goalName: string) => {
+// Fallback track generator with varied album art
+const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
   const trackNames = [
     'Bach Reimagined', 'Peaceful Focus', 'Classical Concentration', 
     'Mozart Modern', 'Therapeutic Symphony', 'Ambient Classical',
     'Focus Flow', 'Mindful Melody', 'Serene Strings',
     'Calm Composition', 'Tranquil Tones', 'Gentle Harmony'
   ];
+
+  // Fallback to default artwork if no album art provided
+  const defaultArtwork = [
+    crossoverClassicalArt, newAgeArt, electronicArt, 
+    acousticArt, peacefulPianoArt
+  ];
+  const artworkOptions = albumArtUrls.length > 0 ? albumArtUrls : defaultArtwork;
 
   return trackNames.map((name, index) => ({
     id: `fallback-${genreName.toLowerCase()}-${index}`,
@@ -32,6 +39,7 @@ const generateFallbackTracks = (genreName: string, goalName: string) => {
     bpm: 60 + (index * 5),
     // Provide a guaranteed working local sample so playback always works
     stream_url: '/audio/sample.mp3',
+    artwork_url: artworkOptions[Math.floor(Math.random() * artworkOptions.length)],
     audio_status: 'working' as const,
     therapeutic_applications: [{
       frequency_band_primary: ['delta', 'theta', 'alpha', 'beta', 'gamma'][index % 5],
@@ -165,6 +173,33 @@ const GenreView: React.FC = () => {
         const { supabase } = await import('@/integrations/supabase/client');
         let allTracks: any[] = [];
 
+        // Fetch available album art first
+        console.log('🎨 Fetching album art from albumart bucket...');
+        const { data: artFiles, error: artError } = await supabase.storage
+          .from('albumart')
+          .list('', {
+            limit: 1000,
+            sortBy: { column: 'name', order: 'asc' }
+          });
+
+        let albumArtUrls: string[] = [];
+        if (!artError && artFiles?.length) {
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+          const validArtFiles = artFiles.filter(file => 
+            imageExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+          );
+          
+          albumArtUrls = validArtFiles.map(file => {
+            const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(file.name);
+            return urlData.publicUrl;
+          });
+          
+          console.log(`🎨 Found ${albumArtUrls.length} album art images`);
+        } else {
+          console.log('🎨 No album art found, using default genre artwork');
+          albumArtUrls = [selectedGenre.artwork];
+        }
+
         // Process each bucket - simplified
         for (const bucketName of selectedGenre.buckets) {
           console.log(`🗂️ Processing bucket: ${bucketName} directly`);
@@ -215,6 +250,9 @@ const GenreView: React.FC = () => {
               
               const cleanTitle = file.name.replace(/\.[^/.]+$/, ''); // Remove extension only
 
+              // Randomly select album art for each track
+              const randomArtwork = albumArtUrls[Math.floor(Math.random() * albumArtUrls.length)];
+
               const track = {
                 id: `${bucketName}-${file.name}`,
                 title: cleanTitle,
@@ -222,7 +260,7 @@ const GenreView: React.FC = () => {
                 storage_bucket: bucketName,
                 storage_key: file.name,
                 stream_url: urlData.publicUrl,
-                artwork_url: selectedGenre.artwork,
+                artwork_url: randomArtwork,
                 audio_status: 'working' as const,
               };
               
@@ -250,7 +288,7 @@ const GenreView: React.FC = () => {
           console.log(`🎵 First track example:`, limitedTracks[0]);
         } else {
           console.log('📂 No tracks found in any bucket, using fallback');
-          const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+          const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name, albumArtUrls);
           setTracks(fallbackTracks);
           console.log(`🔄 Set ${fallbackTracks.length} fallback tracks`);
         }
