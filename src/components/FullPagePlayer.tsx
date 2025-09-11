@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Zap, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { toast } from "@/hooks/use-toast";
 
 export const FullPagePlayer = () => {
   const { 
@@ -21,8 +22,14 @@ export const FullPagePlayer = () => {
     volume, 
     setVolume, 
     seek,
-    setPlayerMode 
+    setPlayerMode,
+    spatialAudioEnabled,
+    toggleSpatialAudio
   } = useAudioStore();
+
+  // Local state for enhanced features
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [lightningMode, setLightningMode] = useState(false);
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -39,6 +46,40 @@ export const FullPagePlayer = () => {
   };
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  // Enhanced control handlers
+  const handleFavorite = () => {
+    setIsFavorited(!isFavorited);
+    toast({
+      title: isFavorited ? "Removed from favorites" : "Added to favorites",
+      description: track?.title,
+    });
+  };
+
+  const handleThumbsDown = async () => {
+    toast({
+      title: "Track disliked",
+      description: "Skipping to next track",
+    });
+    await next();
+  };
+
+  const handleLightningMode = () => {
+    setLightningMode(!lightningMode);
+    toast({
+      title: lightningMode ? "Lightning mode disabled" : "Lightning mode enabled",
+      description: "Therapeutic boost " + (lightningMode ? "deactivated" : "activated"),
+    });
+  };
+
+  const handleSpatialAudio = () => {
+    const willBeEnabled = !spatialAudioEnabled;
+    toggleSpatialAudio();
+    toast({
+      title: willBeEnabled ? "Spatial Audio enabled" : "Spatial Audio disabled",
+      description: willBeEnabled ? "Enhanced audio experience active" : "Standard audio mode",
+    });
+  };
 
   if (!track) {
     return null;
@@ -135,26 +176,77 @@ export const FullPagePlayer = () => {
           </Button>
         </div>
 
-        {/* Volume and like */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 flex-1">
+        {/* Enhanced Controls Section */}
+        <div className="space-y-6">
+          {/* Volume control */}
+          <div className="flex items-center gap-3">
             <Volume2 className="w-5 h-5 text-muted-foreground" />
             <Slider
               value={[volume * 100]}
               max={100}
               step={1}
-              className="flex-1 max-w-32"
+              className="flex-1"
               onValueChange={(value) => setVolume(value[0] / 100)}
             />
           </div>
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-red-500 transition-colors duration-200"
-          >
-            <Heart className="w-5 h-5" />
-          </Button>
+
+          {/* Action buttons */}
+          <div className="flex items-center justify-center gap-4">
+            {/* Favorite */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleFavorite}
+              className={cn(
+                "w-12 h-12 rounded-full transition-colors duration-200",
+                isFavorited 
+                  ? "text-red-500 hover:text-red-600 bg-red-500/10" 
+                  : "text-muted-foreground hover:text-red-500"
+              )}
+            >
+              <Heart className={cn("w-6 h-6", isFavorited && "fill-current")} />
+            </Button>
+
+            {/* Thumbs Down */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleThumbsDown}
+              className="w-12 h-12 rounded-full text-muted-foreground hover:text-destructive transition-colors duration-200"
+            >
+              <ThumbsDown className="w-6 h-6" />
+            </Button>
+
+            {/* Lightning Mode */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLightningMode}
+              className={cn(
+                "w-12 h-12 rounded-full transition-colors duration-200",
+                lightningMode
+                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10"
+                  : "text-muted-foreground hover:text-yellow-500"
+              )}
+            >
+              <Zap className={cn("w-6 h-6", lightningMode && "fill-current")} />
+            </Button>
+
+            {/* Spatial Audio */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSpatialAudio}
+              className={cn(
+                "w-12 h-12 rounded-full transition-colors duration-200",
+                spatialAudioEnabled
+                  ? "text-blue-500 hover:text-blue-600 bg-blue-500/10"
+                  : "text-muted-foreground hover:text-blue-500"
+              )}
+            >
+              <Radio className="w-6 h-6" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
