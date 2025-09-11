@@ -89,7 +89,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Energetic house beats for motivation and energy',
         buckets: ['HIIT'],
         folder: 'HIITHOUSE',
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
       },
       {
         id: 'uplifting-orchestral',
