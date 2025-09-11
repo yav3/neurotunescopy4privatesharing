@@ -195,7 +195,7 @@ export default function FullPlayer() {
           </button>
         </div>
 
-        {/* Enhanced Controls */}
+        {/* Enhanced Controls - Improved Visibility */}
         <div className="flex items-center justify-center gap-6 mb-8">
           {/* Favorite */}
           <Button 
@@ -203,8 +203,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleFavorite}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full",
-              isFavorited ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
+              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              isFavorited 
+                ? "text-red-500 hover:text-red-600 bg-red-500/10 border-red-500/20" 
+                : "text-foreground/80 hover:text-red-500 hover:bg-red-500/5"
             )}
           >
             <Heart size={20} className={cn(isFavorited && "fill-current")} />
@@ -215,7 +217,7 @@ export default function FullPlayer() {
             variant="ghost" 
             size="lg"
             onClick={handleThumbsDown}
-            className="transition-colors duration-200 p-4 rounded-full text-muted-foreground hover:text-destructive"
+            className="transition-colors duration-200 p-4 rounded-full border border-border/50 text-foreground/80 hover:text-destructive hover:bg-destructive/5"
           >
             <ThumbsDown size={20} />
           </Button>
@@ -226,8 +228,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleLightningMode}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full",
-              lightningMode ? "text-yellow-500 hover:text-yellow-600" : "text-muted-foreground"
+              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              lightningMode 
+                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10 border-yellow-500/20" 
+                : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/5"
             )}
           >
             <Zap size={20} className={cn(lightningMode && "fill-current")} />
@@ -239,8 +243,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleSpatialAudio}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full",
-              spatialAudioEnabled ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              spatialAudioEnabled 
+                ? "text-primary hover:text-primary bg-primary/10 border-primary/20" 
+                : "text-foreground/80 hover:text-primary hover:bg-primary/5"
             )}
           >
             <Radio size={20} />

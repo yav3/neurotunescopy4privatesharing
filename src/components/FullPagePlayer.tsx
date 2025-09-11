@@ -270,7 +270,7 @@ export const FullPagePlayer = () => {
             />
           </div>
 
-          {/* Action buttons */}
+          {/* Action buttons - Improved Visibility */}
           <div className="flex items-center justify-center gap-4">
             {/* Favorite */}
             <Button
@@ -278,10 +278,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleFavorite}
               className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200",
+                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
                 isFavorited 
-                  ? "text-red-500 hover:text-red-600 bg-red-500/10" 
-                  : "text-muted-foreground hover:text-red-500"
+                  ? "text-red-500 hover:text-red-600 bg-red-500/10 border-red-500/20" 
+                  : "text-foreground/80 hover:text-red-500 hover:bg-red-500/5"
               )}
             >
               <Heart className={cn("w-6 h-6", isFavorited && "fill-current")} />
@@ -292,7 +292,7 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleThumbsDown}
-              className="w-12 h-12 rounded-full text-muted-foreground hover:text-destructive transition-colors duration-200"
+              className="w-12 h-12 rounded-full border border-border/50 text-foreground/80 hover:text-destructive hover:bg-destructive/5 transition-colors duration-200"
             >
               <ThumbsDown className="w-6 h-6" />
             </Button>
@@ -303,10 +303,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleLightningMode}
               className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200",
+                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
                 lightningMode
-                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10"
-                  : "text-muted-foreground hover:text-yellow-500"
+                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10 border-yellow-500/20"
+                  : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/5"
               )}
             >
               <Zap className={cn("w-6 h-6", lightningMode && "fill-current")} />
@@ -317,12 +317,12 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleSpatialAudio}
-            className={cn(
-              "w-12 h-12 rounded-full transition-colors duration-200",
-              spatialAudioEnabled
-                ? "text-foreground bg-accent"
-                : "text-muted-foreground hover:text-foreground"
-            )}
+              className={cn(
+                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
+                spatialAudioEnabled
+                  ? "text-primary hover:text-primary bg-primary/10 border-primary/20"
+                  : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+              )}
             >
               <Radio className="w-6 h-6" />
             </Button>
