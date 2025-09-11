@@ -48,9 +48,13 @@ interface GenreOption {
 interface Track {
   id: string;
   title: string;
+  artist?: string;
+  duration?: number;
   storage_bucket?: string;
   storage_key?: string;
   artwork_url?: string;
+  stream_url?: string;
+  audio_status?: 'working' | 'missing' | 'unknown';
 }
 
 const GenreView: React.FC = () => {
@@ -226,10 +230,13 @@ const GenreView: React.FC = () => {
                 return {
                   id: `${bucketName}-${file.name}`,
                   title: cleanTitle,
+                  artist: 'Neural Positive Music',
+                  duration: 0,
                   storage_bucket: bucketName,
                   storage_key: file.name,
                   stream_url: urlData.publicUrl,
                   artwork_url: albumArtworks[index % albumArtworks.length],
+                  audio_status: 'working' as const,
                 };
               });
 
@@ -293,8 +300,18 @@ const GenreView: React.FC = () => {
 
     try {
       toast.loading(`Starting ${selectedGenre?.name.toLowerCase()} session...`, { id: "track-play" });
-      await playFromGoal(goal?.backendKey || '');
-      toast.success(`Playing ${selectedGenre?.name.toLowerCase()} music`, { id: "track-play" });
+      
+      // Load tracks directly from the selected genre's buckets instead of using playFromGoal
+      console.log(`🎵 Loading tracks directly from ${selectedGenre?.name} buckets:`, selectedGenre?.buckets);
+      
+      if (tracks.length > 0) {
+        // Use the tracks we already loaded from the genre
+        const { setQueue } = useAudioStore.getState();
+        await setQueue(tracks, 0);
+        toast.success(`Playing ${selectedGenre?.name.toLowerCase()} music`, { id: "track-play" });
+      } else {
+        throw new Error("No tracks available for this genre");
+      }
     } catch (error) {
       console.error('❌ Failed to play track:', error);
       toast.error("Failed to start playback", { id: "track-play" });
