@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { HorizontalTrackList } from '@/components/HorizontalTrackList';
+import { VerticalTrackList } from '@/components/VerticalTrackList';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { getTracksFromStorage } from '@/services/storageDirectAccess';
 import { useAudioStore } from '@/stores';
@@ -238,7 +238,7 @@ const GenreView: React.FC = () => {
         </div>
 
 
-        {/* Horizontal Track List */}
+        {/* Vertical Track List */}
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="flex items-center gap-3 text-muted-foreground">
@@ -247,7 +247,7 @@ const GenreView: React.FC = () => {
             </div>
           </div>
         ) : (
-          <HorizontalTrackList
+          <VerticalTrackList
             tracks={tracks}
             currentTrack={currentTrack}
             isPlaying={isPlaying}

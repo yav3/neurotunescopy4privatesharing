@@ -69,6 +69,10 @@ All colors MUST be HSL.
     --border: 217 91% 25%; /* Medium dark blue borders */
     --input: 217 91% 15%; /* Dark blue input background */
     --ring: 217 91% 60%;
+
+    /* Dark mode gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(217 100% 2%), hsl(217 91% 3%));
+    --gradient-card: linear-gradient(135deg, hsl(217 100% 3%), hsl(217 91% 4%), hsl(217 100% 2%));
   }
 
   /* Common variables for both themes */

@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Play, Music, Headphones } from 'lucide-react';
+import { ArrowLeft, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
-import { cn } from '@/lib/utils';
+import { GenreCard } from '@/components/ui/GenreCard';
 import peacefulPianoArt from '@/assets/peaceful-piano-enhanced.jpg';
 
 // Import new artwork
@@ -232,92 +231,15 @@ export default function GenreSelectionPage() {
       {/* Compact Genre Grid */}
       <div className="relative px-6 pb-8 md:px-12 md:pb-12">
         <div className="max-w-6xl mx-auto">
-          {/* Grid with compact spacing */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          {/* Grid with square cards like therapeutic goals */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
             {genres.map((genre, index) => (
-              <div
+              <GenreCard
                 key={genre.id}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'both' }}
-              >
-                <Card
-                  className={cn(
-                    "group relative overflow-hidden cursor-pointer",
-                    "bg-gradient-card shadow-card border border-border/50",
-                    "transition-all duration-700 ease-out",
-                    "hover:shadow-[0_32px_80px_hsl(217_91%_60%_/_0.25),_0_16px_40px_hsl(217_91%_5%_/_0.4)]",
-                    "hover:border-primary/40 hover:-translate-y-3 hover:scale-[1.02]",
-                    "backdrop-blur-sm"
-                  )}
-                  onClick={() => handleGenreSelect(genre.id)}
-                >
-                  {/* Compact image container */}
-                  <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={genre.image}
-                      alt={genre.name}
-                      className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-110"
-                    />
-                    
-                    {/* Sophisticated gradient overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent group-hover:from-black/80 transition-all duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
-                    
-                    {/* Premium floating badge */}
-                    <div className="absolute top-3 right-3 p-2.5 rounded-2xl bg-card/20 backdrop-blur-md border border-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-card/30">
-                      <Headphones className="w-4 h-4 text-primary" />
-                    </div>
-                    
-                    {/* Track count badge */}
-                    <div className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-md rounded-full text-xs font-medium text-foreground border border-border/30">
-                      {genre.trackCount}
-                    </div>
-                  </div>
-                  
-                  {/* Compact content section */}
-                  <div className="relative z-10 p-6">
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-300">
-                        {genre.name}
-                      </h3>
-                      <p className="text-muted-foreground leading-relaxed text-sm">
-                        {genre.description}
-                      </p>
-                    </div>
-
-                    {/* Compact status indicators */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-                        Ready to play
-                      </div>
-                      <div className="text-xs text-muted-foreground font-medium">
-                        Therapeutic grade
-                      </div>
-                    </div>
-
-                    {/* Compact action button */}
-                    <Button
-                      className={cn(
-                        "w-full h-10 rounded-xl font-semibold text-sm",
-                        "bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground",
-                        "border-2 border-primary/20 hover:border-primary",
-                        "transition-all duration-300 group-hover:shadow-lg",
-                        "backdrop-blur-sm"
-                      )}
-                    >
-                      <Play className="w-3 h-3 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                      Begin Session
-                    </Button>
-                  </div>
-
-                  {/* Premium shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1200 pointer-events-none" />
-                  
-                  {/* Subtle glow animation */}
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 animate-glow-pulse" />
-                </Card>
-              </div>
+                genre={genre}
+                onSelect={handleGenreSelect}
+                index={index}
+              />
             ))}
           </div>
           
