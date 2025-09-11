@@ -30,6 +30,9 @@ const generateFallbackTracks = (genreName: string, goalName: string) => {
     storage_key: `fallback/${name.toLowerCase().replace(/\s+/g, '-')}.mp3`,
     genre: genreName,
     bpm: 60 + (index * 5),
+    // Provide a guaranteed working local sample so playback always works
+    stream_url: '/audio/sample.mp3',
+    audio_status: 'working' as const,
     therapeutic_applications: [{
       frequency_band_primary: ['delta', 'theta', 'alpha', 'beta', 'gamma'][index % 5],
       condition_targets: [goalName.toLowerCase()]
