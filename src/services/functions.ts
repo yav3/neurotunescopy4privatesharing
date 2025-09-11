@@ -3,7 +3,7 @@ if (!SUPABASE_URL) throw new Error('VITE_SUPABASE_URL not set');
 export const FN_BASE = `${new URL(SUPABASE_URL).origin}/functions/v1`; // https://.../functions/v1
 
 export async function listStoragePage({
-  bucket = 'neuralpositivemusic',
+  bucket = 'samba',
   prefix = 'tracks',
   limit = 500,
   offset = 0,
@@ -46,7 +46,7 @@ export async function listStoragePage({
 }
 
 export async function buildManifest({
-  bucket = 'neuralpositivemusic',
+  bucket = 'samba',
   prefix = 'tracks',
   page = 500,
   adminKey,

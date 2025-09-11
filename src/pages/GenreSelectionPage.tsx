@@ -48,7 +48,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'nature-sounds',
         name: 'Nature & Ambient',
         description: 'Calming nature sounds and ambient textures',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['samba'],
         image: '/lovable-uploads/delta-moonlit-lake.png'
       },
       {
@@ -64,7 +64,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'delta-wave',
         name: 'Delta Wave Therapy',
         description: 'Deep sleep-inducing frequencies',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['samba'],
         image: '/lovable-uploads/theta-misty-path.png'
       },
       {

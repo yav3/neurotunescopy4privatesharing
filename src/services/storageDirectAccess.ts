@@ -75,6 +75,9 @@ export async function getTracksFromStorage(
     } else if (normalizedGoal === 'mood-boost') {
       buckets = ['ENERGYBOOST'];
       console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
+    } else if (normalizedGoal === 'stress-anxiety-support' || normalizedGoal === 'anxiety' || normalizedGoal === 'stress') {
+      buckets = ['samba'];
+      console.log(`🎯 Using samba bucket for stress and anxiety support`);
     } else if (normalizedGoal === 'sleep') {
       buckets = ['neuralpositivemusic'];
       console.log(`🎯 Using neuralpositivemusic bucket for sleep`);

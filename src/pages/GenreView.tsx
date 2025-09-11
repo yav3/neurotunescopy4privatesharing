@@ -110,7 +110,7 @@ const GenreView: React.FC = () => {
           id: 'world-new-age',
           name: 'World & New Age',
           description: 'Global sounds and new age music',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['samba'],
           artwork: newAgeArt
         }
       ];
@@ -134,14 +134,14 @@ const GenreView: React.FC = () => {
           id: 'electronic',
           name: 'Electronic',
           description: 'Ambient electronic music',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['samba'],
           artwork: electronicArt
         },
         {
           id: 'world-new-age',
           name: 'World & New Age',
           description: 'Global sounds and new age music',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['samba'],
           artwork: newAgeArt
         }
       ];
