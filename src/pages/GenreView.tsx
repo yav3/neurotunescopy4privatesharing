@@ -198,15 +198,7 @@ const GenreView: React.FC = () => {
                 continue;
               }
               
-              const cleanTitle = file.name
-                .replace(/\.[^/.]+$/, '') // Remove extension
-                .replace(/([A-Z])/g, ' $1') // Add space before capitals
-                .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
-                .replace(/\s+/g, ' ') // Clean up multiple spaces
-                .trim()
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                .join(' ');
+              const cleanTitle = file.name.replace(/\.[^/.]+$/, ''); // Remove extension only
 
               const track = {
                 id: `${bucketName}-${file.name}`,
