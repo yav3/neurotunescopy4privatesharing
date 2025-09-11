@@ -269,8 +269,9 @@ const GenreView: React.FC = () => {
       console.log(`🎵 Playing track:`, track);
       toast.loading(`Starting playback...`, { id: "track-play" });
       
-      // Use the audio store's playTrack method directly
-      await useAudioStore.getState().playTrack(track);
+      // Use the playTrack method from the hook - it should handle everything
+      const audioStore = useAudioStore.getState();
+      await audioStore.playTrack(track);
       
       toast.success(`Now playing: ${track.title}`, { id: "track-play" });
     } catch (error) {
