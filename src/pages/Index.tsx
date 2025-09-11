@@ -198,10 +198,12 @@ const Index = () => {
                   {/* Guaranteed white text */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase text-white"
+                      <h3 className="font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
                           style={{ 
-                            color: 'white !important',
-                            WebkitTextFillColor: 'white !important'
+                            color: '#ffffff',
+                            WebkitTextFillColor: '#ffffff',
+                            textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
+                            fontWeight: '700'
                           }}>
                         {goal.name}
                       </h3>
