@@ -4,11 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 
-// Import new crisp artwork
-import crossoverClassicalArt from '@/assets/crossover-classical-crisp.jpg';
-import newAgeArt from '@/assets/new-age-nature.jpg';
-import electronicArt from '@/assets/electronic-clean.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-clean.jpg';
+// Import blue and green toned artwork only
+import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
+import newAgeArt from '@/assets/new-age-forest.jpg';
+import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
