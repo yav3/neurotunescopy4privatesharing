@@ -176,17 +176,17 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-xl" />
                   </div>
 
-                  {/* Hover overlay */}
+                  {/* Hover overlay with select genre text */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
-                    <span className="text-white font-semibold text-lg tracking-wide">
+                    <span className="text-white font-semibold text-lg md:text-xl tracking-wide">
                       Select Genre
                     </span>
                   </div>
 
-                  {/* Goal title and description */}
+                  {/* Goal title only */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase mb-1 md:mb-2"
+                      <h3 className="font-bold text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase"
                           style={{ 
                             color: '#ffffff',
                             WebkitTextFillColor: '#ffffff',
@@ -195,12 +195,6 @@ const Index = () => {
                           }}>
                         {goal.name}
                       </h3>
-                      <p className="text-white/90 text-xs md:text-sm leading-relaxed"
-                         style={{
-                           textShadow: '0 1px 3px rgba(0, 0, 0, 0.8)'
-                         }}>
-                        {goal.description}
-                      </p>
                     </div>
                   </div>
 
