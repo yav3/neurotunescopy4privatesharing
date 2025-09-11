@@ -384,34 +384,175 @@ All colors MUST be HSL.
     overflow: hidden;
   }
 
-  /* Mobile-first responsive fixes */
-  @media (max-width: 640px) {
+  /* Container with responsive max-width */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 640px) {
     .container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    
-    /* Ensure cards don't overflow */
-    .card-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    /* Fix navigation spacing */
-    nav {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+      padding: 0 1.5rem;
     }
   }
 
-  /* Ensure images don't cause horizontal scroll */
+  @media (min-width: 1024px) {
+    .container {
+      padding: 0 2rem;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .container {
+      padding: 0 2.5rem;
+    }
+  }
+
+  /* Responsive grid system */
+  .responsive-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .responsive-grid {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .responsive-grid {
+      gap: 2rem;
+    }
+  }
+
+  /* Enhanced mobile-first responsive fixes */
+  @media (max-width: 479px) {
+    .container {
+      padding: 0 0.75rem;
+    }
+    
+    /* Ensure buttons are touch-friendly on mobile */
+    button, .btn {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Improve text readability on small screens */
+    h1, h2, h3 {
+      word-break: break-word;
+      hyphens: auto;
+    }
+
+    /* Touch-friendly navigation elements */
+    .nav-button {
+      min-height: 48px;
+      min-width: 48px;
+    }
+  }
+
+  @media (min-width: 480px) and (max-width: 639px) {
+    .container {
+      padding: 0 1rem;
+    }
+  }
+
+  /* Ensure images are responsive with performance optimizations */
   img {
     max-width: 100%;
     height: auto;
+    display: block;
   }
 
-  /* Fix for mobile viewport units */
+  /* Lazy loading placeholder */
+  .img-loading {
+    background: linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(var(--muted-foreground) / 0.1) 50%, hsl(var(--muted)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Fix mobile viewport units with CSS custom properties */
   .min-h-screen {
     min-height: 100vh;
-    min-height: 100dvh;
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+
+  /* Improved scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Enhanced custom scrollbar styles with responsive sizing */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  @media (min-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--border) / 0.8);
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .card {
+      border: 2px solid hsl(var(--foreground));
+    }
+    
+    button {
+      border: 2px solid hsl(var(--foreground));
+    }
+  }
+
+  /* Print styles */
+  @media print {
+    .nav-container,
+    .navigation,
+    button:not(.print-button) {
+      display: none;
+    }
+    
+    body {
+      font-size: 12pt;
+      line-height: 1.4;
+      color: black;
+      background: white;
+    }
+    
+    .card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
   }
 }

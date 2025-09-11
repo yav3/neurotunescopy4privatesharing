@@ -89,10 +89,11 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Enhanced Glassmorphism Goals Grid */}
-      <div className="px-4 -mt-2 pb-16 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
+      {/* Enhanced Responsive Goals Grid */}
+      <div className="container px-4 -mt-2 pb-20 relative z-10">
+        <div className="responsive-grid">
+          {/* Mobile-first responsive grid: 1 col on mobile, 2 on tablet, 3 on desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               const IconComponent = goal.icon;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
@@ -101,11 +102,15 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-700 aspect-[5/4]",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-700",
+                    // Responsive aspect ratios: square on mobile, wider on larger screens
+                    "aspect-square sm:aspect-[4/3] lg:aspect-[5/4]",
                     "bg-white/5 backdrop-blur-md border border-white/10",
                     "shadow-glass hover:shadow-glass-lg",
+                    // Enhanced mobile touch interactions
                     "hover:scale-[1.02] hover:-translate-y-1 hover:bg-white/8",
-                    "hover:border-white/20",
+                    "active:scale-[0.98] active:duration-75",
+                    "hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-white/20",
                     "animate-fade-in"
                   )}
                   style={{ 
@@ -129,34 +134,39 @@ const Index = () => {
                   {/* Glassmorphism border effect */}
                   <div className="absolute inset-0 rounded-lg border border-white/10 group-hover:border-white/20 transition-all duration-300" />
                   
-                  {/* Content with enhanced glassmorphism */}
-                  <div className="relative z-10 p-2 md:p-3 h-full flex flex-col justify-between items-center text-center">
+                  {/* Responsive content with enhanced glassmorphism */}
+                  <div className="relative z-10 p-3 sm:p-4 lg:p-5 h-full flex flex-col justify-between items-center text-center">
                     <div className="flex flex-col items-center space-y-1 flex-1 justify-center">
-                      {/* Glassmorphism text background */}
-                      <div className="bg-black/20 backdrop-blur-sm rounded-lg px-2 py-1 border border-white/10">
-                        <h3 className="text-xs md:text-sm font-bold text-white group-hover:text-white transition-colors leading-tight font-sf">
+                      {/* Responsive glassmorphism text background */}
+                      <div className="bg-black/20 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10">
+                        <h3 className="font-bold text-white group-hover:text-white transition-colors leading-tight font-sf"
+                            style={{ fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }}>
                           {goal.name}
                         </h3>
                       </div>
                     </div>
 
-                    {/* Enhanced Glassmorphism Button */}
-                    <div className="mt-auto pt-1">
+                    {/* Responsive Enhanced Glassmorphism Button */}
+                    <div className="mt-auto pt-2">
                       <Button
                         variant="ghost"
-                        size="sm"
                         className={cn(
                           "transition-all duration-500",
                           "bg-white/10 backdrop-blur-md border border-white/20",
                           "text-white hover:text-white",
                           "hover:bg-white/20 hover:border-white/30",
-                          "px-2 py-1 text-xs font-medium font-sf",
+                          "px-3 py-2 sm:px-4 sm:py-2 font-medium font-sf",
                           "shadow-glass-inset hover:shadow-glass",
-                          "group-hover:scale-105"
+                          "group-hover:scale-105 active:scale-95",
+                          // Responsive text sizing
+                          "text-xs sm:text-sm",
+                          // Touch-friendly sizing on mobile
+                          "min-h-[44px] sm:min-h-auto"
                         )}
                       >
-                        Explore Genres
-                        <ArrowLeft className="w-3 h-3 ml-1 rotate-180 transition-all duration-300 group-hover:translate-x-1" />
+                        <span className="hidden sm:inline">Explore Genres</span>
+                        <span className="sm:hidden">Explore</span>
+                        <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 ml-1 rotate-180 transition-all duration-300 group-hover:translate-x-1" />
                       </Button>
                     </div>
                   </div>

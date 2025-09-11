@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import App from './App.tsx'
 import './index.css'
+import { initResponsive } from './utils/viewport'
+
+// Initialize responsive utilities
+initResponsive();
 
 // Force hard reload to pick up new .env values
 if (typeof window !== 'undefined' && window.location.search.includes('reload=env')) {
