@@ -134,21 +134,90 @@ const GenreView: React.FC = () => {
         setIsLoading(false);
         
         try {
-          // Try to get tracks from storage
-          const result = await Promise.race([
-            getTracksFromServiceStorage(goal.backendKey, 50, selectedGenre.buckets),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage timeout')), 3000))
-          ]) as any;
+          // Pull directly from storage buckets
+          console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
           
-          const fetchedTracks = result.tracks || [];
+          const { supabase } = await import('@/integrations/supabase/client');
+          let allTracks: any[] = [];
+
+          // Process each bucket directly
+          for (const bucketName of selectedGenre.buckets) {
+            try {
+              console.log(`🗂️ Processing bucket: ${bucketName} directly`);
+              
+              // List files directly from bucket
+              const { data: files, error: listError } = await supabase.storage
+                .from(bucketName)
+                .list('', {
+                  limit: 1000,
+                  sortBy: { column: 'name', order: 'asc' }
+                });
+
+              if (listError) {
+                console.error(`❌ Error listing files in bucket ${bucketName}:`, listError);
+                continue;
+              }
+
+              if (!files || files.length === 0) {
+                console.log(`📂 No files found in bucket: ${bucketName}`);
+                continue;
+              }
+
+              // Filter for audio files
+              const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+              const audioFiles = files.filter(file => 
+                audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+              );
+
+              console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
+
+              // Convert to track format
+              const bucketTracks = audioFiles.map((file) => {
+                const { data: urlData } = supabase.storage
+                  .from(bucketName)
+                  .getPublicUrl(file.name);
+                
+                // Clean up the file name for display
+                const cleanTitle = file.name
+                  .replace(/\.[^/.]+$/, '') // Remove extension
+                  .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
+                  .replace(/\s+/g, ' ') // Clean up multiple spaces
+                  .split(' ')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                  .join(' ')
+                  .trim();
+
+                return {
+                  id: `${bucketName}-${file.name}`,
+                  title: cleanTitle,
+                  storage_bucket: bucketName,
+                  storage_key: file.name,
+                  stream_url: urlData.publicUrl,
+                };
+              });
+
+              allTracks.push(...bucketTracks);
+              console.log(`✅ Added ${bucketTracks.length} tracks from bucket: ${bucketName}`);
+
+            } catch (error) {
+              console.error(`❌ Error processing bucket ${bucketName}:`, error);
+              continue;
+            }
+          }
+
+          console.log(`🎯 Total tracks found across all buckets: ${allTracks.length}`);
           
           // Only replace fallback tracks if we actually found real tracks
-          if (fetchedTracks && fetchedTracks.length > 0) {
-            setTracks(fetchedTracks);
-            console.log(`✅ Loaded ${fetchedTracks.length} real tracks for ${selectedGenre.name}`);
+          if (allTracks && allTracks.length > 0) {
+            // Shuffle and limit results  
+            const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
+            const limitedTracks = shuffledTracks.slice(0, 100); // Limit to 100 tracks
+            
+            setTracks(limitedTracks);
+            console.log(`✅ Loaded ${limitedTracks.length} real tracks for ${selectedGenre.name} directly from storage`);
           }
         } catch (storageError) {
-          console.warn(`⚠️ Storage timeout or error for ${selectedGenre.name}:`, storageError);
+          console.warn(`⚠️ Direct storage access error for ${selectedGenre.name}:`, storageError);
         }
         
       } catch (error) {

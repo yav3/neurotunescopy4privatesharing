@@ -475,35 +475,71 @@ export const useAudioStore = create<AudioState>((set, get) => {
         adminLog('🎵 Starting therapeutic session for goal:', goal);
         userLog('🎵 Preparing your therapeutic music session...');
         
-        // Use service storage access for focus-enhancement to access classicalfocus bucket directly
+        // Pull directly from classicalfocus bucket for focus-enhancement
         if (goal === 'focus-enhancement') {
-          const { getTracksFromServiceStorage } = await import('@/services/serviceStorageAccess');
           console.log(`🎯 Loading tracks directly from classicalfocus bucket for: "${goal}"`);
-          const { tracks: storageTracks, error } = await getTracksFromServiceStorage(goal, 50, ['classicalfocus']);
           
-          if (error) {
-            throw new Error(error);
+          const { supabase } = await import('@/integrations/supabase/client');
+          
+          // List files directly from classicalfocus bucket
+          const { data: files, error: listError } = await supabase.storage
+            .from('classicalfocus')
+            .list('', {
+              limit: 1000,
+              sortBy: { column: 'name', order: 'asc' }
+            });
+
+          if (listError) {
+            throw new Error(`Failed to access classicalfocus bucket: ${listError.message}`);
           }
 
-          if (!storageTracks || storageTracks.length === 0) {
-            throw new Error(`No tracks available in classicalfocus bucket for goal "${goal}"`);
+          if (!files || files.length === 0) {
+            throw new Error(`No files found in classicalfocus bucket`);
           }
 
-          adminLog('✅ Retrieved', storageTracks.length, 'tracks from classicalfocus bucket');
+          // Filter for audio files
+          const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+          const audioFiles = files.filter(file => 
+            audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+          );
 
-          // Convert storage tracks to Track format
-          let tracks: Track[] = storageTracks.map((track) => ({
-            id: track.id,
-            title: track.title,
-            artist: 'Classical Focus Collection',
-            duration: 0,
-            storage_bucket: track.storage_bucket,
-            storage_key: track.storage_key,
-            stream_url: track.stream_url, // Use the stream_url from service
-            audio_status: 'working' as const,
-          }));
+          console.log(`🎵 Found ${audioFiles.length} audio files in classicalfocus bucket`);
 
-          console.log(`✅ Converted ${tracks.length} classicalfocus tracks for playback`);
+          if (audioFiles.length === 0) {
+            throw new Error(`No audio files found in classicalfocus bucket`);
+          }
+
+          adminLog('✅ Retrieved', audioFiles.length, 'audio files from classicalfocus bucket');
+
+          // Convert to Track format with public URLs
+          let tracks: Track[] = audioFiles.map((file) => {
+            const { data: urlData } = supabase.storage
+              .from('classicalfocus')
+              .getPublicUrl(file.name);
+            
+            // Clean up the file name for display
+            const cleanTitle = file.name
+              .replace(/\.[^/.]+$/, '') // Remove extension
+              .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
+              .replace(/\s+/g, ' ') // Clean up multiple spaces
+              .split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+              .join(' ')
+              .trim();
+
+            return {
+              id: `classicalfocus-${file.name}`,
+              title: cleanTitle,
+              artist: 'Classical Focus Collection',
+              duration: 0,
+              storage_bucket: 'classicalfocus',
+              storage_key: file.name,
+              stream_url: urlData.publicUrl,
+              audio_status: 'working' as const,
+            };
+          });
+
+          console.log(`✅ Converted ${tracks.length} classicalfocus tracks for direct playback`);
 
           // Validate and set up queue
           const { working } = await validateTracks(tracks);
@@ -515,7 +551,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           const shuffled = working.sort(() => Math.random() - 0.5);
 
           await get().setQueue(shuffled, 0);
-          userLog(`🎵 Playing ${working.length} classical focus tracks`);
+          userLog(`🎵 Playing ${working.length} classical focus tracks directly from storage`);
           return working.length;
         } else {
           // Use regular storage direct access for other goals
