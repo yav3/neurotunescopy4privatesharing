@@ -69,7 +69,14 @@ const GenreView: React.FC = () => {
           id: 'peaceful-piano',
           name: 'Peaceful Piano',
           description: 'Serene piano compositions for deep focus',
-          buckets: ['Chopin', 'classicalfocus'],
+          buckets: ['Chopin'],
+          artwork: crossoverClassicalArt
+        },
+        {
+          id: 'crossover-classical',
+          name: 'Classical Crossover',
+          description: 'Modern classical compositions for focus',
+          buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
@@ -93,7 +100,14 @@ const GenreView: React.FC = () => {
           id: 'peaceful-piano',
           name: 'Peaceful Piano',
           description: 'Serene piano compositions',
-          buckets: ['Chopin', 'classicalfocus'],
+          buckets: ['Chopin'],
+          artwork: crossoverClassicalArt
+        },
+        {
+          id: 'crossover-classical',
+          name: 'Classical Crossover',
+          description: 'Modern classical compositions',
+          buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
