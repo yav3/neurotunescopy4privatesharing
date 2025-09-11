@@ -10,10 +10,8 @@ import { cn } from '@/lib/utils';
 // Import generated nature images
 import focusImage from '@/assets/focus-nature-piano.jpg';
 import stressImage from '@/assets/stress-nature-music.jpg';
-import cardioImage from '@/assets/cardio-nature-energy.jpg';
 import moodImage from '@/assets/mood-nature-guitar.jpg';
 import painImage from '@/assets/pain-nature-harp.jpg';
-import energyImage from '@/assets/energy-sunrise-instruments.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -115,15 +113,15 @@ const Index = () => {
       {/* Compact goals grid that fits in viewport */}
       <div className="container px-4 pb-16 relative z-10">
         <div className="max-w-5xl mx-auto">
-          {/* Smaller cards that fit without scrolling */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
+          {/* Balanced 2x2 grid for 4 cards */}
+          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-2xl mx-auto">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[4/3] rounded-xl border-0",
+                    "aspect-square rounded-xl border-0",
                     "hover:scale-[1.02] hover:-translate-y-1",
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
@@ -154,14 +152,6 @@ const Index = () => {
                       />
                     )}
                     
-                    {goal.id === 'cardio-support' && (
-                      <img 
-                        src={cardioImage}
-                        alt="Energetic ocean wave for cardio support"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                    
                     {goal.id === 'mood-boost' && (
                       <img 
                         src={moodImage}
@@ -174,14 +164,6 @@ const Index = () => {
                       <img 
                         src={painImage}
                         alt="Harp in peaceful garden for pain relief"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                    
-                    {goal.id === 'energy-boost' && (
-                      <img 
-                        src={energyImage}
-                        alt="Keyboard and drums with sunrise for energy boost"
                         className="w-full h-full object-cover"
                       />
                     )}
