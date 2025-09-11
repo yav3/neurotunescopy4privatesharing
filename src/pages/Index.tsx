@@ -60,10 +60,10 @@ const Index = () => {
       <div className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/20 to-primary/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent)] pointer-events-none" />
         
-        <div className="relative z-10 px-4 py-3 md:px-6 md:py-6">
+        <div className="relative z-10 px-4 py-2 md:px-6 md:py-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-4 md:mb-6">
-              <h1 className="text-lg md:text-2xl font-bold mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            <div className="text-center mb-2 md:mb-4">
+              <h1 className="text-lg md:text-2xl font-bold mb-1 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
                 Therapeutic Goals
               </h1>
             </div>
@@ -72,9 +72,9 @@ const Index = () => {
       </div>
 
       {/* Goals Grid */}
-      <div className="px-4 -mt-4 pb-36">
+      <div className="px-4 -mt-2 pb-20">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {THERAPEUTIC_GOALS.map((goal) => {
               const IconComponent = goal.icon;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
@@ -83,7 +83,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-square",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-[4/5]",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
@@ -103,24 +103,25 @@ const Index = () => {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all duration-500" />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-4 md:p-5 h-full flex flex-col justify-between items-center text-center">
-                     <div className="flex flex-col items-center space-y-3 flex-1 justify-center">
-                       <h3 className="text-base md:text-lg font-bold text-white group-hover:text-white transition-colors leading-tight">
+                   <div className="relative z-10 p-3 md:p-4 h-full flex flex-col justify-between items-center text-center">
+                     <div className="flex flex-col items-center space-y-2 flex-1 justify-center">
+                       <h3 className="text-sm md:text-base font-bold text-white group-hover:text-white transition-colors leading-tight">
                          {goal.name}
                        </h3>
                      </div>
 
                      {/* Action Button - Always visible */}
-                     <div className="mt-auto pt-3">
+                     <div className="mt-auto pt-2">
                        <Button
                          variant="outline"
+                         size="sm"
                          className={cn(
                            "transition-all duration-300 group-hover:border-white group-hover:text-black group-hover:bg-white",
-                           "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm"
+                           "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-3 py-1.5 text-xs font-medium backdrop-blur-sm"
                          )}
                        >
                          Explore Genres
-                         <ArrowLeft className="w-4 h-4 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
+                         <ArrowLeft className="w-3 h-3 ml-1 rotate-180 transition-transform group-hover:translate-x-1" />
                        </Button>
                      </div>
                    </div>
