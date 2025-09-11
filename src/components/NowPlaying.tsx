@@ -203,6 +203,7 @@ export const NowPlaying: React.FC = () => {
   // Get therapeutic artwork for current track
   const frequencyBand = getFrequencyBandFromBPM(track.bpm);
   const artwork = getTherapeuticArtwork(frequencyBand, track.id);
+  const artworkUrl = track.album_art_url || (track as any).artwork_url || artwork.url;
 
   // Show full player when playerMode is 'full'
   if (playerMode === 'full') {
@@ -227,7 +228,7 @@ export const NowPlaying: React.FC = () => {
             {/* Album artwork - responsive sizing */}
             <div className="aspect-square relative mb-6 sm:mb-8 rounded-2xl overflow-hidden shadow-2xl mx-auto max-w-[280px] sm:max-w-[320px] md:max-w-[400px]">
               <img 
-                src={artwork.url} 
+                src={artworkUrl} 
                 alt={track.title}
                 className="w-full h-full object-cover"
               />
@@ -371,14 +372,14 @@ export const NowPlaying: React.FC = () => {
               ) : (
                 <>
                    <img 
-                     src={artwork.url} 
+                     src={artworkUrl} 
                      alt={track.title}
                      className="w-full h-full object-cover"
                      onLoad={() => {
-                       console.log('🖼️ Album artwork loaded successfully:', artwork.url);
+                       console.log('🖼️ Album artwork loaded successfully:', artworkUrl);
                      }}
                      onError={(e) => {
-                       console.warn('❌ Failed to load album artwork:', artwork.url);
+                       console.warn('❌ Failed to load album artwork:', artworkUrl);
                        // Fallback to brain emoji if image fails to load
                        e.currentTarget.style.display = 'none';
                        const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;

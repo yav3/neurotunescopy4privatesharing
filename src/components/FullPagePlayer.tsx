@@ -149,8 +149,8 @@ export const FullPagePlayer = () => {
         {/* Album artwork */}
         <div className="aspect-square relative mb-8 rounded-3xl overflow-hidden shadow-2xl">
           <img 
-            src={getTherapeuticArtwork()}
-            alt={`${getTherapeuticGoalName()} - Therapeutic Music`}
+            src={track.album_art_url || (track as any).artwork_url || getTherapeuticArtwork()}
+            alt={track.title || `${getTherapeuticGoalName()} - Therapeutic Music`}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />

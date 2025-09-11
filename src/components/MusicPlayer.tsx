@@ -53,8 +53,8 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
 
           <div className="aspect-square relative mb-8 rounded-2xl overflow-hidden shadow-player">
             <img 
-              src={moodBoostArtwork} 
-              alt="Now Playing"
+              src={track.album_art_url || (track as any).artwork_url || moodBoostArtwork} 
+              alt={track.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
