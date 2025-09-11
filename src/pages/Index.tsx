@@ -109,27 +109,62 @@ const Index = () => {
                   }}
                   onClick={() => handleGoalSelect(goal)}
                 >
-                  {/* Premium gradient background */}
+                  {/* Enhanced glass morphism background */}
                   <div className={cn(
                     "absolute inset-0 bg-gradient-to-br transition-all duration-700",
                     theme.gradient,
                     "group-hover:scale-105"
                   )} />
 
-                  {/* Abstract geometric shapes */}
+                  {/* Multi-layered glass morphism effects */}
                   <div className="absolute inset-0 overflow-hidden">
-                    {/* Primary abstract shape */}
-                    <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-xl" />
-                    <div className="absolute top-1/3 -left-8 w-24 h-24 rotate-45 bg-white/8 rounded-2xl blur-lg" />
-                    <div className="absolute bottom-1/4 right-1/4 w-16 h-16 rounded-full bg-white/12 blur-md" />
+                    {/* Primary glass layer */}
+                    <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/10" />
                     
-                    {/* Secondary geometric elements */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-white/20 rounded-full opacity-30" />
-                    <div className="absolute bottom-4 left-4 w-8 h-8 bg-white/15 rounded-lg rotate-12 blur-sm" />
+                    {/* Floating glass bubbles */}
+                    <div className="absolute top-4 right-6 w-20 h-20 bg-white/15 rounded-full backdrop-blur-md border border-white/20 opacity-60" />
+                    <div className="absolute top-12 left-8 w-14 h-14 bg-white/10 rounded-full backdrop-blur-sm border border-white/10 opacity-40" />
+                    <div className="absolute bottom-8 right-4 w-16 h-16 bg-white/12 rounded-full backdrop-blur-md border border-white/15 opacity-50" />
+                    
+                    {/* Abstract geometric glass shapes */}
+                    <div className="absolute top-1/4 left-1/4 w-12 h-12 bg-white/8 backdrop-blur-sm border border-white/20 rounded-xl rotate-45 opacity-70" />
+                    <div className="absolute bottom-1/3 left-1/2 w-8 h-16 bg-white/6 backdrop-blur-sm border border-white/15 rounded-full transform -rotate-12 opacity-60" />
+                    
+                    {/* Floating abstract elements */}
+                    <div className="absolute top-2 left-1/3 w-6 h-6 bg-gradient-to-br from-white/20 to-white/5 rounded-lg rotate-12 backdrop-blur-sm border border-white/30" />
+                    <div className="absolute bottom-6 right-1/3 w-4 h-8 bg-gradient-to-t from-white/15 to-transparent rounded-full backdrop-blur-sm" />
+                    
+                    {/* Dynamic light rays */}
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-conic from-white/20 via-transparent to-transparent rounded-full opacity-30 animate-pulse" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-radial from-white/10 via-transparent to-transparent opacity-40" />
                   </div>
 
-                  {/* Subtle pattern overlay */}
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_0%,transparent_70%)] opacity-60" />
+                  {/* Enhanced abstract geometric shapes */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    {/* Primary abstract shape with glass effect */}
+                    <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-white/8 backdrop-blur-md border border-white/20 blur-sm group-hover:blur-none transition-all duration-500" />
+                    <div className="absolute top-1/3 -left-6 w-20 h-20 rotate-45 bg-white/6 backdrop-blur-sm border border-white/15 rounded-2xl blur-md group-hover:rotate-12 transition-all duration-700" />
+                    <div className="absolute bottom-1/4 right-1/4 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/25 blur-sm group-hover:scale-110 transition-all duration-500" />
+                    
+                    {/* Secondary geometric elements with enhanced glass */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-36 h-36 border border-white/15 rounded-full opacity-30 backdrop-blur-[0.5px]" />
+                    <div className="absolute top-1/3 right-1/3 w-10 h-2 bg-white/20 rounded-full backdrop-blur-sm border border-white/30 rotate-45" />
+                    <div className="absolute bottom-1/2 left-1/4 w-6 h-12 bg-gradient-to-b from-white/15 to-transparent rounded-full backdrop-blur-sm transform rotate-12" />
+                    
+                    {/* Hexagonal abstract elements */}
+                    <div className="absolute top-6 left-6 w-8 h-8 bg-white/12 backdrop-blur-sm border border-white/25" 
+                         style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+                    <div className="absolute bottom-8 right-8 w-6 h-6 bg-white/10 backdrop-blur-sm border border-white/20 rotate-12" 
+                         style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+                  </div>
+
+                  {/* Enhanced pattern overlays */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15)_0%,transparent_50%)] opacity-60" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.1)_0%,transparent_60%)] opacity-40" />
+                  
+                  {/* Mesh gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-80" />
                   
                   {/* Compact content layout */}
                   <div className="relative z-10 p-4 h-full flex flex-col">
