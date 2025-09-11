@@ -144,6 +144,13 @@ const GenreView: React.FC = () => {
           description: 'Ethereal new age sounds for deep relaxation',
           buckets: ['samba'],
           artwork: '/lovable-uploads/acoustic-sunset-field.png'
+        },
+        {
+          id: 'opera',
+          name: 'Opera',
+          description: 'Classical opera for emotional release and stress relief',
+          buckets: ['opera'],
+          artwork: '/lovable-uploads/european-classical-terrace.png'
         }
       ];
     } else if (goalId === 'mood-boost') {
