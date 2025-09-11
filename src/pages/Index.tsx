@@ -69,8 +69,8 @@ const Index = () => {
                   <div className="absolute inset-0">
                     {goal.id === 'focus-enhancement' && (
                       <img 
-                        src="/lovable-uploads/8182748c-ae0a-49dd-b6ea-45b138a363b4.png"
-                        alt="Glass piano with floating musical notes for focus"
+                        src="/lovable-uploads/5253757b-f0d2-4a4d-a276-3312f8c25598.png"
+                        alt="Ocean wave with flowers for focus enhancement"
                         className="w-full h-full object-cover"
                       />
                     )}
