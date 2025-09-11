@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
-import { NowPlaying } from "@/components/NowPlaying";
-import { MusicPlayer } from "@/components/MusicPlayer";
+import { FullPagePlayer } from "@/components/FullPagePlayer";
+import { MinimizedPlayer } from "@/components/MinimizedPlayer";
 import { TherapeuticDebugPanel } from "@/components/TherapeuticDebugPanel";
 import MusicDeliveryStatus from "@/components/MusicDeliveryStatus";
 import ConnectivityPanel from "@/components/ConnectivityPanel";
@@ -17,6 +17,7 @@ import { AuthPage } from "@/components/auth/AuthPage";
 import { LandingPage } from "@/components/LandingPage";
 import NeuralPositiveLanding from "@/components/NeuralPositiveLanding";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
+import { useAudioStore } from "@/stores";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
@@ -38,7 +39,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const { user, loading } = useAuthContext();
-  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+  const { currentTrack, playerMode } = useAudioStore();
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
@@ -111,9 +112,9 @@ const App = () => {
               <Route path="*" element={<Index />} />
             </Routes>
             
-            {/* Global Music Players - Always available */}
-            <NowPlaying />
-            <MusicPlayer open={showMusicPlayer} onOpenChange={setShowMusicPlayer} />
+            {/* Global Music Players - Based on playerMode */}
+            {currentTrack && playerMode === 'full' && <FullPagePlayer />}
+            {currentTrack && playerMode === 'mini' && <MinimizedPlayer />}
           </div>
           <DevDebugPanel />
         </ErrorBoundary>

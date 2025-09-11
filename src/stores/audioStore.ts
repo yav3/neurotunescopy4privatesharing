@@ -61,6 +61,7 @@ type AudioState = {
   setQueue: (tracks: Track[], startAt?: number) => Promise<void>;
   play: () => void;
   pause: () => void;
+  stop: () => void;
   next: () => Promise<void>;
   prev: () => Promise<void>;
   seek: (time: number) => void;
@@ -447,6 +448,22 @@ export const useAudioStore = create<AudioState>((set, get) => {
       } else {
         set({ error: "Track not available", isLoading: false });
       }
+    },
+
+    stop: () => {
+      const audio = initAudio();
+      audio.pause();
+      audio.src = '';
+      set({ 
+        isPlaying: false, 
+        currentTrack: null, 
+        currentTime: 0, 
+        duration: 0, 
+        queue: [], 
+        index: -1,
+        isLoading: false,
+        error: undefined
+      });
     },
 
     playFromGoal: async (goal: string) => {
