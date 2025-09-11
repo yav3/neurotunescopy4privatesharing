@@ -200,12 +200,13 @@ const GenreView: React.FC = () => {
               
               const cleanTitle = file.name
                 .replace(/\.[^/.]+$/, '') // Remove extension
+                .replace(/([A-Z])/g, ' $1') // Add space before capitals
                 .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
                 .replace(/\s+/g, ' ') // Clean up multiple spaces
+                .trim()
                 .split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                .join(' ')
-                .trim();
+                .join(' ');
 
               const track = {
                 id: `${bucketName}-${file.name}`,
@@ -273,19 +274,16 @@ const GenreView: React.FC = () => {
     }
 
     try {
-      toast.loading(`Starting ${selectedGenre?.name.toLowerCase()} session...`, { id: "track-play" });
+      console.log(`🎵 Playing track:`, track);
+      toast.loading(`Starting playback...`, { id: "track-play" });
       
-      // Play directly from bucket - bypass all APIs and edge functions
-      console.log(`🎵 Playing directly from ${selectedGenre?.name} bucket:`, track);
+      // Use the audio store's playTrack method directly
+      await useAudioStore.getState().playTrack(track);
       
-      // Get the audio store and play the specific track directly
-      const { playTrack } = useAudioStore.getState();
-      await playTrack(track);
-      
-      toast.success(`Playing ${track.title}`, { id: "track-play" });
+      toast.success(`Now playing: ${track.title}`, { id: "track-play" });
     } catch (error) {
       console.error('❌ Failed to play track:', error);
-      toast.error("Failed to start playback", { id: "track-play" });
+      toast.error("Failed to start playback. Please try another track.", { id: "track-play" });
     }
   };
 
