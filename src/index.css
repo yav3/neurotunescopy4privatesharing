@@ -43,25 +43,25 @@ All colors MUST be HSL.
   .dark {
     /* Dark Mode - Much Darker Blue Background */
     --background: 217 100% 2%; /* Much darker blue background */
-    --foreground: 0 0% 100%; /* White text */
+    --foreground: 0 0% 98%; /* Light text */
 
     --card: 217 100% 3%; /* Much darker blue card background */
-    --card-foreground: 0 0% 100%; /* White card text */
+    --card-foreground: 0 0% 98%; /* Light card text */
 
     --popover: 217 100% 2%; /* Much darker blue popover */
-    --popover-foreground: 0 0% 100%; /* White popover text */
+    --popover-foreground: 0 0% 98%; /* Light popover text */
 
     --primary: 217 91% 60%; /* Blue primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
     --secondary: 217 91% 20%; /* Dark blue secondary */
-    --secondary-foreground: 0 0% 100%; /* White secondary text */
+    --secondary-foreground: 0 0% 98%; /* Light secondary text */
 
     --muted: 217 91% 15%; /* Dark blue muted */
-    --muted-foreground: 0 0% 90%; /* Light gray muted text for better contrast */
+    --muted-foreground: 0 0% 80%; /* Light gray muted text for better contrast */
 
     --accent: 217 91% 50%; /* Medium blue accent */
-    --accent-foreground: 0 0% 100%; /* White accent text */
+    --accent-foreground: 0 0% 98%; /* Light accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
@@ -73,6 +73,16 @@ All colors MUST be HSL.
     /* Dark mode gradients */
     --gradient-hero: linear-gradient(180deg, hsl(217 100% 2%), hsl(217 91% 3%));
     --gradient-card: linear-gradient(135deg, hsl(217 100% 3%), hsl(217 91% 4%), hsl(217 100% 2%));
+    
+    /* Dark mode sidebar colors */
+    --sidebar-background: 217 100% 3%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 91% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 217 91% 25%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   /* Common variables for both themes */
