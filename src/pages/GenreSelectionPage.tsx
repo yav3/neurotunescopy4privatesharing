@@ -213,33 +213,29 @@ export default function GenreSelectionPage() {
       {/* Clean Genre Grid - Mobile optimized */}
       <div className="px-3 sm:px-6 pb-12">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {genres.map((genre, index) => (
               <div
                 key={genre.id}
-                className="group relative aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-card border border-border/50 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="group relative aspect-[4/3] sm:aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-card border border-border/50 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 onClick={() => handleGenreSelect(genre.id)}
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <img 
                     src={genre.image}
-                    alt={genre.name}
+                    alt={`${genre.name} cover art`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
                 </div>
                 
                 {/* Position text to avoid obscuring pianos */}
                 <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl drop-shadow-2xl leading-tight"
-                    style={{ 
-                      color: '#ffffff !important',
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-                      WebkitTextFillColor: '#ffffff',
-                      fontWeight: '700'
-                    }}
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-[hsl(var(--text-white))] drop-shadow-xl"
                   >
                     {genre.name}
                   </h3>

@@ -325,9 +325,22 @@ const GenreView: React.FC = () => {
               
               const cleanTitle = file.name.replace(/\.[^/.]+$/, ''); // Remove extension only
 
-              // Truly random album art selection for variety
-              const randomArtworkIndex = Math.floor(Math.random() * albumArtUrls.length);
-              const selectedArtwork = albumArtUrls[randomArtworkIndex];
+              // Diverse album art selection using local pool + bucket images
+              const localArtPool = [
+                '/lovable-uploads/alpha-mountain-lake.png',
+                '/lovable-uploads/beta-waterfall.png',
+                '/lovable-uploads/gamma-sunbeam-forest.png',
+                '/lovable-uploads/delta-moonlit-lake.png',
+                '/lovable-uploads/theta-misty-path.png',
+                '/lovable-uploads/european-classical-terrace.png',
+                '/lovable-uploads/string-quartet-studio.png',
+                '/lovable-uploads/classical-meadow-ensemble.png',
+                '/lovable-uploads/acoustic-sunset-field.png',
+                '/lovable-uploads/folk-instruments-meadow.png'
+              ];
+              const artPool = [...(albumArtUrls || []), ...localArtPool];
+              const seed = Array.from(fullPath).reduce((a, c) => (a + c.charCodeAt(0)) % 2147483647, 0);
+              const selectedArtwork = artPool.length ? artPool[seed % artPool.length] : selectedGenre.artwork;
 
               const track = {
                 id: `${bucketName}-${fullPath}-${Date.now()}-${Math.random()}`, // Unique ID each time

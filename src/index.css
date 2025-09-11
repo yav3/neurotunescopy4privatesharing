@@ -10,7 +10,7 @@ All colors MUST be HSL.
   :root {
     /* Light Mode - Pure White Background with Dark Text */
     --background: 0 0% 100%; /* Pure white background */
-    --foreground: 0 0% 9%; /* Almost black text */
+    --foreground: 217 45% 18%; /* Deep blue foreground text */
 
     --card: 0 0% 100%; /* Pure white card background */
     --card-foreground: 0 0% 9%; /* Almost black card text */
