@@ -99,7 +99,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
       {/* Enhanced Controls Header */}
       <div className="flex items-center justify-between mb-6 p-4 bg-card/50 rounded-lg border border-border/40">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-foreground">Playlist Controls</h2>
+          <h2 className="text-lg font-semibold text-foreground">Music Collection</h2>
         </div>
         <div className="flex items-center gap-2">
           {/* Lightning Mode */}
@@ -136,7 +136,8 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
         </div>
       </div>
 
-      <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+      {/* Album Card Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 max-h-[70vh] overflow-y-auto pr-2">
         {filteredTracks.map((track) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = favorites.has(track.id);
@@ -144,14 +145,15 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
           return (
             <div
               key={track.id}
-              className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-border/60 hover:bg-card/90 transition-all duration-200 shadow-sm hover:shadow-md"
+              className={cn(
+                "bg-card/80 backdrop-blur-sm rounded-lg p-3 border border-border/60 hover:bg-card/90 transition-all duration-300 shadow-sm hover:shadow-lg group cursor-pointer hover:-translate-y-1",
+                isCurrentTrack && "ring-2 ring-primary/50 bg-card"
+              )}
+              onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
-              <div className="flex items-center gap-4">
-                {/* Album Art */}
-                <div 
-                  className="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 cursor-pointer"
-                  onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
-                >
+              {/* Album Art */}
+              <div className="relative aspect-square mb-3">
+                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center relative overflow-hidden">
                   {track.artwork_url ? (
                     <img 
                       src={track.artwork_url} 
@@ -159,35 +161,35 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                       className="w-full h-full object-cover rounded-lg"
                     />
                   ) : (
-                    <div className="w-8 h-8 bg-primary/40 rounded-md"></div>
+                    <div className="w-12 h-12 bg-primary/40 rounded-md"></div>
                   )}
+                  
+                  {/* Play Overlay */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-lg">
+                    <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                      {isLoading && isCurrentTrack ? (
+                        <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                      ) : (isPlaying && isCurrentTrack) ? (
+                        <Pause className="w-6 h-6 text-primary" />
+                      ) : (
+                        <Play className="w-6 h-6 text-primary ml-0.5" />
+                      )}
+                    </div>
+                  </div>
                 </div>
                 
-                {/* Track Info */}
-                <div 
-                  className="flex-1 min-w-0 cursor-pointer"
-                  onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
-                >
-                  <h3 className="text-foreground font-semibold text-base leading-tight truncate">
-                    {track.title}
-                  </h3>
-                  <p className="text-muted-foreground/80 text-sm mt-1">
-                    Therapeutic Music
-                  </p>
-                </div>
-                
-                {/* Enhanced Controls */}
-                <div className="flex items-center gap-1 flex-shrink-0">
+                {/* Action Buttons */}
+                <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   {/* Favorite */}
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={(e) => handleFavorite(track.id, e)}
                     className={cn(
-                      "w-8 h-8 transition-colors duration-200",
+                      "w-8 h-8 bg-black/50 hover:bg-black/70 transition-colors duration-200",
                       isFavorited 
                         ? "text-red-500 hover:text-red-600" 
-                        : "text-muted-foreground hover:text-red-500"
+                        : "text-white hover:text-red-500"
                     )}
                   >
                     <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
@@ -198,31 +200,21 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                     variant="ghost"
                     size="icon"
                     onClick={(e) => handleThumbsDown(track.id, e)}
-                    className="w-8 h-8 text-muted-foreground hover:text-destructive transition-colors duration-200"
+                    className="w-8 h-8 bg-black/50 hover:bg-black/70 text-white hover:text-destructive transition-colors duration-200"
                   >
                     <ThumbsDown className="w-4 h-4" />
                   </Button>
-
-                  {/* Play Button */}
-                  <Button
-                    size="default"
-                    variant={isCurrentTrack ? "default" : "ghost"}
-                    className="w-10 h-10 p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      isCurrentTrack ? onTogglePlay() : onTrackPlay(track);
-                    }}
-                    disabled={isLoading}
-                  >
-                    {isLoading && isCurrentTrack ? (
-                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    ) : (isPlaying && isCurrentTrack) ? (
-                      <Pause className="w-4 h-4" />
-                    ) : (
-                      <Play className="w-4 h-4" />
-                    )}
-                  </Button>
                 </div>
+              </div>
+              
+              {/* Track Info */}
+              <div className="text-center">
+                <h3 className="text-foreground font-medium text-sm leading-tight line-clamp-2 mb-1">
+                  {track.title}
+                </h3>
+                <p className="text-muted-foreground/70 text-xs">
+                  Therapeutic Music
+                </p>
               </div>
             </div>
           );
