@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%; /* White popover */
     --popover-foreground: 0 0% 9%; /* Almost black popover text */
 
-    --primary: 217 91% 60%; /* Blue primary */
+    --primary: 0 0% 15%; /* Dark gray primary instead of blue */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
     --secondary: 0 0% 96%; /* Very light gray secondary */
@@ -35,7 +35,7 @@ All colors MUST be HSL.
 
     --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
-    --ring: 217 91% 60%;
+    --ring: 0 0% 15%;
 
     --radius: 0.75rem;
   }
@@ -51,44 +51,44 @@ All colors MUST be HSL.
     --popover: 217 100% 2%; /* Much darker blue popover */
     --popover-foreground: 0 0% 98%; /* Light popover text */
 
-    --primary: 217 91% 60%; /* Blue primary */
+    --primary: 0 0% 15%; /* Dark gray primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 217 91% 20%; /* Dark blue secondary */
+    --secondary: 0 0% 10%; /* Dark gray secondary */
     --secondary-foreground: 0 0% 98%; /* Light secondary text */
 
-    --muted: 217 91% 15%; /* Dark blue muted */
+    --muted: 0 0% 8%; /* Dark gray muted */
     --muted-foreground: 0 0% 80%; /* Light gray muted text for better contrast */
 
-    --accent: 217 91% 50%; /* Medium blue accent */
+    --accent: 0 0% 25%; /* Medium gray accent */
     --accent-foreground: 0 0% 98%; /* Light accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 91% 25%; /* Medium dark blue borders */
-    --input: 217 91% 15%; /* Dark blue input background */
-    --ring: 217 91% 60%;
+    --border: 0 0% 20%; /* Medium dark gray borders */
+    --input: 0 0% 8%; /* Dark gray input background */
+    --ring: 0 0% 15%;
 
     /* Dark mode gradients */
-    --gradient-hero: linear-gradient(180deg, hsl(217 100% 2%), hsl(217 91% 3%));
-    --gradient-card: linear-gradient(135deg, hsl(217 100% 3%), hsl(217 91% 4%), hsl(217 100% 2%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 8%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 10%), hsl(0 0% 5%));
     
     /* Dark mode sidebar colors */
-    --sidebar-background: 217 100% 3%;
+    --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary: 0 0% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 91% 20%;
+    --sidebar-accent: 0 0% 20%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 217 91% 25%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 0 0% 15%;
   }
 
   /* Common variables for both themes */
   :root {
     /* Clean white gradient variations for cards */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%), hsl(217 91% 50%));
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 25%), hsl(0 0% 10%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 96%), hsl(0 0% 98%));
     --gradient-card-medium: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 94%), hsl(0 0% 96%));
@@ -127,12 +127,12 @@ All colors MUST be HSL.
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 15%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary: 0 0% 15%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 96%;
     --sidebar-accent-foreground: 0 0% 15%;
     --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-ring: 0 0% 15%;
   }
 }
 
@@ -181,12 +181,12 @@ All colors MUST be HSL.
 
   /* Link colors */
   a {
-    color: hsl(217 91% 60%) !important;
+    color: hsl(0 0% 15%) !important;
     font-family: var(--font-sf) !important;
   }
 
   a:hover {
-    color: hsl(217 91% 45%) !important;
+    color: hsl(0 0% 25%) !important;
   }
 
   /* Form elements */
@@ -351,9 +351,13 @@ All colors MUST be HSL.
     }
     
     /* Improve text readability on small screens */
+    h1 { font-size: 1.25rem !important; line-height: 1.35 !important; }
+    h2 { font-size: 1.125rem !important; line-height: 1.35 !important; }
+    h3 { font-size: 1rem !important; line-height: 1.25 !important; }
     h1, h2, h3 {
       word-break: break-word;
       hyphens: auto;
+      margin-bottom: 0.5rem;
     }
 
     /* Touch-friendly navigation elements */

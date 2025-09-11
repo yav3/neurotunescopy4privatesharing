@@ -97,9 +97,9 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
   return (
     <div className="w-full">
       {/* Enhanced Controls Header */}
-      <div className="flex items-center justify-between mb-6 p-4 bg-card/50 rounded-lg border border-border/40">
+      <div className="flex items-center justify-between mb-6 p-4 bg-white rounded-lg border border-gray-200">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-foreground">Music Collection</h2>
+          <h2 className="text-sm sm:text-base md:text-lg font-semibold text-foreground">Your Mix</h2>
         </div>
         <div className="flex items-center gap-2">
           {/* Lightning Mode */}
@@ -108,14 +108,16 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             size="sm"
             onClick={handleLightningMode}
             className={cn(
-              "transition-colors duration-200",
+              "transition-colors duration-200 text-xs sm:text-sm",
               lightningMode
-                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10"
-                : "text-muted-foreground hover:text-yellow-500"
+                ? "text-yellow-600 hover:text-yellow-700 bg-yellow-50"
+                : "text-gray-600 hover:text-yellow-600"
             )}
           >
-            <Zap className={cn("w-4 h-4 mr-2", lightningMode && "fill-current")} />
-            Lightning
+            <Zap className={cn("w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2", lightningMode && "fill-current")} />
+            <span className="hidden sm:inline">Lightning</span>
+            <span className="sm:hidden">⚡</span>
+            {lightningMode && <span className="ml-1 text-xs">save mix</span>}
           </Button>
 
           {/* Spatial Audio */}
@@ -124,20 +126,21 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             size="sm"
             onClick={handleSpatialAudio}
             className={cn(
-              "transition-colors duration-200",
+              "transition-colors duration-200 text-xs sm:text-sm",
               spatialAudioEnabled
-                ? "text-blue-500 hover:text-blue-600 bg-blue-500/10"
-                : "text-muted-foreground hover:text-blue-500"
+                ? "text-gray-700 hover:text-gray-800 bg-gray-100"
+                : "text-gray-600 hover:text-gray-700"
             )}
           >
-            <Radio className="w-4 h-4 mr-2" />
-            Spatial
+            <Radio className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Spatial</span>
+            <span className="sm:hidden">📡</span>
           </Button>
         </div>
       </div>
 
       {/* Album Card Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 max-h-[70vh] overflow-y-auto pr-2">
         {filteredTracks.map((track) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = favorites.has(track.id);
@@ -146,14 +149,14 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             <div
               key={track.id}
               className={cn(
-                "bg-card/80 backdrop-blur-sm rounded-lg p-3 border border-border/60 hover:bg-card/90 transition-all duration-300 shadow-sm hover:shadow-lg group cursor-pointer hover:-translate-y-1",
-                isCurrentTrack && "ring-2 ring-primary/50 bg-card"
+                "bg-white rounded-lg p-2 sm:p-3 border border-gray-200 hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-md group cursor-pointer hover:-translate-y-1",
+                isCurrentTrack && "ring-2 ring-gray-400 bg-gray-50"
               )}
               onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
               {/* Album Art */}
-              <div className="relative aspect-square mb-3">
-                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center relative overflow-hidden">
+              <div className="relative aspect-square mb-2 sm:mb-3">
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden">
                   {track.artwork_url ? (
                     <img 
                       src={track.artwork_url} 
@@ -161,18 +164,18 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                       className="w-full h-full object-cover rounded-lg"
                     />
                   ) : (
-                    <div className="w-12 h-12 bg-primary/40 rounded-md"></div>
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-300 rounded-md"></div>
                   )}
                   
                   {/* Play Overlay */}
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-lg">
-                    <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/90 rounded-full flex items-center justify-center">
                       {isLoading && isCurrentTrack ? (
-                        <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                        <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-gray-300 border-t-gray-800 rounded-full animate-spin" />
                       ) : (isPlaying && isCurrentTrack) ? (
-                        <Pause className="w-6 h-6 text-primary" />
+                        <Pause className="w-4 h-4 sm:w-6 sm:h-6 text-gray-800" />
                       ) : (
-                        <Play className="w-6 h-6 text-primary ml-0.5" />
+                        <Play className="w-4 h-4 sm:w-6 sm:h-6 text-gray-800 ml-0.5" />
                       )}
                     </div>
                   </div>
@@ -209,10 +212,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               
               {/* Track Info */}
               <div className="text-center">
-                <h3 className="text-foreground font-medium text-sm leading-tight line-clamp-2 mb-1">
+                <h3 className="text-foreground font-medium text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
                   {track.title}
                 </h3>
-                <p className="text-muted-foreground/70 text-xs">
+                <p className="text-gray-500 text-xs">
                   Therapeutic Music
                 </p>
               </div>
