@@ -188,35 +188,35 @@ export default function GenreSelectionPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_60%_/_0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.1),transparent_50%)]" />
         
-        {/* Header with refined spacing */}
-        <div className="relative z-10 px-6 py-8 md:px-12 md:py-16">
+        {/* Compact Header */}
+        <div className="relative z-10 px-6 py-4 md:px-12 md:py-6">
           <div className="max-w-6xl mx-auto">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="mb-8 text-muted-foreground hover:text-foreground hover:bg-card/50 backdrop-blur-sm border border-border/30 rounded-full px-4 transition-all duration-300"
+              className="mb-4 text-muted-foreground hover:text-foreground hover:bg-card/50 backdrop-blur-sm border border-border/30 rounded-full px-4 transition-all duration-300"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Goals
             </Button>
             
-            {/* Premium typography hierarchy */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/30 backdrop-blur-md rounded-full text-primary font-medium text-sm mb-6 border border-primary/20">
-                <Music className="w-4 h-4" />
+            {/* Compact typography hierarchy */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-card/30 backdrop-blur-md rounded-full text-primary font-medium text-xs mb-3 border border-primary/20">
+                <Music className="w-3 h-3" />
                 Therapeutic Music Selection
               </div>
               
-              <h1 className="text-3xl md:text-6xl font-bold mb-6 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight">
+              <h1 className="text-2xl md:text-4xl font-bold mb-3 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight">
                 {goal.name}
               </h1>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
                 {goal.description}
               </p>
               
-              <div className="text-sm text-muted-foreground/80 font-medium">
+              <div className="text-xs text-muted-foreground/80 font-medium">
                 Choose your preferred therapeutic sound experience
               </div>
             </div>
@@ -224,11 +224,11 @@ export default function GenreSelectionPage() {
         </div>
       </div>
 
-      {/* Premium Genre Grid */}
-      <div className="relative px-6 pb-16 md:px-12 md:pb-24">
+      {/* Compact Genre Grid */}
+      <div className="relative px-6 pb-8 md:px-12 md:pb-12">
         <div className="max-w-6xl mx-auto">
-          {/* Grid with premium spacing and responsive design */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Grid with compact spacing */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {genres.map((genre, index) => (
               <div
                 key={genre.id}
@@ -246,7 +246,7 @@ export default function GenreSelectionPage() {
                   )}
                   onClick={() => handleGenreSelect(genre.id)}
                 >
-                  {/* Enhanced image container */}
+                  {/* Compact image container */}
                   <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                     <img 
                       src={genre.image}
@@ -259,49 +259,49 @@ export default function GenreSelectionPage() {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
                     
                     {/* Premium floating badge */}
-                    <div className="absolute top-4 right-4 p-3 rounded-2xl bg-card/20 backdrop-blur-md border border-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-card/30">
-                      <Headphones className="w-5 h-5 text-primary" />
+                    <div className="absolute top-3 right-3 p-2.5 rounded-2xl bg-card/20 backdrop-blur-md border border-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-card/30">
+                      <Headphones className="w-4 h-4 text-primary" />
                     </div>
                     
                     {/* Track count badge */}
-                    <div className="absolute top-4 left-4 px-3 py-1.5 bg-card/90 backdrop-blur-md rounded-full text-xs font-medium text-foreground border border-border/30">
+                    <div className="absolute top-3 left-3 px-2.5 py-1 bg-card/90 backdrop-blur-md rounded-full text-xs font-medium text-foreground border border-border/30">
                       {genre.trackCount}
                     </div>
                   </div>
                   
-                  {/* Premium content section */}
-                  <div className="relative z-10 p-8">
-                    <div className="mb-6">
-                      <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors duration-300">
+                  {/* Compact content section */}
+                  <div className="relative z-10 p-6">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-300">
                         {genre.name}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed text-base">
+                      <p className="text-muted-foreground leading-relaxed text-sm">
                         {genre.description}
                       </p>
                     </div>
 
-                    {/* Premium status indicators */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                    {/* Compact status indicators */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                         Ready to play
                       </div>
-                      <div className="text-sm text-muted-foreground font-medium">
+                      <div className="text-xs text-muted-foreground font-medium">
                         Therapeutic grade
                       </div>
                     </div>
 
-                    {/* Premium action button */}
+                    {/* Compact action button */}
                     <Button
                       className={cn(
-                        "w-full h-12 rounded-xl font-semibold text-base",
+                        "w-full h-10 rounded-xl font-semibold text-sm",
                         "bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground",
                         "border-2 border-primary/20 hover:border-primary",
                         "transition-all duration-300 group-hover:shadow-lg",
                         "backdrop-blur-sm"
                       )}
                     >
-                      <Play className="w-4 h-4 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                      <Play className="w-3 h-3 mr-2 group-hover:scale-110 transition-transform duration-300" />
                       Begin Session
                     </Button>
                   </div>
