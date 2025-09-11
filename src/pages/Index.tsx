@@ -85,8 +85,8 @@ const Index = () => {
                     
                     {goal.id === 'cardio-support' && (
                       <img 
-                        src="/lovable-uploads/3e3d1eea-129c-46ad-9052-38849c266b2b.png"
-                        alt="Palm trees on tropical beach"
+                        src="/lovable-uploads/33cf308d-4a24-4a79-9ab3-4689a459980e.png"
+                        alt="Tropical sunset with palm trees for cardio energy"
                         className="w-full h-full object-cover"
                       />
                     )}
