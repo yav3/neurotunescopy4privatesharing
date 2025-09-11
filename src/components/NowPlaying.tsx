@@ -278,28 +278,29 @@ export const NowPlaying: React.FC = () => {
               </Button>
             </div>
 
-            {/* Enhanced controls - responsive layout */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4">
-              <div className="flex items-center gap-3 justify-center sm:justify-start">
+            {/* Enhanced controls - always visible and well-spaced */}
+            <div className="space-y-4 px-4">
+              {/* Main control buttons row */}
+              <div className="flex items-center justify-center gap-4">
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={handleFavorite}
                   className={cn(
-                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
-                    isFavorited ? "text-red-500 hover:text-red-400" : "text-muted-foreground hover:text-foreground"
+                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    isFavorited ? "text-red-500 hover:text-red-400 bg-red-50/10 border-red-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Heart size={20} className={cn(isFavorited && "fill-current")} />
+                  <Heart size={22} className={cn(isFavorited && "fill-current")} />
                 </Button>
 
                 <Button 
                   variant="ghost" 
                   size="icon" 
                   onClick={handleThumbsDown}
-                  className="text-muted-foreground hover:text-destructive h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50"
+                  className="transition-all duration-200 h-12 w-12 rounded-full border border-border/50 text-muted-foreground hover:text-destructive hover:bg-accent/50 hover:scale-105 hover:border-destructive/30"
                 >
-                  <ThumbsDown size={20} />
+                  <ThumbsDown size={22} />
                 </Button>
 
                 <Button 
@@ -307,11 +308,11 @@ export const NowPlaying: React.FC = () => {
                   size="icon" 
                   onClick={handleLightningMode}
                   className={cn(
-                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
-                    lightningMode ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
+                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    lightningMode ? "text-yellow-500 hover:text-yellow-400 bg-yellow-50/10 border-yellow-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Zap size={20} className={cn(lightningMode && "fill-current")} />
+                  <Zap size={22} className={cn(lightningMode && "fill-current")} />
                 </Button>
 
                 <Button 
@@ -319,23 +320,23 @@ export const NowPlaying: React.FC = () => {
                   size="icon" 
                   onClick={handleSpatialAudio}
                   className={cn(
-                    "transition-colors duration-200 h-10 w-10 sm:h-12 sm:w-12 hover:bg-accent/50",
-                    spatialAudioEnabled ? "text-blue-500 hover:text-blue-400" : "text-muted-foreground hover:text-foreground"
+                    "transition-all duration-200 h-12 w-12 rounded-full border border-border/50 hover:bg-accent/50 hover:scale-105",
+                    spatialAudioEnabled ? "text-blue-500 hover:text-blue-400 bg-blue-50/10 border-blue-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Radio size={20} />
+                  <Radio size={22} />
                 </Button>
               </div>
 
-              {/* Volume - hide on very small screens */}
-              <div className="hidden sm:flex items-center gap-2">
-                <Volume2 size={16} className="text-muted-foreground" />
+              {/* Volume control */}
+              <div className="flex items-center justify-center gap-3">
+                <Volume2 size={18} className="text-muted-foreground" />
                 <Slider
                   value={[volume * 100]}
                   max={100}
                   step={1}
                   onValueChange={([value]) => handleVolumeChange(value / 100)}
-                  className="w-20 sm:w-24"
+                  className="w-32"
                 />
               </div>
             </div>
