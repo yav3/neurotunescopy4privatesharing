@@ -101,8 +101,8 @@ const Index = () => {
                     
                     {goal.id === 'pain-support' && (
                       <img 
-                        src="/lovable-uploads/2b0a9067-ec79-46b5-85f2-eb9071f861c9.png"
-                        alt="Flowing blue healing energy"
+                        src="/lovable-uploads/e5c54bcd-f1d9-4fff-b4ef-9c458544a31c.png"
+                        alt="Soft pink clouds for pain relief"
                         className="w-full h-full object-cover"
                       />
                     )}
