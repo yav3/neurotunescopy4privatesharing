@@ -28,16 +28,16 @@ const goalCardThemes = {
     shadow: 'shadow-[0_8px_32px_rgba(14,165,233,0.4)]'
   },
   'mood-boost': {
-    gradient: 'from-yellow-400/90 via-orange-500/80 to-red-500/90',
+    gradient: 'from-pink-500/90 via-rose-500/80 to-red-500/90',
     accent: 'bg-white/20',
     text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(251,146,60,0.4)]'
+    shadow: 'shadow-[0_8px_32px_rgba(244,63,94,0.4)]'
   },
   'pain-support': {
-    gradient: 'from-purple-500/90 via-indigo-500/80 to-blue-600/90',
+    gradient: 'from-indigo-600/90 via-blue-600/80 to-slate-700/90',
     accent: 'bg-white/20',
     text: 'text-white',
-    shadow: 'shadow-[0_8px_32px_rgba(139,92,246,0.4)]'
+    shadow: 'shadow-[0_8px_32px_rgba(79,70,229,0.4)]'
   },
   'energy-boost': {
     gradient: 'from-orange-500/90 via-yellow-500/80 to-amber-500/90',
