@@ -66,10 +66,11 @@ export const GenreCard: React.FC<GenreCardProps> = ({
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <div className="relative z-10">
             <h3 
-              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2"
+              className="font-bold text-base md:text-lg leading-tight tracking-wide uppercase mb-2 text-white"
               style={{ 
                 color: '#ffffff !important',
-                textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
+                WebkitTextFillColor: '#ffffff !important',
+                textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
                 fontWeight: '700'
               }}
             >
