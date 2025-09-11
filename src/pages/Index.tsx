@@ -107,10 +107,10 @@ const Index = () => {
       </div>
 
       {/* Goals grid optimized for viewport fit with navigation space */}
-      <div className="px-3 sm:px-4 pb-24 sm:pb-20 relative z-10 h-full flex items-center">
+      <div className="px-4 sm:px-4 pb-24 sm:pb-20 relative z-10 h-full flex items-center">
         <div className="max-w-6xl mx-auto w-full">
           {/* Responsive cards grid - much larger on desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6 lg:gap-8">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                 <Card
@@ -123,7 +123,7 @@ const Index = () => {
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
                     "hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] md:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]",
-                    "h-[150px] sm:h-[170px] md:h-[280px] lg:h-[320px] xl:h-[360px]"
+                    "h-[160px] sm:h-[180px] md:h-[260px] lg:h-[300px] xl:h-[340px]"
                   )}
                   style={{ 
                     animationDelay: `${index * 100}ms`,
