@@ -201,14 +201,14 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 </div>
                 
-                {/* Clean content - no dark blocks */}
+                {/* Clean white text only */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="font-semibold text-lg text-white mb-1 drop-shadow-2xl">
+                  <h3 
+                    className="font-bold text-xl text-white drop-shadow-2xl"
+                    style={{ color: 'white !important' }}
+                  >
                     {genre.name}
                   </h3>
-                  <p className="text-sm text-white/0 group-hover:text-white/90 transition-colors duration-300 drop-shadow-xl">
-                    {genre.description}
-                  </p>
                 </div>
               </div>
             ))}
