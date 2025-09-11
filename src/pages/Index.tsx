@@ -77,8 +77,8 @@ const Index = () => {
                     
                     {goal.id === 'stress-anxiety-support' && (
                       <img 
-                        src="/lovable-uploads/9e1efaf1-aa12-47f4-9370-f898226802f1.png"
-                        alt="Peaceful sunset over calm water"
+                        src="/lovable-uploads/2a9f2bc3-a005-44d8-b0b1-44354df8542b.png"
+                        alt="Peaceful fluffy clouds for stress relief"
                         className="w-full h-full object-cover"
                       />
                     )}
