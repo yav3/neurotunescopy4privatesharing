@@ -142,7 +142,7 @@ const GenreView: React.FC = () => {
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
-    // Create abort controller for this effect instance
+    // Create abort controller for this effect instance  
     const abortController = new AbortController();
     let isMounted = true;
 
@@ -151,18 +151,10 @@ const GenreView: React.FC = () => {
       
       setIsLoading(true);
       try {
-        console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
+        console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
         
-        // Start with fallback tracks immediately
-        const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-        if (isMounted) {
-          setTracks(fallbackTracks);
-          setIsLoading(false);
-        }
-        
+        // Pull directly from storage buckets without fallbacks first
         try {
-          // Pull directly from storage buckets
-          console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
           
           const { supabase } = await import('@/integrations/supabase/client');
           let allTracks: any[] = [];
@@ -261,7 +253,13 @@ const GenreView: React.FC = () => {
             const limitedTracks = shuffledTracks.slice(0, 100); // Limit to 100 tracks
             
             setTracks(limitedTracks);
+            setIsLoading(false);
             console.log(`✅ Ready to play ${limitedTracks.length} tracks directly from ${selectedGenre.name} bucket`);
+          } else if (isMounted) {
+            // If no tracks found, use fallback
+            const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
+            setTracks(fallbackTracks);
+            setIsLoading(false);
           }
         } catch (storageError) {
           console.warn(`⚠️ Direct storage access error for ${selectedGenre.name}:`, storageError);
