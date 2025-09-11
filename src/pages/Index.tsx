@@ -13,7 +13,7 @@ import stressImage from '@/assets/stress-nature-music.jpg';
 import cardioImage from '@/assets/cardio-nature-energy.jpg';
 import moodImage from '@/assets/mood-nature-guitar.jpg';
 import painImage from '@/assets/pain-nature-harp.jpg';
-import energyImage from '@/assets/energy-nature-electric.jpg';
+import energyImage from '@/assets/energy-nature-violin.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -175,7 +175,7 @@ const Index = () => {
                     {goal.id === 'energy-boost' && (
                       <img 
                         src={energyImage}
-                        alt="Electric guitar on tropical beach for energy"
+                        alt="Violin by waterfall for energy boost"
                         className="w-full h-full object-cover"
                       />
                     )}
