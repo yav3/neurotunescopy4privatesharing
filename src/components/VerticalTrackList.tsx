@@ -140,9 +140,9 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
         </div>
       </div>
 
-      {/* Album Card Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 max-h-[70vh] overflow-y-auto pr-2">
-        {filteredTracks.map((track) => {
+      {/* Standard Playlist - Vertical Scrolling List */}
+      <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
+        {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = favorites.has(track.id);
           
@@ -150,75 +150,78 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             <div
               key={track.id}
               className={cn(
-                "bg-white rounded-lg p-2 sm:p-3 border border-gray-200 hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-md group cursor-pointer hover:-translate-y-1",
-                isCurrentTrack && "ring-2 ring-gray-400 bg-gray-50"
+                "flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-all duration-200 group cursor-pointer",
+                isCurrentTrack && "ring-2 ring-primary bg-primary/5 border-primary/30"
               )}
               onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
-              {/* Album Art */}
-              <div className="relative aspect-square mb-2 sm:mb-3">
-                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden">
-                  {track.artwork_url ? (
-                    <img 
-                      src={track.artwork_url} 
-                      alt={track.title}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-300 rounded-md"></div>
-                  )}
-                  
-                  {/* Play Overlay */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-lg">
-                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/90 rounded-full flex items-center justify-center">
-                      {isLoading && isCurrentTrack ? (
-                        <div className="w-4 h-4 sm:w-6 sm:h-6 border-2 border-gray-300 border-t-gray-800 rounded-full animate-spin" />
-                      ) : (isPlaying && isCurrentTrack) ? (
-                        <Pause className="w-4 h-4 sm:w-6 sm:h-6 text-gray-800" />
-                      ) : (
-                        <Play className="w-4 h-4 sm:w-6 sm:h-6 text-gray-800 ml-0.5" />
-                      )}
-                    </div>
+              {/* Track Number / Play Button */}
+              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                {isLoading && isCurrentTrack ? (
+                  <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                ) : isCurrentTrack && isPlaying ? (
+                  <Pause className="w-4 h-4 text-primary" />
+                ) : (
+                  <div className="relative">
+                    <span className="text-sm text-gray-500 group-hover:opacity-0 transition-opacity">
+                      {(index + 1).toString().padStart(2, '0')}
+                    </span>
+                    <Play className="w-4 h-4 text-primary absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                </div>
-                
-                {/* Action Buttons */}
-                <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  {/* Favorite */}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => handleFavorite(track.id, e)}
-                    className={cn(
-                      "w-8 h-8 bg-black/50 hover:bg-black/70 transition-colors duration-200",
-                      isFavorited 
-                        ? "text-red-500 hover:text-red-600" 
-                        : "text-white hover:text-red-500"
-                    )}
-                  >
-                    <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
-                  </Button>
+                )}
+              </div>
 
-                  {/* Thumbs Down */}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => handleThumbsDown(track.id, e)}
-                    className="w-8 h-8 bg-black/50 hover:bg-black/70 text-white hover:text-destructive transition-colors duration-200"
-                  >
-                    <ThumbsDown className="w-4 h-4" />
-                  </Button>
-                </div>
+              {/* Small Album Art */}
+              <div className="w-12 h-12 rounded-md overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex-shrink-0">
+                {track.artwork_url ? (
+                  <img 
+                    src={track.artwork_url} 
+                    alt={formatTrackTitleForDisplay(track.title)}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">♪</div>
+                )}
               </div>
               
               {/* Track Info */}
-              <div className="text-center">
-                <h3 className="text-foreground font-medium text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-foreground text-sm leading-tight truncate">
                   {formatTrackTitleForDisplay(track.title)}
                 </h3>
-                <p className="text-gray-500 text-xs">
+                <p className="text-xs text-gray-500 truncate">
                   Therapeutic Music
                 </p>
+              </div>
+
+              {/* Action Buttons - Only show on hover */}
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                {/* Favorite */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => handleFavorite(track.id, e)}
+                  className={cn(
+                    "w-8 h-8 transition-colors duration-200",
+                    isFavorited 
+                      ? "text-red-500 hover:text-red-600" 
+                      : "text-gray-400 hover:text-red-500"
+                  )}
+                >
+                  <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
+                </Button>
+
+                {/* Thumbs Down */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => handleThumbsDown(track.id, e)}
+                  className="w-8 h-8 text-gray-400 hover:text-destructive transition-colors duration-200"
+                >
+                  <ThumbsDown className="w-4 h-4" />
+                </Button>
               </div>
             </div>
           );
