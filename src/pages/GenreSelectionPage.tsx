@@ -43,7 +43,7 @@ const getGenreOptions = (goalId: string) => {
         image: peacefulPianoArt
       }
     ],
-    'stress-anxiety': [
+    'stress-anxiety-support': [
       {
         id: 'samba',
         name: 'Samba',
