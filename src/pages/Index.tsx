@@ -70,9 +70,9 @@ const Index = () => {
 
       {/* Compact Header */}
       <div className="relative overflow-hidden">        
-        <div className="relative z-10 px-4 py-6 md:px-6 md:py-8">
+        <div className="relative z-10 px-4 py-4 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-6 md:mb-8">
+            <div className="mb-4 md:mb-6">
               <h1 className="text-2xl font-semibold text-foreground tracking-tight">
                 Home
               </h1>
@@ -85,7 +85,7 @@ const Index = () => {
       <div className="container px-4 pb-20 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Compact grid layout that fits in viewport */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               const IconComponent = goal.icon;
               const theme = goalCardThemes[goal.id as keyof typeof goalCardThemes] || goalCardThemes['focus-enhancement'];
