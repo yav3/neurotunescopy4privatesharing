@@ -50,7 +50,7 @@ const Index = () => {
     <div className={cn(
       "min-h-screen relative overflow-hidden transition-colors duration-500",
       isDarkMode 
-        ? "bg-blue-950" 
+        ? "bg-blue-950/95" 
         : "bg-gradient-to-br from-slate-50 to-blue-50"
     )}>
       {/* Background Elements */}
@@ -188,13 +188,10 @@ const Index = () => {
                     <div className="absolute inset-0 border border-white/10 rounded-2xl" />
                   </div>
 
-                  {/* Clean white text with simple shadow */}
+                  {/* Pure white text with no blur */}
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="relative z-10">
-                      <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide uppercase"
-                          style={{
-                            textShadow: '1px 1px 3px rgba(0,0,0,0.8)'
-                          }}>
+                      <h3 className="text-white font-bold text-sm md:text-base leading-tight tracking-wide uppercase">
                         {goal.name}
                       </h3>
                     </div>
@@ -214,7 +211,7 @@ const Index = () => {
         <div className={cn(
           "backdrop-blur-sm border-t transition-colors duration-500",
           isDarkMode 
-            ? "bg-blue-950/98 border-blue-900/50" 
+            ? "bg-blue-950/99 border-blue-900/50" 
             : "bg-white/95 border-slate-200/50"
         )}>
           <Navigation />
