@@ -73,8 +73,8 @@ export async function getTracksFromStorage(
       buckets = ['focus-music', 'classicalfocus', 'Chopin', 'neuralpositivemusic'];
       console.log(`🎯 Using focus-music, classicalfocus, Chopin, and neuralpositivemusic buckets for focus enhancement`);
     } else if (normalizedGoal === 'mood-boost') {
-      buckets = ['ENERGYBOOST'];
-      console.log(`🎯 Using ENERGYBOOST bucket for mood boost`);
+      buckets = ['HIIT'];
+      console.log(`🎯 Using HIIT bucket for mood boost`);
     } else if (normalizedGoal === 'stress-anxiety-support' || normalizedGoal === 'anxiety' || normalizedGoal === 'stress') {
       buckets = ['samba'];
       console.log(`🎯 Using samba bucket for stress and anxiety support`);

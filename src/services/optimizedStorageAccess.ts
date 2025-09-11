@@ -23,7 +23,7 @@ export async function getTracksFromStorageOptimized(
     if (normalizedGoal === 'focus-enhancement') {
       buckets = ['focus-music', 'classicalfocus', 'Chopin', 'neuralpositivemusic'];
     } else if (normalizedGoal === 'mood-boost') {
-      buckets = ['ENERGYBOOST'];
+      buckets = ['HIIT'];
     } else if (normalizedGoal === 'stress-anxiety-support' || normalizedGoal === 'anxiety' || normalizedGoal === 'stress') {
       buckets = ['samba'];
     } else if (normalizedGoal === 'sleep') {
