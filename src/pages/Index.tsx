@@ -22,10 +22,10 @@ const goalCardThemes = {
     accent: 'text-primary'
   },
   'cardio-support': {
-    bg: 'bg-card-darker',
-    gradient: 'bg-gradient-card-medium',
-    text: 'text-card-foreground',
-    accent: 'text-accent-foreground'
+    bg: 'bg-card-medium',
+    gradient: 'bg-gradient-card-blue',
+    text: 'text-foreground',
+    accent: 'text-primary'
   },
   'mood-boost': {
     bg: 'bg-music-mood',
