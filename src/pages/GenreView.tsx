@@ -318,15 +318,14 @@ const GenreView: React.FC = () => {
               
               const cleanTitle = file.name.replace(/\.[^/.]+$/, ''); // Remove extension only
 
-              // Use deterministic but varied selection based on track name + index
-              const artworkSeed = (file.name + i).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-              const artworkIndex = artworkSeed % albumArtUrls.length;
-              const selectedArtwork = albumArtUrls[artworkIndex];
+              // Truly random album art selection for variety
+              const randomArtworkIndex = Math.floor(Math.random() * albumArtUrls.length);
+              const selectedArtwork = albumArtUrls[randomArtworkIndex];
 
               const track = {
-                id: `${bucketName}-${fullPath}`,
+                id: `${bucketName}-${fullPath}-${Date.now()}-${Math.random()}`, // Unique ID each time
                 title: cleanTitle,
-                artist: selectedGenre.id === 'house-music' ? 'House Music Collection' : 'Neural Positive Music',
+                artist: selectedGenre.id === 'house-music' ? 'House Music Collection' : 'Therapeutic Music',
                 storage_bucket: bucketName,
                 storage_key: fullPath,
                 stream_url: urlData.publicUrl,
@@ -349,13 +348,30 @@ const GenreView: React.FC = () => {
 
         console.log(`🎯 Total tracks from all buckets: ${allTracks.length}`);
         
-        // Set tracks directly - no complex conditions
+        // Set tracks with better randomization
         if (allTracks.length > 0) {
-          const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
-          const limitedTracks = shuffledTracks.slice(0, 50);
-          setTracks(limitedTracks);
-          console.log(`✅ Successfully set ${limitedTracks.length} tracks for display`);
-          console.log(`🎵 First track example:`, limitedTracks[0]);
+          // Multiple shuffle passes for better randomization
+          let shuffledTracks = [...allTracks];
+          for (let i = 0; i < 3; i++) {
+            shuffledTracks = shuffledTracks.sort(() => Math.random() - 0.5);
+          }
+          
+          // Randomly select tracks and add more randomization
+          const trackCount = Math.min(50, shuffledTracks.length);
+          const finalTracks = [];
+          
+          for (let i = 0; i < trackCount; i++) {
+            const randomIndex = Math.floor(Math.random() * shuffledTracks.length);
+            const selectedTrack = shuffledTracks.splice(randomIndex, 1)[0];
+            
+            // Add random timestamp to force re-render and prevent caching
+            selectedTrack.randomId = Date.now() + Math.random();
+            finalTracks.push(selectedTrack);
+          }
+          
+          setTracks(finalTracks);
+          console.log(`✅ Successfully set ${finalTracks.length} randomized tracks for display`);
+          console.log(`🎵 Sample tracks:`, finalTracks.slice(0, 3).map(t => ({ title: t.title, artwork: t.artwork_url })));
         } else {
           console.log('📂 No tracks found in any bucket, using fallback');
           const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name, albumArtUrls);
