@@ -65,198 +65,140 @@ const Index = () => {
                   }}
                   onClick={() => handleGoalSelect(goal)}
                 >
-                  {/* Nature background scene */}
+                  {/* Rich atmospheric nature background inspired by the forest path */}
                   <div className="absolute inset-0">
                     {goal.id === 'focus-enhancement' && (
                       <>
-                        {/* Forest clearing background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-400/30 via-emerald-500/40 to-teal-600/50" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-green-800/40 via-green-600/20 to-green-400/10" />
-                        {/* Tree silhouettes */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-green-900/60 to-transparent" />
-                        <div className="absolute bottom-0 right-4 w-8 h-20 bg-green-900/40 rounded-t-full" />
-                        <div className="absolute bottom-0 left-6 w-6 h-16 bg-green-800/50 rounded-t-full" />
+                        {/* Golden forest clearing with sunbeams */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-300/60 via-yellow-400/70 to-orange-500/60" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-amber-900/40 via-yellow-600/20 to-amber-200/10" />
+                        {/* Sunbeam effects */}
+                        <div className="absolute top-0 right-1/4 w-24 h-full bg-gradient-to-b from-yellow-200/30 via-amber-100/20 to-transparent rotate-12 blur-xl" />
+                        <div className="absolute top-0 left-1/3 w-16 h-full bg-gradient-to-b from-white/20 via-yellow-100/15 to-transparent rotate-6 blur-lg" />
+                        {/* Tree shadows and foliage */}
+                        <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-green-800/60 via-amber-700/30 to-transparent" />
+                        <div className="absolute top-1/4 right-4 w-12 h-20 bg-gradient-to-b from-green-700/40 to-amber-800/30 rounded-t-full blur-sm" />
+                        <div className="absolute top-1/3 left-6 w-8 h-16 bg-gradient-to-b from-amber-600/50 to-green-800/40 rounded-t-full blur-sm" />
+                        {/* Floating golden particles */}
+                        <div className="absolute top-1/4 left-1/2 w-2 h-2 bg-yellow-300/60 rounded-full blur-xs animate-pulse" />
+                        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-amber-200/70 rounded-full blur-xs" />
                       </>
                     )}
                     
                     {goal.id === 'stress-anxiety-support' && (
                       <>
-                        {/* Mountain lake scene */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-300/40 via-cyan-400/50 to-teal-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-blue-800/30 via-blue-600/15 to-sky-400/10" />
-                        {/* Mountain silhouette */}
-                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-700/50 to-transparent" />
-                        <div className="absolute bottom-0 right-2 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[24px] border-b-slate-600/40" />
+                        {/* Peaceful misty lake with morning light */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-200/50 via-blue-300/60 to-teal-400/70" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 via-cyan-600/15 to-sky-200/10" />
+                        {/* Misty effects */}
+                        <div className="absolute bottom-1/4 left-0 w-full h-1/3 bg-gradient-to-t from-white/20 via-cyan-100/15 to-transparent blur-md" />
+                        <div className="absolute top-1/3 right-1/4 w-20 h-8 bg-white/15 rounded-full blur-lg" />
+                        {/* Mountain silhouettes */}
+                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-600/40 to-transparent" />
+                        <div className="absolute bottom-0 right-8 w-0 h-0 border-l-[16px] border-l-transparent border-r-[16px] border-r-transparent border-b-[20px] border-b-slate-500/30" />
+                        <div className="absolute bottom-0 left-12 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[16px] border-b-slate-600/35" />
+                        {/* Gentle light rays */}
+                        <div className="absolute top-0 left-1/4 w-16 h-full bg-gradient-to-b from-white/15 via-cyan-100/10 to-transparent rotate-3 blur-lg" />
                       </>
                     )}
                     
                     {goal.id === 'cardio-support' && (
                       <>
-                        {/* Sunrise beach scene */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-300/40 via-red-400/50 to-pink-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-orange-800/30 via-red-600/15 to-yellow-400/10" />
-                        {/* Beach horizon */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-amber-700/40 to-transparent" />
+                        {/* Dynamic sunrise beach with energy */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-300/60 via-red-400/70 to-pink-500/60" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-red-900/40 via-orange-600/20 to-yellow-300/10" />
+                        {/* Dynamic sun rays */}
+                        <div className="absolute top-0 right-1/3 w-32 h-full bg-gradient-to-b from-yellow-200/40 via-orange-200/25 to-transparent rotate-15 blur-xl animate-pulse" />
+                        <div className="absolute top-0 left-1/4 w-20 h-full bg-gradient-to-b from-white/25 via-yellow-100/15 to-transparent rotate-8 blur-lg" />
+                        {/* Beach waves and energy */}
+                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-orange-800/50 via-red-600/30 to-transparent" />
+                        <div className="absolute bottom-4 left-1/4 w-16 h-2 bg-white/30 rounded-full blur-sm" />
+                        <div className="absolute bottom-6 right-1/3 w-12 h-1 bg-yellow-200/40 rounded-full blur-sm" />
+                        {/* Energy particles */}
+                        <div className="absolute top-1/3 left-1/3 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-pulse" />
+                        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-red-300/60 rounded-full" />
                       </>
                     )}
                     
                     {goal.id === 'mood-boost' && (
                       <>
-                        {/* Sunlit meadow scene */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-300/40 via-green-400/50 to-lime-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-green-700/30 via-lime-600/15 to-yellow-300/10" />
-                        {/* Meadow grass */}
-                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-green-800/50 to-transparent" />
-                        <div className="absolute bottom-0 left-4 w-2 h-8 bg-green-700/60 rounded-t-full" />
-                        <div className="absolute bottom-0 right-8 w-1 h-6 bg-green-600/50 rounded-t-full" />
+                        {/* Vibrant flower meadow with butterfly effects */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-lime-300/60 via-green-400/70 to-emerald-500/60" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-green-800/40 via-lime-600/20 to-yellow-200/15" />
+                        {/* Cheerful sunbeams */}
+                        <div className="absolute top-0 right-1/3 w-28 h-full bg-gradient-to-b from-yellow-200/35 via-lime-100/20 to-transparent rotate-10 blur-xl" />
+                        <div className="absolute top-0 left-1/4 w-20 h-full bg-gradient-to-b from-white/20 via-yellow-100/12 to-transparent rotate-5 blur-lg" />
+                        {/* Flower field */}
+                        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-green-700/50 via-lime-600/25 to-transparent" />
+                        {/* Scattered flowers */}
+                        <div className="absolute bottom-8 left-6 w-3 h-3 bg-pink-300/60 rounded-full blur-xs" />
+                        <div className="absolute bottom-12 right-8 w-2 h-2 bg-yellow-300/70 rounded-full blur-xs" />
+                        <div className="absolute bottom-6 right-1/3 w-2.5 h-2.5 bg-purple-300/50 rounded-full blur-xs" />
+                        {/* Floating petals */}
+                        <div className="absolute top-1/3 right-1/4 w-2 h-1 bg-pink-200/40 rounded-full rotate-45 blur-xs animate-pulse" />
+                        <div className="absolute top-1/2 left-1/3 w-1.5 h-0.5 bg-white/50 rounded-full rotate-12 blur-xs" />
                       </>
                     )}
                     
                     {goal.id === 'pain-support' && (
                       <>
-                        {/* Peaceful waterfall scene */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/40 via-blue-400/50 to-indigo-500/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-800/30 via-blue-600/15 to-cyan-300/10" />
-                        {/* Waterfall effect */}
-                        <div className="absolute top-0 right-6 w-2 h-full bg-gradient-to-b from-white/40 via-cyan-200/30 to-transparent" />
-                        <div className="absolute bottom-0 right-0 w-full h-1/4 bg-gradient-to-t from-blue-800/40 to-transparent" />
+                        {/* Tranquil waterfall scene with healing mist */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/50 via-blue-400/60 to-indigo-500/70" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/35 via-blue-700/20 to-cyan-200/10" />
+                        {/* Waterfall mist */}
+                        <div className="absolute top-0 right-8 w-4 h-full bg-gradient-to-b from-white/40 via-cyan-100/25 to-transparent blur-md" />
+                        <div className="absolute top-1/4 right-6 w-8 h-1/2 bg-gradient-to-b from-white/20 via-blue-100/15 to-transparent blur-lg opacity-70" />
+                        {/* Healing pool */}
+                        <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-blue-800/40 via-cyan-600/20 to-transparent" />
+                        {/* Gentle ripples */}
+                        <div className="absolute bottom-6 left-1/4 w-12 h-1 bg-white/20 rounded-full blur-sm opacity-60" />
+                        <div className="absolute bottom-8 right-1/3 w-8 h-0.5 bg-cyan-200/30 rounded-full blur-sm opacity-50" />
+                        {/* Soft light reflections */}
+                        <div className="absolute top-1/3 left-1/4 w-16 h-full bg-gradient-to-b from-white/10 via-cyan-100/8 to-transparent rotate-2 blur-xl" />
+                        {/* Healing particles */}
+                        <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-200/60 rounded-full animate-pulse blur-xs" />
                       </>
                     )}
                     
                     {goal.id === 'energy-boost' && (
                       <>
-                        {/* Mountain summit scene */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-300/40 via-blue-400/50 to-indigo-600/60" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/30 via-purple-600/15 to-blue-300/10" />
+                        {/* Powerful mountain summit with aurora effects */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-400/60 via-blue-500/70 to-indigo-600/70" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/40 via-purple-700/20 to-blue-300/12" />
+                        {/* Aurora-like energy streams */}
+                        <div className="absolute top-0 left-1/3 w-24 h-full bg-gradient-to-b from-purple-200/30 via-blue-200/20 to-transparent rotate-8 blur-xl animate-pulse" />
+                        <div className="absolute top-0 right-1/4 w-16 h-full bg-gradient-to-b from-cyan-200/25 via-purple-100/15 to-transparent rotate-12 blur-lg" />
                         {/* Mountain peaks */}
-                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-800/50 to-transparent" />
-                        <div className="absolute bottom-0 left-4 w-0 h-0 border-l-[16px] border-l-transparent border-r-[16px] border-r-transparent border-b-[20px] border-b-slate-700/50" />
+                        <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-slate-800/50 via-indigo-800/25 to-transparent" />
+                        <div className="absolute bottom-0 left-6 w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[18px] border-b-slate-700/40" />
+                        <div className="absolute bottom-0 right-8 w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-b-[22px] border-b-slate-600/45" />
+                        {/* Energy sparkles */}
+                        <div className="absolute top-1/4 right-1/3 w-1.5 h-1.5 bg-purple-300/70 rounded-full animate-pulse blur-xs" />
+                        <div className="absolute top-1/3 left-1/4 w-1 h-1 bg-cyan-300/60 rounded-full blur-xs" />
+                        <div className="absolute top-1/2 right-1/4 w-1.5 h-1.5 bg-blue-300/60 rounded-full animate-pulse blur-xs" />
                       </>
                     )}
                   </div>
 
-                  {/* Glass morphism instrument */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    {/* Base glass layer */}
-                    <div className="absolute inset-0 bg-white/10 backdrop-blur-[8px] border border-white/20" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-white/5 to-black/10" />
-                    
-                    {goal.id === 'focus-enhancement' && (
-                      <>
-                        {/* Glass piano in forest clearing */}
-                        <div className="absolute bottom-8 right-4 w-24 h-16 bg-white/20 backdrop-blur-lg border-2 border-white/40 rounded-lg shadow-[inset_0_2px_8px_rgba(255,255,255,0.3),0_4px_16px_rgba(0,0,0,0.2)]">
-                          {/* Piano keys */}
-                          <div className="absolute bottom-0 left-2 w-3 h-8 bg-white/60 border border-white/40 rounded-b-sm shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
-                          <div className="absolute bottom-0 left-6 w-3 h-8 bg-white/60 border border-white/40 rounded-b-sm shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
-                          <div className="absolute bottom-0 left-10 w-3 h-8 bg-white/60 border border-white/40 rounded-b-sm shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
-                          <div className="absolute bottom-0 left-14 w-3 h-8 bg-white/60 border border-white/40 rounded-b-sm shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
-                          <div className="absolute bottom-0 left-18 w-3 h-8 bg-white/60 border border-white/40 rounded-b-sm shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" />
-                          {/* Black keys */}
-                          <div className="absolute bottom-4 left-4 w-2 h-4 bg-black/40 backdrop-blur-sm border border-white/20 rounded-b-sm" />
-                          <div className="absolute bottom-4 left-8 w-2 h-4 bg-black/40 backdrop-blur-sm border border-white/20 rounded-b-sm" />
-                          <div className="absolute bottom-4 left-16 w-2 h-4 bg-black/40 backdrop-blur-sm border border-white/20 rounded-b-sm" />
-                        </div>
-                      </>
-                    )}
-                    
-                    {goal.id === 'stress-anxiety-support' && (
-                      <>
-                        {/* Glass harp by mountain lake */}
-                        <div className="absolute left-6 top-8 w-16 h-20 bg-white/15 backdrop-blur-lg border border-white/30 rounded-t-full shadow-[inset_0_2px_8px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.15)]">
-                          {/* Harp strings */}
-                          <div className="absolute left-2 top-2 w-0.5 h-16 bg-white/50 rounded-full shadow-sm" />
-                          <div className="absolute left-4 top-3 w-0.5 h-14 bg-white/45 rounded-full shadow-sm" />
-                          <div className="absolute left-6 top-4 w-0.5 h-12 bg-white/40 rounded-full shadow-sm" />
-                          <div className="absolute left-8 top-5 w-0.5 h-10 bg-white/35 rounded-full shadow-sm" />
-                          <div className="absolute left-10 top-6 w-0.5 h-8 bg-white/30 rounded-full shadow-sm" />
-                          <div className="absolute left-12 top-7 w-0.5 h-6 bg-white/25 rounded-full shadow-sm" />
-                        </div>
-                      </>
-                    )}
-                    
-                    {goal.id === 'cardio-support' && (
-                      <>
-                        {/* Glass drums on beach */}
-                        <div className="absolute right-8 bottom-6 w-16 h-16 bg-white/20 backdrop-blur-lg border-2 border-white/40 rounded-full shadow-[inset_0_2px_8px_rgba(255,255,255,0.3),0_4px_16px_rgba(0,0,0,0.2)]">
-                          <div className="absolute inset-2 bg-white/15 backdrop-blur-md border border-white/30 rounded-full shadow-[inset_0_1px_4px_rgba(255,255,255,0.4)]" />
-                        </div>
-                        <div className="absolute right-4 bottom-8 w-12 h-12 bg-white/18 backdrop-blur-lg border border-white/35 rounded-full shadow-[inset_0_2px_6px_rgba(255,255,255,0.25),0_3px_12px_rgba(0,0,0,0.18)]">
-                          <div className="absolute inset-2 bg-white/12 backdrop-blur-md border border-white/25 rounded-full shadow-[inset_0_1px_3px_rgba(255,255,255,0.3)]" />
-                        </div>
-                        {/* Drumsticks */}
-                        <div className="absolute right-6 bottom-4 w-1 h-8 bg-white/40 rounded-full transform rotate-45 shadow-sm" />
-                        <div className="absolute right-10 bottom-2 w-1 h-8 bg-white/35 rounded-full transform -rotate-30 shadow-sm" />
-                      </>
-                    )}
-                    
-                    {goal.id === 'mood-boost' && (
-                      <>
-                        {/* Glass guitar in sunlit meadow */}
-                        <div className="absolute left-4 bottom-4 w-20 h-24 bg-white/15 backdrop-blur-lg border border-white/30 rounded-3xl shadow-[inset_0_2px_8px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.15)]">
-                          {/* Guitar body */}
-                          <div className="absolute inset-x-2 top-8 bottom-2 bg-white/10 backdrop-blur-md border border-white/25 rounded-2xl shadow-[inset_0_1px_4px_rgba(255,255,255,0.3)]" />
-                          {/* Sound hole */}
-                          <div className="absolute left-1/2 top-1/2 w-6 h-6 bg-black/30 backdrop-blur-sm border border-white/20 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]" />
-                          {/* Strings */}
-                          <div className="absolute left-1/2 top-2 w-0.5 h-20 bg-white/40 rounded-full transform -translate-x-1/2 shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-20 bg-white/35 rounded-full transform -translate-x-1/2 translate-x-1 shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-20 bg-white/30 rounded-full transform -translate-x-1/2 -translate-x-1 shadow-sm" />
-                        </div>
-                      </>
-                    )}
-                    
-                    {goal.id === 'pain-support' && (
-                      <>
-                        {/* Glass violin by waterfall */}
-                        <div className="absolute right-6 top-6 w-12 h-20 bg-white/18 backdrop-blur-lg border border-white/35 rounded-t-3xl rounded-b-2xl shadow-[inset_0_2px_8px_rgba(255,255,255,0.25),0_4px_16px_rgba(0,0,0,0.18)]">
-                          {/* F-holes */}
-                          <div className="absolute left-3 top-6 w-1 h-8 bg-black/40 backdrop-blur-sm rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]" />
-                          <div className="absolute left-3 top-8 w-3 h-2 bg-black/30 backdrop-blur-sm rounded-full" />
-                          <div className="absolute left-3 top-12 w-3 h-2 bg-black/30 backdrop-blur-sm rounded-full" />
-                          <div className="absolute right-3 top-6 w-1 h-8 bg-black/40 backdrop-blur-sm rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]" />
-                          <div className="absolute right-6 top-8 w-3 h-2 bg-black/30 backdrop-blur-sm rounded-full" />
-                          <div className="absolute right-6 top-12 w-3 h-2 bg-black/30 backdrop-blur-sm rounded-full" />
-                          {/* Strings */}
-                          <div className="absolute left-1/2 top-2 w-0.5 h-16 bg-white/45 rounded-full transform -translate-x-2 shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-16 bg-white/40 rounded-full transform -translate-x-1 shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-16 bg-white/35 rounded-full shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-16 bg-white/30 rounded-full transform translate-x-1 shadow-sm" />
-                        </div>
-                        {/* Bow */}
-                        <div className="absolute right-2 top-12 w-12 h-1 bg-white/35 rounded-full transform rotate-30 shadow-sm" />
-                      </>
-                    )}
-                    
-                    {goal.id === 'energy-boost' && (
-                      <>
-                        {/* Glass electric guitar on mountain summit */}
-                        <div className="absolute left-8 bottom-6 w-16 h-22 bg-white/15 backdrop-blur-lg border border-white/30 rounded-2xl shadow-[inset_0_2px_8px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.15)]">
-                          {/* Guitar body */}
-                          <div className="absolute inset-x-2 top-6 bottom-2 bg-white/10 backdrop-blur-md border border-white/25 rounded-xl shadow-[inset_0_1px_4px_rgba(255,255,255,0.3)]" />
-                          {/* Pickups */}
-                          <div className="absolute left-1/2 top-8 w-8 h-2 bg-white/40 backdrop-blur-sm border border-white/30 rounded-full transform -translate-x-1/2 shadow-[inset_0_1px_2px_rgba(255,255,255,0.4)]" />
-                          <div className="absolute left-1/2 top-12 w-8 h-2 bg-white/35 backdrop-blur-sm border border-white/25 rounded-full transform -translate-x-1/2 shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" />
-                          {/* Strings */}
-                          <div className="absolute left-1/2 top-2 w-0.5 h-18 bg-white/50 rounded-full transform -translate-x-2 shadow-sm animate-pulse" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-18 bg-white/45 rounded-full transform -translate-x-1 shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-18 bg-white/40 rounded-full shadow-sm" />
-                          <div className="absolute left-1/2 top-2 w-0.5 h-18 bg-white/35 rounded-full transform translate-x-1 shadow-sm" />
-                        </div>
-                      </>
-                    )}
+                  {/* Subtle glass morphism overlay to blend with nature */}
+                  <div className="absolute inset-0">
+                    <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/10" />
                   </div>
 
-                  {/* Goal name at bottom left */}
+                  {/* Goal name at bottom left with better contrast */}
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <div className="relative z-10">
-                      <h3 className="text-white font-semibold text-base md:text-lg leading-tight drop-shadow-lg tracking-wide">
-                        {goal.name}
-                      </h3>
+                      <div className="bg-black/30 backdrop-blur-md rounded-lg px-3 py-2 inline-block border border-white/20">
+                        <h3 className="text-white font-semibold text-base md:text-lg leading-tight drop-shadow-xl tracking-wide">
+                          {goal.name}
+                        </h3>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Hover shimmer effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
                 </Card>
               );
             })}
