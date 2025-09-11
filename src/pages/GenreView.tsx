@@ -308,69 +308,81 @@ const GenreView: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/80 relative overflow-hidden">
+      {/* Glassmorphism background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute top-1/4 -right-1/4 w-80 h-80 bg-accent/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-secondary/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '4s' }} />
+      </div>
+
       {/* Hero Section */}
-      <div className="relative h-72 md:h-96 overflow-hidden">
-        {/* Background Image */}
-        <img 
-          src={selectedGenre.artwork} 
-          alt={selectedGenre.name}
-          className="w-full h-full object-cover"
-        />
-        
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background" />
-        
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-center px-4 md:px-8">
-          <div className="max-w-7xl mx-auto w-full">
-            {/* Back Button */}
-            <Button 
-              variant="ghost" 
-              className="text-white hover:bg-white/20 mb-4 md:mb-8"
-              onClick={() => navigate('/')}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-            
-            {/* Genre Info */}
-            <div className="space-y-2 md:space-y-4">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                {selectedGenre.name}
-              </h1>
-              <p className="text-base md:text-xl text-white/80 max-w-2xl">
-                {selectedGenre.description}
-              </p>
-              <p className="text-sm md:text-lg text-white/60">
-                {goal.name}
-              </p>
+      <div className="relative h-80 md:h-[28rem] overflow-hidden">
+        {/* Background Image with glassmorphism overlay */}
+        <div className="relative w-full h-full">
+          <img 
+            src={selectedGenre.artwork} 
+            alt={selectedGenre.name}
+            className="w-full h-full object-cover opacity-60"
+          />
+          
+          {/* Glassmorphism overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90 backdrop-blur-sm" />
+          
+          {/* Glass morphism content card */}
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+            <div className="max-w-7xl mx-auto w-full">
+              {/* Back Button */}
+              <Button 
+                variant="ghost" 
+                className="glass-morphism text-foreground/80 hover:text-foreground hover:bg-background/20 mb-6 md:mb-8 backdrop-blur-md border border-border/20"
+                onClick={() => navigate('/')}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Home
+              </Button>
               
-              {/* Play/Pause Button */}
-              <div className="mt-6 md:mt-8">
-                <Button
-                  size="lg"
-                  className="h-12 md:h-14 px-6 md:px-8 text-base md:text-lg"
-                  onClick={currentTrack ? handleTogglePlay : handleAutoPlay}
-                  disabled={audioLoading || isLoading}
-                >
-                  {audioLoading ? (
-                    <>
-                      <div className="w-5 h-5 md:w-6 md:h-6 mr-2 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                      Loading
-                    </>
-                  ) : isPlaying ? (
-                    <>
-                      <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-                      Pause
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-                      Play
-                    </>
-                  )}
-                </Button>
+              {/* Genre Info in glass card */}
+              <div className="glass-morphism p-6 md:p-8 rounded-2xl backdrop-blur-xl border border-border/20 bg-background/10 max-w-3xl">
+                <div className="space-y-3 md:space-y-4">
+                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight font-sf-pro">
+                    {selectedGenre.name}
+                  </h1>
+                  <p className="text-base md:text-xl text-muted-foreground max-w-2xl">
+                    {selectedGenre.description}
+                  </p>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-sm">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                    {goal.name}
+                  </div>
+                  
+                  {/* Play/Pause Button */}
+                  <div className="pt-4">
+                    <Button
+                      size="lg"
+                      className="h-12 md:h-14 px-8 md:px-10 text-base md:text-lg bg-primary/90 hover:bg-primary backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300"
+                      onClick={currentTrack ? handleTogglePlay : handleAutoPlay}
+                      disabled={audioLoading || isLoading}
+                    >
+                      {audioLoading ? (
+                        <>
+                          <div className="w-5 h-5 md:w-6 md:h-6 mr-2 rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground animate-spin" />
+                          Loading
+                        </>
+                      ) : isPlaying ? (
+                        <>
+                          <Pause className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                          Pause Session
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                          Begin Session
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -378,32 +390,45 @@ const GenreView: React.FC = () => {
       </div>
       
       {/* Tracks Section */}
-      <div className="px-4 md:px-8 py-6 md:py-8 pb-24">
-        <div className="max-w-6xl mx-auto">
+      <div className="relative px-4 md:px-8 py-8 md:py-12 pb-32">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sf-pro">
+              {tracks.length}+ tracks available
+            </h2>
+            <p className="text-muted-foreground">
+              Therapeutic grade • Ready to play
+            </p>
+          </div>
+
           {isLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center gap-2 text-muted-foreground">
-                <div className="w-4 h-4 rounded-full bg-primary animate-pulse"></div>
-                <span>Loading music collection...</span>
+            <div className="text-center py-16">
+              <div className="glass-morphism inline-flex items-center gap-3 px-6 py-4 rounded-full backdrop-blur-xl border border-border/20 bg-background/10">
+                <div className="w-5 h-5 rounded-full bg-primary animate-pulse"></div>
+                <span className="text-foreground">Loading music collection...</span>
               </div>
             </div>
           ) : tracks.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {tracks.slice(0, 12).map((track) => (
-                <TrackRowCard
-                  key={track.id}
-                  track={track}
-                  isPlaying={isTrackPlaying(track)}
-                  onPlay={() => handleTrackPlay(track)}
-                  className="w-full h-auto aspect-[3/4]"
-                />
+                <div key={track.id} className="glass-morphism-card group">
+                  <TrackRowCard
+                    track={track}
+                    isPlaying={isTrackPlaying(track)}
+                    onPlay={() => handleTrackPlay(track)}
+                    className="w-full h-auto aspect-[3/4] border-0 bg-transparent hover:bg-background/5 transition-all duration-300"
+                  />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                No tracks available
-              </p>
+            <div className="text-center py-16">
+              <div className="glass-morphism inline-flex items-center gap-3 px-6 py-4 rounded-full backdrop-blur-xl border border-border/20 bg-background/10">
+                <p className="text-muted-foreground">
+                  No tracks available
+                </p>
+              </div>
             </div>
           )}
         </div>

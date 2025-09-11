@@ -26,7 +26,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['neuralpositivemusic'],
         trackCount: '60+ tracks',
-        gradient: 'from-purple-500 to-indigo-400',
+        gradient: 'from-teal-500 to-indigo-400',
         image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/84E41822D72BB74C3DE361758D96552D357EF3D12CFB9A4B739B8539B88001A5_sk_6_cid_1%20(1).jpeg'
       },
       {
@@ -75,7 +75,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Deep sleep-inducing frequencies',
         buckets: ['neuralpositivemusic'],
         trackCount: '35+ tracks',
-        gradient: 'from-indigo-600 to-purple-400',
+        gradient: 'from-indigo-600 to-teal-400',
         image: '/lovable-uploads/theta-misty-path.png'
       },
       {
@@ -84,7 +84,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Gentle classical pieces for bedtime',
         buckets: ['classicalfocus'],
         trackCount: '30+ tracks',
-        gradient: 'from-purple-600 to-indigo-400',
+        gradient: 'from-gray-600 to-indigo-400',
         image: '/lovable-uploads/folk-instruments-meadow.png'
       }
     ],
@@ -95,7 +95,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Energizing orchestral compositions',
         buckets: ['classicalfocus'],
         trackCount: '55+ tracks',
-        gradient: 'from-yellow-500 to-orange-400',
+        gradient: 'from-teal-500 to-cyan-400',
         image: '/lovable-uploads/beta-waterfall.png'
       },
       {
@@ -104,7 +104,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Upbeat electronic music for motivation',
         buckets: ['neuralpositivemusic'],
         trackCount: '70+ tracks',
-        gradient: 'from-orange-500 to-red-400',
+        gradient: 'from-cyan-500 to-teal-400',
         image: '/lovable-uploads/alpha-mountain-lake.png'
       }
     ],
@@ -115,7 +115,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Therapeutic tones for pain management',
         buckets: ['neuralpositivemusic'],
         trackCount: '40+ tracks',
-        gradient: 'from-purple-600 to-pink-400',
+        gradient: 'from-gray-600 to-indigo-400',
         image: '/lovable-uploads/acoustic-sunset-field.png'
       },
       {
@@ -124,7 +124,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Soft classical music for comfort',
         buckets: ['classicalfocus'],
         trackCount: '35+ tracks',
-        gradient: 'from-pink-500 to-rose-400',
+        gradient: 'from-gray-500 to-blue-400',
         image: '/lovable-uploads/european-classical-terrace.png'
       }
     ],
@@ -135,7 +135,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Dynamic classical pieces for vitality',
         buckets: ['classicalfocus'],
         trackCount: '50+ tracks',
-        gradient: 'from-red-600 to-orange-400',
+        gradient: 'from-teal-600 to-cyan-400',
         image: '/lovable-uploads/gamma-sunbeam-forest.png'
       },
       {
@@ -144,7 +144,7 @@ const getGenreOptions = (goalId: string) => {
         description: 'Rhythmic music for energy and focus',
         buckets: ['neuralpositivemusic'],
         trackCount: '65+ tracks',
-        gradient: 'from-orange-600 to-amber-400',
+        gradient: 'from-indigo-600 to-teal-400',
         image: '/lovable-uploads/string-quartet-studio.png'
       }
     ]
