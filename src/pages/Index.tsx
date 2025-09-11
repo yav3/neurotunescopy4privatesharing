@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Brain } from 'lucide-react';
+import { ArrowLeft, Brain, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -9,33 +9,85 @@ import { cn } from '@/lib/utils';
 
 const Index = () => {
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = React.useState(() => {
+    // Initialize from localStorage or system preference
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return true;
+  });
+
+  // Apply theme on mount and when changed
+  React.useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
   
   const handleGoalSelect = (goal: typeof THERAPEUTIC_GOALS[0]) => {
     navigate(`/goals/${goal.id}/genres`);
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Deep Blue Background Elements */}
+    <div className={cn(
+      "min-h-screen relative overflow-hidden transition-colors duration-500",
+      isDarkMode 
+        ? "bg-slate-900" 
+        : "bg-gradient-to-br from-slate-50 to-blue-50"
+    )}>
+      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle blue gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_60%_/_0.03),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.02),transparent_50%)]" />
-        
-        {/* Abstract deep blue shapes */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-900/20 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-800/15 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
+        {isDarkMode ? (
+          <>
+            {/* Dark mode - deep blue gradients */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-slate-800/20" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_60%_/_0.08),transparent_50%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.05),transparent_50%)]" />
+            <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-900/30 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-800/25 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
+          </>
+        ) : (
+          <>
+            {/* Light mode - soft gradients */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-transparent to-slate-100/30" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(217_91%_90%_/_0.15),transparent_50%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_85%_/_0.1),transparent_50%)]" />
+            <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-transparent rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-slate-200/15 to-transparent rounded-full blur-2xl transform translate-x-1/3 translate-y-1/3" />
+          </>
+        )}
       </div>
 
-      {/* Compact Header */}
+      {/* Header with Theme Toggle */}
       <div className="relative overflow-hidden">        
         <div className="relative z-10 px-4 py-4 md:px-6 md:py-6">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-4 md:mb-6">
-              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
+            <div className="mb-4 md:mb-6 flex items-center justify-between">
+              <h1 className="text-2xl font-semibold text-slate-800 tracking-tight">
                 Home
               </h1>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
+                className="text-slate-700 hover:text-slate-900 hover:bg-slate-100/50"
+              >
+                {isDarkMode ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
             </div>
           </div>
         </div>
@@ -143,7 +195,12 @@ const Index = () => {
 
       {/* Clean Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-background/95 backdrop-blur-sm border-t border-border">
+        <div className={cn(
+          "backdrop-blur-sm border-t transition-colors duration-500",
+          isDarkMode 
+            ? "bg-slate-900/95 border-slate-700/50" 
+            : "bg-white/95 border-slate-200/50"
+        )}>
           <Navigation />
         </div>
       </div>

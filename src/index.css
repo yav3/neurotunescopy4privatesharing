@@ -8,24 +8,24 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* White Background with Blue Card Design System */
+    /* Light Mode - White Background with Deep Blue Text */
     --background: 0 0% 100%; /* Pure white background */
-    --foreground: 217 32% 17%; /* Dark blue text */
+    --foreground: 217 91% 15%; /* Very deep blue text */
 
     --card: 217 91% 95%; /* Very light blue card background */
-    --card-foreground: 217 32% 17%; /* Dark blue card text */
+    --card-foreground: 217 91% 15%; /* Deep blue card text */
 
     --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 217 32% 17%; /* Dark blue popover text */
+    --popover-foreground: 217 91% 15%; /* Deep blue popover text */
 
     --primary: 217 91% 60%; /* Blue primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
     --secondary: 217 91% 85%; /* Light blue secondary */
-    --secondary-foreground: 217 32% 25%; /* Dark blue secondary text */
+    --secondary-foreground: 217 91% 20%; /* Deep blue secondary text */
 
     --muted: 217 91% 90%; /* Very light blue muted */
-    --muted-foreground: 217 32% 45%; /* Medium blue muted text */
+    --muted-foreground: 217 91% 35%; /* Deep blue muted text */
 
     --accent: 217 91% 70%; /* Medium blue accent */
     --accent-foreground: 0 0% 100%; /* White accent text */
@@ -38,6 +38,38 @@ All colors MUST be HSL.
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark Mode - Deep Blue Background */
+    --background: 217 91% 8%; /* Very dark blue background */
+    --foreground: 0 0% 100%; /* White text */
+
+    --card: 217 91% 12%; /* Dark blue card background */
+    --card-foreground: 0 0% 100%; /* White card text */
+
+    --popover: 217 91% 10%; /* Dark blue popover */
+    --popover-foreground: 0 0% 100%; /* White popover text */
+
+    --primary: 217 91% 60%; /* Blue primary */
+    --primary-foreground: 0 0% 100%; /* White primary text */
+
+    --secondary: 217 91% 20%; /* Dark blue secondary */
+    --secondary-foreground: 0 0% 100%; /* White secondary text */
+
+    --muted: 217 91% 15%; /* Dark blue muted */
+    --muted-foreground: 217 91% 70%; /* Light blue muted text */
+
+    --accent: 217 91% 50%; /* Medium blue accent */
+    --accent-foreground: 0 0% 100%; /* White accent text */
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 217 91% 25%; /* Medium dark blue borders */
+    --input: 217 91% 15%; /* Dark blue input background */
+    --ring: 217 91% 60%;
+  }
 
     /* Blue gradient variations for cards */
     --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%), hsl(217 91% 50%));
