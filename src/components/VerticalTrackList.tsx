@@ -97,8 +97,8 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
 
   return (
     <div className="w-full">
-      {/* Enhanced Controls Header */}
-      <div className="flex items-center justify-between mb-6 p-4 bg-white rounded-lg border border-gray-200">
+      {/* Enhanced Controls Header with Glass Morphism */}
+      <div className="flex items-center justify-between mb-6 p-4 rounded-2xl backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg">
         <div className="flex items-center gap-2">
           <h2 className="text-sm sm:text-base md:text-lg font-semibold text-foreground">Your Mix</h2>
         </div>
@@ -109,10 +109,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             size="sm"
             onClick={handleLightningMode}
             className={cn(
-              "transition-colors duration-200 text-xs sm:text-sm",
+              "transition-all duration-200 text-xs sm:text-sm backdrop-blur-sm border border-white/10 rounded-full",
               lightningMode
-                ? "text-yellow-600 hover:text-yellow-700 bg-yellow-50"
-                : "text-gray-600 hover:text-yellow-600"
+                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/20 border-yellow-500/30 shadow-glass-inset"
+                : "text-foreground/80 hover:text-yellow-500 bg-card/20 hover:bg-yellow-500/10"
             )}
           >
             <Zap className={cn("w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2", lightningMode && "fill-current")} />
@@ -127,10 +127,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             size="sm"
             onClick={handleSpatialAudio}
             className={cn(
-              "transition-colors duration-200 text-xs sm:text-sm",
+              "transition-all duration-200 text-xs sm:text-sm backdrop-blur-sm border border-white/10 rounded-full",
               spatialAudioEnabled
-                ? "text-gray-700 hover:text-gray-800 bg-gray-100"
-                : "text-gray-600 hover:text-gray-700"
+                ? "text-primary hover:text-primary bg-primary/20 border-primary/30 shadow-glass-inset"
+                : "text-foreground/80 hover:text-primary bg-card/20 hover:bg-primary/10"
             )}
           >
             <Radio className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
@@ -140,7 +140,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
         </div>
       </div>
 
-      {/* Standard Playlist - Vertical Scrolling List */}
+      {/* Playlist with Glass Morphism */}
       <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
         {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
@@ -150,8 +150,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
             <div
               key={track.id}
               className={cn(
-                "flex items-center gap-3 p-3 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-all duration-200 group cursor-pointer",
-                isCurrentTrack && "ring-2 ring-primary bg-primary/5 border-primary/30"
+                "flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm border border-white/10 hover:shadow-glass transition-all duration-200 group cursor-pointer shadow-glass-inset",
+                isCurrentTrack 
+                  ? "bg-primary/20 border-primary/30 shadow-glass" 
+                  : "bg-card/20 hover:bg-card/40"
               )}
               onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
@@ -163,7 +165,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                   <Pause className="w-4 h-4 text-primary" />
                 ) : (
                   <div className="relative">
-                    <span className="text-sm text-gray-500 group-hover:opacity-0 transition-opacity">
+                    <span className="text-sm text-muted-foreground group-hover:opacity-0 transition-opacity">
                       {(index + 1).toString().padStart(2, '0')}
                     </span>
                     <Play className="w-4 h-4 text-primary absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -171,8 +173,8 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 )}
               </div>
 
-              {/* Small Album Art */}
-              <div className="w-12 h-12 rounded-md overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex-shrink-0">
+              {/* Album Art with Glass Effect */}
+              <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
                 {track.artwork_url ? (
                   <img 
                     src={track.artwork_url} 
@@ -182,7 +184,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                     decoding="async"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">♪</div>
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">♪</div>
                 )}
               </div>
               
@@ -191,12 +193,12 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 <h3 className="font-medium text-foreground text-sm leading-tight truncate">
                   {formatTrackTitleForDisplay(track.title)}
                 </h3>
-                <p className="text-xs text-gray-500 truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   Therapeutic Music
                 </p>
               </div>
 
-              {/* Action Buttons - Only show on hover */}
+              {/* Action Buttons with Glass Morphism */}
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
                 {/* Favorite */}
                 <Button
@@ -204,10 +206,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                   size="icon"
                   onClick={(e) => handleFavorite(track.id, e)}
                   className={cn(
-                    "w-8 h-8 transition-colors duration-200",
+                    "w-8 h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full",
                     isFavorited 
-                      ? "text-red-500 hover:text-red-600" 
-                      : "text-gray-400 hover:text-red-500"
+                      ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                      : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
                   )}
                 >
                   <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
@@ -218,7 +220,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                   variant="ghost"
                   size="icon"
                   onClick={(e) => handleThumbsDown(track.id, e)}
-                  className="w-8 h-8 text-gray-400 hover:text-destructive transition-colors duration-200"
+                  className="w-8 h-8 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
                 >
                   <ThumbsDown className="w-4 h-4" />
                 </Button>

@@ -166,15 +166,15 @@ export const FullPagePlayer = () => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex items-center justify-center">
-      {/* Background - solid clean white */}
-      <div className="absolute inset-0 bg-background" />
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex items-center justify-center">
+      {/* Glass Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl" />
       
       {/* Close button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-6 right-6 text-foreground/70 hover:text-foreground z-10"
+        className="absolute top-6 right-6 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full"
         onClick={() => setPlayerMode('mini')}
       >
         <X className="w-6 h-6" />
@@ -182,8 +182,8 @@ export const FullPagePlayer = () => {
 
       {/* Player content */}
       <div className="relative z-10 w-full max-w-md px-6">
-        {/* Album artwork */}
-        <div className="aspect-square relative mb-8 rounded-3xl overflow-hidden shadow-2xl">
+        {/* Album artwork with Glass Morphism */}
+        <div className="aspect-square relative mb-8 rounded-3xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg">
           <img 
             src={artworkSrc}
             alt={formatTrackTitleForDisplay(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
@@ -191,7 +191,7 @@ export const FullPagePlayer = () => {
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         </div>
 
         {/* Track info */}
@@ -223,12 +223,12 @@ export const FullPagePlayer = () => {
           </div>
         </div>
 
-        {/* Control buttons */}
+        {/* Control buttons with Glass Morphism */}
         <div className="flex items-center justify-center gap-6 mb-8">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-foreground/70 hover:text-foreground w-12 h-12" 
+            className="text-foreground/70 hover:text-foreground w-12 h-12 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full shadow-glass-inset" 
             onClick={prev}
           >
             <SkipBack className="w-6 h-6" />
@@ -236,7 +236,7 @@ export const FullPagePlayer = () => {
           
           <Button
             size="icon"
-            className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 shadow-lg"
+            className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 shadow-glass-lg backdrop-blur-sm"
             onClick={() => isPlaying ? pause() : play()}
           >
             {isPlaying ? (
@@ -249,17 +249,17 @@ export const FullPagePlayer = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-foreground/70 hover:text-foreground w-12 h-12" 
+            className="text-foreground/70 hover:text-foreground w-12 h-12 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full shadow-glass-inset" 
             onClick={next}
           >
             <SkipForward className="w-6 h-6" />
           </Button>
         </div>
 
-        {/* Enhanced Controls Section */}
+        {/* Enhanced Controls Section with Glass Morphism */}
         <div className="space-y-6">
           {/* Volume control */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 p-4 rounded-2xl backdrop-blur-sm bg-card/20 border border-white/10 shadow-glass-inset">
             <Volume2 className="w-5 h-5 text-muted-foreground" />
             <Slider
               value={[volume * 100]}
@@ -270,18 +270,18 @@ export const FullPagePlayer = () => {
             />
           </div>
 
-          {/* Action buttons - Improved Visibility */}
-          <div className="flex items-center justify-center gap-4">
+          {/* Action buttons with Glass Morphism */}
+          <div className="flex items-center justify-center gap-4 p-4 rounded-2xl backdrop-blur-sm bg-card/20 border border-white/10 shadow-glass-inset">
             {/* Favorite */}
             <Button
               variant="ghost"
               size="icon"
               onClick={handleFavorite}
               className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
                 isFavorited 
-                  ? "text-red-500 hover:text-red-600 bg-red-500/10 border-red-500/20" 
-                  : "text-foreground/80 hover:text-red-500 hover:bg-red-500/5"
+                  ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                  : "text-foreground/80 hover:text-red-500 hover:bg-red-500/10"
               )}
             >
               <Heart className={cn("w-6 h-6", isFavorited && "fill-current")} />
@@ -292,7 +292,7 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleThumbsDown}
-              className="w-12 h-12 rounded-full border border-border/50 text-foreground/80 hover:text-destructive hover:bg-destructive/5 transition-colors duration-200"
+              className="w-12 h-12 rounded-full backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset text-foreground/80 hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
             >
               <ThumbsDown className="w-6 h-6" />
             </Button>
@@ -303,10 +303,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleLightningMode}
               className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
                 lightningMode
-                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10 border-yellow-500/20"
-                  : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/5"
+                  ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/20 border-yellow-500/30"
+                  : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/10"
               )}
             >
               <Zap className={cn("w-6 h-6", lightningMode && "fill-current")} />
@@ -318,10 +318,10 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleSpatialAudio}
               className={cn(
-                "w-12 h-12 rounded-full transition-colors duration-200 border border-border/50",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 shadow-glass-inset",
                 spatialAudioEnabled
-                  ? "text-primary hover:text-primary bg-primary/10 border-primary/20"
-                  : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+                  ? "text-primary hover:text-primary bg-primary/20 border-primary/30"
+                  : "text-foreground/80 hover:text-primary hover:bg-primary/10"
               )}
             >
               <Radio className="w-6 h-6" />

@@ -142,9 +142,9 @@ export default function FullPlayer() {
       <div className="flex items-center gap-4 p-6">
         <button
           onClick={() => navigate("/")}
-          className="p-2 rounded-full hover:bg-secondary transition-colors"
+          className="p-2 rounded-full hover:bg-secondary/20 backdrop-blur-sm transition-colors"
         >
-          <ArrowLeft className="w-6 h-6" />
+          <ArrowLeft className="w-6 h-6 text-foreground" />
         </button>
         <div className="text-center flex-1">
           <p className="text-sm text-muted-foreground">Now Playing</p>
@@ -152,10 +152,10 @@ export default function FullPlayer() {
       </div>
 
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-8">
-        {/* Album Artwork */}
-        <div className="relative mb-8 w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden">
+        {/* Album Artwork with Glass Morphism */}
+        <div className="relative mb-8 w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg">
           <div 
-            className="absolute inset-0 bg-gradient-to-br from-muted to-muted-foreground/10"
+            className="absolute inset-0 bg-gradient-to-br from-card/50 to-secondary/30"
             style={{ background: trackArtwork?.gradient || 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))' }}
           />
           {trackArtwork?.url && (
@@ -179,23 +179,29 @@ export default function FullPlayer() {
         </div>
 
         <div className="flex items-center justify-center gap-8 mb-8">
-          <button onClick={prev} className="p-4 rounded-full hover:bg-secondary transition-colors">
-            <SkipBack className="w-8 h-8" />
+          <button 
+            onClick={prev} 
+            className="p-4 rounded-full hover:bg-secondary/20 backdrop-blur-sm border border-white/10 bg-card/20 transition-all duration-200 hover:shadow-glass"
+          >
+            <SkipBack className="w-8 h-8 text-foreground" />
           </button>
           
           <button
             onClick={() => isPlaying ? pause() : play()}
-            className="p-6 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
+            className="p-6 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors backdrop-blur-sm shadow-glass-lg"
           >
             {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10 ml-1" />}
           </button>
           
-          <button onClick={next} className="p-4 rounded-full hover:bg-secondary transition-colors">
-            <SkipForward className="w-8 h-8" />
+          <button 
+            onClick={next} 
+            className="p-4 rounded-full hover:bg-secondary/20 backdrop-blur-sm border border-white/10 bg-card/20 transition-all duration-200 hover:shadow-glass"
+          >
+            <SkipForward className="w-8 h-8 text-foreground" />
           </button>
         </div>
 
-        {/* Enhanced Controls - Improved Visibility */}
+        {/* Enhanced Controls - Glass Morphism */}
         <div className="flex items-center justify-center gap-6 mb-8">
           {/* Favorite */}
           <Button 
@@ -203,10 +209,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleFavorite}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
               isFavorited 
-                ? "text-red-500 hover:text-red-600 bg-red-500/10 border-red-500/20" 
-                : "text-foreground/80 hover:text-red-500 hover:bg-red-500/5"
+                ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                : "text-foreground/80 hover:text-red-500 hover:bg-red-500/10"
             )}
           >
             <Heart size={20} className={cn(isFavorited && "fill-current")} />
@@ -217,7 +223,7 @@ export default function FullPlayer() {
             variant="ghost" 
             size="lg"
             onClick={handleThumbsDown}
-            className="transition-colors duration-200 p-4 rounded-full border border-border/50 text-foreground/80 hover:text-destructive hover:bg-destructive/5"
+            className="transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset text-foreground/80 hover:text-destructive hover:bg-destructive/10"
           >
             <ThumbsDown size={20} />
           </Button>
@@ -228,10 +234,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleLightningMode}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
               lightningMode 
-                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/10 border-yellow-500/20" 
-                : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/5"
+                ? "text-yellow-500 hover:text-yellow-600 bg-yellow-500/20 border-yellow-500/30" 
+                : "text-foreground/80 hover:text-yellow-500 hover:bg-yellow-500/10"
             )}
           >
             <Zap size={20} className={cn(lightningMode && "fill-current")} />
@@ -243,10 +249,10 @@ export default function FullPlayer() {
             size="lg"
             onClick={handleSpatialAudio}
             className={cn(
-              "transition-colors duration-200 p-4 rounded-full border border-border/50",
+              "transition-all duration-200 p-4 rounded-full backdrop-blur-sm border border-white/10 bg-card/20 shadow-glass-inset",
               spatialAudioEnabled 
-                ? "text-primary hover:text-primary bg-primary/10 border-primary/20" 
-                : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+                ? "text-primary hover:text-primary bg-primary/20 border-primary/30" 
+                : "text-foreground/80 hover:text-primary hover:bg-primary/10"
             )}
           >
             <Radio size={20} />

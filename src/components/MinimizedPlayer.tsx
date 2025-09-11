@@ -24,11 +24,11 @@ export const MinimizedPlayer = () => {
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-card/95 backdrop-blur-md border-t border-border/50 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg bg-card/30 border-t border-white/10 shadow-glass-lg">
       {/* Progress bar */}
-      <div className="w-full h-1 bg-muted">
+      <div className="w-full h-1 bg-muted/30">
         <div 
-          className="h-full bg-primary transition-all duration-300"
+          className="h-full bg-primary/70 transition-all duration-300 shadow-sm"
           style={{ width: `${progressPercentage}%` }}
         />
       </div>
@@ -38,8 +38,8 @@ export const MinimizedPlayer = () => {
         className="px-4 py-3 flex items-center gap-3 cursor-pointer"
         onClick={() => setPlayerMode('full')}
       >
-        {/* Album art */}
-        <div className="w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0">
+        {/* Album art with Glass Effect */}
+        <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0 shadow-glass-inset">
           {(track as any).album_art_url || (track as any).artwork_url ? (
             <img
               src={(track as any).album_art_url || (track as any).artwork_url}
@@ -63,12 +63,12 @@ export const MinimizedPlayer = () => {
           </p>
         </div>
         
-        {/* Controls */}
+        {/* Controls with Glass Morphism */}
         <div className="flex items-center gap-1 flex-shrink-0">
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 text-muted-foreground hover:text-red-500"
+            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
             onClick={(e) => {
               e.stopPropagation();
               // TODO: Add favorite functionality
@@ -80,7 +80,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 text-muted-foreground hover:text-yellow-500"
+            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10"
             onClick={(e) => {
               e.stopPropagation();
               // TODO: Add lightning playlist functionality
@@ -92,23 +92,23 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8"
+            className="w-8 h-8 bg-primary/20 hover:bg-primary/30 border border-primary/30 rounded-full backdrop-blur-sm shadow-glass-inset"
             onClick={(e) => {
               e.stopPropagation();
               isPlaying ? pause() : play();
             }}
           >
             {isPlaying ? (
-              <Pause className="w-4 h-4" />
+              <Pause className="w-4 h-4 text-primary" />
             ) : (
-              <Play className="w-4 h-4" />
+              <Play className="w-4 h-4 text-primary" />
             )}
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8"
+            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40"
             onClick={(e) => {
               e.stopPropagation();
               next();
@@ -120,7 +120,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 text-muted-foreground hover:text-foreground"
+            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
             onClick={(e) => {
               e.stopPropagation();
               stop();
