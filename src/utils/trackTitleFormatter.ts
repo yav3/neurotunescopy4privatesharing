@@ -9,43 +9,56 @@ const musicKeywords = [
 ];
 
 /**
- * Cleans track titles for display by removing metadata and making them human-readable
+ * Extracts the core song title by removing metadata and technical information
  */
 export function formatTrackTitleForDisplay(title: string): string {
   if (!title) return '';
   
-  let cleaned = title.toLowerCase();
+  let cleaned = title;
   
-  // Handle concatenated words by inserting spaces before known keywords
-  musicKeywords.forEach(keyword => {
-    const regex = new RegExp(`(?<!^|\\s)${keyword}(?!$|\\s)`, 'gi');
-    cleaned = cleaned.replace(regex, ` ${keyword} `);
-  });
+  // First, extract everything before common metadata separators
+  const metadataSeparators = [
+    /\s+-\s+\d+\s*hz/i,           // - 432 Hz
+    /\s+-\s+\d+\s*bpm/i,          // - 120 BPM
+    /\s+\|\s+/,                   // |separator
+    /\s+•\s+/,                    // •separator
+    /\s+–\s+/,                    // –separator
+    /\s+—\s+/,                    // —separator
+    /\s*\(\s*\d+\s*(hz|bpm|min)\s*\)/i, // (432 Hz) or (120 BPM) or (5 min)
+    /\s*\[\s*\d+\s*(hz|bpm|min)\s*\]/i, // [432 Hz] or [120 BPM] or [5 min]
+  ];
   
-  // Add spaces before capital letters in original title (for mixed case)
-  cleaned = title.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+  // Split by metadata separators and take the first part
+  for (const separator of metadataSeparators) {
+    const parts = cleaned.split(separator);
+    if (parts.length > 1) {
+      cleaned = parts[0].trim();
+      break;
+    }
+  }
   
-  // Re-apply keyword separation on the processed string
-  musicKeywords.forEach(keyword => {
-    const regex = new RegExp(`(?<!^|\\s)${keyword}(?!$|\\s)`, 'gi');
-    cleaned = cleaned.replace(regex, ` ${keyword} `);
-  });
-  
+  // Remove technical suffixes at the end
   cleaned = cleaned
-    // Capitalize first letter of each word
-    .replace(/\b\w/g, letter => letter.toUpperCase())
-    // Remove BPM info (e.g., "118", "120 BPM", etc.)
-    .replace(/\s+\d{2,3}(\s+BPM)?\s+/gi, ' ')
-    // Remove genre info at the end (Rock, Jazz, Classical, etc.)
-    .replace(/\s+(Rock|Jazz|Classical|Electronic|Ambient|Folk|Pop|Hip Hop|R&B|Country|Blues|Reggae|Funk|Soul|Disco|House|Techno|Trance|Dubstep|Drum and Bass|Breakbeat|Garage|UK Garage|Speed Garage|Bassline|Jungle|Hardcore|Happy Hardcore|Gabber|Industrial|Metal|Death Metal|Black Metal|Thrash Metal|Heavy Metal|Power Metal|Progressive Metal|Symphonic Metal|Gothic Metal|Doom Metal|Sludge Metal|Stoner Metal|Post Metal|Metalcore|Deathcore|Grindcore|Mathcore|Screamo|Emo|Post Hardcore|Alternative Rock|Indie Rock|Punk Rock|Pop Punk|Ska Punk|Hardcore Punk|Post Punk|New Wave|Synthwave|Retrowave|Vaporwave|Chillwave|Downtempo|Trip Hop|Lofi|Chill|Relaxing|Meditation|Therapeutic|Binaural|Nature|Soundscape|Remix|Mix|Edit|Version|Instrumental|Acoustic|Live|Demo|Extended|Radio|Club|Dance|Vocal|Original)(\s+(Mix|Remix|Edit|Version))?$/gi, '')
-    // Remove trailing numbers and special characters
-    .replace(/\s*[#\-_]\s*\d+\s*$/g, '')
-    // Remove redundant words that appear multiple times
-    .replace(/\b(\w+)(\s+\1\b)+/gi, '$1')
-    // Clean up multiple spaces
-    .replace(/\s+/g, ' ')
-    // Remove parenthetical content at end like "(1)"
-    .replace(/\s*\(\d+\)\s*$/g, '')
+    .replace(/\s+\d{2,3}\s*(hz|bpm|min|minutes?|seconds?)\s*$/i, '')
+    .replace(/\s+\d{1,2}:\d{2}\s*$/, '') // Remove duration like 5:32
+    .replace(/\s*\(\s*\d+\s*\)\s*$/, '') // Remove (1), (2), etc.
+    .replace(/\s*#\d+\s*$/, '')          // Remove #1, #2, etc.
+    .replace(/\s*-\s*\d+\s*$/, '')       // Remove - 1, - 2, etc.
+    .replace(/\s+track\s+\d+\s*$/i, '')  // Remove "Track 1", "Track 2"
+    .trim();
+  
+  // Add spaces before capital letters (for PascalCase titles)
+  cleaned = cleaned.replace(/([a-z])([A-Z])/g, '$1 $2');
+  
+  // Capitalize properly
+  cleaned = cleaned
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+  
+  // Final cleanup
+  cleaned = cleaned
+    .replace(/\s+/g, ' ')  // Multiple spaces to single space
     .trim();
   
   return cleaned || title; // Fallback to original if cleaning results in empty string
