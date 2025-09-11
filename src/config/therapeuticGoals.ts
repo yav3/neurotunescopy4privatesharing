@@ -1,12 +1,12 @@
 import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-react';
 
-// Import the new abstract therapeutic backgrounds
-import focusEnhancementBg from '@/assets/focus-enhancement-bg.jpg';
-import stressAnxietyBg from '@/assets/stress-anxiety-bg.jpg';
-import moodBoostBg from '@/assets/mood-boost-bg.jpg';
-import energyBoostBg from '@/assets/energy-boost-bg.jpg';
-import painSupportBg from '@/assets/pain-support-bg.jpg';
-import cardioSupportBg from '@/assets/cardio-support-bg.jpg';
+// Import the new therapeutic home page backgrounds
+import focusEnhancementBg from '@/assets/focus-enhancement-home.jpg';
+import stressAnxietyBg from '@/assets/stress-anxiety-home.jpg';
+import moodBoostBg from '@/assets/mood-boost-home.jpg';
+import energyBoostBg from '@/assets/energy-boost-home.jpg';
+import painSupportBg from '@/assets/pain-support-home.jpg';
+import cardioSupportBg from '@/assets/cardio-support-home.jpg';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
