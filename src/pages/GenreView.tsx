@@ -138,151 +138,99 @@ const GenreView: React.FC = () => {
   const genreOptions = goal ? getGenreOptions(goal.id) : [];
   const selectedGenre = genreOptions.find(g => g.id === genreId);
 
-  // Load tracks for the selected genre
+  // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
-    // Create abort controller for this effect instance  
-    const abortController = new AbortController();
-    let isMounted = true;
-
     const loadTracks = async () => {
-      if (!isMounted) return;
-      
       setIsLoading(true);
+      console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
+      
       try {
-        console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
+        const { supabase } = await import('@/integrations/supabase/client');
+        let allTracks: any[] = [];
+
+        // Process each bucket - simplified
+        for (const bucketName of selectedGenre.buckets) {
+          console.log(`🗂️ Processing bucket: ${bucketName} directly`);
+          
+          // List files directly from bucket
+          const { data: files, error: listError } = await supabase.storage
+            .from(bucketName)
+            .list('', {
+              limit: 1000,
+              sortBy: { column: 'name', order: 'asc' }
+            });
+
+          if (listError) {
+            console.error(`❌ Error listing files in bucket ${bucketName}:`, listError);
+            continue;
+          }
+
+          if (!files || files.length === 0) {
+            console.log(`📂 No files found in bucket: ${bucketName}`);
+            continue;
+          }
+
+          // Filter for audio files
+          const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+          const audioFiles = files.filter(file => 
+            audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+          );
+
+          console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
+
+          // Convert to tracks with direct URLs
+          const bucketTracks = audioFiles.map((file, index) => {
+            const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
+            
+            const cleanTitle = file.name
+              .replace(/\.[^/.]+$/, '') // Remove extension
+              .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
+              .replace(/\s+/g, ' ') // Clean up multiple spaces
+              .split(' ')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+              .join(' ')
+              .trim();
+
+            return {
+              id: `${bucketName}-${file.name}`,
+              title: cleanTitle,
+              artist: 'Neural Positive Music',
+              storage_bucket: bucketName,
+              storage_key: file.name,
+              stream_url: urlData.publicUrl,
+              artwork_url: crossoverClassicalArt,
+              audio_status: 'working' as const,
+            };
+          });
+
+          allTracks.push(...bucketTracks);
+          console.log(`✅ Added ${bucketTracks.length} tracks from ${bucketName}`);
+        }
+
+        console.log(`🎯 Total tracks from storage: ${allTracks.length}`);
         
-        // Pull directly from storage buckets without fallbacks first
-        try {
-          
-          const { supabase } = await import('@/integrations/supabase/client');
-          let allTracks: any[] = [];
-
-          // Process each bucket directly with race condition protection
-          for (const bucketName of selectedGenre.buckets) {
-            if (abortController.signal.aborted || !isMounted) {
-              console.log(`🛑 Aborted loading bucket: ${bucketName}`);
-              break;
-            }
-            
-            try {
-              console.log(`🗂️ Processing bucket: ${bucketName} directly`);
-              
-              // List files directly from bucket
-              const { data: files, error: listError } = await supabase.storage
-                .from(bucketName)
-                .list('', {
-                  limit: 1000,
-                  sortBy: { column: 'name', order: 'asc' }
-                });
-
-              if (listError) {
-                console.error(`❌ Error listing files in bucket ${bucketName}:`, listError);
-                continue;
-              }
-
-              if (!files || files.length === 0) {
-                console.log(`📂 No files found in bucket: ${bucketName}`);
-                continue;
-              }
-
-              // Filter for audio files
-              const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
-              const audioFiles = files.filter(file => 
-                audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-              );
-
-              console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
-
-              // Convert to track format with direct Supabase URLs
-              const albumArtworks = [
-                peacefulPianoArt,
-                acousticArt,
-                crossoverClassicalArt,
-                newAgeArt,
-                electronicArt
-              ];
-
-              const bucketTracks = audioFiles.map((file, index) => {
-                // Get direct public URL from Supabase - no API calls
-                const { data: urlData } = supabase.storage
-                  .from(bucketName)
-                  .getPublicUrl(file.name);
-                
-                // Clean up the file name for display
-                const cleanTitle = file.name
-                  .replace(/\.[^/.]+$/, '') // Remove extension
-                  .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
-                  .replace(/\s+/g, ' ') // Clean up multiple spaces
-                  .split(' ')
-                  .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                  .join(' ')
-                  .trim();
-
-                console.log(`🎵 Direct URL for ${file.name}:`, urlData.publicUrl);
-
-                return {
-                  id: `${bucketName}-${file.name}`,
-                  title: cleanTitle,
-                  artist: 'Neural Positive Music',
-                  duration: 0,
-                  storage_bucket: bucketName,
-                  storage_key: file.name,
-                  stream_url: urlData.publicUrl,
-                  artwork_url: albumArtworks[index % albumArtworks.length],
-                  audio_status: 'working' as const,
-                };
-              });
-
-              allTracks.push(...bucketTracks);
-              console.log(`✅ Added ${bucketTracks.length} tracks from bucket: ${bucketName}`);
-
-            } catch (error) {
-              console.error(`❌ Error processing bucket ${bucketName}:`, error);
-              continue;
-            }
-          }
-
-          console.log(`🎯 Total tracks loaded directly from storage: ${allTracks.length}`);
-          
-          // Only update state if component is still mounted and not aborted
-          if (allTracks && allTracks.length > 0 && isMounted && !abortController.signal.aborted) {
-            // Shuffle and limit results  
-            const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
-            const limitedTracks = shuffledTracks.slice(0, 100); // Limit to 100 tracks
-            
-            setTracks(limitedTracks);
-            setIsLoading(false);
-            console.log(`✅ Ready to play ${limitedTracks.length} tracks directly from ${selectedGenre.name} bucket`);
-          } else if (isMounted) {
-            // If no tracks found, use fallback
-            const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-            setTracks(fallbackTracks);
-            setIsLoading(false);
-          }
-        } catch (storageError) {
-          console.warn(`⚠️ Direct storage access error for ${selectedGenre.name}:`, storageError);
+        // Set tracks directly - no complex conditions
+        if (allTracks.length > 0) {
+          const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
+          const limitedTracks = shuffledTracks.slice(0, 50);
+          setTracks(limitedTracks);
+          console.log(`✅ Set ${limitedTracks.length} tracks for display`);
+        } else {
+          console.log('📂 No tracks found, using fallback');
+          setTracks(generateFallbackTracks(selectedGenre.name, goal.name));
         }
         
       } catch (error) {
-        console.error(`❌ Failed to load tracks for ${selectedGenre.name}:`, error);
-        if (isMounted) {
-          const emergencyTracks = generateFallbackTracks(selectedGenre.name, goal.name);
-          setTracks(emergencyTracks);
-          setIsLoading(false);
-        }
+        console.error(`❌ Failed to load tracks:`, error);
+        setTracks(generateFallbackTracks(selectedGenre.name, goal.name));
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadTracks();
-
-    // Cleanup function to prevent race conditions
-    return () => {
-      isMounted = false;
-      abortController.abort();
-      console.log(`🛑 Cleaning up track loading for ${selectedGenre?.name}`);
-    };
   }, [goal, selectedGenre]);
 
   const handleTogglePlay = () => {
