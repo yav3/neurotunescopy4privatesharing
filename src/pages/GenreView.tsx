@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
 import newAgeArt from '@/assets/new-age-artwork.jpg';
 import electronicArt from '@/assets/electronic-artwork.jpg';
+import acousticArt from '@/assets/acoustic-artwork.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 
 // Fallback track generator
 const generateFallbackTracks = (genreName: string, goalName: string) => {
@@ -70,7 +72,7 @@ const GenreView: React.FC = () => {
           name: 'Peaceful Piano',
           description: 'Serene piano compositions for deep focus',
           buckets: ['Chopin'],
-          artwork: crossoverClassicalArt
+          artwork: peacefulPianoArt
         },
         {
           id: 'crossover-classical',
@@ -101,7 +103,7 @@ const GenreView: React.FC = () => {
           name: 'Peaceful Piano',
           description: 'Serene piano compositions',
           buckets: ['Chopin'],
-          artwork: crossoverClassicalArt
+          artwork: peacefulPianoArt
         },
         {
           id: 'crossover-classical',
@@ -197,8 +199,16 @@ const GenreView: React.FC = () => {
 
               console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
 
-              // Convert to track format
-              const bucketTracks = audioFiles.map((file) => {
+              // Convert to track format with unique artwork
+              const albumArtworks = [
+                peacefulPianoArt,
+                acousticArt,
+                crossoverClassicalArt,
+                newAgeArt,
+                electronicArt
+              ];
+
+              const bucketTracks = audioFiles.map((file, index) => {
                 const { data: urlData } = supabase.storage
                   .from(bucketName)
                   .getPublicUrl(file.name);
@@ -219,6 +229,7 @@ const GenreView: React.FC = () => {
                   storage_bucket: bucketName,
                   storage_key: file.name,
                   stream_url: urlData.publicUrl,
+                  artwork_url: albumArtworks[index % albumArtworks.length],
                 };
               });
 

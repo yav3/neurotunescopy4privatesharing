@@ -36,7 +36,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
           return (
             <div
               key={track.id}
-              className="bg-card/50 backdrop-blur-sm rounded-lg p-4 border border-border/50 hover:bg-card/70 transition-colors cursor-pointer"
+              className="bg-card/80 backdrop-blur-sm rounded-lg p-4 border border-border/60 hover:bg-card/90 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
               onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
               <div className="flex items-center gap-4">
@@ -55,10 +55,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 
                 {/* Track Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-foreground font-medium text-base leading-tight truncate">
+                  <h3 className="text-foreground font-semibold text-base leading-tight truncate">
                     {track.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm mt-1">
+                  <p className="text-muted-foreground/80 text-sm mt-1">
                     Therapeutic Music
                   </p>
                 </div>
