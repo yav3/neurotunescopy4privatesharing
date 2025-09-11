@@ -475,61 +475,91 @@ export const useAudioStore = create<AudioState>((set, get) => {
         adminLog('🎵 Starting therapeutic session for goal:', goal);
         userLog('🎵 Preparing your therapeutic music session...');
         
-        // Use storage direct access for all goals now
-        const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
-        console.log(`🎯 Loading tracks for goal: "${goal}"`);
-        const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50);
-        
-        if (error) {
-          throw new Error(error);
-        }
+        // Use service storage access for focus-enhancement to access classicalfocus bucket directly
+        if (goal === 'focus-enhancement') {
+          const { getTracksFromServiceStorage } = await import('@/services/serviceStorageAccess');
+          console.log(`🎯 Loading tracks directly from classicalfocus bucket for: "${goal}"`);
+          const { tracks: storageTracks, error } = await getTracksFromServiceStorage(goal, 50, ['classicalfocus']);
+          
+          if (error) {
+            throw new Error(error);
+          }
 
-        if (!storageTracks || storageTracks.length === 0) {
-          throw new Error(`No tracks available for goal "${goal}"`);
-        }
+          if (!storageTracks || storageTracks.length === 0) {
+            throw new Error(`No tracks available in classicalfocus bucket for goal "${goal}"`);
+          }
 
-        adminLog('✅ Retrieved', storageTracks.length, 'tracks from storage');
+          adminLog('✅ Retrieved', storageTracks.length, 'tracks from classicalfocus bucket');
 
-        // Convert storage tracks to Track format
-        let tracks: Track[] = storageTracks.map((track) => ({
-          id: track.id,
-          title: track.title,
-          artist: 'Neural Positive Music',
-          duration: 0,
-          storage_bucket: track.storage_bucket,
-          storage_key: track.storage_key,
-          stream_url: track.stream_url,
-          audio_status: 'working' as const,
-        }));
+          // Convert storage tracks to Track format
+          let tracks: Track[] = storageTracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: 'Classical Focus Collection',
+            duration: 0,
+            storage_bucket: track.storage_bucket,
+            storage_key: track.storage_key,
+            stream_url: track.stream_url, // Use the stream_url from service
+            audio_status: 'working' as const,
+          }));
 
-        // For manually curated buckets, use all tracks directly (user validated)
-        if (goal === 'focus-enhancement' || goal === 'mood-boost' || goal === 'stress-anxiety-support') {
-          adminLog(`✅ Using all ${tracks.length} curated tracks from your validated bucket for ${goal}`);
-          // Shuffle for variety since tracks are pre-validated
-          tracks = tracks.sort(() => Math.random() - 0.5);
+          console.log(`✅ Converted ${tracks.length} classicalfocus tracks for playback`);
+
+          // Validate and set up queue
+          const { working } = await validateTracks(tracks);
+          if (working.length === 0) {
+            throw new Error('No working tracks found in classicalfocus bucket');
+          }
+
+          // Shuffle tracks for variety
+          const shuffled = working.sort(() => Math.random() - 0.5);
+
+          await get().setQueue(shuffled, 0);
+          userLog(`🎵 Playing ${working.length} classical focus tracks`);
+          return working.length;
         } else {
-          // For other goals, still use neuralpositivemusic with basic shuffling
-          adminLog(`🎯 Using ${tracks.length} tracks with shuffle for ${goal}`);
-          tracks = tracks.sort(() => Math.random() - 0.5);
-        }
+          // Use regular storage direct access for other goals
+          const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
+          console.log(`🎯 Loading tracks for goal: "${goal}"`);
+          const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50);
+          
+          if (error) {
+            throw new Error(error);
+          }
 
-        if (tracks.length === 0) {
-          console.log('🎵 playFromGoal: No tracks found for goal:', goal);
-          throw new Error(`No suitable tracks for goal "${goal}"`);
+          if (!storageTracks || storageTracks.length === 0) {
+            throw new Error(`No tracks available for goal "${goal}"`);
+          }
+
+          adminLog('✅ Retrieved', storageTracks.length, 'tracks from storage');
+
+          // Convert storage tracks to Track format
+          let tracks: Track[] = storageTracks.map((track) => ({
+            id: track.id,
+            title: track.title,
+            artist: 'Neural Positive Music',
+            duration: 0,
+            storage_bucket: track.storage_bucket,
+            storage_key: track.storage_key,
+            stream_url: track.stream_url,
+            audio_status: 'working' as const,
+          }));
+
+          console.log(`✅ Converted ${tracks.length} storage tracks`);
+
+          // Validate working state directly for other goals
+          const { working } = await validateTracks(tracks);
+          if (working.length === 0) {
+            throw new Error('No working tracks found');
+          }
+
+          // Shuffle tracks for variety
+          const shuffled = working.sort(() => Math.random() - 0.5);
+
+          await get().setQueue(shuffled, 0);
+          userLog(`🎵 Playing ${working.length} therapeutic tracks`);
+          return working.length;
         }
-        
-        console.log('🎵 playFromGoal: Setting queue with', tracks.length, 'tracks');
-        await get().setQueue(tracks, 0);
-        console.log('🎵 playFromGoal: Queue set, attempting to play...');
-        await get().play();
-        console.log('🎵 playFromGoal: Play called, currentTrack:', get().currentTrack?.title);
-        
-        set({ isLoading: false });
-        
-        adminLog('🎵 Playlist set:', tracks.length, 'tracks');
-        userLog(`✅ Your session is ready with ${tracks.length} tracks`);
-        
-        return tracks.length;
       } catch (error: any) {
         console.error('🎵 playFromGoal error:', error);
         set({ 
