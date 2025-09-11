@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,9 +67,12 @@ const GenreView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { currentTrack, isPlaying, playFromGoal, play, pause, isLoading: audioLoading } = useAudioStore();
 
+  // Concurrency guards to avoid duplicate loads
+  const loadLock = useRef(false);
+  const lastLoadKey = useRef<string | null>(null);
+
   // Get the therapeutic goal
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
-
   // Genre options mapping
   const getGenreOptions = (goalId: string): GenreOption[] => {
     if (goalId === 'focus-enhancement') {
@@ -138,14 +141,23 @@ const GenreView: React.FC = () => {
   };
 
   // Get the selected genre
-  const genreOptions = goal ? getGenreOptions(goal.id) : [];
-  const selectedGenre = genreOptions.find(g => g.id === genreId);
-
+  const genreOptions = useMemo(() => (goal ? getGenreOptions(goal.id) : []), [goal?.id]);
+  const selectedGenre = useMemo(() => genreOptions.find(g => g.id === genreId), [genreOptions, genreId]);
   // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
+    const loadKey = `${goal.id}:${selectedGenre.id}`;
+    if (loadLock.current && lastLoadKey.current === loadKey) {
+      console.log('⏭️ Skipping duplicate load for', loadKey);
+      return;
+    }
+    lastLoadKey.current = loadKey;
+    loadLock.current = true;
+    let cancelled = false;
+
     const loadTracks = async () => {
+      if (cancelled) return;
       setIsLoading(true);
       console.log(`🎵 Loading ${selectedGenre.name} tracks directly from buckets:`, selectedGenre.buckets);
       
@@ -248,11 +260,17 @@ const GenreView: React.FC = () => {
         setTracks(generateFallbackTracks(selectedGenre.name, goal.name));
       } finally {
         setIsLoading(false);
+        if (!cancelled) loadLock.current = false;
       }
     };
 
     loadTracks();
-  }, [goal, selectedGenre]);
+
+    return () => {
+      cancelled = true;
+      loadLock.current = false;
+    };
+  }, [goal?.id, selectedGenre?.id]);
 
   const handleTogglePlay = () => {
     if (isPlaying) {
