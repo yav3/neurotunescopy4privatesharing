@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 // Import generated nature images
 import focusImage from '@/assets/focus-nature-piano.jpg';
@@ -15,26 +16,7 @@ import painImage from '@/assets/pain-nature-harp.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = React.useState(() => {
-    // Initialize from localStorage or system preference
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return true;
-  });
-
-  // Apply theme on mount and when changed
-  React.useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
+  const { isDark, toggle } = useDarkMode();
   
   const handleGoalSelect = (goal: typeof THERAPEUTIC_GOALS[0]) => {
     console.log('🎯 Index: Attempting to navigate to:', `/goals/${goal.id}/genres`, 'from:', window.location.pathname);
@@ -46,9 +28,6 @@ const Index = () => {
     }
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   return (
     <div className={cn(
@@ -57,7 +36,7 @@ const Index = () => {
     )}>
       {/* Background Elements - theme aware */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {isDarkMode ? (
+        {isDark ? (
           <div className="absolute inset-0 bg-gradient-dark-bg" />
         ) : (
           <div className="absolute inset-0 bg-gradient-hero" />
@@ -76,12 +55,12 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={toggleTheme}
+                onClick={toggle}
               className={cn(
                 "text-foreground hover:text-foreground transition-all duration-200 hover:bg-accent"
               )}
               >
-                {isDarkMode ? (
+                {isDark ? (
                   <Sun className="h-5 w-5" />
                 ) : (
                   <Moon className="h-5 w-5" />
