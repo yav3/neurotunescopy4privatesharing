@@ -20,9 +20,15 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   ];
 
   const handleTabClick = (tab: any) => {
-    navigate(tab.path);
-    onTabChange?.(tab.id);
-    setIsMobileMenuOpen(false); // Close mobile menu after navigation
+    console.log('🎯 Navigation: Attempting to navigate to:', tab.path, 'from:', location.pathname);
+    try {
+      navigate(tab.path);
+      console.log('✅ Navigation: Successfully called navigate()');
+      onTabChange?.(tab.id);
+      setIsMobileMenuOpen(false); // Close mobile menu after navigation
+    } catch (error) {
+      console.error('❌ Navigation: Error during navigate():', error);
+    }
   };
 
   // Touch gesture support for swipe navigation

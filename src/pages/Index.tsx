@@ -39,7 +39,13 @@ const Index = () => {
   }, [isDarkMode]);
   
   const handleGoalSelect = (goal: typeof THERAPEUTIC_GOALS[0]) => {
-    navigate(`/goals/${goal.id}/genres`);
+    console.log('🎯 Index: Attempting to navigate to:', `/goals/${goal.id}/genres`, 'from:', window.location.pathname);
+    try {
+      navigate(`/goals/${goal.id}/genres`);
+      console.log('✅ Index: Successfully called navigate()');
+    } catch (error) {
+      console.error('❌ Index: Error during navigate():', error);
+    }
   };
 
   const toggleTheme = () => {
