@@ -185,7 +185,14 @@ const Index = () => {
                   <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-white/[0.08] backdrop-blur-[0.5px]" />
                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-transparent to-black/[0.08]" />
-                    <div className="absolute inset-0 border border-white/10 rounded-2xl" />
+                    <div className="absolute inset-0 border border-white/10 rounded-xl" />
+                  </div>
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
+                    <span className="text-white font-semibold text-lg tracking-wide">
+                      Select Genre
+                    </span>
                   </div>
 
                   {/* Pure white text for all cards */}
