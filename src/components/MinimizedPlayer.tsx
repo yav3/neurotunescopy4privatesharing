@@ -39,8 +39,18 @@ export const MinimizedPlayer = () => {
         onClick={() => setPlayerMode('full')}
       >
         {/* Album art */}
-        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-          <div className="text-primary/60">♪</div>
+        <div className="w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0">
+          {(track as any).album_art_url || (track as any).artwork_url ? (
+            <img
+              src={(track as any).album_art_url || (track as any).artwork_url}
+              alt={formatTrackTitleForDisplay(track.title)}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-primary/60">♪</div>
+          )}
         </div>
         
         {/* Track info */}

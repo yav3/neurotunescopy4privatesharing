@@ -6,6 +6,7 @@ import { VerticalTrackList } from '@/components/VerticalTrackList';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
+import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 // Import artwork
 import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
@@ -368,29 +369,33 @@ const GenreView: React.FC = () => {
 
         console.log(`🎯 Total tracks from all buckets: ${allTracks.length}`);
         
-        // Set tracks with better randomization
+        // Set tracks with better randomization and de-duplication by display title
         if (allTracks.length > 0) {
+          // De-duplicate by formatted display title (case-insensitive)
+          const seen = new Set<string>();
+          const uniqueByTitle = allTracks.filter(t => {
+            const key = formatTrackTitleForDisplay(t.title || '').toLowerCase();
+            if (!key) return true;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+
           // Multiple shuffle passes for better randomization
-          let shuffledTracks = [...allTracks];
+          let shuffledTracks = [...uniqueByTitle];
           for (let i = 0; i < 3; i++) {
             shuffledTracks = shuffledTracks.sort(() => Math.random() - 0.5);
           }
           
-          // Randomly select tracks and add more randomization
+          // Cap count
           const trackCount = Math.min(50, shuffledTracks.length);
-          const finalTracks = [];
-          
-          for (let i = 0; i < trackCount; i++) {
-            const randomIndex = Math.floor(Math.random() * shuffledTracks.length);
-            const selectedTrack = shuffledTracks.splice(randomIndex, 1)[0];
-            
-            // Add random timestamp to force re-render and prevent caching
-            selectedTrack.randomId = Date.now() + Math.random();
-            finalTracks.push(selectedTrack);
-          }
+          const finalTracks = shuffledTracks.slice(0, trackCount).map(t => ({
+            ...t,
+            randomId: Date.now() + Math.random()
+          }));
           
           setTracks(finalTracks);
-          console.log(`✅ Successfully set ${finalTracks.length} randomized tracks for display`);
+          console.log(`✅ Set ${finalTracks.length} unique tracks (from ${allTracks.length} total)`);
           console.log(`🎵 Sample tracks:`, finalTracks.slice(0, 3).map(t => ({ title: t.title, artwork: t.artwork_url })));
         } else {
           console.log('📂 No tracks found in any bucket, using fallback');

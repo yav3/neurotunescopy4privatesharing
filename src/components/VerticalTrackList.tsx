@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { useAudioStore } from '@/stores';
+import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 interface Track {
   id: string;
@@ -213,7 +214,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               {/* Track Info */}
               <div className="text-center">
                 <h3 className="text-foreground font-medium text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
-                  {track.title}
+                  {formatTrackTitleForDisplay(track.title)}
                 </h3>
                 <p className="text-gray-500 text-xs">
                   Therapeutic Music
