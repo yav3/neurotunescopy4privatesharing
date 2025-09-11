@@ -95,13 +95,13 @@ const Index = () => {
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[5/3] rounded-2xl border-0", // More compact aspect ratio
+                    "aspect-square rounded-2xl border-0",
                     theme.shadow,
-                    "hover:scale-[1.02] hover:-translate-y-1", // Reduced hover effects
+                    "hover:scale-[1.02] hover:-translate-y-1",
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)]" // Reduced shadow
+                    "hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
                   )}
                   style={{ 
                     animationDelay: `${index * 100}ms`, // Faster stagger
