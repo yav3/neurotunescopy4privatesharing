@@ -337,13 +337,13 @@ const GenreView: React.FC = () => {
           {/* Glass morphism content card */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
             <div className="max-w-7xl mx-auto w-full">
-              {/* Back Button */}
+              {/* Back Button - Made More Visible */}
               <Button 
-                variant="ghost" 
-                className="glass-morphism text-foreground/80 hover:text-foreground hover:bg-background/20 mb-6 md:mb-8 backdrop-blur-md border border-border/20"
+                variant="secondary" 
+                className="bg-background/90 hover:bg-background text-foreground hover:text-primary mb-6 md:mb-8 backdrop-blur-md border-2 border-primary/30 hover:border-primary/60 shadow-lg font-medium px-6 py-2.5 transition-all duration-300"
                 onClick={() => navigate('/')}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-5 h-5 mr-2" />
                 Back to Home
               </Button>
               

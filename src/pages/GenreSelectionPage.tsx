@@ -197,12 +197,12 @@ export default function GenreSelectionPage() {
         <div className="relative z-10 px-6 py-4 md:px-12 md:py-6">
           <div className="max-w-6xl mx-auto">
             <Button
-              variant="ghost"
+              variant="secondary"
               size="sm"
               onClick={handleBack}
-              className="mb-4 text-muted-foreground hover:text-foreground hover:bg-card/50 backdrop-blur-sm border border-border/30 rounded-full px-4 transition-all duration-300"
+              className="mb-4 bg-background/90 hover:bg-background text-foreground hover:text-primary backdrop-blur-sm border-2 border-primary/30 hover:border-primary/60 rounded-full px-6 py-2.5 font-medium shadow-lg transition-all duration-300"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Goals
             </Button>
             
