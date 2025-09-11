@@ -42,6 +42,17 @@ export const FullPagePlayer = () => {
   const [lightningMode, setLightningMode] = useState(false);
   const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
 
+  // Local fallback art (user-provided examples)
+  const localArtPool = [
+    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
+    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
+    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
+    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
+    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
+    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
+    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
+  ];
+
   // Load album art from Supabase albumart bucket if track has no artwork
   useEffect(() => {
     let cancelled = false;
@@ -111,6 +122,11 @@ export const FullPagePlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  // Choose best available album artwork (track-provided -> bucket -> local pool -> goal artwork)
+  const seed = Array.from((track?.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
+  const fallbackLocalArt = localArtPool[seed % localArtPool.length];
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt || getTherapeuticArtwork();
+
   // Enhanced control handlers
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -169,9 +185,11 @@ export const FullPagePlayer = () => {
         {/* Album artwork */}
         <div className="aspect-square relative mb-8 rounded-3xl overflow-hidden shadow-2xl">
           <img 
-            src={track.album_art_url || (track as any).artwork_url || getTherapeuticArtwork()}
-            alt={track.title || `${getTherapeuticGoalName()} - Therapeutic Music`}
+            src={artworkSrc}
+            alt={formatTrackTitleForDisplay(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </div>
