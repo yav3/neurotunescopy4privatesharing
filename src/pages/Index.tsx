@@ -72,9 +72,9 @@ const Index = () => {
       </div>
 
       {/* Goals Grid */}
-      <div className="px-4 -mt-2 pb-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+      <div className="px-4 -mt-2 pb-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
             {THERAPEUTIC_GOALS.map((goal) => {
               const IconComponent = goal.icon;
               const theme = goalThemes[goal.id as keyof typeof goalThemes] || goalThemes['focus-enhancement'];
@@ -83,7 +83,7 @@ const Index = () => {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-[4/5]",
+                    "group relative overflow-hidden cursor-pointer transition-all duration-500 aspect-[5/4]",
                     "hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1",
                     "bg-card/90 backdrop-blur-sm",
                     theme.border
@@ -103,21 +103,21 @@ const Index = () => {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all duration-500" />
                   
                    {/* Content */}
-                   <div className="relative z-10 p-3 md:p-4 h-full flex flex-col justify-between items-center text-center">
-                     <div className="flex flex-col items-center space-y-2 flex-1 justify-center">
-                       <h3 className="text-sm md:text-base font-bold text-white group-hover:text-white transition-colors leading-tight">
+                   <div className="relative z-10 p-2 md:p-3 h-full flex flex-col justify-between items-center text-center">
+                     <div className="flex flex-col items-center space-y-1 flex-1 justify-center">
+                       <h3 className="text-xs md:text-sm font-bold text-white group-hover:text-white transition-colors leading-tight">
                          {goal.name}
                        </h3>
                      </div>
 
                      {/* Action Button - Always visible */}
-                     <div className="mt-auto pt-2">
+                     <div className="mt-auto pt-1">
                        <Button
                          variant="outline"
                          size="sm"
                          className={cn(
                            "transition-all duration-300 group-hover:border-white group-hover:text-black group-hover:bg-white",
-                           "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-3 py-1.5 text-xs font-medium backdrop-blur-sm"
+                           "border-white/60 hover:border-white text-white bg-black/20 hover:bg-white px-2 py-1 text-xs font-medium backdrop-blur-sm"
                          )}
                        >
                          Explore Genres
