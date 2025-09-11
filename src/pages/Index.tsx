@@ -64,16 +64,16 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(217_91%_70%_/_0.02),transparent_50%)]" />
       </div>
 
-      {/* Premium Header */}
+      {/* Compact Header */}
       <div className="relative overflow-hidden">        
-        <div className="relative z-10 px-4 py-8 md:px-6 md:py-12">
+        <div className="relative z-10 px-4 py-6 md:px-6 md:py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
+            <div className="text-center mb-6 md:mb-8">
               <div className="inline-block">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground tracking-tight">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-foreground tracking-tight">
                   Therapeutic Goals
                 </h1>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                   Choose your therapeutic goal and discover scientifically-crafted music designed to enhance your mental state and wellbeing
                 </p>
               </div>
@@ -85,8 +85,8 @@ const Index = () => {
       {/* Premium Apple Music-inspired Goals Grid */}
       <div className="container px-4 pb-20 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Premium grid layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Compact grid layout that fits in viewport */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               const IconComponent = goal.icon;
               const theme = goalCardThemes[goal.id as keyof typeof goalCardThemes] || goalCardThemes['focus-enhancement'];
@@ -96,16 +96,16 @@ const Index = () => {
                   key={goal.id}
                   className={cn(
                     "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
-                    "aspect-[4/3] rounded-3xl border-0",
+                    "aspect-[5/3] rounded-2xl border-0", // More compact aspect ratio
                     theme.shadow,
-                    "hover:scale-[1.03] hover:-translate-y-3",
+                    "hover:scale-[1.02] hover:-translate-y-1", // Reduced hover effects
                     "active:scale-[0.98] active:duration-100",
                     "focus:outline-none focus:ring-4 focus:ring-white/20",
                     "animate-fade-in backdrop-blur-xl",
-                    "hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
+                    "hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)]" // Reduced shadow
                   )}
                   style={{ 
-                    animationDelay: `${index * 150}ms`, 
+                    animationDelay: `${index * 100}ms`, // Faster stagger
                     animationFillMode: 'both' 
                   }}
                   onClick={() => handleGoalSelect(goal)}
@@ -120,55 +120,55 @@ const Index = () => {
                   {/* Subtle pattern overlay */}
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_0%,transparent_70%)] opacity-60" />
                   
-                  {/* Apple Music-style content layout */}
-                  <div className="relative z-10 p-6 h-full flex flex-col">
+                  {/* Compact content layout */}
+                  <div className="relative z-10 p-4 h-full flex flex-col">
                     {/* Icon container */}
-                    <div className="mb-4">
+                    <div className="mb-3">
                       <div className={cn(
-                        "inline-flex items-center justify-center w-12 h-12 rounded-2xl",
+                        "inline-flex items-center justify-center w-10 h-10 rounded-xl", // Smaller icon
                         theme.accent,
                         "backdrop-blur-sm border border-white/30",
                         "transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
                       )}>
-                        <IconComponent className="w-6 h-6 text-white drop-shadow-sm" />
+                        <IconComponent className="w-5 h-5 text-white drop-shadow-sm" />
                       </div>
                     </div>
 
-                    {/* Title - Apple Music style */}
+                    {/* Title - Compact style */}
                     <div className="flex-1 flex flex-col justify-end">
-                      <div className="space-y-2">
+                      <div className="space-y-1">
                         <h3 className={cn(
-                          "font-bold text-2xl leading-tight tracking-tight",
+                          "font-bold text-lg leading-tight tracking-tight", // Smaller title
                           theme.text,
                           "drop-shadow-sm transition-all duration-300",
-                          "group-hover:scale-[1.02] group-hover:translate-y-[-2px]"
+                          "group-hover:scale-[1.02] group-hover:translate-y-[-1px]"
                         )}>
                           {goal.name}
                         </h3>
                         
-                        {/* Subtle description */}
-                        <p className="text-white/80 text-sm font-medium leading-relaxed line-clamp-2 drop-shadow-sm">
+                        {/* Compact description */}
+                        <p className="text-white/75 text-xs font-medium leading-snug line-clamp-2 drop-shadow-sm">
                           {goal.description}
                         </p>
                       </div>
                     </div>
 
-                    {/* Premium play indicator */}
-                    <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
-                      <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-                        <ArrowLeft className="w-5 h-5 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110" />
+                    {/* Compact play indicator */}
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
+                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
+                        <ArrowLeft className="w-4 h-4 text-white rotate-180 transform transition-transform duration-300 group-hover:scale-110" />
                       </div>
                     </div>
 
                     {/* Glass morphism overlay on hover */}
-                    <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-3xl" />
+                    <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-2xl" />
                   </div>
 
                   {/* Premium shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1500 ease-out pointer-events-none rounded-3xl" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1200 ease-out pointer-events-none rounded-2xl" />
                   
                   {/* Subtle inner border */}
-                  <div className="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none" />
                 </Card>
               );
             })}
