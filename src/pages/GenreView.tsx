@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { VerticalTrackList } from '@/components/VerticalTrackList';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
-import { getTracksFromStorageOptimized } from '@/services/optimizedStorageAccess';
+import { getTracksFromServiceStorage } from '@/services/serviceStorageAccess';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 
@@ -136,7 +136,7 @@ const GenreView: React.FC = () => {
         try {
           // Try to get tracks from storage
           const result = await Promise.race([
-            getTracksFromStorageOptimized(goal.backendKey, 50, selectedGenre.buckets),
+            getTracksFromServiceStorage(goal.backendKey, 50, selectedGenre.buckets),
             new Promise((_, reject) => setTimeout(() => reject(new Error('Storage timeout')), 3000))
           ]) as any;
           
