@@ -181,6 +181,23 @@ const GenreView: React.FC = () => {
           artwork: peacefulPianoArt
         }
       ];
+    } else if (goalId === 'sleep-support') {
+      return [
+        {
+          id: 'delta-wave',
+          name: 'Delta Wave Therapy',
+          description: 'Deep sleep-inducing frequencies',
+          buckets: ['samba'],
+          artwork: '/lovable-uploads/theta-misty-path.png'
+        },
+        {
+          id: 'nocturnal-classical',
+          name: 'Nocturnal Classical',
+          description: 'Gentle classical pieces for bedtime',
+          buckets: ['classicalfocus'],
+          artwork: '/lovable-uploads/folk-instruments-meadow.png'
+        }
+      ];
     } else if (goalId === 'mood-boost') {
       return [
         {
@@ -211,6 +228,23 @@ const GenreView: React.FC = () => {
           description: 'Upbeat electronic dance music for high energy and motivation',
           buckets: ['HIIT'],
           artwork: dancePartyArt
+        }
+      ];
+    } else if (goalId === 'energy-boost') {
+      return [
+        {
+          id: 'energetic-classical',
+          name: 'Energetic Classical',
+          description: 'Dynamic classical pieces for vitality',
+          buckets: ['classicalfocus'],
+          artwork: crossoverClassicalArt
+        },
+        {
+          id: 'motivational-beats',
+          name: 'Motivational Beats',
+          description: 'Rhythmic music for energy and focus',
+          buckets: ['neuralpositivemusic'],
+          artwork: '/lovable-uploads/string-quartet-studio.png'
         }
       ];
     } else {
