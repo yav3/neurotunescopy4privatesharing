@@ -28,7 +28,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'new-age',
         name: 'New Age',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['newageworldstressanxietyreduction'],
         image: newAgeArt
       },
       {

@@ -101,7 +101,7 @@ const GenreView: React.FC = () => {
           id: 'new-age',
           name: 'New Age',
           description: 'Ethereal soundscapes for enhanced focus',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['newageworldstressanxietyreduction'],
           artwork: newAgeArt
         },
         {
