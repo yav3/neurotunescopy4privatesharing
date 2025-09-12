@@ -32,10 +32,10 @@ const getGenreOptions = (goalId: string) => {
         image: newAgeArt
       },
       {
-        id: 'electronic',
-        name: 'Electronic',
-        description: 'Focused electronic beats and ambient textures',
-        buckets: ['neuralpositivemusic'],
+        id: 'bach-transpositions',
+        name: 'Bach Transpositions',
+        description: 'Modern interpretations of Bach for deep focus',
+        buckets: ['focus-music'],
         image: electronicArt
       },
       {
