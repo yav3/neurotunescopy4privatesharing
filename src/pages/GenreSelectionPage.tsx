@@ -56,9 +56,9 @@ const getGenreOptions = (goalId: string) => {
       },
       {
         id: 'folk-americana-bluegrass',
-        name: 'Folk, Americana, & Bluegrass',
-        description: 'Calming folk and americana music for relaxation',
-        buckets: ['curated-music-collection'],
+        name: 'Country, Americana, & Bluegrass',
+        description: 'Calming country and americana music for relaxation',
+        buckets: ['countryandamericana'],
         image: '/lovable-uploads/folk-instruments-meadow.png'
       },
       {
