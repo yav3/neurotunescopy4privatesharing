@@ -15,7 +15,7 @@ import electronicArt from '@/assets/electronic-artwork.jpg';
 import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
-import dancePartyArt from '@/assets/dance-party-nature.jpg';
+import dancePartyArt from '@/assets/dance-party-beach.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {

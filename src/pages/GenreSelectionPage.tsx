@@ -10,7 +10,7 @@ import newAgeArt from '@/assets/new-age-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
-import dancePartyArt from '@/assets/dance-party-nature.jpg';
+import dancePartyArt from '@/assets/dance-party-beach.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
