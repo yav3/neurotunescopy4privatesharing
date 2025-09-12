@@ -9,6 +9,7 @@ import type { GoalSlug } from '@/config/therapeuticGoals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
 import { filterBlockedTracks } from '@/services/blockedTracks';
+import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -105,13 +106,17 @@ const ensureAudioElement = (): HTMLAudioElement => {
   if (!audioElement) {
     audioElement = document.createElement("audio");
     audioElement.id = AUDIO_ELEMENT_ID;
-    audioElement.preload = "metadata";
-    // audioElement.crossOrigin intentionally disabled to avoid potential CORS issues
-    audioElement.style.display = "none";
+    
     document.body.appendChild(audioElement);
-    console.log(`🎵 Created unified audio element #${AUDIO_ELEMENT_ID}`);
+    
+    // Apply therapeutic audio configuration to prevent ANY browser sounds
+    configureTherapeuticAudio(audioElement);
+    
+    console.log(`🎵 Created therapeutic audio element #${AUDIO_ELEMENT_ID} (completely silent)`);
   } else {
-    console.log(`🎵 Found existing audio element #${AUDIO_ELEMENT_ID}`);
+    // Ensure existing element is also configured for therapeutic use
+    configureTherapeuticAudio(audioElement);
+    console.log(`🎵 Found and configured existing audio element #${AUDIO_ELEMENT_ID}`);
   }
   return audioElement;
 };
@@ -119,8 +124,13 @@ const ensureAudioElement = (): HTMLAudioElement => {
 export const useAudioStore = create<AudioState>((set, get) => {
   let eventListenersAdded = false;
   
+  // Initialize therapeutic audio environment on store creation
+  if (typeof window !== 'undefined') {
+    initTherapeuticAudio();
+  }
+  
   // Force audio element creation on store initialization
-  console.log('🎵 Audio store initializing - creating audio element...');
+  console.log('🎵 Audio store initializing - creating therapeutic audio element...');
   ensureAudioElement();
   
   // Immediate auto-skip function for seamless playback
@@ -146,17 +156,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
     return true;
   };
   
-  // Helper: Announce skips with smart UX (don't spam)
+  // Helper: Announce skips with smart UX (don't spam) - SILENT for therapeutic experience
   const announceSkip = async () => {
     skipped++;
     const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+    
+    // Only log for admin/technical users - never disrupt therapeutic experience for regular users
     if (shouldShowTechnicalLogs()) {
-      if (skipped === 1) toast.info("Skipping broken tracks…");
-      if (skipped % 5 === 0) toast.info(`Skipped ${skipped} broken tracks`);
-    } else {
-      // Simple user-friendly message for non-admins
-      if (skipped === 1) toast.info("Finding the perfect tracks for you...");
+      // Even for admins, keep it minimal and non-disruptive
+      if (skipped === 1) console.log("🎵 Admin log: Skipping broken tracks silently...");
+      if (skipped % 10 === 0) console.log(`🎵 Admin log: Skipped ${skipped} broken tracks`);
     }
+    // NO toast notifications or sounds for regular users - maintain therapeutic calm
   };
   
   // Initialize audio element and events
@@ -185,10 +196,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
         scheduleAutoSkip('track ended');
       });
       
-      // Auto-skip on audio error
-      audio.addEventListener('error', async () => {
-        console.warn('🎵 Audio error event — scheduling skip');
+      // Auto-skip on audio error - SILENT error handling for therapeutic experience
+      audio.addEventListener('error', async (event) => {
+        // Prevent any browser default error sounds or notifications
+        event.preventDefault();
+        event.stopPropagation();
+        
+        console.warn('🎵 Audio error event — silent handling for therapeutic experience');
         set({ isPlaying: false });
+        
+        // Silent skip announcement (visual only, no sounds)
         announceSkip();
         
         // Use debounced auto-skip to prevent racing
@@ -400,9 +417,17 @@ export const useAudioStore = create<AudioState>((set, get) => {
       console.log('🎵 Audio src set, attempting to play...');
       
       try { 
+        // Silent play attempt - no browser error sounds for therapeutic experience
         await audio.play(); 
-      } catch { 
-        console.log('🎵 Autoplay blocked (expected), waiting for user gesture');
+      } catch (playError) { 
+        // Silent handling - prevent any browser notification sounds
+        console.log('🎵 Autoplay blocked or play failed (handled silently for therapeutic experience)');
+        
+        // Don't throw or emit any sounds - therapeutic apps need silent error handling
+        if (playError instanceof Error && !playError.message.includes('interact')) {
+          // Only log non-user-interaction errors silently
+          console.log('🎵 Silent playback issue:', playError.name);
+        }
       }
       
       // Final validation
