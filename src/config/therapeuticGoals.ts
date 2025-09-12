@@ -4,9 +4,9 @@ import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide
 import focusSprite from '@/assets/focus-sprite.jpg';
 import stressReliefSprite from '@/assets/stress-relief-radiant.jpg';
 import moodBoostSprite from '@/assets/mood-boost-sunrise-mountain.jpg';
-import energyBoostSprite from '@/assets/energy-boost-sunflower-instruments.jpg';
+import energyBoostSprite from '@/assets/energy-boost-flowers.jpg';
 import painReliefSprite from '@/assets/pain-relief-sprite.jpg';
-import cardioSprite from '@/assets/cardio-tropical-sunset.jpg';
+import cardioSprite from '@/assets/cardio-sunset-palms.jpg';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
