@@ -207,7 +207,7 @@ export const AudioDataCompiler = () => {
               <div>Working tracks: {stats.working}</div>
               {isCompiling && (
                 <div className="text-primary font-medium">
-                  ⚡ Background compilation in progress...
+                  + Background compilation in progress...
                 </div>
               )}
             </div>
