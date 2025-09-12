@@ -156,6 +156,23 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/european-classical-terrace.png'
         }
       ];
+    } else if (goalId === 'pain-support') {
+      return [
+        {
+          id: 'healing-frequencies',
+          name: 'Healing Frequencies',
+          description: 'Therapeutic tones for pain management',
+          buckets: ['neuralpositivemusic'],
+          artwork: acousticArt
+        },
+        {
+          id: 'gentle-classical',
+          name: 'Gentle Classical',
+          description: 'Soft classical music for comfort',
+          buckets: ['gentleclassicalforpain'],
+          artwork: peacefulPianoArt
+        }
+      ];
     } else if (goalId === 'mood-boost') {
       return [
         {
