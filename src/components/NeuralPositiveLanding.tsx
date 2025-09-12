@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Sparkles, Plus, Shield } from 'lucide-react';
+import { Play, Sparkles, Zap, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -24,7 +24,7 @@ export default function NeuralPositiveLanding({ onSignIn, onGetStarted }: Neural
           className="flex items-center space-x-2"
         >
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
-            <Plus className="w-4 h-4 text-white" strokeWidth={1} />
+            <Zap className="w-4 h-4 text-white" />
           </div>
           <span className="text-xl font-semibold tracking-tight">NeuralPositive</span>
         </motion.div>
@@ -139,7 +139,7 @@ export default function NeuralPositiveLanding({ onSignIn, onGetStarted }: Neural
             <Card className="bg-card/20 backdrop-blur-xl border-border/20 hover:bg-card/30 transition-all duration-300 shadow-glass">
               <CardContent className="p-8 text-center">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-primary flex items-center justify-center mx-auto mb-4">
-                  <Plus className="w-6 h-6 text-white" strokeWidth={1} />
+                  <Zap className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3">Personalized</h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -172,7 +172,7 @@ export default function NeuralPositiveLanding({ onSignIn, onGetStarted }: Neural
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center">
-              <Plus className="w-3 h-3 text-white" strokeWidth={1} />
+              <Zap className="w-3 h-3 text-white" />
             </div>
             <span className="text-lg font-semibold text-foreground">NeuralPositive</span>
           </div>

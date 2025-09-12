@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Target, Heart, Brain, Moon, Plus, Headphones } from 'lucide-react';
+import { ArrowRight, Target, Heart, Brain, Moon, Zap, Headphones } from 'lucide-react';
 import { TherapeuticGoal } from '@/config/therapeuticGoals';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,7 +16,7 @@ const goalIcons = {
   'focus-enhancement': Brain,
   'stress-anxiety-support': Heart,
   'sleep-support': Moon,
-  'mood-boost': Plus,
+  'mood-boost': Zap,
   'pain-support': Target,
   'energy-boost': Headphones,
   'default': Brain

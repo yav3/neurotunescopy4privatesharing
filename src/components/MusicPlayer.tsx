@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, Ban } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTime } from "@/lib/utils";
@@ -10,7 +10,6 @@ import { useAuthContext } from "@/components/auth/AuthProvider";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-import { blockTrack } from '@/services/blockedTracks';
 
 interface MusicPlayerProps {
   open: boolean;
@@ -27,16 +26,6 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
     if (!lastGoal) return 'Therapeutic Music';
     const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
     return goal ? goal.name : 'Therapeutic Music';
-  };
-
-  const handleBlockTrack = async () => {
-    if (!track) return;
-    
-    const success = await blockTrack(track.id, track.title);
-    if (success) {
-      // Skip to next track after blocking
-      await next();
-    }
   };
 
   if (!track) {
@@ -130,29 +119,17 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
               />
             </div>
             
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "transition-colors duration-200",
-                  isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
-                )}
-                onClick={() => setIsLiked(!isLiked)}
-              >
-                <Heart className={cn("w-5 h-5", isLiked && "fill-current")} />
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-destructive transition-colors"
-                onClick={handleBlockTrack}
-                title="Block this track - never play it again"
-              >
-                <Ban className="w-5 h-5" />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "transition-colors duration-200",
+                isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
+              )}
+              onClick={() => setIsLiked(!isLiked)}
+            >
+              <Heart className={cn("w-5 h-5", isLiked && "fill-current")} />
+            </Button>
           </div>
         </div>
       </DialogContent>

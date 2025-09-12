@@ -27,7 +27,6 @@ import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
 import AIDJ from "./pages/AIDJ";
 import GenreSelectionPage from "./pages/GenreSelectionPage";
-import { MagicAuth } from "./pages/MagicAuth";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import UserManagement from "./pages/admin/UserManagement";
@@ -35,7 +34,6 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import Analytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
-import { MagicLinksPage } from "./pages/admin/MagicLinks";
 
 const queryClient = new QueryClient();
 
@@ -107,8 +105,6 @@ const App = () => {
                 <Route index element={<AdminDashboard />} />
                 <Route path="users" element={<UserManagement />} />
                 <Route path="content" element={<ContentManagement />} />
-                <Route path="magic-links" element={<MagicLinksPage />} />
-                <Route path="magic-auth" element={<MagicAuth />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="settings" element={<SystemSettings />} />
                 <Route path="monitoring" element={<DataMonitoring />} />

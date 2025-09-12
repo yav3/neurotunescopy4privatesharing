@@ -826,27 +826,6 @@ export type Database = {
           },
         ]
       }
-      favorites: {
-        Row: {
-          created_at: string
-          id: string
-          track_id: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          track_id: number
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          track_id?: number
-          user_id?: string
-        }
-        Relationships: []
-      }
       financial_metrics: {
         Row: {
           commodity_index: number | null
@@ -1137,39 +1116,6 @@ export type Database = {
           scenario_date?: string
           scenario_type?: string
           tariff_rate_cad?: number | null
-        }
-        Relationships: []
-      }
-      magic_links: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          expires_at: string
-          id: string
-          metadata: Json | null
-          token: string
-          used_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          expires_at: string
-          id?: string
-          metadata?: Json | null
-          token: string
-          used_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          expires_at?: string
-          id?: string
-          metadata?: Json | null
-          token?: string
-          used_at?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -1886,96 +1832,6 @@ export type Database = {
         }
         Relationships: []
       }
-      therapeutic_stratifications: {
-        Row: {
-          created_at: string
-          description: string | null
-          genre: string
-          id: string
-          recommended_intensity: number[] | null
-          stratification_name: string
-          target_bpm_range: string | null
-          therapeutic_goal: string
-          typical_tags: string[] | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          genre: string
-          id?: string
-          recommended_intensity?: number[] | null
-          stratification_name: string
-          target_bpm_range?: string | null
-          therapeutic_goal: string
-          typical_tags?: string[] | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          genre?: string
-          id?: string
-          recommended_intensity?: number[] | null
-          stratification_name?: string
-          target_bpm_range?: string | null
-          therapeutic_goal?: string
-          typical_tags?: string[] | null
-        }
-        Relationships: []
-      }
-      therapeutic_track_categories: {
-        Row: {
-          bpm_range: string | null
-          complexity_score: number | null
-          confidence_score: number | null
-          created_at: string
-          energy_level: number | null
-          id: string
-          intensity_level: number | null
-          mood_tags: string[] | null
-          primary_genre: string | null
-          primary_therapeutic_goal: string
-          secondary_genre: string | null
-          secondary_therapeutic_goal: string | null
-          therapeutic_tags: string[] | null
-          track_id: string
-          updated_at: string
-        }
-        Insert: {
-          bpm_range?: string | null
-          complexity_score?: number | null
-          confidence_score?: number | null
-          created_at?: string
-          energy_level?: number | null
-          id?: string
-          intensity_level?: number | null
-          mood_tags?: string[] | null
-          primary_genre?: string | null
-          primary_therapeutic_goal: string
-          secondary_genre?: string | null
-          secondary_therapeutic_goal?: string | null
-          therapeutic_tags?: string[] | null
-          track_id: string
-          updated_at?: string
-        }
-        Update: {
-          bpm_range?: string | null
-          complexity_score?: number | null
-          confidence_score?: number | null
-          created_at?: string
-          energy_level?: number | null
-          id?: string
-          intensity_level?: number | null
-          mood_tags?: string[] | null
-          primary_genre?: string | null
-          primary_therapeutic_goal?: string
-          secondary_genre?: string | null
-          secondary_therapeutic_goal?: string | null
-          therapeutic_tags?: string[] | null
-          track_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       timber_inventory: {
         Row: {
           annual_growth_mbf: number | null
@@ -2481,18 +2337,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
-      create_magic_link_for_vip: {
-        Args: {
-          expires_in_hours?: number
-          link_metadata?: Json
-          target_user_id: string
-        }
-        Returns: {
-          expires_at: string
-          link_id: string
-          token: string
-        }[]
-      }
       decode_error_level: {
         Args: { elevel: number }
         Returns: string
@@ -2516,10 +2360,6 @@ export type Database = {
           title: string
           track_id: string
         }[]
-      }
-      generate_magic_link_token: {
-        Args: Record<PropertyKey, never>
-        Returns: string
       }
       get_camelot_neighbors: {
         Args: { input_camelot: string }
@@ -2616,14 +2456,6 @@ export type Database = {
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
         Returns: boolean
-      }
-      validate_magic_link: {
-        Args: { link_token: string }
-        Returns: {
-          reason: string
-          user_id: string
-          valid: boolean
-        }[]
       }
       verify_all_tracks: {
         Args: Record<PropertyKey, never>

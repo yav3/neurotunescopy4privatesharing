@@ -1,12 +1,12 @@
-import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
+import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-react';
 
 // Import the new clean sprite-style images
 import focusSprite from '@/assets/focus-sprite.jpg';
-import stressReliefSprite from '@/assets/stress-relief-radiant.jpg';
+import stressReliefSprite from '@/assets/stress-relief-sprite.jpg';
 import moodBoostSprite from '@/assets/mood-boost-sunrise-mountain.jpg';
-import energyBoostSprite from '@/assets/energy-boost-flowers.jpg';
+import energyBoostSprite from '@/assets/energy-boost-sprite.jpg';
 import painReliefSprite from '@/assets/pain-relief-sprite.jpg';
-import cardioSprite from '@/assets/cardio-sunset-palms.jpg';
+import cardioSprite from '@/assets/cardio-sprite.jpg';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -65,8 +65,8 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
     vadProfile: { valence: 0.6, arousal: 0.7, dominance: 0.6 },
-    musicBuckets: ['focus-music', 'classicalfocus', 'Chopin', 'opera', 'curated-music-collection', 'neuralpositivemusic'],
-    synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
+    musicBuckets: ['focus-music', 'neuralpositivemusic'],
+    synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement']
   },
   {
     id: 'stress-anxiety-support',
@@ -81,7 +81,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'sonatasforstress', 'samba', 'verified_music_collection', 'neuralpositivemusic'],
+    musicBuckets: ['samba'],
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
@@ -91,13 +91,13 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Mood Boost',
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
-    icon: Plus,
+    icon: Zap,
     artwork: moodBoostSprite,
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['DISCOFUNKMOODBOOST', 'ROCKMOODBOOST', 'moodboostremixesworlddance', 'pop', 'house', 'HIIT'],
+    musicBuckets: ['HIIT'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
@@ -113,40 +113,8 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    musicBuckets: ['gentleclassicalforpain', 'painreducingworld', 'neuralpositivemusic'],
+    musicBuckets: ['neuralpositivemusic'],
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
-  },
-  {
-    id: 'energy-boost',
-    slug: 'energy-boost',
-    backendKey: 'energy-boost',
-    name: 'Energy Boost',
-    shortName: 'Energize',
-    description: 'High-energy music to boost motivation and physical performance',
-    icon: Waves,
-    artwork: energyBoostSprite,
-    color: 'orange',
-    gradient: 'from-orange-500 to-red-500',
-    bpmRange: { min: 120, max: 160, optimal: 140 },
-    vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
-    musicBuckets: ['ENERGYBOOST', 'HIIT', 'house', 'pop'],
-    synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
-  },
-  {
-    id: 'cardio-support',
-    slug: 'cardio-support',
-    backendKey: 'cardio-support',
-    name: 'Cardio Support',
-    shortName: 'Cardio',
-    description: 'High-tempo music for cardiovascular exercise and fitness',
-    icon: Shield,
-    artwork: cardioSprite,
-    color: 'red',
-    gradient: 'from-red-500 to-pink-500',
-    bpmRange: { min: 130, max: 180, optimal: 150 },
-    vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
-    musicBuckets: ['HIIT', 'house', 'ENERGYBOOST', 'pop'],
-    synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
   }
 ];
 
@@ -183,14 +151,8 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
   return acc;
 }, {} as Record<string, TherapeuticGoal>);
 
-// Legacy type for backwards compatibility - expanded to include new goals
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost' | 'cardio-support';
+// Legacy type for backwards compatibility
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
-
-// Helper function to get buckets for a goal
-export function getBucketsForGoal(goalId: string): string[] {
-  const goal = SYNONYM_TO_GOAL[goalId.toLowerCase()] || GOALS_BY_ID[goalId] || GOALS_BY_SLUG[goalId] || GOALS_BY_BACKEND_KEY[goalId];
-  return goal?.musicBuckets || ['neuralpositivemusic']; // fallback to main bucket
-}

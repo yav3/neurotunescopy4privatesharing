@@ -4,7 +4,7 @@ import {
   TrendingUp,
   Heart,
   Brain,
-  Plus,
+  Zap,
   Moon,
   Shield,
   Calendar,
@@ -101,7 +101,7 @@ export function UnifiedDashboard() {
     { id: 'focus', label: 'Focus Enhancement', icon: Brain, color: 'blue', progress: 75 },
     { id: 'chill', label: 'Stress Reduction', icon: Heart, color: 'green', progress: 88 },
     { id: 'relaxation', label: 'Relaxation', icon: Heart, color: 'cyan', progress: 92 },
-    { id: 'energy', label: 'Energy Boost', icon: Plus, color: 'yellow', progress: 67 },
+    { id: 'energy', label: 'Energy Boost', icon: Zap, color: 'yellow', progress: 67 },
     { id: 'sleep', label: 'Sleep Quality', icon: Moon, color: 'indigo', progress: 84 }
   ];
 
@@ -344,7 +344,7 @@ export function UnifiedDashboard() {
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Plus className="w-8 h-8 text-white" strokeWidth={1} />
+                      <Zap className="w-8 h-8 text-white" />
                     </div>
                     <p className="font-medium">Stress</p>
                     <p className="text-2xl font-bold text-red-500">{moodData.stressLevel}</p>
