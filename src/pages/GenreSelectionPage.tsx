@@ -20,6 +20,7 @@ import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
+import bachPaleWoodInstruments from '@/assets/bach-pale-wood-instruments.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -44,7 +45,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
         buckets: ['focus-music'],
-        image: electronicArt
+        image: bachPaleWoodInstruments
       },
       {
         id: 'peaceful-piano',
