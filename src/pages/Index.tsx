@@ -72,10 +72,10 @@ const Index = () => {
       </div>
 
       {/* Goals grid optimized for viewport fit with navigation space */}
-      <div className="px-4 pb-24 sm:pb-20 relative z-10 h-full flex items-center">
-        <div className="max-w-5xl mx-auto w-full">
+      <div className="pb-24 sm:pb-20 relative z-10 h-full flex items-center justify-center">
+        <div className="w-full max-w-4xl px-4">
           {/* Responsive cards grid with consistent spacing */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6 lg:gap-6 justify-items-center">
             {THERAPEUTIC_GOALS.map((goal, index) => {
               return (
                   <Card
