@@ -14,6 +14,8 @@ import newAgeArt from '@/assets/new-age-artwork.jpg';
 import electronicArt from '@/assets/electronic-artwork.jpg';
 import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
+import houseMusicArt from '@/assets/house-music-energy.jpg';
+import dancePartyArt from '@/assets/dance-party-energy.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -162,7 +164,7 @@ const GenreView: React.FC = () => {
           description: 'Energetic house beats for motivation and energy',
           buckets: ['neuralpositivemusic'],
           folder: 'House',
-          artwork: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
+          artwork: houseMusicArt
         },
         {
           id: 'uplifting-orchestral',
@@ -172,11 +174,11 @@ const GenreView: React.FC = () => {
           artwork: crossoverClassicalArt
         },
         {
-          id: 'positive-electronic',
-          name: 'Positive Electronic',
-          description: 'Upbeat electronic music for motivation',
+          id: 'dance-party',
+          name: 'Dance Party',
+          description: 'Upbeat electronic dance music for high energy and motivation',
           buckets: ['neuralpositivemusic'],
-          artwork: electronicArt
+          artwork: dancePartyArt
         }
       ];
     } else {
