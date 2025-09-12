@@ -11,7 +11,7 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 // Import beautiful instrument nature images
 import focusImage from '@/assets/focus-piano-crystal-meadow.jpg';
 import stressImage from '@/assets/stress-violin-blooms.jpg';
-import moodImage from '@/assets/mood-instruments-rainbow-garden.jpg';
+import moodImage from '@/assets/mood-modern-instruments-garden.jpg';
 import painImage from '@/assets/pain-harp-garden-serenity.jpg';
 
 const Index = () => {
@@ -117,7 +117,7 @@ const Index = () => {
                     {goal.id === 'mood-boost' && (
                       <img 
                         src={moodImage}
-                        alt="Multiple instruments in colorful garden for mood boost"
+                        alt="Modern instruments - drums, guitars, bass, mandolin, synth in colorful garden for mood boost"
                         className="w-full h-full object-cover"
                       />
                     )}
