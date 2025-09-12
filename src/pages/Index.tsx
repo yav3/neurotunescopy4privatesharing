@@ -148,7 +148,7 @@ const Index = () => {
                   {/* Goal title only - responsive sizing */}
                   <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4 md:p-6">
                     <div className="relative z-10">
-                      <h3 className="font-bold text-xs sm:text-base md:text-lg lg:text-xl leading-tight tracking-wide uppercase"
+                      <h3 className="font-bold text-xs sm:text-base md:text-lg lg:text-xl leading-tight tracking-wide"
                           style={{ 
                             color: '#ffffff',
                             WebkitTextFillColor: '#ffffff',
