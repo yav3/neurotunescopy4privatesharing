@@ -19,7 +19,11 @@ export const MagicAuth = () => {
   const token = searchParams.get('token');
 
   useEffect(() => {
+    console.log('MagicAuth: URL params:', window.location.search);
+    console.log('MagicAuth: Token from params:', token);
+    
     if (!token) {
+      console.log('MagicAuth: No token found in URL parameters');
       setError('No magic link token provided');
       setLoading(false);
       return;
@@ -176,10 +180,18 @@ export const MagicAuth = () => {
                 <p className="text-muted-foreground">
                   No authentication token was provided in the URL.
                 </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Make sure you're using the complete magic link URL provided by the administrator.
+                </p>
               </div>
-              <Button variant="outline" onClick={goHome} className="w-full">
-                Go to Home
-              </Button>
+              <div className="space-y-2">
+                <Button variant="outline" onClick={goToLogin} className="w-full">
+                  Sign In Manually
+                </Button>
+                <Button variant="ghost" onClick={goHome} className="w-full">
+                  Go to Home
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
