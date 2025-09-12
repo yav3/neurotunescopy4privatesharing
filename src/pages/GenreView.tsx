@@ -155,6 +155,13 @@ const GenreView: React.FC = () => {
           description: 'Classical opera for emotional release and stress relief',
           buckets: ['opera'],
           artwork: '/lovable-uploads/european-classical-terrace.png'
+        },
+        {
+          id: 'sonatas',
+          name: 'Sonatas',
+          description: 'Classical sonatas for deep stress relief',
+          buckets: ['sonatasforstress'],
+          artwork: '/lovable-uploads/string-quartet-studio.png'
         }
       ];
     } else if (goalId === 'pain-support') {

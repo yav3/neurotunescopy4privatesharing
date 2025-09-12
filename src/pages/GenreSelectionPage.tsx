@@ -81,6 +81,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Classical opera for emotional release and stress relief',
         buckets: ['opera'],
         image: '/lovable-uploads/european-classical-terrace.png'
+      },
+      {
+        id: 'sonatas',
+        name: 'Sonatas',
+        description: 'Classical sonatas for deep stress relief',
+        buckets: ['sonatasforstress'],
+        image: '/lovable-uploads/string-quartet-studio.png'
       }
     ],
     'sleep-support': [
