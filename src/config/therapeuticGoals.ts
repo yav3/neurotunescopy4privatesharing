@@ -3,7 +3,7 @@ import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-
 // Import the new clean sprite-style images
 import focusSprite from '@/assets/focus-sprite.jpg';
 import stressReliefSprite from '@/assets/stress-relief-sprite.jpg';
-import moodBoostSprite from '@/assets/mood-boost-sprite.jpg';
+import moodBoostSprite from '@/assets/mood-boost-sunrise-mountain.jpg';
 import energyBoostSprite from '@/assets/energy-boost-sprite.jpg';
 import painReliefSprite from '@/assets/pain-relief-sprite.jpg';
 import cardioSprite from '@/assets/cardio-sprite.jpg';
