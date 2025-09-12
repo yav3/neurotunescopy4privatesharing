@@ -50,11 +50,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-3 sm:mb-4 md:mb-6 flex items-center justify-between">
               <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight flex items-center gap-1">
-                <svg className="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 12c0-1.5 1-3 2.5-3.5C7 8 9 9 9 12s-2 4-3.5 3.5C4 15 3 13.5 3 12z" fill="currentColor"/>
-                  <path d="M9 12c0-2 2-4 4.5-3.5C15 9 17 10 17 12s-2 3-3.5 2.5C11 14 9 14 9 12z" fill="currentColor"/>
-                  <path d="M15 12c0-1 1-2 2.5-1.5C19 11 21 11.5 21 12s-2 1-3.5 0.5C16 12 15 13 15 12z" fill="currentColor"/>
-                </svg>
+                <Plus className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={2.5} />
                 NeuroTunes
               </h1>
               <Button
