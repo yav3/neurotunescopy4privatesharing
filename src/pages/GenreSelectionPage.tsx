@@ -186,10 +186,10 @@ export default function GenreSelectionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/50">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%227%22%20cy%3D%227%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
+      <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22hsl(var(--foreground))%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%227%22%20cy%3D%227%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
       
       {/* Simple Header - Mobile optimized */}
       <div className="relative z-40 px-3 sm:px-6 py-4 sm:py-6">
@@ -198,7 +198,7 @@ export default function GenreSelectionPage() {
             variant="ghost"
             size="sm"
             onClick={handleBack}
-            className="mb-4 sm:mb-6 text-white/70 hover:text-white hover:bg-white/10"
+            className="mb-4 sm:mb-6 text-muted-foreground hover:text-foreground hover:bg-muted/50"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
@@ -206,10 +206,10 @@ export default function GenreSelectionPage() {
           
           {/* Simple title - Mobile responsive */}
           <div className="text-center mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-foreground leading-tight">
               {goal.name}
             </h1>
-            <p className="text-base sm:text-lg text-blue-200 max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               {goal.description}
             </p>
           </div>
@@ -223,7 +223,7 @@ export default function GenreSelectionPage() {
             {genres.map((genre, index) => (
               <div
                 key={genre.id}
-                className="group relative aspect-[4/3] sm:aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl shadow-blue-500/10"
+                className="group relative aspect-[4/3] sm:aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-card/50 backdrop-blur-xl border border-border hover:border-primary/50 hover:bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10"
                 onClick={() => handleGenreSelect(genre.id)}
               >
                 {/* Background Image */}
@@ -235,13 +235,13 @@ export default function GenreSelectionPage() {
                     decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 </div>
                 
                 {/* Position text to avoid obscuring pianos */}
                 <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-[hsl(var(--text-white))] drop-shadow-xl"
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-xl"
                   >
                     {genre.name}
                   </h3>
