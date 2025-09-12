@@ -144,6 +144,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
         image: '/lovable-uploads/european-classical-terrace.png'
+      },
+      {
+        id: 'world-new-age',
+        name: 'World & New Age',
+        description: 'Global healing sounds for pain relief',
+        buckets: ['painreducingworld'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       }
     ],
     'energy-boost': [

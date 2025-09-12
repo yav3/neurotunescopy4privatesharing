@@ -171,6 +171,13 @@ const GenreView: React.FC = () => {
           description: 'Soft classical music for comfort',
           buckets: ['gentleclassicalforpain'],
           artwork: peacefulPianoArt
+        },
+        {
+          id: 'world-new-age',
+          name: 'World & New Age',
+          description: 'Global healing sounds for pain relief',
+          buckets: ['painreducingworld'],
+          artwork: newAgeArt
         }
       ];
     } else if (goalId === 'mood-boost') {
