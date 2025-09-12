@@ -98,7 +98,6 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/magic-auth" element={<MagicAuth />} />
               <Route path="/goals/:goalId/genres" element={<GenreSelectionPage />} />
               <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
@@ -109,6 +108,7 @@ const App = () => {
                 <Route path="users" element={<UserManagement />} />
                 <Route path="content" element={<ContentManagement />} />
                 <Route path="magic-links" element={<MagicLinksPage />} />
+                <Route path="magic-auth" element={<MagicAuth />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="settings" element={<SystemSettings />} />
                 <Route path="monitoring" element={<DataMonitoring />} />

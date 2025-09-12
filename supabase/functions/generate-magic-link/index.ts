@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Generate the full magic link URL
     const baseUrl = req.headers.get('origin') || 'https://neurotunes.app';
-    const magicLinkUrl = `${baseUrl}/magic-auth?token=${magicLink.token}`;
+    const magicLinkUrl = `${baseUrl}/admin/magic-auth?token=${magicLink.token}`;
 
     console.log('Magic link created successfully:', magicLink.link_id);
 
