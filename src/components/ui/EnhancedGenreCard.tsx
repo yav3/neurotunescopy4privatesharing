@@ -76,23 +76,23 @@ export const EnhancedGenreCard: React.FC<EnhancedGenreCardProps> = ({
 
       {/* Premium Content Container */}
       <div className="relative h-full flex flex-col justify-end p-6 z-10">
-        {/* Title with Glass Background */}
-        <div className={cn(
-          "mb-4 p-3 rounded-lg",
-          "backdrop-blur-md bg-white/15 border border-white/25",
-          "shadow-lg",
-          "transition-all duration-500",
-          "group-hover:bg-white/25 group-hover:border-white/40",
-          "group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
-        )}>
-          <h3 className="text-white text-xl font-bold mb-2 leading-tight drop-shadow-lg">
+        {/* Clean Title without Box */}
+        <div className="mb-4">
+          <h3 className={cn(
+            "text-white text-2xl font-bold mb-3 leading-tight",
+            "drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]",
+            "transition-all duration-500",
+            "group-hover:drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]",
+            "group-hover:text-white"
+          )}>
             {genre.name}
           </h3>
           
-          {/* Enhanced Description with Fade Effect */}
+          {/* Enhanced Description with Better Contrast */}
           <p className={cn(
-            "text-white/90 text-sm leading-relaxed drop-shadow-sm",
-            "opacity-70 group-hover:opacity-100 transition-opacity duration-500",
+            "text-white/95 text-sm leading-relaxed",
+            "drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]",
+            "opacity-80 group-hover:opacity-100 transition-all duration-500",
             "max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-700"
           )}>
             {genre.description}
