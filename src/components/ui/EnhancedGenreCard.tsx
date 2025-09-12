@@ -80,9 +80,9 @@ export const EnhancedGenreCard: React.FC<EnhancedGenreCardProps> = ({
         <div className="mb-4">
           <h3 className={cn(
             "text-white text-2xl font-bold mb-3 leading-tight",
-            "drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]",
+            "drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]",
             "transition-all duration-500",
-            "group-hover:drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]",
+            "group-hover:drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)]",
             "group-hover:text-white"
           )}>
             {genre.name}
@@ -91,7 +91,7 @@ export const EnhancedGenreCard: React.FC<EnhancedGenreCardProps> = ({
           {/* Enhanced Description with Better Contrast */}
           <p className={cn(
             "text-white/95 text-sm leading-relaxed",
-            "drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]",
+            "drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]",
             "opacity-80 group-hover:opacity-100 transition-all duration-500",
             "max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-700"
           )}>

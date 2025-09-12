@@ -20,7 +20,7 @@ import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
-import bachPaleWoodInstruments from '@/assets/bach-pale-wood-instruments.jpg';
+import bachCelloMandolinPhoto from '@/assets/bach-cello-mandolin-photorealistic.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -45,7 +45,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
         buckets: ['focus-music'],
-        image: bachPaleWoodInstruments
+        image: bachCelloMandolinPhoto
       },
       {
         id: 'peaceful-piano',
@@ -282,10 +282,10 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-700 bg-gradient-radial from-white/20 via-transparent to-transparent blur-sm" />
                 </div>
                 
-                {/* Clean Title Overlay without Box */}
+                {/* Clean Title Overlay without Box - Ensure White Text */}
                 <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 pointer-events-none">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-colors duration-300"
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] transition-colors duration-300"
                   >
                     {genre.name}
                   </h3>
