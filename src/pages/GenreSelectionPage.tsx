@@ -258,11 +258,13 @@ export default function GenreSelectionPage() {
                 {/* Position text to avoid obscuring pianos */}
                 <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-2xl"
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight"
                     style={{ 
-                      color: '#ffffff',
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8)',
-                      fontWeight: '700'
+                      color: '#FFFFFF !important',
+                      WebkitTextFillColor: '#FFFFFF',
+                      textShadow: '0 2px 8px rgba(0, 0, 0, 1), 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.8)',
+                      fontWeight: '700',
+                      filter: 'contrast(1.2)'
                     }}
                   >
                     {genre.name}
