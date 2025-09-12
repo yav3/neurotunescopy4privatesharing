@@ -11,6 +11,7 @@ import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
+import popMusicArt from '@/assets/pop-music-bright.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -106,6 +107,13 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic'],
         folder: 'House',
         image: houseMusicArt
+      },
+      {
+        id: 'pop',
+        name: 'Pop',
+        description: 'Uplifting pop music for instant mood elevation',
+        buckets: ['pop'],
+        image: popMusicArt
       },
       {
         id: 'uplifting-orchestral',
