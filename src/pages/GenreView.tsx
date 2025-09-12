@@ -21,7 +21,7 @@ import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
   const trackNames = [
-    'Bach Reimagined', 'Peaceful Focus', 'Classical Concentration', 
+    'Peaceful Focus', 'Classical Concentration', 
     'Mozart Modern', 'Therapeutic Symphony', 'Ambient Classical',
     'Focus Flow', 'Mindful Melody', 'Serene Strings',
     'Calm Composition', 'Tranquil Tones', 'Gentle Harmony'
