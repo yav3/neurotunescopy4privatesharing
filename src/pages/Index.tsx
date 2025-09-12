@@ -12,7 +12,7 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 import focusImage from '@/assets/focus-piano-crystal-meadow.jpg';
 import stressImage from '@/assets/stress-violin-blooms.jpg';
 import moodImage from '@/assets/mood-modern-instruments-garden.jpg';
-import painImage from '@/assets/pain-harp-garden-serenity.jpg';
+import painImage from '@/assets/pain-harp-piano-oud-garden.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -125,7 +125,7 @@ const Index = () => {
                     {goal.id === 'pain-support' && (
                       <img 
                         src={painImage}
-                        alt="Harp in peaceful garden for pain relief"
+                        alt="Harp, piano, and oud in peaceful garden for pain relief"
                         className="w-full h-full object-cover"
                       />
                     )}
