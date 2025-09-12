@@ -285,7 +285,7 @@ export default function GenreSelectionPage() {
                 {/* Clean Title Overlay without Box - Ensure White Text */}
                 <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 pointer-events-none">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] transition-colors duration-300"
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] transition-colors duration-300 filter drop-shadow-[0_0_8px_rgba(0,0,0,1)]"
                   >
                     {genre.name}
                   </h3>
