@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Brain, Sun, Moon, Zap } from 'lucide-react';
+import { ArrowLeft, Brain, Sun, Moon, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -49,7 +49,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-3 sm:mb-4 md:mb-6 flex items-center justify-between">
               <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight flex items-center gap-2">
-                <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                <Plus className="h-5 w-5 sm:h-6 sm:w-6 text-primary" strokeWidth={1} />
                 NeuroTunes
               </h1>
               <Button

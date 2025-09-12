@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Sparkles, Zap, Waves, Flower, Shield } from 'lucide-react';
+import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
 
 // Import the new clean sprite-style images
 import focusSprite from '@/assets/focus-sprite.jpg';
@@ -91,7 +91,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     name: 'Mood Boost',
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
-    icon: Zap,
+    icon: Plus,
     artwork: moodBoostSprite,
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',

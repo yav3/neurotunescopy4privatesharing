@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Pause, Heart, ThumbsDown, Zap, Radio } from 'lucide-react';
+import { Play, Pause, Heart, ThumbsDown, Plus, Radio } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -115,9 +115,9 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 : "text-foreground/80 hover:text-yellow-500 bg-card/20 hover:bg-yellow-500/10"
             )}
           >
-            <Zap className={cn("w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2", lightningMode && "fill-current")} />
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" strokeWidth={1} />
             <span className="hidden sm:inline">Lightning</span>
-            <span className="sm:hidden">⚡</span>
+            <span className="sm:hidden">+</span>
             {lightningMode && <span className="ml-1 text-xs">save mix</span>}
           </Button>
 

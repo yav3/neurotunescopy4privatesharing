@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Zap, Radio } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
@@ -312,7 +312,7 @@ export const FullPagePlayer = () => {
                   : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
               )}
             >
-              <Zap className={cn("w-5 h-5", lightningMode && "fill-current")} />
+              <Plus className="w-5 h-5" strokeWidth={1} />
             </Button>
 
             {/* Spatial Audio */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, X, Heart, Zap } from "lucide-react";
+import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 
@@ -125,7 +125,7 @@ export const MinimizedPlayer = () => {
               // TODO: Add lightning playlist functionality
             }}
           >
-            <Zap className="w-4 h-4" />
+            <Plus className="w-4 h-4" strokeWidth={1} />
           </Button>
           
           <Button
