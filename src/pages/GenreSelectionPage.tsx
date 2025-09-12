@@ -142,7 +142,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'Upbeat electronic dance music for high energy and motivation',
-        buckets: ['HIIT'],
+        buckets: ['ENERGYBOOST'],
         image: dancePartyArt
       }
     ],
