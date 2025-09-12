@@ -8,6 +8,7 @@ import { filterTracksForGoal, sortByTherapeuticEffectiveness } from '@/utils/the
 import type { GoalSlug } from '@/config/therapeuticGoals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
+import { filterBlockedTracks } from '@/services/blockedTracks';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -246,7 +247,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
                   console.log(`✅ Loaded ${newTracks.length} additional tracks for seamless playback`);
                   
                   // Convert to proper format and add to queue
-                  const formattedTracks = newTracks.map((track: any) => ({
+                  let formattedTracks = newTracks.map((track: any) => ({
                     id: track.id,
                     title: track.title,
                     artist: 'Neural Positive Music',
@@ -256,6 +257,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
                     stream_url: track.stream_url,
                     audio_status: 'working' as const,
                   }));
+                  
+                  // Filter out blocked tracks
+                  formattedTracks = await filterBlockedTracks(formattedTracks);
+                  console.log(`🚫 After blocking filter: ${formattedTracks.length} additional tracks`);
                   
                   // Add new tracks to the end of the current queue
                   const { queue: currentQueue } = get();
@@ -552,6 +557,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
           console.log(`✅ Converted ${tracks.length} classicalfocus tracks for direct playback`);
 
+          // Filter out blocked tracks
+          tracks = await filterBlockedTracks(tracks);
+          console.log(`🚫 After blocking filter: ${tracks.length} tracks remaining`);
+
           // Final sequence check before processing tracks
           if (!isValidSequence()) {
             console.log('🛑 Load sequence outdated after track conversion:', myLoadSeq);
@@ -605,6 +614,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }));
 
           console.log(`✅ Converted ${tracks.length} storage tracks`);
+
+          // Filter out blocked tracks
+          tracks = await filterBlockedTracks(tracks);
+          console.log(`🚫 After blocking filter: ${tracks.length} tracks remaining`);
 
           // Validate working state directly for other goals
           const { working } = await validateTracks(tracks);
