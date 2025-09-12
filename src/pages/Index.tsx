@@ -8,11 +8,11 @@ import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
-// Import generated nature images
-import focusImage from '@/assets/focus-nature-piano.jpg';
-import stressImage from '@/assets/stress-nature-music.jpg';
-import moodImage from '@/assets/mood-nature-guitar.jpg';
-import painImage from '@/assets/pain-nature-harp.jpg';
+// Import beautiful instrument nature images
+import focusImage from '@/assets/focus-piano-crystal-meadow.jpg';
+import stressImage from '@/assets/stress-violin-blooms.jpg';
+import moodImage from '@/assets/mood-guitar-sunrise-joy.jpg';
+import painImage from '@/assets/pain-harp-garden-serenity.jpg';
 
 const Index = () => {
   const navigate = useNavigate();
