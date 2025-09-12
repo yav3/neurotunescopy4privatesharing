@@ -12,6 +12,7 @@ import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
 import newAgeArt from '@/assets/new-age-artwork.jpg';
 import electronicArt from '@/assets/electronic-artwork.jpg';
+import sambaImage from '@/assets/samba-tropical-instruments.jpg';
 import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
@@ -126,7 +127,7 @@ const GenreView: React.FC = () => {
           name: 'Samba',
           description: 'Relaxing Brazilian samba rhythms for stress relief',
           buckets: ['samba'],
-          artwork: '/lovable-uploads/delta-moonlit-lake.png'
+          artwork: sambaImage
         },
         {
           id: 'folk-americana-bluegrass',
