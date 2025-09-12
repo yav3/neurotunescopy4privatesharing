@@ -281,22 +281,13 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-700 bg-gradient-radial from-white/20 via-transparent to-transparent blur-sm" />
                 </div>
                 
-                {/* Premium Glass Container for Text */}
-                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
-                  <div className={cn(
-                    "p-2 sm:p-3 rounded-lg",
-                    "backdrop-blur-md bg-white/15 border border-white/25",
-                    "shadow-lg",
-                    "transition-all duration-500",
-                    "group-hover:bg-white/25 group-hover:border-white/40",
-                    "group-hover:shadow-[0_8px_32px_rgba(255,255,255,0.2)]"
-                  )}>
-                    <h3 
-                      className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-lg"
-                    >
-                      {genre.name}
-                    </h3>
-                  </div>
+                {/* Clean Title Overlay without Box */}
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 pointer-events-none">
+                  <h3 
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-colors duration-300"
+                  >
+                    {genre.name}
+                  </h3>
                 </div>
 
                 {/* Animated Light Particles */}
