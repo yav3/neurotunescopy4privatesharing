@@ -9,6 +9,8 @@ import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
 import newAgeArt from '@/assets/new-age-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
+import houseMusicArt from '@/assets/house-music-energy.jpg';
+import dancePartyArt from '@/assets/dance-party-energy.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -101,9 +103,9 @@ const getGenreOptions = (goalId: string) => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['HIIT'],
-        folder: 'HIITHOUSE',
-        image: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/494A919302CB58E88F52E96F4FEDDD68B9E220433097EAC2A78DF75E1BB1863D_sk_6_cid_1%20(1).jpeg'
+        buckets: ['neuralpositivemusic'],
+        folder: 'House',
+        image: houseMusicArt
       },
       {
         id: 'uplifting-orchestral',
@@ -113,11 +115,11 @@ const getGenreOptions = (goalId: string) => {
         image: '/lovable-uploads/classical-meadow-ensemble.png'
       },
       {
-        id: 'positive-electronic',
-        name: 'Positive Electronic',
-        description: 'Upbeat electronic music for motivation',
+        id: 'dance-party',
+        name: 'Dance Party',
+        description: 'Upbeat electronic dance music for high energy and motivation',
         buckets: ['neuralpositivemusic'],
-        image: '/lovable-uploads/alpha-mountain-lake.png'
+        image: dancePartyArt
       }
     ],
     'pain-support': [
