@@ -28,7 +28,8 @@ export const GenreCard: React.FC<GenreCardProps> = ({
     >
       <Card
         className={cn(
-          "group relative overflow-hidden cursor-pointer aspect-square",
+          "group relative overflow-hidden cursor-pointer",
+          "aspect-[4/3] sm:aspect-[3/2] lg:aspect-[16/9]",
           "bg-gradient-to-br from-card/80 to-card backdrop-blur-sm",
           "border border-border/50 shadow-card",
           "transition-all duration-700 ease-out",
