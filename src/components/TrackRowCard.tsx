@@ -36,28 +36,24 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
     '/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png',
     '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
     '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-    '/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png'
+    '/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png',
+    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
+    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
+    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
+    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
+    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
+    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
+    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
   ];
   
-  // Enhanced seed generation for better distribution
-  const createEnhancedSeed = (str: string): number => {
-    let hash = 5381;
-    let hash2 = 5381;
-    
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) + hash) + char; // hash * 33 + char
-      hash2 = ((hash2 << 5) + hash2) + char * 17; // Different multiplier for variation
-    }
-    
-    // Combine both hashes for better distribution
-    return Math.abs(hash ^ hash2);
-  };
+  // Simple but effective unique selection based on track ID
+  let hash = 0;
+  for (let i = 0; i < trackId.length; i++) {
+    hash = ((hash << 5) - hash + trackId.charCodeAt(i)) & 0xffffffff;
+  }
+  hash = Math.abs(hash);
   
-  // Use enhanced seeding with track ID and frequency band for more variety
-  const combinedSeed = trackId + frequencyBand;
-  const seed = createEnhancedSeed(combinedSeed);
-  const artworkIndex = seed % albumArtwork.length;
+  const artworkIndex = hash % albumArtwork.length;
   
   // Gradient based on frequency band for therapeutic visual cues
   const gradients = {
@@ -142,7 +138,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
         
         {/* Track info */}
         <div className="text-center">
-          <h3 className="font-medium text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
+          <h3 className="font-normal text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
             {formattedTitle}
           </h3>
           <p className="text-xs text-white/70 capitalize">
