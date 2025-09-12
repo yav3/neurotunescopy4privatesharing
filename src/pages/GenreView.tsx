@@ -16,6 +16,7 @@ import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
+import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -90,32 +91,32 @@ const GenreView: React.FC = () => {
     if (goalId === 'focus-enhancement') {
       return [
         {
-          id: 'peaceful-piano',
-          name: 'Peaceful Piano',
-          description: 'Serene piano compositions for deep focus',
-          buckets: ['Chopin'],
-          artwork: peacefulPianoArt
-        },
-        {
           id: 'crossover-classical',
-          name: 'Classical Crossover',
-          description: 'Modern classical compositions for focus',
+          name: 'Crossover Classical',
+          description: 'Modern classical compositions for concentration',
           buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
+          id: 'new-age',
+          name: 'New Age',
+          description: 'Ethereal soundscapes for enhanced focus',
+          buckets: ['neuralpositivemusic'],
+          artwork: newAgeArt
+        },
+        {
           id: 'electronic',
           name: 'Electronic',
-          description: 'Ambient electronic music for focus',
-          buckets: ['focus-music'],
+          description: 'Focused electronic beats and ambient textures',
+          buckets: ['neuralpositivemusic'],
           artwork: electronicArt
         },
         {
-          id: 'world-new-age',
-          name: 'World & New Age',
-          description: 'Global sounds and new age music',
-          buckets: ['samba'],
-          artwork: newAgeArt
+          id: 'peaceful-piano',
+          name: 'Peaceful Piano',
+          description: 'Gentle piano melodies for deep concentration',
+          buckets: ['Chopin'],
+          artwork: peacefulPianoArt
         }
       ];
     } else if (goalId === 'stress-anxiety-support') {
@@ -129,9 +130,9 @@ const GenreView: React.FC = () => {
         },
         {
           id: 'folk-americana-bluegrass',
-          name: 'Folk, Americana, & Bluegrass',
-          description: 'Calming folk and americana music for relaxation',
-          buckets: ['curated-music-collection'],
+          name: 'Country, Americana, & Bluegrass',
+          description: 'Calming country and americana music for relaxation',
+          buckets: ['countryandamericana'],
           artwork: '/lovable-uploads/folk-instruments-meadow.png'
         },
         {
@@ -184,9 +185,16 @@ const GenreView: React.FC = () => {
           artwork: houseMusicArt
         },
         {
+          id: 'pop',
+          name: 'Pop',
+          description: 'Uplifting pop music for instant mood elevation',
+          buckets: ['pop'],
+          artwork: popMusicArt
+        },
+        {
           id: 'uplifting-orchestral',
           name: 'Uplifting Orchestral',
-          description: 'Energizing orchestral compositions', 
+          description: 'Energizing orchestral compositions',
           buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
@@ -194,7 +202,7 @@ const GenreView: React.FC = () => {
           id: 'dance-party',
           name: 'Dance Party',
           description: 'Upbeat electronic dance music for high energy and motivation',
-          buckets: ['neuralpositivemusic'],
+          buckets: ['HIIT'],
           artwork: dancePartyArt
         }
       ];
