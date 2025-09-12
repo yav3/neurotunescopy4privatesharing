@@ -84,6 +84,23 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 240 100% 5.1%; /* #00001A equivalent */
     --sidebar-ring: 217 91% 60%;
+
+    /* Dark mode card color variations */
+    --card-light: 240 100% 5.1%; /* Deep Midnight Blue */
+    --card-medium: 240 100% 3.3%; /* Almost Black Blue */
+    --card-darker: 240 56% 8.8%; /* Charcoal Blue */
+    --card-darkest: 240 100% 2.5%; /* Deep midnight */
+
+    /* Dark mode glass morphism effects */
+    --glass-bg: rgba(0, 0, 26, 0.3); /* Using dark blue base */
+    --glass-border: rgba(0, 0, 26, 0.5); /* Stronger border for dark mode */
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 13, 0.8); /* Dark shadow */
+
+    /* Dark mode music categories */
+    --music-focus: 240 100% 5.1%; /* Deep Midnight Blue for focus cards */
+    --music-mood: 240 100% 5.1%; /* Deep Midnight Blue for mood boost cards */
+    --music-sleep: 240 100% 5.1%; /* Deep Midnight Blue for sleep cards */
+    --music-energy: 240 100% 5.1%; /* Deep Midnight Blue for energy cards */
   }
 
   /* Common variables for both themes */
