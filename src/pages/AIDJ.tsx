@@ -8,7 +8,7 @@ import { fetchPlaylist } from "@/lib/api";
 import { newSeed, remember, excludeQS } from "@/state/playlistSession";
 import { supabase } from "@/integrations/supabase/client";
 import { handleImageError } from "@/utils/imageUtils";
-import sambaImage from '@/assets/samba-tropical-instruments.jpg';
+import sambaImage from '@/assets/samba-photorealistic.jpg';
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("flow");

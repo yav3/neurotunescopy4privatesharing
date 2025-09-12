@@ -8,7 +8,7 @@ import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
 import newAgeArt from '@/assets/new-age-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
-import sambaImage from '@/assets/samba-tropical-instruments.jpg';
+import sambaImage from '@/assets/samba-photorealistic.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
