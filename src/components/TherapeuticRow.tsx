@@ -109,10 +109,20 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
             
             {/* Content */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-foreground transition-colors">
+              <h3 
+                className="text-lg font-semibold mb-2 text-foreground group-hover:text-foreground transition-colors"
+                style={{ 
+                  color: 'hsl(var(--foreground)) !important'
+                }}
+              >
                 {goal.name}
               </h3>
-              <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed mb-4">
+              <p 
+                className="text-sm text-muted-foreground group-hover:text-muted-foreground/90 transition-colors leading-relaxed mb-4"
+                style={{ 
+                  color: 'hsl(var(--muted-foreground)) !important'
+                }}
+              >
                 {goal.description}
               </p>
               
@@ -133,7 +143,12 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
               </div>
               
               {/* Action text */}
-              <div className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+              <div 
+                className="text-sm text-muted-foreground group-hover:text-primary transition-colors"
+                style={{ 
+                  color: 'hsl(var(--muted-foreground)) !important'
+                }}
+              >
                 Explore music genres →
               </div>
             </div>
