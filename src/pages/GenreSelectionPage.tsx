@@ -7,7 +7,7 @@ import { EnhancedGenreCard } from '@/components/ui/EnhancedGenreCard';
 import { cn } from '@/lib/utils';
 
 // Import blue and green toned artwork only
-import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
+import crossoverClassicalArt from '@/assets/crossover-classical-fresh.jpg';
 import newAgeArt from '@/assets/new-age-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
 import sambaImage from '@/assets/samba-photorealistic.jpg';
