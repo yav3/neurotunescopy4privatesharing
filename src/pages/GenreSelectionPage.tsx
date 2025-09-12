@@ -142,7 +142,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'gentle-classical',
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
-        buckets: ['classicalfocus'],
+        buckets: ['gentleclassicalforpain'],
         image: '/lovable-uploads/european-classical-terrace.png'
       }
     ],
