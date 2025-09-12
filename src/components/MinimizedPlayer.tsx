@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, X, Heart, Zap } from "lucide-react";
 import { useAudioStore } from "@/stores";
@@ -17,11 +17,54 @@ export const MinimizedPlayer = () => {
     duration
   } = useAudioStore();
 
+  // Local state for album artwork
+  const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
+
+  // Local fallback art pool
+  const localArtPool = [
+    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
+    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
+    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
+    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
+    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
+    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
+    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
+  ];
+
+  // Load album art from Supabase albumart bucket if track has no artwork
+  useEffect(() => {
+    let cancelled = false;
+    const loadAlbumArt = async () => {
+      try {
+        if (!track || (track as any).artwork_url || (track as any).album_art_url) return;
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data: artFiles } = await supabase.storage
+          .from('albumart')
+          .list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+        const images = (artFiles || []).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f.name));
+        if (!images.length) return;
+        const seed = Array.from((track.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
+        const chosen = images[seed % images.length];
+        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
+        if (!cancelled) setAlbumArtUrl(urlData.publicUrl);
+      } catch (e) {
+        console.warn('Album art load failed', e);
+      }
+    };
+    loadAlbumArt();
+    return () => { cancelled = true; };
+  }, [track?.id]);
+
   if (!track) {
     return null;
   }
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  // Choose best available album artwork (track-provided -> bucket -> local pool)
+  const seed = Array.from((track?.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
+  const fallbackLocalArt = localArtPool[seed % localArtPool.length];
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg bg-card/30 border-t border-white/10 shadow-glass-lg">
@@ -40,17 +83,13 @@ export const MinimizedPlayer = () => {
       >
         {/* Album art with Glass Effect */}
         <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0 shadow-glass-inset">
-          {(track as any).album_art_url || (track as any).artwork_url ? (
-            <img
-              src={(track as any).album_art_url || (track as any).artwork_url}
-              alt={formatTrackTitleForDisplay(track.title)}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-primary/60">♪</div>
-          )}
+          <img
+            src={artworkSrc}
+            alt={formatTrackTitleForDisplay(track.title)}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         
         {/* Track info */}
