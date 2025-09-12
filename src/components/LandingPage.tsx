@@ -71,8 +71,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <path d="M3,10 Q6,4 9,10 T15,10 T18,10" stroke="currentColor" strokeWidth="2" fill="none"/>
             </svg>
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-            NeuralPositive
+          <span className="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            NeuroTunes AI Music Therapy Platform
           </span>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
@@ -109,12 +109,21 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </div>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
-              NeuroTunes The Leading Evidence-Based Music Technology, Driving Outcomes Through Science
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent">
+              Personal Music Start Therapy<br />
+              AI-Powered Music Therapy
             </h1>
             
-            <p className="text-xl text-blue-100/90 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Patented closed-loop personalization designed to enhance your performance through scientifically-proven therapeutic music experiences.
+            <h2 className="text-2xl md:text-3xl font-semibold text-blue-100 mb-4">
+              Personalized Music Therapy for Mental Wellness
+            </h2>
+            
+            <p className="text-lg text-blue-100/90 mb-6 leading-relaxed max-w-3xl mx-auto">
+              Evidence-based AI platform that creates personalized therapeutic music experiences to support mental health, cognitive enhancement, and emotional well-being.
+            </p>
+            
+            <p className="text-base text-blue-200/80 mb-8 leading-relaxed max-w-3xl mx-auto">
+              Based on evidence from 15K+ studies, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -239,7 +248,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 </div>
               </div>
               <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">
-                About NeuralPositive
+                About NeuroTunes
               </h2>
               <p className="text-lg text-white/90 leading-relaxed mb-8">
                 We spun out of <strong className="text-blue-200">The Runway Postdoc program at the Jacobs Cornell Technion Institute at Cornell Tech</strong>, partners from other leading US institutions and companies. 
@@ -269,7 +278,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 </svg>
               </div>
               <span className="text-lg font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                NeuralPositive
+                NeuroTunes AI Music Therapy Platform
               </span>
             </div>
             <p className="text-sm text-white/70">
