@@ -408,7 +408,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 Track loaded successfully:', track.title);
       console.log('🎵 Setting currentTrack in store:', track.id, track.title);
-      set({ currentTrack: track, isLoading: false, error: undefined, playerMode: 'full' });
+      // Don't force playerMode to 'full' - preserve user's choice
+      set({ currentTrack: track, isLoading: false, error: undefined });
       console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       return true;
     } catch (error) {

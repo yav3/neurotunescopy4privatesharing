@@ -175,7 +175,11 @@ export const FullPagePlayer = () => {
         variant="ghost"
         size="icon"
         className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full"
-        onClick={() => setPlayerMode('mini')}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setPlayerMode('mini');
+        }}
       >
         <X className="w-5 h-5" />
       </Button>
