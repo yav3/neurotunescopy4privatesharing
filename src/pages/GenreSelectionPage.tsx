@@ -9,8 +9,8 @@ import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
 import newAgeArt from '@/assets/new-age-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
-import houseMusicArt from '@/assets/house-music-energy.jpg';
-import dancePartyArt from '@/assets/dance-party-energy.jpg';
+import houseMusicArt from '@/assets/house-music-nature.jpg';
+import dancePartyArt from '@/assets/dance-party-nature.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
