@@ -170,18 +170,18 @@ export const FullPagePlayer = () => {
       {/* Glass Background Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl" />
       
-      {/* Close button */}
+      {/* Close button - Enhanced for mobile */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full"
+        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full w-10 h-10 md:w-8 md:h-8 touch-manipulation"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           setPlayerMode('mini');
         }}
       >
-        <X className="w-5 h-5" />
+        <X className="w-6 h-6 md:w-5 md:h-5" />
       </Button>
 
       {/* Player content - properly sized container */}
