@@ -93,7 +93,7 @@ export async function getTherapeuticTracks(
   try {
     // Call storage buckets directly as primary source
     const { getTracksFromStorage } = await import('./storageDirectAccess');
-    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count);
+    const { tracks: storageTracks, error } = await getTracksFromStorage(goal, count * 3); // Get more tracks for filtering
     
     if (error) {
       console.error('❌ Storage access error:', error);
@@ -103,7 +103,7 @@ export async function getTherapeuticTracks(
     console.log(`📁 Raw storage tracks found: ${storageTracks.length}`);
     
     // Convert storage tracks to Track interface with stream URLs
-    const tracks: Track[] = storageTracks.map(storageTrack => ({
+    let tracks: Track[] = storageTracks.map(storageTrack => ({
       id: storageTrack.id,
       title: storageTrack.title,
       storage_bucket: storageTrack.storage_bucket,
@@ -111,9 +111,19 @@ export async function getTherapeuticTracks(
       audio_status: 'working' as const,
       stream_url: storageTrack.stream_url
     }));
+
+    // Apply quality filtering and sorting
+    const { getBestQualityTracks, getQualityInsights } = await import('../utils/trackQualityFilter');
     
-    console.log(`✅ Direct storage: Converted ${tracks.length} tracks for ${goal}`);
-    console.log(`🎵 Sample converted track:`, tracks[0] ? {
+    // Get quality insights for logging
+    const insights = getQualityInsights(tracks);
+    console.log(`📊 Track quality insights:`, insights);
+    
+    // Filter and sort by quality, then take the requested count
+    tracks = getBestQualityTracks(tracks, count);
+    
+    console.log(`✅ Direct storage: Converted and filtered ${tracks.length} high-quality tracks for ${goal}`);
+    console.log(`🎵 Sample high-quality track:`, tracks[0] ? {
       id: tracks[0].id,
       title: tracks[0].title,
       bucket: tracks[0].storage_bucket,

@@ -3,15 +3,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
+import { EnhancedGenreCard } from '@/components/ui/EnhancedGenreCard';
+import { cn } from '@/lib/utils';
 
 // Import blue and green toned artwork only
-import crossoverClassicalArt from '@/assets/crossover-classical-blue.jpg';
-import newAgeArt from '@/assets/new-age-forest.jpg';
+import crossoverClassicalArt from '@/assets/crossover-classical-bright.jpg';
+import newAgeArt from '@/assets/new-age-magical-forest.jpg';
 import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
+import sambaImage from '@/assets/samba-photorealistic.jpg';
+import folkPeacefulMeadow from '@/assets/folk-peaceful-meadow.jpg';
+import stringsCrystalPalace from '@/assets/strings-crystal-palace.jpg';
+import newageRadiantGarden from '@/assets/newage-radiant-garden.jpg';
+import operaLuminousHall from '@/assets/opera-luminous-hall.jpg';
+import sonatasBrightConservatory from '@/assets/sonatas-bright-conservatory.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
+import bachInstrumentsGrounded from '@/assets/bach-instruments-grounded.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -36,7 +45,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
         buckets: ['focus-music'],
-        image: electronicArt
+        image: bachInstrumentsGrounded
       },
       {
         id: 'peaceful-piano',
@@ -52,42 +61,42 @@ const getGenreOptions = (goalId: string) => {
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress relief',
         buckets: ['samba'],
-        image: '/lovable-uploads/delta-moonlit-lake.png'
+        image: sambaImage
       },
       {
         id: 'folk-americana-bluegrass',
         name: 'Country, Americana, & Bluegrass',
         description: 'Calming country and americana music for relaxation',
         buckets: ['countryandamericana'],
-        image: '/lovable-uploads/folk-instruments-meadow.png'
+        image: folkPeacefulMeadow
       },
       {
         id: 'meditative-strings',
         name: 'Meditative Strings',
         description: 'Soothing string arrangements for relaxation',
         buckets: ['classicalfocus'],
-        image: '/lovable-uploads/classical-meadow-ensemble.png'
+        image: stringsCrystalPalace
       },
       {
         id: 'new-age',
         name: 'New Age',
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
-        image: '/lovable-uploads/acoustic-sunset-field.png'
+        image: newageRadiantGarden
       },
       {
         id: 'opera',
         name: 'Opera',
         description: 'Classical opera for emotional release and stress relief',
         buckets: ['opera'],
-        image: '/lovable-uploads/european-classical-terrace.png'
+        image: operaLuminousHall
       },
       {
         id: 'sonatas',
         name: 'Sonatas',
         description: 'Classical sonatas for deep stress relief',
         buckets: ['sonatasforstress'],
-        image: '/lovable-uploads/string-quartet-studio.png'
+        image: sonatasBrightConservatory
       }
     ],
     'sleep-support': [
@@ -133,7 +142,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'Upbeat electronic dance music for high energy and motivation',
-        buckets: ['HIIT'],
+        buckets: ['ENERGYBOOST'],
         image: dancePartyArt
       }
     ],
@@ -238,37 +247,64 @@ export default function GenreSelectionPage() {
             {genres.map((genre, index) => (
               <div
                 key={genre.id}
-                className="group relative aspect-[4/3] sm:aspect-square overflow-hidden cursor-pointer rounded-xl sm:rounded-2xl bg-card/50 backdrop-blur-xl border border-border hover:border-primary/50 hover:bg-card/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10"
+                className={cn(
+                  "group relative aspect-[4/3] sm:aspect-square overflow-hidden cursor-pointer",
+                  "rounded-xl sm:rounded-2xl",
+                  "backdrop-blur-xl bg-white/10 border border-white/20",
+                  "shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]",
+                  "transition-all duration-700 ease-out",
+                  "hover:shadow-[0_20px_60px_rgba(31,38,135,0.6)]",
+                  "hover:border-white/40 hover:-translate-y-4 hover:scale-105",
+                  "animate-fade-in",
+                  "before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent",
+                  "before:translate-x-[-100%] before:transition-transform before:duration-1000",
+                  "hover:before:translate-x-[100%]"
+                )}
+                style={{
+                  animationDelay: `${index * 150}ms`,
+                }}
                 onClick={() => handleGenreSelect(genre.id)}
               >
-                {/* Background Image */}
+                {/* Background Image with Luminous Effects */}
                 <div className="absolute inset-0">
                   <img 
                     src={genre.image}
                     alt={`${genre.name} cover art`}
                     loading="lazy"
                     decoding="async"
-                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ${
-                      goalId === 'focus-enhancement' ? 'brightness-110' : ''
-                    }`}
+                    className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-125 group-hover:saturate-125"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  {/* Multi-layered Glass Effects */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/10 group-hover:from-black/10 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-all duration-700" />
+                  
+                  {/* Illuminated Glow Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-700 bg-gradient-radial from-white/20 via-transparent to-transparent blur-sm" />
                 </div>
                 
-                {/* Position text to avoid obscuring pianos */}
-                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4">
+                {/* Clean Title Overlay without Box - Ensure White Text */}
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 pointer-events-none">
                   <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight"
-                    style={{ 
-                      color: '#FFFFFF !important',
-                      WebkitTextFillColor: '#FFFFFF',
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 1), 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.8)',
-                      fontWeight: '700',
-                      filter: 'contrast(1.2)'
-                    }}
+                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] transition-colors duration-300 filter drop-shadow-[0_0_8px_rgba(0,0,0,1)]"
                   >
                     {genre.name}
                   </h3>
+                </div>
+
+                {/* Animated Light Particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 bg-white/60 rounded-full animate-pulse"
+                      style={{
+                        left: `${20 + i * 20}%`,
+                        top: `${30 + (i % 2) * 30}%`,
+                        animationDelay: `${i * 300}ms`,
+                        animationDuration: '2s',
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             ))}

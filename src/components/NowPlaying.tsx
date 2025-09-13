@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Zap, Radio, X } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Plus, Radio, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -318,7 +318,7 @@ export const NowPlaying: React.FC = () => {
                     lightningMode ? "text-yellow-500 hover:text-yellow-400 bg-yellow-50/10 border-yellow-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Zap size={22} className={cn(lightningMode && "fill-current")} />
+                  <Plus size={22} strokeWidth={1} />
                 </Button>
 
                 <Button 
@@ -368,7 +368,7 @@ export const NowPlaying: React.FC = () => {
                 : "from-primary/60 to-secondary/60"
             )}>
               {lightningMode ? (
-                <div className="text-xl">⚡</div>
+                <div className="text-xl">+</div>
               ) : (
                 <>
                    <img 
@@ -437,7 +437,7 @@ export const NowPlaying: React.FC = () => {
               lightningMode ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Zap size={18} className={cn(lightningMode && "fill-current")} />
+            <Plus size={18} strokeWidth={1} />
           </Button>
 
           {/* Spatial Audio */}

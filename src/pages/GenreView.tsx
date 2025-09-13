@@ -12,6 +12,7 @@ import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
 import newAgeArt from '@/assets/new-age-artwork.jpg';
 import electronicArt from '@/assets/electronic-artwork.jpg';
+import sambaImage from '@/assets/samba-photorealistic.jpg';
 import acousticArt from '@/assets/acoustic-artwork.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
@@ -21,7 +22,7 @@ import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
   const trackNames = [
-    'Bach Reimagined', 'Peaceful Focus', 'Classical Concentration', 
+    'Peaceful Focus', 'Classical Concentration', 
     'Mozart Modern', 'Therapeutic Symphony', 'Ambient Classical',
     'Focus Flow', 'Mindful Melody', 'Serene Strings',
     'Calm Composition', 'Tranquil Tones', 'Gentle Harmony'
@@ -126,7 +127,7 @@ const GenreView: React.FC = () => {
           name: 'Samba',
           description: 'Relaxing Brazilian samba rhythms for stress relief',
           buckets: ['samba'],
-          artwork: '/lovable-uploads/delta-moonlit-lake.png'
+          artwork: sambaImage
         },
         {
           id: 'folk-americana-bluegrass',

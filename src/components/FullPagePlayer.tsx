@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Zap, Radio } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
@@ -231,7 +231,7 @@ export const FullPagePlayer = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-foreground/70 hover:text-foreground w-10 h-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full shadow-glass-inset" 
+            className="text-foreground/70 hover:text-foreground w-10 h-10 backdrop-blur-sm bg-card/20 border border-border/50 rounded-full shadow-glass-inset" 
             onClick={prev}
           >
             <SkipBack className="w-5 h-5" />
@@ -252,7 +252,7 @@ export const FullPagePlayer = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-foreground/70 hover:text-foreground w-10 h-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full shadow-glass-inset" 
+            className="text-foreground/70 hover:text-foreground w-10 h-10 backdrop-blur-sm bg-card/20 border border-border/50 rounded-full shadow-glass-inset" 
             onClick={next}
           >
             <SkipForward className="w-5 h-5" />
@@ -262,7 +262,7 @@ export const FullPagePlayer = () => {
         {/* Enhanced Controls Section with Glass Morphism - compact */}
         <div className="space-y-3">
           {/* Volume control */}
-          <div className="flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm bg-card/20 border border-white/10 shadow-glass-inset">
+          <div className="flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm bg-card/30 border border-border/50 shadow-glass-inset">
             <Volume2 className="w-4 h-4 text-muted-foreground" />
             <Slider
               value={[volume * 100]}
@@ -274,14 +274,14 @@ export const FullPagePlayer = () => {
           </div>
 
           {/* Action buttons with Glass Morphism */}
-          <div className="flex items-center justify-center gap-2 p-2 rounded-xl backdrop-blur-md bg-card/40 border border-white/20 shadow-lg">
+          <div className="flex items-center justify-center gap-2 p-2 rounded-xl backdrop-blur-md bg-card/40 border border-border/50 shadow-lg">
             {/* Favorite */}
             <Button
               variant="ghost"
               size="icon"
               onClick={handleFavorite}
               className={cn(
-                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
+                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
                 isFavorited 
                   ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
                   : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
@@ -295,7 +295,7 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleThumbsDown}
-              className="w-10 h-10 rounded-full backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg text-foreground hover:text-orange-400 hover:bg-orange-500/20 hover:border-orange-400/30 transition-all duration-200 hover:scale-105"
+              className="w-10 h-10 rounded-full backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg text-foreground hover:text-orange-400 hover:bg-orange-500/20 hover:border-orange-400/30 transition-all duration-200 hover:scale-105"
             >
               <ThumbsDown className="w-5 h-5" />
             </Button>
@@ -306,13 +306,13 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleLightningMode}
               className={cn(
-                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
+                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
                 lightningMode
                   ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20"
                   : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
               )}
             >
-              <Zap className={cn("w-5 h-5", lightningMode && "fill-current")} />
+              <Plus className="w-5 h-5" strokeWidth={1} />
             </Button>
 
             {/* Spatial Audio */}
@@ -321,7 +321,7 @@ export const FullPagePlayer = () => {
               size="icon"
               onClick={handleSpatialAudio}
               className={cn(
-                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20 bg-card/30 shadow-lg hover:scale-105",
+                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
                 spatialAudioEnabled
                   ? "text-blue-400 bg-blue-500/30 border-blue-400/50 shadow-blue-500/20"
                   : "text-foreground hover:text-blue-400 hover:bg-blue-500/20 hover:border-blue-400/30"

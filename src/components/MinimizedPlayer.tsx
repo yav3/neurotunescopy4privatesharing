@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, X, Heart, Zap } from "lucide-react";
+import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 
@@ -67,7 +67,7 @@ export const MinimizedPlayer = () => {
   const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg bg-card/30 border-t border-white/10 shadow-glass-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
       {/* Progress bar */}
       <div className="w-full h-1 bg-muted/30">
         <div 
@@ -82,7 +82,7 @@ export const MinimizedPlayer = () => {
         onClick={() => setPlayerMode('full')}
       >
         {/* Album art with Glass Effect */}
-        <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0 shadow-glass-inset">
+        <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
           <img
             src={artworkSrc}
             alt={formatTrackTitleForDisplay(track.title)}
@@ -107,7 +107,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
             onClick={(e) => {
               e.stopPropagation();
               // TODO: Add favorite functionality
@@ -119,19 +119,19 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10"
+            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10"
             onClick={(e) => {
               e.stopPropagation();
               // TODO: Add lightning playlist functionality
             }}
           >
-            <Zap className="w-4 h-4" />
+            <Plus className="w-4 h-4" strokeWidth={1} />
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 bg-primary/20 hover:bg-primary/30 border border-primary/30 rounded-full backdrop-blur-sm shadow-glass-inset"
+            className="w-8 h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset"
             onClick={(e) => {
               e.stopPropagation();
               isPlaying ? pause() : play();
@@ -147,7 +147,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40"
+            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40"
             onClick={(e) => {
               e.stopPropagation();
               next();
@@ -159,7 +159,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
             onClick={(e) => {
               e.stopPropagation();
               stop();
