@@ -1,11 +1,11 @@
 import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
 
-// Import the new clean sprite-style images
-import focusSprite from '@/assets/focus-sprite.jpg';
-import stressReliefSprite from '@/assets/stress-relief-radiant.jpg';
-import moodBoostSprite from '@/assets/mood-boost-sunrise-mountain.jpg';
+// Import the new therapeutic goal images
+import focusEnhancement from '@/assets/focus-enhancement-mountain-mist.jpg';
+import stressReduction from '@/assets/stress-reduction-calm-waters.jpg';
+import moodBoost from '@/assets/mood-boost-golden-meadow.jpg';
+import painManagement from '@/assets/pain-management-serene-stones.jpg';
 import energyBoostSprite from '@/assets/energy-boost-flowers.jpg';
-import painReliefSprite from '@/assets/pain-relief-sprite.jpg';
 import cardioSprite from '@/assets/cardio-sunset-palms.jpg';
 
 // Single source of truth for all therapeutic goals
@@ -60,7 +60,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Focus',
     description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
     icon: Brain,
-    artwork: "/src/assets/focus-enhancement-mountain-mist.jpg",
+    artwork: focusEnhancement,
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
@@ -76,7 +76,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Calm your mind and reduce stress and anxiety',
     icon: Sparkles,
-    artwork: "/src/assets/stress-reduction-calm-waters.jpg",
+    artwork: stressReduction,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
@@ -92,7 +92,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
     icon: Plus,
-    artwork: "/src/assets/mood-boost-golden-meadow.jpg",
+    artwork: moodBoost,
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
@@ -108,7 +108,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
     icon: Flower,
-    artwork: "/src/assets/pain-management-serene-stones.jpg",
+    artwork: painManagement,
     color: 'gray',
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
