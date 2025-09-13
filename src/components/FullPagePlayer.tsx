@@ -168,13 +168,15 @@ export const FullPagePlayer = () => {
   return (
     <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex flex-col justify-center overflow-hidden">
       {/* Glass Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl pointer-events-none" />
       
       {/* Close button - Enhanced for mobile */}
       <Button
+        type="button"
+        aria-label="Close player"
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full w-10 h-10 md:w-8 md:h-8 touch-manipulation"
+        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-50 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full w-10 h-10 md:w-8 md:h-8 touch-manipulation pointer-events-auto"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
