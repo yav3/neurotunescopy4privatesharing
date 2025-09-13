@@ -17,7 +17,7 @@ import {
   Brain, 
   Heart, 
   Moon, 
-  Plus, 
+  Zap, 
   Shield, 
   Activity,
   Clock,
@@ -39,7 +39,7 @@ interface TherapeuticUseCaseSelectorProps {
 const CATEGORY_ICONS = {
   clinical: Heart,
   wellness: Shield,
-  performance: Plus,
+  performance: Zap,
   recovery: Moon
 } as const;
 

@@ -81,15 +81,15 @@ export default {
 				'gradient-card-dark': 'var(--gradient-card-dark)',
 				'gradient-hero': 'var(--gradient-hero)',
 				'gradient-dark-bg': 'var(--gradient-dark-bg)',
-				'glass-gradient': 'var(--glass-bg)',
-				'glass-border': 'var(--glass-border)'
+				'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+				'glass-border': 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))'
 			},
 			boxShadow: {
 				'card': 'var(--shadow-card)',
 				'player': 'var(--shadow-player)',
-				'glass': 'var(--glass-shadow)',
-				'glass-lg': 'var(--glass-shadow)',
-				'glass-inset': 'inset 0 1px 0 0 hsl(var(--border) / 0.1)'
+				'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+				'glass-lg': '0 16px 40px 0 rgba(31, 38, 135, 0.4)',
+				'glass-inset': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

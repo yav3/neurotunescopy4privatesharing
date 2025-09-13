@@ -61,15 +61,32 @@ export async function getTracksFromStorage(
   count: number = 50,
   buckets?: string[]
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
-  // Determine buckets based on goal using therapeutic goals configuration
+  // Determine buckets based on goal - direct mapping
   if (!buckets) {
     console.log(`🎯 Goal received: "${goal}"`);
     
-    // Import and use the proper therapeutic goals mapping
-    const { getBucketsForGoal } = await import('../config/therapeuticGoals');
-    buckets = getBucketsForGoal(goal);
+    // Use trim() and toLowerCase() for comparison to handle any whitespace/case issues
+    const normalizedGoal = goal.trim().toLowerCase();
     
-    console.log(`🗂️ Using therapeutic goals mapping: ${buckets.join(', ')} for goal "${goal}"`);
+    if (normalizedGoal === 'focus-enhancement') {
+      // Try focus-music first, then classicalfocus and Chopin, fallback to neuralpositivemusic if auth issues
+      buckets = ['focus-music', 'classicalfocus', 'Chopin', 'neuralpositivemusic'];
+      console.log(`🎯 Using focus-music, classicalfocus, Chopin, and neuralpositivemusic buckets for focus enhancement`);
+    } else if (normalizedGoal === 'mood-boost') {
+      buckets = ['HIIT'];
+      console.log(`🎯 Using HIIT bucket for mood boost`);
+    } else if (normalizedGoal === 'stress-anxiety-support' || normalizedGoal === 'anxiety' || normalizedGoal === 'stress') {
+      buckets = ['samba'];
+      console.log(`🎯 Using samba bucket for stress and anxiety support`);
+    } else if (normalizedGoal === 'sleep') {
+      buckets = ['neuralpositivemusic'];
+      console.log(`🎯 Using neuralpositivemusic bucket for sleep`);
+    } else {
+      buckets = ['neuralpositivemusic'];
+      console.log(`🎯 Using neuralpositivemusic bucket for other goals`);
+    }
+    
+    console.log(`🗂️ Selected buckets:`, buckets);
   }
   
   try {

@@ -8,7 +8,6 @@ import { fetchPlaylist } from "@/lib/api";
 import { newSeed, remember, excludeQS } from "@/state/playlistSession";
 import { supabase } from "@/integrations/supabase/client";
 import { handleImageError } from "@/utils/imageUtils";
-import sambaImage from '@/assets/samba-photorealistic.jpg';
 
 const AIDJ = () => {
   const [activeNavTab, setActiveNavTab] = useState("flow");
@@ -392,7 +391,7 @@ const AIDJ = () => {
             }`}
           >
             <img 
-              src={sambaImage}
+              src="/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png"
               alt="Samba & Jazz"
               className="w-full h-full object-cover"
               onError={handleImageError}

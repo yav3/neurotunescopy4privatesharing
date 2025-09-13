@@ -29,7 +29,7 @@ export const FREQUENCY_BANDS = {
     purpose: 'Active Concentration',
     color: 'hsl(var(--muted))',
     description: 'Supports focused thinking and problem-solving',
-    icon: '+'
+    icon: '⚡'
   },
   gamma: {
     range: '30-100Hz',

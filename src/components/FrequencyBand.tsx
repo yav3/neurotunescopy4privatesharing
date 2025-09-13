@@ -34,7 +34,7 @@ const bandInfo = {
     range: '13-30Hz', 
     purpose: 'Active Concentration', 
     color: 'from-green-600 to-yellow-600', 
-    icon: '+',
+    icon: '⚡',
     description: 'Supports focused thinking and problem-solving'
   },
   gamma: { 
