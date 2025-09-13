@@ -10,16 +10,25 @@ import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
 // Import beautiful instrument nature images
-import focusImage from '@/assets/focus-piano-crystal-meadow.jpg';
-import stressImage from '@/assets/stress-violin-blooms.jpg';
-import moodImage from '@/assets/mood-modern-instruments-garden.jpg';
-import painImage from '@/assets/pain-harp-piano-oud-garden.jpg';
+import focusImage from '@/assets/focus-enhancement-mountain-mist.jpg';
+import stressImage from '@/assets/stress-reduction-calm-waters.jpg';
+import moodImage from '@/assets/mood-boost-golden-meadow.jpg';
+import painImage from '@/assets/pain-management-serene-stones.jpg';
+import cardioImage from '@/assets/cardio-forest-sunray.png';
+import energyImage from '@/assets/energy-boost-sunrise.png';
 const Index = () => {
   const navigate = useNavigate();
   const {
     isDark,
     toggle
   } = useDarkMode();
+
+  // Keep homepage goal order with Cardio left and Energy right
+  const orderedGoals = React.useMemo(() => {
+    const byId = Object.fromEntries(THERAPEUTIC_GOALS.map(g => [g.id, g]));
+    const order = ['focus-enhancement','stress-anxiety-support','mood-boost','pain-support','cardio-support','energy-boost'];
+    return order.map(id => byId[id]).filter(Boolean);
+  }, []);
   const handleGoalSelect = (goal: typeof THERAPEUTIC_GOALS[0]) => {
     console.log('🎯 Index: Attempting to navigate to:', `/goals/${goal.id}/genres`, 'from:', window.location.pathname);
     try {
@@ -57,20 +66,31 @@ const Index = () => {
         <div className="w-full max-w-4xl px-4">
           {/* Responsive cards grid with consistent spacing */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6 lg:gap-6 justify-items-center">
-            {THERAPEUTIC_GOALS.map((goal, index) => {
+            {orderedGoals.map((goal, index) => {
             return <Card key={goal.id} className={cn("group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out", "aspect-[16/9] sm:aspect-[4/3] md:aspect-[5/4] rounded-lg border-0", "hover:scale-[1.01] sm:hover:scale-[1.02] hover:-translate-y-0.5 sm:hover:-translate-y-1", "active:scale-[0.99] active:duration-100", "focus:outline-none focus:ring-4 focus:ring-primary/20", "animate-fade-in bg-card backdrop-blur-xl border border-border/20 shadow-glass", "hover:shadow-glass-lg hover:border-border/40", "h-[160px] sm:h-[180px] md:h-[260px] lg:h-[300px] xl:h-[340px]")} style={{
               animationDelay: `${index * 100}ms`,
               animationFillMode: 'both'
             }} onClick={() => handleGoalSelect(goal)}>
                   {/* Consistent nature with instruments backgrounds */}
                   <div className="absolute inset-0">
-                    {goal.id === 'focus-enhancement' && <img src={focusImage} alt="Piano in peaceful meadow for focus" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'stress-anxiety-support' && <img src={stressImage} alt="Musical notes over calm lake for stress relief" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'mood-boost' && <img src={moodImage} alt="Modern instruments - drums, guitars, bass, mandolin, synth in colorful garden for mood boost" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'pain-support' && <img src={painImage} alt="Harp, piano, and oud in peaceful garden for pain relief" className="w-full h-full object-cover" />}
+                    {goal.id === 'focus-enhancement' && (
+                      <img src={focusImage} alt="Focus Enhancement music - mountain mist landscape" className="w-full h-full object-cover" />
+                    )}
+                    {goal.id === 'stress-anxiety-support' && (
+                      <img src={stressImage} alt="Stress Reduction music - calm waters" className="w-full h-full object-cover" />
+                    )}
+                    {goal.id === 'mood-boost' && (
+                      <img src={moodImage} alt="Mood Boost music - golden meadow" className="w-full h-full object-cover" />
+                    )}
+                    {goal.id === 'pain-support' && (
+                      <img src={painImage} alt="Pain Management music - serene stones" className="w-full h-full object-cover" />
+                    )}
+                    {goal.id === 'cardio-support' && (
+                      <img src={cardioImage} alt="Cardio Support music - forest path with sun rays" className="w-full h-full object-cover" />
+                    )}
+                    {goal.id === 'energy-boost' && (
+                      <img src={energyImage} alt="Energy Boost music - vibrant sunrise" className="w-full h-full object-cover" />
+                    )}
                   </div>
 
                   {/* Subtle glass morphism overlay - theme tokens */}
