@@ -142,14 +142,28 @@ const getGenreOptions = (goalId: string) => {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['neuralpositivemusic/House'],
+        buckets: ['moodboostremixesworlddance'],
         image: dancePartyArt
+      },
+      {
+        id: 'rock-mood-boost',
+        name: 'Rock Mood Boost',
+        description: 'Uplifting rock music for mood elevation',
+        buckets: ['ROCKMOODBOOST'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       },
       {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
         buckets: ['neuralpositivemusic/EDM'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+      },
+      {
+        id: 'hiit-mood',
+        name: 'HIIT Mood',
+        description: 'High-intensity music for mood and energy',
+        buckets: ['HIIT'],
         image: '/lovable-uploads/gamma-sunbeam-forest.png'
       }
     ],
@@ -197,6 +211,27 @@ const getGenreOptions = (goalId: string) => {
         description: 'Upbeat house and dance music for energy and motivation',
         buckets: ['neuralpositivemusic/House'],
         image: happyHouseDance
+      },
+      {
+        id: 'energy-boost-core',
+        name: 'Energy Boost',
+        description: 'High-energy tracks for maximum motivation',
+        buckets: ['ENERGYBOOST'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+      },
+      {
+        id: 'musical-theater-energy',
+        name: 'Musical Theater Energy',
+        description: 'Uplifting musical theater pieces for motivation',
+        buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+      },
+      {
+        id: 'hiit-energy',
+        name: 'HIIT Music',
+        description: 'High-intensity interval training music for energy',
+        buckets: ['HIIT'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       }
     ]
   };

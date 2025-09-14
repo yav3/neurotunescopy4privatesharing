@@ -202,14 +202,14 @@ const GenreView: React.FC = () => {
           id: 'delta-wave',
           name: 'Delta Wave Therapy',
           description: 'Deep sleep-inducing frequencies',
-          buckets: ['samba'],
+          buckets: ['Chopin'],
           artwork: '/lovable-uploads/theta-misty-path.png'
         },
         {
           id: 'nocturnal-classical',
           name: 'Nocturnal Classical',
           description: 'Gentle classical pieces for bedtime',
-          buckets: ['classicalfocus'],
+          buckets: ['gentleclassicalforpain'],
           artwork: '/lovable-uploads/folk-instruments-meadow.png'
         }
       ];
@@ -244,6 +244,44 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
         }
       ];
+    } else if (goalId === 'cardio-support') {
+      return [
+        {
+          id: 'hiit-cardio',
+          name: 'HIIT',
+          description: 'High-intensity interval training music',
+          buckets: ['HIIT'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'house-cardio',
+          name: 'House Cardio',
+          description: 'Pumping house music for cardiovascular exercise',
+          buckets: ['house'],
+          artwork: houseMusicArt
+        },
+        {
+          id: 'edm-cardio',
+          name: 'EDM',
+          description: 'Electronic dance music for high-intensity cardio',
+          buckets: ['neuralpositivemusic/EDM'],
+          artwork: electronicArt
+        },
+        {
+          id: 'energy-boost-cardio',
+          name: 'Energy Boost',
+          description: 'Maximum energy tracks for intense cardio',
+          buckets: ['ENERGYBOOST'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'pop-cardio',
+          name: 'Pop Cardio',
+          description: 'Energetic pop hits perfect for cardio sessions',
+          buckets: ['pop'],
+          artwork: popMusicArt
+        }
+      ];
     } else if (goalId === 'energy-boost') {
       return [
         {
@@ -259,9 +297,74 @@ const GenreView: React.FC = () => {
           description: 'Upbeat house and dance music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
           artwork: '/lovable-uploads/string-quartet-studio.png'
+        },
+        {
+          id: 'energy-boost-core',
+          name: 'Energy Boost',
+          description: 'High-energy tracks for maximum motivation',
+          buckets: ['ENERGYBOOST'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'musical-theater-energy',
+          name: 'Musical Theater Energy',
+          description: 'Uplifting musical theater pieces for motivation',
+          buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'hiit-energy',
+          name: 'HIIT Music',
+          description: 'High-intensity interval training music for energy',
+          buckets: ['HIIT'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
         }
       ];
-    } else {
+    } else if (goalId === 'mood-boost') {
+      return [
+        {
+          id: 'house-music',
+          name: 'House Music',
+          description: 'Energetic house beats for motivation and energy',
+          buckets: ['neuralpositivemusic/House'],
+          artwork: houseMusicArt
+        },
+        {
+          id: 'pop',
+          name: 'Pop',
+          description: 'Uplifting pop music for instant mood elevation',
+          buckets: ['pop'],
+          artwork: popMusicArt
+        },
+        {
+          id: 'dance-party',
+          name: 'Dance Party',
+          description: 'High-energy dance remixes and world beats',
+          buckets: ['moodboostremixesworlddance'],
+          artwork: dancePartyArt
+        },
+        {
+          id: 'rock-mood-boost',
+          name: 'Rock Mood Boost',
+          description: 'Uplifting rock music for mood elevation',
+          buckets: ['ROCKMOODBOOST'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'edm-crossover',
+          name: 'EDM crossover (EDM)',
+          description: 'Electronic dance music crossover tracks for high energy',
+          buckets: ['neuralpositivemusic/EDM'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        },
+        {
+          id: 'hiit-mood',
+          name: 'HIIT Mood',
+          description: 'High-intensity music for mood and energy',
+          buckets: ['HIIT'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+        }
+      ];
       return [
         {
           id: 'peaceful-piano',
