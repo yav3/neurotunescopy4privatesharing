@@ -180,6 +180,13 @@ const GenreView: React.FC = () => {
           description: 'Soft classical music for comfort',
           buckets: ['gentleclassicalforpain'],
           artwork: peacefulPianoArt
+        },
+        {
+          id: 'serene-sonatas',
+          name: 'Serene Sonatas',
+          description: 'Peaceful classical sonatas for pain relief',
+          buckets: ['sonatasforstress'],
+          artwork: '/src/assets/calming-classical-lakeside.jpg'
         }
       ];
     } else if (goalId === 'sleep-support') {

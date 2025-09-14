@@ -167,6 +167,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
         image: '/lovable-uploads/european-classical-terrace.png'
+      },
+      {
+        id: 'serene-sonatas',
+        name: 'Serene Sonatas',
+        description: 'Peaceful classical sonatas for pain relief',
+        buckets: ['sonatasforstress'],
+        image: '/src/assets/calming-classical-lakeside.jpg'
       }
     ],
     'energy-boost': [
