@@ -141,7 +141,7 @@ const GenreView: React.FC = () => {
           name: 'Calming Classical',
           description: 'Soothing classical music for deep relaxation',
           buckets: ['neuralpositivemusic/StressReduction'],
-          artwork: '/lovable-uploads/classical-meadow-ensemble.png'
+          artwork: '/src/assets/calming-classical-lakeside.jpg'
         },
         {
           id: 'new-age',
