@@ -137,10 +137,10 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/folk-instruments-meadow.png'
         },
         {
-          id: 'meditative-strings',
-          name: 'Meditative Strings',
-          description: 'Soothing string arrangements for relaxation',
-          buckets: ['classicalfocus'],
+          id: 'calming-classical',
+          name: 'Calming Classical',
+          description: 'Soothing classical music for deep relaxation',
+          buckets: ['neuralpositivemusic/StressReduction'],
           artwork: '/lovable-uploads/classical-meadow-ensemble.png'
         },
         {

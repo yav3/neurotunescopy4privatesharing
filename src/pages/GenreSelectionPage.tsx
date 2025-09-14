@@ -65,10 +65,10 @@ const getGenreOptions = (goalId: string) => {
         image: folkPeacefulMeadow
       },
       {
-        id: 'meditative-strings',
-        name: 'Meditative Strings',
-        description: 'Soothing string arrangements for relaxation',
-        buckets: ['Chopin'],
+        id: 'calming-classical',
+        name: 'Calming Classical',
+        description: 'Soothing classical music for deep relaxation',
+        buckets: ['neuralpositivemusic/StressReduction'],
         image: stringsCrystalPalace
       },
       {
