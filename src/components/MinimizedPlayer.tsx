@@ -107,65 +107,70 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10 touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               // TODO: Add favorite functionality
             }}
           >
-            <Heart className="w-4 h-4" />
+            <Heart className="w-5 h-5 sm:w-4 sm:h-4" />
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10"
+            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10 touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               // TODO: Add lightning playlist functionality
             }}
           >
-            <Plus className="w-4 h-4" strokeWidth={1} />
+            <Plus className="w-5 h-5 sm:w-4 sm:h-4" strokeWidth={1} />
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset"
+            className="w-12 h-12 sm:w-8 sm:h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               isPlaying ? pause() : play();
             }}
           >
             {isPlaying ? (
-              <Pause className="w-4 h-4 text-primary" />
+              <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
             ) : (
-              <Play className="w-4 h-4 text-primary" />
+              <Play className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
             )}
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40"
+            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40 touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               next();
             }}
           >
-            <SkipForward className="w-4 h-4" />
+            <SkipForward className="w-5 h-5 sm:w-4 sm:h-4" />
           </Button>
           
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               stop();
             }}
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5 sm:w-4 sm:h-4" />
           </Button>
         </div>
       </div>

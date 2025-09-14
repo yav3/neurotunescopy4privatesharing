@@ -198,33 +198,33 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 </p>
               </div>
 
-              {/* Action Buttons with Glass Morphism */}
-              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
-                {/* Favorite */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => handleFavorite(track.id, e)}
-                  className={cn(
-                    "w-8 h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full",
-                    isFavorited 
-                      ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
-                      : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
-                  )}
-                >
-                  <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
-                </Button>
+               {/* Action Buttons with Glass Morphism */}
+               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                 {/* Favorite */}
+                 <Button
+                   variant="ghost"
+                   size="icon"
+                   onClick={(e) => handleFavorite(track.id, e)}
+                   className={cn(
+                     "w-10 h-10 sm:w-8 sm:h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full touch-manipulation active:scale-95",
+                     isFavorited 
+                       ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                       : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                   )}
+                 >
+                   <Heart className={cn("w-5 h-5 sm:w-4 sm:h-4", isFavorited && "fill-current")} />
+                 </Button>
 
-                {/* Thumbs Down */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={(e) => handleThumbsDown(track.id, e)}
-                  className="w-8 h-8 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
-                >
-                  <ThumbsDown className="w-4 h-4" />
-                </Button>
-              </div>
+                 {/* Thumbs Down */}
+                 <Button
+                   variant="ghost"
+                   size="icon"
+                   onClick={(e) => handleThumbsDown(track.id, e)}
+                   className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 touch-manipulation active:scale-95"
+                 >
+                   <ThumbsDown className="w-5 h-5 sm:w-4 sm:h-4" />
+                 </Button>
+               </div>
             </div>
           );
         })}

@@ -174,14 +174,14 @@ export const FullPagePlayer = () => {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full"
+        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full w-12 h-12 sm:w-10 sm:h-10 touch-manipulation active:scale-95 transition-transform"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           setPlayerMode('mini');
         }}
       >
-        <X className="w-5 h-5" />
+        <X className="w-6 h-6 sm:w-5 sm:h-5" />
       </Button>
 
       {/* Player content - properly sized container */}
