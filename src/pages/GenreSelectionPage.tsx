@@ -68,7 +68,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'calming-classical',
         name: 'Calming Classical',
         description: 'Soothing classical music for deep relaxation',
-        buckets: ['neuralpositivemusic/StressReduction'],
+        buckets: ['sonatasforstress'],
         image: '/src/assets/calming-classical-lakeside.jpg'
       },
       {
