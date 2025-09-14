@@ -205,8 +205,7 @@ const GenreView: React.FC = () => {
           id: 'house-music',
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
-          buckets: ['neuralpositivemusic'],
-          folder: 'House',
+          buckets: ['house'],
           artwork: houseMusicArt
         },
         {
@@ -217,18 +216,18 @@ const GenreView: React.FC = () => {
           artwork: popMusicArt
         },
         {
-          id: 'uplifting-orchestral',
-          name: 'Uplifting Orchestral',
-          description: 'Energizing orchestral compositions',
-          buckets: ['classicalfocus'],
-          artwork: crossoverClassicalArt
-        },
-        {
           id: 'dance-party',
           name: 'Dance Party',
-          description: 'Upbeat electronic dance music for high energy and motivation',
-          buckets: ['HIIT'],
+          description: 'High-energy dance remixes and world beats',
+          buckets: ['moodboostremixesworlddance'],
           artwork: dancePartyArt
+        },
+        {
+          id: 'edm-crossover',
+          name: 'EDM crossover (EDM)',
+          description: 'Electronic dance music crossover tracks for high energy',
+          buckets: ['neuralpositivemusic/EDM'],
+          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
         }
       ];
     } else if (goalId === 'energy-boost') {
@@ -310,7 +309,7 @@ const GenreView: React.FC = () => {
         // Determine album art sources
         let albumArtUrls: string[] = [];
         if (selectedGenre.id === 'house-music') {
-          // Strict mode: use only HIIT bucket for audio; use provided artwork only
+          // Strict mode: use house bucket for audio; use provided artwork only
           albumArtUrls = [selectedGenre.artwork];
           console.log('🎨 Using provided House Music artwork only');
         } else {
@@ -416,7 +415,7 @@ const GenreView: React.FC = () => {
               let artistName = 'Therapeutic Music';
               let trackGenre = selectedGenre.name;
               
-              if (selectedGenre.id === 'house-music' && bucketName === 'HIIT') {
+              if (selectedGenre.id === 'house-music' && bucketName === 'house') {
                 artistName = 'House Music Collection';
                 trackGenre = 'House Music';
               } else if (bucketName === 'classicalfocus') {
