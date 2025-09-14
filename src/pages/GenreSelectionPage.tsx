@@ -183,7 +183,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'motivational-beats',
         name: 'Happy House & Dance',
         description: 'Upbeat house and dance music for energy and motivation',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['neuralpositivemusic/House'],
         image: happyHouseDance
       }
     ]
