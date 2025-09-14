@@ -454,16 +454,25 @@ const GenreView: React.FC = () => {
         }
 
         // Process each bucket - simplified
-        for (const bucketName of selectedGenre.buckets) {
-          console.log(`🗂️ Processing bucket: ${bucketName} directly`);
+        for (const bucketPath of selectedGenre.buckets) {
+          console.log(`🗂️ Processing bucket path: ${bucketPath}`);
           
-          // Handle optional folder per genre
-          let folderPath = (selectedGenre as any).folder || '';
-          if (folderPath) {
-            console.log(`📁 Using folder: ${folderPath} in bucket ${bucketName}`);
+          // Parse bucket and folder from path like "neuralpositivemusic/Classical"
+          let bucketName: string;
+          let folderPath: string;
+          
+          if (bucketPath.includes('/')) {
+            const parts = bucketPath.split('/');
+            bucketName = parts[0];
+            folderPath = parts.slice(1).join('/');
+            console.log(`📁 Parsed - Bucket: ${bucketName}, Folder: ${folderPath}`);
+          } else {
+            bucketName = bucketPath;
+            folderPath = (selectedGenre as any).folder || '';
+            console.log(`📦 Direct bucket: ${bucketName}${folderPath ? `, folder: ${folderPath}` : ''}`);
           }
           
-          // List files directly from bucket or folder
+          // List files from bucket/folder
           const { data: files, error: listError } = await supabase.storage
             .from(bucketName)
             .list(folderPath, {
@@ -472,12 +481,12 @@ const GenreView: React.FC = () => {
             });
 
           if (listError) {
-            console.error(`❌ Error listing files in bucket ${bucketName}:`, listError);
+            console.error(`❌ Error listing files in bucket ${bucketName}/${folderPath}:`, listError);
             continue;
           }
 
           if (!files || files.length === 0) {
-            console.log(`📂 No files found in bucket: ${bucketName}`);
+            console.log(`📂 No files found in bucket: ${bucketName}/${folderPath}`);
             continue;
           }
 
@@ -487,7 +496,7 @@ const GenreView: React.FC = () => {
             audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
           );
 
-          console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}`);
+          console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucketName}/${folderPath}`);
 
           // Process files in smaller initial batches, load more as needed
           const INITIAL_BATCH_SIZE = 10; // Load only 10 tracks initially
@@ -565,10 +574,10 @@ const GenreView: React.FC = () => {
             }
           }
 
-          console.log(`📊 Successfully created ${bucketTracks.length} initial tracks from ${bucketName}`);
+          console.log(`📊 Successfully created ${bucketTracks.length} initial tracks from ${bucketName}/${folderPath}`);
 
           allTracks.push(...bucketTracks);
-          console.log(`✅ Added ${bucketTracks.length} tracks from ${bucketName}`);
+          console.log(`✅ Added ${bucketTracks.length} tracks from ${bucketName}/${folderPath}`);
         }
 
         console.log(`🎯 Total tracks from all buckets: ${allTracks.length}`);
