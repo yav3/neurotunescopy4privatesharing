@@ -14,13 +14,13 @@ import newAgeArt from '@/assets/new-age-forest-flute-natural.jpg';
 import electronicArt from '@/assets/drums-aurora-energy.jpg';
 import sambaImage from '@/assets/guitar-beach-sunset-samba.jpg';
 import acousticArt from '@/assets/country-guitar-sunset-lake.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-lake-mountains.jpg';
+import peacefulPianoArt from '@/assets/piano-mountain-sunset.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
-import bachWaterfallNature from '@/assets/bach-waterfall-nature.jpg';
+import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
 
 // Fallback track generator with varied album art

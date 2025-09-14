@@ -16,11 +16,11 @@ import stringsCrystalPalace from '@/assets/classical-instruments-crystal-hall.jp
 import newageRadiantGarden from '@/assets/new-age-forest-flute-natural.jpg';
 import operaLuminousHall from '@/assets/opera-violin-garden-terrace.jpg';
 import sonatasBrightConservatory from '@/assets/classical-instruments-crystal-hall.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-lake-mountains.jpg';
+import peacefulPianoArt from '@/assets/piano-mountain-sunset.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
-import bachWaterfallNature from '@/assets/bach-waterfall-nature.jpg';
+import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import happyHouseDance from '@/assets/happy-house-dance.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
