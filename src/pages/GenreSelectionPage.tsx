@@ -94,13 +94,6 @@ const getGenreOptions = (goalId: string) => {
     ],
     'cardio-support': [
       {
-        id: 'high-energy-dance',
-        name: 'High Energy Dance',
-        description: 'Intense dance beats for cardio workouts',
-        buckets: ['HIIT'],
-        image: dancePartyArt
-      },
-      {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
