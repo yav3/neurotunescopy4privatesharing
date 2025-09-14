@@ -21,6 +21,7 @@ import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import bachInstrumentsGrounded from '@/assets/bach-instruments-grounded.jpg';
+import happyHouseDance from '@/assets/happy-house-dance.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -180,10 +181,10 @@ const getGenreOptions = (goalId: string) => {
       },
       {
         id: 'motivational-beats',
-        name: 'Motivational Beats',
-        description: 'Rhythmic music for energy and focus',
+        name: 'Happy House & Dance',
+        description: 'Upbeat house and dance music for energy and motivation',
         buckets: ['neuralpositivemusic'],
-        image: '/lovable-uploads/string-quartet-studio.png'
+        image: happyHouseDance
       }
     ]
   };
