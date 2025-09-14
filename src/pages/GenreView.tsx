@@ -344,13 +344,6 @@ const GenreView: React.FC = () => {
           artwork: dancePartyArt
         },
         {
-          id: 'rock-mood-boost',
-          name: 'Rock Mood Boost',
-          description: 'Uplifting rock music for mood elevation',
-          buckets: ['ROCKMOODBOOST'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
-        },
-        {
           id: 'edm-crossover',
           name: 'EDM crossover (EDM)',
           description: 'Electronic dance music crossover tracks for high energy',
