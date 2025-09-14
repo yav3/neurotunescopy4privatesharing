@@ -141,8 +141,8 @@ const getGenreOptions = (goalId: string) => {
       {
         id: 'dance-party',
         name: 'Dance Party',
-        description: 'High-energy dance remixes and world beats',
-        buckets: ['moodboostremixesworlddance'],
+        description: 'High-energy dance remixes and world dance beats',
+        buckets: ['neuralpositivemusic/House'],
         image: dancePartyArt
       },
       {

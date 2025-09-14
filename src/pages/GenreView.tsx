@@ -219,7 +219,7 @@ const GenreView: React.FC = () => {
           id: 'dance-party',
           name: 'Dance Party',
           description: 'High-energy dance remixes and world beats',
-          buckets: ['moodboostremixesworlddance'],
+          buckets: ['neuralpositivemusic/House'],
           artwork: dancePartyArt
         },
         {
