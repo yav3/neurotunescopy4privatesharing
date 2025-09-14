@@ -323,7 +323,10 @@ export default function GenreSelectionPage() {
                     alt={`${genre.name} cover art`}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-125 group-hover:saturate-125"
+                    className={cn(
+                      "w-full h-full transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-125 group-hover:saturate-125",
+                      genre.id === 'bach-transpositions' ? "object-contain" : "object-cover"
+                    )}
                   />
                   {/* Multi-layered Glass Effects */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/10 group-hover:from-black/10 transition-all duration-700" />
