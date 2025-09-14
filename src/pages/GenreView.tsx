@@ -250,14 +250,14 @@ const GenreView: React.FC = () => {
           id: 'energetic-classical',
           name: 'Energetic Classical',
           description: 'Dynamic classical pieces for vitality',
-          buckets: ['classicalfocus'],
+          buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
           artwork: crossoverClassicalArt
         },
         {
           id: 'motivational-beats',
-          name: 'Motivational Beats',
-          description: 'Rhythmic music for energy and focus',
-          buckets: ['neuralpositivemusic'],
+          name: 'Happy House & Dance',
+          description: 'Upbeat house and dance music for energy and motivation',
+          buckets: ['neuralpositivemusic/House'],
           artwork: '/lovable-uploads/string-quartet-studio.png'
         }
       ];
