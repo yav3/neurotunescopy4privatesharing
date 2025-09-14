@@ -156,7 +156,7 @@ const getGenreOptions = (goalId: string) => {
     'pain-support': [
       {
         id: 'world-new-age',
-        name: 'World & New Age',
+        name: 'World',
         description: 'Global healing sounds for pain relief',
         buckets: ['painreducingworld'],
         image: '/lovable-uploads/acoustic-sunset-field.png'

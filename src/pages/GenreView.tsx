@@ -169,7 +169,7 @@ const GenreView: React.FC = () => {
       return [
         {
           id: 'world-new-age',
-          name: 'World & New Age',
+          name: 'World',
           description: 'Global healing sounds for pain relief',
           buckets: ['painreducingworld'],
           artwork: newAgeArt
