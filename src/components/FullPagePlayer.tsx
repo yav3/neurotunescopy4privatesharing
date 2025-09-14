@@ -166,26 +166,52 @@ export const FullPagePlayer = () => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex flex-col justify-center overflow-hidden">
-      {/* Glass Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl" />
-      
-      {/* Close button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute top-4 right-4 text-foreground/70 hover:text-foreground z-10 backdrop-blur-sm bg-card/20 border border-white/10 rounded-full w-12 h-12 sm:w-10 sm:h-10 touch-manipulation active:scale-95 transition-transform"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
+    <div 
+      className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex flex-col justify-center overflow-hidden"
+      onClick={(e) => {
+        // Allow closing by clicking the background (but not the content area)
+        if (e.target === e.currentTarget) {
+          console.log('🔘 Background clicked - closing player');
           setPlayerMode('mini');
-        }}
-      >
-        <X className="w-6 h-6 sm:w-5 sm:h-5" />
-      </Button>
+        }
+      }}
+    >
+      {/* Glass Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-card/30 to-secondary/20 backdrop-blur-xl pointer-events-none" />
+      
+      {/* Close button - Enhanced for better touch interaction */}
+      <div className="absolute top-2 right-2 z-50">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-foreground hover:text-foreground backdrop-blur-sm bg-background/90 border-2 border-foreground/30 rounded-full w-14 h-14 touch-manipulation active:scale-90 transition-all duration-200 hover:bg-background hover:border-foreground/50 shadow-xl"
+          onClick={(e) => {
+            console.log('🔘 Close button clicked!');
+            e.preventDefault();
+            e.stopPropagation();
+            setPlayerMode('mini');
+          }}
+          onTouchStart={(e) => {
+            console.log('🔘 Close button touch started!');
+            e.preventDefault();
+          }}
+          style={{ 
+            minHeight: '56px', 
+            minWidth: '56px',
+            pointerEvents: 'all',
+            zIndex: 9999
+          }}
+          aria-label="Close player"
+        >
+          <X className="w-7 h-7 pointer-events-none" strokeWidth={2.5} />
+        </Button>
+      </div>
 
       {/* Player content - properly sized container */}
-      <div className="relative z-10 w-full max-w-md mx-auto px-6 py-6 h-full flex flex-col justify-center">
+      <div 
+        className="relative z-10 w-full max-w-md mx-auto px-6 py-6 h-full flex flex-col justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Album artwork with Glass Morphism - optimized size */}
         <div className="aspect-square relative mb-6 rounded-2xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg max-w-[240px] mx-auto">
           <img 
