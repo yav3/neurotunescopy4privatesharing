@@ -20,6 +20,7 @@ import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
+import bachWaterfallNature from '@/assets/bach-waterfall-nature.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
 
 // Fallback track generator with varied album art
@@ -113,7 +114,7 @@ const GenreView: React.FC = () => {
           name: 'Bach Transpositions',
           description: 'Modern interpretations of Bach for deep focus',
           buckets: ['focus-music'],
-          artwork: electronicArt
+          artwork: bachWaterfallNature
         },
         {
           id: 'peaceful-piano',

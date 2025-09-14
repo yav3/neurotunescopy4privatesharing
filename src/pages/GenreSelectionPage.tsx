@@ -20,7 +20,7 @@ import peacefulPianoArt from '@/assets/peaceful-piano-lake-mountains.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
-import bachInstrumentsGrounded from '@/assets/bach-instruments-grounded.jpg';
+import bachWaterfallNature from '@/assets/bach-waterfall-nature.jpg';
 import happyHouseDance from '@/assets/happy-house-dance.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
@@ -41,7 +41,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
         buckets: ['focus-music'],
-        image: bachInstrumentsGrounded
+        image: bachWaterfallNature
       },
       {
         id: 'peaceful-piano',
