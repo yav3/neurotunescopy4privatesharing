@@ -187,6 +187,13 @@ const GenreView: React.FC = () => {
           description: 'Peaceful classical sonatas for pain relief',
           buckets: ['sonatasforstress'],
           artwork: '/src/assets/calming-classical-lakeside.jpg'
+        },
+        {
+          id: 'peaceful-piano',
+          name: 'Peaceful Piano',
+          description: 'Gentle piano melodies for comfort and healing',
+          buckets: ['Chopin'],
+          artwork: peacefulPianoArt
         }
       ];
     } else if (goalId === 'sleep-support') {

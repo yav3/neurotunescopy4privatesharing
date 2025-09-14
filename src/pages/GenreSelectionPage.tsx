@@ -174,6 +174,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Peaceful classical sonatas for pain relief',
         buckets: ['sonatasforstress'],
         image: '/src/assets/calming-classical-lakeside.jpg'
+      },
+      {
+        id: 'peaceful-piano',
+        name: 'Peaceful Piano',
+        description: 'Gentle piano melodies for comfort and healing',
+        buckets: ['Chopin'],
+        image: '/lovable-uploads/string-quartet-studio.png'
       }
     ],
     'energy-boost': [
