@@ -140,13 +140,6 @@ const getGenreOptions = (goalId: string) => {
         image: popMusicArt
       },
       {
-        id: 'disco-funk',
-        name: 'Disco & Funk',
-        description: 'Groovy disco and funk tracks to boost your mood',
-        buckets: ['DISCOFUNKMOODBOOST'],
-        image: '/lovable-uploads/classical-meadow-ensemble.png'
-      },
-      {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world beats',
