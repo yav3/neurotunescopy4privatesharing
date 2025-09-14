@@ -205,7 +205,7 @@ const GenreView: React.FC = () => {
           id: 'house-music',
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
-          buckets: ['house'],
+          buckets: ['neuralpositivemusic/House'],
           artwork: houseMusicArt
         },
         {
@@ -415,7 +415,7 @@ const GenreView: React.FC = () => {
               let artistName = 'Therapeutic Music';
               let trackGenre = selectedGenre.name;
               
-              if (selectedGenre.id === 'house-music' && bucketName === 'house') {
+              if (selectedGenre.id === 'house-music' && bucketName === 'neuralpositivemusic') {
                 artistName = 'House Music Collection';
                 trackGenre = 'House Music';
               } else if (bucketName === 'classicalfocus') {

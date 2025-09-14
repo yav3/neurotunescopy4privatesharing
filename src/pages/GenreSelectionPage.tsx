@@ -128,7 +128,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['house'],
+        buckets: ['neuralpositivemusic/House'],
         image: houseMusicArt
       },
       {
