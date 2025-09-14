@@ -147,10 +147,10 @@ const getGenreOptions = (goalId: string) => {
         image: dancePartyArt
       },
       {
-        id: 'rock-energy',
-        name: 'Rock Energy',
-        description: 'Uplifting rock music for motivation',
-        buckets: ['ROCKMOODBOOST'],
+        id: 'edm-crossover',
+        name: 'EDM crossover (EDM)',
+        description: 'Electronic dance music crossover tracks for high energy',
+        buckets: ['neuralpositivemusic/EDM'],
         image: '/lovable-uploads/gamma-sunbeam-forest.png'
       }
     ],
