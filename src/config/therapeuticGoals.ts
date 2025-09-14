@@ -145,7 +145,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-red-500 to-pink-500',
     bpmRange: { min: 130, max: 180, optimal: 150 },
     vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
-    musicBuckets: ['HIIT', 'house', 'ENERGYBOOST', 'pop'],
+    musicBuckets: ['HIIT', 'house', 'neuralpositivemusic', 'ENERGYBOOST', 'pop'],
     synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
   }
 ];
