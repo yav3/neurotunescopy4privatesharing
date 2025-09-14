@@ -31,7 +31,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['classicalfocus'],
+        buckets: ['curated-music-collection'],
         image: crossoverClassicalArt
       },
       {
@@ -68,7 +68,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'meditative-strings',
         name: 'Meditative Strings',
         description: 'Soothing string arrangements for relaxation',
-        buckets: ['classicalfocus'],
+        buckets: ['Chopin'],
         image: stringsCrystalPalace
       },
       {
@@ -174,7 +174,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'energetic-classical',
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
-        buckets: ['classicalfocus'],
+        buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
         image: '/lovable-uploads/gamma-sunbeam-forest.png'
       },
       {
