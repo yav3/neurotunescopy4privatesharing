@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Navigation } from "@/components/Navigation";
 import { ProfileEditForm } from "@/components/ProfileEditForm";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User, Settings, Music, Clock, Edit3, Calendar, TrendingUp } from "lucide-react";
+import { User, Settings, Music, Clock, Edit3, Calendar, TrendingUp, ArrowLeft } from "lucide-react";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -17,6 +18,7 @@ interface SessionStats {
 }
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { user } = useAuthContext();
   const [isEditing, setIsEditing] = useState(false);
   const [stats, setStats] = useState<SessionStats>({
@@ -141,6 +143,17 @@ const Profile = () => {
       <Header />
       
       <div className="container max-w-4xl mx-auto px-3 py-2 mb-16 sm:mb-20">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate('/')}
+          className="mb-4 text-muted-foreground hover:text-foreground hover:bg-muted/50"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Home
+        </Button>
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2">
           <div className="flex items-center gap-2">
             <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
