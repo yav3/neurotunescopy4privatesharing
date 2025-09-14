@@ -97,7 +97,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['DISCOFUNKMOODBOOST', 'ROCKMOODBOOST', 'moodboostremixesworlddance', 'pop', 'house', 'HIIT'],
+    musicBuckets: ['DISCOFUNKMOODBOOST', 'ROCKMOODBOOST', 'moodboostremixesworlddance', 'pop', 'house', 'neuralpositivemusic', 'HIIT'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
