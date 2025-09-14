@@ -6,22 +6,24 @@ import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { EnhancedGenreCard } from '@/components/ui/EnhancedGenreCard';
 import { cn } from '@/lib/utils';
 
-// Import blue and green toned artwork only
-import crossoverClassicalArt from '@/assets/crossover-classical-bright.jpg';
-import newAgeArt from '@/assets/new-age-magical-forest.jpg';
-import electronicArt from '@/assets/electronic-nature-keyboard.jpg';
-import sambaImage from '@/assets/samba-photorealistic.jpg';
-import folkPeacefulMeadow from '@/assets/folk-peaceful-meadow.jpg';
-import stringsCrystalPalace from '@/assets/strings-crystal-palace.jpg';
-import newageRadiantGarden from '@/assets/newage-radiant-garden.jpg';
-import operaLuminousHall from '@/assets/opera-luminous-hall.jpg';
-import sonatasBrightConservatory from '@/assets/sonatas-bright-conservatory.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-blue.jpg';
+// Import thematic artwork that matches genre descriptions
+import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
+import newAgeArt from '@/assets/new-age-crystal-forest.jpg';
+import electronicArt from '@/assets/edm-nature-aurora.jpg';
+import sambaImage from '@/assets/samba-tropical-instruments-sunset.jpg';
+import folkPeacefulMeadow from '@/assets/country-guitar-sunset-lake.jpg';
+import stringsCrystalPalace from '@/assets/classical-instruments-crystal-hall.jpg';
+import newageRadiantGarden from '@/assets/new-age-crystal-forest.jpg';
+import operaLuminousHall from '@/assets/opera-grand-hall-golden.jpg';
+import sonatasBrightConservatory from '@/assets/classical-instruments-crystal-hall.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-moonlit-garden.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
-import bachInstrumentsGrounded from '@/assets/bach-instruments-grounded.jpg';
+import bachInstrumentsGrounded from '@/assets/classical-instruments-crystal-hall.jpg';
 import happyHouseDance from '@/assets/happy-house-dance.jpg';
+import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
+import energyBoostLightning from '@/assets/energy-boost-lightning-mountain.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -150,14 +152,14 @@ const getGenreOptions = (goalId: string) => {
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
         buckets: ['neuralpositivemusic/EDM'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: electronicArt
       },
       {
         id: 'hiit-mood',
         name: 'HIIT Mood',
         description: 'High-intensity music for mood and energy',
         buckets: ['HIIT'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: energyBoostLightning
       }
     ],
     'pain-support': [
@@ -166,14 +168,14 @@ const getGenreOptions = (goalId: string) => {
         name: 'World',
         description: 'Global healing sounds for pain relief',
         buckets: ['painreducingworld'],
-        image: '/lovable-uploads/acoustic-sunset-field.png'
+        image: worldInstrumentsZen
       },
       {
         id: 'gentle-classical',
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
-        image: '/lovable-uploads/european-classical-terrace.png'
+        image: stringsCrystalPalace
       },
       {
         id: 'serene-sonatas',
@@ -187,7 +189,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and healing',
         buckets: ['Chopin'],
-        image: '/lovable-uploads/string-quartet-studio.png'
+        image: peacefulPianoArt
       }
     ],
     'energy-boost': [
@@ -196,7 +198,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
         buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: energyBoostLightning
       },
       {
         id: 'motivational-beats',
@@ -210,21 +212,21 @@ const getGenreOptions = (goalId: string) => {
         name: 'Energy Boost',
         description: 'High-energy tracks for maximum motivation',
         buckets: ['ENERGYBOOST'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: energyBoostLightning
       },
       {
         id: 'musical-theater-energy',
         name: 'Musical Theater Energy',
         description: 'Uplifting musical theater pieces for motivation',
         buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: energyBoostLightning
       },
       {
         id: 'hiit-energy',
         name: 'HIIT Music',
         description: 'High-intensity interval training music for energy',
         buckets: ['HIIT'],
-        image: '/lovable-uploads/gamma-sunbeam-forest.png'
+        image: energyBoostLightning
       }
     ]
   };

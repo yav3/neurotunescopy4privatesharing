@@ -8,16 +8,19 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
-// Import artwork
-import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
-import newAgeArt from '@/assets/new-age-artwork.jpg';
-import electronicArt from '@/assets/electronic-artwork.jpg';
-import sambaImage from '@/assets/samba-photorealistic.jpg';
-import acousticArt from '@/assets/acoustic-artwork.jpg';
-import peacefulPianoArt from '@/assets/peaceful-piano-artwork.jpg';
+// Import thematic artwork that matches genre descriptions
+import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
+import newAgeArt from '@/assets/new-age-crystal-forest.jpg';
+import electronicArt from '@/assets/edm-nature-aurora.jpg';
+import sambaImage from '@/assets/samba-tropical-instruments-sunset.jpg';
+import acousticArt from '@/assets/country-guitar-sunset-lake.jpg';
+import peacefulPianoArt from '@/assets/peaceful-piano-moonlit-garden.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
 import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
+import operaArt from '@/assets/opera-grand-hall-golden.jpg';
+import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
+import energyBoostLightning from '@/assets/energy-boost-lightning-mountain.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -155,7 +158,7 @@ const GenreView: React.FC = () => {
           name: 'Opera',
           description: 'Classical opera for emotional release and stress relief',
           buckets: ['opera'],
-          artwork: '/lovable-uploads/european-classical-terrace.png'
+          artwork: operaArt
         },
         {
           id: 'sonatas',
@@ -172,7 +175,7 @@ const GenreView: React.FC = () => {
           name: 'World',
           description: 'Global healing sounds for pain relief',
           buckets: ['painreducingworld'],
-          artwork: newAgeArt
+          artwork: worldInstrumentsZen
         },
         {
           id: 'gentle-classical',
@@ -241,7 +244,7 @@ const GenreView: React.FC = () => {
           name: 'EDM crossover (EDM)',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: electronicArt
         }
       ];
     } else if (goalId === 'cardio-support') {
@@ -251,7 +254,7 @@ const GenreView: React.FC = () => {
           name: 'HIIT',
           description: 'High-intensity interval training music',
           buckets: ['HIIT'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         },
         {
           id: 'house-cardio',
@@ -272,7 +275,7 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost',
           description: 'Maximum energy tracks for intense cardio',
           buckets: ['ENERGYBOOST'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         },
         {
           id: 'pop-cardio',
@@ -303,21 +306,21 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost',
           description: 'High-energy tracks for maximum motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         },
         {
           id: 'musical-theater-energy',
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         },
         {
           id: 'hiit-energy',
           name: 'HIIT Music',
           description: 'High-intensity interval training music for energy',
           buckets: ['HIIT'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -348,14 +351,14 @@ const GenreView: React.FC = () => {
           name: 'EDM crossover (EDM)',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: electronicArt
         },
         {
           id: 'hiit-mood',
           name: 'HIIT Mood',
           description: 'High-intensity music for mood and energy',
           buckets: ['HIIT'],
-          artwork: '/lovable-uploads/gamma-sunbeam-forest.png'
+          artwork: energyBoostLightning
         }
       ];
       return [
