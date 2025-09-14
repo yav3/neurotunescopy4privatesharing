@@ -99,20 +99,34 @@ const getGenreOptions = (goalId: string) => {
         image: sonatasBrightConservatory
       }
     ],
-    'sleep-support': [
+    'cardio-support': [
       {
-        id: 'delta-wave',
-        name: 'Delta Wave Therapy',
-        description: 'Deep sleep-inducing frequencies',
-        buckets: ['samba'],
-        image: '/lovable-uploads/theta-misty-path.png'
+        id: 'high-energy-dance',
+        name: 'High Energy Dance',
+        description: 'Intense dance beats for cardio workouts',
+        buckets: ['HIIT'],
+        image: dancePartyArt
       },
       {
-        id: 'nocturnal-classical',
-        name: 'Nocturnal Classical',
-        description: 'Gentle classical pieces for bedtime',
-        buckets: ['classicalfocus'],
-        image: '/lovable-uploads/folk-instruments-meadow.png'
+        id: 'house-cardio',
+        name: 'House Cardio',
+        description: 'Pumping house music for cardiovascular exercise',
+        buckets: ['house'],
+        image: houseMusicArt
+      },
+      {
+        id: 'pop-cardio',
+        name: 'Pop Cardio',
+        description: 'Energetic pop hits perfect for cardio sessions',
+        buckets: ['pop'],
+        image: popMusicArt
+      },
+      {
+        id: 'energy-boost-cardio',
+        name: 'Energy Boost',
+        description: 'Maximum energy tracks for intense cardio',
+        buckets: ['ENERGYBOOST'],
+        image: electronicArt
       }
     ],
     'mood-boost': [
