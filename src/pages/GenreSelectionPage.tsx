@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils';
 
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
-import newAgeArt from '@/assets/new-age-crystal-forest.jpg';
+import newAgeArt from '@/assets/new-age-forest-flute-natural.jpg';
 import electronicArt from '@/assets/edm-nature-aurora.jpg';
 import sambaImage from '@/assets/samba-tropical-instruments-sunset.jpg';
 import folkPeacefulMeadow from '@/assets/country-guitar-sunset-lake.jpg';
 import stringsCrystalPalace from '@/assets/classical-instruments-crystal-hall.jpg';
-import newageRadiantGarden from '@/assets/new-age-crystal-forest.jpg';
-import operaLuminousHall from '@/assets/opera-grand-hall-golden.jpg';
+import newageRadiantGarden from '@/assets/new-age-forest-flute-natural.jpg';
+import operaLuminousHall from '@/assets/opera-violin-garden-terrace.jpg';
 import sonatasBrightConservatory from '@/assets/classical-instruments-crystal-hall.jpg';
 import peacefulPianoArt from '@/assets/peaceful-piano-moonlit-garden.jpg';
 import houseMusicArt from '@/assets/house-music-bright.jpg';
