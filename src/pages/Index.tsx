@@ -9,11 +9,6 @@ import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
-// Import beautiful instrument nature images
-import focusImage from '@/assets/focus-piano-crystal-meadow.jpg';
-import stressImage from '@/assets/stress-violin-blooms.jpg';
-import moodImage from '@/assets/mood-modern-instruments-garden.jpg';
-import painImage from '@/assets/pain-harp-piano-oud-garden.jpg';
 const Index = () => {
   const navigate = useNavigate();
   const {
@@ -62,15 +57,13 @@ const Index = () => {
               animationDelay: `${index * 100}ms`,
               animationFillMode: 'both'
             }} onClick={() => handleGoalSelect(goal)}>
-                  {/* Consistent nature with instruments backgrounds */}
+                  {/* Goal artwork backgrounds */}
                   <div className="absolute inset-0">
-                    {goal.id === 'focus-enhancement' && <img src={focusImage} alt="Piano in peaceful meadow for focus" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'stress-anxiety-support' && <img src={stressImage} alt="Musical notes over calm lake for stress relief" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'mood-boost' && <img src={moodImage} alt="Modern instruments - drums, guitars, bass, mandolin, synth in colorful garden for mood boost" className="w-full h-full object-cover" />}
-                    
-                    {goal.id === 'pain-support' && <img src={painImage} alt="Harp, piano, and oud in peaceful garden for pain relief" className="w-full h-full object-cover" />}
+                    <img 
+                      src={goal.artwork} 
+                      alt={`${goal.name} therapeutic music`} 
+                      className="w-full h-full object-cover" 
+                    />
                   </div>
 
                   {/* Subtle glass morphism overlay - theme tokens */}
