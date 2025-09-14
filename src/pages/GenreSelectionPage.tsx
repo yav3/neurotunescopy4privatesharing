@@ -101,6 +101,14 @@ const getGenreOptions = (goalId: string) => {
         image: dancePartyArt
       },
       {
+        id: 'edm-cardio',
+        name: 'EDM',
+        description: 'Electronic dance music for high-intensity cardio',
+        buckets: ['neuralpositivemusic'],
+        folder: 'EDM',
+        image: electronicArt
+      },
+      {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
