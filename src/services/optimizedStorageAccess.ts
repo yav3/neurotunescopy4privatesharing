@@ -31,29 +31,36 @@ export async function getTracksFromStorageOptimized(
     let allTracks: StorageTrack[] = [];
 
     // Process buckets in parallel for better performance
-    const bucketPromises = buckets.map(async (bucket) => {
-      console.log(`🗂️ Processing bucket: ${bucket}`);
+    const bucketPromises = buckets.map(async (bucketPath) => {
+      console.log(`🗂️ Processing bucket path: ${bucketPath}`);
+      
+      // Handle bucket/folder syntax (e.g., "neuralpositivemusic/EDM")
+      const pathParts = bucketPath.split('/');
+      const bucket = pathParts[0];
+      const folder = pathParts.length > 1 ? pathParts.slice(1).join('/') : '';
+      
+      console.log(`📂 Bucket: ${bucket}, Folder: ${folder || 'root'}`);
       
       try {
         // Use regular client for all operations since buckets are public
         const { data: files, error: listError } = await supabase.storage
           .from(bucket)
-          .list('', {
+          .list(folder, {
             limit: 1000,
             sortBy: { column: 'name', order: 'asc' }
           });
 
         if (listError) {
-          console.error(`❌ Error listing files in bucket ${bucket}:`, listError);
+          console.error(`❌ Error listing files in bucket ${bucket}/${folder}:`, listError);
           return [];
         }
 
         if (!files || files.length === 0) {
-          console.log(`📂 No files found in bucket ${bucket}`);
+          console.log(`📂 No files found in bucket ${bucket}/${folder}`);
           return [];
         }
 
-        console.log(`📁 Found ${files.length} files in bucket: ${bucket}`);
+        console.log(`📁 Found ${files.length} files in bucket: ${bucket}/${folder}`);
         
         // Filter for audio files
         const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
@@ -61,18 +68,21 @@ export async function getTracksFromStorageOptimized(
           audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
         );
         
-        console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`);
+        console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}/${folder}`);
 
         // Create track objects without additional API calls
         const tracks: StorageTrack[] = audioFiles.map(file => {
-          // Generate public URL directly
-          const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(file.name);
+          // Build the full storage path
+          const fullPath = folder ? `${folder}/${file.name}` : file.name;
+          
+          // Generate public URL with full path
+          const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(fullPath);
           
           return {
-            id: `${bucket}-${file.name}`,
+            id: `${bucketPath}-${file.name}`,
             title: cleanTitle(file.name),
             storage_bucket: bucket,
-            storage_key: file.name,
+            storage_key: fullPath,
             stream_url: urlData.publicUrl,
             file_size: file.metadata?.size,
             last_modified: file.updated_at || file.created_at

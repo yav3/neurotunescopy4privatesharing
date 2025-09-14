@@ -98,8 +98,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['neuralpositivemusic'],
-        folder: 'EDM',
+        buckets: ['neuralpositivemusic/EDM'],
         image: electronicArt
       },
       {
@@ -143,7 +142,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world beats',
-        buckets: ['house'],
+        buckets: ['moodboostremixesworlddance'],
         image: dancePartyArt
       },
       {

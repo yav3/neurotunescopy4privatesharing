@@ -97,7 +97,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['DISCOFUNKMOODBOOST', 'ROCKMOODBOOST', 'moodboostremixesworlddance', 'pop', 'house', 'neuralpositivemusic', 'HIIT'],
+    musicBuckets: ['house', 'pop', 'moodboostremixesworlddance', 'ROCKMOODBOOST', 'neuralpositivemusic/EDM', 'HIIT'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
@@ -129,7 +129,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
-    musicBuckets: ['ENERGYBOOST', 'neuralpositivemusic', 'HIIT', 'house', 'pop'],
+    musicBuckets: ['ENERGYBOOST', 'neuralpositivemusic/House', 'HIIT', 'house', 'pop'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
   },
   {
@@ -145,7 +145,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-red-500 to-pink-500',
     bpmRange: { min: 130, max: 180, optimal: 150 },
     vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
-    musicBuckets: ['HIIT', 'house', 'neuralpositivemusic', 'ENERGYBOOST', 'pop'],
+    musicBuckets: ['HIIT', 'house', 'neuralpositivemusic/EDM', 'ENERGYBOOST', 'pop'],
     synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
   }
 ];
