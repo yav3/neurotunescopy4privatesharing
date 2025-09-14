@@ -129,8 +129,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['neuralpositivemusic'],
-        folder: 'House',
+        buckets: ['house'],
         image: houseMusicArt
       },
       {
@@ -141,18 +140,25 @@ const getGenreOptions = (goalId: string) => {
         image: popMusicArt
       },
       {
-        id: 'uplifting-orchestral',
-        name: 'Uplifting Orchestral',
-        description: 'Energizing orchestral compositions',
-        buckets: ['classicalfocus'], 
+        id: 'disco-funk',
+        name: 'Disco & Funk',
+        description: 'Groovy disco and funk tracks to boost your mood',
+        buckets: ['DISCOFUNKMOODBOOST'],
         image: '/lovable-uploads/classical-meadow-ensemble.png'
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
-        description: 'Upbeat electronic dance music for high energy and motivation',
-        buckets: ['ENERGYBOOST'],
+        description: 'High-energy dance remixes and world beats',
+        buckets: ['moodboostremixesworlddance'],
         image: dancePartyArt
+      },
+      {
+        id: 'rock-energy',
+        name: 'Rock Energy',
+        description: 'Uplifting rock music for motivation',
+        buckets: ['ROCKMOODBOOST'],
+        image: '/lovable-uploads/gamma-sunbeam-forest.png'
       }
     ],
     'pain-support': [
