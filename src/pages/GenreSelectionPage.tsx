@@ -31,7 +31,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['curated-music-collection'],
+        buckets: ['neuralpositivemusic/Classical'],
         image: crossoverClassicalArt
       },
       {
