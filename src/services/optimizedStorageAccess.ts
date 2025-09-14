@@ -16,21 +16,15 @@ export async function getTracksFromStorageOptimized(
   buckets?: string[]
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
   
-  // Determine buckets based on goal
+  // Determine buckets based on goal using therapeutic goals configuration
   if (!buckets) {
-    const normalizedGoal = goal.trim().toLowerCase();
+    console.log(`🎯 Goal received: "${goal}"`);
     
-    if (normalizedGoal === 'focus-enhancement') {
-      buckets = ['focus-music', 'classicalfocus', 'Chopin', 'neuralpositivemusic'];
-    } else if (normalizedGoal === 'mood-boost') {
-      buckets = ['HIIT'];
-    } else if (normalizedGoal === 'stress-anxiety-support' || normalizedGoal === 'anxiety' || normalizedGoal === 'stress') {
-      buckets = ['samba'];
-    } else if (normalizedGoal === 'sleep') {
-      buckets = ['neuralpositivemusic'];
-    } else {
-      buckets = ['neuralpositivemusic'];
-    }
+    // Import and use the proper therapeutic goals mapping  
+    const { getBucketsForGoal } = await import('../config/therapeuticGoals');
+    buckets = getBucketsForGoal(goal);
+    
+    console.log(`🗂️ Using therapeutic goals mapping: ${buckets.join(', ')} for goal "${goal}"`);
   }
   
   try {
