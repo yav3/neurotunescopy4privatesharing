@@ -1,12 +1,12 @@
 import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
 
-// Import the new clean sprite-style images
-import focusSprite from '@/assets/focus-sprite.jpg';
-import stressReliefSprite from '@/assets/stress-relief-radiant.jpg';
-import moodBoostSprite from '@/assets/mood-boost-sunrise-mountain.jpg';
-import energyBoostSprite from '@/assets/energy-boost-flowers.jpg';
-import painReliefSprite from '@/assets/pain-relief-sprite.jpg';
-import cardioSprite from '@/assets/cardio-sunset-palms.jpg';
+// Import the new therapeutic goal card images
+import focusCard from '@/assets/therapeutic-card-1.png';
+import stressCard from '@/assets/therapeutic-card-2.png';
+import moodBoostCard from '@/assets/therapeutic-card-3.png';
+import painCard from '@/assets/therapeutic-card-4.png';
+import energyBoostCard from '@/assets/therapeutic-card-5.png';
+import cardioCard from '@/assets/therapeutic-card-6.png';
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -60,7 +60,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Focus',
     description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
     icon: Brain,
-    artwork: focusSprite,
+    artwork: focusCard,
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
@@ -76,7 +76,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Calm your mind and reduce stress and anxiety',
     icon: Sparkles,
-    artwork: stressReliefSprite,
+    artwork: stressCard,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
@@ -92,7 +92,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energy',
     description: 'Uplift your spirits and energy',
     icon: Plus,
-    artwork: moodBoostSprite,
+    artwork: moodBoostCard,
     color: 'cyan',
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
@@ -108,7 +108,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
     icon: Flower,
-    artwork: painReliefSprite,
+    artwork: painCard,
     color: 'gray',
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
@@ -124,7 +124,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energize',
     description: 'High-energy music to boost motivation and physical performance',
     icon: Waves,
-    artwork: energyBoostSprite,
+    artwork: energyBoostCard,
     color: 'orange',
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
@@ -140,7 +140,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Cardio',
     description: 'High-tempo music for cardiovascular exercise and fitness',
     icon: Shield,
-    artwork: cardioSprite,
+    artwork: cardioCard,
     color: 'red',
     gradient: 'from-red-500 to-pink-500',
     bpmRange: { min: 130, max: 180, optimal: 150 },
