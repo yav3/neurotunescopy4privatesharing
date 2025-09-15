@@ -611,51 +611,20 @@ export const useAudioStore = create<AudioState>((set, get) => {
           userLog(`🎵 Playing ${working.length} classical focus tracks directly from storage`);
           return working.length;
         } else {
-          // Use regular storage direct access for other goals
-          const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
-          console.log(`🎯 Loading tracks for goal: "${goal}" with specific buckets:`, specificBuckets);
-          const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50, specificBuckets);
+          // Use simple storage service
+          const { SimpleStorageService } = await import('@/services/simpleStorageService');
+          const tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
           
-          if (error) {
-            throw new Error(error);
+          if (tracks.length === 0) {
+            throw new Error(`No tracks found for goal: ${goal}`);
           }
 
-          if (!storageTracks || storageTracks.length === 0) {
-            throw new Error(`No tracks available for goal "${goal}"`);
-          }
-
-          adminLog('✅ Retrieved', storageTracks.length, 'tracks from storage');
-
-          // Convert storage tracks to Track format
-          let tracks: Track[] = storageTracks.map((track) => ({
-            id: track.id,
-            title: track.title,
-            artist: 'Neural Positive Music',
-            duration: 0,
-            storage_bucket: track.storage_bucket,
-            storage_key: track.storage_key,
-            stream_url: track.stream_url,
-            audio_status: 'working' as const,
-          }));
-
-          console.log(`✅ Converted ${tracks.length} storage tracks`);
-
-          // Filter out blocked tracks
-          tracks = await filterBlockedTracks(tracks);
-          console.log(`🚫 After blocking filter: ${tracks.length} tracks remaining`);
-
-          // Validate working state directly for other goals
-          const { working } = await validateTracks(tracks);
-          if (working.length === 0) {
-            throw new Error('No working tracks found');
-          }
-
-          // Shuffle tracks for variety
-          const shuffled = working.sort(() => Math.random() - 0.5);
-
-          await get().setQueue(shuffled, 0);
-          userLog(`🎵 Playing ${working.length} therapeutic tracks`);
-          return working.length;
+          console.log(`✅ AudioStore: Received ${tracks.length} tracks from simple storage service`);
+          
+          // Set queue and start playing - tracks are already in the right format
+          await get().setQueue(tracks, 0);
+          userLog(`🎵 Playing ${tracks.length} tracks for ${goal}`);
+          return tracks.length;
         }
       } catch (error: any) {
         console.error('🎵 playFromGoal error:', error);
