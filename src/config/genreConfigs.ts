@@ -38,7 +38,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['audio'],
+        buckets: ['classicalfocus'],
         image: focusCrossoverClassicalLandscape
       },
       {
