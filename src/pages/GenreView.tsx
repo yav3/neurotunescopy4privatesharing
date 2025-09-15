@@ -119,7 +119,7 @@ const GenreView: React.FC = () => {
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
   console.log(`🎯 Goal lookup - goalId: ${goalId}, found goal:`, goal?.name || 'NOT FOUND');
   
-  // Genre options mapping
+  // Genre options mapping - using ONLY the buckets from therapeuticGoals.ts
   const getGenreOptions = (goalId: string): GenreOption[] => {
     console.log(`🎨 Getting genre options for goalId: ${goalId}`);
     if (goalId === 'focus-enhancement') {
@@ -163,11 +163,11 @@ const GenreView: React.FC = () => {
           artwork: sambaImage
         },
         {
-          id: 'folk-americana-bluegrass',
-          name: 'Country, Americana, & Bluegrass',
-          description: 'Calming country and americana music for relaxation',
-          buckets: ['countryandamericana'],
-          artwork: '/lovable-uploads/folk-instruments-meadow.png'
+          id: 'new-age-stress',
+          name: 'New Age & World',
+          description: 'Ethereal new age sounds for deep relaxation',
+          buckets: ['newageworldstressanxietyreduction'],
+          artwork: newAgeArt
         },
         {
           id: 'calming-classical',
@@ -177,32 +177,18 @@ const GenreView: React.FC = () => {
           artwork: '/src/assets/calming-classical-lakeside.jpg'
         },
         {
-          id: 'new-age',
-          name: 'New Age',
-          description: 'Ethereal new age sounds for deep relaxation',
-          buckets: ['newageworldstressanxietyreduction'],
-          artwork: newAgeArt
-        },
-        {
-          id: 'opera',
-          name: 'Opera',
-          description: 'Classical opera for emotional release and stress relief',
-          buckets: ['opera'],
-          artwork: operaArt
-        },
-        {
-          id: 'sonatas',
-          name: 'Sonatas',
-          description: 'Classical sonatas for deep stress relief',
-          buckets: ['sonatasforstress'],
-          artwork: '/lovable-uploads/string-quartet-studio.png'
+          id: 'peaceful-piano',
+          name: 'Peaceful Piano',
+          description: 'Gentle piano melodies for relaxation',
+          buckets: ['Chopin'],
+          artwork: peacefulPianoArt
         }
       ];
     } else if (goalId === 'pain-support') {
       return [
         {
-          id: 'world-new-age',
-          name: 'World',
+          id: 'world-pain-relief',
+          name: 'World Pain Relief',
           description: 'Global healing sounds for pain relief',
           buckets: ['painreducingworld'],
           artwork: worldInstrumentsZen
@@ -215,35 +201,11 @@ const GenreView: React.FC = () => {
           artwork: peacefulPianoArt
         },
         {
-          id: 'serene-sonatas',
-          name: 'Serene Sonatas',
-          description: 'Peaceful classical sonatas for pain relief',
-          buckets: ['sonatasforstress'],
-          artwork: '/src/assets/calming-classical-lakeside.jpg'
-        },
-        {
           id: 'peaceful-piano',
           name: 'Peaceful Piano',
           description: 'Gentle piano melodies for comfort and healing',
           buckets: ['Chopin'],
           artwork: peacefulPianoArt
-        }
-      ];
-    } else if (goalId === 'sleep-support') {
-      return [
-        {
-          id: 'delta-wave',
-          name: 'Delta Wave Therapy',
-          description: 'Deep sleep-inducing frequencies',
-          buckets: ['Chopin'],
-          artwork: '/lovable-uploads/theta-misty-path.png'
-        },
-        {
-          id: 'nocturnal-classical',
-          name: 'Nocturnal Classical',
-          description: 'Gentle classical pieces for bedtime',
-          buckets: ['gentleclassicalforpain'],
-          artwork: '/lovable-uploads/folk-instruments-meadow.png'
         }
       ];
     } else if (goalId === 'mood-boost') {
