@@ -66,6 +66,9 @@ import painGentleWaterfallPiano from '@/assets/pain-gentle-waterfall-piano.jpg';
 import energyLightningMeadow from '@/assets/energy-lightning-meadow.jpg';
 import energyMusicalOceanWave from '@/assets/energy-musical-ocean-wave.jpg';
 
+// Import beautiful New Age artwork
+import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
+
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
   const genreConfigs = {
@@ -82,7 +85,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['NewAgeandWorldFocus'],
-        image: focusNewageForestClearing
+        image: newAgeLeafDewdrop
       },
       {
         id: 'bach-transpositions',
@@ -112,7 +115,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
-        image: stressZenCrystalGarden
+        image: newAgeLeafDewdrop
       },
       {
         id: 'sonatas',
@@ -207,7 +210,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
         buckets: ['neuralpositivemusic/newagechill'],
-        image: stressZenCrystalGarden
+        image: newAgeLeafDewdrop
       },
       {
         id: 'peaceful-piano',
