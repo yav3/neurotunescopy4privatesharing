@@ -8,6 +8,7 @@ import { filterTracksForGoal } from '@/utils/therapeuticFiltering';
 import { API } from '@/lib/api';
 import { getTherapeuticTracks } from "@/services/therapeuticDatabase";
 import { toast } from '@/hooks/use-toast';
+import { createTherapeuticDebugger } from '@/utils/therapeuticConnectionDebugger';
 
 interface UseTherapeuticGoalsOptions {
   autoLoad?: boolean;
@@ -125,6 +126,40 @@ export function useTherapeuticGoals(options: UseTherapeuticGoalsOptions = {}) {
         goals: updatedGoals,
         isLoading: false
       }));
+
+      // DEBUG: Run connection debugger after loading goals
+      console.log('🚨 THERAPEUTIC GOALS LOADED - RUNNING CONNECTION DEBUG 🚨');
+      
+      // Create mock buckets based on what we know exists
+      const knownBuckets = [
+        { id: 'classicalfocus', name: 'Classical Focus' },
+        { id: 'NewAgeandWorldFocus', name: 'New Age World Focus' },
+        { id: 'focus-music', name: 'Focus Music' },
+        { id: 'Chopin', name: 'Chopin' },
+        { id: 'opera', name: 'Opera' },
+        { id: 'sonatasforstress', name: 'Sonatas for Stress' },
+        { id: 'samba', name: 'Samba' },
+        { id: 'neuralpositivemusic', name: 'Neural Positive Music' },
+        { id: 'gentleclassicalforpain', name: 'Gentle Classical for Pain' },
+        { id: 'painreducingworld', name: 'Pain Reducing World' },
+        { id: 'pop', name: 'Pop' },
+        { id: 'moodboostremixesworlddance', name: 'Mood Boost Remixes' },
+        { id: 'HIIT', name: 'HIIT' },
+        { id: 'house', name: 'House' },
+        { id: 'ENERGYBOOST', name: 'Energy Boost' }
+      ];
+
+      const goalsDebugger = createTherapeuticDebugger(updatedGoals, knownBuckets);
+      goalsDebugger.debugConnections();
+
+      console.log('🎯 GOAL BUCKETS FROM CONFIG:');
+      updatedGoals.forEach(goal => {
+        console.log(`Goal: ${goal.name}`);
+        console.log(`  Music buckets:`, goal.musicBuckets);
+        console.log(`  BPM Range:`, goal.bpmRange);
+        console.log(`  Track count:`, goal.trackCount);
+        console.log('  ---');
+      });
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to load goal metrics';

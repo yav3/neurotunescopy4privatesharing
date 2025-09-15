@@ -36,6 +36,7 @@ import Analytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
 import { MagicLinksPage } from "./pages/admin/MagicLinks";
+import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,7 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/debug" element={<ConnectionDiagnostics />} />
               <Route path="/goals/:goalId/genres" element={<GenreSelectionPage />} />
               <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />

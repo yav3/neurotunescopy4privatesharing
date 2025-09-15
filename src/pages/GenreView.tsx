@@ -7,6 +7,7 @@ import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { createTherapeuticDebugger } from '@/utils/therapeuticConnectionDebugger';
 
 // Import new mood boost artwork
 import moodBoostCoastalCove from '@/assets/mood-boost-coastal-cove.png';
@@ -332,6 +333,56 @@ const GenreView: React.FC = () => {
   
   const selectedGenre = useMemo(() => genreOptions.find(g => g.id === genreId), [genreOptions, genreId]);
   console.log(`🎯 Selected genre: ${selectedGenre?.name || 'NOT FOUND'} (genreId: ${genreId})`);
+
+  // DEBUG CONNECTION PROBLEMS - Run debugger when we have data
+  useEffect(() => {
+    if (goal && genreOptions.length > 0) {
+      console.log('🚨 RUNNING THERAPEUTIC CONNECTION DEBUGGER 🚨');
+      
+      // Get all available buckets from Supabase (we'll simulate this for now)
+      const mockBuckets = [
+        { id: 'classicalfocus', name: 'Classical Focus' },
+        { id: 'NewAgeandWorldFocus', name: 'New Age World Focus' },
+        { id: 'focus-music', name: 'Focus Music' },
+        { id: 'Chopin', name: 'Chopin' },
+        { id: 'opera', name: 'Opera' },
+        { id: 'sonatasforstress', name: 'Sonatas for Stress' },
+        { id: 'samba', name: 'Samba' },
+        { id: 'neuralpositivemusic', name: 'Neural Positive Music' },
+        { id: 'gentleclassicalforpain', name: 'Gentle Classical for Pain' },
+        { id: 'painreducingworld', name: 'Pain Reducing World' },
+        { id: 'pop', name: 'Pop' },
+        { id: 'moodboostremixesworlddance', name: 'Mood Boost Remixes' },
+        { id: 'HIIT', name: 'HIIT' },
+        { id: 'house', name: 'House' },
+        { id: 'neuralpositivemusic/Classical-Energy-Boost', name: 'Classical Energy Boost' },
+        { id: 'neuralpositivemusic/MusicalTheaterEnergyBoost', name: 'Musical Theater Energy' },
+        { id: 'neuralpositivemusic/House', name: 'Neural House' },
+        { id: 'neuralpositivemusic/EDM', name: 'Neural EDM' },
+        { id: 'neuralpositivemusic/stressreductionclassical', name: 'Stress Reduction Classical' },
+        { id: 'neuralpositivemusic/newagechill', name: 'New Age Chill' }
+      ];
+
+      // Debug current goal's genre cards vs buckets
+      const connectionDebugger = createTherapeuticDebugger(genreOptions, mockBuckets);
+      connectionDebugger.debugConnections();
+      
+      // Also debug the specific goal-bucket connections from config
+      console.log('🎯 GOAL-SPECIFIC DEBUG:');
+      console.log(`Goal: ${goal.name}`);
+      console.log(`Goal buckets from config:`, goal.musicBuckets);
+      console.log(`Current genre options:`, genreOptions);
+      console.log(`Expected vs actual bucket connections:`);
+      
+      genreOptions.forEach(genre => {
+        console.log(`  Genre ${genre.name}:`);
+        console.log(`    Buckets: ${genre.buckets.join(', ')}`);
+        console.log(`    Buckets exist:`, genre.buckets.map(bucket => 
+          mockBuckets.some(b => b.id === bucket) ? '✅' : '❌'
+        ));
+      });
+    }
+  }, [goal, genreOptions]);
   // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
