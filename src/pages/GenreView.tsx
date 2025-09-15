@@ -121,7 +121,7 @@ export const GenreView: React.FC = () => {
     };
 
     loadTracksDirectly();
-  }, [goal?.id, selectedGenre?.id, selectedGenre?.buckets]);
+  }, [goal?.id, selectedGenre?.id, JSON.stringify(selectedGenre?.buckets)]);
 
   const handleTrackPlay = async (track: Track) => {
     try {
