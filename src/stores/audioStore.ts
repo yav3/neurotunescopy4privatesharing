@@ -59,7 +59,7 @@ type AudioState = {
   
   // Actions
   playTrack: (track: Track) => Promise<void>;
-  playFromGoal: (goal: string) => Promise<number>;
+  playFromGoal: (goal: string, specificBuckets?: string[]) => Promise<number>;
   setQueue: (tracks: Track[], startAt?: number) => Promise<void>;
   play: () => void;
   pause: () => void;
@@ -497,11 +497,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
       });
     },
 
-    playFromGoal: async (goal: string) => {
+    playFromGoal: async (goal: string, specificBuckets?: string[]) => {
       // Increment load sequence for race condition protection
       const myLoadSeq = ++loadSeq;
       set({ isLoading: true, error: undefined, lastGoal: goal });
-      console.log('🎵 playFromGoal started for:', goal, 'seq:', myLoadSeq);
+      console.log('🎵 playFromGoal started for:', goal, 'specificBuckets:', specificBuckets, 'seq:', myLoadSeq);
       
       const isValidSequence = () => myLoadSeq === loadSeq;
       
@@ -613,8 +613,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
         } else {
           // Use regular storage direct access for other goals
           const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
-          console.log(`🎯 Loading tracks for goal: "${goal}"`);
-          const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50);
+          console.log(`🎯 Loading tracks for goal: "${goal}" with specific buckets:`, specificBuckets);
+          const { tracks: storageTracks, error } = await getTracksFromStorage(goal, 50, specificBuckets);
           
           if (error) {
             throw new Error(error);
