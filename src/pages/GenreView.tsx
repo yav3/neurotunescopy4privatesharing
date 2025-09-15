@@ -212,7 +212,7 @@ const GenreView: React.FC = () => {
           name: 'World Pain Relief',
           description: 'Global healing sounds for pain relief',
           buckets: ['painreducingworld'],
-          artwork: worldInstrumentsZen
+          artwork: '/lovable-uploads/world-instruments-zen-garden.png'
         },
         {
           id: 'gentle-classical',
