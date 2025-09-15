@@ -119,7 +119,7 @@ const GenreView: React.FC = () => {
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
   console.log(`🎯 Goal lookup - goalId: ${goalId}, found goal:`, goal?.name || 'NOT FOUND');
   
-  // Genre options mapping - using ONLY the buckets from therapeuticGoals.ts
+  // Genre options mapping - aligned with therapeuticGoals.ts buckets
   const getGenreOptions = (goalId: string): GenreOption[] => {
     console.log(`🎨 Getting genre options for goalId: ${goalId}`);
     if (goalId === 'focus-enhancement') {
@@ -133,28 +133,56 @@ const GenreView: React.FC = () => {
         },
         {
           id: 'new-age',
-          name: 'New Age',
+          name: 'New Age & World Focus',
           description: 'Ethereal soundscapes for enhanced focus',
           buckets: ['NewAgeandWorldFocus'],
           artwork: newAgeArt
         },
         {
           id: 'bach-transpositions',
-          name: 'Bach Transpositions',
-          description: 'Modern interpretations of Bach for deep focus',
+          name: 'Focus Music',
+          description: 'Specialized focus compositions for deep concentration',
           buckets: ['focus-music'],
           artwork: bachWaterfallNature
         },
         {
           id: 'peaceful-piano',
-          name: 'Peaceful Piano',
-          description: 'Gentle piano melodies for deep concentration',
+          name: 'Chopin',
+          description: 'Classical Chopin pieces for deep concentration',
           buckets: ['Chopin'],
           artwork: peacefulPianoArt
+        },
+        {
+          id: 'opera-focus',
+          name: 'Opera',
+          description: 'Classical opera for focused listening',
+          buckets: ['opera'],
+          artwork: operaArt
         }
       ];
     } else if (goalId === 'stress-anxiety-support') {
       return [
+        {
+          id: 'new-age-stress',
+          name: 'New Age & World Stress Relief',
+          description: 'Ethereal new age sounds for deep relaxation',
+          buckets: ['newageworldstressanxietyreduction'],
+          artwork: newAgeArt
+        },
+        {
+          id: 'sonatas',
+          name: 'Sonatas for Stress',
+          description: 'Classical sonatas for deep stress relief',
+          buckets: ['sonatasforstress'],
+          artwork: '/lovable-uploads/string-quartet-studio.png'
+        },
+        {
+          id: 'peaceful-piano',
+          name: 'Chopin',
+          description: 'Gentle Chopin pieces for relaxation',
+          buckets: ['Chopin'],
+          artwork: peacefulPianoArt
+        },
         {
           id: 'samba',
           name: 'Samba',
@@ -163,50 +191,22 @@ const GenreView: React.FC = () => {
           artwork: sambaImage
         },
         {
-          id: 'folk-americana-bluegrass',
-          name: 'Country, Americana, & Bluegrass',
-          description: 'Calming country and americana music for relaxation',
-          buckets: ['countryandamericana'],
-          artwork: '/lovable-uploads/folk-instruments-meadow.png'
-        },
-        {
-          id: 'new-age-stress',
-          name: 'New Age & World',
-          description: 'Ethereal new age sounds for deep relaxation',
-          buckets: ['newageworldstressanxietyreduction'],
-          artwork: newAgeArt
-        },
-        {
-          id: 'calming-classical',
-          name: 'Calming Classical',
-          description: 'Soothing classical music for deep relaxation',
-          buckets: ['sonatasforstress'],
-          artwork: '/src/assets/calming-classical-lakeside.jpg'
-        },
-        {
-          id: 'opera',
-          name: 'Opera',
-          description: 'Classical opera for emotional release and stress relief',
-          buckets: ['opera'],
-          artwork: operaArt
-        },
-        {
-          id: 'sonatas',
-          name: 'Sonatas',
-          description: 'Classical sonatas for deep stress relief',
-          buckets: ['sonatasforstress'],
-          artwork: '/lovable-uploads/string-quartet-studio.png'
-        },
-        {
-          id: 'peaceful-piano',
-          name: 'Peaceful Piano',
-          description: 'Gentle piano melodies for relaxation',
-          buckets: ['Chopin'],
-          artwork: peacefulPianoArt
+          id: 'pain-reducing-world',
+          name: 'Pain Reducing World',
+          description: 'Global healing sounds for stress and anxiety',
+          buckets: ['painreducingworld'],
+          artwork: worldInstrumentsZen
         }
       ];
     } else if (goalId === 'pain-support') {
       return [
+        {
+          id: 'gentle-classical-pain',
+          name: 'Gentle Classical for Pain',
+          description: 'Soft classical music specifically for pain relief',
+          buckets: ['gentleclassicalforpain'],
+          artwork: '/lovable-uploads/gentle-classical-piano.png'
+        },
         {
           id: 'world-pain-relief',
           name: 'World Pain Relief',
@@ -215,16 +215,23 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/world-instruments-zen-garden.png'
         },
         {
-          id: 'gentle-classical',
-          name: 'Gentle Classical',
-          description: 'Soft classical music for comfort',
-          buckets: ['sonatasforstress'],
-          artwork: '/lovable-uploads/gentle-classical-piano.png'
+          id: 'stress-reduction-classical',
+          name: 'Stress Reduction Classical',
+          description: 'Classical music for stress and pain management',
+          buckets: ['neuralpositivemusic/stressreductionclassical'],
+          artwork: '/src/assets/calming-classical-lakeside.jpg'
+        },
+        {
+          id: 'new-age-chill',
+          name: 'New Age Chill',
+          description: 'Gentle new age sounds for comfort and healing',
+          buckets: ['neuralpositivemusic/newagechill'],
+          artwork: newAgeArt
         },
         {
           id: 'peaceful-piano',
-          name: 'Peaceful Piano',
-          description: 'Gentle piano melodies for comfort and healing',
+          name: 'Chopin',
+          description: 'Gentle Chopin pieces for comfort and healing',
           buckets: ['Chopin'],
           artwork: peacefulPianoArt
         }
@@ -247,17 +254,55 @@ const GenreView: React.FC = () => {
         },
         {
           id: 'dance-party',
-          name: 'Dance Party',
+          name: 'Dance Party Remixes',
           description: 'High-energy dance remixes and world beats',
           buckets: ['moodboostremixesworlddance'],
           artwork: cardioForestLight
         },
         {
           id: 'edm-crossover',
-          name: 'EDM crossover (EDM)',
+          name: 'EDM',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
           artwork: gradientMorningMist
+        }
+      ];
+    } else if (goalId === 'energy-boost') {
+      return [
+        {
+          id: 'energy-boost-core',
+          name: 'Energy Boost Core',
+          description: 'Maximum energy tracks for motivation',
+          buckets: ['ENERGYBOOST'],
+          artwork: '/lovable-uploads/colorful-flower-field.png'
+        },
+        {
+          id: 'energetic-classical',
+          name: 'Classical Energy Boost',
+          description: 'Dynamic classical pieces for vitality',
+          buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
+          artwork: '/lovable-uploads/yellow-flowering-field.jpeg'
+        },
+        {
+          id: 'musical-theater-energy',
+          name: 'Musical Theater Energy',
+          description: 'Uplifting musical theater pieces for motivation',
+          buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
+          artwork: '/lovable-uploads/piano-mountain-meadow.png'
+        },
+        {
+          id: 'motivational-beats',
+          name: 'House Music Energy',
+          description: 'Upbeat house music for energy and motivation',
+          buckets: ['neuralpositivemusic/House'],
+          artwork: '/lovable-uploads/coastal-cove.png'
+        },
+        {
+          id: 'hiit-energy',
+          name: 'HIIT Music',
+          description: 'High-intensity interval training music for energy',
+          buckets: ['HIIT'],
+          artwork: '/lovable-uploads/intense-sunrise.jpeg'
         }
       ];
     } else if (goalId === 'cardio-support') {
@@ -271,7 +316,7 @@ const GenreView: React.FC = () => {
         },
         {
           id: 'house-cardio',
-          name: 'House Cardio',
+          name: 'House Music',
           description: 'Pumping house music for cardiovascular exercise',
           buckets: ['house'],
           artwork: houseCardioDj
@@ -296,44 +341,6 @@ const GenreView: React.FC = () => {
           description: 'Energetic pop hits perfect for cardio sessions',
           buckets: ['pop'],
           artwork: popCardioConcert
-        }
-      ];
-    } else if (goalId === 'energy-boost') {
-      return [
-        {
-          id: 'energetic-classical',
-          name: 'Energetic Classical',
-          description: 'Dynamic classical pieces for vitality',
-          buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-          artwork: '/lovable-uploads/yellow-flowering-field.jpeg'
-        },
-        {
-          id: 'motivational-beats',
-          name: 'Happy House & Dance',
-          description: 'Upbeat house and dance music for energy and motivation',
-          buckets: ['neuralpositivemusic/House'],
-          artwork: '/lovable-uploads/coastal-cove.png'
-        },
-        {
-          id: 'edm-energy',
-          name: 'EDM Energy',
-          description: 'Electronic dance music for high energy',
-          buckets: ['neuralpositivemusic/EDM'],
-          artwork: '/lovable-uploads/colorful-flower-field.png'
-        },
-        {
-          id: 'musical-theater-energy',
-          name: 'Musical Theater Energy',
-          description: 'Uplifting musical theater pieces for motivation',
-          buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: '/lovable-uploads/piano-mountain-meadow.png'
-        },
-        {
-          id: 'hiit-energy',
-          name: 'HIIT Music',
-          description: 'High-intensity interval training music for energy',
-          buckets: ['HIIT'],
-          artwork: '/lovable-uploads/intense-sunrise.jpeg'
         }
       ];
     }
