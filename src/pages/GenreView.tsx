@@ -29,6 +29,12 @@ import energyOceanWaves from '@/assets/energy-ocean-waves.jpg';
 import energyTropicalBeach from '@/assets/energy-tropical-beach.jpg';
 import energyMountainRiver from '@/assets/energy-mountain-river.jpg';
 import energyGeometricSpace from '@/assets/energy-geometric-space.jpg';
+// Import new cardio-specific artwork
+import hiitCardioDynamic from '@/assets/hiit-cardio-dynamic.jpg';
+import houseCardioDj from '@/assets/house-cardio-dj.jpg';
+import edmCardioCyber from '@/assets/edm-cardio-cyber.jpg';
+import energyCardioLightning from '@/assets/energy-cardio-lightning.jpg';
+import popCardioConcert from '@/assets/pop-cardio-concert.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -265,35 +271,35 @@ const GenreView: React.FC = () => {
           name: 'HIIT',
           description: 'High-intensity interval training music',
           buckets: ['HIIT'],
-          artwork: energyHorseField
+          artwork: hiitCardioDynamic
         },
         {
           id: 'house-cardio',
           name: 'House Cardio',
           description: 'Pumping house music for cardiovascular exercise',
           buckets: ['house'],
-          artwork: houseMusicArt
+          artwork: houseCardioDj
         },
         {
           id: 'edm-cardio',
           name: 'EDM',
           description: 'Electronic dance music for high-intensity cardio',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: electronicArt
+          artwork: edmCardioCyber
         },
         {
           id: 'energy-boost-cardio',
           name: 'Energy Boost',
           description: 'Maximum energy tracks for intense cardio',
           buckets: ['ENERGYBOOST'],
-          artwork: energyMountainRiver
+          artwork: energyCardioLightning
         },
         {
           id: 'pop-cardio',
           name: 'Pop Cardio',
           description: 'Energetic pop hits perfect for cardio sessions',
           buckets: ['pop'],
-          artwork: popMusicArt
+          artwork: popCardioConcert
         }
       ];
     } else if (goalId === 'energy-boost') {
