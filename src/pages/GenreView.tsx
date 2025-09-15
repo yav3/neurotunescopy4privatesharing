@@ -8,6 +8,7 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 import { createTherapeuticDebugger } from '@/utils/therapeuticConnectionDebugger';
+import { TherapeuticMusicDebugger } from '@/utils/therapeuticMusicDebugger';
 
 interface Track {
   id: string;
@@ -40,13 +41,29 @@ export const GenreView: React.FC = () => {
     buckets: goal.musicBuckets
   } : null;
 
-  // Debug logging
+  // Comprehensive debug logging
   useEffect(() => {
     if (goal && selectedGenre) {
       const connectionDebugger = createTherapeuticDebugger([selectedGenre], goal.musicBuckets || []);
       connectionDebugger.debugConnections();
+
+      // Add the comprehensive music debugger
+      const musicDebugger = new TherapeuticMusicDebugger();
+      
+      console.log('🔍 COMPREHENSIVE MUSIC BUCKET DEBUG');
+      console.log('Goal:', goal.name);
+      console.log('Genre:', selectedGenre.name);
+      console.log('Genre Buckets:', selectedGenre.buckets);
+      
+      // Test classical focus specifically
+      if (selectedGenre.id === 'crossover-classical') {
+        musicDebugger.testClassicalFocusBucket([]);
+      }
+      
+      // Debug the selected genre as a bucket
+      musicDebugger.debugMusicConnection(selectedGenre, tracks || []);
     }
-  }, [goal, selectedGenre]);
+  }, [goal, selectedGenre, tracks]);
 
   // Load tracks with enhanced folder traversal
   useEffect(() => {
