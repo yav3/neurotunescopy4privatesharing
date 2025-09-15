@@ -173,15 +173,6 @@ export default function GenreSelectionPage() {
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-700 bg-gradient-radial from-white/20 via-transparent to-transparent blur-sm" />
                 </div>
                 
-                {/* Clean Title Overlay without Box - Ensure White Text */}
-                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 right-2 sm:right-4 pointer-events-none">
-                  <h3 
-                    className="font-bold text-sm sm:text-lg md:text-xl leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] transition-colors duration-300 filter drop-shadow-[0_0_8px_rgba(0,0,0,1)]"
-                  >
-                    {genre.name}
-                  </h3>
-                </div>
-
                 {/* Animated Light Particles */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
                   {[...Array(4)].map((_, i) => (
