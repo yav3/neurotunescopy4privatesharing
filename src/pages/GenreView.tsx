@@ -180,6 +180,27 @@ const GenreView: React.FC = () => {
           description: 'Ethereal new age sounds for deep relaxation',
           buckets: ['newageworldstressanxietyreduction'],
           artwork: newAgeArt
+        },
+        {
+          id: 'sonatas',
+          name: 'Sonatas for Stress',
+          description: 'Classical sonatas for deep stress relief',
+          buckets: ['sonatasforstress'],
+          artwork: '/lovable-uploads/string-quartet-studio.png'
+        },
+        {
+          id: 'peaceful-piano',
+          name: 'Chopin',
+          description: 'Gentle Chopin pieces for relaxation',
+          buckets: ['Chopin'],
+          artwork: peacefulPianoArt
+        },
+        {
+          id: 'opera',
+          name: 'Opera',
+          description: 'Classical opera for emotional release and stress relief',
+          buckets: ['opera'],
+          artwork: operaArt
         }
       ];
     } else if (goalId === 'pain-support') {

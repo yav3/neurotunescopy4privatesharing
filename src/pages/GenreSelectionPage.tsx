@@ -84,6 +84,27 @@ const getGenreOptions = (goalId: string) => {
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newageRadiantGarden
+      },
+      {
+        id: 'sonatas',
+        name: 'Sonatas for Stress',
+        description: 'Classical sonatas for deep stress relief',
+        buckets: ['sonatasforstress'],
+        image: sonatasBrightConservatory
+      },
+      {
+        id: 'peaceful-piano',
+        name: 'Chopin',
+        description: 'Gentle Chopin pieces for relaxation',
+        buckets: ['Chopin'],
+        image: peacefulPianoArt
+      },
+      {
+        id: 'opera',
+        name: 'Opera',
+        description: 'Classical opera for emotional release and stress relief',
+        buckets: ['opera'],
+        image: operaLuminousHall
       }
     ],
     'cardio-support': [
