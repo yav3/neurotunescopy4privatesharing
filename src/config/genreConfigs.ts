@@ -39,21 +39,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['classicalfocus'],
+        buckets: ['audio', 'classicalfocus'],
         image: focusCrossoverClassicalLandscape
       },
       {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['NewAgeandWorldFocus'],
+        buckets: ['audio', 'NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for deep concentration',
-        buckets: ['Chopin'],
+        buckets: ['audio', 'Chopin'],
         image: focusZenStones
       }
     ],
@@ -62,42 +62,42 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['newageworldstressanxietyreduction'],
+        buckets: ['audio', 'neuralpositivemusic'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'sonatas',
         name: 'Sonatas for Stress',
         description: 'Classical sonatas for deep stress relief',
-        buckets: ['sonatasforstress'],
+        buckets: ['audio', 'Chopin'],
         image: stressClassicalPeacefulStream
       },
       {
         id: 'peaceful-piano',
         name: 'Chopin',
         description: 'Gentle Chopin pieces for relaxation',
-        buckets: ['Chopin'],
+        buckets: ['audio', 'Chopin'],
         image: focusPianoCherryBlossoms
       },
       {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress relief',
-        buckets: ['samba'],
+        buckets: ['audio', 'samba'],
         image: stressSambaTropicalSunset
       },
       {
         id: 'neuralpositivemusic',
         name: 'Neural Positive Music',
         description: 'Specially composed music for stress reduction',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['audio', 'neuralpositivemusic'],
         image: focusClassicalMountainLake
       },
       {
         id: 'pain-reducing-world',
         name: 'World Healing Music',
         description: 'Global healing sounds for stress and anxiety',
-        buckets: ['painreducingworld'],
+        buckets: ['audio', 'neuralpositivemusic'],
         image: painWorldHealingGarden
       }
     ],
@@ -106,7 +106,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['audio', 'neuralpositivemusic'],
         image: moodBoostCoastalCove,
       },
       {
@@ -136,36 +136,36 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'gentle-classical',
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
-        buckets: ['gentleclassicalforpain'],
-        image: stressClassicalPeacefulStream
+        buckets: ['audio', 'Chopin'],
+        image: stressClassicalPeacefulStream,
       },
       {
         id: 'world-new-age',
         name: 'World Healing Music',
         description: 'Global healing sounds for pain relief',
-        buckets: ['painreducingworld'],
-        image: painWorldHealingGarden
+        buckets: ['audio', 'neuralpositivemusic'],
+        image: painWorldHealingGarden,
       },
       {
         id: 'stress-reduction-classical',
         name: 'Stress Reduction Classical',
         description: 'Classical music specifically for pain and stress relief',
-        buckets: ['neuralpositivemusic/stressreductionclassical'],
-        image: focusClassicalMountainLake
+        buckets: ['audio', 'Chopin'],
+        image: focusClassicalMountainLake,
       },
       {
         id: 'new-age-chill',
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
-        buckets: ['neuralpositivemusic/newagechill'],
-        image: newAgeLeafDewdrop
+        buckets: ['audio', 'neuralpositivemusic'],
+        image: newAgeLeafDewdrop,
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and healing',
-        buckets: ['Chopin'],
-        image: painGentleWaterfallPiano
+        buckets: ['audio', 'Chopin'],
+        image: painGentleWaterfallPiano,
       }
     ],
     'energy-boost': [
@@ -203,35 +203,35 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'hiit-cardio',
         name: 'HIIT Cardio',
         description: 'High-intensity interval training music',
-        buckets: ['HIIT'],
+        buckets: ['audio', 'HIIT'],
         image: hiitForestPath,
       },
       {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
-        buckets: ['house'],
+        buckets: ['audio', 'house'],
         image: cardioFloralField,
       },
       {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['EDM'],
+        buckets: ['audio', 'ENERGYBOOST'],
         image: cardioLeafDewdrops,
       },
       {
         id: 'energy-boost-cardio',
         name: 'Energy Boost',
         description: 'Maximum energy tracks for intense cardio',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['audio', 'ENERGYBOOST'],
         image: cardioLeafDroplet,
       },
       {
         id: 'pop-cardio',
         name: 'Pop Cardio',
         description: 'Energetic pop hits perfect for cardio sessions',
-        buckets: ['pop'],
+        buckets: ['audio', 'pop'],
         image: cardioSunsetBeachFlowers,
       },
       {
