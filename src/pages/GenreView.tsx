@@ -128,14 +128,14 @@ const GenreView: React.FC = () => {
           id: 'crossover-classical',
           name: 'Crossover Classical',
           description: 'Modern classical compositions for concentration',
-          buckets: ['neuralpositivemusic/Classical'],
+          buckets: ['classicalfocus'],
           artwork: crossoverClassicalArt
         },
         {
           id: 'new-age',
           name: 'New Age',
           description: 'Ethereal soundscapes for enhanced focus',
-          buckets: ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'],
+          buckets: ['NewAgeandWorldFocus'],
           artwork: newAgeArt
         },
         {
@@ -180,7 +180,7 @@ const GenreView: React.FC = () => {
           id: 'new-age',
           name: 'New Age',
           description: 'Ethereal new age sounds for deep relaxation',
-          buckets: ['newageworldstressanxietyreduction', 'painreducingworld'],
+          buckets: ['newageworldstressanxietyreduction'],
           artwork: newAgeArt
         },
         {
@@ -266,7 +266,7 @@ const GenreView: React.FC = () => {
           id: 'dance-party',
           name: 'Dance Party',
           description: 'High-energy dance remixes and world beats',
-          buckets: ['neuralpositivemusic/House'],
+          buckets: ['moodboostremixesworlddance'],
           artwork: cardioForestLight
         },
         {
@@ -389,6 +389,7 @@ const GenreView: React.FC = () => {
 
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         console.log(`🎯 Goal: ${goal.name}, Genre: ${selectedGenre.id}`);
+        console.log(`📋 Available music buckets from config:`, goal.musicBuckets);
 
         // Determine album art sources
         let albumArtUrls: string[] = [];
