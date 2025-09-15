@@ -65,7 +65,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
     vadProfile: { valence: 0.6, arousal: 0.7, dominance: 0.6 },
-    musicBuckets: ['focus-music', 'classicalfocus', 'Chopin', 'opera', 'curated-music-collection', 'neuralpositivemusic'],
+    musicBuckets: ['focus-music', 'classicalfocus', 'Chopin', 'opera', 'curated-music-collection', 'neuralpositivemusic', 'NewAgeandWorldFocus'],
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
   },
   {
