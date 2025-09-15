@@ -24,6 +24,12 @@ import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import happyHouseDance from '@/assets/happy-house-dance.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
+// Import specific energy-themed artwork
+import energyBoostArtwork from '@/assets/energy-boost-artwork.jpg';
+import energySunsetField from '@/assets/energy-sunset-field.jpg';
+import energyHorseField from '@/assets/energy-horse-field.jpg';
+import energyWaveAbstract from '@/assets/energy-wave-abstract.jpg';
+import energyOceanWaves from '@/assets/energy-ocean-waves.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -198,35 +204,35 @@ const getGenreOptions = (goalId: string) => {
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
         buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-        image: energyBoostLightning
+        image: energySunsetField
       },
       {
         id: 'motivational-beats',
         name: 'Happy House & Dance',
         description: 'Upbeat house and dance music for energy and motivation',
         buckets: ['neuralpositivemusic/House'],
-        image: happyHouseDance
+        image: energyWaveAbstract
       },
       {
         id: 'energy-boost-core',
         name: 'Energy Boost',
         description: 'High-energy tracks for maximum motivation',
         buckets: ['ENERGYBOOST'],
-        image: energyBoostLightning
+        image: energyBoostArtwork
       },
       {
         id: 'musical-theater-energy',
         name: 'Musical Theater Energy',
         description: 'Uplifting musical theater pieces for motivation',
         buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-        image: energyBoostLightning
+        image: energyHorseField
       },
       {
         id: 'hiit-energy',
         name: 'HIIT Music',
         description: 'High-intensity interval training music for energy',
         buckets: ['HIIT'],
-        image: energyBoostLightning
+        image: energyOceanWaves
       }
     ]
   };
