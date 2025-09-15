@@ -98,8 +98,11 @@ const GenreView: React.FC = () => {
 
   // Get the therapeutic goal
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
+  console.log(`🎯 Goal lookup - goalId: ${goalId}, found goal:`, goal?.name || 'NOT FOUND');
+  
   // Genre options mapping
   const getGenreOptions = (goalId: string): GenreOption[] => {
+    console.log(`🎨 Getting genre options for goalId: ${goalId}`);
     if (goalId === 'focus-enhancement') {
       return [
         {
@@ -404,7 +407,10 @@ const GenreView: React.FC = () => {
 
   // Get the selected genre
   const genreOptions = useMemo(() => (goal ? getGenreOptions(goal.id) : []), [goal?.id]);
+  console.log(`🎵 Genre options for ${goal?.name}:`, genreOptions.map(g => g.name));
+  
   const selectedGenre = useMemo(() => genreOptions.find(g => g.id === genreId), [genreOptions, genreId]);
+  console.log(`🎯 Selected genre: ${selectedGenre?.name || 'NOT FOUND'} (genreId: ${genreId})`);
   // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
@@ -426,6 +432,9 @@ const GenreView: React.FC = () => {
       try {
         const { supabase } = await import('@/integrations/supabase/client');
         let allTracks: any[] = [];
+
+        console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
+        console.log(`🎯 Goal: ${goal.name}, Genre: ${selectedGenre.id}`);
 
         // Determine album art sources
         let albumArtUrls: string[] = [];
@@ -477,6 +486,7 @@ const GenreView: React.FC = () => {
           }
           
           // List files from bucket/folder
+          console.log(`🔍 Listing files from bucket: ${bucketName}, folder: "${folderPath}"`);
           const { data: files, error: listError } = await supabase.storage
             .from(bucketName)
             .list(folderPath, {
@@ -485,14 +495,16 @@ const GenreView: React.FC = () => {
             });
 
           if (listError) {
-            console.error(`❌ Error listing files in bucket ${bucketName}/${folderPath}:`, listError);
+            console.error(`❌ Error listing files from ${bucketName}/${folderPath}:`, listError);
             continue;
           }
 
           if (!files || files.length === 0) {
-            console.log(`📂 No files found in bucket: ${bucketName}/${folderPath}`);
+            console.log(`📂 No files found in ${bucketName}/${folderPath}`);
             continue;
           }
+
+          console.log(`📁 Found ${files.length} files in ${bucketName}/${folderPath}`);
 
           // Filter for audio files
           const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
