@@ -333,6 +333,7 @@ const GenreView: React.FC = () => {
   
   const selectedGenre = useMemo(() => genreOptions.find(g => g.id === genreId), [genreOptions, genreId]);
   console.log(`🎯 Selected genre: ${selectedGenre?.name || 'NOT FOUND'} (genreId: ${genreId})`);
+  console.log(`🎪 Pop genre bucket config:`, selectedGenre?.id === 'pop' ? selectedGenre : 'Not Pop genre');
   // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
