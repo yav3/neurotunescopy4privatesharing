@@ -187,13 +187,6 @@ const GenreView: React.FC = () => {
           description: 'Specially composed music for stress reduction',
           buckets: ['neuralpositivemusic'],
           artwork: focusClassicalMountainLake
-        },
-        {
-          id: 'pain-reducing-world',
-          name: 'World Healing Music',
-          description: 'Global healing sounds for stress and anxiety',
-          buckets: ['painreducingworld'],
-          artwork: painWorldHealingGarden
         }
       ];
     } else if (goalId === 'pain-support') {
