@@ -204,6 +204,13 @@ const GenreView: React.FC = () => {
           description: 'Global healing sounds for stress and anxiety',
           buckets: ['painreducingworld'],
           artwork: worldInstrumentsZen
+        },
+        {
+          id: 'opera',
+          name: 'Opera',
+          description: 'Classical opera for emotional release and stress relief',
+          buckets: ['opera'],
+          artwork: operaArt
         }
       ];
     } else if (goalId === 'pain-support') {
