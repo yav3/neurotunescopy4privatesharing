@@ -66,7 +66,7 @@ import stressSambaTropicalSunset from '@/assets/stress-samba-tropical-sunset.jpg
 import focusClassicalMountainLake from '@/assets/focus-classical-mountain-lake.jpg';
 import painWorldHealingGarden from '@/assets/pain-world-healing-garden.jpg';
 
-// Import user-provided artwork
+// Import user-provided artwork - Updated
 import chopinLotusFlower from '@/assets/chopin-lotus-flower.jpg';
 import worldMusicCactusSky from '@/assets/world-music-cactus-sky.jpg';
 import sambaPurpleFlowers from '@/assets/samba-purple-flowers.jpg';
@@ -339,7 +339,6 @@ const GenreView: React.FC = () => {
   
   const selectedGenre = useMemo(() => genreOptions.find(g => g.id === genreId), [genreOptions, genreId]);
   console.log(`🎯 Selected genre: ${selectedGenre?.name || 'NOT FOUND'} (genreId: ${genreId})`);
-  console.log(`🎪 Pop genre bucket config:`, selectedGenre?.id === 'pop' ? selectedGenre : 'Not Pop genre');
   // Load tracks directly from bucket - simplified
   useEffect(() => {
     if (!goal || !selectedGenre) return;
