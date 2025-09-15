@@ -107,28 +107,28 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
         buckets: ['neuralpositivemusic'],
-        image: moodBoostCoastalCove
+        image: moodBoostCoastalCove,
       },
       {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
         buckets: ['audio'],
-        image: moodBoostSunsetFlowers
+        image: moodBoostSunsetFlowers,
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['neuralpositivemusic'],
-        image: moodBoostDancePartyWaves
+        buckets: ['audio', 'moodboostremixesworlddance'],
+        image: moodBoostDancePartyWaves,
       },
       {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
-        buckets: ['neuralpositivemusic'],
-        image: moodBoostLeafDewdrop
+        buckets: ['audio', 'neuralpositivemusic'],
+        image: moodBoostLeafDewdrop,
       },
     ],
     'pain-support': [
@@ -204,35 +204,35 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'HIIT Cardio',
         description: 'High-intensity interval training music',
         buckets: ['HIIT'],
-        image: hiitForestPath
+        image: hiitForestPath,
       },
       {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
         buckets: ['house'],
-        image: cardioFloralField
+        image: cardioFloralField,
       },
       {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
         buckets: ['EDM'],
-        image: cardioLeafDewdrops
+        image: cardioLeafDewdrops,
       },
       {
         id: 'energy-boost-cardio',
         name: 'Energy Boost',
         description: 'Maximum energy tracks for intense cardio',
         buckets: ['ENERGYBOOST'],
-        image: cardioLeafDroplet
+        image: cardioLeafDroplet,
       },
       {
         id: 'pop-cardio',
         name: 'Pop Cardio',
         description: 'Energetic pop hits perfect for cardio sessions',
         buckets: ['pop'],
-        image: cardioSunsetBeachFlowers
+        image: cardioSunsetBeachFlowers,
       },
       {
         id: 'dance-cardio',
