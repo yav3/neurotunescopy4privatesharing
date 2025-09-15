@@ -218,8 +218,8 @@ const GenreView: React.FC = () => {
           id: 'gentle-classical',
           name: 'Gentle Classical',
           description: 'Soft classical music for comfort',
-          buckets: ['gentleclassicalforpain'],
-          artwork: peacefulPianoArt
+          buckets: ['sonatasforstress'],
+          artwork: '/lovable-uploads/gentle-classical-piano.png'
         },
         {
           id: 'peaceful-piano',
