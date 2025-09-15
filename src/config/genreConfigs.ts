@@ -106,7 +106,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['audio', 'neuralpositivemusic'],
+        buckets: ['energyboost', 'hiit', 'neuralpositivemusic'],
         image: moodBoostCoastalCove,
       },
       {
@@ -173,21 +173,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'maximum-energy-edm',
         name: 'Maximum Energy EDM',
         description: 'Peak energy electronic dance music for maximum motivation',
-        buckets: ['audio', 'ENERGYBOOST'],
+        buckets: ['ENERGYBOOST'],
         image: maximumEnergyEdmDj
       },
       {
         id: 'hiit-energy',
         name: 'HIIT Energy',
         description: 'High-intensity interval training music for peak performance',
-        buckets: ['HIIT', 'audio'],
+        buckets: ['HIIT'],
         image: hiitForestPath
       },
       {
         id: 'energetic-house',
         name: 'Energetic House',
         description: 'Upbeat house music for energy and motivation',
-        buckets: ['audio', 'neuralpositivemusic'],
+        buckets: ['ENERGYBOOST', 'HIIT', 'neuralpositivemusic'],
         image: cardioSunsetBeachFlowers
       },
       {
@@ -203,28 +203,28 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'hiit-cardio',
         name: 'HIIT Cardio',
         description: 'High-intensity interval training music',
-        buckets: ['audio', 'HIIT'],
+        buckets: ['HIIT'],
         image: hiitForestPath,
       },
       {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
-        buckets: ['audio', 'house'],
+        buckets: ['ENERGYBOOST', 'HIIT', 'neuralpositivemusic'],
         image: cardioFloralField,
       },
       {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['audio', 'ENERGYBOOST'],
+        buckets: ['ENERGYBOOST'],
         image: cardioLeafDewdrops,
       },
       {
         id: 'energy-boost-cardio',
         name: 'Energy Boost',
         description: 'Maximum energy tracks for intense cardio',
-        buckets: ['audio', 'ENERGYBOOST'],
+        buckets: ['ENERGYBOOST'],
         image: cardioLeafDroplet,
       },
       {
