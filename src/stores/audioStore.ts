@@ -411,7 +411,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       audio.src = url;
-      // audio.crossOrigin intentionally disabled to avoid potential CORS issues
+      // crossOrigin is now properly configured in configureTherapeuticAudio
       (audio as any).playsInline = true;
       audio.load();
       console.log('🎵 Audio src set, attempting to play...');

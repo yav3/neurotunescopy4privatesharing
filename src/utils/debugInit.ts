@@ -1,6 +1,7 @@
 import { APIInterceptor } from './apiInterceptor';
 import { performanceMonitor, debugPerformance } from './performanceMonitor';
 import { AudioValidator } from './audioValidator';
+import './quickAudioTest'; // Initialize audio debugging commands
 
 export function initializeDebugging() {
   if (import.meta.env.PROD) return;

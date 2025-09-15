@@ -5,8 +5,9 @@
  * Configure audio element for therapeutic use - completely silent error handling
  */
 export function configureTherapeuticAudio(audioElement: HTMLAudioElement): void {
-  // Disable all browser default audio feedback
-  audioElement.preload = "none"; // Only load when actually needed
+  // Configure for cross-origin audio requests (Supabase storage)
+  audioElement.crossOrigin = "anonymous"; // Allow cross-origin requests
+  audioElement.preload = "metadata"; // Load metadata for better UX
   audioElement.controls = false; // No default controls
   audioElement.autoplay = false; // Never autoplay
   
