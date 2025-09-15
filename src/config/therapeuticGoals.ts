@@ -7,7 +7,7 @@ import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-boost-tropical.jpg';
 import cardioCard from '@/assets/therapeutic-card-6.png';
-import hiitCard from '@/assets/hiit-forest-path.png';
+
 
 // Single source of truth for all therapeutic goals
 export interface TherapeuticGoal {
@@ -148,22 +148,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
     musicBuckets: ['HIIT', 'house', 'neuralpositivemusic/EDM', 'ENERGYBOOST', 'pop'],
     synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
-  },
-  {
-    id: 'hiit-training',
-    slug: 'hiit-training',
-    backendKey: 'hiit-training',
-    name: 'HIIT Training',
-    shortName: 'HIIT',
-    description: 'High-intensity interval training music for maximum performance',
-    icon: Waves,
-    artwork: hiitCard,
-    color: 'emerald',
-    gradient: 'from-emerald-500 to-green-600',
-    bpmRange: { min: 140, max: 180, optimal: 160 },
-    vadProfile: { valence: 0.8, arousal: 1.0, dominance: 0.9 },
-    musicBuckets: ['HIIT', 'ENERGYBOOST', 'neuralpositivemusic/House', 'neuralpositivemusic/EDM'],
-    synonyms: ['hiit', 'interval', 'training', 'high-intensity', 'tabata', 'circuit']
   }
 ];
 
@@ -201,7 +185,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - expanded to include new goals
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost' | 'cardio-support' | 'hiit-training';
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost' | 'cardio-support';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);

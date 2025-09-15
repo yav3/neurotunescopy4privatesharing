@@ -44,8 +44,9 @@ import energyHorseField from '@/assets/energy-horse-field.jpg';
 import energyWaveAbstract from '@/assets/energy-wave-abstract.jpg';
 import energyOceanWaves from '@/assets/energy-ocean-waves.jpg';
 
-// Import new cardio artwork
+// Import new cardio artwork  
 import cardioFloralField from '@/assets/cardio-floral-field.png';
+import hiitForestPath from '@/assets/hiit-forest-path.png';
 import cardioOceanCove from '@/assets/cardio-ocean-cove.png';
 import cardioLeafDewdrops from '@/assets/cardio-leaf-dewdrops.png';
 import cardioLeafDroplet from '@/assets/cardio-leaf-droplet.png';
@@ -243,7 +244,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'HIIT Music',
         description: 'High-intensity interval training music for energy',
         buckets: ['HIIT'],
-        image: cardioFloralField
+        image: hiitForestPath
       }
     ],
     'cardio-support': [
@@ -252,14 +253,14 @@ const getGenreOptions = (goalId: string) => {
         name: 'HIIT Cardio',
         description: 'High-intensity interval training music',
         buckets: ['HIIT'],
-        image: cardioFloralField
+        image: hiitForestPath
       },
       {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
         buckets: ['house'],
-        image: cardioOceanCove
+        image: cardioFloralField
       },
       {
         id: 'edm-cardio',
