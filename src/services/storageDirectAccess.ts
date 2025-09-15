@@ -61,15 +61,19 @@ export async function getTracksFromStorage(
   count: number = 50,
   buckets?: string[]
 ): Promise<{ tracks: StorageTrack[]; error?: string }> {
-  // Determine buckets based on goal using therapeutic goals configuration
-  if (!buckets) {
-    console.log(`🎯 Goal received: "${goal}"`);
+  console.log(`🎯 Goal received: "${goal}", specific buckets:`, buckets);
+  
+  // Determine buckets based on goal using therapeutic goals configuration ONLY if no specific buckets provided
+  if (!buckets || buckets.length === 0) {
+    console.log(`🎯 No specific buckets provided, using therapeutic goals mapping for: "${goal}"`);
     
     // Import and use the proper therapeutic goals mapping
     const { getBucketsForGoal } = await import('../config/therapeuticGoals');
     buckets = getBucketsForGoal(goal);
     
     console.log(`🗂️ Using therapeutic goals mapping: ${buckets.join(', ')} for goal "${goal}"`);
+  } else {
+    console.log(`🎯 Using ONLY specific buckets: ${buckets.join(', ')} - skipping therapeutic goals mapping`);
   }
   
   try {
@@ -178,9 +182,19 @@ export async function getTracksFromStorage(
       return { tracks: [], error: 'No audio files found in storage buckets' };
     }
 
-    // Filter by goal (skip filtering for manually curated buckets)
+    // Filter by goal only if using therapeutic goal mapping (not specific buckets)
     let filteredTracks = allTracks;
-    if (goal === 'focus-enhancement' || goal === 'mood-boost') {
+    
+    // Check if we're using specific buckets vs. therapeutic goal mapping
+    const { getBucketsForGoal } = await import('../config/therapeuticGoals');
+    const therapeuticBuckets = getBucketsForGoal(goal);
+    const usingSpecificBuckets = buckets.length !== therapeuticBuckets.length || 
+                                !buckets.every(bucket => therapeuticBuckets.includes(bucket));
+    
+    if (usingSpecificBuckets) {
+      console.log(`🎯 Using specific buckets - NO goal filtering. Returning all ${allTracks.length} tracks from buckets: ${buckets.join(', ')}`);
+      filteredTracks = allTracks;
+    } else if (goal === 'focus-enhancement' || goal === 'mood-boost') {
       console.log(`🎯 Using all tracks from curated ${buckets[0]} bucket: ${allTracks.length} tracks`);
       filteredTracks = allTracks;
     } else {
