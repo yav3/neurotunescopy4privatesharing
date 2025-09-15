@@ -56,13 +56,6 @@ const getGenreOptions = (goalId: string) => {
         image: crossoverClassicalArt
       },
       {
-        id: 'classical-focus',
-        name: 'Classical Focus',
-        description: 'Traditional classical music for deep focus',
-        buckets: ['classicalfocus'],
-        image: stringsCrystalPalace
-      },
-      {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
