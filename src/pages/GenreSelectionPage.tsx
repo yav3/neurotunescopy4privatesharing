@@ -79,53 +79,11 @@ const getGenreOptions = (goalId: string) => {
     ],
     'stress-anxiety-support': [
       {
-        id: 'samba',
-        name: 'Samba',
-        description: 'Relaxing Brazilian samba rhythms for stress relief',
-        buckets: ['samba'],
-        image: sambaImage
-      },
-      {
-        id: 'folk-americana-bluegrass',
-        name: 'Country, Americana, & Bluegrass',
-        description: 'Calming country and americana music for relaxation',
-        buckets: ['countryandamericana'],
-        image: folkPeacefulMeadow
-      },
-      {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newageRadiantGarden
-      },
-      {
-        id: 'sonatas',
-        name: 'Sonatas for Stress',
-        description: 'Classical sonatas for deep stress relief',
-        buckets: ['sonatasforstress'],
-        image: sonatasBrightConservatory
-      },
-      {
-        id: 'peaceful-piano',
-        name: 'Chopin',
-        description: 'Gentle Chopin pieces for relaxation',
-        buckets: ['Chopin'],
-        image: peacefulPianoArt
-      },
-      {
-        id: 'pain-reducing-world',
-        name: 'Pain Reducing World',
-        description: 'Global healing sounds for stress and anxiety',
-        buckets: ['painreducingworld'],
-        image: worldInstrumentsZen
-      },
-      {
-        id: 'opera',
-        name: 'Opera',
-        description: 'Classical opera for emotional release and stress relief',
-        buckets: ['opera'],
-        image: operaLuminousHall
       }
     ],
     'cardio-support': [
