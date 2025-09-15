@@ -50,18 +50,27 @@ export default function GenreView() {
         
         let allGenreTracks: any[] = [];
         
-        // Load tracks from each bucket specified for this genre
-        for (const bucketName of selectedGenre.buckets) {
-          console.log(`📂 Loading from bucket: ${bucketName}`);
-          const { tracks: bucketTracks, error } = await getTracksFromStorage(bucketName, 100);
-          
-          if (error) {
-            console.error(`❌ Error loading from bucket ${bucketName}:`, error);
-            continue;
-          }
-          
-          console.log(`✅ Loaded ${bucketTracks.length} tracks from ${bucketName}`);
-          allGenreTracks = [...allGenreTracks, ...bucketTracks];
+        // Load tracks from all buckets specified for this genre in one call
+        console.log(`📂 Loading from all genre buckets: ${selectedGenre.buckets.join(', ')}`);
+        const { tracks: bucketTracks, error } = await getTracksFromStorage(
+          genreId || 'genre', // use genreId as goal identifier
+          300, // get more tracks to ensure variety
+          selectedGenre.buckets // pass the specific buckets for this genre
+        );
+        
+        if (error) {
+          console.error(`❌ Error loading from genre buckets:`, error);
+          setError(`Failed to load tracks: ${error}`);
+          return;
+        }
+        
+        if (bucketTracks && bucketTracks.length > 0) {
+          console.log(`✅ Found ${bucketTracks.length} tracks across all genre buckets`);
+          allGenreTracks = bucketTracks;
+        } else {
+          console.log(`📂 No tracks found in any genre buckets`);
+          setError('No music tracks found for this genre.');
+          return;
         }
         
         console.log(`🎵 Total genre tracks loaded: ${allGenreTracks.length}`);
