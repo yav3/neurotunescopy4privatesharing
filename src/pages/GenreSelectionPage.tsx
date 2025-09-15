@@ -44,6 +44,14 @@ import energyHorseField from '@/assets/energy-horse-field.jpg';
 import energyWaveAbstract from '@/assets/energy-wave-abstract.jpg';
 import energyOceanWaves from '@/assets/energy-ocean-waves.jpg';
 
+// Import new cardio artwork
+import cardioFloralField from '@/assets/cardio-floral-field.png';
+import cardioOceanCove from '@/assets/cardio-ocean-cove.png';
+import cardioLeafDewdrops from '@/assets/cardio-leaf-dewdrops.png';
+import cardioLeafDroplet from '@/assets/cardio-leaf-droplet.png';
+import cardioSunsetBeachFlowers from '@/assets/cardio-sunset-beach-flowers.png';
+import cardioMountainWildflowers from '@/assets/cardio-mountain-wildflowers.png';
+
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
   const genreConfigs = {
@@ -238,35 +246,42 @@ const getGenreOptions = (goalId: string) => {
         name: 'HIIT Cardio',
         description: 'High-intensity interval training music',
         buckets: ['HIIT'],
-        image: electronicArt
+        image: cardioFloralField
       },
       {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
         buckets: ['house'],
-        image: houseMusicArt
+        image: cardioOceanCove
       },
       {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
         buckets: ['neuralpositivemusic/EDM'],
-        image: electronicArt
+        image: cardioLeafDewdrops
       },
       {
         id: 'energy-boost-cardio',
         name: 'Energy Boost',
         description: 'Maximum energy tracks for intense cardio',
         buckets: ['ENERGYBOOST'],
-        image: energyBoostLightning
+        image: cardioLeafDroplet
       },
       {
         id: 'pop-cardio',
         name: 'Pop Cardio',
         description: 'Energetic pop hits perfect for cardio sessions',
         buckets: ['pop'],
-        image: popMusicArt
+        image: cardioSunsetBeachFlowers
+      },
+      {
+        id: 'dance-cardio',
+        name: 'Dance Cardio',
+        description: 'Upbeat dance music for energetic cardio workouts',
+        buckets: ['dance'],
+        image: cardioMountainWildflowers
       }
     ]
   };
