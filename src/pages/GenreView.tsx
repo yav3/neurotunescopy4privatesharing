@@ -13,13 +13,13 @@ const GENRE_CONFIGS = {
     {
       id: 'crossover-classical',
       name: 'Crossover Classical',
-      buckets: ['classicalfocus'],
+      buckets: ['audio'],
       image: '/src/assets/focus-crossover-classical-landscape.jpg'
     },
     {
       id: 'new-age',
       name: 'New Age & World Focus',
-      buckets: ['NewAgeandWorldFocus'],
+      buckets: ['audio'],
       image: '/src/assets/focus-new-age-landscape.jpg'
     },
     {
@@ -33,7 +33,7 @@ const GENRE_CONFIGS = {
     {
       id: 'ambient-calm',
       name: 'Ambient Calm',
-      buckets: ['newageworldstressanxietyreduction'],
+      buckets: ['audio'],
       image: '/src/assets/stress-ambient-calm-landscape.jpg'
     }
   ],
@@ -41,7 +41,7 @@ const GENRE_CONFIGS = {
     {
       id: 'edm-crossover',
       name: 'EDM Crossover',
-      buckets: ['neuralpositivemusic'],
+      buckets: ['audio'],
       image: '/src/assets/mood-edm-crossover-landscape.jpg'
     }
   ]

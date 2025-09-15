@@ -66,7 +66,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
     vadProfile: { valence: 0.6, arousal: 0.7, dominance: 0.6 },
-    musicBuckets: ['focus-music', 'classicalfocus', 'Chopin', 'opera', 'neuralpositivemusic', 'NewAgeandWorldFocus'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'Chopin', 'opera'],
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
   },
   {
@@ -82,7 +82,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'sonatasforstress', 'Chopin', 'samba', 'neuralpositivemusic', 'painreducingworld'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'Chopin', 'samba'],
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
@@ -98,7 +98,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['neuralpositivemusic/House', 'pop', 'moodboostremixesworlddance', 'neuralpositivemusic/EDM'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'pop'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
@@ -114,7 +114,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    musicBuckets: ['gentleclassicalforpain', 'painreducingworld', 'neuralpositivemusic/stressreductionclassical', 'neuralpositivemusic/newagechill', 'Chopin'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'Chopin'],
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   },
   {
@@ -130,7 +130,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
-    musicBuckets: ['ENERGYBOOST', 'neuralpositivemusic/Classical-Energy-Boost', 'neuralpositivemusic/MusicalTheaterEnergyBoost', 'neuralpositivemusic/House', 'HIIT'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'ENERGYBOOST', 'HIIT'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
   },
   {
@@ -146,7 +146,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-red-500 to-pink-500',
     bpmRange: { min: 130, max: 180, optimal: 150 },
     vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
-    musicBuckets: ['HIIT', 'house', 'neuralpositivemusic/EDM', 'ENERGYBOOST', 'pop'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'HIIT', 'ENERGYBOOST', 'pop'],
     synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
   }
 ];
