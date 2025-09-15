@@ -22,6 +22,7 @@ import maximumEnergyEdmDj from '@/assets/maximum-energy-edm-dj.png';
 import focusZenStones from '@/assets/focus-zen-stones.png';
 import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical-landscape.jpg';
 import hiitForestPath from '@/assets/hiit-forest-path.png';
+import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
 
 export interface GenreConfig {
   id: string;
@@ -123,7 +124,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
         buckets: ['audio', 'Chopin'],
-        image: stressClassicalPeacefulStream,
+        image: gentleClassicalMistyLake,
       },
       {
         id: 'stress-reduction-classical',
