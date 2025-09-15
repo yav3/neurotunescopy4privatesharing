@@ -1,4 +1,11 @@
 // Simple therapeutic categories with direct bucket mapping
+import focusCard from '@/assets/therapeutic-card-1.png';
+import stressCard from '@/assets/therapeutic-card-2.png';
+import moodBoostCard from '@/assets/therapeutic-card-3.png';
+import painCard from '@/assets/therapeutic-card-4.png';
+import energyBoostCard from '@/assets/energy-boost-tropical.jpg';
+import cardioCard from '@/assets/cardio-mountain-lake.jpg';
+
 export interface TherapeuticCategory {
   id: string;
   name: string;
@@ -14,42 +21,42 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
     name: 'Stress & Anxiety Support',
     description: 'Calming music to reduce stress and anxiety',
     buckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'Chopin'],
-    image: '/api/placeholder/400/300'
+    image: stressCard
   },
   {
     id: 'focus-enhancement',
     name: 'Focus & Concentration',
     description: 'Music to enhance focus and concentration',
     buckets: ['focus-music', 'classicalfocus', 'NewAgeandWorldFocus'],
-    image: '/api/placeholder/400/300'
+    image: focusCard
   },
   {
     id: 'energy-boost',
     name: 'Energy & Motivation',
     description: 'Uplifting music for energy and motivation',
     buckets: ['ENERGYBOOST', 'neuralpositivemusic', 'HIIT'],
-    image: '/api/placeholder/400/300'
+    image: energyBoostCard
   },
   {
     id: 'mood-boost',
     name: 'Mood Enhancement',
     description: 'Feel-good music to boost your mood',
     buckets: ['neuralpositivemusic', 'moodboostremixesworlddance', 'pop'],
-    image: '/api/placeholder/400/300'
+    image: moodBoostCard
   },
   {
     id: 'pain-support',
     name: 'Pain Relief',
     description: 'Gentle music for pain management and relief',
     buckets: ['gentleclassicalforpain', 'painreducingworld', 'Chopin'],
-    image: '/api/placeholder/400/300'
+    image: painCard
   },
   {
     id: 'cardio-support',
     name: 'Cardio & Exercise',
     description: 'High-energy music for workouts and cardio',
     buckets: ['HIIT', 'ENERGYBOOST', 'neuralpositivemusic'],
-    image: '/api/placeholder/400/300'
+    image: cardioCard
   }
 ];
 
