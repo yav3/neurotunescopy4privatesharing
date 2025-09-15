@@ -35,6 +35,11 @@ export const GenreView: React.FC = () => {
   // Get the genre configuration
   const genreOptions = goalId ? getGenreOptions(goalId) : [];
   const selectedGenre = genreOptions.find(genre => genre.id === genreId);
+  
+  // Debug logs to see what's happening with genre selection
+  console.log('🔍 DEBUG - URL params:', { goalId, genreId });
+  console.log('🔍 DEBUG - Available genres for goal:', genreOptions.map(g => ({ id: g.id, name: g.name, buckets: g.buckets })));
+  console.log('🔍 DEBUG - Selected genre:', selectedGenre ? { id: selectedGenre.id, name: selectedGenre.name, buckets: selectedGenre.buckets } : 'NOT FOUND');
 
   // Simple direct bucket loading
   useEffect(() => {
