@@ -22,6 +22,7 @@ import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
+import energyBoostDataAnalytics from '@/assets/energy-boost-data-analytics.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -307,7 +308,7 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost',
           description: 'High-energy tracks for maximum motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: energyBoostLightning
+          artwork: energyBoostDataAnalytics
         },
         {
           id: 'musical-theater-energy',
