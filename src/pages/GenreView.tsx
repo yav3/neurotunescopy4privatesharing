@@ -10,7 +10,7 @@ import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
-import newAgeArt from '@/assets/world-instruments-zen-garden.jpg';
+import newAgeArt from '@/assets/world-instruments-wildflower-hill.jpg';
 import electronicArt from '@/assets/drums-aurora-energy.jpg';
 import sambaImage from '@/assets/guitar-beach-sunset-samba.jpg';
 import acousticArt from '@/assets/country-guitar-sunset-lake.jpg';
