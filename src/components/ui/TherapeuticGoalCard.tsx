@@ -24,6 +24,9 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   onClick,
   className
 }) => {
+  // Check if this card needs glass morphism effect
+  const needsGlassMorphism = goal.id === 'energy-boost' || goal.id === 'cardio-support';
+  
   return (
     <Card 
       className={cn(
@@ -34,6 +37,13 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
         "animate-fade-in",
         "w-full h-full",
+        // Glass morphism effect for Energy Boost and Cardio Support
+        needsGlassMorphism && [
+          "border border-white/20",
+          "bg-white/5 backdrop-blur-sm",
+          "shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]",
+          "hover:bg-white/10 hover:border-white/30"
+        ],
         isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_30px_hsl(217_91%_60%_/_0.4)]",
         className
       )}
