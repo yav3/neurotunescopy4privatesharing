@@ -38,21 +38,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['neuralpositivemusic'],
+        buckets: ['audio'],
         image: focusCrossoverClassicalLandscape
       },
       {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['newageworldstressanxietyreduction'],
+        buckets: ['audio'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for deep concentration',
-        buckets: ['Chopin'],
+        buckets: ['audio'],
         image: focusZenStones
       }
     ],
