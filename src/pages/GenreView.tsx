@@ -61,6 +61,11 @@ import cardioWaveEnergy from '@/assets/cardio-wave-energy.jpg';
 import cardioRunningHorse from '@/assets/cardio-running-horse.jpg';
 import cardioGoldenPath from '@/assets/cardio-golden-path.jpg';
 
+// Import stress-anxiety artwork
+import stressSambaTropicalSunset from '@/assets/stress-samba-tropical-sunset.jpg';
+import focusClassicalMountainLake from '@/assets/focus-classical-mountain-lake.jpg';
+import painWorldHealingGarden from '@/assets/pain-world-healing-garden.jpg';
+
 
 interface GenreOption {
   id: string;
@@ -146,12 +151,12 @@ const GenreView: React.FC = () => {
           id: 'new-age-stress',
           name: 'New Age & World Stress Relief',
           description: 'Ethereal new age sounds for deep relaxation',
-          buckets: ['newageworldstressanxietyreduction'],
+          buckets: ['NewAgeandWorldFocus'],
           artwork: newAgeArt
         },
         {
           id: 'sonatas',
-          name: 'Sonatas for Stress',
+          name: 'Sonar for Stress',
           description: 'Classical sonatas for deep stress relief',
           buckets: ['sonatasforstress'],
           artwork: '/lovable-uploads/string-quartet-studio.png'
@@ -164,11 +169,25 @@ const GenreView: React.FC = () => {
           artwork: peacefulPianoArt
         },
         {
-          id: 'opera',
-          name: 'Opera',
-          description: 'Classical opera for emotional release and stress relief',
-          buckets: ['opera'],
-          artwork: operaArt
+          id: 'samba',
+          name: 'Samba',
+          description: 'Relaxing Brazilian samba rhythms for stress relief',
+          buckets: ['samba'],
+          artwork: stressSambaTropicalSunset
+        },
+        {
+          id: 'neuralpositivemusic',
+          name: 'Neural Positive Music',
+          description: 'Specially composed music for stress reduction',
+          buckets: ['neuralpositivemusic'],
+          artwork: focusClassicalMountainLake
+        },
+        {
+          id: 'pain-reducing-world',
+          name: 'World Healing Music',
+          description: 'Global healing sounds for stress and anxiety',
+          buckets: ['painreducingworld'],
+          artwork: painWorldHealingGarden
         }
       ];
     } else if (goalId === 'pain-support') {
