@@ -214,13 +214,6 @@ const getGenreOptions = (goalId: string) => {
         image: energyWaveAbstract
       },
       {
-        id: 'energy-boost-core',
-        name: 'Energy Boost',
-        description: 'High-energy tracks for maximum motivation',
-        buckets: ['ENERGYBOOST'],
-        image: energyBoostArtwork
-      },
-      {
         id: 'musical-theater-energy',
         name: 'Musical Theater Energy',
         description: 'Uplifting musical theater pieces for motivation',
