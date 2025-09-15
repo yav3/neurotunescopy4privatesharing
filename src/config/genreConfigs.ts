@@ -2,6 +2,7 @@
 import moodBoostCoastalCove from '@/assets/mood-boost-coastal-cove.png';
 import moodBoostSunsetFlowers from '@/assets/mood-boost-sunset-flowers.png';
 import moodBoostFloralField from '@/assets/mood-boost-floral-field.png';
+import moodBoostDancePartyWaves from '@/assets/mood-boost-dance-party-waves.jpg';
 import moodBoostLeafDewdrop from '@/assets/mood-boost-leaf-dewdrop.png';
 import cardioMountainWildflowers from '@/assets/cardio-mountain-wildflowers.png';
 import cardioFloralField from '@/assets/cardio-floral-field.png';
@@ -119,7 +120,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
         buckets: ['moodboostremixesworlddance'],
-        image: moodBoostFloralField
+        image: moodBoostDancePartyWaves
       },
       {
         id: 'edm-crossover',
