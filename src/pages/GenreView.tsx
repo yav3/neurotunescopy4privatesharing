@@ -20,6 +20,7 @@ import dancePartyArt from '@/assets/dance-party-beach.jpg';
 import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
+import worldPainReliefOud from '@/assets/world-pain-relief-oud-landscape.jpg';
 import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import energyBoostArtwork from '@/assets/energy-boost-artwork.jpg';
 import energySunsetField from '@/assets/energy-sunset-field.jpg';
@@ -212,7 +213,7 @@ const GenreView: React.FC = () => {
           name: 'World Pain Relief',
           description: 'Global healing sounds for pain relief',
           buckets: ['painreducingworld'],
-          artwork: '/lovable-uploads/world-instruments-zen-garden.png'
+          artwork: worldPainReliefOud
         },
         {
           id: 'stress-reduction-classical',

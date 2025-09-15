@@ -23,6 +23,7 @@ import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
 import happyHouseDance from '@/assets/happy-house-dance.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
+import worldPainReliefOud from '@/assets/world-pain-relief-oud-landscape.jpg';
 import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
 // Import specific energy-themed artwork
 import energyBoostArtwork from '@/assets/energy-boost-artwork.jpg';
@@ -174,7 +175,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'World',
         description: 'Global healing sounds for pain relief',
         buckets: ['painreducingworld'],
-        image: worldInstrumentsZen
+        image: worldPainReliefOud
       },
       {
         id: 'gentle-classical',
