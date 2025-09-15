@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getGenreOptions } from '@/config/genreConfigs';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { VerticalTrackList } from '@/components/VerticalTrackList';
@@ -25,17 +26,16 @@ export const GenreView: React.FC = () => {
   const { goalId, genreId } = useParams<{ goalId: string; genreId: string }>();
   const navigate = useNavigate();
   const [tracks, setTracks] = useState<Track[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { isPlaying, play, pause, isLoading: audioLoading } = useAudioStore();
+  const { isPlaying, play, pause, isLoading } = useAudioStore();
   const loadLock = useRef(false);
   const lastLoadKey = useRef<string>('');
 
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
   
   // Get the actual genre configuration with correct buckets
-  const { getGenreOptions } = require('@/config/genreConfigs');
   const genreOptions = goalId ? getGenreOptions(goalId) : [];
   const selectedGenre = genreOptions.find(genre => genre.id === genreId);
 
@@ -75,7 +75,7 @@ export const GenreView: React.FC = () => {
 
     const loadTracks = async () => {
       if (cancelled) return;
-      setIsLoading(true);
+      setIsTracksLoading(true);
       setTracks([]);
       setError(null);
       
@@ -182,7 +182,7 @@ export const GenreView: React.FC = () => {
         console.error('Failed to load tracks:', error);
         setError('Failed to load music. Please try again.');
       } finally {
-        setIsLoading(false);
+        setIsTracksLoading(false);
         if (!cancelled) loadLock.current = false;
       }
     };
@@ -202,7 +202,19 @@ export const GenreView: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  const handleTogglePlay = async () => {
+    try {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
+    } catch (error) {
+      toast.error("Failed to toggle playback");
+    }
+  };
+
+  if (isTracksLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-background/80 flex items-center justify-center">
         <div className="text-center">
@@ -291,8 +303,8 @@ export const GenreView: React.FC = () => {
             tracks={tracks}
             onTrackPlay={handleTrackPlay}
             isPlaying={isPlaying}
-            onTogglePlay={() => isPlaying ? pause() : play()}
-            isLoading={audioLoading}
+            onTogglePlay={handleTogglePlay}
+            isLoading={isLoading}
           />
         )}
       </div>
