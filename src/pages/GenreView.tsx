@@ -9,6 +9,7 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 import { playFromGenre } from '@/actions/playFromGoal';
+import { TherapeuticMusicDebugger } from '@/utils/musicDebugger';
 
 interface Track {
   id: string;
@@ -100,6 +101,10 @@ export const GenreView: React.FC = () => {
         }
 
         console.log(`🎯 TOTAL TRACKS LOADED: ${allTracks.length}`);
+        
+        // Debug the music connection
+        const musicDebugger = new TherapeuticMusicDebugger();
+        musicDebugger.debugMusicConnection(selectedGenre, allTracks);
         
         if (allTracks.length > 0) {
           setTracks(allTracks);
