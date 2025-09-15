@@ -44,6 +44,13 @@ const getGenreOptions = (goalId: string) => {
         image: crossoverClassicalArt
       },
       {
+        id: 'new-age',
+        name: 'New Age & World Focus',
+        description: 'Ethereal soundscapes for enhanced focus',
+        buckets: ['NewAgeandWorldFocus'],
+        image: newAgeArt
+      },
+      {
         id: 'bach-transpositions',
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
