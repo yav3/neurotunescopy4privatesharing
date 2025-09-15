@@ -18,6 +18,7 @@ import painGentleWaterfallPiano from '@/assets/pain-gentle-waterfall-piano.jpg';
 import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
 import energeticClassicalHibiscus from '@/assets/energetic-classical-hibiscus.png';
 import maximumEnergyEdmScene from '@/assets/maximum-energy-edm-scene.jpg';
+import maximumEnergyEdmDj from '@/assets/maximum-energy-edm-dj.png';
 import focusZenStones from '@/assets/focus-zen-stones.png';
 import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical-landscape.jpg';
 import hiitForestPath from '@/assets/hiit-forest-path.png';
@@ -169,39 +170,32 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     ],
     'energy-boost': [
       {
-        id: 'energy-boost-max',
-        name: 'Maximum Energy Boost',
-        description: 'Peak energy music for maximum motivation',
-        buckets: ['neuralpositivemusic/EDM'],
-        image: maximumEnergyEdmScene
-      },
-      {
-        id: 'energetic-classical',
-        name: 'Energetic Classical',
-        description: 'Dynamic classical pieces for vitality',
-        buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-        image: energeticClassicalHibiscus
-      },
-      {
-        id: 'musical-theater-energy',
-        name: 'Musical Theater Energy',
-        description: 'Uplifting musical theater pieces for motivation',
-        buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-        image: cardioMountainWildflowers
-      },
-      {
-        id: 'motivational-beats',
-        name: 'Happy House & Dance',
-        description: 'Upbeat house and dance music for energy and motivation',
-        buckets: ['house'],
-        image: cardioSunsetBeachFlowers
+        id: 'maximum-energy-edm',
+        name: 'Maximum Energy EDM',
+        description: 'Peak energy electronic dance music for maximum motivation',
+        buckets: ['audio', 'ENERGYBOOST'],
+        image: maximumEnergyEdmDj
       },
       {
         id: 'hiit-energy',
-        name: 'HIIT Music',
-        description: 'High-intensity interval training music for energy',
-        buckets: ['HIIT'],
+        name: 'HIIT Energy',
+        description: 'High-intensity interval training music for peak performance',
+        buckets: ['HIIT', 'audio'],
         image: hiitForestPath
+      },
+      {
+        id: 'energetic-house',
+        name: 'Energetic House',
+        description: 'Upbeat house music for energy and motivation',
+        buckets: ['audio', 'neuralpositivemusic'],
+        image: cardioSunsetBeachFlowers
+      },
+      {
+        id: 'pop-energy',
+        name: 'Pop Energy',
+        description: 'High-energy pop tracks for motivation',
+        buckets: ['pop', 'audio'],
+        image: cardioMountainWildflowers
       }
     ],
     'cardio-support': [

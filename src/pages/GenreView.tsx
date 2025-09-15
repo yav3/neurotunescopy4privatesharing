@@ -7,45 +7,8 @@ import { useAudioStore } from '@/stores/audioStore';
 import { Track } from '@/types/index';
 import { TherapeuticMusicDebugger } from '@/utils/musicDebugger';
 
-// Genre configurations for each therapeutic goal
-const GENRE_CONFIGS = {
-  'focus-enhancement': [
-    {
-      id: 'crossover-classical',
-      name: 'Crossover Classical',
-      buckets: ['audio'],
-      image: '/src/assets/focus-crossover-classical-landscape.jpg'
-    },
-    {
-      id: 'new-age',
-      name: 'New Age & World Focus',
-      buckets: ['audio'],
-      image: '/src/assets/focus-new-age-landscape.jpg'
-    },
-    {
-      id: 'peaceful-piano',
-      name: 'Peaceful Piano',
-      buckets: ['Chopin'],
-      image: '/src/assets/focus-peaceful-piano-landscape.jpg'
-    }
-  ],
-  'stress-anxiety-support': [
-    {
-      id: 'ambient-calm',
-      name: 'Ambient Calm',
-      buckets: ['audio'],
-      image: '/src/assets/stress-ambient-calm-landscape.jpg'
-    }
-  ],
-  'mood-boost': [
-    {
-      id: 'edm-crossover',
-      name: 'EDM Crossover',
-      buckets: ['audio'],
-      image: '/src/assets/mood-edm-crossover-landscape.jpg'
-    }
-  ]
-};
+// Use shared genre configurations instead of hardcoded ones
+import { getGenreOptions } from '@/config/genreConfigs';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -57,7 +20,7 @@ export default function GenreView() {
   const [error, setError] = useState<string | null>(null);
 
   const goal = goalId ? getGoal(goalId) : null;
-  const genreOptions = GENRE_CONFIGS[goalId as keyof typeof GENRE_CONFIGS] || [];
+  const genreOptions = goalId ? getGenreOptions(goalId) : [];
   const selectedGenre = genreOptions.find(g => g.id === genreId);
 
   // Debug logs to see what's happening with genre selection
