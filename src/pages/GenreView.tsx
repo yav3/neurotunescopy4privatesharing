@@ -315,10 +315,10 @@ const GenreView: React.FC = () => {
           artwork: '/lovable-uploads/coastal-cove.png'
         },
         {
-          id: 'energy-boost-core',
-          name: 'Energy Boost',
-          description: 'High-energy tracks for maximum motivation',
-          buckets: ['ENERGYBOOST'],
+          id: 'edm-energy',
+          name: 'EDM Energy',
+          description: 'Electronic dance music for high energy',
+          buckets: ['neuralpositivemusic/EDM'],
           artwork: '/lovable-uploads/colorful-flower-field.png'
         },
         {
