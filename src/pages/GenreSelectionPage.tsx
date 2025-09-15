@@ -159,7 +159,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['neuralpositivemusic/House'],
+        buckets: ['house'],
         image: moodBoostCoastalCove
       },
       {
@@ -180,7 +180,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
-        buckets: ['neuralpositivemusic/EDM'],
+        buckets: ['EDM'],
         image: moodBoostLeafDewdrop
       },
     ],
@@ -226,7 +226,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'energy-boost-max',
         name: 'Maximum Energy Boost',
         description: 'Peak energy music for maximum motivation',
-        buckets: ['neuralpositivemusic/EDM'],
+        buckets: ['EDM'],
         image: energyLightningMeadow
       },
       {
@@ -247,7 +247,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'motivational-beats',
         name: 'Happy House & Dance',
         description: 'Upbeat house and dance music for energy and motivation',
-        buckets: ['neuralpositivemusic/House'],
+        buckets: ['house'],
         image: cardioSunsetBeachFlowers
       },
       {
@@ -277,7 +277,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'edm-cardio',
         name: 'EDM',
         description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['neuralpositivemusic/EDM'],
+        buckets: ['EDM'],
         image: cardioLeafDewdrops
       },
       {
