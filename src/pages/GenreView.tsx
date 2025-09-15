@@ -66,6 +66,12 @@ import stressSambaTropicalSunset from '@/assets/stress-samba-tropical-sunset.jpg
 import focusClassicalMountainLake from '@/assets/focus-classical-mountain-lake.jpg';
 import painWorldHealingGarden from '@/assets/pain-world-healing-garden.jpg';
 
+// Import user-provided artwork
+import chopinLotusFlower from '@/assets/chopin-lotus-flower.jpg';
+import worldMusicCactusSky from '@/assets/world-music-cactus-sky.jpg';
+import sambaPurpleFlowers from '@/assets/samba-purple-flowers.jpg';
+import maximumEnergyCoralCactus from '@/assets/maximum-energy-coral-cactus.jpg';
+
 
 interface GenreOption {
   id: string;
@@ -121,7 +127,7 @@ const GenreView: React.FC = () => {
           name: 'New Age & World Focus',
           description: 'Ethereal soundscapes for enhanced focus',
           buckets: ['NewAgeandWorldFocus'],
-          artwork: newAgeArt
+          artwork: worldMusicCactusSky
         },
         {
           id: 'bach-transpositions',
@@ -135,7 +141,7 @@ const GenreView: React.FC = () => {
           name: 'Chopin',
           description: 'Classical Chopin pieces for deep concentration',
           buckets: ['Chopin'],
-          artwork: peacefulPianoArt
+          artwork: chopinLotusFlower
         },
         {
           id: 'opera-focus',
@@ -152,7 +158,7 @@ const GenreView: React.FC = () => {
           name: 'New Age & World Stress Relief',
           description: 'Ethereal new age sounds for deep relaxation',
           buckets: ['NewAgeandWorldFocus'],
-          artwork: newAgeArt
+          artwork: worldMusicCactusSky
         },
         {
           id: 'sonatas',
@@ -166,14 +172,14 @@ const GenreView: React.FC = () => {
           name: 'Chopin',
           description: 'Gentle Chopin pieces for relaxation',
           buckets: ['Chopin'],
-          artwork: peacefulPianoArt
+          artwork: chopinLotusFlower
         },
         {
           id: 'samba',
           name: 'Samba',
           description: 'Relaxing Brazilian samba rhythms for stress relief',
           buckets: ['samba'],
-          artwork: stressSambaTropicalSunset
+          artwork: sambaPurpleFlowers
         },
         {
           id: 'neuralpositivemusic',
@@ -225,7 +231,7 @@ const GenreView: React.FC = () => {
           name: 'Chopin',
           description: 'Gentle Chopin pieces for comfort and healing',
           buckets: ['Chopin'],
-          artwork: peacefulPianoArt
+          artwork: chopinLotusFlower
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -266,7 +272,7 @@ const GenreView: React.FC = () => {
           name: 'Classical Energy Boost',
           description: 'Dynamic classical pieces for vitality',
           buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-          artwork: energySunsetField
+          artwork: maximumEnergyCoralCactus
         },
         {
           id: 'musical-theater-energy',
