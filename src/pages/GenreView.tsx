@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getGenreOptions } from '@/config/genreConfigs';
 import { ArrowLeft } from 'lucide-react';
@@ -8,8 +8,6 @@ import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
-import { createTherapeuticDebugger } from '@/utils/therapeuticConnectionDebugger';
-import { TherapeuticMusicDebugger } from '@/utils/therapeuticMusicDebugger';
 import { playFromGenre } from '@/actions/playFromGoal';
 
 interface Track {
@@ -31,51 +29,18 @@ export const GenreView: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   
   const { isPlaying, play, pause, isLoading } = useAudioStore();
-  const loadLock = useRef(false);
-  const lastLoadKey = useRef<string>('');
 
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
   
-  // Get the actual genre configuration with correct buckets
+  // Get the genre configuration
   const genreOptions = goalId ? getGenreOptions(goalId) : [];
   const selectedGenre = genreOptions.find(genre => genre.id === genreId);
 
-  // Comprehensive debug logging
-  useEffect(() => {
-    if (goal && selectedGenre) {
-      const connectionDebugger = createTherapeuticDebugger([selectedGenre], goal.musicBuckets || []);
-      connectionDebugger.debugConnections();
-
-      // Add the comprehensive music debugger
-      const musicDebugger = new TherapeuticMusicDebugger();
-      
-      console.log('🔍 COMPREHENSIVE MUSIC BUCKET DEBUG');
-      console.log('Goal:', goal.name);
-      console.log('Genre:', selectedGenre.name);
-      console.log('Genre Buckets:', selectedGenre.buckets);
-      
-      // Test classical focus specifically
-      if (selectedGenre.id === 'crossover-classical') {
-        musicDebugger.testClassicalFocusBucket([]);
-      }
-      
-      // Debug the selected genre as a bucket
-      musicDebugger.debugMusicConnection(selectedGenre, tracks || []);
-    }
-  }, [goal, selectedGenre, tracks]);
-
-  // Load tracks with enhanced folder traversal
+  // Simple direct bucket loading
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
-    const loadKey = `${goal.id}:${selectedGenre.id}:${selectedGenre.buckets.join(',')}`;
-    if (loadLock.current && lastLoadKey.current === loadKey) return;
-
-    let cancelled = false;
-    lastLoadKey.current = loadKey;
-
-    const loadTracks = async () => {
-      if (cancelled) return;
+    const loadTracksDirectly = async () => {
       setIsTracksLoading(true);
       setTracks([]);
       setError(null);
@@ -84,115 +49,69 @@ export const GenreView: React.FC = () => {
         const { supabase } = await import('@/integrations/supabase/client');
         let allTracks: Track[] = [];
 
-        console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
-        console.log(`🔍 CRITICAL DEBUG - Selected Genre Buckets:`, selectedGenre.buckets);
-        console.log(`🔍 CRITICAL DEBUG - Is Classical Crossover?`, selectedGenre.id === 'crossover-classical');
-        console.log(`🔍 FORCE REFRESH DEBUG - Date:`, new Date().toISOString());
-        console.log(`🔍 BUCKET ACCESS TEST - About to process buckets:`, selectedGenre.buckets);
+        console.log(`🎵 DIRECT BUCKET ACCESS - Loading from:`, selectedGenre.buckets);
 
-        // Process each bucket with enhanced folder handling
-        for (const bucketPath of selectedGenre.buckets) {
-          console.log(`🗂️ Processing bucket path: ${bucketPath}`);
+        for (const bucketName of selectedGenre.buckets) {
+          console.log(`📂 Accessing bucket: ${bucketName}`);
           
-          let bucketName: string;
-          let specificFolder: string;
-          
-          if (bucketPath.includes('/')) {
-            const parts = bucketPath.split('/');
-            bucketName = parts[0];
-            specificFolder = parts.slice(1).join('/');
-          } else {
-            bucketName = bucketPath;
-            specificFolder = '';
+          // Get all files from bucket
+          const { data: files, error } = await supabase.storage
+            .from(bucketName)
+            .list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+
+          if (error) {
+            console.error(`❌ Error accessing bucket ${bucketName}:`, error);
+            continue;
           }
 
-          // Check bucket structure for debugging
-          const { data: rootFiles, error: rootError } = await supabase.storage
-            .from(bucketName)
-            .list('', { limit: 100 });
-          
-          if (!rootError && rootFiles) {
-            console.log(`📂 Root level of ${bucketName}:`, rootFiles.length, 'items');
+          if (files && files.length > 0) {
+            console.log(`✅ Found ${files.length} items in ${bucketName}`);
             
+            // Filter for audio files
             const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
-            const folders = rootFiles.filter(f => !f.name.includes('.'));
-            const directFiles = rootFiles.filter(f => audioExtensions.some(ext => f.name.toLowerCase().endsWith(ext)));
-            
-            console.log(`📁 Folders: ${folders.length}, Direct audio files: ${directFiles.length}`);
+            const audioFiles = files.filter(file => 
+              audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+            );
 
-            // Handle direct files in root
-            if (directFiles.length > 0) {
-              for (const file of directFiles.slice(0, 10)) {
-                const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(file.name);
-                if (urlData?.publicUrl) {
-                  allTracks.push({
-                    id: `${bucketName}-${file.name}-${Date.now()}-${Math.random()}`,
-                    title: file.name,
-                    url: urlData.publicUrl,
-                    bucket: bucketName,
-                    folder: '',
-                    artwork_url: selectedGenre.image,
-                    size: file.metadata?.size || 0
-                  });
-                }
-              }
-            }
+            console.log(`🎵 Audio files in ${bucketName}: ${audioFiles.length}`);
 
-            // Handle folders
-            for (const folder of folders.slice(0, 5)) {
-              const { data: folderFiles } = await supabase.storage
-                .from(bucketName)
-                .list(folder.name, { limit: 100 });
+            // Convert to Track objects
+            for (const file of audioFiles) {
+              const { data } = supabase.storage.from(bucketName).getPublicUrl(file.name);
               
-              if (folderFiles) {
-                const folderAudioFiles = folderFiles.filter(f => 
-                  audioExtensions.some(ext => f.name.toLowerCase().endsWith(ext))
-                );
-                
-                console.log(`🎵 Found ${folderAudioFiles.length} audio files in folder: ${folder.name}`);
-                
-                for (const file of folderAudioFiles.slice(0, 10)) {
-                  const fullPath = `${folder.name}/${file.name}`;
-                  const { data: urlData } = supabase.storage.from(bucketName).getPublicUrl(fullPath);
-                  if (urlData?.publicUrl) {
-                    allTracks.push({
-                      id: `${bucketName}-${fullPath}-${Date.now()}-${Math.random()}`,
-                      title: file.name,
-                      url: urlData.publicUrl,
-                      bucket: bucketName,
-                      folder: folder.name,
-                      artwork_url: selectedGenre.image,
-                      size: file.metadata?.size || 0
-                    });
-                  }
-                }
-              }
+              allTracks.push({
+                id: `${bucketName}-${file.name}-${Date.now()}`,
+                title: file.name.replace(/\.[^/.]+$/, ""), // Remove extension
+                url: data.publicUrl,
+                bucket: bucketName,
+                folder: '',
+                artwork_url: selectedGenre.image,
+                size: file.metadata?.size || 0
+              });
             }
+          } else {
+            console.log(`📂 No files found in bucket: ${bucketName}`);
           }
         }
 
-        console.log(`🎯 Total tracks found: ${allTracks.length}`);
+        console.log(`🎯 TOTAL TRACKS LOADED: ${allTracks.length}`);
         
         if (allTracks.length > 0) {
-          // Shuffle and set tracks
-          const shuffledTracks = allTracks.sort(() => Math.random() - 0.5);
-          setTracks(shuffledTracks.slice(0, 50));
+          setTracks(allTracks);
         } else {
-          setError('No music found for this genre.');
+          setError('No music files found in the designated buckets.');
         }
         
       } catch (error) {
-        console.error('Failed to load tracks:', error);
+        console.error('❌ Failed to load tracks from buckets:', error);
         setError('Failed to load music. Please try again.');
       } finally {
         setIsTracksLoading(false);
-        if (!cancelled) loadLock.current = false;
       }
     };
 
-    loadTracks();
-    return () => { cancelled = true; loadLock.current = false; };
-  }, [goal?.id, selectedGenre?.id]);
+    loadTracksDirectly();
+  }, [goal?.id, selectedGenre?.id, selectedGenre?.buckets]);
 
   const handleTrackPlay = async (track: Track) => {
     try {
@@ -282,6 +201,7 @@ export const GenreView: React.FC = () => {
                     }
                   }}
                   className="bg-primary hover:bg-primary/90"
+                  disabled={tracks.length === 0}
                 >
                   Play All
                 </Button>
