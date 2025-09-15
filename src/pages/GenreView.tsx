@@ -119,7 +119,6 @@ export default function GenreView() {
           <div className="absolute inset-0 bg-black/40 rounded-lg flex items-end">
             <div className="p-6 text-white">
               <h1 className="text-4xl font-bold mb-2">{category.name}</h1>
-              <p className="text-lg opacity-90">{category.description}</p>
             </div>
           </div>
         </div>
