@@ -353,75 +353,10 @@ const GenreView: React.FC = () => {
           artwork: cardioRunningHorse
         }
       ];
-    } else if (goalId === 'mood-boost') {
-      return [
-        {
-          id: 'house-music',
-          name: 'House Music',
-          description: 'Energetic house beats for motivation and energy',
-          buckets: ['neuralpositivemusic/House'],
-          artwork: gradientForestAir
-        },
-        {
-          id: 'pop',
-          name: 'Pop',
-          description: 'Uplifting pop music for instant mood elevation',
-          buckets: ['pop'],
-          artwork: gradientGlacierBlue
-        },
-        {
-          id: 'dance-party',
-          name: 'Dance Party',
-          description: 'High-energy dance remixes and world beats',
-          buckets: ['moodboostremixesworlddance'],
-          artwork: cardioGoldenPath
-        },
-        {
-          id: 'edm-crossover',
-          name: 'EDM crossover (EDM)',
-          description: 'Electronic dance music crossover tracks for high energy',
-          buckets: ['neuralpositivemusic/EDM'],
-          artwork: gradientOceanCurrent
-        },
-        {
-          id: 'hiit-mood',
-          name: 'HIIT Mood',
-          description: 'High-intensity music for mood and energy',
-          buckets: ['HIIT'],
-          artwork: cardioGeometricSun
-        }
-      ];
-      return [
-        {
-          id: 'peaceful-piano',
-          name: 'Peaceful Piano',
-          description: 'Serene piano compositions',
-          buckets: ['Chopin'],
-          artwork: peacefulPianoArt
-        },
-        {
-          id: 'crossover-classical',
-          name: 'Classical Crossover',
-          description: 'Modern classical compositions',
-          buckets: ['Chopin'],
-          artwork: gradientForestAir
-        },
-        {
-          id: 'electronic',
-          name: 'Electronic',
-          description: 'Ambient electronic music',
-          buckets: ['samba'],
-          artwork: gradientDesertDawn
-        },
-        {
-          id: 'world-new-age',
-          name: 'World & New Age',
-          description: 'Global sounds and new age music',
-          buckets: ['samba'],
-          artwork: newAgeArt
-        }
-      ];
     }
+
+    // Default fallback
+    return [];
   };
 
   // Get the selected genre
