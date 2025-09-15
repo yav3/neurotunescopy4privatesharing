@@ -62,7 +62,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['audio', 'neuralpositivemusic'],
+        buckets: ['audio', 'NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
@@ -92,7 +92,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['energyboost', 'hiit', 'neuralpositivemusic'],
+        buckets: ['ENERGYBOOST', 'HIIT'],
         image: moodBoostCoastalCove,
       },
       {
@@ -113,7 +113,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
-        buckets: ['audio', 'neuralpositivemusic'],
+        buckets: ['ENERGYBOOST', 'EDM'],
         image: moodBoostLeafDewdrop,
       },
     ],
@@ -136,7 +136,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-chill',
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
-        buckets: ['audio', 'neuralpositivemusic'],
+        buckets: ['audio', 'NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop,
       },
       {
@@ -166,7 +166,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'energetic-house',
         name: 'Energetic House',
         description: 'Upbeat house music for energy and motivation',
-        buckets: ['ENERGYBOOST', 'HIIT', 'neuralpositivemusic'],
+        buckets: ['ENERGYBOOST', 'HIIT'],
         image: cardioSunsetBeachFlowers
       },
       {
@@ -189,7 +189,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-cardio',
         name: 'House Cardio',
         description: 'Pumping house music for cardiovascular exercise',
-        buckets: ['ENERGYBOOST', 'HIIT', 'neuralpositivemusic'],
+        buckets: ['ENERGYBOOST', 'HIIT'],
         image: cardioFloralField,
       },
       {
