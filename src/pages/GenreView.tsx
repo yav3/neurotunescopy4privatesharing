@@ -15,6 +15,10 @@ import moodBoostFloralField from '@/assets/mood-boost-floral-field.png';
 import moodBoostLeafDewdrop from '@/assets/mood-boost-leaf-dewdrop.png';
 import moodBoostNordicFjord from '@/assets/mood-boost-nordic-fjord.png';
 
+// Import new energy boost artwork
+import energyBoostGrandPiano from '@/assets/energy-boost-grand-piano-mountains.png';
+import energyBoostViolin from '@/assets/energy-boost-violin-hills.jpg';
+
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
 import newAgeArt from '@/assets/world-instruments-wildflower-hill.jpg';
@@ -304,14 +308,14 @@ const GenreView: React.FC = () => {
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: energyHorseField
+          artwork: energyBoostViolin
         },
         {
           id: 'motivational-beats',
           name: 'House Music Energy',
           description: 'Upbeat house music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
-          artwork: energyWaveAbstract
+          artwork: energyBoostGrandPiano
         },
         {
           id: 'hiit-energy',

@@ -14,6 +14,10 @@ import moodBoostLeafDewdrop from '@/assets/mood-boost-leaf-dewdrop.png';
 import moodBoostLeafDroplets from '@/assets/mood-boost-leaf-droplets.png';
 import moodBoostNordicFjord from '@/assets/mood-boost-nordic-fjord.png';
 
+// Import new energy boost artwork
+import energyBoostGrandPiano from '@/assets/energy-boost-grand-piano-mountains.png';
+import energyBoostViolin from '@/assets/energy-boost-violin-hills.jpg';
+
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
 import newAgeArt from '@/assets/new-age-forest-flute-natural.jpg';
@@ -234,14 +238,14 @@ const getGenreOptions = (goalId: string) => {
         name: 'Happy House & Dance',
         description: 'Upbeat house and dance music for energy and motivation',
         buckets: ['neuralpositivemusic/House'],
-        image: energyWaveAbstract
+        image: energyBoostGrandPiano
       },
       {
         id: 'musical-theater-energy',
         name: 'Musical Theater Energy',
         description: 'Uplifting musical theater pieces for motivation',
         buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-        image: energyHorseField
+        image: energyBoostViolin
       },
       {
         id: 'hiit-energy',
