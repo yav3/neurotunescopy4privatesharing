@@ -192,6 +192,13 @@ const GenreView: React.FC = () => {
           artwork: sambaImage
         },
         {
+          id: 'folk-americana-bluegrass',
+          name: 'Country, Americana, & Bluegrass',
+          description: 'Calming country and americana music for relaxation',
+          buckets: ['countryandamericana'],
+          artwork: acousticArt
+        },
+        {
           id: 'pain-reducing-world',
           name: 'Pain Reducing World',
           description: 'Global healing sounds for stress and anxiety',
