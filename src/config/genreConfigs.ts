@@ -105,28 +105,28 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['neuralpositivemusic/House'],
+        buckets: ['neuralpositivemusic'],
         image: moodBoostCoastalCove
       },
       {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
-        buckets: ['pop'],
+        buckets: ['audio'],
         image: moodBoostSunsetFlowers
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['moodboostremixesworlddance'],
+        buckets: ['neuralpositivemusic'],
         image: moodBoostDancePartyWaves
       },
       {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
-        buckets: ['EDM'],
+        buckets: ['neuralpositivemusic'],
         image: moodBoostLeafDewdrop
       },
     ],
