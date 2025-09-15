@@ -69,6 +69,7 @@ import energyMusicalOceanWave from '@/assets/energy-musical-ocean-wave.jpg';
 // Import beautiful New Age artwork
 import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
 import energeticClassicalHibiscus from '@/assets/energetic-classical-hibiscus.png';
+import maximumEnergyEdmScene from '@/assets/maximum-energy-edm-scene.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -115,7 +116,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['newageworldstressanxietyreduction'],
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
@@ -226,8 +227,8 @@ const getGenreOptions = (goalId: string) => {
         id: 'energy-boost-max',
         name: 'Maximum Energy Boost',
         description: 'Peak energy music for maximum motivation',
-        buckets: ['EDM'],
-        image: energyLightningMeadow
+        buckets: ['neuralpositivemusic/EDM'],
+        image: maximumEnergyEdmScene
       },
       {
         id: 'energetic-classical',
