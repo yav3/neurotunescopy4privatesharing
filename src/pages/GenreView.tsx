@@ -26,12 +26,19 @@ export const GenreView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { isPlaying, play, pause, audioLoading } = useAudioStore();
+  const { isPlaying, play, pause, isLoading: audioLoading } = useAudioStore();
   const loadLock = useRef(false);
   const lastLoadKey = useRef<string>('');
 
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
-  const selectedGenre = goal?.genres.find(g => g.id === genreId);
+  // For now, create a mock genre based on the genreId since the goal structure doesn't have genres
+  const selectedGenre = genreId && goal ? {
+    id: genreId,
+    name: genreId.charAt(0).toUpperCase() + genreId.slice(1).replace('-', ' '),
+    description: `Music for ${goal.name}`,
+    artwork: goal.artwork,
+    buckets: goal.musicBuckets
+  } : null;
 
   // Debug logging
   useEffect(() => {
@@ -255,6 +262,8 @@ export const GenreView: React.FC = () => {
           <VerticalTrackList
             tracks={tracks}
             onTrackPlay={handleTrackPlay}
+            isPlaying={isPlaying}
+            onTogglePlay={() => isPlaying ? pause() : play()}
             isLoading={audioLoading}
           />
         )}
