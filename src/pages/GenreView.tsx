@@ -305,35 +305,35 @@ const GenreView: React.FC = () => {
           name: 'Energetic Classical',
           description: 'Dynamic classical pieces for vitality',
           buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-          artwork: gradientDesertDawn
+          artwork: '/lovable-uploads/yellow-flowering-field.jpeg'
         },
         {
           id: 'motivational-beats',
           name: 'Happy House & Dance',
           description: 'Upbeat house and dance music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
-          artwork: cardioTropicalPalms
+          artwork: '/lovable-uploads/coastal-cove.png'
         },
         {
           id: 'energy-boost-core',
           name: 'Energy Boost',
           description: 'High-energy tracks for maximum motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: cardioSunsetField
+          artwork: '/lovable-uploads/colorful-flower-field.png'
         },
         {
           id: 'musical-theater-energy',
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: cardioWaveEnergy
+          artwork: '/lovable-uploads/piano-mountain-meadow.png'
         },
         {
           id: 'hiit-energy',
           name: 'HIIT Music',
           description: 'High-intensity interval training music for energy',
           buckets: ['HIIT'],
-          artwork: cardioRunningHorse
+          artwork: '/lovable-uploads/intense-sunrise.jpeg'
         }
       ];
     }
