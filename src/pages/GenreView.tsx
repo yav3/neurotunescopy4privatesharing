@@ -61,39 +61,6 @@ import cardioWaveEnergy from '@/assets/cardio-wave-energy.jpg';
 import cardioRunningHorse from '@/assets/cardio-running-horse.jpg';
 import cardioGoldenPath from '@/assets/cardio-golden-path.jpg';
 
-// Fallback track generator with varied album art
-const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
-  const trackNames = [
-    'Peaceful Focus', 'Classical Concentration', 
-    'Mozart Modern', 'Therapeutic Symphony', 'Ambient Classical',
-    'Focus Flow', 'Mindful Melody', 'Serene Strings',
-    'Calm Composition', 'Tranquil Tones', 'Gentle Harmony'
-  ];
-
-  // Fallback to default artwork if no album art provided
-  const defaultArtwork = [
-    crossoverClassicalArt, newAgeArt, electronicArt, 
-    acousticArt, peacefulPianoArt
-  ];
-  const artworkOptions = albumArtUrls.length > 0 ? albumArtUrls : defaultArtwork;
-
-  return trackNames.map((name, index) => ({
-    id: `fallback-${genreName.toLowerCase()}-${index}`,
-    title: `${name} ${goalName}`,
-    storage_bucket: 'fallback',
-    storage_key: `fallback/${name.toLowerCase().replace(/\s+/g, '-')}.mp3`,
-    genre: genreName,
-    bpm: 60 + (index * 5),
-    // Provide a guaranteed working local sample so playback always works
-    stream_url: '/audio/sample.mp3',
-    artwork_url: artworkOptions[Math.floor(Math.random() * artworkOptions.length)],
-    audio_status: 'working' as const,
-    therapeutic_applications: [{
-      frequency_band_primary: ['delta', 'theta', 'alpha', 'beta', 'gamma'][index % 5],
-      condition_targets: [goalName.toLowerCase()]
-    }]
-  }));
-};
 
 interface GenreOption {
   id: string;
@@ -120,6 +87,7 @@ const GenreView: React.FC = () => {
   const { goalId, genreId } = useParams<{ goalId: string; genreId: string }>();
   const navigate = useNavigate();
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { currentTrack, isPlaying, playFromGoal, play, pause, isLoading: audioLoading } = useAudioStore();
 
@@ -564,15 +532,15 @@ const GenreView: React.FC = () => {
           console.log(`✅ Set ${finalTracks.length} unique tracks (from ${allTracks.length} total)`);
           console.log(`🎵 Sample tracks:`, finalTracks.slice(0, 3).map(t => ({ title: t.title, artwork: t.artwork_url })));
         } else {
-          console.log('📂 No tracks found in any bucket, using fallback');
-          const fallbackTracks = generateFallbackTracks(selectedGenre.name, goal.name, albumArtUrls);
-          setTracks(fallbackTracks);
-          console.log(`🔄 Set ${fallbackTracks.length} fallback tracks`);
+          console.log('📂 No tracks found in any bucket for this genre');
+          setError('No music available for this genre. Please try another genre or contact support.');
+          setTracks([]);
         }
         
       } catch (error) {
         console.error(`❌ Failed to load tracks:`, error);
-        setTracks(generateFallbackTracks(selectedGenre.name, goal.name));
+        setError('Failed to load music. Please try again or contact support.');
+        setTracks([]);
       } finally {
         setIsLoading(false);
         if (!cancelled) loadLock.current = false;
