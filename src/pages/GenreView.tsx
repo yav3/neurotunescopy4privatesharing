@@ -270,13 +270,6 @@ const GenreView: React.FC = () => {
     } else if (goalId === 'energy-boost') {
       return [
         {
-          id: 'energy-boost-core',
-          name: 'Energy Boost Core',
-          description: 'Maximum energy tracks for motivation',
-          buckets: ['ENERGYBOOST'],
-          artwork: energyBoostArtwork
-        },
-        {
           id: 'energetic-classical',
           name: 'Classical Energy Boost',
           description: 'Dynamic classical pieces for vitality',
@@ -327,13 +320,6 @@ const GenreView: React.FC = () => {
           description: 'Electronic dance music for high-intensity cardio',
           buckets: ['neuralpositivemusic/EDM'],
           artwork: edmCardioCyber
-        },
-        {
-          id: 'energy-boost-cardio',
-          name: 'Energy Boost',
-          description: 'Maximum energy tracks for intense cardio',
-          buckets: ['ENERGYBOOST'],
-          artwork: energyCardioLightning
         },
         {
           id: 'pop-cardio',
