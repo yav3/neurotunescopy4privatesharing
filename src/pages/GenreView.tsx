@@ -163,6 +163,13 @@ const GenreView: React.FC = () => {
           artwork: sambaImage
         },
         {
+          id: 'folk-americana-bluegrass',
+          name: 'Country, Americana, & Bluegrass',
+          description: 'Calming country and americana music for relaxation',
+          buckets: ['countryandamericana'],
+          artwork: '/lovable-uploads/folk-instruments-meadow.png'
+        },
+        {
           id: 'new-age-stress',
           name: 'New Age & World',
           description: 'Ethereal new age sounds for deep relaxation',
@@ -175,6 +182,20 @@ const GenreView: React.FC = () => {
           description: 'Soothing classical music for deep relaxation',
           buckets: ['sonatasforstress'],
           artwork: '/src/assets/calming-classical-lakeside.jpg'
+        },
+        {
+          id: 'opera',
+          name: 'Opera',
+          description: 'Classical opera for emotional release and stress relief',
+          buckets: ['opera'],
+          artwork: operaArt
+        },
+        {
+          id: 'sonatas',
+          name: 'Sonatas',
+          description: 'Classical sonatas for deep stress relief',
+          buckets: ['sonatasforstress'],
+          artwork: '/lovable-uploads/string-quartet-studio.png'
         },
         {
           id: 'peaceful-piano',
