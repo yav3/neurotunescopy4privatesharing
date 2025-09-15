@@ -55,7 +55,7 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
     id: 'cardio-support',
     name: 'Cardio & Exercise',
     description: 'High-energy music for workouts and cardio',
-    buckets: ['HIIT', 'ENERGYBOOST', 'samba', 'pop'],
+    buckets: ['EDM', 'HIIT'],
     image: cardioCard
   }
 ];
