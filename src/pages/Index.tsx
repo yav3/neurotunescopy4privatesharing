@@ -8,6 +8,8 @@ import { THERAPEUTIC_CATEGORIES } from '@/config/therapeuticCategories';
 import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import { useAudioStore } from '@/stores/audioStore';
+import { toast } from 'sonner';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -15,13 +17,18 @@ const Index = () => {
     isDark,
     toggle
   } = useDarkMode();
-  const handleGoalSelect = (category: typeof THERAPEUTIC_CATEGORIES[0]) => {
-    console.log('🎯 Index: Attempting to navigate to:', `/goal/${category.id}`, 'from:', window.location.pathname);
+  const { playFromGoal, isLoading } = useAudioStore();
+
+  const handleGoalSelect = async (category: typeof THERAPEUTIC_CATEGORIES[0]) => {
+    console.log('🎯 Playing music for category:', category.name);
+    toast.info(`Loading ${category.name} music...`);
+    
     try {
-      navigate(`/goal/${category.id}`);
-      console.log('✅ Index: Successfully called navigate()');
+      await playFromGoal(category.id);
+      toast.success(`Playing ${category.name} music`);
     } catch (error) {
-      console.error('❌ Index: Error during navigate():', error);
+      console.error('❌ Error playing music:', error);
+      toast.error('Failed to load music. Please try again.');
     }
   };
   return (
