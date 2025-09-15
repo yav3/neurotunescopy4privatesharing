@@ -68,6 +68,7 @@ import energyMusicalOceanWave from '@/assets/energy-musical-ocean-wave.jpg';
 
 // Import beautiful New Age artwork
 import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
+import energeticClassicalHibiscus from '@/assets/energetic-classical-hibiscus.png';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -225,7 +226,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'energy-boost-max',
         name: 'Maximum Energy Boost',
         description: 'Peak energy music for maximum motivation',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['neuralpositivemusic/EDM'],
         image: energyLightningMeadow
       },
       {
@@ -233,7 +234,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
         buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-        image: energyMusicalOceanWave
+        image: energeticClassicalHibiscus
       },
       {
         id: 'musical-theater-energy',

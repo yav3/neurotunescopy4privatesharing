@@ -616,30 +616,6 @@ const GenreView: React.FC = () => {
     }
   };
 
-  const handlePlayGenreMix = async () => {
-    if (!goal || !selectedGenre || audioLoading) {
-      toast.error("Cannot start mix, please wait...");
-      return;
-    }
-
-    try {
-      console.log(`🎵 Playing genre mix for:`, selectedGenre.name, 'buckets:', selectedGenre.buckets);
-      toast.loading(`Loading ${selectedGenre.name} mix...`, { id: "genre-mix" });
-      
-      const audioStore = useAudioStore.getState();
-      // Use specific buckets for this genre to prevent classical mixing in house music
-      const trackCount = await audioStore.playFromGoal(goal.id, selectedGenre.buckets);
-      
-      if (trackCount > 0) {
-        toast.success(`Playing ${selectedGenre.name} mix (${trackCount} tracks)`, { id: "genre-mix" });
-      } else {
-        toast.error("No tracks available for this genre", { id: "genre-mix" });
-      }
-    } catch (error) {
-      console.error('❌ Failed to play genre mix:', error);
-      toast.error("Failed to start genre mix", { id: "genre-mix" });
-    }
-  };
 
   if (!goal || !selectedGenre) {
     return (
@@ -688,18 +664,6 @@ const GenreView: React.FC = () => {
           <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-foreground leading-tight">
             {selectedGenre.name}
           </h2>
-          
-          {/* Play Genre Mix Button */}
-          <div className="pt-2">
-            <Button 
-              onClick={handlePlayGenreMix}
-              disabled={audioLoading}
-              size="lg"
-              className="flex items-center gap-2 font-semibold"
-            >
-              🎵 Play {selectedGenre.name} Mix
-            </Button>
-          </div>
         </div>
 
 
