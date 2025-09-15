@@ -274,35 +274,35 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost Core',
           description: 'Maximum energy tracks for motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: '/lovable-uploads/colorful-flower-field.png'
+          artwork: energyBoostDataAnalytics
         },
         {
           id: 'energetic-classical',
           name: 'Classical Energy Boost',
           description: 'Dynamic classical pieces for vitality',
           buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-          artwork: '/lovable-uploads/yellow-flowering-field.jpeg'
+          artwork: energySunsetField
         },
         {
           id: 'musical-theater-energy',
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: '/lovable-uploads/piano-mountain-meadow.png'
+          artwork: energyHorseField
         },
         {
           id: 'motivational-beats',
           name: 'House Music Energy',
           description: 'Upbeat house music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
-          artwork: '/lovable-uploads/coastal-cove.png'
+          artwork: energyWaveAbstract
         },
         {
           id: 'hiit-energy',
           name: 'HIIT Music',
           description: 'High-intensity interval training music for energy',
           buckets: ['HIIT'],
-          artwork: '/lovable-uploads/intense-sunrise.jpeg'
+          artwork: energyOceanWaves
         }
       ];
     } else if (goalId === 'cardio-support') {
