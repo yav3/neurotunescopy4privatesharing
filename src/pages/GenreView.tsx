@@ -387,7 +387,7 @@ const GenreView: React.FC = () => {
   useEffect(() => {
     if (!goal || !selectedGenre) return;
 
-    const loadKey = `${goal.id}:${selectedGenre.id}`;
+    const loadKey = `${goal.id}:${selectedGenre.id}:${selectedGenre.buckets.join(',')}`;
     if (loadLock.current && lastLoadKey.current === loadKey) {
       console.log('⏭️ Skipping duplicate load for', loadKey);
       return;
@@ -408,6 +408,13 @@ const GenreView: React.FC = () => {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         console.log(`🎯 Goal: ${goal.name}, Genre: ${selectedGenre.id}`);
         console.log(`📋 Available music buckets from config:`, goal.musicBuckets);
+        console.log(`🔍 CRITICAL DEBUG - Selected Genre Buckets:`, selectedGenre.buckets);
+        console.log(`🔍 CRITICAL DEBUG - Is Classical Crossover?`, selectedGenre.id === 'crossover-classical');
+        console.log(`🔍 CRITICAL DEBUG - Should be using classicalfocus bucket!`);
+        
+        // Force clear any existing data 
+        setTracks([]);
+        setError(null);
 
         // Determine album art sources
         let albumArtUrls: string[] = [];
