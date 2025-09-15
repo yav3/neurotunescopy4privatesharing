@@ -87,7 +87,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['NewAgeandWorldFocus'],
+        buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
       },
       {
