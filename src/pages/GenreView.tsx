@@ -23,6 +23,7 @@ interface Track {
 }
 
 export const GenreView: React.FC = () => {
+  console.log('🚀 GenreView component loaded at:', new Date().toISOString());
   const { goalId, genreId } = useParams<{ goalId: string; genreId: string }>();
   const navigate = useNavigate();
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -86,6 +87,8 @@ export const GenreView: React.FC = () => {
         console.log(`🎵 Loading ${selectedGenre.name} tracks from buckets:`, selectedGenre.buckets);
         console.log(`🔍 CRITICAL DEBUG - Selected Genre Buckets:`, selectedGenre.buckets);
         console.log(`🔍 CRITICAL DEBUG - Is Classical Crossover?`, selectedGenre.id === 'crossover-classical');
+        console.log(`🔍 FORCE REFRESH DEBUG - Date:`, new Date().toISOString());
+        console.log(`🔍 BUCKET ACCESS TEST - About to process buckets:`, selectedGenre.buckets);
 
         // Process each bucket with enhanced folder handling
         for (const bucketPath of selectedGenre.buckets) {
