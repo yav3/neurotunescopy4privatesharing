@@ -1,13 +1,11 @@
 /**
- * Force Update React Hooks
+ * Force Render & Update Utilities  
  * Solutions for when UI updates fail to render/show in React apps
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-/**
- * Hook that provides a function to force component re-render
- */
+// 1. Force Component Re-render Hook
 export const useForceUpdate = () => {
   const [, setTick] = useState(0);
   const update = useCallback(() => {
@@ -16,10 +14,7 @@ export const useForceUpdate = () => {
   return update;
 };
 
-/**
- * Hook that provides a key that changes on force update
- * Useful for forcing child component re-renders
- */
+// 2. Force Re-render with Key Change
 export const useKeyUpdate = () => {
   const [key, setKey] = useState(0);
   const forceUpdate = useCallback(() => {
