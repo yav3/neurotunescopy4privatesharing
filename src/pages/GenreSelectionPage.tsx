@@ -143,7 +143,7 @@ const getGenreOptions = (goalId: string) => {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
-        buckets: ['pop'],
+        buckets: ['audio'],
         image: popMusicArt
       },
       {
