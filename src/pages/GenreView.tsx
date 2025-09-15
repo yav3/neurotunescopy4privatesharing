@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 import { createTherapeuticDebugger } from '@/utils/therapeuticConnectionDebugger';
 import { TherapeuticMusicDebugger } from '@/utils/therapeuticMusicDebugger';
+import { playFromGenre } from '@/actions/playFromGoal';
 
 interface Track {
   id: string;
@@ -32,14 +33,11 @@ export const GenreView: React.FC = () => {
   const lastLoadKey = useRef<string>('');
 
   const goal = goalId ? GOALS_BY_ID[goalId] : null;
-  // For now, create a mock genre based on the genreId since the goal structure doesn't have genres
-  const selectedGenre = genreId && goal ? {
-    id: genreId,
-    name: genreId.charAt(0).toUpperCase() + genreId.slice(1).replace('-', ' '),
-    description: `Music for ${goal.name}`,
-    artwork: goal.artwork,
-    buckets: goal.musicBuckets
-  } : null;
+  
+  // Get the actual genre configuration with correct buckets
+  const { getGenreOptions } = require('@/config/genreConfigs');
+  const genreOptions = goalId ? getGenreOptions(goalId) : [];
+  const selectedGenre = genreOptions.find(genre => genre.id === genreId);
 
   // Comprehensive debug logging
   useEffect(() => {
@@ -130,7 +128,7 @@ export const GenreView: React.FC = () => {
                     url: urlData.publicUrl,
                     bucket: bucketName,
                     folder: '',
-                    artwork_url: selectedGenre.artwork,
+                    artwork_url: selectedGenre.image,
                     size: file.metadata?.size || 0
                   });
                 }
@@ -160,7 +158,7 @@ export const GenreView: React.FC = () => {
                       url: urlData.publicUrl,
                       bucket: bucketName,
                       folder: folder.name,
-                      artwork_url: selectedGenre.artwork,
+                      artwork_url: selectedGenre.image,
                       size: file.metadata?.size || 0
                     });
                   }
@@ -244,7 +242,7 @@ export const GenreView: React.FC = () => {
           
           <div className="flex flex-col lg:flex-row lg:items-center gap-6">
             <img 
-              src={selectedGenre.artwork} 
+              src={selectedGenre.image} 
               alt={selectedGenre.name}
               className="w-full lg:w-48 h-48 object-cover rounded-xl shadow-lg"
             />
@@ -259,6 +257,19 @@ export const GenreView: React.FC = () => {
                 <span className="text-sm text-muted-foreground">
                   {tracks.length} tracks available
                 </span>
+                <Button 
+                  onClick={async () => {
+                    try {
+                      await playFromGenre(goalId!, selectedGenre.buckets);
+                      toast.success(`Playing ${selectedGenre.name}`);
+                    } catch (error) {
+                      toast.error('Failed to start music');
+                    }
+                  }}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  Play All
+                </Button>
               </div>
             </div>
           </div>
