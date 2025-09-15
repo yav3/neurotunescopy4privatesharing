@@ -35,6 +35,14 @@ import houseCardioDj from '@/assets/house-cardio-dj.jpg';
 import edmCardioCyber from '@/assets/edm-cardio-cyber.jpg';
 import energyCardioLightning from '@/assets/energy-cardio-lightning.jpg';
 import popCardioConcert from '@/assets/pop-cardio-concert.jpg';
+// Import unique artwork from user uploads
+import cardioSunsetField from '@/assets/cardio-sunset-field.jpg';
+import cardioForestLight from '@/assets/cardio-forest-light.jpg';
+import cardioGeometricSun from '@/assets/cardio-geometric-sun.jpg';
+import cardioTropicalPalms from '@/assets/cardio-tropical-palms.jpg';
+import cardioWaveEnergy from '@/assets/cardio-wave-energy.jpg';
+import cardioRunningHorse from '@/assets/cardio-running-horse.jpg';
+import cardioGoldenPath from '@/assets/cardio-golden-path.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -254,7 +262,7 @@ const GenreView: React.FC = () => {
           name: 'Dance Party',
           description: 'High-energy dance remixes and world beats',
           buckets: ['neuralpositivemusic/House'],
-          artwork: dancePartyArt
+          artwork: cardioForestLight
         },
         {
           id: 'edm-crossover',
@@ -316,28 +324,28 @@ const GenreView: React.FC = () => {
           name: 'Happy House & Dance',
           description: 'Upbeat house and dance music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
-          artwork: energyTropicalBeach
+          artwork: cardioTropicalPalms
         },
         {
           id: 'energy-boost-core',
           name: 'Energy Boost',
           description: 'High-energy tracks for maximum motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: energySunsetField
+          artwork: cardioSunsetField
         },
         {
           id: 'musical-theater-energy',
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: energyWaveAbstract
+          artwork: cardioWaveEnergy
         },
         {
           id: 'hiit-energy',
           name: 'HIIT Music',
           description: 'High-intensity interval training music for energy',
           buckets: ['HIIT'],
-          artwork: energyOceanWaves
+          artwork: cardioRunningHorse
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -361,7 +369,7 @@ const GenreView: React.FC = () => {
           name: 'Dance Party',
           description: 'High-energy dance remixes and world beats',
           buckets: ['moodboostremixesworlddance'],
-          artwork: dancePartyArt
+          artwork: cardioGoldenPath
         },
         {
           id: 'edm-crossover',
@@ -375,7 +383,7 @@ const GenreView: React.FC = () => {
           name: 'HIIT Mood',
           description: 'High-intensity music for mood and energy',
           buckets: ['HIIT'],
-          artwork: energyGeometricSpace
+          artwork: cardioGeometricSun
         }
       ];
       return [
