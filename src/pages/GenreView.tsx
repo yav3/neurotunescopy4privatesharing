@@ -28,37 +28,46 @@ export default function GenreView() {
   console.log('🔍 DEBUG - Available genres for goal:', genreOptions.map(g => ({ id: g.id, name: g.name, buckets: g.buckets })));
   console.log('🔍 DEBUG - Selected genre:', selectedGenre ? { id: selectedGenre.id, name: selectedGenre.name, buckets: selectedGenre.buckets } : 'NOT FOUND');
 
-  // Load tracks using the proper therapeutic database system  
+  // Load tracks using the specific genre bucket configuration
   useEffect(() => {
-    if (!goal) {
-      console.log('❌ No goal available');
-      setError('No therapeutic goal specified.');
+    if (!goal || !selectedGenre) {
+      console.log('❌ No goal or selected genre available');
+      setError('No therapeutic goal or genre specified.');
       setIsTracksLoading(false);
       return;
     }
 
-    const loadTherapeuticTracks = async () => {
+    const loadGenreSpecificTracks = async () => {
       setIsTracksLoading(true);
       setTracks([]);
       setError(null);
       
       try {
-        console.log(`🎯 Loading therapeutic tracks for goal: ${goal.id} (backend: ${goal.backendKey})`);
+        console.log(`🎯 Loading tracks for genre: ${selectedGenre.name} with buckets:`, selectedGenre.buckets);
         
-        // Use the proper therapeutic database system
-        const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
-        const { tracks: therapeuticTracks, error } = await getTherapeuticTracks(goal.backendKey, 50);
+        // Use the storageDirectAccess to get tracks from the specific genre buckets
+        const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
         
-        if (error) {
-          console.error('❌ Error loading therapeutic tracks:', error);
-          setError(`Failed to load music: ${error}`);
-          return;
+        let allGenreTracks: any[] = [];
+        
+        // Load tracks from each bucket specified for this genre
+        for (const bucketName of selectedGenre.buckets) {
+          console.log(`📂 Loading from bucket: ${bucketName}`);
+          const { tracks: bucketTracks, error } = await getTracksFromStorage(bucketName, 100);
+          
+          if (error) {
+            console.error(`❌ Error loading from bucket ${bucketName}:`, error);
+            continue;
+          }
+          
+          console.log(`✅ Loaded ${bucketTracks.length} tracks from ${bucketName}`);
+          allGenreTracks = [...allGenreTracks, ...bucketTracks];
         }
         
-        console.log(`🎵 Loaded ${therapeuticTracks.length} therapeutic tracks`);
+        console.log(`🎵 Total genre tracks loaded: ${allGenreTracks.length}`);
         
-        // Convert therapeutic tracks to our Track interface
-        const convertedTracks: Track[] = therapeuticTracks.map((track, index) => ({
+        // Convert to Track interface
+        const convertedTracks: Track[] = allGenreTracks.map((track, index) => ({
           id: track.id || `track-${index}`,
           unique_id: track.id || `track-${index}`,
           title: track.title || 'Unknown Track',
@@ -89,19 +98,19 @@ export default function GenreView() {
         if (convertedTracks.length > 0) {
           setTracks(convertedTracks);
         } else {
-          setError('No music tracks found for this therapeutic goal.');
+          setError('No music tracks found for this genre.');
         }
         
       } catch (error) {
-        console.error('❌ Failed to load therapeutic tracks:', error);
+        console.error('❌ Failed to load genre tracks:', error);
         setError('Failed to load music. Please try again.');
       } finally {
         setIsTracksLoading(false);
       }
     };
 
-    loadTherapeuticTracks();
-  }, [goal?.id, goal?.backendKey, selectedGenre]);
+    loadGenreSpecificTracks();
+  }, [goal?.id, selectedGenre?.id, selectedGenre?.buckets]);
 
   const handleTrackPlay = async (track: Track) => {
     try {
