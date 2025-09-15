@@ -6,7 +6,7 @@ import stressCard from '@/assets/therapeutic-card-2.png';
 import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-boost-tropical.jpg';
-import cardioCard from '@/assets/therapeutic-card-6.png';
+import cardioCard from '@/assets/cardio-mountain-lake.jpg';
 
 
 // Single source of truth for all therapeutic goals
