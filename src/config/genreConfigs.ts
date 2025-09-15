@@ -86,20 +86,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['audio', 'samba'],
         image: stressSambaTropicalSunset
       },
-      {
-        id: 'neuralpositivemusic',
-        name: 'Neural Positive Music',
-        description: 'Specially composed music for stress reduction',
-        buckets: ['audio', 'neuralpositivemusic'],
-        image: focusClassicalMountainLake
-      },
-      {
-        id: 'pain-reducing-world',
-        name: 'World Healing Music',
-        description: 'Global healing sounds for stress and anxiety',
-        buckets: ['audio', 'neuralpositivemusic'],
-        image: painWorldHealingGarden
-      }
     ],
     'mood-boost': [
       {
@@ -138,13 +124,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Soft classical music for comfort',
         buckets: ['audio', 'Chopin'],
         image: stressClassicalPeacefulStream,
-      },
-      {
-        id: 'world-new-age',
-        name: 'World Healing Music',
-        description: 'Global healing sounds for pain relief',
-        buckets: ['audio', 'neuralpositivemusic'],
-        image: painWorldHealingGarden,
       },
       {
         id: 'stress-reduction-classical',
