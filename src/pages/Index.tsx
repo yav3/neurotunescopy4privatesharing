@@ -4,7 +4,7 @@ import { ArrowLeft, Brain, Sun, Moon, Plus } from 'lucide-react';
 import logoImage from "@/assets/logo.png";
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { THERAPEUTIC_CATEGORIES } from '@/config/therapeuticCategories';
 import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
@@ -15,10 +15,10 @@ const Index = () => {
     isDark,
     toggle
   } = useDarkMode();
-  const handleGoalSelect = (goal: typeof THERAPEUTIC_GOALS[0]) => {
-    console.log('🎯 Index: Attempting to navigate to:', `/goals/${goal.id}/genres`, 'from:', window.location.pathname);
+  const handleGoalSelect = (category: typeof THERAPEUTIC_CATEGORIES[0]) => {
+    console.log('🎯 Index: Attempting to navigate to:', `/goal/${category.id}`, 'from:', window.location.pathname);
     try {
-      navigate(`/goals/${goal.id}/genres`);
+      navigate(`/goal/${category.id}`);
       console.log('✅ Index: Successfully called navigate()');
     } catch (error) {
       console.error('❌ Index: Error during navigate():', error);
@@ -67,9 +67,9 @@ const Index = () => {
         <div className="w-full max-w-4xl px-4">
           {/* Responsive cards grid with consistent spacing */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6 lg:gap-6 justify-items-center">
-            {THERAPEUTIC_GOALS.map((goal, index) => (
+            {THERAPEUTIC_CATEGORIES.map((category, index) => (
               <Card 
-                key={goal.id} 
+                key={category.id} 
                 className={cn(
                   "group relative overflow-hidden cursor-pointer transition-all duration-700 ease-out",
                   "aspect-[16/9] sm:aspect-[4/3] md:aspect-[5/4] rounded-lg border-0",
@@ -84,13 +84,13 @@ const Index = () => {
                   animationDelay: `${index * 100}ms`,
                   animationFillMode: 'both'
                 }} 
-                onClick={() => handleGoalSelect(goal)}
+                onClick={() => handleGoalSelect(category)}
               >
-                {/* Goal artwork backgrounds */}
+                {/* Category artwork backgrounds */}
                 <div className="absolute inset-0">
                   <img 
-                    src={goal.artwork} 
-                    alt={`${goal.name} therapeutic music`} 
+                    src={category.image} 
+                    alt={`${category.name} therapeutic music`} 
                     className="w-full h-full object-cover" 
                   />
                 </div>
@@ -100,7 +100,7 @@ const Index = () => {
                   {/* Overlay content if needed */}
                 </div>
 
-                {/* Goal title only - responsive sizing */}
+                {/* Category title only - responsive sizing */}
                 <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4 md:p-6">
                   <div className="relative z-10">
                     <h3 
@@ -112,7 +112,7 @@ const Index = () => {
                         fontWeight: '700'
                       }}
                     >
-                      {goal.name}
+                      {category.name}
                     </h3>
                   </div>
                 </div>

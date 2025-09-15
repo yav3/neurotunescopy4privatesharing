@@ -2,124 +2,61 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Play, RotateCcw } from 'lucide-react';
-import { useTherapeuticGoals } from '@/hooks/useTherapeuticGoals';
 import { useAudioStore } from '@/stores/audioStore';
-import { Track } from '@/types/index';
-import { TherapeuticMusicDebugger } from '@/utils/musicDebugger';
-
-// Use shared genre configurations instead of hardcoded ones
-import { getGenreOptions } from '@/config/genreConfigs';
+import { Track } from '@/types/simpleTrack';
+import { getCategoryById } from '@/config/therapeuticCategories';
+import { SimpleStorageService } from '@/services/simpleStorageService';
 
 export default function GenreView() {
-  const { goalId, genreId } = useParams();
+  const { goalId } = useParams();
   const navigate = useNavigate();
-  const { getGoal } = useTherapeuticGoals();
   
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const goal = goalId ? getGoal(goalId) : null;
-  const genreOptions = goalId ? getGenreOptions(goalId) : [];
-  const selectedGenre = genreOptions.find(g => g.id === genreId);
+  const category = goalId ? getCategoryById(goalId) : null;
 
-  // Debug logs to see what's happening with genre selection
-  console.log('🔍 DEBUG - URL params:', { goalId, genreId });
-  console.log('🔍 DEBUG - Available genres for goal:', genreOptions.map(g => ({ id: g.id, name: g.name, buckets: g.buckets })));
-  console.log('🔍 DEBUG - Selected genre:', selectedGenre ? { id: selectedGenre.id, name: selectedGenre.name, buckets: selectedGenre.buckets } : 'NOT FOUND');
+  console.log('🔍 DEBUG - Category ID:', goalId);
+  console.log('🔍 DEBUG - Found category:', category);
 
-  // Load tracks using the specific genre bucket configuration
+  // Load tracks using simple storage service
   useEffect(() => {
-    if (!goal || !selectedGenre) {
-      console.log('❌ No goal or selected genre available');
-      setError('No therapeutic goal or genre specified.');
+    if (!category) {
+      console.log('❌ No category available');
+      setError('No therapeutic category specified.');
       setIsTracksLoading(false);
       return;
     }
 
-    const loadGenreSpecificTracks = async () => {
+    const loadCategoryTracks = async () => {
       setIsTracksLoading(true);
       setTracks([]);
       setError(null);
       
       try {
-        console.log(`🎯 Loading tracks for genre: ${selectedGenre.name} with buckets:`, selectedGenre.buckets);
+        console.log(`🎯 Loading tracks for category: ${category.name}`);
         
-        // Use the storageDirectAccess to get tracks from the specific genre buckets
-        const { getTracksFromStorage } = await import('@/services/storageDirectAccess');
+        // Use simple storage service - no complex conversions needed
+        const tracks = await SimpleStorageService.getTracksFromCategory(category.id, 200);
         
-        let allGenreTracks: any[] = [];
-        
-        // Load tracks from all buckets specified for this genre in one call
-        console.log(`📂 Loading from all genre buckets: ${selectedGenre.buckets.join(', ')}`);
-        const { tracks: bucketTracks, error } = await getTracksFromStorage(
-          genreId || 'genre', // use genreId as goal identifier
-          300, // get more tracks to ensure variety
-          selectedGenre.buckets // pass the specific buckets for this genre
-        );
-        
-        if (error) {
-          console.error(`❌ Error loading from genre buckets:`, error);
-          setError(`Failed to load tracks: ${error}`);
-          return;
-        }
-        
-        if (bucketTracks && bucketTracks.length > 0) {
-          console.log(`✅ Found ${bucketTracks.length} tracks across all genre buckets`);
-          allGenreTracks = bucketTracks;
+        if (tracks.length > 0) {
+          console.log(`✅ Loaded ${tracks.length} tracks for category`);
+          setTracks(tracks);
         } else {
-          console.log(`📂 No tracks found in any genre buckets`);
-          setError('No music tracks found for this genre.');
-          return;
-        }
-        
-        console.log(`🎵 Total genre tracks loaded: ${allGenreTracks.length}`);
-        
-        // Convert to Track interface
-        const convertedTracks: Track[] = allGenreTracks.map((track, index) => ({
-          id: track.id || `track-${index}`,
-          unique_id: track.id || `track-${index}`,
-          title: track.title || 'Unknown Track',
-          url: track.stream_url || '',
-          file_path: track.stream_url || '',
-          bucket: track.storage_bucket || '',
-          folder: '',
-          artwork_url: selectedGenre?.image || '',
-          size: 0,
-          artist: track.artist,
-          bpm: track.bpm || track.bpm_est,
-          duration: track.duration_seconds,
-          camelot_key: '',
-          vad: { valence: 0.5, arousal: 0.5, dominance: 0.5 }
-        }));
-        
-        console.log(`✅ Converted ${convertedTracks.length} tracks for UI`);
-        console.log(`🎵 Sample track:`, convertedTracks[0] ? {
-          id: convertedTracks[0].id,
-          title: convertedTracks[0].title,
-          hasUrl: !!convertedTracks[0].file_path
-        } : 'No tracks');
-        
-        // Debug the music connection
-        const musicDebugger = new TherapeuticMusicDebugger();
-        musicDebugger.debugMusicConnection(selectedGenre, convertedTracks);
-        
-        if (convertedTracks.length > 0) {
-          setTracks(convertedTracks);
-        } else {
-          setError('No music tracks found for this genre.');
+          setError('No music tracks found for this category.');
         }
         
       } catch (error) {
-        console.error('❌ Failed to load genre tracks:', error);
+        console.error('❌ Failed to load category tracks:', error);
         setError('Failed to load music. Please try again.');
       } finally {
         setIsTracksLoading(false);
       }
     };
 
-    loadGenreSpecificTracks();
-  }, [goal?.id, selectedGenre?.id, selectedGenre?.buckets]);
+    loadCategoryTracks();
+  }, [category?.id]);
 
   const handleTrackPlay = async (track: Track) => {
     try {
@@ -144,7 +81,7 @@ export default function GenreView() {
   };
 
   const handleBack = () => {
-    navigate(`/goal/${goalId}`);
+    navigate('/');
   };
 
   const handleRetry = () => {
@@ -153,28 +90,14 @@ export default function GenreView() {
     setTracks([]);
   };
 
-  if (!goal) {
+  if (!category) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Goal Not Found</h2>
+          <h2 className="text-2xl font-bold mb-4">Category Not Found</h2>
           <Button onClick={() => navigate('/')} variant="outline">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!selectedGenre) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Genre Not Found</h2>
-          <Button onClick={handleBack} variant="outline">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Genres
           </Button>
         </div>
       </div>
@@ -185,18 +108,18 @@ export default function GenreView() {
     <div className="container mx-auto px-4 py-8">
       <Button onClick={handleBack} variant="ghost" className="mb-4">
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Genres
+        Back to Categories
       </Button>
 
       <div className="mb-8">
         <div 
           className="relative h-64 rounded-lg bg-cover bg-center mb-6"
-          style={{ backgroundImage: `url(${selectedGenre.image})` }}
+          style={{ backgroundImage: `url(${category.image})` }}
         >
           <div className="absolute inset-0 bg-black/40 rounded-lg flex items-end">
             <div className="p-6 text-white">
-              <h1 className="text-4xl font-bold mb-2">{selectedGenre.name}</h1>
-              <p className="text-lg opacity-90">{goal.name}</p>
+              <h1 className="text-4xl font-bold mb-2">{category.name}</h1>
+              <p className="text-lg opacity-90">{category.description}</p>
             </div>
           </div>
         </div>
@@ -231,7 +154,7 @@ export default function GenreView() {
 
       {!isTracksLoading && !error && tracks.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No tracks found for this genre.</p>
+          <p className="text-muted-foreground">No tracks found for this category.</p>
         </div>
       )}
 
