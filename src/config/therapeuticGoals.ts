@@ -5,7 +5,7 @@ import focusCard from '@/assets/therapeutic-card-1.png';
 import stressCard from '@/assets/therapeutic-card-2.png';
 import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
-import energyBoostCard from '@/assets/therapeutic-card-5.png';
+import energyBoostCard from '@/assets/energy-boost-ocean-splash.png';
 import cardioCard from '@/assets/therapeutic-card-6.png';
 
 // Single source of truth for all therapeutic goals
