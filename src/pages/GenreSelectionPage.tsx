@@ -72,6 +72,7 @@ import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
 import energeticClassicalHibiscus from '@/assets/energetic-classical-hibiscus.png';
 import maximumEnergyEdmScene from '@/assets/maximum-energy-edm-scene.jpg';
 import focusZenStones from '@/assets/focus-zen-stones.png';
+import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical-landscape.jpg';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -82,7 +83,7 @@ const getGenreOptions = (goalId: string) => {
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
         buckets: ['neuralpositivemusic'],
-        image: focusClassicalMountainLake
+        image: focusCrossoverClassicalLandscape
       },
       {
         id: 'new-age',
