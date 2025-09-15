@@ -70,6 +70,7 @@ import energyMusicalOceanWave from '@/assets/energy-musical-ocean-wave.jpg';
 import newAgeLeafDewdrop from '@/assets/new-age-leaf-dewdrop.png';
 import energeticClassicalHibiscus from '@/assets/energetic-classical-hibiscus.png';
 import maximumEnergyEdmScene from '@/assets/maximum-energy-edm-scene.jpg';
+import focusZenStones from '@/assets/focus-zen-stones.png';
 
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
@@ -90,25 +91,11 @@ const getGenreOptions = (goalId: string) => {
         image: newAgeLeafDewdrop
       },
       {
-        id: 'bach-transpositions',
-        name: 'Bach Transpositions',
-        description: 'Modern interpretations of Bach for deep focus',
-        buckets: ['focus-music'],
-        image: focusBachWaterfallPiano
-      },
-      {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for deep concentration',
         buckets: ['Chopin'],
-        image: focusPianoCherryBlossoms
-      },
-      {
-        id: 'opera-focus',
-        name: 'Opera',
-        description: 'Classical opera for focused listening',
-        buckets: ['opera'],
-        image: focusOperaNatureStage
+        image: focusZenStones
       }
     ],
     'stress-anxiety-support': [
