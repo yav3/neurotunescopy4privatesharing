@@ -21,7 +21,7 @@ import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
-import energyBoostDataAnalytics from '@/assets/energy-boost-data-analytics.jpg';
+import energyBoostArtwork from '@/assets/energy-boost-artwork.jpg';
 import energySunsetField from '@/assets/energy-sunset-field.jpg';
 import energyHorseField from '@/assets/energy-horse-field.jpg';
 import energyWaveAbstract from '@/assets/energy-wave-abstract.jpg';
@@ -274,7 +274,7 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost Core',
           description: 'Maximum energy tracks for motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: energyBoostDataAnalytics
+          artwork: energyBoostArtwork
         },
         {
           id: 'energetic-classical',
