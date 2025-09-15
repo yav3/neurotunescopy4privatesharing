@@ -52,8 +52,15 @@ const getGenreOptions = (goalId: string) => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['neuralpositivemusic/Classical'],
+        buckets: ['neuralpositivemusic'],
         image: crossoverClassicalArt
+      },
+      {
+        id: 'classical-focus',
+        name: 'Classical Focus',
+        description: 'Traditional classical music for deep focus',
+        buckets: ['classicalfocus'],
+        image: stringsCrystalPalace
       },
       {
         id: 'new-age',
@@ -75,6 +82,13 @@ const getGenreOptions = (goalId: string) => {
         description: 'Gentle piano melodies for deep concentration',
         buckets: ['Chopin'],
         image: peacefulPianoArt
+      },
+      {
+        id: 'opera-focus',
+        name: 'Opera',
+        description: 'Classical opera for focused listening',
+        buckets: ['opera'],
+        image: operaLuminousHall
       }
     ],
     'stress-anxiety-support': [
@@ -100,41 +114,25 @@ const getGenreOptions = (goalId: string) => {
         image: peacefulPianoArt
       },
       {
-        id: 'opera',
-        name: 'Opera',
-        description: 'Classical opera for emotional release and stress relief',
-        buckets: ['opera'],
-        image: operaLuminousHall
-      }
-    ],
-    'cardio-support': [
-      {
-        id: 'edm-cardio',
-        name: 'EDM',
-        description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['neuralpositivemusic/EDM'],
-        image: electronicArt
+        id: 'samba',
+        name: 'Samba',
+        description: 'Relaxing Brazilian samba rhythms for stress relief',
+        buckets: ['samba'],
+        image: sambaImage
       },
       {
-        id: 'house-cardio',
-        name: 'House Cardio',
-        description: 'Pumping house music for cardiovascular exercise',
-        buckets: ['house'],
-        image: houseMusicArt
+        id: 'neuralpositivemusic',
+        name: 'Neural Positive Music',
+        description: 'Specially composed music for stress reduction',
+        buckets: ['neuralpositivemusic'],
+        image: crossoverClassicalArt
       },
       {
-        id: 'pop-cardio',
-        name: 'Pop Cardio',
-        description: 'Energetic pop hits perfect for cardio sessions',
-        buckets: ['pop'],
-        image: popMusicArt
-      },
-      {
-        id: 'energy-boost-cardio',
-        name: 'Energy Boost',
-        description: 'Maximum energy tracks for intense cardio',
-        buckets: ['ENERGYBOOST'],
-        image: electronicArt
+        id: 'pain-reducing-world',
+        name: 'World Healing Music',
+        description: 'Global healing sounds for stress and anxiety',
+        buckets: ['painreducingworld'],
+        image: worldInstrumentsZen
       }
     ],
     'mood-boost': [
@@ -166,22 +164,8 @@ const getGenreOptions = (goalId: string) => {
         buckets: ['neuralpositivemusic/EDM'],
         image: moodBoostLeafDewdrop
       },
-      {
-        id: 'hiit-mood',
-        name: 'HIIT Mood',
-        description: 'High-intensity music for mood and energy',
-        buckets: ['HIIT'],
-        image: moodBoostNordicFjord
-      }
     ],
     'pain-support': [
-      {
-        id: 'world-new-age',
-        name: 'World',
-        description: 'Global healing sounds for pain relief',
-        buckets: ['painreducingworld'],
-        image: worldPainReliefOud
-      },
       {
         id: 'gentle-classical',
         name: 'Gentle Classical',
@@ -190,11 +174,25 @@ const getGenreOptions = (goalId: string) => {
         image: stringsCrystalPalace
       },
       {
-        id: 'serene-sonatas',
-        name: 'Serene Sonatas',
-        description: 'Peaceful classical sonatas for pain relief',
-        buckets: ['sonatasforstress'],
-        image: '/src/assets/calming-classical-lakeside.jpg'
+        id: 'world-new-age',
+        name: 'World Healing Music',
+        description: 'Global healing sounds for pain relief',
+        buckets: ['painreducingworld'],
+        image: worldPainReliefOud
+      },
+      {
+        id: 'stress-reduction-classical',
+        name: 'Stress Reduction Classical',
+        description: 'Classical music specifically for pain and stress relief',
+        buckets: ['neuralpositivemusic/stressreductionclassical'],
+        image: stringsCrystalPalace
+      },
+      {
+        id: 'new-age-chill',
+        name: 'New Age Chill',
+        description: 'Calming new age sounds for pain management',
+        buckets: ['neuralpositivemusic/newagechill'],
+        image: newageRadiantGarden
       },
       {
         id: 'peaceful-piano',
@@ -206,18 +204,18 @@ const getGenreOptions = (goalId: string) => {
     ],
     'energy-boost': [
       {
+        id: 'energy-boost-max',
+        name: 'Maximum Energy Boost',
+        description: 'Peak energy music for maximum motivation',
+        buckets: ['ENERGYBOOST'],
+        image: energyBoostArtwork
+      },
+      {
         id: 'energetic-classical',
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
         buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
         image: energySunsetField
-      },
-      {
-        id: 'motivational-beats',
-        name: 'Happy House & Dance',
-        description: 'Upbeat house and dance music for energy and motivation',
-        buckets: ['neuralpositivemusic/House'],
-        image: energyBoostGrandPiano
       },
       {
         id: 'musical-theater-energy',
@@ -227,11 +225,55 @@ const getGenreOptions = (goalId: string) => {
         image: energyBoostViolin
       },
       {
+        id: 'motivational-beats',
+        name: 'Happy House & Dance',
+        description: 'Upbeat house and dance music for energy and motivation',
+        buckets: ['neuralpositivemusic/House'],
+        image: energyBoostGrandPiano
+      },
+      {
         id: 'hiit-energy',
         name: 'HIIT Music',
         description: 'High-intensity interval training music for energy',
         buckets: ['HIIT'],
         image: energyOceanWaves
+      }
+    ],
+    'cardio-support': [
+      {
+        id: 'hiit-cardio',
+        name: 'HIIT Cardio',
+        description: 'High-intensity interval training music',
+        buckets: ['HIIT'],
+        image: electronicArt
+      },
+      {
+        id: 'house-cardio',
+        name: 'House Cardio',
+        description: 'Pumping house music for cardiovascular exercise',
+        buckets: ['house'],
+        image: houseMusicArt
+      },
+      {
+        id: 'edm-cardio',
+        name: 'EDM',
+        description: 'Electronic dance music for high-intensity cardio',
+        buckets: ['neuralpositivemusic/EDM'],
+        image: electronicArt
+      },
+      {
+        id: 'energy-boost-cardio',
+        name: 'Energy Boost',
+        description: 'Maximum energy tracks for intense cardio',
+        buckets: ['ENERGYBOOST'],
+        image: energyBoostLightning
+      },
+      {
+        id: 'pop-cardio',
+        name: 'Pop Cardio',
+        description: 'Energetic pop hits perfect for cardio sessions',
+        buckets: ['pop'],
+        image: popMusicArt
       }
     ]
   };
