@@ -52,6 +52,20 @@ import cardioLeafDroplet from '@/assets/cardio-leaf-droplet.png';
 import cardioSunsetBeachFlowers from '@/assets/cardio-sunset-beach-flowers.png';
 import cardioMountainWildflowers from '@/assets/cardio-mountain-wildflowers.png';
 
+// Import new consistent nature-themed artwork
+import focusClassicalMountainLake from '@/assets/focus-classical-mountain-lake.jpg';
+import focusNewageForestClearing from '@/assets/focus-newage-forest-clearing.jpg';
+import focusBachWaterfallPiano from '@/assets/focus-bach-waterfall-piano.jpg';
+import focusPianoCherryBlossoms from '@/assets/focus-piano-cherry-blossoms.jpg';
+import focusOperaNatureStage from '@/assets/focus-opera-nature-stage.jpg';
+import stressZenCrystalGarden from '@/assets/stress-zen-crystal-garden.jpg';
+import stressClassicalPeacefulStream from '@/assets/stress-classical-peaceful-stream.jpg';
+import stressSambaTropicalSunset from '@/assets/stress-samba-tropical-sunset.jpg';
+import painWorldHealingGarden from '@/assets/pain-world-healing-garden.jpg';
+import painGentleWaterfallPiano from '@/assets/pain-gentle-waterfall-piano.jpg';
+import energyLightningMeadow from '@/assets/energy-lightning-meadow.jpg';
+import energyMusicalOceanWave from '@/assets/energy-musical-ocean-wave.jpg';
+
 // Simplified genre definitions
 const getGenreOptions = (goalId: string) => {
   const genreConfigs = {
@@ -61,35 +75,35 @@ const getGenreOptions = (goalId: string) => {
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
         buckets: ['neuralpositivemusic'],
-        image: crossoverClassicalArt
+        image: focusClassicalMountainLake
       },
       {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['NewAgeandWorldFocus'],
-        image: newAgeArt
+        image: focusNewageForestClearing
       },
       {
         id: 'bach-transpositions',
         name: 'Bach Transpositions',
         description: 'Modern interpretations of Bach for deep focus',
         buckets: ['focus-music'],
-        image: bachWaterfallNature
+        image: focusBachWaterfallPiano
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for deep concentration',
         buckets: ['Chopin'],
-        image: peacefulPianoArt
+        image: focusPianoCherryBlossoms
       },
       {
         id: 'opera-focus',
         name: 'Opera',
         description: 'Classical opera for focused listening',
         buckets: ['opera'],
-        image: operaLuminousHall
+        image: focusOperaNatureStage
       }
     ],
     'stress-anxiety-support': [
@@ -98,42 +112,42 @@ const getGenreOptions = (goalId: string) => {
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
-        image: newageRadiantGarden
+        image: stressZenCrystalGarden
       },
       {
         id: 'sonatas',
         name: 'Sonatas for Stress',
         description: 'Classical sonatas for deep stress relief',
         buckets: ['sonatasforstress'],
-        image: sonatasBrightConservatory
+        image: stressClassicalPeacefulStream
       },
       {
         id: 'peaceful-piano',
         name: 'Chopin',
         description: 'Gentle Chopin pieces for relaxation',
         buckets: ['Chopin'],
-        image: peacefulPianoArt
+        image: focusPianoCherryBlossoms
       },
       {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress relief',
         buckets: ['samba'],
-        image: sambaImage
+        image: stressSambaTropicalSunset
       },
       {
         id: 'neuralpositivemusic',
         name: 'Neural Positive Music',
         description: 'Specially composed music for stress reduction',
         buckets: ['neuralpositivemusic'],
-        image: crossoverClassicalArt
+        image: focusClassicalMountainLake
       },
       {
         id: 'pain-reducing-world',
         name: 'World Healing Music',
         description: 'Global healing sounds for stress and anxiety',
         buckets: ['painreducingworld'],
-        image: worldInstrumentsZen
+        image: painWorldHealingGarden
       }
     ],
     'mood-boost': [
@@ -172,35 +186,35 @@ const getGenreOptions = (goalId: string) => {
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
-        image: stringsCrystalPalace
+        image: stressClassicalPeacefulStream
       },
       {
         id: 'world-new-age',
         name: 'World Healing Music',
         description: 'Global healing sounds for pain relief',
         buckets: ['painreducingworld'],
-        image: worldPainReliefOud
+        image: painWorldHealingGarden
       },
       {
         id: 'stress-reduction-classical',
         name: 'Stress Reduction Classical',
         description: 'Classical music specifically for pain and stress relief',
         buckets: ['neuralpositivemusic/stressreductionclassical'],
-        image: stringsCrystalPalace
+        image: focusClassicalMountainLake
       },
       {
         id: 'new-age-chill',
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
         buckets: ['neuralpositivemusic/newagechill'],
-        image: newageRadiantGarden
+        image: stressZenCrystalGarden
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and healing',
         buckets: ['Chopin'],
-        image: peacefulPianoArt
+        image: painGentleWaterfallPiano
       }
     ],
     'energy-boost': [
@@ -209,35 +223,35 @@ const getGenreOptions = (goalId: string) => {
         name: 'Maximum Energy Boost',
         description: 'Peak energy music for maximum motivation',
         buckets: ['ENERGYBOOST'],
-        image: energyBoostArtwork
+        image: energyLightningMeadow
       },
       {
         id: 'energetic-classical',
         name: 'Energetic Classical',
         description: 'Dynamic classical pieces for vitality',
         buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-        image: energySunsetField
+        image: energyMusicalOceanWave
       },
       {
         id: 'musical-theater-energy',
         name: 'Musical Theater Energy',
         description: 'Uplifting musical theater pieces for motivation',
         buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-        image: energyBoostViolin
+        image: cardioMountainWildflowers
       },
       {
         id: 'motivational-beats',
         name: 'Happy House & Dance',
         description: 'Upbeat house and dance music for energy and motivation',
         buckets: ['neuralpositivemusic/House'],
-        image: energyBoostGrandPiano
+        image: cardioSunsetBeachFlowers
       },
       {
         id: 'hiit-energy',
         name: 'HIIT Music',
         description: 'High-intensity interval training music for energy',
         buckets: ['HIIT'],
-        image: energyOceanWaves
+        image: cardioFloralField
       }
     ],
     'cardio-support': [
