@@ -35,7 +35,12 @@ import houseCardioDj from '@/assets/house-cardio-dj.jpg';
 import edmCardioCyber from '@/assets/edm-cardio-cyber.jpg';
 import energyCardioLightning from '@/assets/energy-cardio-lightning.jpg';
 import popCardioConcert from '@/assets/pop-cardio-concert.jpg';
-// Import unique artwork from user uploads
+// Import gradient-based artwork
+import gradientGlacierBlue from '@/assets/gradient-glacier-blue.jpg';
+import gradientOceanCurrent from '@/assets/gradient-ocean-current.jpg';
+import gradientMorningMist from '@/assets/gradient-morning-mist.jpg';
+import gradientDesertDawn from '@/assets/gradient-desert-dawn.jpg';
+import gradientForestAir from '@/assets/gradient-forest-air.jpg';
 import cardioSunsetField from '@/assets/cardio-sunset-field.jpg';
 import cardioForestLight from '@/assets/cardio-forest-light.jpg';
 import cardioGeometricSun from '@/assets/cardio-geometric-sun.jpg';
@@ -248,14 +253,14 @@ const GenreView: React.FC = () => {
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
           buckets: ['neuralpositivemusic/House'],
-          artwork: houseMusicArt
+          artwork: gradientGlacierBlue
         },
         {
           id: 'pop',
           name: 'Pop',
           description: 'Uplifting pop music for instant mood elevation',
           buckets: ['pop'],
-          artwork: popMusicArt
+          artwork: gradientOceanCurrent
         },
         {
           id: 'dance-party',
@@ -269,7 +274,7 @@ const GenreView: React.FC = () => {
           name: 'EDM crossover (EDM)',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: electronicArt
+          artwork: gradientMorningMist
         }
       ];
     } else if (goalId === 'cardio-support') {
@@ -317,7 +322,7 @@ const GenreView: React.FC = () => {
           name: 'Energetic Classical',
           description: 'Dynamic classical pieces for vitality',
           buckets: ['neuralpositivemusic/Classical-Energy-Boost'],
-          artwork: crossoverClassicalArt
+          artwork: gradientDesertDawn
         },
         {
           id: 'motivational-beats',
@@ -355,14 +360,14 @@ const GenreView: React.FC = () => {
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
           buckets: ['neuralpositivemusic/House'],
-          artwork: houseMusicArt
+          artwork: gradientForestAir
         },
         {
           id: 'pop',
           name: 'Pop',
           description: 'Uplifting pop music for instant mood elevation',
           buckets: ['pop'],
-          artwork: popMusicArt
+          artwork: gradientGlacierBlue
         },
         {
           id: 'dance-party',
@@ -376,7 +381,7 @@ const GenreView: React.FC = () => {
           name: 'EDM crossover (EDM)',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: electronicArt
+          artwork: gradientOceanCurrent
         },
         {
           id: 'hiit-mood',
@@ -399,14 +404,14 @@ const GenreView: React.FC = () => {
           name: 'Classical Crossover',
           description: 'Modern classical compositions',
           buckets: ['Chopin'],
-          artwork: crossoverClassicalArt
+          artwork: gradientForestAir
         },
         {
           id: 'electronic',
           name: 'Electronic',
           description: 'Ambient electronic music',
           buckets: ['samba'],
-          artwork: electronicArt
+          artwork: gradientDesertDawn
         },
         {
           id: 'world-new-age',
