@@ -6,6 +6,14 @@ import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { EnhancedGenreCard } from '@/components/ui/EnhancedGenreCard';
 import { cn } from '@/lib/utils';
 
+// Import new mood boost artwork
+import moodBoostCoastalCove from '@/assets/mood-boost-coastal-cove.png';
+import moodBoostSunsetFlowers from '@/assets/mood-boost-sunset-flowers.png';
+import moodBoostFloralField from '@/assets/mood-boost-floral-field.png';
+import moodBoostLeafDewdrop from '@/assets/mood-boost-leaf-dewdrop.png';
+import moodBoostLeafDroplets from '@/assets/mood-boost-leaf-droplets.png';
+import moodBoostNordicFjord from '@/assets/mood-boost-nordic-fjord.png';
+
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
 import newAgeArt from '@/assets/new-age-forest-flute-natural.jpg';
@@ -152,35 +160,35 @@ const getGenreOptions = (goalId: string) => {
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
         buckets: ['neuralpositivemusic/House'],
-        image: houseMusicArt
+        image: moodBoostCoastalCove
       },
       {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
         buckets: ['pop'],
-        image: popMusicArt
+        image: moodBoostSunsetFlowers
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
         buckets: ['moodboostremixesworlddance'],
-        image: dancePartyArt
+        image: moodBoostFloralField
       },
       {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
         buckets: ['neuralpositivemusic/EDM'],
-        image: electronicArt
+        image: moodBoostLeafDewdrop
       },
       {
         id: 'hiit-mood',
         name: 'HIIT Mood',
         description: 'High-intensity music for mood and energy',
         buckets: ['HIIT'],
-        image: energyBoostLightning
+        image: moodBoostNordicFjord
       }
     ],
     'pain-support': [

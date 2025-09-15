@@ -8,6 +8,13 @@ import { useAudioStore } from '@/stores';
 import { toast } from 'sonner';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
 
+// Import new mood boost artwork
+import moodBoostCoastalCove from '@/assets/mood-boost-coastal-cove.png';
+import moodBoostSunsetFlowers from '@/assets/mood-boost-sunset-flowers.png';
+import moodBoostFloralField from '@/assets/mood-boost-floral-field.png';
+import moodBoostLeafDewdrop from '@/assets/mood-boost-leaf-dewdrop.png';
+import moodBoostNordicFjord from '@/assets/mood-boost-nordic-fjord.png';
+
 // Import thematic artwork that matches genre descriptions
 import crossoverClassicalArt from '@/assets/classical-instruments-crystal-hall.jpg';
 import newAgeArt from '@/assets/world-instruments-wildflower-hill.jpg';
@@ -258,7 +265,7 @@ const GenreView: React.FC = () => {
           name: 'House Music',
           description: 'Energetic house beats for motivation and energy',
           buckets: ['neuralpositivemusic/House'],
-          artwork: gradientGlacierBlue
+          artwork: moodBoostCoastalCove
         },
         {
           id: 'pop',
@@ -266,21 +273,21 @@ const GenreView: React.FC = () => {
           description: 'Uplifting pop music for instant mood elevation',
           buckets: ['pop'],
           folder: 'tracks',
-          artwork: gradientOceanCurrent
+          artwork: moodBoostSunsetFlowers
         },
         {
           id: 'dance-party',
           name: 'Dance Party Remixes',
           description: 'High-energy dance remixes and world beats',
           buckets: ['moodboostremixesworlddance'],
-          artwork: cardioForestLight
+          artwork: moodBoostFloralField
         },
         {
           id: 'edm-crossover',
           name: 'EDM',
           description: 'Electronic dance music crossover tracks for high energy',
           buckets: ['neuralpositivemusic/EDM'],
-          artwork: gradientMorningMist
+          artwork: moodBoostLeafDewdrop
         }
       ];
     } else if (goalId === 'energy-boost') {
