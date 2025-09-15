@@ -21,8 +21,14 @@ import popMusicArt from '@/assets/pop-music-joyful-nature.jpg';
 import operaArt from '@/assets/opera-violin-garden-terrace.jpg';
 import worldInstrumentsZen from '@/assets/world-instruments-zen-garden.jpg';
 import bachWaterfallNature from '@/assets/string-instruments-waterfall.jpg';
-import energyBoostLightning from '@/assets/drums-aurora-energy.jpg';
 import energyBoostDataAnalytics from '@/assets/energy-boost-data-analytics.jpg';
+import energySunsetField from '@/assets/energy-sunset-field.jpg';
+import energyHorseField from '@/assets/energy-horse-field.jpg';
+import energyWaveAbstract from '@/assets/energy-wave-abstract.jpg';
+import energyOceanWaves from '@/assets/energy-ocean-waves.jpg';
+import energyTropicalBeach from '@/assets/energy-tropical-beach.jpg';
+import energyMountainRiver from '@/assets/energy-mountain-river.jpg';
+import energyGeometricSpace from '@/assets/energy-geometric-space.jpg';
 
 // Fallback track generator with varied album art
 const generateFallbackTracks = (genreName: string, goalName: string, albumArtUrls: string[] = []) => {
@@ -256,7 +262,7 @@ const GenreView: React.FC = () => {
           name: 'HIIT',
           description: 'High-intensity interval training music',
           buckets: ['HIIT'],
-          artwork: energyBoostLightning
+          artwork: energyHorseField
         },
         {
           id: 'house-cardio',
@@ -277,7 +283,7 @@ const GenreView: React.FC = () => {
           name: 'Energy Boost',
           description: 'Maximum energy tracks for intense cardio',
           buckets: ['ENERGYBOOST'],
-          artwork: energyBoostLightning
+          artwork: energyMountainRiver
         },
         {
           id: 'pop-cardio',
@@ -301,28 +307,28 @@ const GenreView: React.FC = () => {
           name: 'Happy House & Dance',
           description: 'Upbeat house and dance music for energy and motivation',
           buckets: ['neuralpositivemusic/House'],
-          artwork: '/lovable-uploads/string-quartet-studio.png'
+          artwork: energyTropicalBeach
         },
         {
           id: 'energy-boost-core',
           name: 'Energy Boost',
           description: 'High-energy tracks for maximum motivation',
           buckets: ['ENERGYBOOST'],
-          artwork: energyBoostDataAnalytics
+          artwork: energySunsetField
         },
         {
           id: 'musical-theater-energy',
           name: 'Musical Theater Energy',
           description: 'Uplifting musical theater pieces for motivation',
           buckets: ['neuralpositivemusic/MusicalTheaterEnergyBoost'],
-          artwork: energyBoostLightning
+          artwork: energyWaveAbstract
         },
         {
           id: 'hiit-energy',
           name: 'HIIT Music',
           description: 'High-intensity interval training music for energy',
           buckets: ['HIIT'],
-          artwork: energyBoostLightning
+          artwork: energyOceanWaves
         }
       ];
     } else if (goalId === 'mood-boost') {
@@ -360,7 +366,7 @@ const GenreView: React.FC = () => {
           name: 'HIIT Mood',
           description: 'High-intensity music for mood and energy',
           buckets: ['HIIT'],
-          artwork: energyBoostLightning
+          artwork: energyGeometricSpace
         }
       ];
       return [
