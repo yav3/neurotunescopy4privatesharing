@@ -45,7 +45,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['audio'],
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
@@ -61,7 +61,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['NewAgeandWorldFocus'],
+        buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
       },
       {
