@@ -95,9 +95,7 @@ const Index = () => {
           {/* Branding */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
-                <Plus className="w-7 h-7 text-black" />
-              </div>
+              <Plus className="w-7 h-7 text-foreground" />
               <div>
                 <div className="text-4xl font-bold text-foreground">NeuroTunes</div>
               </div>
