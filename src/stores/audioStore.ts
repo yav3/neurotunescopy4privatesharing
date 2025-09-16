@@ -797,10 +797,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log('🎵 Blacklisted unsupported track:', currentTrack.id, currentTrack.title);
           }
           
-          // Only show toast for first error in sequence, suppress rapid error spam
+          // Show toast only for first error in a 10-second window to reduce spam
           if (consecutiveFailures === 1) {
             set({ error: "Audio format not supported" });
-            toast.error("Finding playable tracks...");
+            toast.error("Finding playable tracks...", { duration: 2000 });
+          } else if (consecutiveFailures >= 5) {
+            // Show different message after many failures
+            toast.error("Searching for working tracks...", { duration: 1500 });
+            consecutiveFailures = 1; // Reset to prevent further spam
           } else {
             // Silent handling for consecutive failures
             set({ error: null });
@@ -810,7 +814,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Use longer delay for format errors, no UI updates during rapid cycling
           scheduleAutoSkip('format not supported', 1500);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
-          // Network/loading error - handle silently during rapid failures
+          // Network/loading error - handle more gracefully
           const now = Date.now();
           const isWithinSuppressionWindow = now - lastErrorTime < ERROR_SUPPRESSION_WINDOW;
           
@@ -828,10 +832,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log('🎵 Blacklisted network-failed track:', currentTrack.id, currentTrack.title);
           }
           
-          // Only show toast for first error, suppress spam
+          // Show loading error less frequently
           if (consecutiveFailures === 1) {
             set({ error: "Network error loading track" });
-            toast.error("Loading tracks...");
+            toast.error("Checking track availability...", { duration: 1500 });
+          } else if (consecutiveFailures >= 8) {
+            toast.warning("Loading backup tracks...", { duration: 2000 });
+            consecutiveFailures = 1; // Reset counter
           } else {
             set({ error: null });
             console.log(`🎵 Silent network skip ${consecutiveFailures} - suppressing UI spam`);
