@@ -145,7 +145,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   ensureAudioElement();
   
   // Immediate auto-skip function for seamless playback
-  const scheduleAutoSkip = (reason: string, delay: number = 50) => {
+  const scheduleAutoSkip = (reason: string, delay: number = 5000) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered: ${reason}`);
@@ -158,7 +158,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (!isNexting) {
         get().next();
       }
-    }, delay); // Use provided delay or default minimal delay for seamless playback
+    }, delay); // Use provided delay with longer default for stability
   };
   
   // Helper: Remove item from array at index
@@ -209,8 +209,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        // Use debounced auto-skip to prevent racing
-        scheduleAutoSkip('track ended');
+        // Use longer delay to prevent racing and allow proper track transitions
+        scheduleAutoSkip('track ended', 3000);
       });
       
       // Auto-skip on audio error with better debugging
@@ -248,8 +248,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           adminLog('🎵 Audio error - skipping to next track');
         }
         
-        // Use immediate auto-skip for format errors
-        scheduleAutoSkip('audio error', consecutiveFailures > 2 ? 100 : 2000);
+        // Use longer auto-skip delay for format errors to allow proper loading
+        scheduleAutoSkip('audio error', consecutiveFailures > 2 ? 3000 : 8000);
       });
       
       // Honest state tracking
@@ -870,8 +870,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log(`🎵 Silent skip ${consecutiveFailures} - suppressing UI spam`);
           }
           
-          // Use longer delay for format errors, no UI updates during rapid cycling
-          scheduleAutoSkip('format not supported', 1500);
+          // Use longer delay for format errors, allow proper loading time
+          scheduleAutoSkip('format not supported', 8000);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error - handle more gracefully
           const now = Date.now();
@@ -934,7 +934,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log(`🎵 Silent network skip ${consecutiveFailures} - suppressing UI spam`);
           }
           
-          scheduleAutoSkip('network error', 2000);
+          scheduleAutoSkip('network error', 10000);
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
@@ -943,8 +943,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             toast.error("Playback issue - trying next track");
           }
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Use debounced auto-skip to prevent racing
-          scheduleAutoSkip('unknown error');
+          // Use longer delay to prevent racing and allow proper error handling
+          scheduleAutoSkip('unknown error', 8000);
         }
       }
     },
