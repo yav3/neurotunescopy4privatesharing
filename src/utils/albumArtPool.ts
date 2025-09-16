@@ -9,6 +9,7 @@ import leafDropletsArt from '@/assets/album-art-leaf-droplets.png';
 import goldenSplashArt from '@/assets/album-art-golden-splash.png';
 import sunsetLakeArt from '@/assets/album-art-sunset-lake.png';
 import dewdropArt from '@/assets/album-art-dewdrop.png';
+import energyMotivationArt from '@/assets/energy-motivation-updated.png';
 
 // Existing therapeutic art imports (keep for backward compatibility)
 import therapeuticCard1 from '@/assets/therapeutic-card-1.png';
@@ -63,7 +64,7 @@ export const getAlbumArtByGoal = (goalId: string): string => {
     'stress-anxiety': mountainLakeArt,        // Calm serenity
     'mood-boost': goldenSplashArt,           // Energy and vitality
     'pain-relief': dewdropArt,               // Gentle healing
-    'energy-boost': oceanWaveArt,            // Dynamic energy
+    'energy-boost': energyMotivationArt,     // Dynamic energy with ocean wave
     'sleep-support': sunsetLakeArt,          // Peaceful rest
     'meditation': waterDropArt,              // Mindful focus
     'cardio': goldenSplashArt,              // High energy
