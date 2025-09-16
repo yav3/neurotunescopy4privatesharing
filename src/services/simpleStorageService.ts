@@ -43,7 +43,13 @@ export class SimpleStorageService {
           this.audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
         );
 
-        console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName}`);
+        console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName} (${files.length} total files)`);
+        
+        if (audioFiles.length === 0) {
+          console.warn(`⚠️ No audio files found in bucket ${bucketName}`);
+          console.log(`🔍 File types in bucket:`, [...new Set(files.map(f => f.name.split('.').pop()?.toLowerCase() || 'no-ext'))]);
+          continue;
+        }
 
         // Convert to Track objects
         for (const file of audioFiles) {

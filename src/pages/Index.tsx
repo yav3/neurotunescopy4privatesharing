@@ -179,7 +179,7 @@ const Index = () => {
 
       {/* Debug button in development */}
       {import.meta.env.DEV && (
-        <div className="fixed bottom-20 right-4 z-50">
+        <div className="fixed bottom-20 right-4 z-50 space-y-2">
           <Button 
             onClick={() => {
               import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
@@ -188,9 +188,33 @@ const Index = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm"
+            className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            🔍 Debug Buckets
+            🔍 Debug All Buckets
+          </Button>
+          <Button 
+            onClick={() => {
+              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+                BucketDiagnostics.checkSpecificGenre('pain-support', 'new-age-chill');
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full"
+          >
+            🎯 Check Pain/New Age
+          </Button>
+          <Button 
+            onClick={() => {
+              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+                BucketDiagnostics.checkBucketDetails('painreducingworld');
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full"
+          >
+            📂 Check painreducingworld
           </Button>
         </div>
       )}

@@ -22,7 +22,8 @@ export class BucketDiagnostics {
       working: [] as string[],
       missing: [] as string[],
       empty: [] as string[],
-      errors: [] as { bucket: string; error: string }[]
+      errors: [] as { bucket: string; error: string }[],
+      detailed: {} as Record<string, { totalFiles: number; audioFiles: number; sampleFiles: string[] }>
     };
     
     for (const bucketName of allBuckets) {
@@ -31,25 +32,38 @@ export class BucketDiagnostics {
         
         const { data: files, error } = await supabase.storage
           .from(bucketName)
-          .list('', { limit: 10 });
+          .list('', { limit: 1000 });
         
         if (error) {
           console.error(`❌ Error accessing bucket ${bucketName}:`, error.message);
-          if (error.message?.includes('not found') || error.message?.includes('does not exist')) {
-            results.missing.push(bucketName);
-          } else {
-            results.errors.push({ bucket: bucketName, error: error.message });
-          }
+          results.errors.push({ bucket: bucketName, error: error.message });
         } else if (!files || files.length === 0) {
           console.warn(`📂 Bucket ${bucketName} exists but is empty`);
           results.empty.push(bucketName);
+          results.detailed[bucketName] = { totalFiles: 0, audioFiles: 0, sampleFiles: [] };
         } else {
-          console.log(`✅ Bucket ${bucketName} is working with ${files.length} files`);
-          results.working.push(bucketName);
+          const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+          const audioFiles = files.filter(file => 
+            audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+          );
+          
+          results.detailed[bucketName] = {
+            totalFiles: files.length,
+            audioFiles: audioFiles.length,
+            sampleFiles: audioFiles.slice(0, 3).map(f => f.name)
+          };
+          
+          if (audioFiles.length > 0) {
+            console.log(`✅ Bucket ${bucketName}: ${audioFiles.length} audio files out of ${files.length} total`);
+            results.working.push(bucketName);
+          } else {
+            console.warn(`⚠️ Bucket ${bucketName}: ${files.length} files but no audio files found`);
+            results.empty.push(bucketName);
+          }
         }
         
         // Small delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 50));
         
       } catch (error) {
         console.error(`❌ Unexpected error checking bucket ${bucketName}:`, error);
@@ -57,28 +71,19 @@ export class BucketDiagnostics {
       }
     }
     
-    console.log('🎯 BUCKET DIAGNOSTICS RESULTS:');
+    console.log('\n🎯 COMPREHENSIVE BUCKET DIAGNOSTICS RESULTS:');
     console.log(`✅ Working buckets (${results.working.length}):`, results.working);
-    console.log(`📂 Empty buckets (${results.empty.length}):`, results.empty);
-    console.log(`❌ Missing buckets (${results.missing.length}):`, results.missing);
-    console.log(`🚨 Error buckets (${results.errors.length}):`, results.errors);
+    console.log(`📂 Empty/No audio buckets (${results.empty.length}):`, results.empty);
+    console.log(`🚨 Error buckets (${results.errors.length}):`, results.errors.map(e => `${e.bucket}: ${e.error}`));
     
-    // Check specific problematic genres
-    console.log('\n🎭 GENRE-SPECIFIC DIAGNOSTICS:');
-    
-    const problemGenres = [
-      { goal: 'pain-support', genre: 'new-age-chill', buckets: ['painreducingworld'] }
-    ];
-    
-    for (const { goal, genre, buckets } of problemGenres) {
-      console.log(`🎯 Checking problematic genre: ${genre} (${goal}) -> buckets: ${buckets.join(', ')}`);
-      for (const bucket of buckets) {
-        const status = results.working.includes(bucket) ? '✅ Working' :
-                      results.empty.includes(bucket) ? '📂 Empty' :
-                      results.missing.includes(bucket) ? '❌ Missing' : '🚨 Error';
-        console.log(`  - ${bucket}: ${status}`);
+    // Show detailed stats for all buckets
+    console.log('\n📊 DETAILED BUCKET STATS:');
+    Object.entries(results.detailed).forEach(([bucket, stats]) => {
+      console.log(`${bucket}: ${stats.audioFiles} audio files / ${stats.totalFiles} total files`);
+      if (stats.sampleFiles.length > 0) {
+        console.log(`  Sample files: ${stats.sampleFiles.join(', ')}`);
       }
-    }
+    });
     
     return results;
   }
