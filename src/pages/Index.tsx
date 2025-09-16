@@ -20,6 +20,7 @@ import dewdropMoon from '@/assets/dewdrop-moon.png';
 import forestLakeMist from '@/assets/forest-lake-mist.png';
 import yellowFlowers from '@/assets/yellow-flowers.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
+import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
 // Therapeutic goals with diverse images
 const therapeuticGoals = [
@@ -60,8 +61,13 @@ const Index = () => {
     setSelectedGoalId('');
   };
 
-  const handleTrendingSelect = (categoryId: string) => {
+  const handleTrendingSelect = async (categoryId: string) => {
     console.log('🎵 Navigating to trending category:', categoryId);
+    
+    // Run full diagnostic first to identify issues
+    console.log('🔧 Running audio system diagnostic...');
+    await audioSystemDebugger.testFullSystem();
+    
     // Map trending categories to actual music goals for immediate playback
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'focus-enhancement',
