@@ -24,6 +24,7 @@ import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical
 import hiitForestPath from '@/assets/hiit-forest-path.png';
 import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
 import painSonatasYellowFlowers from '@/assets/pain-sonatas-yellow-flowers.jpg';
+import painPeacefulPianoMountainLake from '@/assets/pain-peaceful-piano-mountain-lake.jpg';
 
 // Import new Stress & Anxiety Support images
 import sambaTropicalHibiscus from '@/assets/samba-tropical-hibiscus.png';
@@ -165,7 +166,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and relaxation',
         buckets: ['Chopin'],
-        image: painGentleWaterfallPiano,
+        image: painPeacefulPianoMountainLake,
       }
     ],
     'energy-boost': [
