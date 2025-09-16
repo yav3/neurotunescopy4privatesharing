@@ -157,13 +157,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     ],
     'energy-boost': [
       {
-        id: 'maximum-energy-edm',
-        name: 'Maximum Energy EDM',
-        description: 'Peak energy electronic dance music for maximum motivation',
-        buckets: ['ENERGYBOOST'],
-        image: maximumEnergyEdmDj
-      },
-      {
         id: 'hiit-energy',
         name: 'HIIT Energy',
         description: 'High-intensity interval training music for peak performance',
@@ -174,7 +167,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'energetic-house',
         name: 'Energetic House',
         description: 'Upbeat house music for energy and motivation',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['neuralpositivemusic'],
         image: cardioSunsetBeachFlowers
       },
       {
