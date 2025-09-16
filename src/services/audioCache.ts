@@ -11,6 +11,12 @@ export interface CachedAudioTrack {
   verified: number; // timestamp when last verified
   genre?: string;
   goal?: string;
+  // Enhanced metadata
+  fileSize?: number;
+  contentType?: string;
+  duration?: number;
+  audioFingerprint?: string; // Audio hash/checksum
+  etag?: string; // File version identifier
 }
 
 export interface GenreFallbacks {
@@ -186,11 +192,14 @@ export class AudioCacheService {
             
             const url = data.publicUrl;
             
-            // Test if URL is accessible
+            // Test if URL is accessible and get metadata
             const isWorking = await headOk(url, 3000);
             
             if (isWorking) {
               totalValidated++;
+              
+              // Get enhanced metadata
+              const audioFingerprint = await this.generateAudioFingerprint(url);
               
               const track: CachedAudioTrack = {
                 id: file.id || `${bucket}-${file.name}`,
@@ -199,7 +208,12 @@ export class AudioCacheService {
                 bucket,
                 filename: file.name,
                 verified: Date.now(),
-                genre: this.mapBucketToGenre(bucket)
+                genre: this.mapBucketToGenre(bucket),
+                // Enhanced metadata
+                fileSize: file.metadata?.size,
+                contentType: file.metadata?.mimetype,
+                etag: file.metadata?.eTag,
+                audioFingerprint
               };
               
               bucketTracks.push(track);
@@ -283,6 +297,39 @@ export class AudioCacheService {
     }
     
     return stats;
+  }
+  
+  /**
+   * Generate audio fingerprint (simplified hash based on file metadata)
+   */
+  private static async generateAudioFingerprint(url: string): Promise<string | undefined> {
+    try {
+      // Create a simple fingerprint based on URL and timestamp
+      // In a full implementation, this would involve audio analysis
+      const response = await fetch(url, { method: 'HEAD' });
+      const lastModified = response.headers.get('last-modified');
+      const contentLength = response.headers.get('content-length');
+      const etag = response.headers.get('etag');
+      
+      // Simple hash combination of metadata
+      const fingerprint = btoa(`${url}-${lastModified}-${contentLength}-${etag}`).substring(0, 16);
+      return fingerprint;
+    } catch (error) {
+      console.warn('Failed to generate audio fingerprint:', error);
+      return undefined;
+    }
+  }
+  
+  /**
+   * Get detailed track info by fingerprint
+   */
+  static getTrackByFingerprint(fingerprint: string): CachedAudioTrack | null {
+    const cached = this.getCachedTracks();
+    for (const tracks of Object.values(cached)) {
+      const track = tracks.find(t => t.audioFingerprint === fingerprint);
+      if (track) return track;
+    }
+    return null;
   }
   
   /**
