@@ -74,8 +74,8 @@ export class SimpleStorageService {
   }
 
   static async getTracksFromCategory(categoryId: string, maxTracks: number = 100): Promise<Track[]> {
-    const { getBucketsForCategory } = await import('@/config/therapeuticCategories');
-    const buckets = getBucketsForCategory(categoryId);
+    const { getBucketsForGoal } = await import('@/config/therapeuticGoals');
+    const buckets = getBucketsForGoal(categoryId);
     
     if (buckets.length === 0) {
       console.warn(`No buckets found for category: ${categoryId}`);
