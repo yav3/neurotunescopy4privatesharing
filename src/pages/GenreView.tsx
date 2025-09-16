@@ -40,6 +40,16 @@ export default function GenreView() {
   console.log('🔍 DEBUG - Genre ID:', genreId);
   console.log('🔍 DEBUG - Found genre:', genre);
 
+  // Immediate bucket diagnostics for painreducingworld
+  useEffect(() => {
+    if (genre?.buckets.includes('painreducingworld')) {
+      import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+        console.log('🚨 PAINREDUCINGWORLD BUCKET DIAGNOSTICS - Starting immediate check...');
+        BucketDiagnostics.checkBucketDetails('painreducingworld');
+      });
+    }
+  }, [genre]);
+
   // Load tracks using simple storage service
   useEffect(() => {
     if (!genre) {

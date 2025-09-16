@@ -206,15 +206,15 @@ const Index = () => {
           </Button>
           <Button 
             onClick={() => {
-              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-                BucketDiagnostics.checkBucketDetails('painreducingworld');
+              import('@/utils/directBucketTest').then(({ testPainReducingWorldBucket }) => {
+                testPainReducingWorldBucket();
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            📂 Check painreducingworld
+            🧪 Direct Bucket Test
           </Button>
         </div>
       )}
