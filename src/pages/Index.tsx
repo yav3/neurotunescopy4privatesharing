@@ -28,7 +28,7 @@ const therapeuticGoals = [
   { id: 'pain-support', name: 'Pain Reduction', letter: 'P', image: getAlbumArtByGoal('pain-support') },
   { id: 'energy-boost', name: 'Energy Boost', letter: 'E', image: tropicalFlowers },
   { id: 'mood-boost', name: 'Mood Enhancement', letter: 'M', image: getAlbumArtByGoal('mood-boost') },
-  { id: 'stress-anxiety-support', name: 'Stress Reduction', letter: 'S', image: getAlbumArtByGoal('stress-anxiety-support') },
+  { id: 'stress-reduction-alt', name: 'Stress Reduction', letter: 'S', image: getAlbumArtByGoal('stress-anxiety-support'), goalMapping: 'stress-anxiety-support' },
 ];
 
 // Trending music categories with varied images
@@ -49,7 +49,9 @@ const Index = () => {
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
-    setSelectedGoalId(goalId);
+    // Map stress-reduction-alt to the actual stress-anxiety-support goal
+    const mappedGoalId = goalId === 'stress-reduction-alt' ? 'stress-anxiety-support' : goalId;
+    setSelectedGoalId(mappedGoalId);
     setIsModalOpen(true);
   };
 
