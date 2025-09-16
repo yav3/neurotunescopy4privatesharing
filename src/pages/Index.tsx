@@ -8,24 +8,35 @@ import { Navigation } from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
-// Therapeutic goals with single letter icons
+// Import beautiful album art images
+import zenStonesArt from '@/assets/album-art-zen-stones.png';
+import mountainLakeArt from '@/assets/album-art-mountain-lake.png';
+import dewdropArt from '@/assets/album-art-dewdrop.png';
+import energyOceanArt from '@/assets/energy-ocean-wave.png';
+import goldenSplashArt from '@/assets/album-art-golden-splash.png';
+import sunsetLakeArt from '@/assets/album-art-sunset-lake.png';
+import oceanWaveArt from '@/assets/album-art-ocean-wave.png';
+import waterDropArt from '@/assets/album-art-water-drop.png';
+import leafDropletsArt from '@/assets/album-art-leaf-droplets.png';
+
+// Therapeutic goals with beautiful images
 const therapeuticGoals = [
-  { id: 'focus-enhancement', name: 'Focus Enhancement', letter: 'F', image: '/api/placeholder/240/120' },
-  { id: 'stress-anxiety-support', name: 'Anxiety Reduction', letter: 'A', image: '/api/placeholder/240/120' },
-  { id: 'pain-support', name: 'Pain Reduction', letter: 'P', image: '/api/placeholder/240/120' },
-  { id: 'energy-boost', name: 'Energy Boost', letter: 'E', image: '/api/placeholder/240/120' },
-  { id: 'mood-boost', name: 'Mood Enhancement', letter: 'M', image: '/api/placeholder/240/120' },
-  { id: 'stress-anxiety-support', name: 'Stress Reduction', letter: 'S', image: '/api/placeholder/240/120' },
+  { id: 'focus-enhancement', name: 'Focus Enhancement', letter: 'F', image: zenStonesArt },
+  { id: 'stress-anxiety-support', name: 'Anxiety Reduction', letter: 'A', image: mountainLakeArt },
+  { id: 'pain-support', name: 'Pain Reduction', letter: 'P', image: dewdropArt },
+  { id: 'energy-boost', name: 'Energy Boost', letter: 'E', image: energyOceanArt },
+  { id: 'mood-boost', name: 'Mood Enhancement', letter: 'M', image: goldenSplashArt },
+  { id: 'stress-anxiety-support', name: 'Stress Reduction', letter: 'S', image: sunsetLakeArt },
 ];
 
-// Trending music categories
+// Trending music categories with beautiful images
 const trendingCategories = [
-  { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: '/api/placeholder/300/200' },
-  { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: '/api/placeholder/300/200' },
-  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: '/api/placeholder/300/200' },
-  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: '/api/placeholder/300/200' },
-  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: '/api/placeholder/300/200' },
-  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: '/api/placeholder/300/200' },
+  { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: waterDropArt },
+  { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: oceanWaveArt },
+  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: goldenSplashArt },
+  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: leafDropletsArt },
+  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: mountainLakeArt },
+  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: zenStonesArt },
 ];
 
 const Index = () => {
@@ -74,16 +85,27 @@ const Index = () => {
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[2/1] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[2/1] border-0 rounded-xl shadow-lg"
                   onClick={() => handleGoalSelect(goal.id)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary/60" />
+                  {/* Beautiful background image */}
+                  <div className="absolute inset-0">
+                    <img 
+                      src={goal.image} 
+                      alt={goal.name}
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/70 group-hover:from-black/50 group-hover:to-black/60 transition-all duration-300" />
+                  
                   <div className="relative h-full p-4 flex flex-col justify-between">
-                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
                       <span className="text-white font-bold text-sm">{goal.letter}</span>
                     </div>
                     <div>
-                      <h3 className="text-white font-semibold text-sm leading-tight">
+                      <h3 className="text-white font-semibold text-sm leading-tight drop-shadow-lg">
                         {goal.name}
                       </h3>
                     </div>
@@ -100,16 +122,27 @@ const Index = () => {
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[3/2] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[3/2] border-0 rounded-xl shadow-lg"
                   onClick={() => handleTrendingSelect(category.id)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/80 to-accent/60" />
+                  {/* Beautiful background image */}
+                  <div className="absolute inset-0">
+                    <img 
+                      src={category.image} 
+                      alt={category.name}
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/70 group-hover:from-black/50 group-hover:to-black/60 transition-all duration-300" />
+                  
                   <div className="relative h-full p-6 flex flex-col justify-between">
-                    <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
                       <span className="text-white font-bold text-lg">{category.letter}</span>
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-lg leading-tight">
+                      <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg">
                         {category.name}
                       </h3>
                     </div>
