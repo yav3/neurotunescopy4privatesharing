@@ -249,6 +249,12 @@ All colors MUST be HSL.
     color: #ffffff !important;
   }
   
+  /* Force white text on genre cards - override global dark text rule */
+  .group h3.text-white,
+  .group .text-white {
+    color: #ffffff !important;
+  }
+  
   /* Dark mode body and text fixes */
   .dark body,
   .dark html {
