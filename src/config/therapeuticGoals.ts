@@ -5,7 +5,7 @@ import focusCard from '@/assets/therapeutic-card-1.png';
 import stressCard from '@/assets/therapeutic-card-2.png';
 import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
-import energyBoostCard from '@/assets/energy-motivation-forest-path.png';
+import energyBoostCard from '@/assets/energy-motivation-updated.png';
 import cardioCard from '@/assets/cardio-mountain-lake.jpg';
 
 
