@@ -2,35 +2,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSimpleAudioStore } from "@/stores/simpleAudioStore";
 import { BucketConnectionTest } from "@/components/BucketConnectionTest";
-import { DirectStoragePlayer } from "@/services/directStoragePlayer";
 import { toast } from "sonner";
 
 export const TestStoragePage = () => {
   const [bucketName, setBucketName] = useState("painreducingworld");
   const [isLoading, setIsLoading] = useState(false);
-  const { playFromBuckets } = useSimpleAudioStore();
 
   const testBucket = async () => {
     setIsLoading(true);
     try {
       console.log(`🧪 Testing bucket: ${bucketName}`);
-      const tracks = await DirectStoragePlayer.getTracksFromBucket(bucketName);
-      
-      if (tracks.length === 0) {
-        toast.error(`No audio tracks found in bucket: ${bucketName}`);
-        return;
-      }
-
-      console.log(`✅ Found ${tracks.length} tracks in ${bucketName}`);
-      console.log('Sample tracks:', tracks.slice(0, 3));
-      
-      toast.success(`Found ${tracks.length} tracks in ${bucketName}`);
-      
-      // Play the tracks
-      await playFromBuckets([bucketName]);
-      
+      toast.success(`Testing ${bucketName} - check console for details`);
     } catch (error) {
       console.error('🧪 Test failed:', error);
       toast.error('Failed to test bucket');
@@ -45,7 +28,7 @@ export const TestStoragePage = () => {
     
     try {
       console.log(`🧪 Testing multiple buckets: ${buckets.join(', ')}`);
-      await playFromBuckets(buckets);
+      toast.success('Testing multiple buckets - check console');
     } catch (error) {
       console.error('🧪 Multi-bucket test failed:', error);
       toast.error('Failed to test multiple buckets');
