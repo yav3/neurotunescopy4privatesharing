@@ -54,7 +54,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for deep concentration',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: focusZenStones
       }
     ],
