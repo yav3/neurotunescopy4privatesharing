@@ -24,6 +24,11 @@ import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical
 import hiitForestPath from '@/assets/hiit-forest-path.png';
 import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
 
+// Import new Stress & Anxiety Support images
+import sambaTropicalHibiscus from '@/assets/samba-tropical-hibiscus.png';
+import sonatasMistyLake from '@/assets/sonatas-misty-lake.png';
+import chopinMountainPeaks from '@/assets/chopin-mountain-peaks.jpg';
+
 export interface GenreConfig {
   id: string;
   name: string;
@@ -71,21 +76,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Sonatas',
         description: 'Classical sonatas for deep stress relief',
         buckets: ['sonatasforstress'],
-        image: stressClassicalPeacefulStream
+        image: sonatasMistyLake
       },
       {
         id: 'peaceful-piano',
         name: 'Chopin',
         description: 'Gentle Chopin pieces for relaxation',
         buckets: ['Chopin'],
-        image: focusPianoCherryBlossoms
+        image: chopinMountainPeaks
       },
       {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress relief',
         buckets: ['samba'],
-        image: stressSambaTropicalSunset
+        image: sambaTropicalHibiscus
       },
     ],
     'mood-boost': [
