@@ -28,11 +28,11 @@ const therapeuticGoals = [
 // Trending music categories with varied images
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
-  { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: getAlbumArtByGoal('energy-boost') },
-  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: tropicalFlowers },
-  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: mistyLake },
-  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: getAlbumArtByGoal('focus-enhancement') },
-  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: getAlbumArtByGoal('mood-boost') },
+  { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: tropicalFlowers },
+  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
+  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: peacefulLake },
+  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: tropicalFlowers },
+  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: mistyLake },
 ];
 
 const Index = () => {
