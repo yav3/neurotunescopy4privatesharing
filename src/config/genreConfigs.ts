@@ -172,6 +172,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     ],
     'energy-boost': [
       {
+        id: 'pop-energy',
+        name: 'Pop Energy',
+        description: 'High-energy pop tracks for motivation',
+        buckets: ['pop'],
+        image: cardioMountainWildflowers
+      },
+      {
         id: 'hiit-energy',
         name: 'HIIT Energy',
         description: 'High-intensity interval training music for peak performance',
@@ -184,13 +191,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Upbeat house music for energy and motivation',
         buckets: ['ENERGYBOOST'],
         image: cardioSunsetBeachFlowers
-      },
-      {
-        id: 'pop-energy',
-        name: 'Pop Energy',
-        description: 'High-energy pop tracks for motivation',
-        buckets: ['pop'],
-        image: cardioMountainWildflowers
       }
     ]
   };

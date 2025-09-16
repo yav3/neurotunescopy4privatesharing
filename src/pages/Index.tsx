@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_CATEGORIES } from '@/config/therapeuticCategories';
@@ -95,14 +95,11 @@ const Index = () => {
           {/* Branding */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Plus className="w-7 h-7 text-white" />
               </div>
               <div>
-                <div className="text-xl font-bold text-foreground">NeuroTunes</div>
-                <div className="text-sm text-muted-foreground">AI Music Therapy Platform</div>
+                <div className="text-4xl font-bold text-foreground">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -116,7 +113,7 @@ const Index = () => {
           </div>
           
           {/* Greeting */}
-          <h1 className="text-3xl font-bold text-foreground">Good morning</h1>
+          <h1 className="text-xl font-medium text-foreground">Good morning</h1>
         </div>
       </div>
 
@@ -126,7 +123,7 @@ const Index = () => {
           
           {/* Therapeutic Goals Section */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Let's Personalize! Pick one.</h2>
+            <h2 className="text-lg font-medium text-foreground mb-6">Let's Personalize! Pick one.</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {therapeuticGoals.map((goal) => (
                 <Card 
@@ -222,15 +219,27 @@ const Index = () => {
           </Button>
           <Button 
             onClick={() => {
-              import('@/utils/directBucketTest').then(({ testPainReducingWorldBucket }) => {
-                testPainReducingWorldBucket();
+              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
+                TrackLoadingDebugger.testPopEnergySpecifically();
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            🧪 Direct Bucket Test
+            🎯 Test Pop Energy
+          </Button>
+          <Button 
+            onClick={() => {
+              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
+                TrackLoadingDebugger.testPainReductionSpecifically();
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full"
+          >
+            🎯 Test Pain/New Age
           </Button>
         </div>
       )}
