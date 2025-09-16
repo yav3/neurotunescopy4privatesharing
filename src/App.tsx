@@ -121,6 +121,18 @@ const App = () => {
             {/* Global Music Players - Based on playerMode */}
             {currentTrack && playerMode === 'full' && <FullPagePlayer />}
             {currentTrack && playerMode === 'mini' && <MinimizedPlayer />}
+            
+            {/* Fallback debug info */}
+            {!currentTrack && (
+              <div className="fixed bottom-4 right-4 bg-red-500 text-white p-2 rounded text-xs">
+                No currentTrack
+              </div>
+            )}
+            {currentTrack && !playerMode && (
+              <div className="fixed bottom-4 right-4 bg-yellow-500 text-black p-2 rounded text-xs">
+                No playerMode set
+              </div>
+            )}
           </div>
           <DevDebugPanel />
         </ErrorBoundary>
