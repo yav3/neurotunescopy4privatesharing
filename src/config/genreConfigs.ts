@@ -74,7 +74,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       {
         id: 'sonatas',
         name: 'Sonatas',
-        description: 'Classical sonatas for deep stress relief',
+        description: 'Classical sonatas for deep stress support',
         buckets: ['sonatasforstress'],
         image: sonatasMistyLake
       },
@@ -88,7 +88,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       {
         id: 'samba',
         name: 'Samba',
-        description: 'Relaxing Brazilian samba rhythms for stress relief',
+        description: 'Relaxing Brazilian samba rhythms for stress support',
         buckets: ['samba'],
         image: sambaTropicalHibiscus
       },
@@ -148,7 +148,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       {
         id: 'stress-reduction-classical',
         name: 'Stress Reduction Classical',
-        description: 'Classical music specifically for pain and stress relief',
+        description: 'Classical music specifically for pain and stress support',
         buckets: ['gentleclassicalforpain'],
         image: focusClassicalMountainLake,
       },
@@ -162,7 +162,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
-        description: 'Gentle piano melodies for comfort and healing',
+        description: 'Gentle piano melodies for comfort and relaxation',
         buckets: ['Chopin'],
         image: painGentleWaterfallPiano,
       }
