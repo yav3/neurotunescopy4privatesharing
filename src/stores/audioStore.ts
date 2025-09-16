@@ -138,7 +138,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered: ${reason}`);
-      if (!isNexting && !isTransitioning) {
+      if (!isNexting) {
         get().next();
       }
     }, 50); // Minimal delay for seamless playback
@@ -800,14 +800,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      // Prevent concurrent operations with double lock
-      if (isNexting || isTransitioning) {
-        console.log('🎵 Next already in progress or system transitioning, skipping');
+      // Prevent concurrent operations - more responsive flag management
+      if (isNexting) {
+        console.log('🎵 Next already in progress, skipping');
         return;
       }
       
       isNexting = true;
-      isTransitioning = true;
+      
+      // Add debug logging for button tap responsiveness
+      console.log('🎵 Next button pressed - starting operation');
       
       try {
         // Clear any pending auto-skip timeouts
@@ -826,6 +828,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             set({ index: i });
             await get().play();
             console.log('🎵 Successfully skipped to track:', queue[i].title);
+            // Reset flag immediately on success
+            isNexting = false;
             return;
           }
           
@@ -843,22 +847,28 @@ export const useAudioStore = create<AudioState>((set, get) => {
           console.log('🎵 Queue exhausted, reloading tracks for goal:', currentState.lastGoal);
           toast.info("Loading more tracks...");
           await get().playFromGoal(currentState.lastGoal);
+          // Reset flag after successful reload
+          isNexting = false;
           return;
         } else {
           // No valid goal set - load focus enhancement as default
           console.log('🎵 No valid goal set, loading focus enhancement as default');
           toast.info("Loading focus enhancement tracks...");
           await get().playFromGoal('focus-enhancement');
+          // Reset flag after successful reload
+          isNexting = false;
           return;
         }
         
         console.log('🎵 No more working tracks available');
         toast.error("No more tracks available. Please select a new category.");
         set({ isLoading: false, error: "No more tracks available" });
+      } catch (error) {
+        console.error('🎵 Next operation error:', error);
+        set({ isLoading: false, error: "Failed to skip to next track" });
       } finally {
         isNexting = false;
-        isTransitioning = false;
-        console.log('🎵 Next operation completed');
+        console.log('🎵 Next operation completed - flag reset');
       }
     },
 
