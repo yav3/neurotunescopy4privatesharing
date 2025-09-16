@@ -1,18 +1,7 @@
 import { create } from "zustand";
-import { streamUrl } from "@/lib/api";
-import { API } from "@/lib/api";
-import { SmartAudioResolver } from '@/utils/smartAudioResolver';
-import type { Track } from "@/types";
-import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
-import { filterTracksForGoal, sortByTherapeuticEffectiveness } from '@/utils/therapeuticFiltering';
-import type { GoalSlug } from '@/config/therapeuticGoals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
-import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
-import { filterBlockedTracks } from '@/services/blockedTracks';
-import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
-import { AudioCacheService } from '@/services/audioCache';
-import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
+import { DirectStoragePlayer, type DirectTrack } from '@/services/directStoragePlayer';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -60,7 +49,7 @@ type AudioState = {
   // Playback state
   isPlaying: boolean;
   isLoading: boolean;
-  currentTrack: Track | null;
+  currentTrack: DirectTrack | null;
   currentTime: number;
   duration: number;
   volume: number;
@@ -73,18 +62,18 @@ type AudioState = {
   setPlayerMode: (mode: 'full' | 'mini') => void;
   
   // Queue
-  queue: Track[];
+  queue: DirectTrack[];
   index: number;
-  lastGoal?: string;
+  lastBuckets?: string[];
   
   // Session management
   sessionManager: typeof sessionManager;
   setSessionManager: (manager: typeof sessionManager) => void;
   
   // Actions
-  playTrack: (track: Track) => Promise<void>;
-  playFromGoal: (goal: string, specificBuckets?: string[]) => Promise<number>;
-  setQueue: (tracks: Track[], startAt?: number) => Promise<void>;
+  playTrack: (track: DirectTrack) => Promise<void>;
+  playFromBuckets: (buckets: string[]) => Promise<number>;
+  setQueue: (tracks: DirectTrack[], startAt?: number) => Promise<void>;
   play: () => void;
   pause: () => void;
   stop: () => void;
