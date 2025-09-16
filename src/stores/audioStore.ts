@@ -10,6 +10,7 @@ import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
 import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
+import { AudioCacheService } from '@/services/audioCache';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -570,8 +571,29 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         console.log(`✅ SimpleStorageService returned ${tracks.length} tracks for ${goal}`);
         
+        // If no tracks found, try cached fallback tracks
         if (tracks.length === 0) {
-          throw new Error(`No tracks found for goal: ${goal}`);
+          console.log(`📦 No tracks from storage service, trying cache fallbacks for ${goal}`);
+          const cachedTracks = AudioCacheService.getFallbackTracks(goal);
+          
+          if (cachedTracks.length > 0) {
+            console.log(`✨ Found ${cachedTracks.length} cached fallback tracks for ${goal}`);
+            
+            // Convert cached tracks to SimpleTrack format to match expected interface
+            const fallbackTracks = cachedTracks.map((track) => ({
+              id: track.id,
+              title: track.title,
+              url: track.url,
+              bucket: track.bucket,
+              artist: 'Neural Positive Music',
+              duration: 0,
+            }));
+            
+            tracks = fallbackTracks;
+            console.log(`🔄 Using ${tracks.length} cached fallback tracks instead`);
+          } else {
+            throw new Error(`No tracks found for goal: ${goal}`);
+          }
         }
         
         // Convert to proper Track format (SimpleStorageService returns SimpleTrack)
@@ -802,6 +824,36 @@ export const useAudioStore = create<AudioState>((set, get) => {
             set({ error: "Audio format not supported" });
             toast.error("Finding playable tracks...", { duration: 2000 });
           } else if (consecutiveFailures >= 5) {
+            // Try loading cached fallback tracks when too many failures
+            const { lastGoal } = get();
+            if (lastGoal) {
+              const cachedTracks = AudioCacheService.getFallbackTracks(lastGoal);
+              if (cachedTracks.length > 0) {
+                console.log(`🔄 Loading ${cachedTracks.length} cached fallback tracks due to repeated failures`);
+                toast.success("Loading backup tracks...", { duration: 2000 });
+                
+                // Convert and inject cached tracks into queue
+                const fallbackTracks: Track[] = cachedTracks.slice(0, 10).map((track) => ({
+                  id: track.id,
+                  title: track.title,
+                  artist: 'Neural Positive Music',
+                  duration: 0,
+                  storage_bucket: track.bucket,
+                  storage_key: track.filename,
+                  stream_url: track.url,
+                  audio_status: 'working' as const,
+                }));
+                
+                // Add to current queue
+                const { queue, index } = get();
+                const newQueue = [...queue.slice(0, index + 1), ...fallbackTracks, ...queue.slice(index + 1)];
+                set({ queue: newQueue });
+                
+                consecutiveFailures = 1; // Reset counter
+                return; // Don't show error message
+              }
+            }
+            
             // Show different message after many failures
             toast.error("Searching for working tracks...", { duration: 1500 });
             consecutiveFailures = 1; // Reset to prevent further spam
@@ -837,6 +889,34 @@ export const useAudioStore = create<AudioState>((set, get) => {
             set({ error: "Network error loading track" });
             toast.error("Checking track availability...", { duration: 1500 });
           } else if (consecutiveFailures >= 8) {
+            // Try cached fallbacks for network errors too
+            const { lastGoal } = get();
+            if (lastGoal) {
+              const cachedTracks = AudioCacheService.getFallbackTracks(lastGoal);
+              if (cachedTracks.length > 0) {
+                console.log(`🌐 Loading cached tracks due to network failures`);
+                toast.info("Switching to offline tracks...", { duration: 2000 });
+                
+                const fallbackTracks: Track[] = cachedTracks.slice(0, 8).map((track) => ({
+                  id: track.id,
+                  title: track.title,
+                  artist: 'Neural Positive Music',
+                  duration: 0,
+                  storage_bucket: track.bucket,
+                  storage_key: track.filename,
+                  stream_url: track.url,
+                  audio_status: 'working' as const,
+                }));
+                
+                const { queue, index } = get();
+                const newQueue = [...queue.slice(0, index + 1), ...fallbackTracks, ...queue.slice(index + 1)];
+                set({ queue: newQueue });
+                
+                consecutiveFailures = 1;
+                return;
+              }
+            }
+            
             toast.warning("Loading backup tracks...", { duration: 2000 });
             consecutiveFailures = 1; // Reset counter
           } else {

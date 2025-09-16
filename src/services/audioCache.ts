@@ -1,0 +1,305 @@
+import { supabase } from '@/integrations/supabase/client';
+import { SimpleCacheManager } from '@/utils/simpleCacheManager';
+import { headOk } from '@/lib/stream';
+
+export interface CachedAudioTrack {
+  id: string;
+  title: string;
+  url: string;
+  bucket: string;
+  filename: string;
+  verified: number; // timestamp when last verified
+  genre?: string;
+  goal?: string;
+}
+
+export interface GenreFallbacks {
+  [genreKey: string]: CachedAudioTrack[];
+}
+
+/**
+ * Audio Cache Service - Pre-validates and stores working audio URLs locally
+ */
+export class AudioCacheService {
+  private static readonly STORAGE_KEY = 'audio_cache_validated_tracks';
+  private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+  private static readonly MAX_TRACKS_PER_GENRE = 20;
+  
+  private static cache = new SimpleCacheManager<GenreFallbacks>();
+  
+  /**
+   * Get all cached validated tracks organized by genre
+   */
+  static getCachedTracks(): GenreFallbacks {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (!stored) return {};
+      
+      const parsed = JSON.parse(stored);
+      
+      // Check if cache is still valid
+      const now = Date.now();
+      const validTracks: GenreFallbacks = {};
+      
+      for (const [genre, tracks] of Object.entries(parsed) as [string, CachedAudioTrack[]][]) {
+        const validGenreTracks = tracks.filter(track => 
+          now - track.verified < this.CACHE_DURATION
+        );
+        
+        if (validGenreTracks.length > 0) {
+          validTracks[genre] = validGenreTracks;
+        }
+      }
+      
+      return validTracks;
+    } catch (error) {
+      console.warn('Failed to load cached tracks:', error);
+      return {};
+    }
+  }
+  
+  /**
+   * Save validated tracks to local storage
+   */
+  static saveCachedTracks(tracks: GenreFallbacks): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tracks));
+      console.log('💾 Saved cached tracks:', Object.keys(tracks).length, 'genres');
+    } catch (error) {
+      console.error('Failed to save cached tracks:', error);
+    }
+  }
+  
+  /**
+   * Get fallback tracks for a specific genre/goal
+   */
+  static getFallbackTracks(genreKey: string, goalKey?: string): CachedAudioTrack[] {
+    const cached = this.getCachedTracks();
+    
+    // Try exact match first
+    let tracks = cached[genreKey] || [];
+    
+    // If no tracks or goal specified, try goal-specific fallbacks
+    if ((!tracks.length || goalKey) && goalKey) {
+      const goalTracks = cached[`${genreKey}-${goalKey}`] || [];
+      tracks = [...tracks, ...goalTracks];
+    }
+    
+    // If still no tracks, try related genres
+    if (!tracks.length) {
+      const fallbackGenres = this.getRelatedGenres(genreKey);
+      for (const fallback of fallbackGenres) {
+        const fallbackTracks = cached[fallback] || [];
+        if (fallbackTracks.length > 0) {
+          tracks = fallbackTracks.slice(0, 10); // Limit fallback tracks
+          console.log(`🔄 Using fallback genre "${fallback}" for "${genreKey}"`);
+          break;
+        }
+      }
+    }
+    
+    return tracks.slice(0, this.MAX_TRACKS_PER_GENRE);
+  }
+  
+  /**
+   * Get related genres for fallbacks
+   */
+  private static getRelatedGenres(genreKey: string): string[] {
+    const fallbackMap: Record<string, string[]> = {
+      'pop': ['energyboost', 'neuralpositivemusic'],
+      'hiit': ['energyboost', 'neuralpositivemusic'],
+      'country': ['neuralpositivemusic', 'energyboost'],
+      'classical': ['chopin', 'newageworldstressanxietyreduction'],
+      'pain-management': ['chopin', 'newageworldstressanxietyreduction'],
+      'stress-anxiety': ['newageworldstressanxietyreduction', 'chopin'],
+      'sleep': ['newageworldstressanxietyreduction', 'chopin'],
+      'focus': ['chopin', 'neuralpositivemusic'],
+    };
+    
+    // Find the best match
+    for (const [pattern, fallbacks] of Object.entries(fallbackMap)) {
+      if (genreKey.toLowerCase().includes(pattern)) {
+        return fallbacks;
+      }
+    }
+    
+    // Default fallbacks
+    return ['neuralpositivemusic', 'chopin', 'newageworldstressanxietyreduction'];
+  }
+  
+  /**
+   * Scan and validate audio tracks from storage buckets
+   */
+  static async scanAndCacheAudioTracks(): Promise<void> {
+    console.log('🔍 Starting audio cache scan...');
+    
+    const buckets = [
+      'neuralpositivemusic',
+      'chopin', 
+      'newageworldstressanxietyreduction',
+      'energyboost',
+      'newageandworldfocus'
+    ];
+    
+    const validatedTracks: GenreFallbacks = {};
+    let totalScanned = 0;
+    let totalValidated = 0;
+    
+    for (const bucket of buckets) {
+      console.log(`📂 Scanning bucket: ${bucket}`);
+      
+      try {
+        const { data: files, error } = await supabase.storage
+          .from(bucket)
+          .list('', { limit: 100 });
+        
+        if (error) {
+          console.warn(`❌ Failed to list files in ${bucket}:`, error);
+          continue;
+        }
+        
+        if (!files || files.length === 0) {
+          console.log(`📭 No files found in ${bucket}`);
+          continue;
+        }
+        
+        const audioFiles = files.filter(file => 
+          file.name.toLowerCase().endsWith('.mp3') ||
+          file.name.toLowerCase().endsWith('.wav') ||
+          file.name.toLowerCase().endsWith('.m4a')
+        );
+        
+        console.log(`🎵 Found ${audioFiles.length} audio files in ${bucket}`);
+        
+        const bucketTracks: CachedAudioTrack[] = [];
+        
+        // Test each audio file (limit to prevent overwhelming)
+        const filesToTest = audioFiles.slice(0, this.MAX_TRACKS_PER_GENRE);
+        
+        for (const file of filesToTest) {
+          totalScanned++;
+          
+          try {
+            const { data } = supabase.storage
+              .from(bucket)
+              .getPublicUrl(file.name);
+            
+            const url = data.publicUrl;
+            
+            // Test if URL is accessible
+            const isWorking = await headOk(url, 3000);
+            
+            if (isWorking) {
+              totalValidated++;
+              
+              const track: CachedAudioTrack = {
+                id: file.id || `${bucket}-${file.name}`,
+                title: this.cleanTitle(file.name),
+                url,
+                bucket,
+                filename: file.name,
+                verified: Date.now(),
+                genre: this.mapBucketToGenre(bucket)
+              };
+              
+              bucketTracks.push(track);
+              console.log(`✅ Validated: ${track.title}`);
+            } else {
+              console.log(`❌ Failed to validate: ${file.name}`);
+            }
+          } catch (error) {
+            console.warn(`⚠️ Error testing ${file.name}:`, error);
+          }
+        }
+        
+        if (bucketTracks.length > 0) {
+          const genreKey = this.mapBucketToGenre(bucket);
+          validatedTracks[genreKey] = bucketTracks;
+          
+          // Also store by bucket name for direct access
+          validatedTracks[bucket] = bucketTracks;
+        }
+        
+      } catch (error) {
+        console.error(`💥 Error scanning bucket ${bucket}:`, error);
+      }
+    }
+    
+    // Save the validated tracks
+    this.saveCachedTracks(validatedTracks);
+    
+    console.log(`✨ Cache scan complete! ${totalValidated}/${totalScanned} tracks validated across ${Object.keys(validatedTracks).length} categories`);
+  }
+  
+  /**
+   * Clean filename to create a display title
+   */
+  private static cleanTitle(filename: string): string {
+    return filename
+      .replace(/\.(mp3|wav|m4a)$/i, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase())
+      .trim();
+  }
+  
+  /**
+   * Map storage bucket names to genre keys
+   */
+  private static mapBucketToGenre(bucket: string): string {
+    const mapping: Record<string, string> = {
+      'neuralpositivemusic': 'positive-energy',
+      'chopin': 'classical-piano',
+      'newageworldstressanxietyreduction': 'stress-anxiety',
+      'energyboost': 'energy-boost',
+      'newageandworldfocus': 'focus-concentration'
+    };
+    
+    return mapping[bucket] || bucket;
+  }
+  
+  /**
+   * Check if cache needs refresh
+   */
+  static needsRefresh(): boolean {
+    const cached = this.getCachedTracks();
+    const totalTracks = Object.values(cached).reduce((sum, tracks) => sum + tracks.length, 0);
+    
+    return totalTracks < 20; // Refresh if we have fewer than 20 total cached tracks
+  }
+  
+  /**
+   * Get cache statistics
+   */
+  static getCacheStats() {
+    const cached = this.getCachedTracks();
+    const stats = {
+      totalGenres: Object.keys(cached).length,
+      totalTracks: Object.values(cached).reduce((sum, tracks) => sum + tracks.length, 0),
+      genres: {} as Record<string, number>
+    };
+    
+    for (const [genre, tracks] of Object.entries(cached)) {
+      stats.genres[genre] = tracks.length;
+    }
+    
+    return stats;
+  }
+  
+  /**
+   * Force refresh the cache
+   */
+  static async forceRefresh(): Promise<void> {
+    localStorage.removeItem(this.STORAGE_KEY);
+    await this.scanAndCacheAudioTracks();
+  }
+}
+
+// Auto-scan on app load if cache is empty
+if (typeof window !== 'undefined') {
+  setTimeout(() => {
+    if (AudioCacheService.needsRefresh()) {
+      console.log('🚀 Auto-starting audio cache scan...');
+      AudioCacheService.scanAndCacheAudioTracks();
+    }
+  }, 2000);
+}
