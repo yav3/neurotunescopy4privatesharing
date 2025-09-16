@@ -8,6 +8,7 @@ import { filterTracksForGoal, sortByTherapeuticEffectiveness } from '@/utils/the
 import type { GoalSlug } from '@/config/therapeuticGoals';
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { toast } from "sonner";
+import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
 import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
 import { AudioCacheService } from '@/services/audioCache';
@@ -223,7 +224,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
           trackTitle: currentTrack?.title
         };
         
-        console.error('🎵 Audio error event:', errorDetails);
+        adminError('🎵 Audio error event:', errorDetails);
         
         // Track consecutive failures for smart error suppression
         const now = Date.now();
@@ -237,14 +238,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
         // Add failed track to blacklist
         if (currentTrack) {
           failedTracks.add(currentTrack.id);
-          console.log(`🚫 Blacklisted track: ${currentTrack.title} (${currentTrack.id})`);
+          adminLog(`🚫 Blacklisted track: ${currentTrack.title} (${currentTrack.id})`);
         }
         
         set({ isPlaying: false });
         
         // Only show error notification for first failure in sequence
         if (consecutiveFailures === 1) {
-          console.log('🎵 Audio error - skipping to next track');
+          adminLog('🎵 Audio error - skipping to next track');
         }
         
         // Use immediate auto-skip for format errors
@@ -498,7 +499,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       console.log('🎵 Store playerMode after set:', get().playerMode);
       return true;
     } catch (error) {
-      console.error('🎵 Load track failed:', error);
+      adminError('🎵 Load track failed:', error);
       if (isValid()) {
         set({ isLoading: false });
       }
@@ -822,7 +823,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Show toast only for first error in a 10-second window to reduce spam
           if (consecutiveFailures === 1) {
             set({ error: "Audio format not supported" });
-            toast.error("Finding playable tracks...", { duration: 2000 });
+            const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+            if (shouldShowTechnicalLogs()) {
+              toast.error("Finding playable tracks...", { duration: 2000 });
+            }
           } else if (consecutiveFailures >= 5) {
             // Try loading cached fallback tracks when too many failures
             const { lastGoal } = get();
@@ -855,7 +859,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
             }
             
             // Show different message after many failures
-            toast.error("Searching for working tracks...", { duration: 1500 });
+            const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+            if (shouldShowTechnicalLogs()) {
+              toast.error("Searching for working tracks...", { duration: 1500 });
+            }
             consecutiveFailures = 1; // Reset to prevent further spam
           } else {
             // Silent handling for consecutive failures
@@ -887,7 +894,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Show loading error less frequently
           if (consecutiveFailures === 1) {
             set({ error: "Network error loading track" });
-            toast.error("Checking track availability...", { duration: 1500 });
+            const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+            if (shouldShowTechnicalLogs()) {
+              toast.error("Checking track availability...", { duration: 1500 });
+            }
           } else if (consecutiveFailures >= 8) {
             // Try cached fallbacks for network errors too
             const { lastGoal } = get();
@@ -928,7 +938,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
-          toast.error("Playback issue - trying next track");
+          const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+          if (shouldShowTechnicalLogs()) {
+            toast.error("Playback issue - trying next track");
+          }
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
           // Use debounced auto-skip to prevent racing
           scheduleAutoSkip('unknown error');
@@ -1005,7 +1018,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         console.log('🎵 No more working tracks available');
-        toast.error("No more tracks available. Please select a new category.");
+        const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
+        if (shouldShowTechnicalLogs()) {
+          toast.error("No more tracks available. Please select a new category.");
+        }
         set({ isLoading: false, error: "No more tracks available" });
       } catch (error) {
         console.error('🎵 Next operation error:', error);
