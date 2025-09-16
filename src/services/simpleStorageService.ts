@@ -14,24 +14,44 @@ export class SimpleStorageService {
       try {
         console.log(`📂 Processing bucket: ${bucketName}`);
         
-        // List files in bucket
-        const { data: files, error } = await supabase.storage
+        // List files in bucket - try different approaches
+        let files: any[] = [];
+        let error: any = null;
+        
+        // First attempt: list with empty path
+        const result1 = await supabase.storage
           .from(bucketName)
           .list('', {
             limit: 1000,
             offset: 0,
           });
+        
+        if (result1.error) {
+          console.warn(`⚠️ Method 1 failed for ${bucketName}:`, result1.error.message);
+          
+          // Second attempt: list with null path
+          const result2 = await supabase.storage
+            .from(bucketName)
+            .list();
+          
+          if (result2.error) {
+            console.error(`❌ Method 2 also failed for ${bucketName}:`, result2.error.message);
+            error = result2.error;
+          } else {
+            files = result2.data || [];
+            console.log(`✅ Method 2 succeeded for ${bucketName}`);
+          }
+        } else {
+          files = result1.data || [];
+          console.log(`✅ Method 1 succeeded for ${bucketName}`);
+        }
 
         if (error) {
           console.error(`❌ Error listing files in bucket ${bucketName}:`, error);
-          // Try to be more specific about the error
-          if (error.message?.includes('not found') || error.message?.includes('does not exist')) {
-            console.warn(`📂 Bucket ${bucketName} does not exist - skipping`);
-          } else if (error.message?.includes('permission') || error.message?.includes('access')) {
-            console.warn(`📂 No access to bucket ${bucketName} - skipping`);
-          }
           continue;
         }
+
+        console.log(`📋 Raw files in ${bucketName}:`, files.map(f => ({ name: f.name, size: f.metadata?.size })));
 
         if (!files || files.length === 0) {
           console.log(`📂 No files found in bucket ${bucketName}`);
@@ -53,22 +73,20 @@ export class SimpleStorageService {
 
         // Convert to Track objects
         for (const file of audioFiles) {
-          const { data: urlData } = supabase.storage
-            .from(bucketName)
-            .getPublicUrl(file.name);
+          // Use the direct public URL format that works
+          const publicUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`;
 
-          if (urlData?.publicUrl) {
           const track: Track = {
             id: `${bucketName}-${file.id || file.name}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             title: cleanTitle(file.name),
-            url: urlData.publicUrl,
+            url: publicUrl,
             bucket: bucketName,
             folder: '',
             duration: file.metadata?.size ? Math.floor(file.metadata.size / 1000) : undefined
           };
 
-            allTracks.push(track);
-          }
+          allTracks.push(track);
+          console.log(`✅ Added track: ${track.title} -> ${publicUrl}`);
         }
 
       } catch (error) {
