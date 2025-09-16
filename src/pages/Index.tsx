@@ -13,6 +13,12 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 import peacefulLake from '@/assets/peaceful-lake-sunset.png';
 import mistyLake from '@/assets/misty-lake-rock.png';
 import tropicalFlowers from '@/assets/tropical-flowers.png';
+import foggyLakeRock from '@/assets/foggy-lake-rock.png';
+import waterfallGreen from '@/assets/waterfall-green.png';
+import dewdropLeaf from '@/assets/dewdrop-leaf.png';
+import dewdropMoon from '@/assets/dewdrop-moon.png';
+import forestLakeMist from '@/assets/forest-lake-mist.png';
+import yellowFlowers from '@/assets/yellow-flowers.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 
 // Therapeutic goals with diverse images
@@ -30,9 +36,9 @@ const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: tropicalFlowers },
   { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
-  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: peacefulLake },
-  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: tropicalFlowers },
-  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: mistyLake },
+  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
+  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: waterfallGreen },
+  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: yellowFlowers },
 ];
 
 const Index = () => {
