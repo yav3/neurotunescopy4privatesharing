@@ -26,6 +26,11 @@ let currentAbort: AbortController | null = null;
 // Blacklist for failed tracks to prevent infinite cycling
 let failedTracks = new Set<string>();
 
+// Track consecutive failures to suppress UI spam
+let consecutiveFailures = 0;
+let lastErrorTime = 0;
+const ERROR_SUPPRESSION_WINDOW = 5000; // 5 seconds
+
 // Skip tracking for UX and timeout management
 let skipped = 0;
 let skipTimeout: NodeJS.Timeout | null = null;
@@ -142,6 +147,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered: ${reason}`);
+      
+      // Suppress player mode updates during rapid error cascades
+      if (consecutiveFailures > 2) {
+        console.log(`🎵 Suppressing player updates during error cascade (failure ${consecutiveFailures})`);
+      }
+      
       if (!isNexting) {
         get().next();
       }
@@ -219,6 +230,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // Honest state tracking
       audio.addEventListener('play', () => {
         console.log('🎵 Audio play event fired');
+        // Reset error suppression on successful play
+        consecutiveFailures = 0;
+        lastErrorTime = 0;
+        
         const { currentTrack } = get();
         if (currentTrack) {
           // Remember played track for variety
@@ -443,9 +458,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       console.log('🎵 Track loaded successfully:', track.title);
       console.log('🎵 Setting currentTrack in store:', track.id, track.title);
       console.log('🎵 Current playerMode:', get().playerMode);
+      
       // Set currentTrack and ensure playerMode is set (default to mini if not set)
       const currentPlayerMode = get().playerMode || 'mini';
-      set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
+      
+      // During rapid error cascades, suppress UI updates to prevent visual race conditions
+      if (consecutiveFailures > 2) {
+        console.log('🎵 Suppressing UI updates during error cascade - setting track silently');
+        set({ currentTrack: track, isLoading: false, error: undefined });
+      } else {
+        set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
+      }
+      
       console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       console.log('🎵 Store playerMode after set:', get().playerMode);
       return true;
@@ -804,27 +828,65 @@ export const useAudioStore = create<AudioState>((set, get) => {
           set({ error: "Click play to start music (browser autoplay restriction)" });
           toast.info("Click the play button to start music");
         } else if (errorMessage === 'NotSupportedError' || errorCode === 4) {
-          // Media format/source not supported
-          set({ error: "Audio format not supported" });
-          toast.error("Track format not supported - trying next track");
-          // Add to blacklist immediately and use longer debounce
+          // Media format/source not supported - handle silently to avoid UI spam
+          const now = Date.now();
+          const isWithinSuppressionWindow = now - lastErrorTime < ERROR_SUPPRESSION_WINDOW;
+          
+          if (isWithinSuppressionWindow) {
+            consecutiveFailures++;
+          } else {
+            consecutiveFailures = 1;
+          }
+          lastErrorTime = now;
+          
+          // Add to blacklist immediately
           const { currentTrack } = get();
           if (currentTrack) {
             failedTracks.add(currentTrack.id);
             console.log('🎵 Blacklisted unsupported track:', currentTrack.id, currentTrack.title);
           }
-          scheduleAutoSkip('format not supported', 2000); // Longer delay
+          
+          // Only show toast for first error in sequence, suppress rapid error spam
+          if (consecutiveFailures === 1) {
+            set({ error: "Audio format not supported" });
+            toast.error("Finding playable tracks...");
+          } else {
+            // Silent handling for consecutive failures
+            set({ error: null });
+            console.log(`🎵 Silent skip ${consecutiveFailures} - suppressing UI spam`);
+          }
+          
+          // Use longer delay for format errors, no UI updates during rapid cycling
+          scheduleAutoSkip('format not supported', 1500);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
-          // Network/loading error
-          set({ error: "Network error loading track" });
-          toast.error("Network error - checking next track");
-          // Add to blacklist and use longer debounce for network errors
+          // Network/loading error - handle silently during rapid failures
+          const now = Date.now();
+          const isWithinSuppressionWindow = now - lastErrorTime < ERROR_SUPPRESSION_WINDOW;
+          
+          if (isWithinSuppressionWindow) {
+            consecutiveFailures++;
+          } else {
+            consecutiveFailures = 1;
+          }
+          lastErrorTime = now;
+          
+          // Add to blacklist
           const { currentTrack } = get();
           if (currentTrack) {
             failedTracks.add(currentTrack.id);
             console.log('🎵 Blacklisted network-failed track:', currentTrack.id, currentTrack.title);
           }
-          scheduleAutoSkip('network error', 3000); // Even longer delay for network issues
+          
+          // Only show toast for first error, suppress spam
+          if (consecutiveFailures === 1) {
+            set({ error: "Network error loading track" });
+            toast.error("Loading tracks...");
+          } else {
+            set({ error: null });
+            console.log(`🎵 Silent network skip ${consecutiveFailures} - suppressing UI spam`);
+          }
+          
+          scheduleAutoSkip('network error', 2000);
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
