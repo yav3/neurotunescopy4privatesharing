@@ -91,16 +91,32 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="px-6 py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto">
+          {/* Branding */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+              </div>
+              <div>
+                <div className="text-xl font-bold text-foreground">NeuroTunes</div>
+                <div className="text-sm text-muted-foreground">AI Music Therapy Platform</div>
+              </div>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={toggle} 
+              className="text-foreground hover:bg-accent"
+            >
+              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+          </div>
+          
+          {/* Greeting */}
           <h1 className="text-3xl font-bold text-foreground">Good morning</h1>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={toggle} 
-            className="text-foreground hover:bg-accent"
-          >
-            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
         </div>
       </div>
 
@@ -110,7 +126,7 @@ const Index = () => {
           
           {/* Therapeutic Goals Section */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Therapeutic Goals</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Let's Personalize! Pick one.</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {therapeuticGoals.map((goal) => (
                 <Card 
