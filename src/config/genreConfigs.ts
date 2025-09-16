@@ -25,6 +25,7 @@ import hiitForestPath from '@/assets/hiit-forest-path.png';
 import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
 import painSonatasYellowFlowers from '@/assets/pain-sonatas-yellow-flowers.jpg';
 import painPeacefulPianoMountainLake from '@/assets/pain-peaceful-piano-mountain-lake.jpg';
+import edmCrossoverCactus from '@/assets/edm-crossover-cactus.jpg';
 
 // Import new Stress & Anxiety Support images
 import sambaTropicalHibiscus from '@/assets/samba-tropical-hibiscus.png';
@@ -129,7 +130,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
         buckets: ['ENERGYBOOST'],
-        image: moodBoostLeafDewdrop,
+        image: edmCrossoverCactus,
       },
       {
         id: 'world',
