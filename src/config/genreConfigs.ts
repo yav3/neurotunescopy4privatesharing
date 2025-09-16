@@ -84,7 +84,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress relief',
-        buckets: ['audio', 'samba'],
+        buckets: ['samba'],
         image: stressSambaTropicalSunset
       },
     ],
