@@ -4,80 +4,78 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Play, RotateCcw } from 'lucide-react';
 import { useAudioStore } from '@/stores/audioStore';
 import { Track } from '@/types/simpleTrack';
-import { getCategoryById } from '@/config/therapeuticCategories';
+import { getGenreOptions } from '@/config/genreConfigs';
 import { SimpleStorageService } from '@/services/simpleStorageService';
 
 export default function GenreView() {
-  const { goalId } = useParams();
+  const { goalId, genreId } = useParams();
   const navigate = useNavigate();
   
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const category = goalId ? getCategoryById(goalId) : null;
+  // Get the specific genre from the configuration
+  const genres = goalId ? getGenreOptions(goalId) : [];
+  const genre = genres.find(g => g.id === genreId);
 
-  console.log('🔍 DEBUG - Category ID:', goalId);
-  console.log('🔍 DEBUG - Found category:', category);
+  console.log('🔍 DEBUG - Goal ID:', goalId);
+  console.log('🔍 DEBUG - Genre ID:', genreId);
+  console.log('🔍 DEBUG - Found genre:', genre);
 
   // Load tracks using simple storage service
   useEffect(() => {
-    if (!category) {
-      console.log('❌ No category available');
-      setError('No therapeutic category specified.');
+    if (!genre) {
+      console.log('❌ No genre available');
+      setError('Genre not found.');
       setIsTracksLoading(false);
       return;
     }
 
-    const loadCategoryTracks = async () => {
+    const loadGenreTracks = async () => {
       setIsTracksLoading(true);
       setTracks([]);
       setError(null);
       
       try {
-        console.log(`🎯 Loading tracks for category: ${category.name}`);
+        console.log(`🎯 Loading tracks for genre: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
         
-        // Use simple storage service - no complex conversions needed
-        const tracks = await SimpleStorageService.getTracksFromCategory(category.id, 200);
+        // Use the specific genre buckets instead of category buckets
+        const tracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
         
         if (tracks.length > 0) {
-          console.log(`✅ Loaded ${tracks.length} tracks for category`);
+          console.log(`✅ Loaded ${tracks.length} tracks for genre`);
           setTracks(tracks);
         } else {
-          setError('No music tracks found for this category.');
+          setError('No music tracks found for this genre.');
         }
         
       } catch (error) {
-        console.error('❌ Failed to load category tracks:', error);
-        setError('Failed to load music. Please try again.');
+        console.error(`❌ Error loading genre tracks:`, error);
+        setError('Failed to load music tracks for this genre.');
       } finally {
         setIsTracksLoading(false);
       }
     };
 
-    loadCategoryTracks();
-  }, [category?.id]);
+    loadGenreTracks();
+  }, [genre?.id]);
+
+  // Audio store actions
+  const { play, setQueue } = useAudioStore();
 
   const handleTrackPlay = async (track: Track) => {
-    try {
-      const audioStore = useAudioStore.getState();
-      await audioStore.setQueue([track], 0);
-      await audioStore.play();
-    } catch (error) {
-      console.error('Failed to play track:', error);
-    }
+    console.log('🎵 Playing single track:', track.title);
+    await setQueue([track], 0);
+    await play();
   };
 
   const handlePlayAll = async () => {
     if (tracks.length === 0) return;
     
-    try {
-      const audioStore = useAudioStore.getState();
-      await audioStore.setQueue(tracks, 0);
-      await audioStore.play();
-    } catch (error) {
-      console.error('Failed to play all tracks:', error);
-    }
+    console.log(`🎵 Playing all ${tracks.length} tracks`);
+    await setQueue(tracks, 0);
+    await play();
   };
 
   const handleBack = () => {
@@ -85,20 +83,20 @@ export default function GenreView() {
   };
 
   const handleRetry = () => {
-    // Trigger a reload by updating the dependency
     setError(null);
-    setTracks([]);
+    // Trigger re-fetch by updating the dependency
+    if (genre) {
+      const event = new CustomEvent('retry-load');
+      window.dispatchEvent(event);
+    }
   };
 
-  if (!category) {
+  if (!genre) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Category Not Found</h2>
-          <Button onClick={() => navigate('/')} variant="outline">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Button>
+          <h2 className="text-2xl font-bold mb-4">Genre Not Found</h2>
+          <Button onClick={handleBack}>Back to Home</Button>
         </div>
       </div>
     );
@@ -112,13 +110,18 @@ export default function GenreView() {
       </Button>
 
       <div className="mb-8">
-        <div 
-          className="relative h-64 rounded-lg bg-cover bg-center mb-6"
-          style={{ backgroundImage: `url(${category.image})` }}
-        >
-          <div className="absolute inset-0 bg-black/40 rounded-lg flex items-end">
-            <div className="p-6 text-white">
-              <h1 className="text-4xl font-bold mb-2">{category.name}</h1>
+        {/* Genre Banner */}
+        <div className="relative mb-8 rounded-xl overflow-hidden">
+          <div className="aspect-[3/1] relative">
+            <img 
+              src={genre.image}
+              alt={genre.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-3xl font-bold text-white mb-2">{genre.name}</h2>
+              <p className="text-white/80">{genre.description}</p>
             </div>
           </div>
         </div>
@@ -126,7 +129,7 @@ export default function GenreView() {
         <div className="flex items-center gap-4 mb-6">
           <Button onClick={handlePlayAll} disabled={tracks.length === 0 || isTracksLoading}>
             <Play className="h-4 w-4 mr-2" />
-            Play All
+            Play All ({tracks.length})
           </Button>
           
           {error && (
@@ -153,7 +156,7 @@ export default function GenreView() {
 
       {!isTracksLoading && !error && tracks.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No tracks found for this category.</p>
+          <p className="text-muted-foreground">No tracks found for this genre.</p>
         </div>
       )}
 
