@@ -93,7 +93,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['opera'],
+        buckets: ['neuralpositivemusic'],
         image: moodBoostCoastalCove,
       },
       {
@@ -114,7 +114,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['opera'],
+        buckets: ['ENERGYBOOST'],
         image: moodBoostDancePartyWaves,
       },
       {
