@@ -1,1 +1,1 @@
-export { useAudioStore, playFromGoal, playTrackNow } from "./audioStore";
+export { useSimpleAudioStore as useAudioStore } from "./simpleAudioStore";

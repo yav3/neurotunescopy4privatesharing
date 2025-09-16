@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { AUDIO_ELEMENT_ID } from '@/player/constants';
 import { DirectStoragePlayer, type DirectTrack } from '@/services/directStoragePlayer';
+import { toast } from "sonner";
 
 type SimpleAudioState = {
   // Playback state

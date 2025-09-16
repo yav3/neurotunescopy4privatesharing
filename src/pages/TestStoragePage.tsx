@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSimpleAudioStore } from "@/stores/simpleAudioStore";
+import { BucketConnectionTest } from "@/components/BucketConnectionTest";
 import { DirectStoragePlayer } from "@/services/directStoragePlayer";
 import { toast } from "sonner";
 
@@ -55,49 +56,55 @@ export const TestStoragePage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Direct Storage Test</CardTitle>
-          <CardDescription>
-            Test direct access to Supabase storage buckets
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex gap-2">
-            <Input
-              placeholder="Bucket name (e.g., painreducingworld)"
-              value={bucketName}
-              onChange={(e) => setBucketName(e.target.value)}
-            />
+      <h1 className="text-2xl font-bold mb-6">🎵 Direct Storage Connection Test</h1>
+      
+      <BucketConnectionTest />
+      
+      <div className="mt-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Individual Bucket Test</CardTitle>
+            <CardDescription>
+              Test a specific bucket by name
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Bucket name (e.g., painreducingworld)"
+                value={bucketName}
+                onChange={(e) => setBucketName(e.target.value)}
+              />
+              <Button 
+                onClick={testBucket} 
+                disabled={isLoading || !bucketName}
+              >
+                {isLoading ? "Testing..." : "Test Bucket"}
+              </Button>
+            </div>
+            
             <Button 
-              onClick={testBucket} 
-              disabled={isLoading || !bucketName}
+              onClick={testMultipleBuckets} 
+              disabled={isLoading}
+              variant="secondary"
+              className="w-full"
             >
-              {isLoading ? "Testing..." : "Test Bucket"}
+              {isLoading ? "Testing..." : "Test & Play Multiple Buckets"}
             </Button>
-          </div>
-          
-          <Button 
-            onClick={testMultipleBuckets} 
-            disabled={isLoading}
-            variant="secondary"
-            className="w-full"
-          >
-            {isLoading ? "Testing..." : "Test Multiple Buckets"}
-          </Button>
 
-          <div className="text-sm text-muted-foreground">
-            <p>Available buckets to test:</p>
-            <ul className="list-disc list-inside">
-              <li>painreducingworld</li>
-              <li>neuralpositivemusic</li>
-              <li>classicalfocus</li>
-              <li>deepworkbeats</li>
-              <li>anxietyreduction</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="text-sm text-muted-foreground">
+              <p className="font-semibold">Exact bucket names we're using:</p>
+              <ul className="list-disc list-inside space-y-1 mt-2">
+                <li><code>painreducingworld</code> - Contains alternativeHz-frequencies.mp3</li>
+                <li><code>neuralpositivemusic</code> - Neural positive music</li>
+                <li><code>classicalfocus</code> - Classical focus music</li>
+                <li><code>deepworkbeats</code> - Deep work beats</li>
+                <li><code>anxietyreduction</code> - Anxiety reduction music</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
