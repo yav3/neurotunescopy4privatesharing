@@ -62,7 +62,23 @@ const Index = () => {
 
   const handleTrendingSelect = (categoryId: string) => {
     console.log('🎵 Navigating to trending category:', categoryId);
-    // Navigate to trending category or playlist
+    // Map trending categories to actual music goals for immediate playback
+    const trendingToGoalMap: Record<string, string> = {
+      'chill-classical': 'focus-enhancement',
+      'electronic-dance': 'energy-boost', 
+      'positive-pop': 'mood-boost',
+      'chill-piano': 'focus-enhancement',
+      'relaxing-new-age': 'stress-anxiety-support',
+      'classical-focus': 'focus-enhancement'
+    };
+    
+    const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
+    console.log('🎵 Starting playback for goal:', goalId);
+    
+    // Use the playFromGoal action from audio store
+    import('@/stores').then(({ useAudioStore }) => {
+      useAudioStore.getState().playFromGoal(goalId);
+    });
   };
 
   return (
