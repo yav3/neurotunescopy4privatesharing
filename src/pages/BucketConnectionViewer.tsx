@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,17 +8,27 @@ export const BucketConnectionViewer = () => {
   const [connections, setConnections] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // EXACTLY these buckets - no more, no less
-  const EXACT_BUCKETS = [
-    "painreducingworld",    // Contains alternativeHz-frequencies.mp3 
-    "neuralpositivemusic",  // Neural positive music
-    "classicalfocus",       // Classical focus music  
-    "deepworkbeats",        // Deep work beats
-    "anxietyreduction"      // Anxiety reduction music
+  // ONLY REAL BUCKETS THAT ACTUALLY EXIST (based on your screenshot)
+  const REAL_BUCKETS = [
+    {
+      name: "painreducingworld",
+      description: "Pain reduction therapeutic music (shows 0 files - possible permission issue)",
+      status: "Connected but empty"
+    },
+    {
+      name: "neuralpositivemusic", 
+      description: "Neural positive therapeutic music (confirmed 99 audio files)",
+      status: "Working with content"
+    },
+    {
+      name: "classicalfocus",
+      description: "Classical music for focus",
+      status: "Exists in system"
+    }
   ];
 
   const testConnection = async (bucketName: string) => {
-    console.log(`🔍 CONNECTING TO BUCKET: ${bucketName}`);
+    console.log(`🔍 TESTING REAL BUCKET: ${bucketName}`);
     
     try {
       const { data: files, error } = await supabase.storage
@@ -48,7 +58,7 @@ export const BucketConnectionViewer = () => {
         `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`
       );
 
-      console.log(`✅ BUCKET ${bucketName} CONNECTED: ${files?.length || 0} total files, ${audioFiles.length} audio files`);
+      console.log(`✅ BUCKET ${bucketName}: ${files?.length || 0} total files, ${audioFiles.length} audio files`);
       
       return {
         name: bucketName,
@@ -74,15 +84,18 @@ export const BucketConnectionViewer = () => {
 
   const testAllConnections = async () => {
     setIsLoading(true);
-    console.log('🚀 TESTING ALL BUCKET CONNECTIONS');
-    console.log('📋 BUCKETS TO TEST:', EXACT_BUCKETS);
+    console.log('🚀 TESTING ONLY REAL BUCKETS');
+    console.log('📋 REAL BUCKETS TO TEST:', REAL_BUCKETS.map(b => b.name));
     
     const results: Record<string, any> = {};
     
-    for (const bucket of EXACT_BUCKETS) {
-      const result = await testConnection(bucket);
-      results[bucket] = result;
-      setConnections(prev => ({ ...prev, [bucket]: result }));
+    for (const bucket of REAL_BUCKETS) {
+      console.log(`\n🔍 Testing: ${bucket.name}`);
+      const result = await testConnection(bucket.name);
+      results[bucket.name] = { ...result, ...bucket };
+      
+      // Update UI progressively
+      setConnections(prev => ({ ...prev, [bucket.name]: results[bucket.name] }));
       
       // Small delay to prevent API overload
       await new Promise(resolve => setTimeout(resolve, 300));
@@ -92,8 +105,8 @@ export const BucketConnectionViewer = () => {
     const connected = Object.values(results).filter((r: any) => r.connected).length;
     const totalAudio = Object.values(results).reduce((sum: number, r: any) => sum + (r.audioFiles || 0), 0);
     
-    console.log('📊 CONNECTION SUMMARY:');
-    console.log(`✅ Connected buckets: ${connected}/${EXACT_BUCKETS.length}`);
+    console.log('📊 REAL BUCKET CONNECTION SUMMARY:');
+    console.log(`✅ Connected buckets: ${connected}/${REAL_BUCKETS.length}`);
     console.log(`🎵 Total audio files: ${totalAudio}`);
     console.log('🔗 Connection details:', results);
     
@@ -104,18 +117,23 @@ export const BucketConnectionViewer = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">🔗 Exact Bucket Connections</CardTitle>
+          <CardTitle className="text-2xl">🔗 REAL Bucket Connections</CardTitle>
           <CardDescription>
-            These are the EXACT buckets we connect to - no fallbacks, no alternatives
+            These are the ONLY REAL buckets that actually exist in your system - no fake ones!
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-              {EXACT_BUCKETS.map(bucket => (
-                <Badge key={bucket} variant="outline" className="justify-center p-2">
-                  {bucket}
-                </Badge>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              {REAL_BUCKETS.map(bucket => (
+                <div key={bucket.name} className="text-center">
+                  <Badge variant="outline" className="justify-center p-2 mb-1">
+                    {bucket.name}
+                  </Badge>
+                  <div className="text-xs text-muted-foreground">
+                    {bucket.status}
+                  </div>
+                </div>
               ))}
             </div>
             
@@ -125,7 +143,7 @@ export const BucketConnectionViewer = () => {
               className="w-full"
               size="lg"
             >
-              {isLoading ? "Testing Connections..." : "Test All Bucket Connections"}
+              {isLoading ? "Testing Real Buckets..." : "Test Real Bucket Connections"}
             </Button>
           </div>
         </CardContent>
@@ -134,19 +152,20 @@ export const BucketConnectionViewer = () => {
       {/* Connection Results */}
       {Object.keys(connections).length > 0 && (
         <div className="grid gap-4">
-          {EXACT_BUCKETS.map(bucketName => {
-            const conn = connections[bucketName];
+          {REAL_BUCKETS.map(bucket => {
+            const conn = connections[bucket.name];
             if (!conn) return null;
 
             return (
-              <Card key={bucketName} className={conn.connected ? "border-green-200" : "border-red-200"}>
+              <Card key={bucket.name} className={conn.connected ? "border-green-200" : "border-red-200"}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{bucketName}</CardTitle>
+                    <CardTitle className="text-lg">{bucket.name}</CardTitle>
                     <Badge variant={conn.connected ? "default" : "destructive"}>
                       {conn.connected ? "✅ CONNECTED" : "❌ FAILED"}
                     </Badge>
                   </div>
+                  <CardDescription>{bucket.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {conn.connected ? (
@@ -197,12 +216,15 @@ export const BucketConnectionViewer = () => {
       
       <Card className="bg-blue-50">
         <CardContent className="pt-6">
-          <h3 className="font-semibold mb-2">🎯 Connection Details</h3>
+          <h3 className="font-semibold mb-2">🎯 REAL Connection Details</h3>
           <div className="text-sm space-y-1">
+            <p><strong>CONFIRMED Real Buckets:</strong></p>
+            <p><code>painreducingworld</code> - Connected but shows 0 files (permission issue?)</p>
+            <p><code>neuralpositivemusic</code> - Connected with 99 audio files ✅</p>
+            <p><code>classicalfocus</code> - Exists in your system</p>
             <p><strong>Supabase URL:</strong> https://pbtgvcjniayedqlajjzz.supabase.co</p>
             <p><strong>Storage Path:</strong> /storage/v1/object/public/[bucket]/[filename]</p>
             <p><strong>Audio Extensions:</strong> .mp3, .wav, .flac, .aac, .ogg, .m4a</p>
-            <p><strong>Known File:</strong> painreducingworld/alternativeHz-frequencies.mp3</p>
           </div>
         </CardContent>
       </Card>
