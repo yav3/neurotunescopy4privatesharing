@@ -61,14 +61,14 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     'stress-anxiety-support': [
       {
         id: 'new-age-stress',
-        name: 'New Age & World Stress Relief',
+        name: 'New Age & World',
         description: 'Ethereal new age sounds for deep relaxation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'sonatas',
-        name: 'Sonatas for Stress',
+        name: 'Sonatas',
         description: 'Classical sonatas for deep stress relief',
         buckets: ['sonatasforstress'],
         image: stressClassicalPeacefulStream
