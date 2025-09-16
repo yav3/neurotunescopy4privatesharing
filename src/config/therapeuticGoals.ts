@@ -121,7 +121,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     id: 'energy-boost',
     slug: 'energy-boost',
     backendKey: 'energy-boost',
-    name: 'Energy Boost',
+    name: 'Energy & Motivation',
     shortName: 'Energize',
     description: 'High-energy music to boost motivation and physical performance',
     icon: Waves,
