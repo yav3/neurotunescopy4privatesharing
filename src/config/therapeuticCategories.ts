@@ -34,14 +34,14 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
     id: 'energy-boost',
     name: 'Energy & Motivation',
     description: 'Uplifting music for energy and motivation',
-    buckets: ['ENERGYBOOST', 'neuralpositivemusic', 'HIIT'],
+    buckets: ['ENERGYBOOST', 'HIIT', 'pop', 'countryandamericana', 'NewAgeandWorldFocus'],
     image: energyBoostCard
   },
   {
     id: 'mood-boost',
     name: 'Mood Enhancement',
     description: 'Feel-good music to boost your mood',
-    buckets: ['neuralpositivemusic', 'moodboostremixesworlddance', 'pop'],
+    buckets: ['audio', 'neuralpositivemusic', 'pop', 'moodboostremixesworlddance', 'countryandamericana', 'ENERGYBOOST', 'NewAgeandWorldFocus'],
     image: moodBoostCard
   },
   {
