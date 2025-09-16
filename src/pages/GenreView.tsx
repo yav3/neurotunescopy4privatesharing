@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Play, RotateCcw } from 'lucide-react';
 import { useAudioStore } from '@/stores/audioStore';
-import { Track } from '@/types/simpleTrack';
+import { Track as SimpleTrack } from '@/types/simpleTrack';
+import { Track as AudioTrack } from '@/types';
 import { getGenreOptions } from '@/config/genreConfigs';
 import { SimpleStorageService } from '@/services/simpleStorageService';
 
@@ -11,9 +12,25 @@ export default function GenreView() {
   const { goalId, genreId } = useParams();
   const navigate = useNavigate();
   
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<SimpleTrack[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Helper function to convert SimpleTrack to AudioTrack for the audio store
+  const convertToAudioTrack = (simpleTrack: SimpleTrack): AudioTrack => {
+    return {
+      id: simpleTrack.id,
+      title: simpleTrack.title,
+      artist: simpleTrack.artist || 'Therapeutic Music',
+      stream_url: simpleTrack.url,
+      storage_bucket: simpleTrack.bucket,
+      storage_key: simpleTrack.folder ? `${simpleTrack.folder}/${simpleTrack.title}` : simpleTrack.title,
+      duration: simpleTrack.duration,
+      bpm: simpleTrack.bpm,
+      album_art_url: simpleTrack.artwork_url,
+      audio_status: 'working' as const
+    };
+  };
 
   // Get the specific genre from the configuration
   const genres = goalId ? getGenreOptions(goalId) : [];
@@ -64,9 +81,10 @@ export default function GenreView() {
   // Audio store actions
   const { play, setQueue } = useAudioStore();
 
-  const handleTrackPlay = async (track: Track) => {
+  const handleTrackPlay = async (track: SimpleTrack) => {
     console.log('🎵 Playing single track:', track.title);
-    await setQueue([track], 0);
+    const audioTrack = convertToAudioTrack(track);
+    await setQueue([audioTrack], 0);
     await play();
   };
 
@@ -74,7 +92,8 @@ export default function GenreView() {
     if (tracks.length === 0) return;
     
     console.log(`🎵 Playing all ${tracks.length} tracks`);
-    await setQueue(tracks, 0);
+    const audioTracks = tracks.map(convertToAudioTrack);
+    await setQueue(audioTracks, 0);
     await play();
   };
 

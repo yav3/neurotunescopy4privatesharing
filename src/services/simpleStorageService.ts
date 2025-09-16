@@ -24,6 +24,12 @@ export class SimpleStorageService {
 
         if (error) {
           console.error(`❌ Error listing files in bucket ${bucketName}:`, error);
+          // Try to be more specific about the error
+          if (error.message?.includes('not found') || error.message?.includes('does not exist')) {
+            console.warn(`📂 Bucket ${bucketName} does not exist - skipping`);
+          } else if (error.message?.includes('permission') || error.message?.includes('access')) {
+            console.warn(`📂 No access to bucket ${bucketName} - skipping`);
+          }
           continue;
         }
 
