@@ -47,15 +47,20 @@ export const MinimizedPlayer = () => {
     const loadAlbumArt = async () => {
       try {
         if (!track || (track as any).artwork_url || (track as any).album_art_url) return;
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data: artFiles } = await supabase.storage
-          .from('albumart')
-          .list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+        
+        // Use StorageRequestManager to prevent simultaneous requests
+        const { storageRequestManager } = await import('@/services/storageRequestManager');
+        const artFiles = await storageRequestManager.listStorage('albumart');
+        
         const images = (artFiles || []).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f.name));
         if (!images.length) return;
+        
         const seed = Array.from((track.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
         const chosen = images[seed % images.length];
+        
+        const { supabase } = await import('@/integrations/supabase/client');
         const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
+        
         if (!cancelled) setAlbumArtUrl(urlData.publicUrl);
       } catch (e) {
         console.warn('Album art load failed', e);

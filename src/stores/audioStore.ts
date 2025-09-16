@@ -44,6 +44,18 @@ let autoSkipTimeout: NodeJS.Timeout | null = null;
 // Proactive queue loading timeout
 let loadMoreTracksTimeout: NodeJS.Timeout | null = null;
 
+// Helper functions for UUID handling
+const isValidUuid = (str: string): boolean => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+};
+
+const extractUuidFromCompositeId = (compositeId: string): string => {
+  // Look for UUID pattern within the composite ID
+  const uuidMatch = compositeId.match(/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+  return uuidMatch ? uuidMatch[0] : compositeId;
+};
+
 type AudioState = {
   // Playback state
   isPlaying: boolean;
@@ -133,6 +145,7 @@ const ensureAudioElement = (): HTMLAudioElement => {
   return audioElement;
 };
 
+// Set initial default player mode to 'mini' to ensure player always shows
 export const useAudioStore = create<AudioState>((set, get) => {
   let eventListenersAdded = false;
   
@@ -268,14 +281,27 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log('🎵 Remembered track for exclusion:', currentTrack.title);
           });
           
-          // Add successfully playing track to working edge collection
+  // Add successfully playing track to working edge collection
           if (!currentTrack.from_working_collection) {
-            WorkingEdgeCollectionService.addToWorkingCollection(currentTrack.id, 1.0)
-              .catch(error => console.warn('Failed to add track to working collection:', error));
+            // Extract proper UUID from composite track ID if needed
+            const trackUuid = currentTrack.id.includes('-') && currentTrack.id.length > 36 
+              ? extractUuidFromCompositeId(currentTrack.id)
+              : currentTrack.id;
+              
+            if (isValidUuid(trackUuid)) {
+              WorkingEdgeCollectionService.addToWorkingCollection(trackUuid, 1.0)
+                .catch(error => console.warn('Failed to add track to working collection:', error));
+            }
           } else {
             // Update play stats for working collection tracks
-            WorkingEdgeCollectionService.updatePlayStats(currentTrack.id)
-              .catch(error => console.warn('Failed to update play stats:', error));
+            const trackUuid = currentTrack.id.includes('-') && currentTrack.id.length > 36 
+              ? extractUuidFromCompositeId(currentTrack.id)
+              : currentTrack.id;
+              
+            if (isValidUuid(trackUuid)) {
+              WorkingEdgeCollectionService.updatePlayStats(trackUuid)
+                .catch(error => console.warn('Failed to update play stats:', error));
+            }
           }
         }
         set({ isPlaying: true });
@@ -527,7 +553,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     duration: 0,
     volume: 0.8,
     spatialAudioEnabled: false,
-    playerMode: 'full',
+    playerMode: 'mini', // Default to mini so MinimizedPlayer always shows
     queue: [],
     index: -1,
     sessionManager: null,

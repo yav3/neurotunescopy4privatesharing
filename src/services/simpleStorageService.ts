@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Track, cleanTitle } from '@/types/simpleTrack';
 import { expandBucketsWithFallbacks, isBucketEmpty } from '@/utils/bucketFallbacks';
+import { storageRequestManager } from '@/services/storageRequestManager';
 
 // Simple storage service - direct bucket access only
 export class SimpleStorageService {
@@ -23,36 +24,20 @@ export class SimpleStorageService {
       try {
         console.log(`📂 Processing bucket: ${bucketName}`);
         
-        // List files in bucket - try different approaches
+        // List files in bucket using throttled request manager
         let files: any[] = [];
         let error: any = null;
         
-        // First attempt: list with empty path
-        const result1 = await supabase.storage
-          .from(bucketName)
-          .list('', {
+        try {
+          console.log(`🔄 Using throttled storage request for bucket: ${bucketName}`);
+          files = await storageRequestManager.listStorage(bucketName, {
             limit: 1000,
             offset: 0,
           });
-        
-        if (result1.error) {
-          console.warn(`⚠️ Method 1 failed for ${bucketName}:`, result1.error.message);
-          
-          // Second attempt: list with null path
-          const result2 = await supabase.storage
-            .from(bucketName)
-            .list();
-          
-          if (result2.error) {
-            console.error(`❌ Method 2 also failed for ${bucketName}:`, result2.error.message);
-            error = result2.error;
-          } else {
-            files = result2.data || [];
-            console.log(`✅ Method 2 succeeded for ${bucketName}`);
-          }
-        } else {
-          files = result1.data || [];
-          console.log(`✅ Method 1 succeeded for ${bucketName}`);
+          console.log(`✅ Throttled request succeeded for ${bucketName}`);
+        } catch (requestError) {
+          console.error(`❌ Throttled request failed for ${bucketName}:`, requestError);
+          error = requestError;
         }
 
         if (error) {
