@@ -111,7 +111,7 @@ const Index = () => {
           </div>
           
           {/* Greeting */}
-          <h1 className="text-xl font-medium text-foreground">Good morning</h1>
+          <h1 className="text-base font-medium text-foreground">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
@@ -121,7 +121,6 @@ const Index = () => {
           
           {/* Therapeutic Goals Section */}
           <div>
-            <h2 className="text-lg font-medium text-foreground mb-6">Let's Personalize! Pick one.</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {therapeuticGoals.map((goal) => (
                 <Card 
