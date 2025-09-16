@@ -628,7 +628,6 @@ All colors MUST be HSL.
       page-break-inside: avoid;
     }
   }
-}
 
 /* Glass Morphism & Premium Effects */
 @layer utilities {
