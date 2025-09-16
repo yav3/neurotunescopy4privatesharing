@@ -211,20 +211,43 @@ export const useAudioStore = create<AudioState>((set, get) => {
         scheduleAutoSkip('track ended');
       });
       
-      // Auto-skip on audio error - SILENT error handling for therapeutic experience
+      // Auto-skip on audio error with better debugging
       audio.addEventListener('error', async (event) => {
-        // Prevent any browser default error sounds or notifications
-        event.preventDefault();
-        event.stopPropagation();
+        const currentTrack = get().currentTrack;
+        const errorDetails = {
+          error: audio.error,
+          networkState: audio.networkState,
+          readyState: audio.readyState,
+          src: audio.src,
+          trackTitle: currentTrack?.title
+        };
         
-        console.warn('🎵 Audio error event — silent handling for therapeutic experience');
+        console.error('🎵 Audio error event:', errorDetails);
+        
+        // Track consecutive failures for smart error suppression
+        const now = Date.now();
+        if (now - lastErrorTime < ERROR_SUPPRESSION_WINDOW) {
+          consecutiveFailures++;
+        } else {
+          consecutiveFailures = 1;
+        }
+        lastErrorTime = now;
+        
+        // Add failed track to blacklist
+        if (currentTrack) {
+          failedTracks.add(currentTrack.id);
+          console.log(`🚫 Blacklisted track: ${currentTrack.title} (${currentTrack.id})`);
+        }
+        
         set({ isPlaying: false });
         
-        // Silent skip announcement (visual only, no sounds)
-        announceSkip();
+        // Only show error notification for first failure in sequence
+        if (consecutiveFailures === 1) {
+          console.log('🎵 Audio error - skipping to next track');
+        }
         
-        // Use debounced auto-skip to prevent racing
-        scheduleAutoSkip('audio error');
+        // Use immediate auto-skip for format errors
+        scheduleAutoSkip('audio error', consecutiveFailures > 2 ? 100 : 2000);
       });
       
       // Honest state tracking
@@ -537,149 +560,77 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const isValidSequence = () => myLoadSeq === loadSeq;
       
       try {
-        const { adminLog, userLog } = await import('@/utils/adminLogging');
+        console.log('🎵 Starting music session for goal:', goal);
         
-        adminLog('🎵 Starting therapeutic session for goal:', goal);
-        userLog('🎵 Preparing your therapeutic music session...');
+        // SIMPLIFIED: Always use SimpleStorageService for consistency
+        console.log(`🎯 Loading tracks from storage service for goal: "${goal}"`);
         
-        // Pull directly from classicalfocus bucket for focus-enhancement
-        if (goal === 'focus-enhancement') {
-          if (!isValidSequence()) {
-            console.log('🛑 Load sequence outdated, aborting focus-enhancement load:', myLoadSeq);
-            return 0;
-          }
-          
-          console.log(`🎯 Loading tracks directly from classicalfocus bucket for: "${goal}"`);
-          
-          const { supabase } = await import('@/integrations/supabase/client');
-          
-          // List files directly from classicalfocus bucket
-          const { data: files, error: listError } = await supabase.storage
-            .from('classicalfocus')
-            .list('', {
-              limit: 1000,
-              sortBy: { column: 'name', order: 'asc' }
-            });
-
-          if (listError) {
-            throw new Error(`Failed to access classicalfocus bucket: ${listError.message}`);
-          }
-
-          if (!files || files.length === 0) {
-            throw new Error(`No files found in classicalfocus bucket`);
-          }
-
-          // Filter for audio files
-          const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
-          const audioFiles = files.filter(file => 
-            audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-          );
-
-          console.log(`🎵 Found ${audioFiles.length} audio files in classicalfocus bucket`);
-
-          if (audioFiles.length === 0) {
-            throw new Error(`No audio files found in classicalfocus bucket`);
-          }
-
-          adminLog('✅ Retrieved', audioFiles.length, 'audio files from classicalfocus bucket');
-
-          // Convert to Track format with public URLs
-          let tracks: Track[] = audioFiles.map((file) => {
-            const { data: urlData } = supabase.storage
-              .from('classicalfocus')
-              .getPublicUrl(file.name);
-            
-            // Clean up the file name for display
-            const cleanTitle = file.name
-              .replace(/\.[^/.]+$/, '') // Remove extension
-              .replace(/[_-]/g, ' ') // Replace underscores/hyphens with spaces
-              .replace(/\s+/g, ' ') // Clean up multiple spaces
-              .split(' ')
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-              .join(' ')
-              .trim();
-
-            return {
-              id: `classicalfocus-${file.name}`,
-              title: cleanTitle,
-              artist: 'Classical Focus Collection',
-              duration: 0,
-              storage_bucket: 'classicalfocus',
-              storage_key: file.name,
-              stream_url: urlData.publicUrl,
-              audio_status: 'working' as const,
-            };
-          });
-
-          console.log(`✅ Converted ${tracks.length} classicalfocus tracks for direct playback`);
-
-          // Filter out blocked tracks
-          tracks = await filterBlockedTracks(tracks);
-          console.log(`🚫 After blocking filter: ${tracks.length} tracks remaining`);
-
-          // Final sequence check before processing tracks
-          if (!isValidSequence()) {
-            console.log('🛑 Load sequence outdated after track conversion:', myLoadSeq);
-            return 0;
-          }
-
-          // Validate and set up queue
-          const { working } = await validateTracks(tracks);
-          if (working.length === 0) {
-            throw new Error('No working tracks found in classicalfocus bucket');
-          }
-
-          // Final sequence check before queue setup
-          if (!isValidSequence()) {
-            console.log('🛑 Load sequence outdated before queue setup:', myLoadSeq);
-            return 0;
-          }
-
-          // Shuffle tracks for variety
-          const shuffled = working.sort(() => Math.random() - 0.5);
-
-          await get().setQueue(shuffled, 0);
-          userLog(`🎵 Playing ${working.length} classical focus tracks directly from storage`);
-          return working.length;
-        } else {
-          // Use simple storage service with blacklist filtering
-          const { SimpleStorageService } = await import('@/services/simpleStorageService');
-          let tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
-          
-          // Filter out blacklisted tracks
-          const originalCount = tracks.length;
-          tracks = tracks.filter(track => !failedTracks.has(track.id));
-          
-          if (originalCount > tracks.length) {
-            console.log(`🚫 Filtered out ${originalCount - tracks.length} blacklisted tracks, ${tracks.length} remaining`);
-          }
-          
-          if (tracks.length === 0) {
-            // If all tracks are blacklisted, clear blacklist and try again once
-            if (failedTracks.size > 0 && originalCount > 0) {
-              console.log('🎵 All tracks blacklisted, clearing blacklist to retry');
-              failedTracks.clear();
-              tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
-            }
-            
-            if (tracks.length === 0) {
-              throw new Error(`No tracks found for goal: ${goal}`);
-            }
-          }
-
-          console.log(`✅ AudioStore: Received ${tracks.length} tracks from simple storage service`);
-          
-          // Set queue and start playing - tracks are already in the right format
-          await get().setQueue(tracks, 0);
-          userLog(`🎵 Playing ${tracks.length} tracks for ${goal}`);
-          return tracks.length;
+        const { SimpleStorageService } = await import('@/services/simpleStorageService');
+        let tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+        
+        console.log(`✅ SimpleStorageService returned ${tracks.length} tracks for ${goal}`);
+        
+        if (tracks.length === 0) {
+          throw new Error(`No tracks found for goal: ${goal}`);
         }
+        
+        // Convert to proper Track format (SimpleStorageService returns SimpleTrack)
+        const convertedTracks: Track[] = tracks.map((track) => ({
+          id: track.id,
+          title: track.title,
+          artist: track.artist || 'Neural Positive Music',
+          duration: track.duration || 0,
+          storage_bucket: track.bucket,
+          storage_key: track.id,
+          stream_url: track.url,
+          audio_status: 'working' as const,
+        }));
+        
+        console.log(`✅ Converted ${convertedTracks.length} tracks to proper format`);
+        
+        // Clear blacklist occasionally to allow retry of previously failed tracks
+        if (failedTracks.size > 20) {
+          console.log('🔄 Clearing blacklist to allow retries');
+          failedTracks.clear();
+        }
+        
+        // Filter out recently failed tracks (but allow some through for variety)
+        const originalCount = convertedTracks.length;
+        const availableTracks = convertedTracks.filter(track => !failedTracks.has(track.id));
+        
+        // If we filtered out too many, keep some of the blacklisted ones
+        let finalTracks = availableTracks;
+        if (availableTracks.length < 5 && originalCount > 5) {
+          console.log('🎵 Not enough available tracks, including some previously failed ones');
+          finalTracks = convertedTracks.slice(0, 10); // Take first 10 regardless of blacklist
+        }
+        
+        console.log(`📊 Track filtering: ${originalCount} total → ${availableTracks.length} available → ${finalTracks.length} final`);
+        
+        if (finalTracks.length === 0) {
+          throw new Error(`No playable tracks found for goal: ${goal}`);
+        }
+        
+        // Shuffle for variety
+        const shuffled = finalTracks.sort(() => Math.random() - 0.5);
+        
+        // Set queue and start playing
+        await get().setQueue(shuffled, 0);
+        console.log(`🎵 Successfully queued ${shuffled.length} tracks for ${goal}`);
+        return shuffled.length;
+        
       } catch (error: any) {
         console.error('🎵 playFromGoal error:', error);
         set({ 
           isLoading: false, 
           error: error instanceof Error ? error.message : "Failed to load tracks" 
         });
+        
+        // Show user-friendly error in UI
+        import('@/utils/adminLogging').then(({ userLog }) => {
+          userLog(`❌ Could not load music for ${goal}. Please try again.`);
+        });
+        
         return 0;
       }
     },
