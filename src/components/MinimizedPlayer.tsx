@@ -77,7 +77,7 @@ export const MinimizedPlayer = () => {
   const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
       {/* Progress bar */}
       <div className="w-full h-1 bg-muted/30">
         <div 
