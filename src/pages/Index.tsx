@@ -175,8 +175,26 @@ const Index = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className="backdrop-blur-sm border-t bg-background/95 border-border">
           <Navigation />
-        </div>
       </div>
+
+      {/* Debug button in development */}
+      {import.meta.env.DEV && (
+        <div className="fixed bottom-20 right-4 z-50">
+          <Button 
+            onClick={() => {
+              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+                BucketDiagnostics.checkAllBuckets();
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm"
+          >
+            🔍 Debug Buckets
+          </Button>
+        </div>
+      )}
+    </div>
 
       {/* Genre Selection Modal */}
       <GenreSelectionModal

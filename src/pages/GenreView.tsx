@@ -64,6 +64,12 @@ export default function GenreView() {
           console.log(`✅ Loaded ${tracks.length} tracks for genre`);
           setTracks(tracks);
         } else {
+          console.warn(`⚠️ No tracks found for genre: ${genre.name}, buckets: ${genre.buckets.join(', ')}`);
+          console.log('🔍 This could mean:');
+          console.log('  1. Bucket(s) do not exist in Supabase');
+          console.log('  2. Bucket(s) exist but are empty');
+          console.log('  3. Bucket(s) exist but contain no audio files');
+          console.log('  4. Permission issues accessing bucket(s)');
           setError('No music tracks found for this genre.');
         }
         
@@ -102,7 +108,18 @@ export default function GenreView() {
   };
 
   const handleRetry = () => {
+    console.log('🔄 Retrying to load tracks...');
+    
+    // Import and run diagnostics
+    import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+      if (goalId && genreId) {
+        BucketDiagnostics.checkSpecificGenre(goalId, genreId);
+      }
+    });
+    
     setError(null);
+    setTracks([]);
+    
     // Trigger re-fetch by updating the dependency
     if (genre) {
       const event = new CustomEvent('retry-load');
