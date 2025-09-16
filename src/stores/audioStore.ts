@@ -23,6 +23,9 @@ let isTransitioning = false; // Global transition lock
 // Network hang protection  
 let currentAbort: AbortController | null = null;
 
+// Blacklist for failed tracks to prevent infinite cycling
+let failedTracks = new Set<string>();
+
 // Skip tracking for UX
 let skipped = 0;
 
@@ -614,12 +617,29 @@ export const useAudioStore = create<AudioState>((set, get) => {
           userLog(`🎵 Playing ${working.length} classical focus tracks directly from storage`);
           return working.length;
         } else {
-          // Use simple storage service
+          // Use simple storage service with blacklist filtering
           const { SimpleStorageService } = await import('@/services/simpleStorageService');
-          const tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+          let tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+          
+          // Filter out blacklisted tracks
+          const originalCount = tracks.length;
+          tracks = tracks.filter(track => !failedTracks.has(track.id));
+          
+          if (originalCount > tracks.length) {
+            console.log(`🚫 Filtered out ${originalCount - tracks.length} blacklisted tracks, ${tracks.length} remaining`);
+          }
           
           if (tracks.length === 0) {
-            throw new Error(`No tracks found for goal: ${goal}`);
+            // If all tracks are blacklisted, clear blacklist and try again once
+            if (failedTracks.size > 0 && originalCount > 0) {
+              console.log('🎵 All tracks blacklisted, clearing blacklist to retry');
+              failedTracks.clear();
+              tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+            }
+            
+            if (tracks.length === 0) {
+              throw new Error(`No tracks found for goal: ${goal}`);
+            }
           }
 
           console.log(`✅ AudioStore: Received ${tracks.length} tracks from simple storage service`);
@@ -646,10 +666,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // Fast parallel validation
       const { working, broken } = await validateTracks(tracks);
       
-      // Remove broken tracks and announce skips
+      // Remove broken tracks from queue, blacklist them, and announce skips
       if (broken.length > 0) {
         const { adminLog, userLog } = await import('@/utils/adminLogging');
         adminLog(`🎵 Removing ${broken.length} broken tracks`);
+        
+        // Add broken tracks to blacklist
+        broken.forEach(track => {
+          failedTracks.add(track.id);
+          console.log('🎵 Added broken track to blacklist:', track.id, track.title);
+        });
+        console.log('🎵 Total blacklisted tracks:', failedTracks.size);
+        
         for (let i = 0; i < Math.min(broken.length, 3); i++) {
           announceSkip();
         }
@@ -836,8 +864,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
             return;
           }
           
-          // Drop broken track from queue and announce skip
+          // Drop broken track from queue, blacklist it, and announce skip
           console.log('🎵 Removing broken track from queue:', queue[i].title);
+          failedTracks.add(queue[i].id);
+          console.log('🎵 Added track to blacklist:', queue[i].id, '- Total blacklisted:', failedTracks.size);
           announceSkip();
           queue = removeAt(queue, i);
           i--; // Adjust index since we removed an item
