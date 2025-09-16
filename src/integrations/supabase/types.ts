@@ -2923,6 +2923,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      generate_unique_filename: {
+        Args: { base_name: string; bucket_name: string; exclude_id?: string }
+        Returns: string
+      }
       get_camelot_neighbors: {
         Args: { input_camelot: string }
         Returns: string[]

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { albumArtPool, getAlbumArtForTrack } from '@/utils/albumArtPool';
 
 export const MinimizedPlayer = () => {
   const { 
@@ -14,8 +16,16 @@ export const MinimizedPlayer = () => {
     currentTrack: track, 
     setPlayerMode,
     currentTime,
-    duration
+    duration,
+    lastGoal
   } = useAudioStore();
+
+  // Get therapeutic goal display name
+  const getTherapeuticGoalName = () => {
+    if (!lastGoal) return 'Therapeutic Music';
+    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
+    return goal ? goal.name : 'Therapeutic Music';
+  };
 
   // Local state for album artwork
   const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
@@ -98,7 +108,7 @@ export const MinimizedPlayer = () => {
             {formatTrackTitleForDisplay(track.title)}
           </h3>
           <p className="text-xs text-muted-foreground truncate">
-            Therapeutic Music
+            {getTherapeuticGoalName()}
           </p>
         </div>
         
