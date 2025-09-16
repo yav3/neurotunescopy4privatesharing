@@ -72,7 +72,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
         {/* Content - Enhanced with glass morphism backdrop */}
         <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
           <div className="backdrop-blur-sm bg-black/20 rounded-xl p-3 border border-white/10 transform transition-all duration-300 group-hover:translate-y-[-4px] group-hover:bg-black/30 group-hover:border-white/20">
-            <h3 className="text-white font-semibold text-base sm:text-lg leading-tight drop-shadow-lg mb-1 line-clamp-2">
+            <h3 className="text-white font-normal text-base sm:text-lg leading-tight drop-shadow-lg mb-1 line-clamp-2">
               {goal.name}
             </h3>
             <div className="space-y-1.5 mt-1">
