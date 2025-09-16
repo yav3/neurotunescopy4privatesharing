@@ -40,6 +40,10 @@ export interface Track {
   original_title?: string;
   mood?: string;
   
+  // Working edge collection properties
+  from_working_collection?: boolean;  // Indicates track is from working edge collection
+  reliability_score?: number;         // Track reliability score from working collection
+  
   // Visual properties
   album_art_url?: string;
   album_art_thumbnail?: string;

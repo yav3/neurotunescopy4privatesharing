@@ -12,6 +12,7 @@ import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
 import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
 import { AudioCacheService } from '@/services/audioCache';
+import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -266,6 +267,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
             remember(currentTrack.id);
             console.log('🎵 Remembered track for exclusion:', currentTrack.title);
           });
+          
+          // Add successfully playing track to working edge collection
+          if (!currentTrack.from_working_collection) {
+            WorkingEdgeCollectionService.addToWorkingCollection(currentTrack.id, 1.0)
+              .catch(error => console.warn('Failed to add track to working collection:', error));
+          } else {
+            // Update play stats for working collection tracks
+            WorkingEdgeCollectionService.updatePlayStats(currentTrack.id)
+              .catch(error => console.warn('Failed to update play stats:', error));
+          }
         }
         set({ isPlaying: true });
       });
@@ -998,18 +1009,98 @@ export const useAudioStore = create<AudioState>((set, get) => {
           set({ queue });
         }
         
-        // If no more tracks in current queue, handle goal reloading
+        // If no more tracks in current queue, try working edge collection first
         const currentState = get();
         if (currentState.lastGoal && currentState.lastGoal !== 'trending') {
-          console.log('🎵 Queue exhausted, reloading tracks for goal:', currentState.lastGoal);
+          console.log('🎵 Queue exhausted, trying working edge collection first...');
+          
+          // Try to load working edge tracks as fallback
+          try {
+            const workingTracks = await WorkingEdgeCollectionService.getWorkingTracks(
+              undefined, // No specific genre filter 
+              currentState.lastGoal,
+              10
+            );
+            
+            if (workingTracks.length > 0) {
+              console.log(`✅ Found ${workingTracks.length} working edge tracks for fallback`);
+              toast.success("Loading verified tracks...", { duration: 2000 });
+              
+              // Convert working edge tracks to track format
+              const fallbackTracks: Track[] = workingTracks.map(workingTrack => ({
+                ...WorkingEdgeCollectionService.convertToTrackFormat(workingTrack),
+                artist: 'Neural Positive Music',
+                duration: 0,
+                stream_url: API.streamUrl(workingTrack.track_id),
+                audio_status: 'working' as const,
+              }));
+              
+              // Add to current queue
+              const { queue: currentQueue, index: currentIndex } = get();
+              const newQueue = [...currentQueue.slice(0, currentIndex + 1), ...fallbackTracks, ...currentQueue.slice(currentIndex + 1)];
+              set({ queue: newQueue });
+              
+              // Try to play the first working edge track
+              for (let i = currentIndex + 1; i < newQueue.length; i++) {
+                const success = await loadTrack(newQueue[i]);
+                if (success) {
+                  set({ index: i });
+                  await get().play();
+                  console.log('🎵 Successfully playing working edge track:', newQueue[i].title);
+                  isNexting = false;
+                  return;
+                }
+              }
+            }
+          } catch (error) {
+            console.warn('🎵 Failed to load working edge tracks:', error);
+          }
+          
+          // If working edge tracks didn't work, reload tracks for goal
+          console.log('🎵 Working edge tracks unavailable, reloading tracks for goal:', currentState.lastGoal);
           toast.info("Loading more tracks...");
           await get().playFromGoal(currentState.lastGoal);
           // Reset flag after successful reload
           isNexting = false;
           return;
         } else {
-          // No valid goal set - load focus enhancement as default
-          console.log('🎵 No valid goal set, loading focus enhancement as default');
+          // No valid goal set - try working edge tracks first, then load focus enhancement as default
+          console.log('🎵 No valid goal set, trying working edge tracks first...');
+          
+          try {
+            const workingTracks = await WorkingEdgeCollectionService.getWorkingTracks(
+              undefined, // No specific genre/goal filters
+              undefined,
+              10
+            );
+            
+            if (workingTracks.length > 0) {
+              console.log(`✅ Found ${workingTracks.length} working edge tracks as default fallback`);
+              toast.success("Loading verified tracks...", { duration: 2000 });
+              
+              const fallbackTracks: Track[] = workingTracks.map(workingTrack => ({
+                ...WorkingEdgeCollectionService.convertToTrackFormat(workingTrack),
+                artist: 'Neural Positive Music',
+                duration: 0,
+                stream_url: API.streamUrl(workingTrack.track_id),
+                audio_status: 'working' as const,
+              }));
+              
+              set({ queue: fallbackTracks, index: 0 });
+              const success = await loadTrack(fallbackTracks[0]);
+              if (success) {
+                await get().play();
+                console.log('🎵 Successfully playing default working edge track');
+                isNexting = false;
+                return;
+              }
+            }
+          } catch (error) {
+            console.warn('🎵 Failed to load default working edge tracks:', error);
+          }
+          
+          // Final fallback - load focus enhancement as default
+          console.log('🎵 Loading focus enhancement as final fallback');
           toast.info("Loading focus enhancement tracks...");
           await get().playFromGoal('focus-enhancement');
           // Reset flag after successful reload

@@ -2777,6 +2777,65 @@ export type Database = {
         }
         Relationships: []
       }
+      working_edge_collection: {
+        Row: {
+          bpm: number | null
+          created_at: string
+          energy_level: number | null
+          genre: string | null
+          id: string
+          last_played_at: string | null
+          play_count: number
+          reliability_score: number
+          storage_bucket: string
+          storage_key: string
+          therapeutic_goal: string | null
+          track_id: string
+          updated_at: string
+          verified_at: string
+        }
+        Insert: {
+          bpm?: number | null
+          created_at?: string
+          energy_level?: number | null
+          genre?: string | null
+          id?: string
+          last_played_at?: string | null
+          play_count?: number
+          reliability_score?: number
+          storage_bucket: string
+          storage_key: string
+          therapeutic_goal?: string | null
+          track_id: string
+          updated_at?: string
+          verified_at?: string
+        }
+        Update: {
+          bpm?: number | null
+          created_at?: string
+          energy_level?: number | null
+          genre?: string | null
+          id?: string
+          last_played_at?: string | null
+          play_count?: number
+          reliability_score?: number
+          storage_bucket?: string
+          storage_key?: string
+          therapeutic_goal?: string | null
+          track_id?: string
+          updated_at?: string
+          verified_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "working_edge_collection_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: true
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       my_favorites: {
@@ -2875,6 +2934,10 @@ export type Database = {
       }
     }
     Functions: {
+      add_to_working_collection: {
+        Args: { _reliability_score?: number; _track_id: string }
+        Returns: boolean
+      }
       clean_track_title_from_filename: {
         Args: { storage_key: string }
         Returns: string
@@ -2960,6 +3023,17 @@ export type Database = {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
       }
+      get_working_edge_tracks: {
+        Args: { _genre?: string; _limit?: number; _therapeutic_goal?: string }
+        Returns: {
+          play_count: number
+          reliability_score: number
+          storage_bucket: string
+          storage_key: string
+          title: string
+          track_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -3022,6 +3096,10 @@ export type Database = {
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
         Returns: boolean
+      }
+      update_working_edge_play_stats: {
+        Args: { _track_id: string }
+        Returns: undefined
       }
       validate_magic_link: {
         Args: { link_token: string }
