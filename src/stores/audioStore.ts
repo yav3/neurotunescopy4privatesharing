@@ -26,8 +26,9 @@ let currentAbort: AbortController | null = null;
 // Blacklist for failed tracks to prevent infinite cycling
 let failedTracks = new Set<string>();
 
-// Skip tracking for UX
+// Skip tracking for UX and timeout management
 let skipped = 0;
+let skipTimeout: NodeJS.Timeout | null = null;
 
 // Debounced auto-skip protection
 let autoSkipTimeout: NodeJS.Timeout | null = null;
@@ -137,14 +138,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
   ensureAudioElement();
   
   // Immediate auto-skip function for seamless playback
-  const scheduleAutoSkip = (reason: string) => {
+  const scheduleAutoSkip = (reason: string, delay: number = 50) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered: ${reason}`);
       if (!isNexting) {
         get().next();
       }
-    }, 50); // Minimal delay for seamless playback
+    }, delay); // Use provided delay or default minimal delay for seamless playback
   };
   
   // Helper: Remove item from array at index
@@ -806,14 +807,24 @@ export const useAudioStore = create<AudioState>((set, get) => {
           // Media format/source not supported
           set({ error: "Audio format not supported" });
           toast.error("Track format not supported - trying next track");
-          // Use debounced auto-skip to prevent racing
-          scheduleAutoSkip('format not supported');
+          // Add to blacklist immediately and use longer debounce
+          const { currentTrack } = get();
+          if (currentTrack) {
+            failedTracks.add(currentTrack.id);
+            console.log('🎵 Blacklisted unsupported track:', currentTrack.id, currentTrack.title);
+          }
+          scheduleAutoSkip('format not supported', 2000); // Longer delay
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error
           set({ error: "Network error loading track" });
           toast.error("Network error - checking next track");
-          // Use debounced auto-skip to prevent racing
-          scheduleAutoSkip('network error');
+          // Add to blacklist and use longer debounce for network errors
+          const { currentTrack } = get();
+          if (currentTrack) {
+            failedTracks.add(currentTrack.id);
+            console.log('🎵 Blacklisted network-failed track:', currentTrack.id, currentTrack.title);
+          }
+          scheduleAutoSkip('network error', 3000); // Even longer delay for network issues
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });

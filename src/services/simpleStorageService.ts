@@ -52,14 +52,14 @@ export class SimpleStorageService {
             .getPublicUrl(file.name);
 
           if (urlData?.publicUrl) {
-            const track: Track = {
-              id: `${bucketName}-${file.name.replace(/[^a-zA-Z0-9]/g, '-')}`,
-              title: cleanTitle(file.name),
-              url: urlData.publicUrl,
-              bucket: bucketName,
-              folder: '',
-              duration: file.metadata?.size ? Math.floor(file.metadata.size / 1000) : undefined
-            };
+          const track: Track = {
+            id: `${bucketName}-${file.id || file.name}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            title: cleanTitle(file.name),
+            url: urlData.publicUrl,
+            bucket: bucketName,
+            folder: '',
+            duration: file.metadata?.size ? Math.floor(file.metadata.size / 1000) : undefined
+          };
 
             allTracks.push(track);
           }
