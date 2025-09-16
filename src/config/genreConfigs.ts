@@ -40,14 +40,14 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'crossover-classical',
         name: 'Crossover Classical',
         description: 'Modern classical compositions for concentration',
-        buckets: ['audio', 'classicalfocus'],
+        buckets: ['classicalfocus'],
         image: focusCrossoverClassicalLandscape
       },
       {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
-        buckets: ['audio', 'NewAgeandWorldFocus'],
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
@@ -63,21 +63,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['audio', 'NewAgeandWorldFocus'],
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'sonatas',
         name: 'Sonatas for Stress',
         description: 'Classical sonatas for deep stress relief',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: stressClassicalPeacefulStream
       },
       {
         id: 'peaceful-piano',
         name: 'Chopin',
         description: 'Gentle Chopin pieces for relaxation',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: focusPianoCherryBlossoms
       },
       {
@@ -100,14 +100,14 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
-        buckets: ['audio'],
+        buckets: ['moodboostremixesworlddance'],
         image: moodBoostSunsetFlowers,
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['audio', 'moodboostremixesworlddance'],
+        buckets: ['moodboostremixesworlddance'],
         image: moodBoostDancePartyWaves,
       },
       {
@@ -123,28 +123,28 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'gentle-classical',
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: gentleClassicalMistyLake,
       },
       {
         id: 'stress-reduction-classical',
         name: 'Stress Reduction Classical',
         description: 'Classical music specifically for pain and stress relief',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: focusClassicalMountainLake,
       },
       {
         id: 'new-age-chill',
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
-        buckets: ['audio', 'NewAgeandWorldFocus'],
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop,
       },
       {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and healing',
-        buckets: ['audio', 'Chopin'],
+        buckets: ['Chopin'],
         image: painGentleWaterfallPiano,
       }
     ],
