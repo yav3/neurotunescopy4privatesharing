@@ -23,6 +23,7 @@ import focusZenStones from '@/assets/focus-zen-stones.png';
 import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical-landscape.jpg';
 import hiitForestPath from '@/assets/hiit-forest-path.png';
 import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
+import painSonatasYellowFlowers from '@/assets/pain-sonatas-yellow-flowers.jpg';
 
 // Import new Stress & Anxiety Support images
 import sambaTropicalHibiscus from '@/assets/samba-tropical-hibiscus.png';
@@ -150,7 +151,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Sonatas',
         description: 'Classical music specifically for pain and stress support',
         buckets: ['sonatasforstress'],
-        image: focusClassicalMountainLake,
+        image: painSonatasYellowFlowers,
       },
       {
         id: 'new-age-chill',
