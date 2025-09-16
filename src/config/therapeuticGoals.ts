@@ -98,7 +98,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-cyan-500 to-teal-500',
     bpmRange: { min: 90, max: 140, optimal: 120 },
     vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['audio', 'neuralpositivemusic', 'pop'],
+    musicBuckets: ['audio', 'neuralpositivemusic', 'pop', 'moodboostremixesworlddance', 'countryandamericana', 'ENERGYBOOST', 'NewAgeandWorldFocus'],
     synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
@@ -130,7 +130,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
-    musicBuckets: ['ENERGYBOOST'],
+    musicBuckets: ['ENERGYBOOST', 'HIIT', 'pop', 'countryandamericana', 'NewAgeandWorldFocus'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
   }
 ];
