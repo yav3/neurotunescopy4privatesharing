@@ -1,0 +1,47 @@
+// Fallback mapping for empty storage buckets
+// Maps empty buckets to populated ones with similar content
+
+export const BUCKET_FALLBACKS: Record<string, string[]> = {
+  // Empty buckets → Working buckets with similar content
+  'pop': ['ENERGYBOOST', 'neuralpositivemusic'], // Pop music fallback to energy/positive music
+  'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
+  'countryandamericana': ['ENERGYBOOST', 'NewAgeandWorldFocus'], // Country fallback to world music
+  'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
+  'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback
+  'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
+};
+
+/**
+ * Get fallback buckets for a given bucket if it's empty
+ * @param originalBucket - The original bucket that might be empty
+ * @returns Array of fallback bucket names, or original bucket if no fallbacks needed
+ */
+export const getFallbackBuckets = (originalBucket: string): string[] => {
+  const fallbacks = BUCKET_FALLBACKS[originalBucket];
+  return fallbacks || [originalBucket];
+};
+
+/**
+ * Get all possible buckets including fallbacks for an array of buckets
+ * @param buckets - Original bucket array
+ * @returns Expanded array including fallback buckets
+ */
+export const expandBucketsWithFallbacks = (buckets: string[]): string[] => {
+  const allBuckets = new Set<string>();
+  
+  buckets.forEach(bucket => {
+    const bucketsToTry = getFallbackBuckets(bucket);
+    bucketsToTry.forEach(b => allBuckets.add(b));
+  });
+  
+  return Array.from(allBuckets);
+};
+
+/**
+ * Check if a bucket is known to be empty and needs fallbacks
+ * @param bucket - Bucket name to check
+ * @returns True if bucket is known to be empty
+ */
+export const isBucketEmpty = (bucket: string): boolean => {
+  return Object.keys(BUCKET_FALLBACKS).includes(bucket);
+};

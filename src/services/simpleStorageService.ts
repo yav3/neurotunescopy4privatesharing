@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Track, cleanTitle } from '@/types/simpleTrack';
+import { expandBucketsWithFallbacks, isBucketEmpty } from '@/utils/bucketFallbacks';
 
 // Simple storage service - direct bucket access only
 export class SimpleStorageService {
@@ -8,9 +9,17 @@ export class SimpleStorageService {
   static async getTracksFromBuckets(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
     console.log(`🎵 Loading tracks from buckets: ${bucketNames.join(', ')}`);
     
+    // Expand buckets with fallbacks for empty buckets
+    const expandedBuckets = expandBucketsWithFallbacks(bucketNames);
+    const hasEmptyBuckets = bucketNames.some(bucket => isBucketEmpty(bucket));
+    
+    if (hasEmptyBuckets) {
+      console.log(`🔄 Original buckets contain empty ones, expanded to: ${expandedBuckets.join(', ')}`);
+    }
+    
     let allTracks: Track[] = [];
 
-    for (const bucketName of bucketNames) {
+    for (const bucketName of expandedBuckets) {
       try {
         console.log(`📂 Processing bucket: ${bucketName}`);
         
@@ -55,6 +64,11 @@ export class SimpleStorageService {
 
         if (!files || files.length === 0) {
           console.log(`📂 No files found in bucket ${bucketName}`);
+          
+          // If this was an originally requested bucket (not a fallback), log it as empty
+          if (bucketNames.includes(bucketName)) {
+            console.warn(`⚠️ Originally requested bucket ${bucketName} is empty`);
+          }
           continue;
         }
 
@@ -68,6 +82,11 @@ export class SimpleStorageService {
         if (audioFiles.length === 0) {
           console.warn(`⚠️ No audio files found in bucket ${bucketName}`);
           console.log(`🔍 File types in bucket:`, [...new Set(files.map(f => f.name.split('.').pop()?.toLowerCase() || 'no-ext'))]);
+          
+          // If this was an originally requested bucket (not a fallback), log it as empty
+          if (bucketNames.includes(bucketName)) {
+            console.warn(`⚠️ Originally requested bucket ${bucketName} has no audio files`);
+          }
           continue;
         }
 
@@ -98,7 +117,11 @@ export class SimpleStorageService {
     const shuffled = allTracks.sort(() => Math.random() - 0.5);
     const finalTracks = shuffled.slice(0, maxTracks);
 
-    console.log(`✅ Returning ${finalTracks.length} tracks from ${bucketNames.length} buckets`);
+    console.log(`✅ Returning ${finalTracks.length} tracks from ${expandedBuckets.length} buckets (${bucketNames.length} original, ${expandedBuckets.length - bucketNames.length} fallbacks)`);
+    
+    if (hasEmptyBuckets && finalTracks.length > 0) {
+      console.log(`🎵 Successfully used fallback buckets to provide music for empty genres`);
+    }
     
     return finalTracks;
   }
