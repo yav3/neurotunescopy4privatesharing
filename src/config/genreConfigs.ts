@@ -147,9 +147,9 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'stress-reduction-classical',
-        name: 'Stress Reduction Classical',
+        name: 'Sonatas',
         description: 'Classical music specifically for pain and stress support',
-        buckets: ['gentleclassicalforpain'],
+        buckets: ['sonatasforstress'],
         image: focusClassicalMountainLake,
       },
       {
