@@ -92,7 +92,7 @@ const Index = () => {
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${goal.image})` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary/60" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/30" />
                   <div className="relative h-full p-4 flex flex-col justify-between">
                     <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <span className="text-white font-bold text-sm">{goal.letter}</span>
@@ -122,7 +122,7 @@ const Index = () => {
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${category.image})` }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/80 to-accent/60" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/40 to-accent/30" />
                   <div className="relative h-full p-6 flex flex-col justify-between">
                     <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <span className="text-white font-bold text-lg">{category.letter}</span>
