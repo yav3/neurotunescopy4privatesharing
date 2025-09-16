@@ -488,7 +488,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // During rapid error cascades, suppress UI updates to prevent visual race conditions
       if (consecutiveFailures > 2) {
         console.log('🎵 Suppressing UI updates during error cascade - setting track silently');
-        set({ currentTrack: track, isLoading: false, error: undefined });
+        set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
       } else {
         set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
       }
