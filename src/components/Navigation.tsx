@@ -53,10 +53,10 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               onClick={() => handleTabClick(tab)}
               className={cn(
                 "flex items-center justify-center p-2.5 sm:p-3 transition-all duration-200 rounded-full",
-                "hover:bg-white/10 active:scale-95 min-w-[44px] min-h-[44px]",
+                "hover:bg-foreground/10 active:scale-95 min-w-[44px] min-h-[44px]",
                 isActive 
-                  ? "text-white bg-white/20" 
-                  : "text-white/70 hover:text-white"
+                  ? "text-foreground bg-foreground/20" 
+                  : "text-foreground/70 hover:text-foreground"
               )}
             >
               <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
