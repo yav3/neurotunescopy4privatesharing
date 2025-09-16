@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_CATEGORIES } from '@/config/therapeuticCategories';
 import { Navigation } from '@/components/Navigation';
+import { GenreSelectionModal } from '@/components/GenreSelectionModal';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 
@@ -37,14 +38,18 @@ const trendingCategories = [
 const Index = () => {
   const navigate = useNavigate();
   const { isDark, toggle } = useDarkMode();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGoalId, setSelectedGoalId] = useState<string>('');
 
   const handleGoalSelect = (goalId: string) => {
-    console.log('🎯 Navigating to genre selection for goal:', goalId);
-    try {
-      navigate(`/goals/${goalId}/genres`);
-    } catch (error) {
-      console.error('❌ Error navigating to genre selection:', error);
-    }
+    console.log('🎯 Opening genre selection modal for goal:', goalId);
+    setSelectedGoalId(goalId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedGoalId('');
   };
 
   const handleTrendingSelect = (categoryId: string) => {
@@ -142,6 +147,13 @@ const Index = () => {
           <Navigation />
         </div>
       </div>
+
+      {/* Genre Selection Modal */}
+      <GenreSelectionModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        goalId={selectedGoalId}
+      />
     </div>
   );
 };
