@@ -129,6 +129,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['ENERGYBOOST'],
         image: moodBoostLeafDewdrop,
       },
+      {
+        id: 'world',
+        name: 'World',
+        description: 'Uplifting world music for mood enhancement',
+        buckets: ['NewAgeandWorldFocus'],
+        image: newAgeLeafDewdrop,
+      },
     ],
     'pain-support': [
       {
