@@ -75,36 +75,55 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
   return (
     <Card
       className={cn(
-        "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] overflow-hidden",
-        "bg-card/90 backdrop-blur-sm",
-        theme.border,
+        "group cursor-pointer transition-all duration-500 overflow-hidden relative",
+        // Enhanced glass morphism base
+        "bg-white/[0.02] backdrop-blur-md border border-white/8",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.08),0_4px_16px_rgba(255,255,255,0.03)_inset]",
+        // Enhanced hover effects
+        "hover:bg-white/[0.05] hover:backdrop-blur-lg hover:border-white/15",
+        "hover:shadow-[0_16px_48px_rgba(0,0,0,0.12),0_8px_24px_rgba(255,255,255,0.06)_inset]",
+        "hover:scale-[1.02] hover:-translate-y-1",
         className
       )}
       onClick={handleGoalClick}
     >
-      {/* Background Image */}
-      <div className="absolute inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-500">
+      {/* Background Image with enhanced effects */}
+      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-all duration-700">
         <img 
           src={goal.artwork} 
           alt={goal.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
       </div>
       
-      {/* Background gradient overlay */}
-      <div className={cn("absolute inset-0 opacity-90 group-hover:opacity-95 transition-opacity duration-500 bg-gradient-to-br", theme.bg)} />
+      {/* Enhanced background gradient with glass effect */}
+      <div className={cn(
+        "absolute inset-0 opacity-80 group-hover:opacity-90 transition-all duration-500",
+        "bg-gradient-to-br", theme.bg,
+        "backdrop-blur-sm"
+      )} />
+      
+      {/* Glass morphism overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-white/[0.01] opacity-60 group-hover:opacity-80 transition-all duration-500" />
+      
+      {/* Animated shine effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
       
       {/* Content */}
       <div className="relative z-10 p-6">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-4 flex-1">
-            {/* Icon */}
+            {/* Enhanced Icon with glass morphism */}
             <div className={cn(
-              "p-3 rounded-2xl transition-all duration-300 group-hover:scale-110",
+              "p-3 rounded-2xl transition-all duration-500 group-hover:scale-110",
               "bg-gradient-to-br", theme.gradient,
-              "shadow-lg group-hover:shadow-xl"
+              "shadow-lg group-hover:shadow-xl",
+              "backdrop-blur-sm border border-white/10",
+              "relative overflow-hidden"
             )}>
-              <IconComponent className="w-6 h-6 text-white" />
+              {/* Icon shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <IconComponent className="w-6 h-6 text-white relative z-10" />
             </div>
             
             {/* Content */}
@@ -126,17 +145,17 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
                 {goal.description}
               </p>
               
-              {/* Features */}
+              {/* Enhanced Features with glass morphism */}
               <div className="flex flex-wrap gap-2 mb-4">
-                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                <div className="inline-flex items-center text-xs bg-white/5 backdrop-blur-sm border border-white/10 px-2 py-1 rounded-full group-hover:bg-white/10 transition-all duration-300">
                   <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
                   Science-backed
                 </div>
-                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                <div className="inline-flex items-center text-xs bg-white/5 backdrop-blur-sm border border-white/10 px-2 py-1 rounded-full group-hover:bg-white/10 transition-all duration-300">
                   <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
                   Multiple genres
                 </div>
-                <div className="inline-flex items-center text-xs bg-secondary/50 px-2 py-1 rounded-full">
+                <div className="inline-flex items-center text-xs bg-white/5 backdrop-blur-sm border border-white/10 px-2 py-1 rounded-full group-hover:bg-white/10 transition-all duration-300">
                   <div className={cn("w-1.5 h-1.5 rounded-full mr-1.5", theme.accent.replace('text-', 'bg-'))} />
                   Personalized
                 </div>
@@ -154,15 +173,12 @@ export const TherapeuticRow: React.FC<TherapeuticRowProps> = ({ goal, className 
             </div>
           </div>
           
-          {/* Arrow */}
-          <div className="flex items-center">
+          {/* Enhanced Arrow with glass effect */}
+          <div className="flex items-center p-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 group-hover:bg-white/10 group-hover:border-white/20 transition-all duration-300">
             <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
           </div>
         </div>
       </div>
-      
-      {/* Hover effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
     </Card>
   );
 };

@@ -24,64 +24,69 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   onClick,
   className
 }) => {
-  // Check if this card needs glass morphism effect
-  const needsGlassMorphism = goal.id === 'energy-boost';
-  
   return (
     <Card 
       className={cn(
         "relative overflow-hidden cursor-pointer group",
-        "bg-gradient-card shadow-card",
-        "transition-all duration-500 ease-out",
-        "hover:shadow-[0_20px_60px_hsl(217_91%_60%_/_0.3),_0_8px_24px_hsl(217_91%_5%_/_0.6)]",
-        "hover:border-primary/40 hover:-translate-y-2 hover:scale-[1.02]",
+        // Enhanced glass morphism base
+        "bg-white/[0.02] backdrop-blur-md border border-white/10",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.1),0_4px_16px_rgba(255,255,255,0.05)_inset]",
+        "transition-all duration-700 ease-out",
+        // Enhanced hover effects with more shine
+        "hover:bg-white/[0.05] hover:backdrop-blur-lg hover:border-white/20",
+        "hover:shadow-[0_20px_60px_rgba(0,0,0,0.15),0_8px_32px_rgba(255,255,255,0.1)_inset]",
+        "hover:-translate-y-3 hover:scale-[1.03]",
         "animate-fade-in",
         "w-full h-full",
-        // Glass morphism effect for Energy Boost and Cardio Support
-        needsGlassMorphism && [
-          "border border-white/20",
-          "bg-white/5 backdrop-blur-sm",
-          "shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]",
-          "hover:bg-white/10 hover:border-white/30"
+        // Selected state with enhanced glow
+        isSelected && [
+          "ring-2 ring-primary/50 ring-offset-2 ring-offset-background/50",
+          "shadow-[0_0_40px_hsl(217_91%_60%_/_0.3),0_0_20px_hsl(217_91%_60%_/_0.2)]",
+          "bg-white/[0.08] border-primary/30"
         ],
-        isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_0_30px_hsl(217_91%_60%_/_0.4)]",
         className
       )}
       onClick={onClick}
     >
       <div className="aspect-[4/3] relative">
-        {/* Background Image - Using goal.artwork directly */}
+        {/* Background Image with enhanced shine */}
         <img 
           src={goal.artwork} 
           alt={goal.name}
-          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-125"
           onError={handleImageError}
         />
         
-        {/* Enhanced Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5 group-hover:from-black/70 transition-all duration-500" />
+        {/* Enhanced Gradient Overlay with glass effect */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/60 transition-all duration-500" />
         
-        {/* Animated glow effect on hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/60 to-transparent" />
+        {/* Glass morphism overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/[0.02] via-transparent to-white/[0.08] opacity-60 group-hover:opacity-80 transition-all duration-500" />
         
-        {/* Content - Responsive positioning */}
+        {/* Animated shine effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+        
+        {/* Moving light reflection */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+        
+        {/* Content - Enhanced with glass morphism backdrop */}
         <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-          <div className="transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+          <div className="backdrop-blur-sm bg-black/20 rounded-xl p-3 border border-white/10 transform transition-all duration-300 group-hover:translate-y-[-4px] group-hover:bg-black/30 group-hover:border-white/20">
             <h3 className="text-white font-semibold text-base sm:text-lg leading-tight drop-shadow-lg mb-1 line-clamp-2">
               {goal.name}
             </h3>
             <div className="space-y-1.5 mt-1">
               
-              {/* BPM Range and Effectiveness */}
+              {/* BPM Range and Effectiveness with glass morphism */}
               <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                 {showBpmRange && (
-                  <Badge variant="outline" className="bg-white/10 text-white border-white/30 text-xs backdrop-blur-sm hover:bg-white/20 transition-colors duration-200">
+                  <Badge variant="outline" className="bg-white/10 backdrop-blur-sm text-white border-white/30 text-xs hover:bg-white/20 hover:border-white/40 transition-all duration-200">
                     {goal.bpmRange.min}-{goal.bpmRange.max} BPM
                   </Badge>
                 )}
                 
                 {effectiveness !== undefined && (
-                  <Badge variant="outline" className="bg-primary/20 text-white border-primary/30 text-xs backdrop-blur-sm hover:bg-primary/30 transition-colors duration-200">
+                  <Badge variant="outline" className="bg-primary/20 backdrop-blur-sm text-white border-primary/30 text-xs hover:bg-primary/30 hover:border-primary/40 transition-all duration-200">
                     {effectiveness}% effective
                   </Badge>
                 )}
