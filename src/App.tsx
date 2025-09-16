@@ -122,15 +122,20 @@ const App = () => {
             {currentTrack && playerMode === 'full' && <FullPagePlayer />}
             {currentTrack && playerMode === 'mini' && <MinimizedPlayer />}
             
-            {/* Fallback debug info */}
+            {/* Enhanced debug info */}
             {!currentTrack && (
-              <div className="fixed bottom-4 right-4 bg-red-500 text-white p-2 rounded text-xs">
+              <div className="fixed bottom-4 right-4 bg-red-500 text-white p-2 rounded text-xs z-[9999]">
                 No currentTrack
               </div>
             )}
             {currentTrack && !playerMode && (
-              <div className="fixed bottom-4 right-4 bg-yellow-500 text-black p-2 rounded text-xs">
+              <div className="fixed bottom-4 right-4 bg-yellow-500 text-black p-2 rounded text-xs z-[9999]">
                 No playerMode set
+              </div>
+            )}
+            {currentTrack && playerMode && (
+              <div className="fixed bottom-4 left-4 bg-green-500 text-white p-2 rounded text-xs z-[9999]">
+                Track: {currentTrack.title?.substring(0, 20)}... | Mode: {playerMode}
               </div>
             )}
           </div>
