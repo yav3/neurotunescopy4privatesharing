@@ -41,66 +41,66 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark Mode - Deep Midnight Blue Variants */
-    --background: 240 100% 2.5%; /* #00000D equivalent - Deep midnight */
+    /* Dark Mode - Ultra Deep Black Variants */
+    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
     --foreground: 0 0% 98%; /* Light text */
 
-    --card: 240 100% 5.1%; /* #00001A equivalent - Deep Midnight Blue */
+    --card: 240 100% 2.5%; /* Darker card background */
     --card-foreground: 0 0% 98%; /* Light card text */
 
-    --popover: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue */
+    --popover: 240 100% 1.5%; /* Almost pure black blue */
     --popover-foreground: 0 0% 98%; /* Light popover text */
 
     --primary: 217 91% 60%; /* Blue primary for better contrast */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 240 56% 8.8%; /* #0A0A23 equivalent - Charcoal Blue */
+    --secondary: 240 56% 4%; /* Much darker charcoal blue */
     --secondary-foreground: 0 0% 98%; /* Light secondary text */
 
-    --muted: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue */
+    --muted: 240 100% 1.5%; /* Almost pure black blue */
     --muted-foreground: 0 0% 80%; /* Light gray muted text for better contrast */
 
-    --accent: 240 56% 8.8%; /* #0A0A23 equivalent - Charcoal Blue */
+    --accent: 240 56% 4%; /* Much darker charcoal blue */
     --accent-foreground: 0 0% 98%; /* Light accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 100% 5.1%; /* #00001A equivalent - Deep Midnight Blue borders */
-    --input: 240 100% 3.3%; /* #000011 equivalent - Almost Black Blue input background */
+    --border: 240 100% 2.5%; /* Darker borders */
+    --input: 240 100% 1.5%; /* Almost pure black blue input background */
     --ring: 217 91% 60%;
 
-    /* Dark mode gradients using consistent deep blues */
-    --gradient-hero: linear-gradient(135deg, hsl(240 100% 2.5%), hsl(240 100% 3.3%), hsl(240 56% 8.8%));
-    --gradient-card: linear-gradient(135deg, hsl(240 100% 3.3%), hsl(240 100% 5.1%), hsl(240 100% 2.5%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(240 100% 2.5%), hsl(220 83% 53% / 0.1), hsl(240 100% 2.5%));
+    /* Dark mode gradients using ultra deep colors */
+    --gradient-hero: linear-gradient(135deg, hsl(240 100% 1%), hsl(240 100% 1.5%), hsl(240 56% 4%));
+    --gradient-card: linear-gradient(135deg, hsl(240 100% 1.5%), hsl(240 100% 2.5%), hsl(240 100% 1%));
+    --gradient-dark-bg: linear-gradient(135deg, hsl(240 100% 1%), hsl(220 83% 53% / 0.05), hsl(240 100% 1%));
     
-    /* Dark mode sidebar colors using new palette */
-    --sidebar-background: 240 100% 3.3%; /* #000011 equivalent */
+    /* Dark mode sidebar colors using ultra deep palette */
+    --sidebar-background: 240 100% 1.5%; /* Almost pure black blue */
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 56% 8.8%; /* #0A0A23 equivalent */
+    --sidebar-accent: 240 56% 4%; /* Much darker charcoal blue */
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 100% 5.1%; /* #00001A equivalent */
+    --sidebar-border: 240 100% 2.5%; /* Darker border */
     --sidebar-ring: 217 91% 60%;
 
-    /* Dark mode card color variations */
-    --card-light: 240 100% 5.1%; /* Deep Midnight Blue */
-    --card-medium: 240 100% 3.3%; /* Almost Black Blue */
-    --card-darker: 240 56% 8.8%; /* Charcoal Blue */
-    --card-darkest: 240 100% 2.5%; /* Deep midnight */
+    /* Dark mode card color variations - ultra deep */
+    --card-light: 240 100% 2.5%; /* Darker than before */
+    --card-medium: 240 100% 1.5%; /* Almost black blue */
+    --card-darker: 240 56% 4%; /* Much darker charcoal blue */
+    --card-darkest: 240 100% 1%; /* Ultra deep */
 
-    /* Dark mode glass morphism effects */
-    --glass-bg: rgba(0, 0, 26, 0.3); /* Using dark blue base */
-    --glass-border: rgba(0, 0, 26, 0.5); /* Stronger border for dark mode */
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 13, 0.8); /* Dark shadow */
+    /* Dark mode glass morphism effects - darker */
+    --glass-bg: rgba(0, 0, 13, 0.4); /* Darker glass */
+    --glass-border: rgba(0, 0, 13, 0.6); /* Darker border */
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 6, 0.9); /* Much darker shadow */
 
-    /* Dark mode music categories */
-    --music-focus: 240 100% 5.1%; /* Deep Midnight Blue for focus cards */
-    --music-mood: 240 100% 5.1%; /* Deep Midnight Blue for mood boost cards */
-    --music-sleep: 240 100% 5.1%; /* Deep Midnight Blue for sleep cards */
-    --music-energy: 240 100% 5.1%; /* Deep Midnight Blue for energy cards */
+    /* Dark mode music categories - ultra deep */
+    --music-focus: 240 100% 1.5%; /* Ultra deep for focus cards */
+    --music-mood: 240 100% 1.5%; /* Ultra deep for mood boost cards */
+    --music-sleep: 240 100% 1.5%; /* Ultra deep for sleep cards */
+    --music-energy: 240 100% 1.5%; /* Ultra deep for energy cards */
   }
 
   /* Common variables for both themes */
@@ -258,7 +258,7 @@ All colors MUST be HSL.
   /* Dark mode body and text fixes */
   .dark body,
   .dark html {
-    background-color: hsl(240 100% 2.5%) !important; /* #00000D equivalent */
+    background-color: hsl(240 100% 1%) !important; /* Ultra deep black with blue tint */
     color: hsl(0 0% 98%) !important;
   }
   
