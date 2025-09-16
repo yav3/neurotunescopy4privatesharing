@@ -63,14 +63,14 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'new-age-stress',
         name: 'New Age & World Stress Relief',
         description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['NewAgeandWorldFocus'],
+        buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
       },
       {
         id: 'sonatas',
         name: 'Sonatas for Stress',
         description: 'Classical sonatas for deep stress relief',
-        buckets: ['Chopin'],
+        buckets: ['sonatasforstress'],
         image: stressClassicalPeacefulStream
       },
       {
@@ -93,28 +93,35 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['ENERGYBOOST', 'HIIT'],
+        buckets: ['opera'],
         image: moodBoostCoastalCove,
       },
       {
         id: 'pop',
         name: 'Pop',
         description: 'Uplifting pop music for instant mood elevation',
-        buckets: ['moodboostremixesworlddance'],
+        buckets: ['pop'],
         image: moodBoostSunsetFlowers,
+      },
+      {
+        id: 'chill-country',
+        name: 'Chill Country & Americana',
+        description: 'Relaxing country and americana for mood enhancement',
+        buckets: ['countryandamericana'],
+        image: moodBoostFloralField,
       },
       {
         id: 'dance-party',
         name: 'Dance Party',
         description: 'High-energy dance remixes and world dance beats',
-        buckets: ['moodboostremixesworlddance'],
+        buckets: ['opera'],
         image: moodBoostDancePartyWaves,
       },
       {
         id: 'edm-crossover',
         name: 'EDM crossover (EDM)',
         description: 'Electronic dance music crossover tracks for high energy',
-        buckets: ['ENERGYBOOST', 'EDM'],
+        buckets: ['ENERGYBOOST'],
         image: moodBoostLeafDewdrop,
       },
     ],
@@ -123,21 +130,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'gentle-classical',
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
-        buckets: ['Chopin'],
+        buckets: ['gentleclassicalforpain'],
         image: gentleClassicalMistyLake,
       },
       {
         id: 'stress-reduction-classical',
         name: 'Stress Reduction Classical',
         description: 'Classical music specifically for pain and stress relief',
-        buckets: ['Chopin'],
+        buckets: ['gentleclassicalforpain'],
         image: focusClassicalMountainLake,
       },
       {
         id: 'new-age-chill',
         name: 'New Age Chill',
         description: 'Calming new age sounds for pain management',
-        buckets: ['NewAgeandWorldFocus'],
+        buckets: ['painreducingworld'],
         image: newAgeLeafDewdrop,
       },
       {
@@ -160,7 +167,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'hiit-energy',
         name: 'HIIT Energy',
         description: 'High-intensity interval training music for peak performance',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['HIIT'],
         image: hiitForestPath
       },
       {
@@ -174,7 +181,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'pop-energy',
         name: 'Pop Energy',
         description: 'High-energy pop tracks for motivation',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['pop'],
         image: cardioMountainWildflowers
       }
     ]
