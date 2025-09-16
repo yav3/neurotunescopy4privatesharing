@@ -50,13 +50,6 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
     description: 'Gentle music for pain management and relief',
     buckets: ['gentleclassicalforpain', 'painreducingworld', 'Chopin'],
     image: painCard
-  },
-  {
-    id: 'cardio-support',
-    name: 'Cardio & Exercise',
-    description: 'High-energy music for workouts and cardio',
-    buckets: ['EDM', 'HIIT'],
-    image: cardioCard
   }
 ];
 

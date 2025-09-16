@@ -177,50 +177,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['pop', 'audio'],
         image: cardioMountainWildflowers
       }
-    ],
-    'cardio-support': [
-      {
-        id: 'hiit-cardio',
-        name: 'HIIT Cardio',
-        description: 'High-intensity interval training music',
-        buckets: ['HIIT'],
-        image: hiitForestPath,
-      },
-      {
-        id: 'house-cardio',
-        name: 'House Cardio',
-        description: 'Pumping house music for cardiovascular exercise',
-        buckets: ['ENERGYBOOST', 'HIIT'],
-        image: cardioFloralField,
-      },
-      {
-        id: 'edm-cardio',
-        name: 'EDM',
-        description: 'Electronic dance music for high-intensity cardio',
-        buckets: ['ENERGYBOOST'],
-        image: cardioLeafDewdrops,
-      },
-      {
-        id: 'energy-boost-cardio',
-        name: 'Energy Boost',
-        description: 'Maximum energy tracks for intense cardio',
-        buckets: ['ENERGYBOOST'],
-        image: cardioLeafDroplet,
-      },
-      {
-        id: 'pop-cardio',
-        name: 'Pop Cardio',
-        description: 'Energetic pop hits perfect for cardio sessions',
-        buckets: ['audio', 'pop'],
-        image: cardioSunsetBeachFlowers,
-      },
-      {
-        id: 'dance-cardio',
-        name: 'Dance Cardio',
-        description: 'Upbeat dance music for energetic cardio workouts',
-        buckets: ['dance'],
-        image: cardioMountainWildflowers
-      }
     ]
   };
 

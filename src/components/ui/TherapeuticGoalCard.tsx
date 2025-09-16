@@ -25,7 +25,7 @@ export const TherapeuticGoalCard: React.FC<TherapeuticGoalCardProps> = ({
   className
 }) => {
   // Check if this card needs glass morphism effect
-  const needsGlassMorphism = goal.id === 'energy-boost' || goal.id === 'cardio-support';
+  const needsGlassMorphism = goal.id === 'energy-boost';
   
   return (
     <Card 

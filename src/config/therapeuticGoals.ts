@@ -132,22 +132,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
     musicBuckets: ['audio', 'neuralpositivemusic', 'ENERGYBOOST', 'HIIT'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
-  },
-  {
-    id: 'cardio-support',
-    slug: 'cardio-support',
-    backendKey: 'cardio-support',
-    name: 'Cardio Support',
-    shortName: 'Cardio',
-    description: 'High-tempo music for cardiovascular exercise and fitness',
-    icon: Shield,
-    artwork: cardioCard,
-    color: 'red',
-    gradient: 'from-red-500 to-pink-500',
-    bpmRange: { min: 130, max: 180, optimal: 150 },
-    vadProfile: { valence: 0.7, arousal: 0.95, dominance: 0.8 },
-    musicBuckets: ['audio', 'neuralpositivemusic', 'HIIT', 'ENERGYBOOST', 'pop'],
-    synonyms: ['cardio', 'running', 'cycling', 'fitness', 'exercise', 'workout']
   }
 ];
 
@@ -185,7 +169,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - expanded to include new goals
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost' | 'cardio-support';
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
