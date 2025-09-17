@@ -37,9 +37,34 @@ export default function GenreView() {
   const genres = goalId ? getGenreOptions(goalId) : [];
   const genre = genres.find(g => g.id === genreId);
 
-  console.log('🔍 DEBUG - Goal ID:', goalId);
-  console.log('🔍 DEBUG - Genre ID:', genreId);
-  console.log('🔍 DEBUG - Found genre:', genre);
+  // Combined effect for initial state and loading with debug logging
+  useEffect(() => {
+    if (!genre) {
+      console.log('🔍 DEBUG - Genre not found for:', { goalId, genreId });
+      setError('Genre not found.');
+      setIsTracksLoading(false);
+      return;
+    }
+
+    console.log('🔍 DEBUG - Loading genre:', {
+      goalId,
+      genreId,
+      genre: genre.name,
+      buckets: genre.buckets
+    });
+
+    setIsTracksLoading(true);
+    setTracks([]);
+    setError(null);
+
+    // Run diagnostics for specific bucket (non-blocking)
+    if (genre.buckets.includes('painreducingworld')) {
+      import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+        console.log('🚨 PAINREDUCINGWORLD BUCKET DIAGNOSTICS - Starting immediate check...');
+        BucketDiagnostics.checkBucketDetails('painreducingworld');
+      }).catch(console.error);
+    }
+  }, [goalId, genreId, genre?.id]);
 
   // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
   useAsyncEffect(
@@ -96,28 +121,6 @@ export default function GenreView() {
     },
     [genre?.id]
   );
-
-  // Separate effect for diagnostics (non-blocking)
-  useEffect(() => {
-    if (genre?.buckets.includes('painreducingworld')) {
-      import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-        console.log('🚨 PAINREDUCINGWORLD BUCKET DIAGNOSTICS - Starting immediate check...');
-        BucketDiagnostics.checkBucketDetails('painreducingworld');
-      });
-    }
-  }, [genre?.buckets]);
-
-  // Set initial loading state when genre changes
-  useEffect(() => {
-    if (genre) {
-      setIsTracksLoading(true);
-      setTracks([]);
-      setError(null);
-    } else {
-      setError('Genre not found.');
-      setIsTracksLoading(false);
-    }
-  }, [genre?.id]);
 
   // Audio store actions
   const { playTrack, setQueue, play } = useAudioStore();
