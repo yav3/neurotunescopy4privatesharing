@@ -505,29 +505,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      // Test the URL first before setting it
-      try {
-        console.log('🎵 Testing URL accessibility:', url);
-        const testResponse = await fetch(url, { 
-          method: 'HEAD',
-          mode: 'cors'
-        });
-        
-        if (!testResponse.ok) {
-          console.log('🎵 URL test failed with status:', testResponse.status);
-          throw new Error(`HTTP ${testResponse.status}`);
-        }
-        
-        const contentType = testResponse.headers.get('content-type');
-        console.log('🎵 URL test successful, content-type:', contentType);
-        
-        if (contentType && !contentType.includes('audio')) {
-          console.log('🎵 Warning: Content-Type is not audio:', contentType);
-        }
-      } catch (urlTestError) {
-        console.log('🎵 URL test failed:', urlTestError);
-        // Don't return false here, let the audio element try anyway
-      }
+      // Skip URL testing - edge function with service key handles access
       
       audio.src = url;
       // Ensure proper configuration for Supabase storage
