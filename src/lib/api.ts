@@ -32,7 +32,7 @@ export const streamUrl = (track: any): string => {
   // Fallback: Use Edge function to generate signed URL
   const trackId = typeof track === 'string' ? track : (track.id || track.unique_id);
   if (trackId) {
-    const edgeUrl = `${import.meta.env.VITE_SUPABASE_FUNCTIONS_URL}/api/stream/${trackId}`;
+    const edgeUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/api/stream/${trackId}`;
     console.log('🔄 Fallback to Edge function URL:', edgeUrl);
     return edgeUrl;
   }

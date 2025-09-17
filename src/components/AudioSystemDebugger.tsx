@@ -34,7 +34,7 @@ export const debugStreamUrl = async (track: any) => {
   console.log('ID is valid UUID:', isValidUUID(trackId?.toString() || ''));
   
   // Test different URL generation approaches
-  const api_base = import.meta.env.VITE_API_BASE_URL || 'https://pbtgvcjniayedqlajjzz.functions.supabase.co';
+  const api_base = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1';
   console.log('API_BASE from env:', api_base);
   
   // Method 1: Using ID - DEPRECATED, should not be used

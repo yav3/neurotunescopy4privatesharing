@@ -40,7 +40,7 @@ export const debugStreamUrl = (track: any) => {
   }
   
   // Legacy method for comparison
-  const api_base = import.meta.env.VITE_API_BASE_URL;
+  const api_base = 'https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1';
   console.log('API_BASE from env:', api_base);
   
   // Method 1: Using ID (legacy - shows URL construction issue)

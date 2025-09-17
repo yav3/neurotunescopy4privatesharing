@@ -61,7 +61,7 @@ export const FullPagePlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Get artwork based on therapeutic goal
+  // Get artwork based on therapeutic goal  
   const getTherapeuticArtwork = () => {
     if (!lastGoal) return focusArtwork; // Default fallback
     
@@ -99,10 +99,10 @@ export const FullPagePlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Choose best available album artwork (track-provided -> bucket -> local pool -> goal artwork)
+  // Single artwork source declaration - no race conditions
   const seed = Array.from((track?.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
   const fallbackLocalArt = localArtPool[seed % localArtPool.length];
-  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt || getTherapeuticArtwork();
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || fallbackLocalArt || getTherapeuticArtwork();
 
   // Enhanced control handlers
   const handleFavorite = () => {

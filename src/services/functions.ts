@@ -1,5 +1,5 @@
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.replace(/\/+$/,'');
-if (!SUPABASE_URL) throw new Error('VITE_SUPABASE_URL not set');
+const SUPABASE_URL = 'https://pbtgvcjniayedqlajjzz.supabase.co';
+console.log('🔧 Using hardcoded Supabase URL for Lovable compatibility');
 export const FN_BASE = `${new URL(SUPABASE_URL).origin}/functions/v1`; // https://.../functions/v1
 
 export async function listStoragePage({
