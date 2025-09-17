@@ -7,7 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { formatTime, cn } from '@/lib/utils';
 import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
-import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 
 // Enhanced artwork selection with better distribution for each track
@@ -237,7 +237,7 @@ export const NowPlaying: React.FC = () => {
 
             {/* Track info */}
             <div className="text-center mb-6 sm:mb-8 px-4">
-              <h3 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">{formatTrackTitleForDisplay(track.title)}</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">{TitleFormatter.formatTrackTitle(track.title)}</h3>
               <p className="text-base sm:text-lg text-muted-foreground">{getTherapeuticGoalName()}</p>
             </div>
 
@@ -394,7 +394,7 @@ export const NowPlaying: React.FC = () => {
               )}
             </div>
             <div className="min-w-0">
-              <h4 className="font-medium truncate">{formatTrackTitleForDisplay(track.title)}</h4>
+              <h4 className="font-medium truncate">{TitleFormatter.formatTrackTitle(track.title)}</h4>
               <p className="text-sm text-muted-foreground truncate">
                 {spatialAudioEnabled && "🌐 "} {getTherapeuticGoalName()}
               </p>

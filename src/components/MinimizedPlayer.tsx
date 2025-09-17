@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
 import { useAudioStore } from "@/stores";
-import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
+import { TitleFormatter } from "@/utils/titleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 
@@ -154,7 +154,7 @@ export const MinimizedPlayer = () => {
         <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
           <img
             src={artworkSrc}
-            alt={formatTrackTitleForDisplay(track.title)}
+            alt={TitleFormatter.formatTrackTitle(track.title)}
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
@@ -164,7 +164,7 @@ export const MinimizedPlayer = () => {
         {/* Track info */}
         <div className="flex-1 min-w-0">
           <h3 className="font-medium text-foreground text-sm leading-tight truncate">
-            {formatTrackTitleForDisplay(track.title)}
+            {TitleFormatter.formatTrackTitle(track.title)}
           </h3>
           <p className="text-xs text-muted-foreground truncate">
             {getTherapeuticGoalName()}

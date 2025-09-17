@@ -1,5 +1,5 @@
 // Track quality assessment and filtering system
-import { formatTrackTitleForDisplay } from './trackTitleFormatter';
+import { TitleFormatter } from './titleFormatter';
 
 interface Track {
   id: string;
@@ -99,7 +99,7 @@ export function assessTrackQuality(track: Track): QualityScore {
   }
 
   // Bonus for proper capitalization
-  const formattedTitle = formatTrackTitleForDisplay(title);
+  const formattedTitle = TitleFormatter.formatTrackTitle(title);
   if (formattedTitle !== title && formattedTitle.length > 0) {
     // Title benefited from formatting
     if (formattedTitle.split(' ').length > title.split(' ').length) {

@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { TitleFormatter } from '@/utils/titleFormatter';
 import { ArtworkService } from '@/services/artworkService';
 import { handleImageError } from '@/utils/imageUtils';
 
@@ -92,7 +92,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
 
   const frequencyBand = getFrequencyBand(track);
   const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-  const formattedTitle = formatTrackTitleForDisplay(track.title);
+  const formattedTitle = TitleFormatter.formatTrackTitle(track.title);
 
   return (
     <Card 

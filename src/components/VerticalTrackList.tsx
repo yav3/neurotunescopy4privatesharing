@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { useAudioStore } from '@/stores';
-import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { TitleFormatter } from '@/utils/titleFormatter';
 
 interface Track {
   id: string;
@@ -178,7 +178,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 {track.artwork_url ? (
                   <img 
                     src={track.artwork_url} 
-                    alt={formatTrackTitleForDisplay(track.title)}
+                    alt={TitleFormatter.formatTrackTitle(track.title)}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
@@ -191,8 +191,8 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               {/* Track Info */}
               <div className="flex-1 min-w-0">
                 <h3 className="font-medium text-foreground text-sm leading-tight truncate max-w-[200px]">
-                  {formatTrackTitleForDisplay(track.title).split(' ').slice(0, 4).join(' ')}
-                  {formatTrackTitleForDisplay(track.title).split(' ').length > 4 ? '...' : ''}
+                  {TitleFormatter.formatTrackTitle(track.title).split(' ').slice(0, 4).join(' ')}
+                  {TitleFormatter.formatTrackTitle(track.title).split(' ').length > 4 ? '...' : ''}
                 </h3>
                 <p className="text-xs text-muted-foreground truncate">
                   Therapeutic Music

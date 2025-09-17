@@ -4,7 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
-import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
+import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
@@ -38,14 +38,16 @@ export const FullPagePlayer = () => {
     toggleSpatialAudio
   } = useAudioStore();
 
-  // Debug full page player render
-  console.log('🎵 FullPagePlayer render state:', {
-    hasTrack: !!track,
-    trackTitle: track?.title,
-    isPlaying,
-    currentTime,
-    duration
-  });
+  // Reduced debug logging - only on track changes  
+  useEffect(() => {
+    if (track?.id) {
+      console.log('🎵 FullPagePlayer track changed:', {
+        trackId: track.id,
+        title: track.title,
+        isPlaying
+      });
+    }
+  }, [track?.id, isPlaying]);
 
   // Local state for enhanced features
   const [isFavorited, setIsFavorited] = useState(false);
@@ -206,7 +208,7 @@ export const FullPagePlayer = () => {
         <div className="aspect-square relative mb-6 rounded-2xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg max-w-[240px] mx-auto">
           <img 
             src={artworkSrc}
-            alt={formatTrackTitleForDisplay(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
+            alt={TitleFormatter.formatTrackTitle(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
@@ -217,7 +219,7 @@ export const FullPagePlayer = () => {
         {/* Track info - compact */}
         <div className="text-center mb-6">
           <h1 className="text-xl font-normal text-foreground mb-1 leading-tight line-clamp-2">
-            {formatTrackTitleForDisplay(track.title)}
+            {TitleFormatter.formatTrackTitle(track.title)}
           </h1>
           <p className="text-base text-muted-foreground">{getTherapeuticGoalName()}</p>
         </div>
