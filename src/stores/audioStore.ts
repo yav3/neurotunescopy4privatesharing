@@ -224,8 +224,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        // Use longer delay to prevent racing while allowing track transitions
-        scheduleAutoSkip('track ended', 3000);
+        // Use much longer delay to prevent racing while allowing track transitions
+        scheduleAutoSkip('track ended', 8000);
       });
       
       // Auto-skip on audio error with better debugging
@@ -264,7 +264,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         // CRITICAL: If too many consecutive failures, wait much longer
-        const errorDelay = consecutiveFailures > 5 ? 10000 : (consecutiveFailures > 2 ? 6000 : 4000);
+        const errorDelay = consecutiveFailures > 5 ? 20000 : (consecutiveFailures > 2 ? 15000 : 10000);
         console.log(`🎵 Error cascade detection: ${consecutiveFailures} failures, using ${errorDelay}ms delay`);
         
         // Use longer auto-skip delay for audio errors to allow proper URL resolution

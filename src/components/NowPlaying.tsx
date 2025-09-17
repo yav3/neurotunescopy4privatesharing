@@ -386,9 +386,9 @@ export const NowPlaying: React.FC = () => {
                        if (fallback) fallback.style.display = 'flex';
                      }}
                    />
-                  <div className="hidden w-full h-full items-center justify-center text-xl">
-                    🧠
-                  </div>
+                   <div className="hidden w-full h-full items-center justify-center text-xl bg-card/50 rounded-lg border border-border/20">
+                     <div className="text-muted-foreground">No Image</div>
+                   </div>
                   <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light`} />
                 </>
               )}

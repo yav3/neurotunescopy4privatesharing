@@ -174,7 +174,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
           <h3 className="text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors truncate">
             {formatTrackTitleForDisplay(track.title)}
           </h3>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
+          <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <span className="capitalize bg-secondary px-2 py-1 rounded-full text-xs">
               {track.genre}
             </span>
