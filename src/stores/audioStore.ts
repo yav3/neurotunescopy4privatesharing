@@ -223,12 +223,33 @@ export const useAudioStore = create<AudioState>((set, get) => {
     
     console.log('🎵 Audio element initialized:', audio.id, 'src:', audio.src);
     
+    // Add safety check for multiple audio elements
+    const allAudioElements = document.querySelectorAll('audio');
+    if (allAudioElements.length > 1) {
+      console.warn('🚨 Multiple audio elements detected!', allAudioElements.length);
+      allAudioElements.forEach((el, i) => {
+        if (el.id !== AUDIO_ELEMENT_ID) {
+          console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
+          el.pause();
+          el.remove();
+        }
+      });
+    }
+    
     // Only add event listeners once
     if (!eventListenersAdded) {
       // Auto-next on track end
       audio.addEventListener('ended', async () => {
         console.log('🎵 Audio ended - scheduling auto-next');
         set({ isPlaying: false });
+        
+        // Ensure no other audio elements are playing
+        document.querySelectorAll('audio').forEach(el => {
+          if (el !== audio && !el.paused) {
+            console.warn('🚨 Found another playing audio element, stopping it:', el.id || 'unnamed');
+            el.pause();
+          }
+        });
         
         // Complete session when queue ends
         const { queue, index } = get();
@@ -726,8 +747,22 @@ export const useAudioStore = create<AudioState>((set, get) => {
       isTransitioning = true;
       
       try {
+        // Debug logging for bucket/content verification
+        console.log('🐛 DEBUG playTrack called:', {
+          title: track.title,
+          bucket: track.storage_bucket,
+          url: window.location.pathname,
+          expectedGenre: window.location.pathname.includes('sonatas') ? 'Classical Sonatas' : 'Unknown'
+        });
+        
         // CRITICAL: Stop current audio before loading new track to prevent simultaneous playback
         const audio = initAudio();
+        
+        // Perform comprehensive audio cleanup before starting new track
+        import('@/utils/audioCleanup').then(({ AudioCleanup }) => {
+          AudioCleanup.stopAllAudioExcept(audio);
+        });
+        
         console.log('🎵 Stopping current audio before loading new track');
         audio.pause();
         audio.currentTime = 0;

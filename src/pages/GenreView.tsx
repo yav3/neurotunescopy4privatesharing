@@ -83,6 +83,18 @@ export default function GenreView() {
         artist: track.artist || 'Neural Positive Music'
       }));
       
+      // Validate bucket content matches expected genre
+      if (genre.buckets.length > 0) {
+        import('@/utils/bucketContentValidator').then(({ BucketContentValidator }) => {
+          genre.buckets.forEach(bucketName => {
+            const bucketTracks = rawTracks.filter(track => track.bucket === bucketName);
+            if (bucketTracks.length > 0) {
+              BucketContentValidator.logValidationResults(bucketName, bucketTracks);
+            }
+          });
+        });
+      }
+      
       return tracks;
     },
     (tracks: SimpleTrack[]) => {

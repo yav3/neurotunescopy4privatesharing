@@ -36,6 +36,10 @@ export class SimpleStorageService {
   private static async _getTracksFromBucketsInternal(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
     console.log(`🎵 Loading tracks from BUCKET ROOTS ONLY: ${bucketNames.join(', ')}`);
     
+    // Debug: Log which genre/route is requesting which bucket
+    console.log(`🐛 DEBUG: Bucket request - buckets: ${bucketNames.join(', ')}, maxTracks: ${maxTracks}`);
+    console.log(`🐛 DEBUG: Current URL: ${typeof window !== 'undefined' ? window.location.pathname : 'N/A'}`);
+    
     // Apply fallback system for empty buckets
     const expandedBuckets = expandBucketsWithFallbacks(bucketNames);
     console.log(`🔄 Original buckets: ${bucketNames.join(', ')}`);
