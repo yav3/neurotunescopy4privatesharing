@@ -13,43 +13,38 @@ export class DirectBucketAccess {
     console.log(`🎯 DIRECT ROOT ACCESS: ${bucketName}`);
     
     try {
-      // Access bucket root directly with empty string path
-      const { data: files, error } = await supabase.storage
-        .from(bucketName)
-        .list('', {  // Empty string = root directory only
-          limit: 1000,
-          sortBy: { column: 'name', order: 'asc' }
-        });
+      // Use edge function for service-level access instead of direct client access
+      console.log(`🔄 Using edge function for bucket access: ${bucketName}`);
+      const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/storage-access?bucket=${bucketName}&limit=1000`, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-      if (error) {
-        console.error(`❌ Direct root access failed for ${bucketName}:`, error);
+      if (!response.ok) {
+        console.error(`❌ Edge function failed for ${bucketName}:`, response.status, response.statusText);
         return [];
       }
 
-      if (!files || files.length === 0) {
-        console.log(`📂 Bucket ${bucketName} root is empty`);
-        return [];
-      }
-
-      console.log(`📋 Found ${files.length} total files in ${bucketName} root`);
-
-      // Filter for audio files only
-      const audioFiles = files.filter(file => 
-        this.audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-      );
-
-      console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName} root`);
+      const result = await response.json();
       
-      if (audioFiles.length === 0) {
-        console.log(`🔍 File types in ${bucketName} root:`, 
-          [...new Set(files.map(f => f.name.split('.').pop()?.toLowerCase() || 'no-ext'))]
-        );
+      if (result.error) {
+        console.error(`❌ Edge function error for ${bucketName}:`, result.error);
+        return [];
       }
 
-      return audioFiles;
+      const tracks = result.tracks || [];
+      console.log(`🎵 Found ${tracks.length} audio files via edge function in ${bucketName}`);
+      
+      // Convert edge function response to expected format
+      return tracks.map((track: any) => ({
+        name: track.storage_key,
+        metadata: { size: track.file_size }
+      }));
 
     } catch (error) {
-      console.error(`❌ Exception accessing ${bucketName} root:`, error);
+      console.error(`❌ Exception accessing ${bucketName} via edge function:`, error);
       return [];
     }
   }
@@ -91,21 +86,50 @@ export class DirectBucketAccess {
     
     for (const bucketName of expandedBuckets) {
       console.log(`🚀 Processing bucket: ${bucketName}`);
-      const audioFiles = await this.getAudioFilesFromBucketRoot(bucketName);
       
-      for (const file of audioFiles) {
-        const track = {
-          id: `${bucketName}-root-${file.name}`,
-          title: this.cleanTitle(file.name),
-          url: `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`,
-          bucket: bucketName,
-          folder: '', // Always empty for root access
-          filename: file.name,
-          size: file.metadata?.size
-        };
+      try {
+        // Use edge function for service-level access
+        console.log(`🔄 Using edge function for bucket access: ${bucketName}`);
+        const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/storage-access?bucket=${bucketName}&limit=1000`, {
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          console.error(`❌ Edge function failed for ${bucketName}:`, response.status, response.statusText);
+          continue;
+        }
+
+        const result = await response.json();
         
-        allTracks.push(track);
-        console.log(`✅ ROOT track: ${track.title}`);
+        if (result.error) {
+          console.error(`❌ Edge function error for ${bucketName}:`, result.error);
+          continue;
+        }
+
+        const tracks = result.tracks || [];
+        console.log(`🎵 Found ${tracks.length} tracks via edge function in ${bucketName}`);
+        
+        // Convert edge function response to DirectBucketAccess format
+        for (const track of tracks) {
+          const convertedTrack = {
+            id: `${bucketName}-root-${track.storage_key}`,
+            title: track.title,
+            url: track.stream_url,
+            bucket: bucketName,
+            folder: '', // Always empty for root access
+            filename: track.storage_key,
+            size: track.file_size
+          };
+          
+          allTracks.push(convertedTrack);
+          console.log(`✅ ROOT track: ${convertedTrack.title}`);
+        }
+        
+      } catch (error) {
+        console.error(`❌ Exception accessing ${bucketName} via edge function:`, error);
       }
     }
 
