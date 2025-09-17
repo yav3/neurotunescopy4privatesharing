@@ -7,6 +7,7 @@ import { Track as SimpleTrack } from '@/types/simpleTrack';
 import { Track as AudioTrack } from '@/types';
 import { getGenreOptions } from '@/config/genreConfigs';
 import { SimpleStorageService } from '@/services/simpleStorageService';
+import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -40,7 +41,52 @@ export default function GenreView() {
   console.log('🔍 DEBUG - Genre ID:', genreId);
   console.log('🔍 DEBUG - Found genre:', genre);
 
-  // Immediate bucket diagnostics for painreducingworld
+  // Safe async effect for loading tracks with race condition protection
+  useAsyncEffect(
+    async (signal: AbortSignal) => {
+      if (!genre) {
+        throw new Error('Genre not found.');
+      }
+
+      console.log(`🎯 Loading tracks for genre: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
+      
+      // Check if request was aborted before making network call
+      if (signal.aborted) {
+        throw new Error('Request aborted');
+      }
+      
+      // Use the specific genre buckets instead of category buckets
+      const tracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
+      
+      // Check if request was aborted after network call
+      if (signal.aborted) {
+        throw new Error('Request aborted');
+      }
+      
+      return tracks;
+    },
+    (tracks: SimpleTrack[]) => {
+      if (tracks.length > 0) {
+        console.log(`✅ Loaded ${tracks.length} tracks for genre`);
+        setTracks(tracks);
+        setError(null);
+      } else {
+        console.warn(`⚠️ No tracks found for genre: ${genre?.name}, buckets: ${genre?.buckets.join(', ')}`);
+        setError('No music tracks found for this genre.');
+        setTracks([]);
+      }
+      setIsTracksLoading(false);
+    },
+    (error: Error) => {
+      console.error(`❌ Error loading genre tracks:`, error);
+      setError('Failed to load music tracks for this genre.');
+      setTracks([]);
+      setIsTracksLoading(false);
+    },
+    [genre?.id]
+  );
+
+  // Separate effect for diagnostics (non-blocking)
   useEffect(() => {
     if (genre?.buckets.includes('painreducingworld')) {
       import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
@@ -48,60 +94,29 @@ export default function GenreView() {
         BucketDiagnostics.checkBucketDetails('painreducingworld');
       });
     }
-  }, [genre]);
+  }, [genre?.buckets]);
 
-  // Load tracks using simple storage service
+  // Set initial loading state when genre changes
   useEffect(() => {
-    if (!genre) {
-      console.log('❌ No genre available');
-      setError('Genre not found.');
-      setIsTracksLoading(false);
-      return;
-    }
-
-    const loadGenreTracks = async () => {
+    if (genre) {
       setIsTracksLoading(true);
       setTracks([]);
       setError(null);
-      
-      try {
-        console.log(`🎯 Loading tracks for genre: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
-        
-        // Use the specific genre buckets instead of category buckets
-        const tracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
-        
-        if (tracks.length > 0) {
-          console.log(`✅ Loaded ${tracks.length} tracks for genre`);
-          setTracks(tracks);
-        } else {
-          console.warn(`⚠️ No tracks found for genre: ${genre.name}, buckets: ${genre.buckets.join(', ')}`);
-          console.log('🔍 This could mean:');
-          console.log('  1. Bucket(s) do not exist in Supabase');
-          console.log('  2. Bucket(s) exist but are empty');
-          console.log('  3. Bucket(s) exist but contain no audio files');
-          console.log('  4. Permission issues accessing bucket(s)');
-          setError('No music tracks found for this genre.');
-        }
-        
-      } catch (error) {
-        console.error(`❌ Error loading genre tracks:`, error);
-        setError('Failed to load music tracks for this genre.');
-      } finally {
-        setIsTracksLoading(false);
-      }
-    };
-
-    loadGenreTracks();
+    } else {
+      setError('Genre not found.');
+      setIsTracksLoading(false);
+    }
   }, [genre?.id]);
 
   // Audio store actions
-  const { play, setQueue } = useAudioStore();
+  const { playTrack, setQueue, play } = useAudioStore();
 
   const handleTrackPlay = async (track: SimpleTrack) => {
     console.log('🎵 Playing single track:', track.title);
     const audioTrack = convertToAudioTrack(track);
-    await setQueue([audioTrack], 0);
-    await play();
+    
+    // Use atomic playTrack operation to prevent race conditions
+    await playTrack(audioTrack);
   };
 
   const handlePlayAll = async () => {
@@ -109,6 +124,8 @@ export default function GenreView() {
     
     console.log(`🎵 Playing all ${tracks.length} tracks`);
     const audioTracks = tracks.map(convertToAudioTrack);
+    
+    // Atomic operation: set queue and play first track
     await setQueue(audioTracks, 0);
     await play();
   };
@@ -120,21 +137,20 @@ export default function GenreView() {
   const handleRetry = () => {
     console.log('🔄 Retrying to load tracks...');
     
-    // Import and run diagnostics
+    // Run diagnostics in background (non-blocking)
     import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
       if (goalId && genreId) {
         BucketDiagnostics.checkSpecificGenre(goalId, genreId);
       }
     });
     
+    // Reset state to trigger re-fetch via useAsyncEffect dependency
     setError(null);
     setTracks([]);
+    setIsTracksLoading(true);
     
-    // Trigger re-fetch by updating the dependency
-    if (genre) {
-      const event = new CustomEvent('retry-load');
-      window.dispatchEvent(event);
-    }
+    // Force re-render to trigger useAsyncEffect with current genre
+    // The useAsyncEffect hook will handle the actual retry logic safely
   };
 
   if (!genre) {

@@ -570,12 +570,24 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     // Actions
     playTrack: async (track: Track) => {
-      const success = await loadTrack(track);
-      if (success) {
-        set({ queue: [track], index: 0 });
-        await get().play();
-      } else {
-        set({ error: "Track not available", isLoading: false });
+      // Prevent concurrent playTrack calls
+      if (isTransitioning) {
+        console.log('🎵 PlayTrack already in progress, skipping');
+        return;
+      }
+      
+      isTransitioning = true;
+      
+      try {
+        const success = await loadTrack(track);
+        if (success) {
+          set({ queue: [track], index: 0 });
+          await get().play();
+        } else {
+          set({ error: "Track not available", isLoading: false });
+        }
+      } finally {
+        isTransitioning = false;
       }
     },
 
