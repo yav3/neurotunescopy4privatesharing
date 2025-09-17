@@ -172,6 +172,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ isPlaying: true });
       }
     }
+    
+    // Start continuous state monitoring to prevent future freezing
+    import('@/utils/playerStateValidator').then(({ PlayerStateValidator }) => {
+      PlayerStateValidator.validateAndFix();
+      PlayerStateValidator.startContinuousMonitoring();
+    });
   }, 100);
   
   // Immediate auto-skip function for seamless playback - MUCH LONGER DELAYS TO PREVENT RACING
@@ -236,8 +242,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
       });
     }
     
-    // Only add event listeners once
+    // Critical fix: Only add event listeners once per audio element
     if (!eventListenersAdded) {
+      console.log('🎵 Adding event listeners to audio element (one time only)');
+      
+      // Mark as added immediately to prevent race conditions
+      eventListenersAdded = true;
       // Auto-next on track end
       audio.addEventListener('ended', async () => {
         console.log('🎵 Audio ended - scheduling auto-next');
@@ -376,11 +386,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
         const actuallyPlaying = !audio.paused && !audio.ended && currentTime > 0;
         const storeState = get();
         
-        if (actuallyPlaying !== storeState.isPlaying) {
+        // Critical fix: Also ensure currentTrack exists when audio is playing
+        if (actuallyPlaying && !storeState.currentTrack && storeState.queue.length > 0) {
+          const expectedTrack = storeState.queue[storeState.index];
+          console.log('🔧 Restoring lost currentTrack:', expectedTrack?.title);
+          set({ 
+            currentTrack: expectedTrack,
+            isPlaying: actuallyPlaying, 
+            currentTime,
+            duration 
+          });
+        } else if (actuallyPlaying !== storeState.isPlaying) {
           console.log('🔧 State sync: audio playing =', actuallyPlaying, 'store =', storeState.isPlaying);
-          set({ isPlaying: actuallyPlaying, currentTime });
+          set({ isPlaying: actuallyPlaying, currentTime, duration });
         } else {
-          set({ currentTime });
+          set({ currentTime, duration });
         }
         
         // Track session progress
@@ -681,13 +701,20 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 About to set currentTrack - before:', get().currentTrack?.title);
       
+      // Critical fix: Always set currentTrack atomically to prevent loss
+      const newState = { 
+        currentTrack: track, 
+        isLoading: false, 
+        error: undefined, 
+        playerMode: currentPlayerMode 
+      };
+      
       // During rapid error cascades, suppress UI updates to prevent visual race conditions
       if (consecutiveFailures > 2) {
         console.log('🎵 Suppressing UI updates during error cascade - setting track silently');
-        set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
-      } else {
-        set({ currentTrack: track, isLoading: false, error: undefined, playerMode: currentPlayerMode });
       }
+      
+      set(newState);
       
       console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       console.log('🎵 Store playerMode after set:', get().playerMode);
@@ -1405,3 +1432,4 @@ export const playTrackNow = async (track: Track) => {
 
 // Export debug utilities for development
 export { debugPlayerState, fixPlayerState } from '@/utils/playerStateDebug';
+export { PlayerStateValidator } from '@/utils/playerStateValidator';
