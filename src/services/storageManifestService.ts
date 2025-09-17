@@ -20,7 +20,7 @@ export class StorageManifestService {
   private static readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   /**
-   * Fetch manifest of all playable tracks from a bucket
+   * Fetch manifest of all playable tracks from a bucket using SERVICE ROLE
    * Returns only objects that actually exist and are accessible
    */
   static async fetchBucketManifest(bucketName: string, prefix: string = ''): Promise<ManifestTrack[]> {
@@ -33,96 +33,56 @@ export class StorageManifestService {
       return cached;
     }
 
-    console.log(`🔍 Fetching manifest for bucket: ${bucketName}${prefix ? ` with prefix: ${prefix}` : ''}`);
+    console.log(`🔍 Fetching manifest for bucket: ${bucketName} using SERVICE ROLE${prefix ? ` with prefix: ${prefix}` : ''}`);
 
     try {
-      // List actual objects in the bucket
-      const { data: files, error } = await supabase.storage
-        .from(bucketName)
-        .list(prefix, {
+      // Use the storage-list edge function with SERVICE ROLE access
+      const { data, error } = await supabase.functions.invoke('storage-list', {
+        body: {
+          bucket: bucketName,
+          prefix: prefix || 'tracks',
           limit: 1000,
           offset: 0,
-          sortBy: { column: 'name', order: 'asc' }
-        });
+          strict: 1 // Only return .mp3 files
+        }
+      });
 
       if (error) {
-        console.error(`❌ Failed to list files in ${bucketName}:`, error);
+        console.error(`❌ Failed to fetch from storage-list edge function:`, error);
         return [];
       }
 
-      if (!files || files.length === 0) {
-        console.log(`📂 No files found in bucket ${bucketName}`);
+      if (!data?.ok || !data.results) {
+        console.error(`❌ Storage-list edge function returned error:`, data?.error);
         return [];
       }
 
-      // Filter for audio files only
-      const audioFiles = files.filter(file => 
-        this.audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-      );
+      console.log(`🔑 SERVICE ROLE: Found ${data.results.length} files in ${bucketName}`);
+      console.log(`📊 Stats: ${data.totals.mp3} MP3s, ${data.totals.ok} working, ${data.totals.bad} bad`);
 
-      console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName} (${files.length} total files)`);
-
-      // Generate URLs for each audio file
-      const manifest: ManifestTrack[] = [];
-      
-      for (const file of audioFiles) {
-        const storageKey = prefix ? `${prefix}/${file.name}` : file.name;
-        
-        // Generate both signed and public URLs
-        const { data: signedData, error: signedError } = await supabase.storage
-          .from(bucketName)
-          .createSignedUrl(storageKey, 24 * 60 * 60); // 24 hours
-
-        const publicUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${storageKey}`;
-        
-        // Prefer signed URL if available, fallback to public
-        const primaryUrl = signedData?.signedUrl || publicUrl;
-        
-        // Test URL accessibility
-        let accessible = false;
-        let contentType: string | undefined;
-        
-        try {
-          const response = await fetch(primaryUrl, { method: 'HEAD' });
-          accessible = response.ok;
-          contentType = response.headers.get('content-type') || undefined;
-          
-          if (!accessible) {
-            console.warn(`❌ URL not accessible: ${file.name} (${response.status})`);
-          }
-        } catch (error) {
-          console.warn(`❌ URL test failed: ${file.name}`, error);
-          accessible = false;
-        }
-
-        manifest.push({
-          name: file.name,
-          storage_key: storageKey,
-          signed_url: signedData?.signedUrl || '',
-          public_url: publicUrl,
+      // Convert edge function results to ManifestTrack format
+      const manifest: ManifestTrack[] = data.results
+        .filter((result: any) => result.audio_ok) // Only include working audio files
+        .map((result: any) => ({
+          name: result.name,
+          storage_key: result.storage_key,
+          signed_url: result.url,
+          public_url: `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${result.storage_key}`,
           bucket: bucketName,
-          accessible,
-          content_type: contentType
-        });
+          accessible: result.audio_ok,
+          content_type: result.content_type
+        }));
 
-        if (accessible) {
-          console.log(`✅ Verified playable: ${file.name}`);
-        }
-      }
-
-      // Filter to only accessible tracks
-      const playableTracks = manifest.filter(track => track.accessible);
-      
-      console.log(`✅ Manifest complete: ${playableTracks.length}/${manifest.length} tracks are playable in ${bucketName}`);
+      console.log(`✅ SERVICE ROLE Manifest: ${manifest.length} verified playable tracks from ${bucketName}`);
       
       // Cache the results
-      this.manifestCache.set(cacheKey, playableTracks);
+      this.manifestCache.set(cacheKey, manifest);
       setTimeout(() => this.manifestCache.delete(cacheKey), this.CACHE_TTL);
       
-      return playableTracks;
+      return manifest;
 
     } catch (error) {
-      console.error(`❌ Error fetching manifest for ${bucketName}:`, error);
+      console.error(`❌ Error fetching manifest for ${bucketName} with SERVICE ROLE:`, error);
       return [];
     }
   }
