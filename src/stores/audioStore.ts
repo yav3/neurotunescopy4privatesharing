@@ -908,9 +908,47 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       try {
         console.log('🎵 Attempting audio.play()...');
-        await audio.play();
+        
+        // Safari fix: Ensure audio is ready before attempting play
+        if (audio.readyState === 0) {
+          console.log('🎵 Safari fix: Audio not ready, loading first...');
+          audio.load();
+          
+          // Wait for Safari to be ready (up to 3 seconds)
+          await new Promise<void>((resolve) => {
+            const onCanPlay = () => {
+              audio.removeEventListener('canplay', onCanPlay);
+              audio.removeEventListener('error', onError);
+              console.log('🎵 Audio ready for Safari playback');
+              resolve();
+            };
+            
+            const onError = () => {
+              audio.removeEventListener('canplay', onCanPlay);
+              audio.removeEventListener('error', onError);
+              console.log('🎵 Audio loading error in Safari fix');
+              resolve();
+            };
+            
+            audio.addEventListener('canplay', onCanPlay);
+            audio.addEventListener('error', onError);
+            
+            setTimeout(() => {
+              audio.removeEventListener('canplay', onCanPlay);
+              audio.removeEventListener('error', onError);
+              console.log('🎵 Safari fix timeout');
+              resolve();
+            }, 3000);
+          });
+        }
+        
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+        
         console.log('✅ Audio.play() successful - track should be playing');
-        set({ error: undefined });
+        set({ error: undefined, isPlaying: true });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
         
