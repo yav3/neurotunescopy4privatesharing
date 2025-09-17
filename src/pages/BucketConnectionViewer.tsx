@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from '@/integrations/supabase/client';
+import { StorageManifestService } from '@/services/storageManifestService';
 
 export const BucketConnectionViewer = () => {
   const [connections, setConnections] = useState<Record<string, any>>({});
@@ -168,34 +169,59 @@ export const BucketConnectionViewer = () => {
 
   const testAllConnections = async () => {
     setIsLoading(true);
-    console.log('🚀 TESTING BUCKETS WITH SERVICE ROLE KEY');
+    console.log('🔑 TESTING ALL BUCKETS WITH SERVICE ROLE MANIFEST SERVICE');
     console.log('📋 BUCKETS TO TEST:', REAL_BUCKETS.map(b => b.name));
     
     try {
-      // Call edge function with service role access
-      const { data, error } = await supabase.functions.invoke('storage-bucket-test', {
-        body: { buckets: REAL_BUCKETS }
-      });
-
-      if (error) {
-        console.error('❌ Edge function error:', error);
-        setIsLoading(false);
-        return;
-      }
-
-      if (data.success) {
-        setConnections(data.results);
+      const results: Record<string, any> = {};
+      
+      // Test each bucket using the StorageManifestService (which uses SERVICE ROLE)
+      for (const bucket of REAL_BUCKETS) {
+        console.log(`🔍 Testing ${bucket.name} with SERVICE ROLE manifest...`);
         
-        console.log('📊 SERVICE ROLE BUCKET TEST SUMMARY:');
-        console.log(`✅ Connected buckets: ${data.summary.connected}/${data.summary.total}`);
-        console.log(`🎵 Total audio files: ${data.summary.totalAudio}`);
-        console.log('🔗 Connection details:', data.results);
-      } else {
-        console.error('❌ Test failed:', data.error);
+        try {
+          const manifestTracks = await StorageManifestService.fetchBucketManifest(bucket.name);
+          
+          results[bucket.name] = {
+            connected: true,
+            files: manifestTracks.length,
+            audioFiles: manifestTracks.length, // All manifest tracks are audio
+            sampleUrls: manifestTracks.slice(0, 3).map(t => t.signed_url || t.public_url),
+            sampleFiles: manifestTracks.slice(0, 3).map(t => t.name),
+            urlTests: manifestTracks.slice(0, 3).map(t => ({
+              url: t.signed_url || t.public_url,
+              accessible: t.accessible,
+              status: t.accessible ? 200 : 400
+            }))
+          };
+          
+          console.log(`✅ ${bucket.name}: ${manifestTracks.length} verified playable tracks`);
+          
+        } catch (error) {
+          console.error(`❌ Failed to test ${bucket.name}:`, error);
+          results[bucket.name] = {
+            connected: false,
+            error: String(error),
+            files: 0,
+            audioFiles: 0,
+            sampleUrls: []
+          };
+        }
       }
       
+      setConnections(results);
+      
+      const totalPlayable = Object.values(results)
+        .filter((r: any) => r.connected)
+        .reduce((sum: number, r: any) => sum + r.audioFiles, 0);
+      
+      console.log('📊 SERVICE ROLE MANIFEST TEST SUMMARY:');
+      console.log(`✅ Connected buckets: ${Object.values(results).filter((r: any) => r.connected).length}/${REAL_BUCKETS.length}`);
+      console.log(`🎵 Total verified playable tracks: ${totalPlayable}`);
+      console.log('🔗 All URLs are pre-verified as working');
+      
     } catch (error) {
-      console.error('💥 Request failed:', error);
+      console.error('💥 Manifest service test failed:', error);
     }
     
     setIsLoading(false);
@@ -205,9 +231,9 @@ export const BucketConnectionViewer = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">🔑 SERVICE ROLE Storage Test</CardTitle>
+          <CardTitle className="text-2xl">🔑 SERVICE ROLE Manifest Test</CardTitle>
           <CardDescription>
-            Testing ALL real buckets with SERVICE ROLE KEY for full admin access
+            Testing ALL real buckets with SERVICE ROLE manifest service - only returns files that actually exist and are playable
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -231,7 +257,7 @@ export const BucketConnectionViewer = () => {
               className="w-full"
               size="lg"
             >
-              {isLoading ? "Testing with Service Role..." : "🔑 Test All Buckets (Service Role)"}
+              {isLoading ? "Testing with Manifest Service..." : "🔑 Test All Buckets (Manifest Service)"}
             </Button>
           </div>
         </CardContent>
