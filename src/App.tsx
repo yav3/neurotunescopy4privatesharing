@@ -118,9 +118,9 @@ const App = () => {
               <Route path="*" element={<Index />} />
             </Routes>
             
-            {/* Global Music Players - Always show MinimizedPlayer when there's a track, unless in full mode */}
-            {currentTrack && playerMode === 'full' && <FullPagePlayer />}
-            {currentTrack && playerMode !== 'full' && <MinimizedPlayer />}
+            {/* Global Music Players - Always show MinimizedPlayer, show full player when in full mode */}
+            {playerMode === 'full' && <FullPagePlayer />}
+            {playerMode !== 'full' && <MinimizedPlayer />}
             
             {/* Enhanced debug info */}
             {!currentTrack && (
