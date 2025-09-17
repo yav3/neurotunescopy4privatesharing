@@ -120,24 +120,8 @@ const App = () => {
             
             {/* Global Music Players - Always show MinimizedPlayer, show full player when in full mode */}
             {playerMode === 'full' && <FullPagePlayer />}
-            {playerMode !== 'full' && <MinimizedPlayer />}
+            <MinimizedPlayer />
             
-            {/* Enhanced debug info */}
-            {!currentTrack && (
-              <div className="fixed bottom-4 right-4 bg-red-500 text-white p-2 rounded text-xs z-[9998]">
-                No currentTrack
-              </div>
-            )}
-            {currentTrack && !playerMode && (
-              <div className="fixed bottom-4 right-4 bg-yellow-500 text-black p-2 rounded text-xs z-[9998]">
-                No playerMode set
-              </div>
-            )}
-            {currentTrack && playerMode && (
-              <div className="fixed bottom-4 left-4 bg-green-500 text-white p-2 rounded text-xs z-[9998] max-w-xs">
-                Track: {currentTrack.title?.substring(0, 20)}... | Mode: {playerMode}
-              </div>
-            )}
           </div>
           <DevDebugPanel />
         </ErrorBoundary>
