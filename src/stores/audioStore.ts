@@ -160,7 +160,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
   
   // Force audio element creation on store initialization
   console.log('🎵 Audio store initializing - creating therapeutic audio element...');
-  ensureAudioElement();
+  const initialAudio = ensureAudioElement();
+  
+  // Sync initial state with audio element
+  setTimeout(() => {
+    const audio = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+    if (audio) {
+      const actuallyPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
+      if (actuallyPlaying) {
+        console.log('🔧 Initial state sync: audio is playing, updating store');
+        set({ isPlaying: true });
+      }
+    }
+  }, 100);
   
   // Immediate auto-skip function for seamless playback - MUCH LONGER DELAYS TO PREVENT RACING
   const scheduleAutoSkip = (reason: string, delay: number = 15000) => { // Much longer default delay
@@ -339,7 +351,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
         const currentTime = audio.currentTime;
         const duration = audio.duration || 0;
         
-        set({ currentTime });
+        // Sync playing state with actual audio element state to prevent UI desync
+        const actuallyPlaying = !audio.paused && !audio.ended && currentTime > 0;
+        const storeState = get();
+        
+        if (actuallyPlaying !== storeState.isPlaying) {
+          console.log('🔧 State sync: audio playing =', actuallyPlaying, 'store =', storeState.isPlaying);
+          set({ isPlaying: actuallyPlaying, currentTime });
+        } else {
+          set({ currentTime });
+        }
         
         // Track session progress
         if (sessionManager && duration > 0) {
@@ -987,6 +1008,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
       try {
         console.log('🎵 Attempting audio.play()...');
         
+        // Optimistically set playing state to ensure UI responsiveness
+        set({ isPlaying: true, error: undefined });
+        
         // Safari fix: Ensure audio is ready before attempting play
         if (audio.readyState === 0) {
           console.log('🎵 Safari fix: Audio not ready, loading first...');
@@ -1029,6 +1053,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ error: undefined, isPlaying: true });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
+        
+        // Reset isPlaying state on any error
+        set({ isPlaying: false });
         
         // Better error handling based on error type
         const errorMessage = error.name;
@@ -1190,7 +1217,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
     pause: () => {
       const audio = initAudio();
+      console.log('🎵 Pause called - audio paused:', audio.paused);
       audio.pause();
+      // Ensure state is synchronized immediately
+      set({ isPlaying: false });
     },
 
     next: async () => {
@@ -1337,3 +1367,6 @@ export const playFromGoal = async (goal: string) => {
 export const playTrackNow = async (track: Track) => {
   await useAudioStore.getState().playTrack(track);
 };
+
+// Export debug utilities for development
+export { debugPlayerState, fixPlayerState } from '@/utils/playerStateDebug';
