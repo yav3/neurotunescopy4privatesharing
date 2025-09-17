@@ -36,11 +36,11 @@ export class StorageManifestService {
     console.log(`🔍 Fetching manifest for bucket: ${bucketName} using SERVICE ROLE${prefix ? ` with prefix: ${prefix}` : ''}`);
 
     try {
-      // Use the storage-list edge function with SERVICE ROLE access
+      // Use the storage-list edge function with SERVICE ROLE access via POST
       const { data, error } = await supabase.functions.invoke('storage-list', {
         body: {
           bucket: bucketName,
-          prefix: prefix || 'tracks',
+          prefix: prefix, // Empty string for root directory
           limit: 1000,
           offset: 0,
           strict: 1 // Only return .mp3 files
