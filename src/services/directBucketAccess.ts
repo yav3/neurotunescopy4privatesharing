@@ -53,10 +53,12 @@ export class DirectBucketAccess {
   // Get tracks from multiple bucket roots
   static async getTracksFromBucketRoots(bucketNames: string[]): Promise<any[]> {
     console.log(`🎯 DIRECT ROOT ACCESS for buckets: ${bucketNames.join(', ')}`);
+    console.log(`🔍 Bucket names received:`, bucketNames);
     
     const allTracks: any[] = [];
     
     for (const bucketName of bucketNames) {
+      console.log(`🚀 Processing bucket: ${bucketName}`);
       const audioFiles = await this.getAudioFilesFromBucketRoot(bucketName);
       
       for (const file of audioFiles) {
@@ -76,6 +78,7 @@ export class DirectBucketAccess {
     }
 
     console.log(`✅ Total tracks from ${bucketNames.length} bucket roots: ${allTracks.length}`);
+    console.log(`📋 Final tracks:`, allTracks.map(t => ({ bucket: t.bucket, title: t.title })));
     return allTracks;
   }
 
