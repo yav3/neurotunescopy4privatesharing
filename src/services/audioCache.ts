@@ -341,12 +341,7 @@ export class AudioCacheService {
   }
 }
 
-// Auto-scan on app load if cache is empty
+// Auto-scan disabled to prevent mass HEAD requests on app load
 if (typeof window !== 'undefined') {
-  setTimeout(() => {
-    if (AudioCacheService.needsRefresh()) {
-      console.log('🚀 Auto-starting audio cache scan...');
-      AudioCacheService.scanAndCacheAudioTracks();
-    }
-  }, 2000);
+  console.log('📦 AudioCache auto-scan disabled to prevent network spam');
 }

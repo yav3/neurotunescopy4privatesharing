@@ -585,27 +585,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
       audio.preload = "metadata";       // Better than "auto" for initial loading
       (audio as any).playsInline = true;
       
-      // Debug: Test URL accessibility before setting src
-      console.log('🔍 Testing URL accessibility:', url);
-      try {
-        const testResponse = await fetch(url, { method: 'HEAD' });
-        console.log('🔍 URL test response:', testResponse.status, testResponse.statusText);
-        if (!testResponse.ok) {
-          console.error('❌ URL not accessible:', testResponse.status, testResponse.statusText);
-          set({ 
-            error: `Audio file not accessible (${testResponse.status}: ${testResponse.statusText})`,
-            isLoading: false 
-          });
-          return false;
-        }
-      } catch (fetchError) {
-        console.error('❌ URL fetch test failed:', fetchError);
-        set({ 
-          error: `Cannot access audio file: ${fetchError.message}`,
-          isLoading: false 
-        });
-        return false;
-      }
+      // Skip redundant HEAD request - SmartAudioResolver already validated the URL
+      console.log('✅ Using pre-validated URL from SmartAudioResolver:', url);
       
       // Clear any previous source first
       audio.removeAttribute('src');
