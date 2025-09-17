@@ -114,7 +114,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    musicBuckets: ['audio', 'neuralpositivemusic', 'Chopin'],
+    musicBuckets: ['painreducingworld', 'gentleclassicalforpain', 'Chopin'],
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   },
   {
