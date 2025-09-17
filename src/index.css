@@ -51,8 +51,8 @@ All colors MUST be HSL.
     --popover: 240 100% 1.5%; /* Almost pure black blue */
     --popover-foreground: 0 0% 98%; /* Light popover text */
 
-    --primary: 217 91% 60%; /* Blue primary for better contrast */
-    --primary-foreground: 0 0% 100%; /* White primary text */
+    --primary: 0 0% 100%; /* White primary for controls */
+    --primary-foreground: 0 0% 0%; /* Black primary text */
 
     --secondary: 240 56% 4%; /* Much darker charcoal blue */
     --secondary-foreground: 0 0% 98%; /* Light secondary text */
@@ -68,7 +68,7 @@ All colors MUST be HSL.
 
     --border: 240 100% 2.5%; /* Darker borders */
     --input: 240 100% 1.5%; /* Almost pure black blue input background */
-    --ring: 217 91% 60%;
+    --ring: 0 0% 100%;
 
     /* Dark mode gradients using ultra deep colors */
     --gradient-hero: linear-gradient(135deg, hsl(240 100% 1%), hsl(240 100% 1.5%), hsl(240 56% 4%));
@@ -78,12 +78,12 @@ All colors MUST be HSL.
     /* Dark mode sidebar colors using ultra deep palette */
     --sidebar-background: 240 100% 1.5%; /* Almost pure black blue */
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 240 56% 4%; /* Much darker charcoal blue */
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 240 100% 2.5%; /* Darker border */
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-ring: 0 0% 100%;
 
     /* Dark mode card color variations - ultra deep */
     --card-light: 240 100% 2.5%; /* Darker than before */

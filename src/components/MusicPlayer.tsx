@@ -87,7 +87,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
               value={[0]}
               max={100}
               step={0.1}
-              className="mb-2"
+              className="mb-2 [&_.slider-track]:bg-foreground/20 [&_.slider-range]:bg-foreground [&_.slider-thumb]:bg-foreground [&_.slider-thumb]:border-background"
               disabled
             />
             <div className="flex justify-between text-sm text-muted-foreground">
@@ -103,13 +103,13 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
             
             <Button
               size="icon"
-              className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90"
+              className="w-16 h-16 rounded-full bg-foreground hover:bg-foreground/90 text-background"
               onClick={() => isPlaying ? pause() : play()}
             >
               {isPlaying ? (
-                <Pause className="w-8 h-8 text-primary-foreground" />
+                <Pause className="w-8 h-8" />
               ) : (
-                <Play className="w-8 h-8 text-primary-foreground ml-1" />
+                <Play className="w-8 h-8 ml-1" />
               )}
             </Button>
             
@@ -125,7 +125,7 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
                 value={[80]}
                 max={100}
                 step={1}
-                className="flex-1 max-w-24"
+                className="flex-1 max-w-24 [&_.slider-track]:bg-foreground/20 [&_.slider-range]:bg-foreground [&_.slider-thumb]:bg-foreground [&_.slider-thumb]:border-background"
                 disabled
               />
             </div>
