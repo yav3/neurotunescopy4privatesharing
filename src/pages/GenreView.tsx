@@ -72,6 +72,7 @@ export default function GenreView() {
     setIsTracksLoading(true);
     setTracks([]);
     setError(null);
+  }, [goalId, genreId]); // Only depend on route params, not derived objects
 
   // Import and run sonatas diagnostic on sonatas page
   useEffect(() => {
@@ -82,7 +83,6 @@ export default function GenreView() {
       }).catch(console.error);
     }
   }, [genreId, goalId]);
-  }, [goalId, genreId]); // Only depend on route params, not derived objects
 
   // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
   useAsyncEffect(
