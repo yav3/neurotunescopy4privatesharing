@@ -159,8 +159,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
   console.log('🎵 Audio store initializing - creating therapeutic audio element...');
   ensureAudioElement();
   
-  // Immediate auto-skip function for seamless playback - LONGER DELAYS TO PREVENT RACING
-  const scheduleAutoSkip = (reason: string, delay: number = 5000) => { // Increased default delay
+  // Immediate auto-skip function for seamless playback - MUCH LONGER DELAYS TO PREVENT RACING
+  const scheduleAutoSkip = (reason: string, delay: number = 15000) => { // Much longer default delay
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered after ${delay}ms: ${reason}`);
@@ -225,7 +225,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         // Use much longer delay to prevent racing while allowing track transitions
-        scheduleAutoSkip('track ended', 8000);
+        scheduleAutoSkip('track ended', 12000);
       });
       
       // Auto-skip on audio error with better debugging
@@ -264,10 +264,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         // CRITICAL: If too many consecutive failures, wait much longer
-        const errorDelay = consecutiveFailures > 5 ? 20000 : (consecutiveFailures > 2 ? 15000 : 10000);
+        const errorDelay = consecutiveFailures > 5 ? 45000 : (consecutiveFailures > 2 ? 30000 : 20000);
         console.log(`🎵 Error cascade detection: ${consecutiveFailures} failures, using ${errorDelay}ms delay`);
         
-        // Use longer auto-skip delay for audio errors to allow proper URL resolution
+        // Use much longer auto-skip delay for audio errors to allow proper URL resolution
         scheduleAutoSkip('audio error', errorDelay);
       });
       
