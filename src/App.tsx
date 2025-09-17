@@ -25,12 +25,9 @@ import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
-import AIDJ from "./pages/AIDJ";
-import GenreSelectionPage from "./pages/GenreSelectionPage";
 import { MagicAuth } from "./pages/MagicAuth";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
-import UserManagement from "./pages/admin/UserManagement";
 import ContentManagement from "./pages/admin/ContentManagement";
 import Analytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
@@ -87,8 +84,10 @@ const App = () => {
       return <AuthPage onBack={() => setShowAuth(false)} />;
     }
     
-    // For unauthenticated users, show the main app with limited features
-    // They can access therapeutic music but not personalization features
+    // Force all unauthenticated users to landing page
+    if (currentPath !== '/landing') {
+      return <LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />;
+    }
   }
 
   return (
@@ -101,14 +100,11 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/debug" element={<ConnectionDiagnostics />} />
-              <Route path="/goals/:goalId/genres" element={<GenreSelectionPage />} />
-              <Route path="/ai-dj" element={<AIDJ />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/landing" element={<LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
-                <Route path="users" element={<UserManagement />} />
                 <Route path="content" element={<ContentManagement />} />
                 <Route path="magic-links" element={<MagicLinksPage />} />
                 <Route path="magic-auth" element={<MagicAuth />} />
