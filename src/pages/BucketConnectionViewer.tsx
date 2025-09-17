@@ -128,7 +128,20 @@ export const BucketConnectionViewer = () => {
         `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`
       );
 
+      // Test URL accessibility
+      const urlTests = await Promise.all(
+        sampleUrls.map(async (url) => {
+          try {
+            const response = await fetch(url, { method: 'HEAD' });
+            return { url, accessible: response.ok, status: response.status };
+          } catch (error) {
+            return { url, accessible: false, error: String(error) };
+          }
+        })
+      );
+
       console.log(`✅ BUCKET ${bucketName}: ${files?.length || 0} total files, ${audioFiles.length} audio files`);
+      console.log(`🔗 URL Tests:`, urlTests);
       
       return {
         name: bucketName,
@@ -136,7 +149,8 @@ export const BucketConnectionViewer = () => {
         files: files?.length || 0,
         audioFiles: audioFiles.length,
         sampleUrls,
-        sampleFiles: audioFiles.slice(0, 3).map(f => f.name)
+        sampleFiles: audioFiles.slice(0, 3).map(f => f.name),
+        urlTests
       };
 
     } catch (error) {
@@ -265,6 +279,20 @@ export const BucketConnectionViewer = () => {
                             {conn.sampleUrls.map((url: string, idx: number) => (
                               <div key={idx} className="text-xs font-mono bg-muted p-1 rounded break-all">
                                 🔗 {url}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {conn.urlTests && conn.urlTests.length > 0 && (
+                        <div>
+                          <p className="text-sm font-medium mb-1">URL Accessibility Tests:</p>
+                          <div className="space-y-1">
+                            {conn.urlTests.map((test: any, idx: number) => (
+                              <div key={idx} className={`text-xs p-2 rounded ${test.accessible ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                {test.accessible ? '✅' : '❌'} {test.accessible ? `Playable (${test.status})` : `Not accessible: ${test.error || test.status}`}
+                                <div className="text-xs mt-1 break-all">{test.url}</div>
                               </div>
                             ))}
                           </div>
