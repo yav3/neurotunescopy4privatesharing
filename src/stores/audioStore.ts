@@ -516,20 +516,49 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      // Skip URL testing - edge function with service key handles access
+      // Configure audio element properly for Supabase storage
+      audio.crossOrigin = "anonymous";  // Required for CORS
+      audio.preload = "metadata";       // Better than "auto" for initial loading
+      (audio as any).playsInline = true;
+      
+      // Debug: Test URL accessibility before setting src
+      console.log('🔍 Testing URL accessibility:', url);
+      try {
+        const testResponse = await fetch(url, { method: 'HEAD' });
+        console.log('🔍 URL test response:', testResponse.status, testResponse.statusText);
+        if (!testResponse.ok) {
+          console.error('❌ URL not accessible:', testResponse.status, testResponse.statusText);
+          set({ 
+            error: `Audio file not accessible (${testResponse.status}: ${testResponse.statusText})`,
+            isLoading: false 
+          });
+          return false;
+        }
+      } catch (fetchError) {
+        console.error('❌ URL fetch test failed:', fetchError);
+        set({ 
+          error: `Cannot access audio file: ${fetchError.message}`,
+          isLoading: false 
+        });
+        return false;
+      }
       
       // Clear any previous source first
       audio.removeAttribute('src');
       audio.load();
       
-      // Configure for Supabase signed URLs
-      audio.crossOrigin = "anonymous";
-      audio.preload = "auto";
-      (audio as any).playsInline = true;
-      
       // Set source and reload
+      console.log('🎵 Setting audio.src to:', url);
       audio.src = url;
+      console.log('🎵 Audio element state after src set:', {
+        src: audio.src,
+        readyState: audio.readyState,
+        networkState: audio.networkState,
+        crossOrigin: audio.crossOrigin,
+        preload: audio.preload
+      });
       audio.load();
+      console.log('🎵 Called audio.load(), readyState now:', audio.readyState);
       
       // Add load event listener to detect successful loading
       const loadPromise = new Promise<boolean>((resolve) => {
