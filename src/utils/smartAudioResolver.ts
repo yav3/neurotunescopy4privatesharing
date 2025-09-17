@@ -47,11 +47,12 @@ export class SmartAudioResolver {
       hasDatabase: !!(track.storage_bucket && track.storage_key)
     });
 
-    // Strategy 1: Try database URL as-is
+    // Strategy 1: Try database URL with proper encoding
     if (track.storage_bucket && track.storage_key) {
-      // Don't encode the entire storage_key since it may contain path separators
-      const dbUrl = `${baseUrl}/${track.storage_bucket}/${track.storage_key}`;
-      console.log(`🔗 Strategy 1: Database URL - ${dbUrl}`);
+      // First try with proper encoding of the storage key
+      const encodedKey = encodeURIComponent(track.storage_key);
+      const dbUrl = `${baseUrl}/${track.storage_bucket}/${encodedKey}`;
+      console.log(`🔗 Strategy 1: Database URL (encoded) - ${dbUrl}`);
       
       const dbResult = await this.testUrl(dbUrl, 'database');
       attempts.push(dbResult);
@@ -64,17 +65,17 @@ export class SmartAudioResolver {
       } else {
         console.log(`❌ Database URL failed with status ${dbResult.status}`);
         
-        // Try with URL encoding for the storage key
-        const encodedDbUrl = `${baseUrl}/${track.storage_bucket}/${encodeURIComponent(track.storage_key)}`;
-        if (encodedDbUrl !== dbUrl) {
-          console.log(`🔗 Strategy 1b: Encoded Database URL - ${encodedDbUrl}`);
-          const encodedResult = await this.testUrl(encodedDbUrl, 'database_encoded');
-          attempts.push(encodedResult);
+        // Try without encoding as fallback
+        const rawDbUrl = `${baseUrl}/${track.storage_bucket}/${track.storage_key}`;
+        if (rawDbUrl !== dbUrl) {
+          console.log(`🔗 Strategy 1b: Raw Database URL - ${rawDbUrl}`);
+          const rawResult = await this.testUrl(rawDbUrl, 'database_raw');
+          attempts.push(rawResult);
           
-          if (encodedResult.status === 200) {
-            const result = { success: true, url: encodedDbUrl, method: 'database_encoded', attempts };
+          if (rawResult.status === 200) {
+            const result = { success: true, url: rawDbUrl, method: 'database_raw', attempts };
             this.cache.set(cacheKey, result);
-            console.log(`✅ Encoded Database URL works!`);
+            console.log(`✅ Raw Database URL works!`);
             return result;
           }
         }
@@ -83,14 +84,21 @@ export class SmartAudioResolver {
       console.log(`⚠️ No database storage info available for "${track.title}"`);
     }
 
-    // Strategy 2: Try neuralpositivemusic bucket with exact title match
+    // Strategy 2: Try neuralpositivemusic bucket with better title cleaning
     console.log(`🔗 Strategy 2: neuralpositivemusic exact match`);
-    const cleanTitle = track.title.toLowerCase()
-      .replace(/[^a-z0-9]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
     
-    const neuralUrl = `${baseUrl}/neuralpositivemusic/${cleanTitle}.mp3`;
+    // Better title cleaning to handle special characters
+    const cleanTitle = track.title
+      .replace(/[;&,]/g, '') // Remove semicolons, ampersands, commas
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, '') // Remove all non-alphanumeric except hyphens
+      .replace(/-+/g, '-') // Collapse multiple hyphens
+      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+    
+    console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanTitle}"`);
+    
+    const neuralUrl = `${baseUrl}/neuralpositivemusic/${encodeURIComponent(cleanTitle + '.mp3')}`;
     const neuralResult = await this.testUrl(neuralUrl, 'neural_exact');
     attempts.push(neuralResult);
     

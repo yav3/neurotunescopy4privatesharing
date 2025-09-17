@@ -158,11 +158,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
   console.log('🎵 Audio store initializing - creating therapeutic audio element...');
   ensureAudioElement();
   
-  // Immediate auto-skip function for seamless playback
-  const scheduleAutoSkip = (reason: string, delay: number = 1500) => {
+  // Immediate auto-skip function for seamless playback - LONGER DELAYS TO PREVENT RACING
+  const scheduleAutoSkip = (reason: string, delay: number = 5000) => { // Increased default delay
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
-      console.log(`🎵 Auto-skip triggered: ${reason}`);
+      console.log(`🎵 Auto-skip triggered after ${delay}ms: ${reason}`);
       
       // Suppress player mode updates during rapid error cascades
       if (consecutiveFailures > 2) {
@@ -172,7 +172,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (!isNexting) {
         get().next();
       }
-    }, delay); // Use provided delay with longer default for stability
+    }, delay); // Use provided delay with much longer default for stability
   };
   
   // Helper: Remove item from array at index
@@ -223,8 +223,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           sessionManager.completeSession().catch(console.error);
         }
         
-        // Use moderate delay to prevent racing while allowing quick transitions
-        scheduleAutoSkip('track ended', 1000);
+        // Use longer delay to prevent racing while allowing track transitions
+        scheduleAutoSkip('track ended', 3000);
       });
       
       // Auto-skip on audio error with better debugging
@@ -262,8 +262,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
           adminLog('🎵 Audio error - skipping to next track');
         }
         
-        // Use moderate auto-skip delay for format errors to allow proper loading
-        scheduleAutoSkip('audio error', consecutiveFailures > 2 ? 2000 : 1500);
+        // CRITICAL: If too many consecutive failures, wait much longer
+        const errorDelay = consecutiveFailures > 5 ? 10000 : (consecutiveFailures > 2 ? 6000 : 4000);
+        console.log(`🎵 Error cascade detection: ${consecutiveFailures} failures, using ${errorDelay}ms delay`);
+        
+        // Use longer auto-skip delay for audio errors to allow proper URL resolution
+        scheduleAutoSkip('audio error', errorDelay);
       });
       
       // Honest state tracking
@@ -924,8 +928,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log(`🎵 Silent skip ${consecutiveFailures} - suppressing UI spam`);
           }
           
-          // Use moderate delay for format errors, allow reasonable loading time
-          scheduleAutoSkip('format not supported', 2000);
+          // Use longer delay for format errors to allow URL resolution
+          scheduleAutoSkip('format not supported', 5000);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error - handle more gracefully
           const now = Date.now();
@@ -988,7 +992,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log(`🎵 Silent network skip ${consecutiveFailures} - suppressing UI spam`);
           }
           
-          scheduleAutoSkip('network error', 2500);
+          scheduleAutoSkip('network error', 6000);
         } else {
           // Other errors
           set({ error: "Playback error - trying next track" });
@@ -997,8 +1001,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             toast.error("Playback issue - trying next track");
           }
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Use moderate delay to prevent racing while allowing reasonable error handling
-          scheduleAutoSkip('unknown error', 2000);
+          // Use longer delay to prevent racing while allowing reasonable error handling
+          scheduleAutoSkip('unknown error', 5000);
         }
       }
     },
