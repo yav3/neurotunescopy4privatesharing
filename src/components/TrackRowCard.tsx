@@ -1,8 +1,11 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter';
+import { ArtworkService } from '@/services/artworkService';
+import { handleImageError } from '@/utils/imageUtils';
 
 interface TrackRowCardProps {
   track: {
@@ -88,7 +91,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
   };
 
   const frequencyBand = getFrequencyBand(track);
-  const artwork = getTherapeuticArtwork(frequencyBand, track.id);
+  const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
   const formattedTitle = formatTrackTitleForDisplay(track.title);
 
   return (
@@ -106,7 +109,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
         className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
         style={{
           backgroundImage: `url(${artwork.url})`,
-          backgroundPosition: artwork.position
+          backgroundPosition: 'center'
         }}
         onError={(e) => {
           console.warn('❌ Failed to load track card artwork:', artwork.url);

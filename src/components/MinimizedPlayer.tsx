@@ -4,7 +4,7 @@ import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-import { albumArtPool, getAlbumArtForTrack } from '@/utils/albumArtPool';
+import { ArtworkService } from '@/services/artworkService';
 
 export const MinimizedPlayer = () => {
   const { 
@@ -27,46 +27,27 @@ export const MinimizedPlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Local state for album artwork
+  // Artwork state managed by centralized service (prevents race conditions)
   const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
 
-  // Local fallback art pool
-  const localArtPool = [
-    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
-    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
-    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
-    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
-    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
-    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
-    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
-  ];
-
-  // Load album art from Supabase albumart bucket if track has no artwork
+  // Load artwork using centralized service to prevent race conditions
   useEffect(() => {
+    if (!track) return;
+
     let cancelled = false;
-    const loadAlbumArt = async () => {
+    
+    const loadArtwork = async () => {
       try {
-        if (!track || (track as any).artwork_url || (track as any).album_art_url) return;
-        
-        // Use StorageRequestManager to prevent simultaneous requests
-        const { storageRequestManager } = await import('@/services/storageRequestManager');
-        const artFiles = await storageRequestManager.listStorage('albumart');
-        
-        const images = (artFiles || []).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f.name));
-        if (!images.length) return;
-        
-        const seed = Array.from((track.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
-        const chosen = images[seed % images.length];
-        
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
-        
-        if (!cancelled) setAlbumArtUrl(urlData.publicUrl);
-      } catch (e) {
-        console.warn('Album art load failed', e);
+        const artwork = await ArtworkService.getTrackArtwork(track);
+        if (!cancelled) {
+          setAlbumArtUrl(artwork);
+        }
+      } catch (error) {
+        console.error('Error loading artwork:', error);
       }
     };
-    loadAlbumArt();
+
+    loadArtwork();
     return () => { cancelled = true; };
   }, [track?.id]);
 
@@ -116,10 +97,8 @@ export const MinimizedPlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Choose best available album artwork (track-provided -> bucket -> local pool)
-  const seed = Array.from((track?.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
-  const fallbackLocalArt = localArtPool[seed % localArtPool.length];
-  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || fallbackLocalArt;
+  // Centralized artwork prevents inconsistencies and race conditions
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || '/lovable-uploads/focus-enhancement-artwork.jpg';
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">

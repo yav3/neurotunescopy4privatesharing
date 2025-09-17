@@ -3,6 +3,8 @@ import { Play, Pause, Brain, TrendingUp, Clock } from 'lucide-react'
 import { useAuthContext } from '@/components/auth/AuthProvider'
 import type { Track } from '@/types'
 import { formatTrackTitleForDisplay } from '@/utils/trackTitleFormatter'
+import { ArtworkService } from '@/services/artworkService'
+import { useAudioStore } from '@/stores'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
   therapeutic_applications?: Array<{
@@ -13,11 +15,10 @@ type MusicTrack = Track & {
   valence?: number;
   bpm?: number;
   genre?: string;
-}
-import { useAudioStore } from '@/stores'
+};
 
 interface TrackCardProps {
-  track: MusicTrack
+  track: MusicTrack;
 }
 
 const formatDuration = (seconds: number): string => {
@@ -126,7 +127,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
-  const artwork = React.useMemo(() => getTherapeuticArtwork(frequencyBand, track.id), [frequencyBand, track.id])
+  const artwork = React.useMemo(() => 
+    ArtworkService.getTherapeuticArtwork(frequencyBand, track.id), 
+    [frequencyBand, track.id]
+  )
 
   const handlePlayClick = async () => {
     console.log('▶️ TrackCard play button clicked for track:', track.title, track.id);
@@ -149,7 +153,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
             <img 
               src={artwork.url}
               alt={`${frequencyBand} band therapeutic artwork`}
-              className={`w-full h-full object-cover ${artwork.position}`}
+              className="w-full h-full object-cover"
             />
             {/* Therapeutic Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
