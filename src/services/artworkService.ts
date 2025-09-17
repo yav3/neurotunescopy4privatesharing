@@ -52,26 +52,40 @@ export class ArtworkService {
     const cacheKey = `track:${track.id}`;
     
     try {
+      console.log('🎨 Loading artwork for track:', track.id);
+      
+      // Clear storage cache to force fresh request
+      storageRequestManager.clearCache('albumart');
+      
       // Try to load from Supabase albumart bucket (only once per track)
       const artFiles = await storageRequestManager.listStorage('albumart');
+      
+      console.log('🖼️ Found albumart files:', artFiles?.length || 0, artFiles);
       
       if (artFiles && artFiles.length > 0) {
         // Use track ID for consistent selection
         const hash = Math.abs(track.id.split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
         const chosen = artFiles[hash % artFiles.length];
         
+        console.log('✅ Selected artwork file:', chosen.name, 'for track', track.id);
+        
         const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
         const artworkUrl = urlData.publicUrl;
         
+        console.log('🔗 Generated artwork URL:', artworkUrl);
+        
         this.cache.set(cacheKey, artworkUrl);
         return artworkUrl;
+      } else {
+        console.log('📂 No files in albumart bucket, using fallback');
       }
     } catch (error) {
-      console.warn('Failed to load artwork from bucket:', error);
+      console.warn('❌ Failed to load artwork from bucket:', error);
     }
 
     // Fallback to local album art pool with consistent selection
     const fallbackArt = this._getLocalFallbackArt(track);
+    console.log('🎭 Using fallback art:', fallbackArt, 'for track', track.id);
     this.cache.set(cacheKey, fallbackArt);
     return fallbackArt;
   }
