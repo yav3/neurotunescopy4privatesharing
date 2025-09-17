@@ -26,8 +26,9 @@ let isTransitioning = false; // Global transition lock
 // Network hang protection  
 let currentAbort: AbortController | null = null;
 
-// Blacklist for failed tracks to prevent infinite cycling
-let failedTracks = new Set<string>();
+// Track failure counts instead of permanent blacklist
+let trackFailureCounts = new Map<string, number>();
+const MAX_TRACK_FAILURES = 3; // Allow 3 attempts before giving up
 
 // Track consecutive failures to suppress UI spam
 let consecutiveFailures = 0;
@@ -254,10 +255,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         lastErrorTime = now;
         
-        // Add failed track to blacklist
+        // Track failure count instead of permanent blacklist
         if (currentTrack) {
-          failedTracks.add(currentTrack.id);
-          adminLog(`🚫 Blacklisted track: ${currentTrack.title} (${currentTrack.id})`);
+          const failures = (trackFailureCounts.get(currentTrack.id) || 0) + 1;
+          trackFailureCounts.set(currentTrack.id, failures);
+          adminLog(`⚠️ Track failure ${failures}/${MAX_TRACK_FAILURES}: ${currentTrack.title} (${currentTrack.id})`);
+          
+          if (failures >= MAX_TRACK_FAILURES) {
+            adminLog(`🚫 Track exhausted retry attempts: ${currentTrack.title}`);
+          }
         }
         
         set({ isPlaying: false });
@@ -429,9 +435,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
     try {
       console.log('🎵 Loading track:', track.title, 'ID:', track.id, 'seq:', mySeq);
       
+      // Set currentTrack optimistically for immediate UI update
+      set({ currentTrack: track, isLoading: true });
+      console.log('🎵 Set currentTrack optimistically:', track.title);
+      
       // Early validation
       if (!isValid()) {
         console.log('🎵 Load sequence invalidated early:', mySeq);
+        set({ currentTrack: null, isLoading: false });
         return false;
       }
       
@@ -550,12 +561,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         audio.addEventListener('loadeddata', onLoadedData);
         audio.addEventListener('error', onError);
         
-        // Timeout after 10 seconds
+        // Timeout after 20 seconds (increased for better network reliability)
         setTimeout(() => {
           console.log('🎵 Audio load timeout - readyState:', audio.readyState);
           cleanupListeners();
           resolve(false);
-        }, 10000);
+        }, 20000);
       });
       
       audio.load();
@@ -751,21 +762,23 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         console.log(`✅ Converted ${convertedTracks.length} tracks to proper format`);
         
-        // Clear blacklist occasionally to allow retry of previously failed tracks
-        if (failedTracks.size > 20) {
-          console.log('🔄 Clearing blacklist to allow retries');
-          failedTracks.clear();
+        // Clear failure counts occasionally to allow retry of previously failed tracks
+        if (trackFailureCounts.size > 50) {
+          console.log('🔄 Clearing failure counts to allow retries');
+          trackFailureCounts.clear();
         }
         
-        // Filter out recently failed tracks (but allow some through for variety)
+        // Filter out tracks that have exceeded failure threshold
         const originalCount = convertedTracks.length;
-        const availableTracks = convertedTracks.filter(track => !failedTracks.has(track.id));
+        const availableTracks = convertedTracks.filter(track => 
+          (trackFailureCounts.get(track.id) || 0) < MAX_TRACK_FAILURES
+        );
         
-        // If we filtered out too many, keep some of the blacklisted ones
+        // If we filtered out too many, keep some of the failed ones for retry
         let finalTracks = availableTracks;
         if (availableTracks.length < 5 && originalCount > 5) {
           console.log('🎵 Not enough available tracks, including some previously failed ones');
-          finalTracks = convertedTracks.slice(0, 10); // Take first 10 regardless of blacklist
+          finalTracks = convertedTracks.slice(0, 10); // Take first 10 regardless of failure count
         }
         
         console.log(`📊 Track filtering: ${originalCount} total → ${availableTracks.length} available → ${finalTracks.length} final`);
@@ -805,17 +818,17 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // Fast parallel validation
       const { working, broken } = await validateTracks(tracks);
       
-      // Remove broken tracks from queue, blacklist them, and announce skips
+      // Mark broken tracks with high failure count
       if (broken.length > 0) {
         const { adminLog, userLog } = await import('@/utils/adminLogging');
-        adminLog(`🎵 Removing ${broken.length} broken tracks`);
+        adminLog(`🎵 Marking ${broken.length} broken tracks`);
         
-        // Add broken tracks to blacklist
+        // Mark tracks as failed
         broken.forEach(track => {
-          failedTracks.add(track.id);
-          console.log('🎵 Added broken track to blacklist:', track.id, track.title);
+          trackFailureCounts.set(track.id, MAX_TRACK_FAILURES);
+          console.log('🎵 Marked broken track as exhausted:', track.id, track.title);
         });
-        console.log('🎵 Total blacklisted tracks:', failedTracks.size);
+        console.log('🎵 Total failed tracks:', trackFailureCounts.size);
         
         for (let i = 0; i < Math.min(broken.length, 3); i++) {
           announceSkip();
@@ -991,11 +1004,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
           lastErrorTime = now;
           
-          // Add to blacklist immediately
+          // Track failure count instead of permanent blacklist
           const { currentTrack } = get();
           if (currentTrack) {
-            failedTracks.add(currentTrack.id);
-            console.log('🎵 Blacklisted unsupported track:', currentTrack.id, currentTrack.title);
+            const failures = (trackFailureCounts.get(currentTrack.id) || 0) + 1;
+            trackFailureCounts.set(currentTrack.id, failures);
+            console.log('🎵 Track format not supported, failure count:', failures, currentTrack.title);
           }
           
           // Show toast only for first error in a 10-second window to reduce spam
@@ -1062,11 +1076,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
           lastErrorTime = now;
           
-          // Add to blacklist
+          // Track failure count for network issues
           const { currentTrack } = get();
           if (currentTrack) {
-            failedTracks.add(currentTrack.id);
-            console.log('🎵 Blacklisted network-failed track:', currentTrack.id, currentTrack.title);
+            const failures = (trackFailureCounts.get(currentTrack.id) || 0) + 1;
+            trackFailureCounts.set(currentTrack.id, failures);
+            console.log('🎵 Network error loading track, failure count:', failures, currentTrack.title);
           }
           
           // Show loading error less frequently
@@ -1167,10 +1182,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
             return;
           }
           
-          // Drop broken track from queue, blacklist it, and announce skip
-          console.log('🎵 Removing broken track from queue:', queue[i].title);
-          failedTracks.add(queue[i].id);
-          console.log('🎵 Added track to blacklist:', queue[i].id, '- Total blacklisted:', failedTracks.size);
+          // Track failure count instead of immediate removal
+          const failures = (trackFailureCounts.get(queue[i].id) || 0) + 1;
+          trackFailureCounts.set(queue[i].id, failures);
+          
+          if (failures >= MAX_TRACK_FAILURES) {
+            console.log('🎵 Removing exhausted track from queue:', queue[i].title);
+            console.log('🎵 Track failed', failures, 'times - removing permanently');
+          } else {
+            console.log('🎵 Track failed', failures, 'of', MAX_TRACK_FAILURES, 'attempts - will retry later');
+            // Skip this track for now but don't remove it from queue
+            i++;
+            continue;
+          }
           announceSkip();
           queue = removeAt(queue, i);
           i--; // Adjust index since we removed an item
