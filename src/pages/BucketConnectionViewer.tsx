@@ -8,22 +8,92 @@ export const BucketConnectionViewer = () => {
   const [connections, setConnections] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // ONLY REAL BUCKETS THAT ACTUALLY EXIST (based on your screenshot)
+  // ALL REAL BUCKETS FROM YOUR SUPABASE PROJECT
   const REAL_BUCKETS = [
-    {
-      name: "painreducingworld",
-      description: "Pain reduction therapeutic music (shows 0 files - possible permission issue)",
-      status: "Connected but empty"
-    },
     {
       name: "neuralpositivemusic", 
       description: "Neural positive therapeutic music (confirmed 99 audio files)",
       status: "Working with content"
     },
     {
+      name: "audio",
+      description: "General audio storage bucket",
+      status: "Main audio bucket"
+    },
+    {
+      name: "ENERGYBOOST",
+      description: "High energy music for workouts",
+      status: "Energy music collection"
+    },
+    {
+      name: "focus-music",
+      description: "Music specifically for focus and concentration",
+      status: "Focus collection"
+    },
+    {
+      name: "opera",
+      description: "Opera music collection",
+      status: "Classical opera"
+    },
+    {
+      name: "HIIT",
+      description: "High intensity interval training music",
+      status: "Workout music"
+    },
+    {
+      name: "samba",
+      description: "Samba and Brazilian music",
+      status: "World music"
+    },
+    {
+      name: "Chopin",
+      description: "Classical Chopin compositions",
+      status: "Classical piano"
+    },
+    {
+      name: "curated-music-collection",
+      description: "Professionally curated music collection",
+      status: "Curated content"
+    },
+    {
       name: "classicalfocus",
-      description: "Classical music for focus",
-      status: "Exists in system"
+      description: "Classical music for focus and productivity",
+      status: "Classical focus"
+    },
+    {
+      name: "newageworldstressanxietyreduction",
+      description: "New age and world music for stress and anxiety relief",
+      status: "Therapeutic music"
+    },
+    {
+      name: "pop",
+      description: "Popular music collection",
+      status: "Pop music"
+    },
+    {
+      name: "countryandamericana",
+      description: "Country and Americana music",
+      status: "Country collection"
+    },
+    {
+      name: "gentleclassicalforpain",
+      description: "Gentle classical music for pain management",
+      status: "Pain relief music"
+    },
+    {
+      name: "sonatasforstress",
+      description: "Classical sonatas for stress relief",
+      status: "Stress relief"
+    },
+    {
+      name: "painreducingworld",
+      description: "World music for pain reduction (shows 0 files - possible permission issue)",
+      status: "Connected but empty"
+    },
+    {
+      name: "NewAgeandWorldFocus",
+      description: "New age and world music for focus",
+      status: "Focus collection"
     }
   ];
 
