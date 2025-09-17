@@ -8,10 +8,12 @@ import { Track as AudioTrack } from '@/types';
 import { getGenreOptions } from '@/config/genreConfigs';
 import { SimpleStorageService } from '@/services/simpleStorageService';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
+import { useAuthContext } from '@/components/auth/AuthProvider';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
   
   const [tracks, setTracks] = useState<SimpleTrack[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
@@ -37,6 +39,28 @@ export default function GenreView() {
   const genres = goalId ? getGenreOptions(goalId) : [];
   const genre = genres.find(g => g.id === genreId);
 
+  // Authentication check for sonatas
+  if (genreId === 'sonatas' && !user) {
+    return (
+      <div className="max-w-4xl mx-auto p-8 text-center">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+          <h2 className="text-xl font-semibold text-yellow-800 mb-2">
+            Authentication Required
+          </h2>
+          <p className="text-yellow-700 mb-4">
+            You need to be logged in to access {genre?.name || 'this music collection'}.
+          </p>
+          <Button 
+            onClick={() => navigate('/landing')}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            Login to Access Music
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   // Initialize state when route params change - no continuous debug logs
   useEffect(() => {
     if (!genre) {
@@ -49,12 +73,15 @@ export default function GenreView() {
     setTracks([]);
     setError(null);
 
-    // Run diagnostics for specific bucket (non-blocking, no debug logs)
-    if (genre.buckets.includes('painreducingworld')) {
-      import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-        BucketDiagnostics.checkBucketDetails('painreducingworld');
+  // Import and run sonatas diagnostic on sonatas page
+  useEffect(() => {
+    if (genreId === 'sonatas' && goalId === 'stress-anxiety-support') {
+      import('@/utils/sonatasBucketDiagnostic').then(({ diagnoseSonatasAccess, testSonatasGenreConfig }) => {
+        testSonatasGenreConfig();
+        diagnoseSonatasAccess();
       }).catch(console.error);
     }
+  }, [genreId, goalId]);
   }, [goalId, genreId]); // Only depend on route params, not derived objects
 
   // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
