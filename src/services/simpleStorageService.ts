@@ -36,10 +36,14 @@ export class SimpleStorageService {
   private static async _getTracksFromBucketsInternal(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
     console.log(`🎵 Loading tracks from BUCKET ROOTS ONLY: ${bucketNames.join(', ')}`);
     
-    // NO FALLBACKS - only use exact buckets requested
+    // Apply fallback system for empty buckets
+    const expandedBuckets = expandBucketsWithFallbacks(bucketNames);
+    console.log(`🔄 Original buckets: ${bucketNames.join(', ')}`);
+    console.log(`📈 Expanded with fallbacks: ${expandedBuckets.join(', ')}`);
+    
     let allTracks: Track[] = [];
 
-    for (const bucketName of bucketNames) {
+    for (const bucketName of expandedBuckets) {
       try {
         console.log(`📂 Processing bucket ROOT: ${bucketName}`);
         
@@ -110,7 +114,7 @@ export class SimpleStorageService {
     const shuffled = allTracks.sort(() => Math.random() - 0.5);
     const finalTracks = shuffled.slice(0, maxTracks);
 
-    console.log(`✅ Returning ${finalTracks.length} tracks from ${bucketNames.length} bucket ROOTS`);
+    console.log(`✅ Returning ${finalTracks.length} tracks from ${bucketNames.length} original buckets (${expandedBuckets.length} with fallbacks)`);
     
     return finalTracks;
   }

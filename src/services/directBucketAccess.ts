@@ -1,8 +1,12 @@
 import { supabase } from '@/integrations/supabase/client';
+import { expandBucketsWithFallbacks } from '@/utils/bucketFallbacks';
 
 // Direct bucket access service - ONLY bucket roots, NO subfolders
 export class DirectBucketAccess {
   private static audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
+  
+  // Race condition protection - request deduplication
+  private static pendingRequests = new Map<string, Promise<any[]>>();
 
   // Get all audio files directly from bucket root - no folders, no prefixes
   static async getAudioFilesFromBucketRoot(bucketName: string): Promise<any[]> {
@@ -52,12 +56,40 @@ export class DirectBucketAccess {
 
   // Get tracks from multiple bucket roots
   static async getTracksFromBucketRoots(bucketNames: string[]): Promise<any[]> {
+    // Create unique request key for race condition protection
+    const requestKey = `roots:${bucketNames.sort().join(',')}`; 
+    
+    // Return existing request if already in progress
+    if (this.pendingRequests.has(requestKey)) {
+      console.log(`🔄 Returning existing request for buckets: ${bucketNames.join(', ')}`);
+      return this.pendingRequests.get(requestKey)!;
+    }
+    
     console.log(`🎯 DIRECT ROOT ACCESS for buckets: ${bucketNames.join(', ')}`);
     console.log(`🔍 Bucket names received:`, bucketNames);
     
+    // Create and cache the request promise
+    const requestPromise = this._getTracksFromBucketRootsInternal(bucketNames);
+    this.pendingRequests.set(requestKey, requestPromise);
+    
+    // Clean up when request completes
+    requestPromise.finally(() => {
+      this.pendingRequests.delete(requestKey);
+    });
+    
+    return requestPromise;
+  }
+
+  // Internal implementation without race protection
+  private static async _getTracksFromBucketRootsInternal(bucketNames: string[]): Promise<any[]> {
+    // Apply fallback system for empty buckets
+    const expandedBuckets = expandBucketsWithFallbacks(bucketNames);
+    console.log(`🔄 Original buckets: ${bucketNames.join(', ')}`);
+    console.log(`📈 Expanded with fallbacks: ${expandedBuckets.join(', ')}`);
+    
     const allTracks: any[] = [];
     
-    for (const bucketName of bucketNames) {
+    for (const bucketName of expandedBuckets) {
       console.log(`🚀 Processing bucket: ${bucketName}`);
       const audioFiles = await this.getAudioFilesFromBucketRoot(bucketName);
       
@@ -77,7 +109,7 @@ export class DirectBucketAccess {
       }
     }
 
-    console.log(`✅ Total tracks from ${bucketNames.length} bucket roots: ${allTracks.length}`);
+    console.log(`✅ Total tracks from ${bucketNames.length} original buckets (${expandedBuckets.length} with fallbacks): ${allTracks.length}`);
     console.log(`📋 Final tracks:`, allTracks.map(t => ({ bucket: t.bucket, title: t.title })));
     return allTracks;
   }
