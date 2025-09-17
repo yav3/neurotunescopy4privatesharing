@@ -71,19 +71,20 @@ export const FrequencyBand: React.FC<FrequencyBandProps> = ({
       aria-label={`${band} frequency band: ${info.purpose}`}
     >
       <div className="text-center">
+        {/* Clean emoji icons - no text sprites */}
         <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">
           {info.icon}
         </div>
         
-        <h3 className="text-lg font-bold capitalize mb-1">
+        <h3 className="text-lg font-bold capitalize mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
           {band}
         </h3>
         
-        <div className={`text-sm mb-2 ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+        <div className={`text-sm mb-2 opacity-0 group-hover:opacity-100 transition-opacity ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
           {info.range}
         </div>
         
-        <div className={`text-xs font-medium mb-3 ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
+        <div className={`text-xs font-medium mb-3 opacity-0 group-hover:opacity-100 transition-opacity ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
           {info.purpose}
         </div>
         

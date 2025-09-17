@@ -139,14 +139,12 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
           </button>
         </div>
         
-        {/* Track info */}
-        <div className="text-center">
+        {/* Track info - Only visible on hover */}
+        <div className="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <h3 className="font-normal text-xs sm:text-sm leading-tight line-clamp-2 mb-1">
             {formattedTitle}
           </h3>
-          <p className="text-xs text-white/70 capitalize">
-            {frequencyBand} Frequency
-          </p>
+          {/* Removed frequency band text to reduce clutter */}
         </div>
       </div>
     </Card>
