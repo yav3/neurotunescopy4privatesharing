@@ -37,34 +37,25 @@ export default function GenreView() {
   const genres = goalId ? getGenreOptions(goalId) : [];
   const genre = genres.find(g => g.id === genreId);
 
-  // Combined effect for initial state and loading with debug logging
+  // Initialize state when route params change - no continuous debug logs
   useEffect(() => {
     if (!genre) {
-      console.log('🔍 DEBUG - Genre not found for:', { goalId, genreId });
       setError('Genre not found.');
       setIsTracksLoading(false);
       return;
     }
 
-    console.log('🔍 DEBUG - Loading genre:', {
-      goalId,
-      genreId,
-      genre: genre.name,
-      buckets: genre.buckets
-    });
-
     setIsTracksLoading(true);
     setTracks([]);
     setError(null);
 
-    // Run diagnostics for specific bucket (non-blocking)
+    // Run diagnostics for specific bucket (non-blocking, no debug logs)
     if (genre.buckets.includes('painreducingworld')) {
       import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-        console.log('🚨 PAINREDUCINGWORLD BUCKET DIAGNOSTICS - Starting immediate check...');
         BucketDiagnostics.checkBucketDetails('painreducingworld');
       }).catch(console.error);
     }
-  }, [goalId, genreId, genre?.id]);
+  }, [goalId, genreId]); // Only depend on route params, not derived objects
 
   // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
   useAsyncEffect(
@@ -72,8 +63,6 @@ export default function GenreView() {
       if (!genre) {
         throw new Error('Genre not found.');
       }
-
-      console.log(`🎯 Loading tracks from BUCKET ROOTS ONLY: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
       
       // Check if request was aborted before making network call
       if (signal.aborted) {
@@ -103,23 +92,20 @@ export default function GenreView() {
     },
     (tracks: SimpleTrack[]) => {
       if (tracks.length > 0) {
-        console.log(`✅ Loaded ${tracks.length} tracks from BUCKET ROOTS for genre`);
         setTracks(tracks);
         setError(null);
       } else {
-        console.warn(`⚠️ No tracks found in BUCKET ROOTS for: ${genre?.name}, buckets: ${genre?.buckets.join(', ')}`);
         setError('No music tracks found in bucket roots for this genre.');
         setTracks([]);
       }
       setIsTracksLoading(false);
     },
     (error: Error) => {
-      console.error(`❌ Error loading tracks from BUCKET ROOTS:`, error);
       setError('Failed to load music tracks from bucket roots.');
       setTracks([]);
       setIsTracksLoading(false);
     },
-    [genre?.id]
+    [goalId, genreId] // Depend on route params only
   );
 
   // Audio store actions
