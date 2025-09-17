@@ -3,7 +3,7 @@
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'content-type,x-admin-key',
-  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Methods': 'GET,OPTIONS',
   'Content-Type': 'application/json'
 };
 
@@ -17,25 +17,12 @@ const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const sb = () => createClient(SUPABASE_URL, SERVICE_KEY);
 
 async function handleList(req: Request): Promise<Response> {
-  let bucket, prefix, limit, offset, strict;
-  
-  if (req.method === 'GET') {
-    // Handle GET requests with URL parameters
-    const url = new URL(req.url);
-    bucket = url.searchParams.get('bucket') || 'neuralpositivemusic';
-    prefix = url.searchParams.get('prefix') || '';  // Use empty string (root) instead of 'tracks'
-    limit = Math.max(1, Math.min(parseInt(url.searchParams.get('limit') || '500', 10), 2000));
-    offset = Math.max(0, parseInt(url.searchParams.get('offset') || '0', 10));
-    strict = url.searchParams.get('strict') === '1';
-  } else {
-    // Handle POST requests with body parameters
-    const body = await req.json();
-    bucket = body.bucket || 'neuralpositivemusic';
-    prefix = body.prefix || '';  // Use empty string (root)
-    limit = Math.max(1, Math.min(parseInt(body.limit || '500', 10), 2000));
-    offset = Math.max(0, parseInt(body.offset || '0', 10));
-    strict = body.strict === '1' || body.strict === 1;
-  }
+  const url = new URL(req.url);
+  const bucket = url.searchParams.get('bucket') || 'neuralpositivemusic';
+  const prefix = url.searchParams.get('prefix') || 'tracks';
+  const limit = Math.max(1, Math.min(parseInt(url.searchParams.get('limit') || '500', 10), 2000));
+  const offset = Math.max(0, parseInt(url.searchParams.get('offset') || '0', 10));
+  const strict = url.searchParams.get('strict') === '1';
   
   try {
     const supabase = sb();
@@ -71,11 +58,10 @@ async function handleList(req: Request): Promise<Response> {
       if (strict && !isMP3) continue;
 
       try {
-        // Generate signed URL (24 hours)  
-        const storageKey = prefix ? `${prefix}/${file.name}` : file.name;
+        // Generate signed URL (24 hours)
         const { data: urlData, error: urlError } = await supabase.storage
           .from(bucket)
-          .createSignedUrl(storageKey, 86400);
+          .createSignedUrl(`${prefix}/${file.name}`, 86400);
 
         if (urlError || !urlData?.signedUrl) {
           console.warn(`Failed to generate URL for ${file.name}:`, urlError);
@@ -100,7 +86,7 @@ async function handleList(req: Request): Promise<Response> {
 
         results.push({
           name: file.name,
-          storage_key: storageKey,
+          storage_key: `${prefix}/${file.name}`,
           url: urlData.signedUrl,
           audio_ok: audioOk,
           content_type: contentType
