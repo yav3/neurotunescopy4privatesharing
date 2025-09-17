@@ -168,31 +168,35 @@ export const BucketConnectionViewer = () => {
 
   const testAllConnections = async () => {
     setIsLoading(true);
-    console.log('🚀 TESTING ONLY REAL BUCKETS');
-    console.log('📋 REAL BUCKETS TO TEST:', REAL_BUCKETS.map(b => b.name));
+    console.log('🚀 TESTING BUCKETS WITH SERVICE ROLE KEY');
+    console.log('📋 BUCKETS TO TEST:', REAL_BUCKETS.map(b => b.name));
     
-    const results: Record<string, any> = {};
-    
-    for (const bucket of REAL_BUCKETS) {
-      console.log(`\n🔍 Testing: ${bucket.name}`);
-      const result = await testConnection(bucket.name);
-      results[bucket.name] = { ...result, ...bucket };
+    try {
+      // Call edge function with service role access
+      const { data, error } = await supabase.functions.invoke('storage-bucket-test', {
+        body: { buckets: REAL_BUCKETS }
+      });
+
+      if (error) {
+        console.error('❌ Edge function error:', error);
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.success) {
+        setConnections(data.results);
+        
+        console.log('📊 SERVICE ROLE BUCKET TEST SUMMARY:');
+        console.log(`✅ Connected buckets: ${data.summary.connected}/${data.summary.total}`);
+        console.log(`🎵 Total audio files: ${data.summary.totalAudio}`);
+        console.log('🔗 Connection details:', data.results);
+      } else {
+        console.error('❌ Test failed:', data.error);
+      }
       
-      // Update UI progressively
-      setConnections(prev => ({ ...prev, [bucket.name]: results[bucket.name] }));
-      
-      // Small delay to prevent API overload
-      await new Promise(resolve => setTimeout(resolve, 300));
+    } catch (error) {
+      console.error('💥 Request failed:', error);
     }
-    
-    // Summary log
-    const connected = Object.values(results).filter((r: any) => r.connected).length;
-    const totalAudio = Object.values(results).reduce((sum: number, r: any) => sum + (r.audioFiles || 0), 0);
-    
-    console.log('📊 REAL BUCKET CONNECTION SUMMARY:');
-    console.log(`✅ Connected buckets: ${connected}/${REAL_BUCKETS.length}`);
-    console.log(`🎵 Total audio files: ${totalAudio}`);
-    console.log('🔗 Connection details:', results);
     
     setIsLoading(false);
   };
@@ -201,9 +205,9 @@ export const BucketConnectionViewer = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">🔗 REAL Bucket Connections</CardTitle>
+          <CardTitle className="text-2xl">🔑 SERVICE ROLE Storage Test</CardTitle>
           <CardDescription>
-            These are the ONLY REAL buckets that actually exist in your system - no fake ones!
+            Testing ALL real buckets with SERVICE ROLE KEY for full admin access
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -227,7 +231,7 @@ export const BucketConnectionViewer = () => {
               className="w-full"
               size="lg"
             >
-              {isLoading ? "Testing Real Buckets..." : "Test Real Bucket Connections"}
+              {isLoading ? "Testing with Service Role..." : "🔑 Test All Buckets (Service Role)"}
             </Button>
           </div>
         </CardContent>
@@ -314,15 +318,14 @@ export const BucketConnectionViewer = () => {
       
       <Card className="bg-blue-50">
         <CardContent className="pt-6">
-          <h3 className="font-semibold mb-2">🎯 REAL Connection Details</h3>
+          <h3 className="font-semibold mb-2">🔑 SERVICE ROLE Access Details</h3>
           <div className="text-sm space-y-1">
-            <p><strong>CONFIRMED Real Buckets:</strong></p>
-            <p><code>painreducingworld</code> - Connected but shows 0 files (permission issue?)</p>
-            <p><code>neuralpositivemusic</code> - Connected with 99 audio files ✅</p>
-            <p><code>classicalfocus</code> - Exists in your system</p>
+            <p><strong>Access Level:</strong> Full admin access with SERVICE ROLE KEY</p>
+            <p><strong>All Storage Buckets:</strong> {REAL_BUCKETS.length} buckets from your Supabase project</p>
             <p><strong>Supabase URL:</strong> https://pbtgvcjniayedqlajjzz.supabase.co</p>
             <p><strong>Storage Path:</strong> /storage/v1/object/public/[bucket]/[filename]</p>
             <p><strong>Audio Extensions:</strong> .mp3, .wav, .flac, .aac, .ogg, .m4a</p>
+            <p><strong>URL Testing:</strong> HEAD requests to verify accessibility</p>
           </div>
         </CardContent>
       </Card>

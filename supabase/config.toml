@@ -1,1 +1,4 @@
 project_id = "pbtgvcjniayedqlajjzz"
+
+[functions.storage-bucket-test]
+verify_jwt = false
