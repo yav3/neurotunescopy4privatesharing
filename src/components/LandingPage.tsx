@@ -43,13 +43,13 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               onClick={handleLogin}
               className="border-blue-500 text-blue-500 hover:bg-blue-50"
             >
-              Personal Music
+              Login
             </Button>
             <Button 
               onClick={handleSignup}
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              Start Therapy
+              Request Access
             </Button>
           </div>
         </div>
@@ -318,7 +318,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <svg className="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <circle cx="10" cy="10" r="3" fill="currentColor"/>
               </svg>
-              Start Free Session
+              Request Access
             </Button>
             <Button 
               variant="outline"

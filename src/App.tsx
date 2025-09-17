@@ -72,6 +72,7 @@ const App = () => {
     );
   }
 
+  // ENFORCE AUTHENTICATION: No anonymous usage allowed
   if (!user) {
     // Handle unauthenticated password reset routes
     const currentPath = window.location.pathname;
@@ -84,10 +85,8 @@ const App = () => {
       return <AuthPage onBack={() => setShowAuth(false)} />;
     }
     
-    // Force all unauthenticated users to landing page
-    if (currentPath !== '/landing') {
-      return <LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />;
-    }
+    // FORCE ALL users to authenticate - landing page is only for signup/login
+    return <LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />;
   }
 
   return (
