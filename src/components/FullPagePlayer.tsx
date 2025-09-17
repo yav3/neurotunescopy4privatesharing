@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTrackTitleForDisplay } from "@/utils/trackTitleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
 
 // Import artwork for different therapeutic goals
@@ -53,27 +54,22 @@ export const FullPagePlayer = () => {
     '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
   ];
 
-  // Load album art from Supabase albumart bucket if track has no artwork
+  // Load artwork using centralized service (prevents race conditions)
   useEffect(() => {
     let cancelled = false;
-    const loadAlbumArt = async () => {
+    const loadArtwork = async () => {
+      if (!track) return;
       try {
-        if (!track || (track as any).artwork_url || (track as any).album_art_url) return;
-        const { supabase } = await import('@/integrations/supabase/client');
-        const { data: artFiles } = await supabase.storage
-          .from('albumart')
-          .list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
-        const images = (artFiles || []).filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f.name));
-        if (!images.length) return;
-        const seed = Array.from((track.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
-        const chosen = images[seed % images.length];
-        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
-        if (!cancelled) setAlbumArtUrl(urlData.publicUrl);
-      } catch (e) {
-        console.warn('Album art load failed', e);
+        const artwork = await ArtworkService.getTrackArtwork(track);
+        if (!cancelled) {
+          setAlbumArtUrl(artwork);
+        }
+      } catch (error) {
+        console.warn('Artwork loading failed:', error);
       }
     };
-    loadAlbumArt();
+    
+    loadArtwork();
     return () => { cancelled = true; };
   }, [track?.id]);
 
