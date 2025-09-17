@@ -168,10 +168,49 @@ export class SmartAudioResolver {
       console.log(`❌ Error searching files: ${error}`);
     }
 
-    // Strategy 4: Try audio bucket with UUID format
+    // Strategy 4: Try ENERGYBOOST bucket
+    const energyBoostUrl = `${baseUrl}/ENERGYBOOST/${encodeURIComponent(cleanTitle + '.mp3')}`;
+    console.log(`🔗 Strategy 4: ENERGYBOOST bucket - ${energyBoostUrl}`);
+    
+    const energyBoostResult = await this.testUrl(energyBoostUrl, 'energyboost');
+    attempts.push(energyBoostResult);
+    
+    if (energyBoostResult.status === 200) {
+      const result = { success: true, url: energyBoostUrl, method: 'energyboost', attempts };
+      this.cache.set(cacheKey, result);
+      console.log(`✅ ENERGYBOOST bucket works!`);
+      return result;
+    }
+
+    // Try variations with different patterns for ENERGYBOOST
+    const variations = [
+      `${track.title} (3)`,
+      `${track.title} House Sephardim World (3)`,
+      track.title.replace(/\s+/g, '%20')
+    ];
+    
+    for (const variation of variations) {
+      const variationClean = variation
+        .replace(/[;&,]/g, '')
+        .replace(/\s+/g, '%20');
+      const variationUrl = `${baseUrl}/ENERGYBOOST/${variationClean}.mp3`;
+      
+      console.log(`🔗 Strategy 4b: ENERGYBOOST variation - ${variationUrl}`);
+      const variationResult = await this.testUrl(variationUrl, 'energyboost_var');
+      attempts.push(variationResult);
+      
+      if (variationResult.status === 200) {
+        const result = { success: true, url: variationUrl, method: 'energyboost_var', attempts };
+        this.cache.set(cacheKey, result);
+        console.log(`✅ ENERGYBOOST variation works!`);
+        return result;
+      }
+    }
+
+    // Strategy 5: Try audio bucket with UUID format
     if (track.id) {
       const uuidUrl = `${baseUrl}/audio/tracks/${track.id}.mp3`;
-      console.log(`🔗 Strategy 4: UUID format - ${uuidUrl}`);
+      console.log(`🔗 Strategy 5: UUID format - ${uuidUrl}`);
       
       const uuidResult = await this.testUrl(uuidUrl, 'uuid');
       attempts.push(uuidResult);
