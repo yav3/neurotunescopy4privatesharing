@@ -113,6 +113,13 @@ export class ArtworkService {
     this.loadingPromises.clear();
   }
 
+  // Force cache refresh on page load
+  static {
+    if (typeof window !== 'undefined') {
+      this.clearCache();
+    }
+  }
+
   // Get cache stats for debugging
   static getCacheStats() {
     return {
