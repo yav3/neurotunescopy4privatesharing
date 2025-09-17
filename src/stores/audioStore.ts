@@ -505,15 +505,75 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
+      // Test the URL first before setting it
+      try {
+        console.log('🎵 Testing URL accessibility:', url);
+        const testResponse = await fetch(url, { 
+          method: 'HEAD',
+          mode: 'cors'
+        });
+        
+        if (!testResponse.ok) {
+          console.log('🎵 URL test failed with status:', testResponse.status);
+          throw new Error(`HTTP ${testResponse.status}`);
+        }
+        
+        const contentType = testResponse.headers.get('content-type');
+        console.log('🎵 URL test successful, content-type:', contentType);
+        
+        if (contentType && !contentType.includes('audio')) {
+          console.log('🎵 Warning: Content-Type is not audio:', contentType);
+        }
+      } catch (urlTestError) {
+        console.log('🎵 URL test failed:', urlTestError);
+        // Don't return false here, let the audio element try anyway
+      }
+      
       audio.src = url;
-      // crossOrigin is now properly configured in configureTherapeuticAudio
+      // Ensure proper configuration for Supabase storage
+      audio.crossOrigin = "anonymous";
       (audio as any).playsInline = true;
+      
+      // Add load event listener to detect successful loading
+      const loadPromise = new Promise<boolean>((resolve) => {
+        const onLoad = () => {
+          console.log('🎵 Audio loaded successfully');
+          audio.removeEventListener('loadeddata', onLoad);
+          audio.removeEventListener('error', onError);
+          resolve(true);
+        };
+        
+        const onError = (error: any) => {
+          console.log('🎵 Audio load error:', error);
+          audio.removeEventListener('loadeddata', onLoad);
+          audio.removeEventListener('error', onError);
+          resolve(false);
+        };
+        
+        audio.addEventListener('loadeddata', onLoad);
+        audio.addEventListener('error', onError);
+        
+        // Timeout after 10 seconds
+        setTimeout(() => {
+          audio.removeEventListener('loadeddata', onLoad);
+          audio.removeEventListener('error', onError);
+          resolve(false);
+        }, 10000);
+      });
+      
       audio.load();
-      console.log('🎵 Audio src set, attempting to play...');
+      console.log('🎵 Audio src set, waiting for load...');
+      
+      const loaded = await loadPromise;
+      if (!loaded) {
+        console.log('🎵 Audio failed to load, trying alternative approach');
+        return false;
+      }
       
       try { 
-        // Silent play attempt - no browser error sounds for therapeutic experience
+        console.log('🎵 Audio loaded, attempting to play...');
         await audio.play(); 
+        console.log('🎵 Audio play successful');
       } catch (playError) { 
         // Silent handling - prevent any browser notification sounds
         console.log('🎵 Autoplay blocked or play failed (handled silently for therapeutic experience)');
