@@ -38,6 +38,15 @@ export const FullPagePlayer = () => {
     toggleSpatialAudio
   } = useAudioStore();
 
+  // Debug full page player render
+  console.log('🎵 FullPagePlayer render state:', {
+    hasTrack: !!track,
+    trackTitle: track?.title,
+    isPlaying,
+    currentTime,
+    duration
+  });
+
   // Local state for enhanced features
   const [isFavorited, setIsFavorited] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);

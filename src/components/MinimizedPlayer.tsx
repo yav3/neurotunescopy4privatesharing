@@ -15,10 +15,21 @@ export const MinimizedPlayer = () => {
     isPlaying, 
     currentTrack: track, 
     setPlayerMode,
+    playerMode,
     currentTime,
     duration,
     lastGoal
   } = useAudioStore();
+
+  // Debug player state
+  console.log('🎵 MinimizedPlayer render state:', {
+    hasTrack: !!track,
+    trackTitle: track?.title,
+    isPlaying,
+    playerMode,
+    currentTime,
+    duration
+  });
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -128,7 +139,10 @@ export const MinimizedPlayer = () => {
       {/* Player content */}
       <div 
         className="px-4 py-3 flex items-center gap-3 cursor-pointer"
-        onClick={() => setPlayerMode('full')}
+        onClick={() => {
+          console.log('🎵 MinimizedPlayer clicked - switching to full mode');
+          setPlayerMode('full');
+        }}
       >
         {/* Album art with Glass Effect */}
         <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
