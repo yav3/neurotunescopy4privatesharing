@@ -21,7 +21,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/buckets" element={<BucketConnectionViewer />} />
-            <Route path="*" element={<BucketConnectionViewer />} />
+            <Route path="*" element={<div className="text-center p-8"><h2>Page Not Found</h2><p>Go to <a href="/" className="text-primary hover:underline">Home</a></p></div>} />
           </Routes>
         </ErrorBoundary>
       </TooltipProvider>
