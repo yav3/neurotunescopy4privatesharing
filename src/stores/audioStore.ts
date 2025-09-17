@@ -708,11 +708,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log('🎵 Stopping current audio before loading new track');
         audio.pause();
         audio.currentTime = 0;
-        // Clear the source to fully stop current playback
+        
+        // Clear the source to fully stop current playback, but keep currentTrack for UI continuity
+        const previousTrack = get().currentTrack;
         audio.removeAttribute('src');
         audio.load();
         
-        // Update state to reflect stopped audio
+        // Update playing state but preserve currentTrack until new track loads
         set({ isPlaying: false, currentTime: 0 });
         
         const success = await loadTrack(track);
@@ -720,7 +722,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           set({ queue: [track], index: 0 });
           await get().play();
         } else {
-          set({ error: "Track not available", isLoading: false });
+          // If loading fails, restore the previous track or clear if none
+          set({ currentTrack: previousTrack, error: "Track not available", isLoading: false });
         }
       } finally {
         isTransitioning = false;
