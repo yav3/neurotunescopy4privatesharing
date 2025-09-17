@@ -7,9 +7,12 @@ import { storageRequestManager } from '@/services/storageRequestManager';
 export class SimpleStorageService {
   private static audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
   
-  // Request deduplication to prevent race conditions
+  // Request deduplication and queuing to prevent race conditions
   private static pendingRequests = new Map<string, Promise<Track[]>>();
   private static requestSequence = 0;
+  private static requestQueue: (() => Promise<void>)[] = [];
+  private static isProcessingQueue = false;
+  private static readonly MAX_CONCURRENT_REQUESTS = 2;
 
   static async getTracksFromBuckets(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
     // Create unique request key for deduplication
@@ -21,8 +24,20 @@ export class SimpleStorageService {
       return this.pendingRequests.get(requestKey)!;
     }
     
-    // Create new request
-    const requestPromise = this._getTracksFromBucketsInternal(bucketNames, maxTracks);
+    // Queue the request to prevent simultaneous bucket access
+    const requestPromise = new Promise<Track[]>((resolve, reject) => {
+      this.requestQueue.push(async () => {
+        try {
+          const result = await this._getTracksFromBucketsInternal(bucketNames, maxTracks);
+          resolve(result);
+        } catch (error) {
+          reject(error);
+        }
+      });
+      
+      this.processQueue();
+    });
+    
     this.pendingRequests.set(requestKey, requestPromise);
     
     // Clean up request when done
@@ -31,6 +46,31 @@ export class SimpleStorageService {
     });
     
     return requestPromise;
+  }
+
+  private static async processQueue(): Promise<void> {
+    if (this.isProcessingQueue || this.requestQueue.length === 0) {
+      return;
+    }
+    
+    this.isProcessingQueue = true;
+    
+    while (this.requestQueue.length > 0) {
+      const batch = this.requestQueue.splice(0, this.MAX_CONCURRENT_REQUESTS);
+      console.log(`🔄 Processing ${batch.length} queued storage requests`);
+      
+      try {
+        await Promise.all(batch.map(request => request()));
+        // Small delay between batches to prevent overwhelming storage
+        if (this.requestQueue.length > 0) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      } catch (error) {
+        console.error('❌ Error processing request batch:', error);
+      }
+    }
+    
+    this.isProcessingQueue = false;
   }
 
   private static async _getTracksFromBucketsInternal(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
