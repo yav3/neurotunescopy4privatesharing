@@ -54,24 +54,8 @@ export const FullPagePlayer = () => {
     '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
   ];
 
-  // Load artwork using centralized service (prevents race conditions)
-  useEffect(() => {
-    let cancelled = false;
-    const loadArtwork = async () => {
-      if (!track) return;
-      try {
-        const artwork = await ArtworkService.getTrackArtwork(track);
-        if (!cancelled) {
-          setAlbumArtUrl(artwork);
-        }
-      } catch (error) {
-        console.warn('Artwork loading failed:', error);
-      }
-    };
-    
-    loadArtwork();
-    return () => { cancelled = true; };
-  }, [track?.id]);
+  // Remove independent artwork loading - use centralized service only  
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || getTherapeuticArtwork();
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {

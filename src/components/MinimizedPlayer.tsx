@@ -97,8 +97,8 @@ export const MinimizedPlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Centralized artwork prevents inconsistencies and race conditions
-  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || albumArtUrl || '/lovable-uploads/focus-enhancement-artwork.jpg';
+  // Centralized artwork prevents race conditions  
+  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || '/lovable-uploads/focus-enhancement-artwork.jpg';
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">

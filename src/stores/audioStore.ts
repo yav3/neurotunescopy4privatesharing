@@ -61,6 +61,7 @@ type AudioState = {
   isPlaying: boolean;
   isLoading: boolean;
   currentTrack: Track | null;
+  currentTrackArtwork: string | null;
   currentTime: number;
   duration: number;
   volume: number;
@@ -558,6 +559,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     isPlaying: false,
     isLoading: false,
     currentTrack: null,
+    currentTrackArtwork: null,
     currentTime: 0,
     duration: 0,
     volume: 0.8,
