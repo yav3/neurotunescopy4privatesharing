@@ -595,6 +595,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
       // Set currentTrack and ensure playerMode is set (default to mini if not set)
       const currentPlayerMode = get().playerMode || 'mini';
       
+      console.log('🎵 About to set currentTrack - before:', get().currentTrack?.title);
+      
       // During rapid error cascades, suppress UI updates to prevent visual race conditions
       if (consecutiveFailures > 2) {
         console.log('🎵 Suppressing UI updates during error cascade - setting track silently');
@@ -605,6 +607,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       console.log('🎵 Store currentTrack after set:', get().currentTrack?.title);
       console.log('🎵 Store playerMode after set:', get().playerMode);
+      
+      // Verify the track is actually set
+      setTimeout(() => {
+        const verifyTrack = get().currentTrack;
+        if (!verifyTrack) {
+          console.error('🚨 CRITICAL: currentTrack was cleared after being set!', {
+            expectedTrack: track.title,
+            actualTrack: verifyTrack,
+            timestamp: Date.now()
+          });
+        } else {
+          console.log('✅ currentTrack verified still set:', verifyTrack.title);
+        }
+      }, 100);
+      
       return true;
     } catch (error) {
       adminError('🎵 Load track failed:', error);
@@ -659,6 +676,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     stop: () => {
+      console.log('🛑 STOP called - clearing currentTrack');
+      console.trace('🛑 Stop called from:');
       const audio = initAudio();
       audio.pause();
       audio.src = '';

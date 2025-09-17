@@ -52,6 +52,21 @@ export const MinimizedPlayer = () => {
   }, [track?.id]);
 
   if (!track) {
+    // Debug: Log when player shows empty state while audio might be playing
+    const audio = (window as any).audioPlayer;
+    const isAudioActuallyPlaying = audio && !audio.paused && !audio.ended && audio.readyState > 2;
+    
+    if (isAudioActuallyPlaying) {
+      console.error('🚨 PLAYER BUG: Audio is playing but currentTrack is null!', {
+        audioSrc: audio.src,
+        audioPaused: audio.paused,
+        audioCurrentTime: audio.currentTime,
+        audioDuration: audio.duration,
+        storeCurrentTrack: useAudioStore.getState().currentTrack,
+        storeIsPlaying: useAudioStore.getState().isPlaying
+      });
+    }
+    
     // Show empty player with message when no track is loaded
     return (
       <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
