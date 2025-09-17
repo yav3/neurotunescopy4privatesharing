@@ -70,8 +70,8 @@ const Index = () => {
     
     // Map trending categories to actual music goals for immediate playback
     const trendingToGoalMap: Record<string, string> = {
-      'chill-classical': 'focus-enhancement',
-      'electronic-dance': 'energy-boost', 
+      'chill-classical': 'pain-support',
+      'electronic-dance': 'energy-boost',
       'positive-pop': 'mood-boost',
       'chill-piano': 'focus-enhancement',
       'relaxing-new-age': 'stress-anxiety-support',
