@@ -123,8 +123,14 @@ export const MinimizedPlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Centralized artwork prevents race conditions  
-  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || '/lovable-uploads/focus-enhancement-artwork.jpg';
+  // Centralized artwork using ArtworkService to prevent race conditions
+  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
+
+  useEffect(() => {
+    if (track) {
+      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
+    }
+  }, [track?.id]);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">

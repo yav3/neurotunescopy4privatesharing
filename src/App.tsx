@@ -119,12 +119,7 @@ const App = () => {
             </Routes>
             
             {/* Global Music Players - Always show MinimizedPlayer, show full player when in full mode */}
-            {playerMode === 'full' && (
-              <div>
-                <div>Debug: Rendering FullPagePlayer because playerMode is 'full'</div>
-                <FullPagePlayer />
-              </div>
-            )}
+            {playerMode === 'full' && <FullPagePlayer />}
             <MinimizedPlayer />
             
           </div>

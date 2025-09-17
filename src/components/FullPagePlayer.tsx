@@ -108,10 +108,14 @@ export const FullPagePlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Single artwork source declaration - no race conditions
-  const seed = Array.from((track?.id || '')).reduce((a, c) => a + c.charCodeAt(0), 0);
-  const fallbackLocalArt = localArtPool[seed % localArtPool.length];
-  const artworkSrc = (track as any)?.album_art_url || (track as any)?.artwork_url || fallbackLocalArt || getTherapeuticArtwork();
+  // Unified artwork using ArtworkService (same as MinimizedPlayer)
+  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
+
+  useEffect(() => {
+    if (track) {
+      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
+    }
+  }, [track?.id]);
 
   // Enhanced control handlers
   const handleFavorite = () => {

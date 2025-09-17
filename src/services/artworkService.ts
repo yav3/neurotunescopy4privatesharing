@@ -19,11 +19,9 @@ export class ArtworkService {
 
   // Get consistent artwork for a track (prevents race conditions)
   static async getTrackArtwork(track: any): Promise<string> {
-    // Prioritize track-provided artwork
-    if (track?.album_art_url || track?.artwork_url) {
-      return track.album_art_url || track.artwork_url;
-    }
-
+    // Skip database-stored artwork URLs since they might point to deleted files
+    // Always use consistent fallback system instead
+    
     const cacheKey = `track:${track.id}`;
     
     // Return cached result if available
