@@ -703,6 +703,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       isTransitioning = true;
       
       try {
+        // CRITICAL: Stop current audio before loading new track to prevent simultaneous playback
+        const audio = initAudio();
+        console.log('🎵 Stopping current audio before loading new track');
+        audio.pause();
+        audio.currentTime = 0;
+        // Clear the source to fully stop current playback
+        audio.removeAttribute('src');
+        audio.load();
+        
+        // Update state to reflect stopped audio
+        set({ isPlaying: false, currentTime: 0 });
+        
         const success = await loadTrack(track);
         if (success) {
           set({ queue: [track], index: 0 });
