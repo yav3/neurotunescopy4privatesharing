@@ -6,7 +6,7 @@ import { useAudioStore } from '@/stores/audioStore';
 import { Track as SimpleTrack } from '@/types/simpleTrack';
 import { Track as AudioTrack } from '@/types';
 import { getGenreOptions } from '@/config/genreConfigs';
-import { DirectBucketAccess } from '@/services/directBucketAccess';
+import { SimpleStorageService } from '@/services/simpleStorageService';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 
 export default function GenreView() {
@@ -69,23 +69,18 @@ export default function GenreView() {
         throw new Error('Request aborted');
       }
       
-      // Use DIRECT bucket root access - no folders, no subpaths
-      const rawTracks = await DirectBucketAccess.getTracksFromBucketRoots(genre.buckets);
+      // Use optimized SimpleStorageService - same as rest of app
+      const rawTracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
       
       // Check if request was aborted after network call
       if (signal.aborted) {
         throw new Error('Request aborted');
       }
       
-      // Convert to SimpleTrack format
-      const tracks: SimpleTrack[] = rawTracks.map(rawTrack => ({
-        id: rawTrack.id,
-        title: rawTrack.title,
-        url: rawTrack.url,
-        bucket: rawTrack.bucket,
-        folder: rawTrack.folder,
-        artist: 'Neural Positive Music',
-        duration: rawTrack.size ? Math.floor(rawTrack.size / 1000) : undefined
+      // rawTracks is already in correct SimpleTrack format from SimpleStorageService
+      const tracks: SimpleTrack[] = rawTracks.map(track => ({
+        ...track,
+        artist: track.artist || 'Neural Positive Music'
       }));
       
       return tracks;
@@ -95,13 +90,13 @@ export default function GenreView() {
         setTracks(tracks);
         setError(null);
       } else {
-        setError('No music tracks found in bucket roots for this genre.');
+        setError('No music tracks found for this genre.');
         setTracks([]);
       }
       setIsTracksLoading(false);
     },
     (error: Error) => {
-      setError('Failed to load music tracks from bucket roots.');
+      setError('Failed to load music tracks.');
       setTracks([]);
       setIsTracksLoading(false);
     },
