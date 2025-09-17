@@ -37,6 +37,7 @@ import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
 import { MagicLinksPage } from "./pages/admin/MagicLinks";
 import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
+import StorageManager from "./pages/StorageManager";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +115,7 @@ const App = () => {
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="settings" element={<SystemSettings />} />
                 <Route path="monitoring" element={<DataMonitoring />} />
+                <Route path="storage" element={<StorageManager />} />
               </Route>
               <Route path="*" element={<Index />} />
             </Routes>

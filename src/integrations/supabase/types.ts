@@ -538,6 +538,7 @@ export type Database = {
           curated_storage_key: string
           id: string
           metadata: Json | null
+          original_filename: string | null
           original_track_id: string
           quality_score: number | null
           verification_status: string
@@ -547,6 +548,7 @@ export type Database = {
           curated_storage_key: string
           id?: string
           metadata?: Json | null
+          original_filename?: string | null
           original_track_id: string
           quality_score?: number | null
           verification_status?: string
@@ -556,6 +558,7 @@ export type Database = {
           curated_storage_key?: string
           id?: string
           metadata?: Json | null
+          original_filename?: string | null
           original_track_id?: string
           quality_score?: number | null
           verification_status?: string
@@ -1676,6 +1679,36 @@ export type Database = {
         }
         Relationships: []
       }
+      repair_map: {
+        Row: {
+          created_at: string | null
+          id: string
+          new_key: string
+          old_key: string
+          status: string | null
+          storage_bucket: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          new_key: string
+          old_key: string
+          status?: string | null
+          storage_bucket: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          new_key?: string
+          old_key?: string
+          status?: string | null
+          storage_bucket?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       spectral_analysis: {
         Row: {
           alpha_band_power: number | null
@@ -1754,6 +1787,60 @@ export type Database = {
           track_id?: string
           updated_at?: string | null
           zero_crossing_rate?: number | null
+        }
+        Relationships: []
+      }
+      staging_files: {
+        Row: {
+          bucket: string
+          category: string | null
+          id: string
+          new_key: string | null
+          original_key: string
+        }
+        Insert: {
+          bucket: string
+          category?: string | null
+          id?: string
+          new_key?: string | null
+          original_key: string
+        }
+        Update: {
+          bucket?: string
+          category?: string | null
+          id?: string
+          new_key?: string | null
+          original_key?: string
+        }
+        Relationships: []
+      }
+      staging_repair: {
+        Row: {
+          category: string | null
+          file_id: string | null
+          key_status: string
+          original_key: string
+          repair_id: string
+          safe_new_key: string | null
+          storage_bucket: string
+        }
+        Insert: {
+          category?: string | null
+          file_id?: string | null
+          key_status: string
+          original_key: string
+          repair_id?: string
+          safe_new_key?: string | null
+          storage_bucket: string
+        }
+        Update: {
+          category?: string | null
+          file_id?: string | null
+          key_status?: string
+          original_key?: string
+          repair_id?: string
+          safe_new_key?: string | null
+          storage_bucket?: string
         }
         Relationships: []
       }
@@ -2111,6 +2198,7 @@ export type Database = {
           neural_entrainment_potential: number | null
           normalization_notes: Json | null
           onset_rate: number | null
+          original_filename: string | null
           pitch_mean: number | null
           play_count: number | null
           psychoacoustic_features: Json | null
@@ -2135,6 +2223,7 @@ export type Database = {
           title: string
           title_health_score: number | null
           tonal_features: Json | null
+          track_uuid: string
           tuning_frequency: number | null
           valence: number | null
           version_label: string | null
@@ -2181,6 +2270,7 @@ export type Database = {
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
           onset_rate?: number | null
+          original_filename?: string | null
           pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
@@ -2205,6 +2295,7 @@ export type Database = {
           title: string
           title_health_score?: number | null
           tonal_features?: Json | null
+          track_uuid: string
           tuning_frequency?: number | null
           valence?: number | null
           version_label?: string | null
@@ -2251,6 +2342,7 @@ export type Database = {
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
           onset_rate?: number | null
+          original_filename?: string | null
           pitch_mean?: number | null
           play_count?: number | null
           psychoacoustic_features?: Json | null
@@ -2275,6 +2367,7 @@ export type Database = {
           title?: string
           title_health_score?: number | null
           tonal_features?: Json | null
+          track_uuid?: string
           tuning_frequency?: number | null
           valence?: number | null
           version_label?: string | null
@@ -2932,11 +3025,39 @@ export type Database = {
         }
         Relationships: []
       }
+      storage_related_columns: {
+        Row: {
+          column_name: unknown | null
+          data_type: string | null
+          reference_type: string | null
+          table_name: unknown | null
+          table_schema: unknown | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_to_working_collection: {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
+      }
+      analyze_storage_columns: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          column_name: string
+          data_type: string
+          table_name: string
+          table_schema: string
+        }[]
+      }
+      apply_database_repairs: {
+        Args: { dry_run?: boolean }
+        Returns: {
+          column_name: string
+          operation_type: string
+          rows_affected: number
+          table_name: string
+        }[]
       }
       clean_track_title_from_filename: {
         Args: { storage_key: string }
@@ -2989,6 +3110,15 @@ export type Database = {
       generate_unique_filename: {
         Args: { base_name: string; bucket_name: string; exclude_id?: string }
         Returns: string
+      }
+      get_bucket_repair_status: {
+        Args: { _bucket_name: string }
+        Returns: {
+          files_needing_repair: number
+          files_repaired: number
+          sample_repairs: Json
+          total_files: number
+        }[]
       }
       get_camelot_neighbors: {
         Args: { input_camelot: string }
@@ -3089,9 +3219,27 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      populate_bucket_repair_map: {
+        Args: { _bucket_name: string }
+        Returns: {
+          sample_mappings: Json
+          total_unsafe_keys: number
+        }[]
+      }
+      populate_repair_map: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          buckets_affected: string[]
+          total_unsafe_keys: number
+        }[]
+      }
       range: {
         Args: Record<PropertyKey, never>
         Returns: string[]
+      }
+      safe_key: {
+        Args: { raw: string }
+        Returns: string
       }
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
@@ -3107,6 +3255,15 @@ export type Database = {
           reason: string
           user_id: string
           valid: boolean
+        }[]
+      }
+      validate_repairs: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          check_name: string
+          count: number
+          details: string
+          status: string
         }[]
       }
       verify_all_tracks: {
