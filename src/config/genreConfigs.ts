@@ -78,7 +78,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'sonatas',
         name: 'Sonatas',
         description: 'Classical sonatas for deep stress support',
-        buckets: ['Chopin', 'newageworldstressanxietyreduction'],
+        buckets: ['sonatasforstress'],
         image: sonatasMistyLake
       },
       {
