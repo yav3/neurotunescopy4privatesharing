@@ -10,6 +10,10 @@ export interface WorkingEdgeTrack {
 }
 
 export class WorkingEdgeCollectionService {
+  // Race condition protection for concurrent calls
+  private static pendingAdds = new Set<string>();
+  private static addRequestQueue = new Map<string, Promise<boolean>>();
+  
   // Get reliable tracks for fallback
   static async getWorkingTracks(
     genre?: string,
@@ -43,6 +47,28 @@ export class WorkingEdgeCollectionService {
     trackId: string, 
     reliabilityScore: number = 1.0
   ): Promise<boolean> {
+    // Prevent concurrent calls for same track
+    if (this.pendingAdds.has(trackId)) {
+      console.log(`🎵 Already adding track ${trackId} to working collection, skipping`);
+      return this.addRequestQueue.get(trackId) || Promise.resolve(false);
+    }
+
+    // Create and store the promise to prevent concurrent calls
+    const addPromise = this._performAdd(trackId, reliabilityScore);
+    this.addRequestQueue.set(trackId, addPromise);
+    this.pendingAdds.add(trackId);
+
+    try {
+      const result = await addPromise;
+      return result;
+    } finally {
+      // Cleanup after completion
+      this.pendingAdds.delete(trackId);
+      this.addRequestQueue.delete(trackId);
+    }
+  }
+
+  private static async _performAdd(trackId: string, reliabilityScore: number): Promise<boolean> {
     try {
       const { data, error } = await supabase.rpc('add_to_working_collection', {
         _track_id: trackId,
@@ -50,6 +76,11 @@ export class WorkingEdgeCollectionService {
       });
 
       if (error) {
+        // Don't spam logs for schema errors - they're expected during development
+        if (error.code === '42703') {
+          console.log(`🎵 Schema mismatch for working collection (expected during development)`);
+          return false;
+        }
         console.error('❌ Error adding track to working collection:', error);
         return false;
       }

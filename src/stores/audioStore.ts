@@ -281,7 +281,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log('🎵 Remembered track for exclusion:', currentTrack.title);
           });
           
-  // Add successfully playing track to working edge collection
+          // Add successfully playing track to working edge collection (debounced)
           if (!currentTrack.from_working_collection) {
             // Extract proper UUID from composite track ID if needed
             const trackUuid = currentTrack.id.includes('-') && currentTrack.id.length > 36 
@@ -289,18 +289,23 @@ export const useAudioStore = create<AudioState>((set, get) => {
               : currentTrack.id;
               
             if (isValidUuid(trackUuid)) {
-              WorkingEdgeCollectionService.addToWorkingCollection(trackUuid, 1.0)
-                .catch(error => console.warn('Failed to add track to working collection:', error));
+              // Debounce working collection calls to prevent spam
+              setTimeout(() => {
+                WorkingEdgeCollectionService.addToWorkingCollection(trackUuid, 1.0)
+                  .catch(() => {}); // Silent fail to prevent console spam
+              }, 3000); // 3 second delay to prevent rapid-fire calls
             }
           } else {
-            // Update play stats for working collection tracks
+            // Update play stats for working collection tracks (also debounced)
             const trackUuid = currentTrack.id.includes('-') && currentTrack.id.length > 36 
               ? extractUuidFromCompositeId(currentTrack.id)
               : currentTrack.id;
               
             if (isValidUuid(trackUuid)) {
-              WorkingEdgeCollectionService.updatePlayStats(trackUuid)
-                .catch(error => console.warn('Failed to update play stats:', error));
+              setTimeout(() => {
+                WorkingEdgeCollectionService.updatePlayStats(trackUuid)
+                  .catch(() => {}); // Silent fail
+              }, 2000);
             }
           }
         }
@@ -992,13 +997,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      // Prevent concurrent operations - more responsive flag management
-      if (isNexting) {
-        console.log('🎵 Next already in progress, skipping');
+      // Prevent concurrent operations with transition lock
+      if (isNexting || isTransitioning) {
+        console.log('🎵 Next already in progress or transitioning, skipping');
         return;
       }
       
       isNexting = true;
+      isTransitioning = true;
       
       // Add debug logging for button tap responsiveness
       console.log('🎵 Next button pressed - starting operation');
@@ -1145,7 +1151,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ isLoading: false, error: "Failed to skip to next track" });
       } finally {
         isNexting = false;
-        console.log('🎵 Next operation completed - flag reset');
+        isTransitioning = false;
+        console.log('🎵 Next operation completed - flags reset');
       }
     },
 
