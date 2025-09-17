@@ -133,16 +133,13 @@ const Index = () => {
                     style={{ backgroundImage: `url(${goal.image})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/30" />
-                  <div className="relative h-full p-4 flex flex-col justify-between">
-                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">{goal.letter}</span>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-semibold text-sm leading-tight">
-                        {goal.name}
-                      </h3>
-                    </div>
-                  </div>
+                   <div className="relative h-full p-4 flex flex-col justify-end">
+                     <div>
+                       <h3 className="text-white font-semibold text-sm leading-tight drop-shadow-lg">
+                         {goal.name}
+                       </h3>
+                     </div>
+                   </div>
                 </Card>
               ))}
             </div>
@@ -163,16 +160,13 @@ const Index = () => {
                     style={{ backgroundImage: `url(${category.image})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/40 to-accent/30" />
-                  <div className="relative h-full p-6 flex flex-col justify-between">
-                    <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">{category.letter}</span>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-lg leading-tight">
-                        {category.name}
-                      </h3>
-                    </div>
-                  </div>
+                   <div className="relative h-full p-6 flex flex-col justify-end">
+                     <div>
+                       <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg">
+                         {category.name}
+                       </h3>
+                     </div>
+                   </div>
                 </Card>
               ))}
             </div>

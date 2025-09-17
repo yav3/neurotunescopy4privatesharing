@@ -158,7 +158,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
             >
               {/* Track Number / Play Button */}
-              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full bg-card/50 border border-white/10">
                 {isLoading && isCurrentTrack ? (
                   <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                 ) : isCurrentTrack && isPlaying ? (
@@ -190,8 +190,9 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               
               {/* Track Info */}
               <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-foreground text-sm leading-tight truncate">
-                  {formatTrackTitleForDisplay(track.title)}
+                <h3 className="font-medium text-foreground text-sm leading-tight truncate max-w-[200px]">
+                  {formatTrackTitleForDisplay(track.title).split(' ').slice(0, 4).join(' ')}
+                  {formatTrackTitleForDisplay(track.title).split(' ').length > 4 ? '...' : ''}
                 </h3>
                 <p className="text-xs text-muted-foreground truncate">
                   Therapeutic Music

@@ -222,52 +222,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
         if (isLastTrack && sessionManager) {
           console.log('🎵 Session completed - last track finished');
           sessionManager.completeSession().catch(console.error);
+          return;
         }
         
-  // Smart auto-skip with cooldown to prevent racing
-  let lastSkipTime = 0;
-  const SKIP_COOLDOWN = 3000; // Minimum 3 seconds between skips
-  
-  const scheduleAutoSkip = (reason: string, delay: number = 8000) => { // Reasonable default delay
-    if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
-    
-    autoSkipTimeout = setTimeout(() => {
-      const now = Date.now();
-      const timeSinceLastSkip = now - lastSkipTime;
-      
-      // Enforce cooldown to prevent racing
-      if (timeSinceLastSkip < SKIP_COOLDOWN) {
-        const additionalWait = SKIP_COOLDOWN - timeSinceLastSkip;
-        console.log(`🎵 Skip cooldown: waiting additional ${additionalWait}ms`);
-        scheduleAutoSkip(reason, additionalWait);
-        return;
-      }
-      
-      lastSkipTime = now;
-      console.log(`🎵 Auto-skip triggered after ${delay}ms: ${reason}`);
-      
-      // Suppress player mode updates during rapid error cascades
-      if (consecutiveFailures > 2) {
-        console.log(`🎵 Suppressing player updates during error cascade (failure ${consecutiveFailures})`);
-      }
-      
-      const { queue, index } = get();
-      
-      if (index < queue.length - 1) {
-        // Try next track
-        set({ index: index + 1 });
-        const nextTrack = queue[index + 1];
-        loadTrack(nextTrack);
-      } else {
-        console.log('🎵 End of queue reached');
-        set({ 
-          isPlaying: false, 
-          currentTrack: null,
-          error: 'No more tracks available' 
-        });
-      }
-    }, delay);
-  };
+        // Auto-advance to next track when current track ends
+        if (!isNexting) {
+          console.log('🎵 Track ended naturally, advancing to next');
+          get().next();
+        }
       });
       
       // Auto-skip on audio error with better debugging
