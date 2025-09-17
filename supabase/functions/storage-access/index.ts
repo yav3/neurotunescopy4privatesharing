@@ -64,35 +64,37 @@ Deno.serve(async (req) => {
 
     console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`)
 
-    // Create track objects with URLs (try public first, then signed)
+    // Create track objects with URLs (prioritize signed URLs for reliability)
     const tracks = await Promise.all(audioFiles.map(async (file) => {
       let streamUrl: string | undefined;
       
+      // Always use signed URLs for private buckets (more reliable)
       try {
-        // First try public URL
-        const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(file.name)
-        
-        if (publicUrlData.publicUrl) {
-          streamUrl = publicUrlData.publicUrl;
+        const { data: signedUrlData, error: signedError } = await supabase.storage
+          .from(bucket)
+          .createSignedUrl(file.name, 3600); // 1 hour expiry
+          
+        if (signedError) {
+          console.log(`❌ Signed URL failed for ${file.name}:`, signedError);
+        } else if (signedUrlData?.signedUrl) {
+          streamUrl = signedUrlData.signedUrl;
+          console.log(`✅ Created signed URL for ${file.name}`);
         }
       } catch (error) {
-        console.log(`⚠️ Public URL failed for ${file.name}, trying signed URL:`, error);
+        console.log(`❌ Error creating signed URL for ${file.name}:`, error);
       }
       
-      // If public URL failed, try signed URL (valid for 1 hour)
+      // Fallback to public URL only if signed URL failed
       if (!streamUrl) {
         try {
-          const { data: signedUrlData, error: signedError } = await supabase.storage
-            .from(bucket)
-            .createSignedUrl(file.name, 3600); // 1 hour expiry
-            
-          if (signedError) {
-            console.log(`❌ Signed URL failed for ${file.name}:`, signedError);
-          } else if (signedUrlData?.signedUrl) {
-            streamUrl = signedUrlData.signedUrl;
+          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(file.name)
+          
+          if (publicUrlData.publicUrl) {
+            streamUrl = publicUrlData.publicUrl;
+            console.log(`🔄 Using public URL fallback for ${file.name}`);
           }
         } catch (error) {
-          console.log(`❌ Error creating signed URL for ${file.name}:`, error);
+          console.log(`⚠️ Public URL fallback also failed for ${file.name}:`, error);
         }
       }
       
