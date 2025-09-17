@@ -507,34 +507,53 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       // Skip URL testing - edge function with service key handles access
       
-      audio.src = url;
-      // Ensure proper configuration for Supabase storage
+      // Clear any previous source first
+      audio.removeAttribute('src');
+      audio.load();
+      
+      // Configure for Supabase signed URLs
       audio.crossOrigin = "anonymous";
+      audio.preload = "auto";
       (audio as any).playsInline = true;
+      
+      // Set source and reload
+      audio.src = url;
+      audio.load();
       
       // Add load event listener to detect successful loading
       const loadPromise = new Promise<boolean>((resolve) => {
-        const onLoad = () => {
-          console.log('🎵 Audio loaded successfully');
-          audio.removeEventListener('loadeddata', onLoad);
-          audio.removeEventListener('error', onError);
+        const onCanPlay = () => {
+          console.log('🎵 Audio can play - ready for playback');
+          cleanupListeners();
           resolve(true);
         };
         
+        const onLoadedData = () => {
+          console.log('🎵 Audio data loaded, checking if playable');
+          // Don't resolve immediately, wait for canplay
+        };
+        
         const onError = (error: any) => {
-          console.log('🎵 Audio load error:', error);
-          audio.removeEventListener('loadeddata', onLoad);
-          audio.removeEventListener('error', onError);
+          console.log('🎵 Audio load error:', error, 'readyState:', audio.readyState);
+          console.log('🎵 Audio error details:', audio.error);
+          cleanupListeners();
           resolve(false);
         };
         
-        audio.addEventListener('loadeddata', onLoad);
+        const cleanupListeners = () => {
+          audio.removeEventListener('canplay', onCanPlay);
+          audio.removeEventListener('loadeddata', onLoadedData);
+          audio.removeEventListener('error', onError);
+        };
+        
+        audio.addEventListener('canplay', onCanPlay);
+        audio.addEventListener('loadeddata', onLoadedData);
         audio.addEventListener('error', onError);
         
         // Timeout after 10 seconds
         setTimeout(() => {
-          audio.removeEventListener('loadeddata', onLoad);
-          audio.removeEventListener('error', onError);
+          console.log('🎵 Audio load timeout - readyState:', audio.readyState);
+          cleanupListeners();
           resolve(false);
         }, 10000);
       });
