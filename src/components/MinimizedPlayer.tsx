@@ -21,8 +21,25 @@ export const MinimizedPlayer = () => {
     lastGoal
   } = useAudioStore();
 
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
+  // Centralized artwork using ArtworkService to prevent race conditions
+  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
+
+  useEffect(() => {
+    if (track) {
+      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
+    }
+  }, [track?.id]);
+
+  // Get therapeutic goal display name
+  const getTherapeuticGoalName = () => {
+    if (!lastGoal) return 'Therapeutic Music';
+    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
+    return goal ? goal.name : 'Therapeutic Music';
+  };
+
+  // NOW SAFE TO HAVE CONDITIONAL RETURNS AFTER ALL HOOKS
   // Show MinimizedPlayer unless explicitly in full mode with a track
-  // This ensures the player is always accessible
   if (playerMode === 'full' && track) {
     return null; // Only hide when full player is active with a track
   }
@@ -36,37 +53,6 @@ export const MinimizedPlayer = () => {
     currentTime,
     duration
   });
-
-  // Get therapeutic goal display name
-  const getTherapeuticGoalName = () => {
-    if (!lastGoal) return 'Therapeutic Music';
-    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
-    return goal ? goal.name : 'Therapeutic Music';
-  };
-
-  // Artwork state managed by centralized service (prevents race conditions)
-  const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
-
-  // Load artwork using centralized service to prevent race conditions
-  useEffect(() => {
-    if (!track) return;
-
-    let cancelled = false;
-    
-    const loadArtwork = async () => {
-      try {
-        const artwork = await ArtworkService.getTrackArtwork(track);
-        if (!cancelled) {
-          setAlbumArtUrl(artwork);
-        }
-      } catch (error) {
-        console.error('Error loading artwork:', error);
-      }
-    };
-
-    loadArtwork();
-    return () => { cancelled = true; };
-  }, [track?.id]);
 
   // Always show MinimizedPlayer when there's a track OR audio is playing
   // This prevents the player from disappearing due to race conditions
@@ -132,15 +118,6 @@ export const MinimizedPlayer = () => {
   }
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
-
-  // Centralized artwork using ArtworkService to prevent race conditions
-  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
-
-  useEffect(() => {
-    if (track) {
-      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
-    }
-  }, [track?.id]);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
