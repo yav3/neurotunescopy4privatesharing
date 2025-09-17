@@ -6,7 +6,7 @@ import type { Track } from "@/types";
 import { TherapeuticGoalMapper } from '@/utils/therapeuticMapper';
 import { filterTracksForGoal, sortByTherapeuticEffectiveness } from '@/utils/therapeuticFiltering';
 import type { GoalSlug } from '@/config/therapeuticGoals';
-import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { AUDIO_ELEMENT_ID, getAudioElementId } from '@/player/constants';
 import { toast } from "sonner";
 import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
 import { filterBlockedTracks } from '@/services/blockedTracks';
@@ -123,28 +123,33 @@ const ensureAudioElement = (): HTMLAudioElement => {
   if (audioElement && document.body.contains(audioElement)) return audioElement;
   
   // Clean up any existing audio elements first
+  // Remove old audio elements from other users/sessions to prevent interference
   document.querySelectorAll("audio").forEach(el => {
-    if (el.id !== AUDIO_ELEMENT_ID) {
-      console.warn("[audio] Removing duplicate audio element:", el.id || "no-id");
+    const currentElementId = getAudioElementId();
+    if (el.id && el.id !== currentElementId && el.id.startsWith('audio-player-')) {
+      console.warn(`[audio] Removing old user audio element: ${el.id}`);
+      el.pause();
       el.remove();
     }
   });
   
-  audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+  const currentElementId = getAudioElementId();
+  audioElement = document.getElementById(currentElementId) as HTMLAudioElement;
   if (!audioElement) {
     audioElement = document.createElement("audio");
-    audioElement.id = AUDIO_ELEMENT_ID;
+    audioElement.id = currentElementId;
+    console.log(`🎵 Creating new user-specific audio element: ${currentElementId}`);
     
     document.body.appendChild(audioElement);
     
     // Apply therapeutic audio configuration to prevent ANY browser sounds
     configureTherapeuticAudio(audioElement);
     
-    console.log(`🎵 Created therapeutic audio element #${AUDIO_ELEMENT_ID} (completely silent)`);
+    console.log(`🎵 Created therapeutic audio element #${currentElementId} (user-isolated and silent)`);
   } else {
     // Ensure existing element is also configured for therapeutic use
     configureTherapeuticAudio(audioElement);
-    console.log(`🎵 Found and configured existing audio element #${AUDIO_ELEMENT_ID}`);
+    console.log(`🎵 Found and configured existing user-specific audio element #${currentElementId}`);
   }
   return audioElement;
 };

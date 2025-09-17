@@ -2,6 +2,17 @@
 import { useEffect, useCallback, useRef } from 'react'
 import { API } from '@/lib/api'
 
+// Helper to create user-specific storage keys
+const getUserSpecificKey = (key: string) => {
+  try {
+    const supabaseAuth = JSON.parse(localStorage.getItem('sb-pbtgvcjniayedqlajjzz-auth-token') || '{}');
+    const userId = supabaseAuth.user?.id;
+    return userId ? `${key}_${userId.substring(0, 8)}` : `${key}_anon`;
+  } catch {
+    return `${key}_anon`;
+  }
+};
+
 interface SessionManager {
   trackProgress: (currentTime: number, duration: number) => void
   completeSession: () => Promise<void>
@@ -15,7 +26,7 @@ export const useSessionManager = (): SessionManager => {
 
   // Track progress every 30 seconds (mirror backend expectations)
   const trackProgress = useCallback((currentTime: number, duration: number) => {
-    const sessionId = sessionStorage.getItem('currentSessionId')
+    const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
     if (!sessionId || sessionCompletedRef.current) return
 
     const now = Date.now()
@@ -45,7 +56,7 @@ export const useSessionManager = (): SessionManager => {
 
   // Complete session - mirror backend completion
   const completeSession = useCallback(async () => {
-    const sessionId = sessionStorage.getItem('currentSessionId')
+    const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
     if (!sessionId || sessionCompletedRef.current) return
 
     try {
@@ -53,7 +64,7 @@ export const useSessionManager = (): SessionManager => {
       await API.complete(sessionId)
       
       // Calculate session metrics
-      const startTime = sessionStorage.getItem('sessionStartTime')
+      const startTime = sessionStorage.getItem(getUserSpecificKey('sessionStartTime'))
       const sessionDuration = startTime ? Date.now() - parseInt(startTime) : 0
       
       console.log('📈 Session completed:', {
@@ -62,9 +73,9 @@ export const useSessionManager = (): SessionManager => {
         timestamp: new Date().toISOString()
       })
 
-      // Clean up session storage
-      sessionStorage.removeItem('currentSessionId')
-      sessionStorage.removeItem('sessionStartTime')
+      // Clean up user-specific session storage
+      sessionStorage.removeItem(getUserSpecificKey('currentSessionId'))
+      sessionStorage.removeItem(getUserSpecificKey('sessionStartTime'))
       sessionCompletedRef.current = true
     } catch (error) {
       console.error('❌ Failed to complete session:', error)
@@ -95,7 +106,7 @@ export const useSessionManager = (): SessionManager => {
   // Auto-complete session on page unload
   useEffect(() => {
     const handleBeforeUnload = () => {
-      const sessionId = sessionStorage.getItem('currentSessionId')
+      const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
       if (sessionId && !sessionCompletedRef.current) {
         // Use API.complete for reliable completion on page exit
         API.complete(sessionId).catch(error => {

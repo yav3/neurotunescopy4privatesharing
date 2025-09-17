@@ -367,10 +367,20 @@ export function useTherapeuticSession(options: UseTherapeuticSessionOptions = {}
       completedAt: new Date().toISOString()
     };
 
-    // Store in localStorage for now (could be sent to backend)
-    const storedSessions = JSON.parse(localStorage.getItem('therapeuticSessions') || '[]');
+  // Store in user-specific localStorage to prevent cross-user bleeding
+  const getUserSpecificKey = (key: string) => {
+    try {
+      const supabaseAuth = JSON.parse(localStorage.getItem('sb-pbtgvcjniayedqlajjzz-auth-token') || '{}');
+      const userId = supabaseAuth.user?.id;
+      return userId ? `${key}_${userId.substring(0, 8)}` : `${key}_anon`;
+    } catch {
+      return `${key}_anon`;
+    }
+  };
+  
+  const storedSessions = JSON.parse(localStorage.getItem(getUserSpecificKey('therapeuticSessions')) || '[]');
     storedSessions.push(sessionData);
-    localStorage.setItem('therapeuticSessions', JSON.stringify(storedSessions.slice(-100))); // Keep last 100
+    localStorage.setItem(getUserSpecificKey('therapeuticSessions'), JSON.stringify(storedSessions.slice(-100))); // Keep last 100
   };
 
   // Cleanup timer on unmount

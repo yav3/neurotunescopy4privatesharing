@@ -27,7 +27,16 @@ export interface GenreFallbacks {
  * Audio Cache Service - Pre-validates and stores working audio URLs locally
  */
 export class AudioCacheService {
-  private static readonly STORAGE_KEY = 'audio_cache_validated_tracks';
+  private static getStorageKey(): string {
+    // Make storage key user-specific to prevent session bleeding
+    try {
+      const supabaseAuth = JSON.parse(localStorage.getItem('sb-pbtgvcjniayedqlajjzz-auth-token') || '{}');
+      const userId = supabaseAuth.user?.id;
+      return userId ? `audio_cache_validated_tracks_${userId.substring(0, 8)}` : 'audio_cache_validated_tracks_anon';
+    } catch {
+      return 'audio_cache_validated_tracks_anon';
+    }
+  }
   private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
   private static readonly MAX_TRACKS_PER_GENRE = 20;
   
@@ -38,7 +47,7 @@ export class AudioCacheService {
    */
   static getCachedTracks(): GenreFallbacks {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
+      const stored = localStorage.getItem(this.getStorageKey());
       if (!stored) return {};
       
       const parsed = JSON.parse(stored);
@@ -69,7 +78,7 @@ export class AudioCacheService {
    */
   static saveCachedTracks(tracks: GenreFallbacks): void {
     try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tracks));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(tracks));
       console.log('💾 Saved cached tracks:', Object.keys(tracks).length, 'genres');
     } catch (error) {
       console.error('Failed to save cached tracks:', error);
@@ -336,7 +345,7 @@ export class AudioCacheService {
    * Force refresh the cache
    */
   static async forceRefresh(): Promise<void> {
-    localStorage.removeItem(this.STORAGE_KEY);
+    localStorage.removeItem(this.getStorageKey());
     await this.scanAndCacheAudioTracks();
   }
 }
