@@ -34,95 +34,75 @@ export class SimpleStorageService {
   }
 
   private static async _getTracksFromBucketsInternal(bucketNames: string[], maxTracks: number = 100): Promise<Track[]> {
-    console.log(`🎵 Loading tracks from buckets: ${bucketNames.join(', ')}`);
+    console.log(`🎵 Loading tracks from BUCKET ROOTS ONLY: ${bucketNames.join(', ')}`);
     
-    // Expand buckets with fallbacks for empty buckets
-    const expandedBuckets = expandBucketsWithFallbacks(bucketNames);
-    const hasEmptyBuckets = bucketNames.some(bucket => isBucketEmpty(bucket));
-    
-    if (hasEmptyBuckets) {
-      console.log(`🔄 Original buckets contain empty ones, expanded to: ${expandedBuckets.join(', ')}`);
-    }
-    
+    // NO FALLBACKS - only use exact buckets requested
     let allTracks: Track[] = [];
 
-    for (const bucketName of expandedBuckets) {
+    for (const bucketName of bucketNames) {
       try {
-        console.log(`📂 Processing bucket: ${bucketName}`);
+        console.log(`📂 Processing bucket ROOT: ${bucketName}`);
         
-        // List files in bucket using throttled request manager
+        // List files in bucket ROOT ONLY using throttled request manager
         let files: any[] = [];
         let error: any = null;
         
         try {
-          console.log(`🔄 Using throttled storage request for bucket: ${bucketName}`);
-          files = await storageRequestManager.listStorage(bucketName, {
-            limit: 1000,
-            offset: 0,
-          });
-          console.log(`✅ Throttled request succeeded for ${bucketName}`);
+          console.log(`🔄 Accessing bucket ROOT directly: ${bucketName}`);
+          files = await storageRequestManager.listStorage(bucketName);
+          console.log(`✅ Got ${files?.length || 0} files from ${bucketName} ROOT`);
         } catch (requestError) {
-          console.error(`❌ Throttled request failed for ${bucketName}:`, requestError);
+          console.error(`❌ Failed to access ${bucketName} ROOT:`, requestError);
           error = requestError;
         }
 
         if (error) {
-          console.error(`❌ Error listing files in bucket ${bucketName}:`, error);
+          console.error(`❌ Error listing files in bucket ${bucketName} ROOT:`, error);
           continue;
         }
 
-        console.log(`📋 Raw files in ${bucketName}:`, files.map(f => ({ name: f.name, size: f.metadata?.size })));
+        console.log(`📋 Raw files in ${bucketName} ROOT:`, files?.map(f => ({ name: f.name, size: f.metadata?.size })) || []);
 
         if (!files || files.length === 0) {
-          console.log(`📂 No files found in bucket ${bucketName}`);
-          
-          // If this was an originally requested bucket (not a fallback), log it as empty
-          if (bucketNames.includes(bucketName)) {
-            console.warn(`⚠️ Originally requested bucket ${bucketName} is empty`);
-          }
+          console.log(`📂 No files found in bucket ${bucketName} ROOT`);
           continue;
         }
 
-        // Filter for audio files
+        // Filter for audio files - ONLY in bucket root
         const audioFiles = files.filter(file => 
           this.audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
         );
 
-        console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName} (${files.length} total files)`);
+        console.log(`🎵 Found ${audioFiles.length} audio files in ${bucketName} ROOT (${files.length} total files)`);
         
         if (audioFiles.length === 0) {
-          console.warn(`⚠️ No audio files found in bucket ${bucketName}`);
-          console.log(`🔍 File types in bucket:`, [...new Set(files.map(f => f.name.split('.').pop()?.toLowerCase() || 'no-ext'))]);
-          
-          // If this was an originally requested bucket (not a fallback), log it as empty
-          if (bucketNames.includes(bucketName)) {
-            console.warn(`⚠️ Originally requested bucket ${bucketName} has no audio files`);
-          }
+          console.warn(`⚠️ No audio files found in bucket ${bucketName} ROOT`);
+          console.log(`🔍 File types in bucket ROOT:`, [...new Set(files.map(f => f.name.split('.').pop()?.toLowerCase() || 'no-ext'))]);
           continue;
         }
 
-        // Convert to Track objects
+        // Convert to Track objects - ALL from bucket root
         for (const file of audioFiles) {
-          // Use the direct public URL format that works
+          // Use the direct public URL format that works - ROOT level only
           const publicUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`;
 
           // Generate deterministic ID to prevent duplicates and race conditions
           const sequence = ++this.requestSequence;
           const track: Track = {
-            id: `${bucketName}-${file.id || file.name}-${sequence}`,
+            id: `${bucketName}-root-${file.name}-${sequence}`,
             title: cleanTitle(file.name),
             url: publicUrl,
             bucket: bucketName,
-            folder: '',
+            folder: '', // Always empty - root level only
             duration: file.metadata?.size ? Math.floor(file.metadata.size / 1000) : undefined
           };
 
           allTracks.push(track);
-          console.log(`✅ Added track: ${track.title} -> ${publicUrl}`);
+          console.log(`✅ Added ROOT track: ${track.title} -> ${publicUrl}`);
         }
 
       } catch (error) {
-        console.error(`❌ Error processing bucket ${bucketName}:`, error);
+        console.error(`❌ Error processing bucket ${bucketName} ROOT:`, error);
       }
     }
 
@@ -130,11 +110,7 @@ export class SimpleStorageService {
     const shuffled = allTracks.sort(() => Math.random() - 0.5);
     const finalTracks = shuffled.slice(0, maxTracks);
 
-    console.log(`✅ Returning ${finalTracks.length} tracks from ${expandedBuckets.length} buckets (${bucketNames.length} original, ${expandedBuckets.length - bucketNames.length} fallbacks)`);
-    
-    if (hasEmptyBuckets && finalTracks.length > 0) {
-      console.log(`🎵 Successfully used fallback buckets to provide music for empty genres`);
-    }
+    console.log(`✅ Returning ${finalTracks.length} tracks from ${bucketNames.length} bucket ROOTS`);
     
     return finalTracks;
   }

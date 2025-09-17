@@ -6,7 +6,7 @@ import { useAudioStore } from '@/stores/audioStore';
 import { Track as SimpleTrack } from '@/types/simpleTrack';
 import { Track as AudioTrack } from '@/types';
 import { getGenreOptions } from '@/config/genreConfigs';
-import { SimpleStorageService } from '@/services/simpleStorageService';
+import { DirectBucketAccess } from '@/services/directBucketAccess';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 
 export default function GenreView() {
@@ -41,45 +41,56 @@ export default function GenreView() {
   console.log('🔍 DEBUG - Genre ID:', genreId);
   console.log('🔍 DEBUG - Found genre:', genre);
 
-  // Safe async effect for loading tracks with race condition protection
+  // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
   useAsyncEffect(
     async (signal: AbortSignal) => {
       if (!genre) {
         throw new Error('Genre not found.');
       }
 
-      console.log(`🎯 Loading tracks for genre: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
+      console.log(`🎯 Loading tracks from BUCKET ROOTS ONLY: ${genre.name} with buckets: ${genre.buckets.join(', ')}`);
       
       // Check if request was aborted before making network call
       if (signal.aborted) {
         throw new Error('Request aborted');
       }
       
-      // Use the specific genre buckets instead of category buckets
-      const tracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
+      // Use DIRECT bucket root access - no folders, no subpaths
+      const rawTracks = await DirectBucketAccess.getTracksFromBucketRoots(genre.buckets);
       
       // Check if request was aborted after network call
       if (signal.aborted) {
         throw new Error('Request aborted');
       }
       
+      // Convert to SimpleTrack format
+      const tracks: SimpleTrack[] = rawTracks.map(rawTrack => ({
+        id: rawTrack.id,
+        title: rawTrack.title,
+        url: rawTrack.url,
+        bucket: rawTrack.bucket,
+        folder: rawTrack.folder,
+        artist: 'Neural Positive Music',
+        duration: rawTrack.size ? Math.floor(rawTrack.size / 1000) : undefined
+      }));
+      
       return tracks;
     },
     (tracks: SimpleTrack[]) => {
       if (tracks.length > 0) {
-        console.log(`✅ Loaded ${tracks.length} tracks for genre`);
+        console.log(`✅ Loaded ${tracks.length} tracks from BUCKET ROOTS for genre`);
         setTracks(tracks);
         setError(null);
       } else {
-        console.warn(`⚠️ No tracks found for genre: ${genre?.name}, buckets: ${genre?.buckets.join(', ')}`);
-        setError('No music tracks found for this genre.');
+        console.warn(`⚠️ No tracks found in BUCKET ROOTS for: ${genre?.name}, buckets: ${genre?.buckets.join(', ')}`);
+        setError('No music tracks found in bucket roots for this genre.');
         setTracks([]);
       }
       setIsTracksLoading(false);
     },
     (error: Error) => {
-      console.error(`❌ Error loading genre tracks:`, error);
-      setError('Failed to load music tracks for this genre.');
+      console.error(`❌ Error loading tracks from BUCKET ROOTS:`, error);
+      setError('Failed to load music tracks from bucket roots.');
       setTracks([]);
       setIsTracksLoading(false);
     },

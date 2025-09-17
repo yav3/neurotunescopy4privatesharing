@@ -38,20 +38,20 @@ class StorageRequestManager {
     }
   }
 
-  // Throttled storage list request
+  // Throttled storage list request - BUCKET ROOT ONLY
   async listStorage(bucket: string, options?: any): Promise<any> {
     const cacheKey = this.getCacheKey(bucket, options);
     
     // Check cache first
     const cached = this.requestCache.get(cacheKey);
     if (cached && this.isCacheValid(cached.timestamp)) {
-      console.log(`📦 Using cached storage list for bucket: ${bucket}`);
+      console.log(`📦 Using cached storage list for bucket ROOT: ${bucket}`);
       return cached.data;
     }
 
     // Check if request is already pending
     if (this.pendingRequests.has(cacheKey)) {
-      console.log(`⏳ Joining existing request for bucket: ${bucket}`);
+      console.log(`⏳ Joining existing request for bucket ROOT: ${bucket}`);
       return this.pendingRequests.get(cacheKey);
     }
 
@@ -59,18 +59,20 @@ class StorageRequestManager {
     const requestPromise = new Promise<any>((resolve, reject) => {
       const executeRequest = async () => {
         try {
-          console.log(`🔄 Fetching storage list for bucket: ${bucket}`);
+          console.log(`🔄 Fetching storage list for bucket ROOT ONLY: ${bucket}`);
           
+          // ALWAYS access bucket root - never subfolders
           const { data, error } = await supabase.storage
             .from(bucket)
-            .list('', {
+            .list('', {  // Empty string = bucket root only
               limit: 1000,
               sortBy: { column: 'name', order: 'asc' },
-              ...options
+              // Remove any folder/prefix options that might be passed
+              // ...options
             });
 
           if (error) {
-            console.error(`❌ Storage list error for ${bucket}:`, error);
+            console.error(`❌ Storage list error for ${bucket} ROOT:`, error);
             reject(error);
             return;
           }
@@ -81,10 +83,10 @@ class StorageRequestManager {
             timestamp: Date.now()
           });
 
-          console.log(`✅ Cached storage list for ${bucket}: ${data?.length || 0} files`);
+          console.log(`✅ Cached storage list for ${bucket} ROOT: ${data?.length || 0} files`);
           resolve(data);
         } catch (error) {
-          console.error(`❌ Storage request failed for ${bucket}:`, error);
+          console.error(`❌ Storage request failed for ${bucket} ROOT:`, error);
           reject(error);
         } finally {
           // Clean up pending request
