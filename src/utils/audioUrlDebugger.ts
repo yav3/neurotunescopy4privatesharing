@@ -20,16 +20,21 @@ export class AudioUrlDebugger {
    */
   static async testAudioUrl(
     bucket: string, 
-    originalFileName: string, 
-    encodedFileName?: string
+    originalFileName: string
   ): Promise<AudioUrlTest> {
-    const encoded = encodedFileName || encodeURIComponent(originalFileName);
-    const publicUrl = `${this.SUPABASE_STORAGE_URL}/${bucket}/${encoded}`;
+    // Use Supabase client for proper URL encoding instead of manual construction
+    const { data } = (await import('@/integrations/supabase/client')).supabase.storage
+      .from(bucket).getPublicUrl(originalFileName);
+    const publicUrl = data.publicUrl;
+    
+    // Extract the encoded filename from the generated URL for reference
+    const urlParts = publicUrl.split('/');
+    const encodedFileName = urlParts[urlParts.length - 1];
     
     const result: AudioUrlTest = {
       bucket,
       original: originalFileName,
-      encoded,
+      encoded: encodedFileName,
       publicUrl,
       status: 'testing'
     };
@@ -80,7 +85,7 @@ export class AudioUrlDebugger {
       console.log(`📦 Testing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(urlTests.length / batchSize)}`);
       
       const batchResults = await Promise.all(
-        batch.map(test => this.testAudioUrl(test.bucket, test.original, test.encoded))
+        batch.map(test => this.testAudioUrl(test.bucket, test.original))
       );
       
       results.push(...batchResults);

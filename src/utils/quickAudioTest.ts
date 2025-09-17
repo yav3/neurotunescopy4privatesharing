@@ -56,12 +56,12 @@ export async function testEncoding(original: string, bucket: string = 'ENERGYBOO
   console.log('Encoded URL:', encoded);
   
   const results = await Promise.all([
-    AudioUrlDebugger.testAudioUrl(bucket, original, original),
-    AudioUrlDebugger.testAudioUrl(bucket, original, encodeURIComponent(original))
+    AudioUrlDebugger.testAudioUrl(bucket, original),
+    AudioUrlDebugger.testAudioUrl(bucket, original)
   ]);
   
-  console.log('Non-encoded result:', results[0].status, results[0].error);
-  console.log('Encoded result:', results[1].status, results[1].error);
+  console.log('First test result:', results[0].status, results[0].error);
+  console.log('Second test result:', results[1].status, results[1].error);
   
   return results;
 }

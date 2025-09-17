@@ -87,8 +87,9 @@ export class SimpleStorageService {
 
         // Convert to Track objects - ALL from bucket root
         for (const file of audioFiles) {
-          // Use the direct public URL format that works - ROOT level only
-          const publicUrl = `https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/${bucketName}/${file.name}`;
+          // Use Supabase client to get properly encoded public URL
+          const { data } = supabase.storage.from(bucketName).getPublicUrl(file.name);
+          const publicUrl = data.publicUrl;
 
           // Generate deterministic ID to prevent duplicates and race conditions
           const sequence = ++this.requestSequence;
