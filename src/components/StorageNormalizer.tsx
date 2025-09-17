@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, FileText, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Loader2, FileText, CheckCircle, XCircle, AlertTriangle, PlayCircle, PauseCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -27,6 +28,36 @@ interface NormalizationSummary {
   results: NormalizationResult[];
 }
 
+interface BucketStatus {
+  bucket: string;
+  total_files: number;
+  files_needing_repair: number;
+  files_repaired: number;
+  status: 'pending' | 'analyzing' | 'ready' | 'processing' | 'completed' | 'error';
+  error?: string;
+}
+
+// All audio buckets in the system
+const AUDIO_BUCKETS = [
+  'neuralpositivemusic',
+  'audio',
+  'ENERGYBOOST', 
+  'focus-music',
+  'opera',
+  'samba',
+  'HIIT',
+  'Chopin',
+  'classicalfocus',
+  'newageworldstressanxietyreduction',
+  'moodboostremixesworlddance',
+  'pop',
+  'countryandamericana',
+  'gentleclassicalforpain',
+  'sonatasforstress',
+  'painreducingworld',
+  'NewAgeandWorldFocus'
+];
+
 export const StorageNormalizer = () => {
   const [bucketName, setBucketName] = useState('sonatasforstress');
   const [dryRun, setDryRun] = useState(true);
@@ -34,6 +65,13 @@ export const StorageNormalizer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<NormalizationSummary | null>(null);
   const [repairStatus, setRepairStatus] = useState<any>(null);
+  
+  // Bulk operations state
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bucketStatuses, setBucketStatuses] = useState<Record<string, BucketStatus>>({});
+  const [isBulkAnalyzing, setIsBulkAnalyzing] = useState(false);
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
+  const [currentProcessingBucket, setCurrentProcessingBucket] = useState<string | null>(null);
 
   const analyzeFiles = async () => {
     setIsLoading(true);
@@ -110,6 +148,164 @@ export const StorageNormalizer = () => {
     }
   };
 
+  // Bulk operations
+  const analyzeAllBuckets = async () => {
+    setIsBulkAnalyzing(true);
+    const initialStatuses: Record<string, BucketStatus> = {};
+    
+    // Initialize all buckets as pending
+    AUDIO_BUCKETS.forEach(bucket => {
+      initialStatuses[bucket] = {
+        bucket,
+        total_files: 0,
+        files_needing_repair: 0,
+        files_repaired: 0,
+        status: 'pending'
+      };
+    });
+    setBucketStatuses(initialStatuses);
+
+    // Process each bucket
+    for (const bucket of AUDIO_BUCKETS) {
+      setBucketStatuses(prev => ({
+        ...prev,
+        [bucket]: { ...prev[bucket], status: 'analyzing' }
+      }));
+
+      try {
+        // Populate repair map
+        const { data: analyzeData, error: analyzeError } = await supabase.rpc('populate_bucket_repair_map', {
+          _bucket_name: bucket
+        });
+
+        if (analyzeError) throw analyzeError;
+
+        // Get detailed status
+        const { data: statusData, error: statusError } = await supabase.rpc('get_bucket_repair_status', {
+          _bucket_name: bucket
+        });
+
+        if (statusError) throw statusError;
+
+        const status = statusData[0];
+        setBucketStatuses(prev => ({
+          ...prev,
+          [bucket]: {
+            bucket,
+            total_files: status.total_files,
+            files_needing_repair: status.files_needing_repair,
+            files_repaired: status.files_repaired,
+            status: status.files_needing_repair > 0 ? 'ready' : 'completed'
+          }
+        }));
+
+      } catch (error) {
+        console.error(`Error analyzing bucket ${bucket}:`, error);
+        setBucketStatuses(prev => ({
+          ...prev,
+          [bucket]: { 
+            ...prev[bucket], 
+            status: 'error', 
+            error: error.message 
+          }
+        }));
+      }
+
+      // Small delay to prevent overwhelming the system
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    setIsBulkAnalyzing(false);
+    toast({
+      title: "Bulk Analysis Complete",
+      description: `Analyzed ${AUDIO_BUCKETS.length} buckets`,
+    });
+  };
+
+  const processAllBuckets = async () => {
+    setIsBulkProcessing(true);
+    let totalProcessed = 0;
+    let totalSuccessful = 0;
+    let totalFailed = 0;
+
+    // Get buckets that need processing
+    const bucketsToProcess = Object.values(bucketStatuses)
+      .filter(status => status.status === 'ready' && status.files_needing_repair > 0)
+      .map(status => status.bucket);
+
+    for (const bucket of bucketsToProcess) {
+      setCurrentProcessingBucket(bucket);
+      setBucketStatuses(prev => ({
+        ...prev,
+        [bucket]: { ...prev[bucket], status: 'processing' }
+      }));
+
+      try {
+        const { data, error } = await supabase.functions.invoke('normalize-storage-files', {
+          body: {
+            bucket_name: bucket,
+            dry_run: dryRun,
+            limit: 50 // Process more files per bucket in bulk mode
+          }
+        });
+
+        if (error) throw error;
+
+        totalProcessed += data.total_processed;
+        totalSuccessful += data.successful;
+        totalFailed += data.failed;
+
+        setBucketStatuses(prev => ({
+          ...prev,
+          [bucket]: { 
+            ...prev[bucket], 
+            status: data.failed === 0 ? 'completed' : 'error',
+            error: data.failed > 0 ? `${data.failed} files failed` : undefined
+          }
+        }));
+
+      } catch (error) {
+        console.error(`Error processing bucket ${bucket}:`, error);
+        setBucketStatuses(prev => ({
+          ...prev,
+          [bucket]: { 
+            ...prev[bucket], 
+            status: 'error', 
+            error: error.message 
+          }
+        }));
+        totalFailed++;
+      }
+
+      // Delay between buckets
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    setCurrentProcessingBucket(null);
+    setIsBulkProcessing(false);
+    
+    toast({
+      title: dryRun ? "Bulk Preview Complete" : "Bulk Normalization Complete",
+      description: `Processed ${totalProcessed} files across ${bucketsToProcess.length} buckets. ${totalSuccessful} successful, ${totalFailed} failed.`,
+    });
+  };
+
+  const getBucketStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case 'error':
+        return <XCircle className="w-4 h-4 text-red-500" />;
+      case 'processing':
+      case 'analyzing':
+        return <Loader2 className="w-4 h-4 animate-spin text-blue-500" />;
+      case 'ready':
+        return <PlayCircle className="w-4 h-4 text-yellow-500" />;
+      default:
+        return <PauseCircle className="w-4 h-4 text-gray-400" />;
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'success':
@@ -123,80 +319,204 @@ export const StorageNormalizer = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Storage File Normalizer</CardTitle>
+          <CardTitle className="flex items-center justify-between">
+            Storage File Normalizer
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="bulk-mode" className="text-sm">Bulk Mode</Label>
+              <Switch
+                id="bulk-mode"
+                checked={bulkMode}
+                onCheckedChange={setBulkMode}
+              />
+            </div>
+          </CardTitle>
           <CardDescription>
-            Normalize file names in Supabase storage buckets to ensure consistent, safe naming conventions.
+            {bulkMode 
+              ? 'Normalize file names across all audio buckets automatically.'
+              : 'Normalize file names in individual Supabase storage buckets to ensure consistent, safe naming conventions.'
+            }
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="bucket">Bucket Name</Label>
-              <Input
-                id="bucket"
-                value={bucketName}
-                onChange={(e) => setBucketName(e.target.value)}
-                placeholder="Enter bucket name"
-              />
+          {bulkMode ? (
+            // Bulk mode interface
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <Label htmlFor="dryrun-bulk">Operation Mode</Label>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="dryrun-bulk"
+                      checked={dryRun}
+                      onCheckedChange={setDryRun}
+                    />
+                    <Label htmlFor="dryrun-bulk" className="text-sm text-muted-foreground">
+                      {dryRun ? 'Preview mode (safe)' : 'Live changes (DESTRUCTIVE)'}
+                    </Label>
+                  </div>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {AUDIO_BUCKETS.length} buckets total
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <Button 
+                  onClick={analyzeAllBuckets} 
+                  disabled={isBulkAnalyzing || isBulkProcessing}
+                  variant="outline"
+                  size="lg"
+                >
+                  {isBulkAnalyzing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <FileText className="w-4 h-4 mr-2" />}
+                  Analyze All Buckets
+                </Button>
+                <Button 
+                  onClick={processAllBuckets} 
+                  disabled={isBulkAnalyzing || isBulkProcessing || Object.keys(bucketStatuses).length === 0}
+                  variant={dryRun ? "secondary" : "default"}
+                  size="lg"
+                >
+                  {isBulkProcessing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  {dryRun ? 'Preview All Changes' : 'Normalize All Buckets'}
+                </Button>
+              </div>
+
+              {currentProcessingBucket && (
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <div className="text-sm font-medium">Currently processing: {currentProcessingBucket}</div>
+                  <Progress value={
+                    (Object.values(bucketStatuses).filter(s => s.status === 'completed').length / 
+                     Object.values(bucketStatuses).filter(s => s.files_needing_repair > 0).length) * 100
+                  } className="mt-2" />
+                </div>
+              )}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="limit">File Limit</Label>
-              <Input
-                id="limit"
-                type="number"
-                value={limit}
-                onChange={(e) => setLimit(parseInt(e.target.value) || 10)}
-                min="1"
-                max="100"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="dryrun">Dry Run Mode</Label>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="dryrun"
-                  checked={dryRun}
-                  onCheckedChange={setDryRun}
-                />
-                <Label htmlFor="dryrun" className="text-sm text-muted-foreground">
-                  {dryRun ? 'Simulation only' : 'Live changes'}
-                </Label>
+          ) : (
+            // Single bucket mode interface  
+            <div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="bucket">Bucket Name</Label>
+                  <Input
+                    id="bucket"
+                    value={bucketName}
+                    onChange={(e) => setBucketName(e.target.value)}
+                    placeholder="Enter bucket name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="limit">File Limit</Label>
+                  <Input
+                    id="limit"
+                    type="number"
+                    value={limit}
+                    onChange={(e) => setLimit(parseInt(e.target.value) || 10)}
+                    min="1"
+                    max="100"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dryrun">Dry Run Mode</Label>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="dryrun"
+                      checked={dryRun}
+                      onCheckedChange={setDryRun}
+                    />
+                    <Label htmlFor="dryrun" className="text-sm text-muted-foreground">
+                      {dryRun ? 'Simulation only' : 'Live changes'}
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 mt-4">
+                <Button 
+                  onClick={analyzeFiles} 
+                  disabled={isLoading || !bucketName}
+                  variant="outline"
+                >
+                  {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <FileText className="w-4 h-4 mr-2" />}
+                  Analyze Files
+                </Button>
+                <Button 
+                  onClick={normalizeFiles} 
+                  disabled={isLoading || !bucketName}
+                  variant={dryRun ? "secondary" : "default"}
+                >
+                  {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  {dryRun ? 'Preview Changes' : 'Normalize Files'}
+                </Button>
+                <Button 
+                  onClick={getRepairStatus} 
+                  disabled={isLoading}
+                  variant="ghost"
+                >
+                  Refresh Status
+                </Button>
               </div>
             </div>
-          </div>
-
-          <div className="flex gap-4">
-            <Button 
-              onClick={analyzeFiles} 
-              disabled={isLoading || !bucketName}
-              variant="outline"
-            >
-              {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <FileText className="w-4 h-4 mr-2" />}
-              Analyze Files
-            </Button>
-            <Button 
-              onClick={normalizeFiles} 
-              disabled={isLoading || !bucketName}
-              variant={dryRun ? "secondary" : "default"}
-            >
-              {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-              {dryRun ? 'Preview Changes' : 'Normalize Files'}
-            </Button>
-            <Button 
-              onClick={getRepairStatus} 
-              disabled={isLoading}
-              variant="ghost"
-            >
-              Refresh Status
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
 
-      {repairStatus && (
+      {/* Bulk status overview */}
+      {bulkMode && Object.keys(bucketStatuses).length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Bulk Processing Status</CardTitle>
+            <CardDescription>
+              Status of all audio buckets
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {AUDIO_BUCKETS.map(bucket => {
+                const status = bucketStatuses[bucket];
+                if (!status) return null;
+                
+                return (
+                  <div key={bucket} className="border rounded-lg p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-sm truncate">{bucket}</span>
+                      {getBucketStatusIcon(status.status)}
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 text-xs">
+                      <div className="text-center">
+                        <div className="font-bold text-blue-600">{status.total_files}</div>
+                        <div className="text-muted-foreground">Total</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-bold text-yellow-600">{status.files_needing_repair}</div>
+                        <div className="text-muted-foreground">Need Fix</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-bold text-green-600">{status.files_repaired}</div>
+                        <div className="text-muted-foreground">Fixed</div>
+                      </div>
+                    </div>
+                    {status.error && (
+                      <div className="text-red-500 text-xs truncate" title={status.error}>
+                        {status.error}
+                      </div>
+                    )}
+                    <Badge variant={status.status === 'completed' ? 'default' : 
+                                   status.status === 'error' ? 'destructive' : 'secondary'} 
+                           className="w-full justify-center text-xs">
+                      {status.status}
+                    </Badge>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {repairStatus && !bulkMode && (
         <Card>
           <CardHeader>
             <CardTitle>Repair Status</CardTitle>
