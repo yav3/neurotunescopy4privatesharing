@@ -55,10 +55,8 @@ const therapeuticGoals = [
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
-  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
-  { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
-  { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: waterfallGreen },
-  { id: 'classical-focus', name: 'Classical Focus', letter: 'F', image: yellowFlowers },
+  { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: waterfallGreen },
+  { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: forestLakeMist },
 ];
 
 const Index = () => {
@@ -93,10 +91,8 @@ const Index = () => {
     const trendingToBucketsMap: Record<string, { goal: string; buckets: string[] }> = {
       'chill-classical': { goal: 'pain-support', buckets: ['Chopin', 'newageworldstressanxietyreduction'] }, // Use working fallback buckets directly
       'nocturnes': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Nocturnes bucket specifically
-      'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
-      'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
-      'relaxing-new-age': { goal: 'stress-anxiety-support', buckets: ['newageworldstressanxietyreduction'] },
-      'classical-focus': { goal: 'focus-enhancement', buckets: ['classicalfocus'] } // Classical focus specifically
+      'new-age-world': { goal: 'meditation-support', buckets: ['meditation'] }, // New Age & World maps to meditation bucket
+      'non-sleep-deep-rest': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Non-Sleep Deep Rest from Nocturnes bucket
     };
     
     const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
