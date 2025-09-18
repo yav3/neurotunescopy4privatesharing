@@ -149,20 +149,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: gentleClassicalMistyLake,
       },
       {
-        id: 'stress-reduction-classical',
-        name: 'Sonatas',
-        description: 'Classical music specifically for pain and stress support',
-        buckets: ['sonatasforstress'],
-        image: painSonatasYellowFlowers,
-      },
-      {
-        id: 'new-age-chill',
-        name: 'New Age Chill',
-        description: 'Calming new age sounds for pain management',
-        buckets: ['painreducingworld'],
-        image: newAgeLeafDewdrop,
-      },
-      {
         id: 'peaceful-piano',
         name: 'Peaceful Piano',
         description: 'Gentle piano melodies for comfort and relaxation',
