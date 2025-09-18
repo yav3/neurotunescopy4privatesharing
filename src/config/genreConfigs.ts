@@ -195,20 +195,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       },
       {
-        id: 'meditation-sonatas',
-        name: 'Peaceful Sonatas',
-        description: 'Classical sonatas for meditative practice',
-        buckets: ['sonatasforstress'],
-        image: sonatasMistyLake
-      },
-      {
-        id: 'contemplative-piano',
-        name: 'Contemplative Piano',
-        description: 'Gentle piano music for mindfulness and meditation',
-        buckets: ['Chopin'],
-        image: focusZenStones
-      },
-      {
         id: 'non-sleep-deep-rest',
         name: 'Non-Sleep Deep Rest',
         description: 'Specialized audio for deep rest and recovery without sleep',
