@@ -82,13 +82,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       },
       {
-        id: 'sonatas',
-        name: 'Sonatas',
-        description: 'Classical sonatas for deep stress support',
-        buckets: ['sonatasforstress'],
-        image: sonatasMistyLake
-      },
-      {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress support',
