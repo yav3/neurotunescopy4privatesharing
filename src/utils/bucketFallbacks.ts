@@ -56,6 +56,8 @@ export const getFallbackBuckets = (originalBucket: string): string[] => {
 export const expandBucketsWithFallbacks = (buckets: string[]): string[] => {
   const allBuckets = new Set<string>();
   
+  console.log(`🔄 Expanding buckets with fallbacks: ${buckets.join(', ')}`);
+  
   buckets.forEach(bucket => {
     // Skip known empty buckets entirely and use only their fallbacks
     if (shouldSkipEmptyBucket(bucket)) {
@@ -63,22 +65,29 @@ export const expandBucketsWithFallbacks = (buckets: string[]): string[] => {
       const fallbacks = BUCKET_FALLBACKS[bucket] || [];
       fallbacks.forEach(fallback => {
         if (!shouldSkipEmptyBucket(fallback)) {
+          console.log(`📈 Adding fallback bucket: ${fallback}`);
           allBuckets.add(fallback);
+        } else {
+          console.log(`⚠️ Fallback bucket ${fallback} is also empty, skipping`);
         }
       });
     } else {
       // Use the bucket itself, plus fallbacks if it becomes empty
+      console.log(`✅ Using original bucket: ${bucket}`);
       allBuckets.add(bucket);
       const fallbacks = BUCKET_FALLBACKS[bucket] || [];
       fallbacks.forEach(fallback => {
         if (!shouldSkipEmptyBucket(fallback)) {
+          console.log(`📈 Adding additional fallback: ${fallback}`);
           allBuckets.add(fallback);
         }
       });
     }
   });
   
-  return Array.from(allBuckets);
+  const result = Array.from(allBuckets);
+  console.log(`📊 Final expanded buckets: ${result.join(', ')}`);
+  return result;
 };
 
 /**

@@ -245,8 +245,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
     const allAudioElements = document.querySelectorAll('audio');
     if (allAudioElements.length > 1) {
       console.warn('🚨 Multiple audio elements detected!', allAudioElements.length);
+      const currentElementId = getAudioElementId();
       allAudioElements.forEach((el, i) => {
-        if (el.id !== AUDIO_ELEMENT_ID) {
+        if (el.id !== currentElementId) {
           console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
           el.pause();
           el.remove();

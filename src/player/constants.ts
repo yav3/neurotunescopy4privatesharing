@@ -28,5 +28,8 @@ export const getAudioElementId = () => {
   return `audio-player-${userId.substring(0, 8)}`;
 };
 
-// Legacy export for compatibility - but now user-specific
-export const AUDIO_ELEMENT_ID = getAudioElementId();
+// Dynamic AUDIO_ELEMENT_ID that updates with current user
+export const getActiveAudioElementId = () => getAudioElementId();
+
+// Legacy export for compatibility - use getActiveAudioElementId() for current ID
+export const AUDIO_ELEMENT_ID = 'audio-player-dynamic';

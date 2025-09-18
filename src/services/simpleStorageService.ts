@@ -97,8 +97,10 @@ export class SimpleStorageService {
         
         try {
           console.log(`🔄 Accessing bucket ROOT directly: ${bucketName}`);
+          const startTime = performance.now();
           files = await storageRequestManager.listStorage(bucketName);
-          console.log(`✅ Got ${files?.length || 0} files from ${bucketName} ROOT`);
+          const endTime = performance.now();
+          console.log(`✅ Got ${files?.length || 0} files from ${bucketName} ROOT in ${Math.round(endTime - startTime)}ms`);
         } catch (requestError) {
           console.error(`❌ Failed to access ${bucketName} ROOT:`, requestError);
           error = requestError;

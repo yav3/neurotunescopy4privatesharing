@@ -1,4 +1,4 @@
-import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { getActiveAudioElementId } from '@/player/constants';
 
 interface AudioValidationResult {
   isValid: boolean;
@@ -20,17 +20,29 @@ export class AudioValidator {
       errors.push(`Multiple audio elements found: ${audioElements.length}`);
     }
     
+    // Get current active audio element ID
+    const activeElementId = getActiveAudioElementId();
+    
     // Check audio element properties
-    const audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+    const audioElement = document.getElementById(activeElementId) as HTMLAudioElement;
     if (!audioElement) {
-      errors.push(`Main audio element (#${AUDIO_ELEMENT_ID}) not found`);
+      errors.push(`Main audio element (#${activeElementId}) not found`);
     } else {
-      if (!audioElement.crossOrigin) {
+      // Check crossOrigin - can be set as property or attribute
+      const hasCrossOrigin = audioElement.crossOrigin || audioElement.getAttribute('crossorigin');
+      if (!hasCrossOrigin) {
         warnings.push('Audio element missing crossOrigin attribute');
+      } else {
+        console.log(`🔧 Audio element crossOrigin OK: property="${audioElement.crossOrigin}", attribute="${audioElement.getAttribute('crossorigin')}"`);
       }
+      
       if (audioElement.preload !== 'auto') {
         warnings.push('Audio element preload not set to auto');
       }
+      
+      // Debug: Log all audio element attributes
+      const attrs = Array.from(audioElement.attributes).map(attr => `${attr.name}="${attr.value}"`);
+      console.log(`🔧 Audio element attributes: ${attrs.join(', ')}`);
     }
     
     // Check for competing audio contexts
