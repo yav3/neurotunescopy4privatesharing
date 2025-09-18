@@ -3,12 +3,14 @@
 
 export const BUCKET_FALLBACKS: Record<string, string[]> = {
   // Empty buckets → Working buckets with similar content
-  'pop': ['ENERGYBOOST', 'neuralpositivemusic'], // Pop music fallback to energy/positive music
+  'pop': ['ENERGYBOOST'], // Pop music - ENERGYBOOST has actual pop tracks mixed with EDM
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
   'countryandamericana': ['ENERGYBOOST', 'NewAgeandWorldFocus'], // Country fallback to world music
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
   'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
+  'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty mood boost bucket fallback
+  'audio': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty audio bucket fallback
 };
 
 /**

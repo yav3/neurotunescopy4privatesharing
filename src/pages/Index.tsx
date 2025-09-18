@@ -68,11 +68,11 @@ const Index = () => {
     console.log('🔧 Running audio system diagnostic...');
     await audioSystemDebugger.testFullSystem();
     
-    // Map trending categories to actual music goals for immediate playback
+    // Map trending categories to actual music goals for immediate playbook
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'pain-support',
       'electronic-dance': 'energy-boost',
-      'positive-pop': 'mood-boost',
+      'positive-pop': 'energy-boost', // Changed: Pop should use energy-boost which has actual pop in ENERGYBOOST bucket
       'chill-piano': 'focus-enhancement',
       'relaxing-new-age': 'stress-anxiety-support',
       'classical-focus': 'focus-enhancement'

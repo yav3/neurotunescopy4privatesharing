@@ -185,11 +185,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
     });
   }, 100);
   
-  // Immediate auto-skip function for seamless playback - MUCH LONGER DELAYS TO PREVENT RACING
-  const scheduleAutoSkip = (reason: string, delay: number = 15000) => { // Much longer default delay
+  // Immediate auto-skip function for seamless playback - LESS aggressive for user experience
+  const scheduleAutoSkip = (reason: string, delay: number = 3000) => { // Shorter default for better UX
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered after ${delay}ms: ${reason}`);
+      
+      // Only auto-skip if we have multiple tracks in queue
+      const { queue, index } = get();
+      if (queue.length <= 1) {
+        console.log('🎵 Only one track in queue, not auto-skipping');
+        return;
+      }
       
       // Suppress player mode updates during rapid error cascades
       if (consecutiveFailures > 2) {
@@ -199,7 +206,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       if (!isNexting) {
         get().next();
       }
-    }, delay); // Use provided delay with much longer default for stability
+    }, delay); // Use provided delay with shorter default for better UX
   };
   
   // Helper: Remove item from array at index
