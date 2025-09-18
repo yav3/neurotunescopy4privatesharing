@@ -7,11 +7,11 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
   'countryandamericana': ['NewAgeandWorldFocus'], // REMOVED ENERGYBOOST fallback - causes EDM instead of country
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
-  'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback to working classical buckets
+  'sonatasforstress': ['Chopin'], // Sonatas should ONLY fallback to Chopin classical music
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
   'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty mood boost bucket fallback
   'audio': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty audio bucket fallback
-  'newageworldstressanxietyreduction': ['NewAgeandWorldFocus', 'neuralpositivemusic'], // If primary new age is empty, use these working buckets
+  'newageworldstressanxietyreduction': ['NewAgeandWorldFocus'], // If primary new age is empty, use world focus only
   'meditation': ['newageworldstressanxietyreduction', 'Chopin'], // Non-Sleep Deep Rest fallback to calm music
   'Nocturnes': ['Chopin', 'newageworldstressanxietyreduction'], // Nocturnes fallback to piano music and new age
   'albumart': ['neuralpositivemusic', 'Chopin'], // Empty album art bucket - fallback to music buckets for now
@@ -19,9 +19,8 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
 
 // Cache of known empty buckets to avoid repeated requests
 const KNOWN_EMPTY_BUCKETS = new Set([
-  'sonatasforstress',
   'albumart',
-  'pop',
+  'pop', 
   'HIIT',
   'gentleclassicalforpain',
   'painreducingworld',
