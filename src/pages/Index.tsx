@@ -89,22 +89,22 @@ const Index = () => {
     console.log('🔧 Running audio system diagnostic...');
     await audioSystemDebugger.testFullSystem();
     
-    // Map trending categories to actual music goals for immediate playbook
-    const trendingToGoalMap: Record<string, string> = {
-      'chill-classical': 'pain-support',
-      'nocturnes': 'focus-enhancement', // Nocturnes are perfect for focus and relaxation
-      'positive-pop': 'energy-boost', // Changed: Pop should use energy-boost which has actual pop in ENERGYBOOST bucket
-      'chill-piano': 'focus-enhancement',
-      'relaxing-new-age': 'stress-anxiety-support',
-      'classical-focus': 'focus-enhancement'
+    // Map trending categories to specific genre buckets for targeted playback
+    const trendingToBucketsMap: Record<string, { goal: string; buckets: string[] }> = {
+      'chill-classical': { goal: 'pain-support', buckets: ['gentleclassicalforpain'] },
+      'nocturnes': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano nocturnes specifically
+      'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
+      'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
+      'relaxing-new-age': { goal: 'stress-anxiety-support', buckets: ['newageworldstressanxietyreduction'] },
+      'classical-focus': { goal: 'focus-enhancement', buckets: ['classicalfocus'] } // Classical focus specifically
     };
     
-    const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
-    console.log('🎵 Starting playback for goal:', goalId);
+    const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
+    console.log('🎵 Starting playback for category:', categoryId, 'using goal:', mapping.goal, 'buckets:', mapping.buckets);
     
-    // Use the playFromGoal action from audio store
-    import('@/stores').then(({ useAudioStore }) => {
-      useAudioStore.getState().playFromGoal(goalId);
+    // Use the playFromGenre action from playFromGoal.ts to play from specific buckets
+    import('@/actions/playFromGoal').then(({ playFromGenre }) => {
+      playFromGenre(mapping.goal, mapping.buckets);
     });
   };
 
