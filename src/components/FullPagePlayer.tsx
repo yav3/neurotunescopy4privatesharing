@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from '@/utils/titleFormatter';
@@ -193,9 +193,9 @@ export const FullPagePlayer = () => {
             pointerEvents: 'all',
             zIndex: 9999
           }}
-          aria-label="Close player"
+          aria-label="Minimize player"
         >
-          <X className="w-7 h-7 pointer-events-none" strokeWidth={2.5} />
+          <ChevronDown className="w-7 h-7 pointer-events-none" strokeWidth={2.5} />
         </Button>
       </div>
 

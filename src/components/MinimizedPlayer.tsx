@@ -25,9 +25,9 @@ export const MinimizedPlayer = () => {
   // Centralized artwork using ArtworkService to prevent race conditions
   const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
   
-  // Double-tap detection state
-  const [lastTapTime, setLastTapTime] = useState<number>(0);
-  const [tapCount, setTapCount] = useState<number>(0);
+  // Remove unused double-tap state since we're using simple click now
+  // const [lastTapTime, setLastTapTime] = useState<number>(0);
+  // const [tapCount, setTapCount] = useState<number>(0);
 
   useEffect(() => {
     if (track) {
@@ -42,47 +42,22 @@ export const MinimizedPlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Double-tap handler - using pointer events for better reliability
-  const handlePlayerClick = (e: React.MouseEvent | React.TouchEvent) => {
-    console.log('🎵 Player click detected', { target: e.target, currentTarget: e.currentTarget });
-    
+  // Click handler to expand to full player
+  const handleExpand = (e: React.MouseEvent | React.TouchEvent) => {
     // Only handle clicks on the container, not on buttons
     const target = e.target as HTMLElement;
     if (target.tagName === 'BUTTON' || target.closest('button')) {
-      console.log('🎵 Click on button ignored');
       return;
     }
     
-    const now = Date.now();
-    const timeDiff = now - lastTapTime;
-    
-    console.log('🎵 Processing container click', { timeDiff, tapCount, now });
-    
-    if (timeDiff < 500 && tapCount === 1) {
-      // Double tap detected
-      console.log('🎵 Double-tap detected - expanding to full player');
-      setPlayerMode('full');
-      setTapCount(0);
-      setLastTapTime(0);
-    } else {
-      // First tap
-      console.log('🎵 First tap registered');
-      setTapCount(1);
-      setLastTapTime(now);
-      
-      // Reset after timeout if no second tap
-      setTimeout(() => {
-        console.log('🎵 Resetting tap count after timeout');
-        setTapCount(0);
-        setLastTapTime(0);
-      }, 500);
-    }
+    console.log('🎵 Expanding minimized player to full view');
+    setPlayerMode('full');
   };
 
   // NOW SAFE TO HAVE CONDITIONAL RETURNS AFTER ALL HOOKS
-  // Show MinimizedPlayer unless explicitly in full mode with a track
-  if (playerMode === 'full' && track) {
-    return null; // Only hide when full player is active with a track
+  // Only show MinimizedPlayer when explicitly in mini mode
+  if (playerMode !== 'mini') {
+    return null;
   }
 
   // Debug player state (only when visible)
@@ -129,8 +104,8 @@ export const MinimizedPlayer = () => {
           {/* Player content with actual audio info */}
           <div 
             className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-            onClick={handlePlayerClick}
-            onTouchEnd={handlePlayerClick}
+            onClick={handleExpand}
+            onTouchEnd={handleExpand}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -260,8 +235,8 @@ export const MinimizedPlayer = () => {
       {/* Player content */}
       <div 
         className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-        onClick={handlePlayerClick}
-        onTouchEnd={handlePlayerClick}
+        onClick={handleExpand}
+        onTouchEnd={handleExpand}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {

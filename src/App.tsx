@@ -115,9 +115,8 @@ const App = () => {
               <Route path="*" element={<Index />} />
             </Routes>
             
-            {/* Global Music Players - Always show MinimizedPlayer, show full player when in full mode */}
-            {playerMode === 'full' && <FullPagePlayer />}
-            <MinimizedPlayer />
+            {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
+            {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
             
           </div>
           <DevDebugPanel />

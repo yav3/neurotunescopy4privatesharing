@@ -884,7 +884,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
     duration: 0,
     volume: 0.8,
     spatialAudioEnabled: false,
-    playerMode: 'mini', // Default to mini so MinimizedPlayer always shows
+    playerMode: 'full', // Default to full player
     queue: [],
     index: -1,
     sessionManager: null,
