@@ -69,7 +69,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'americana-bluegrass-country',
         name: 'Americana, Bluegrass, Country',
         description: 'Acoustic country and folk music for focused concentration',
-        buckets: ['countryandamericana'],
+        buckets: ['Nocturnes'],
         image: moodBoostFloralField
       }
     ],
@@ -99,7 +99,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'bluegrass-americana',
         name: 'Bluegrass & Americana',
         description: 'Calming country and americana music for stress relief',
-        buckets: ['countryandamericana'],
+        buckets: ['Nocturnes'],
         image: moodBoostFloralField
       },
     ],
@@ -122,7 +122,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'chill-country',
         name: 'Chill Country & Americana',
         description: 'Relaxing country and americana for mood enhancement',
-        buckets: ['countryandamericana'],
+        buckets: ['Nocturnes'],
         image: moodBoostFloralField,
       },
       {
