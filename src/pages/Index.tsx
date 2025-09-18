@@ -20,6 +20,7 @@ import dewdropMoon from '@/assets/dewdrop-moon.png';
 import forestLakeMist from '@/assets/forest-lake-mist.png';
 import yellowFlowers from '@/assets/yellow-flowers.png';
 import stressLeaf from '@/assets/stress-support-leaf.png';
+import anxietyLake from '@/assets/anxiety-support-lake.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -44,7 +45,7 @@ const therapeuticGoals = [
     id: 'anxiety-support', 
     name: 'Anxiety Support',
     letter: 'A',
-    image: stressAnxietyGoal?.artwork || mistyLake,
+    image: anxietyLake,
     goalMapping: 'stress-anxiety-support'
   }
 ];
