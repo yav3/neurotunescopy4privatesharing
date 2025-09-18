@@ -256,14 +256,14 @@ const Index = () => {
           <Button 
             onClick={() => {
               import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'zen-new-age');
+                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'non-sleep-deep-rest');
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            🧘 Test Meditation New Age
+            🧘 Test Non-Sleep Deep Rest
           </Button>
         </div>
       )}

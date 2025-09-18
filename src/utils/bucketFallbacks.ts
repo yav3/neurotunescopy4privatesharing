@@ -12,6 +12,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty mood boost bucket fallback
   'audio': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty audio bucket fallback
   'newageworldstressanxietyreduction': ['NewAgeandWorldFocus', 'neuralpositivemusic'], // If primary new age is empty, use these working buckets
+  'meditation': ['newageworldstressanxietyreduction', 'Chopin'], // Non-Sleep Deep Rest fallback to calm music
 };
 
 /**

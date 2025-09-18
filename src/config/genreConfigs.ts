@@ -207,6 +207,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Gentle piano music for mindfulness and meditation',
         buckets: ['Chopin'],
         image: focusZenStones
+      },
+      {
+        id: 'non-sleep-deep-rest',
+        name: 'Non-Sleep Deep Rest',
+        description: 'Specialized audio for deep rest and recovery without sleep',
+        buckets: ['meditation'],
+        image: newAgeLeafDewdrop
       }
     ]
   };
