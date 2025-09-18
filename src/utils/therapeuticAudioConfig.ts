@@ -5,11 +5,15 @@
  * Configure audio element for therapeutic use - completely silent error handling
  */
 export function configureTherapeuticAudio(audioElement: HTMLAudioElement): void {
-  // Configure for cross-origin audio requests (Supabase storage)
+  // Configure for cross-origin audio requests (Supabase storage) - CRITICAL for playback
   audioElement.crossOrigin = "anonymous"; // Allow cross-origin requests
-  audioElement.preload = "metadata"; // Load metadata for better UX
+  audioElement.preload = "auto"; // Load full audio for faster playback (reduced delay)
   audioElement.controls = false; // No default controls
   audioElement.autoplay = false; // Never autoplay
+  
+  // Ensure attributes are actually set
+  audioElement.setAttribute('crossorigin', 'anonymous');
+  audioElement.setAttribute('preload', 'auto');
   
   // Mark as therapeutic audio for special handling
   audioElement.setAttribute('data-therapeutic', 'true');
