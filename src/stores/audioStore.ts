@@ -396,8 +396,53 @@ export const useAudioStore = create<AudioState>((set, get) => {
       });
       
       audio.addEventListener('pause', () => {
-        console.log('🎵 Audio pause event fired');
+        console.log('🎵 Audio pause event fired - analyzing cause:', {
+          ended: audio.ended,
+          currentTime: audio.currentTime,
+          duration: audio.duration,
+          readyState: audio.readyState,
+          networkState: audio.networkState,
+          paused: audio.paused,
+          buffered: audio.buffered.length > 0 ? `${audio.buffered.start(0)}-${audio.buffered.end(0)}` : 'none'
+        });
         set({ isPlaying: false });
+      });
+      
+      // Additional monitoring for unexpected stops
+      audio.addEventListener('stalled', () => {
+        console.warn('⚠️ Audio stalled - network loading halted');
+      });
+
+      audio.addEventListener('waiting', () => {
+        console.log('⏳ Audio waiting - insufficient data for playback');
+      });
+
+      audio.addEventListener('canplaythrough', () => {
+        console.log('✅ Audio can play through - buffering complete');
+      });
+
+      audio.addEventListener('suspend', () => {
+        console.log('⏹️ Audio loading suspended - browser stopped downloading');
+      });
+
+      audio.addEventListener('abort', () => {
+        console.log('🚫 Audio loading aborted - fetch was cancelled');
+      });
+
+      audio.addEventListener('emptied', () => {
+        console.log('🔄 Audio emptied - media element reset');
+      });
+
+      audio.addEventListener('loadstart', () => {
+        console.log('🚀 Audio load started');
+      });
+
+      audio.addEventListener('progress', () => {
+        if (audio.buffered.length > 0) {
+          const bufferedEnd = audio.buffered.end(audio.buffered.length - 1);
+          const bufferedPercent = (bufferedEnd / audio.duration) * 100;
+          console.log(`📊 Audio buffering progress: ${Math.round(bufferedPercent)}%`);
+        }
       });
       
       // Time and metadata tracking
