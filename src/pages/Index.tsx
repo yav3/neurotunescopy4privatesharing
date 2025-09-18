@@ -28,7 +28,6 @@ const therapeuticGoals = [
   { id: 'stress-anxiety-support', name: 'Anxiety Reduction', letter: 'A', image: mistyLake },
   { id: 'pain-support', name: 'Pain Reduction', letter: 'P', image: getAlbumArtByGoal('pain-support') },
   { id: 'energy-boost', name: 'Energy Boost', letter: 'E', image: tropicalFlowers },
-  { id: 'mood-boost', name: 'Mood Enhancement', letter: 'M', image: getAlbumArtByGoal('mood-boost') },
   { id: 'stress-reduction-alt', name: 'Stress Reduction', letter: 'S', image: getAlbumArtByGoal('stress-anxiety-support'), goalMapping: 'stress-anxiety-support' },
 ];
 

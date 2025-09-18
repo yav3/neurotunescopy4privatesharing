@@ -82,24 +82,8 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['sonatasforstress', 'newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba'],
+    musicBuckets: ['sonatasforstress', 'newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana'],
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
-  },
-  {
-    id: 'mood-boost',
-    slug: 'mood-boost',
-    backendKey: 'mood-boost',
-    name: 'Mood Boost',
-    shortName: 'Energy',
-    description: 'Uplift your spirits and energy',
-    icon: Plus,
-    artwork: moodBoostCard,
-    color: 'cyan',
-    gradient: 'from-cyan-500 to-teal-500',
-    bpmRange: { min: 90, max: 140, optimal: 120 },
-    vadProfile: { valence: 0.8, arousal: 0.7, dominance: 0.5 },
-    musicBuckets: ['audio', 'neuralpositivemusic', 'pop', 'moodboostremixesworlddance', 'countryandamericana', 'ENERGYBOOST', 'NewAgeandWorldFocus'],
-    synonyms: ['mood', 'happy', 'uplift', 'mood_boost', 'energy']
   },
   {
     id: 'pain-support',
@@ -168,8 +152,8 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
   return acc;
 }, {} as Record<string, TherapeuticGoal>);
 
-// Legacy type for backwards compatibility - expanded to include new goals
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'mood-boost' | 'pain-support' | 'energy-boost';
+// Legacy type for backwards compatibility - updated to remove mood-boost
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'pain-support' | 'energy-boost';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
