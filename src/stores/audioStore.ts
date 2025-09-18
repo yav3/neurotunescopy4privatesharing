@@ -152,6 +152,13 @@ const ensureAudioElement = (): HTMLAudioElement => {
   } else {
     // Ensure existing element is also configured for therapeutic use
     configureTherapeuticAudio(audioElement);
+    
+    // Ensure crossOrigin is set on existing elements too  
+    if (!audioElement.crossOrigin) {
+      audioElement.crossOrigin = 'anonymous';
+      console.log(`🎵 Added crossOrigin to existing audio element`);
+    }
+    
     console.log(`🎵 Found and configured existing user-specific audio element #${currentElementId}`);
   }
   return audioElement;
@@ -676,9 +683,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         const onLoadedData = () => {
           console.log('🎵 Audio data loaded, checking if playable');
-          // Accept loadeddata as sufficient for basic playback
-          if (audio.readyState >= 2) {
-            console.log('🎵 Audio has enough data loaded, proceeding with playback');
+          // More aggressive: Accept readyState >= 1 (HAVE_METADATA) for faster start
+          if (audio.readyState >= 1) {
+            console.log('🎵 Audio has metadata loaded, proceeding with faster playback');
             cleanupListeners();
             resolve(true);
           }
@@ -711,19 +718,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
         audio.addEventListener('loadeddata', onLoadedData);
         audio.addEventListener('error', onError);
         
-        // Reduced timeout to 8 seconds for faster user feedback
+        // Faster timeout - 3 seconds for quicker user feedback
         setTimeout(() => {
           console.log('🎵 Audio load timeout - readyState:', audio.readyState);
-          // If we have some data loaded but not full canplay, still try to proceed
-          if (audio.readyState >= 2) {
-            console.log('🎵 Timeout but sufficient data available, proceeding anyway');
+          // More aggressive: accept HAVE_METADATA (readyState >= 1) for faster playback
+          if (audio.readyState >= 1) {
+            console.log('🎵 Timeout but metadata available, proceeding anyway');
             cleanupListeners();
             resolve(true);
           } else {
             cleanupListeners();  
             resolve(false);
           }
-        }, 8000);
+        }, 3000);
       });
       
       audio.load();
@@ -737,19 +744,32 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       // Don't attempt autoplay during initial load to avoid browser blocking
       // Actually DO start playing since this is user-initiated via a click
-      console.log('🎵 Audio loaded successfully, attempting autoplay...');
+      console.log('🎵 Audio loaded successfully, attempting immediate autoplay...');
       
       try {
+        // Force immediate playback - no waiting
+        set({ isPlaying: true });
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           await playPromise;
         }
-        console.log('✅ Auto-play successful after load');
-        set({ isPlaying: true });
+        console.log('✅ Immediate auto-play successful after load');
       } catch (playError: any) {
-        console.log('🎵 Auto-play blocked after load (expected in some browsers):', playError.name);
-        // Don't set error state - just let user manually click play
-        set({ isPlaying: false });
+        console.log('🎵 Immediate auto-play blocked (trying again shortly):', playError.name);
+        // Retry once after small delay
+        setTimeout(async () => {
+          try {
+            const retryPromise = audio.play();
+            if (retryPromise !== undefined) {
+              await retryPromise;
+            }
+            set({ isPlaying: true });
+            console.log('✅ Retry auto-play successful');
+          } catch (retryError: any) {
+            console.log('🎵 Retry also failed, user must manually play:', retryError.name);
+            set({ isPlaying: false });
+          }
+        }, 300);
       }
       
       // Final validation
