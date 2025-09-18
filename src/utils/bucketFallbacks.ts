@@ -9,7 +9,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
   'sonatasforstress': ['Chopin'], // Sonatas should ONLY fallback to Chopin classical music
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
-  'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty mood boost bucket fallback
+  'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // House and dance music fallback
   'audio': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty audio bucket fallback
   'newageworldstressanxietyreduction': ['NewAgeandWorldFocus'], // If primary new age is empty, use world focus only
   'meditation': ['newageworldstressanxietyreduction', 'Chopin'], // Non-Sleep Deep Rest fallback to calm music
@@ -25,7 +25,6 @@ const KNOWN_EMPTY_BUCKETS = new Set([
   'HIIT',
   'gentleclassicalforpain',
   'painreducingworld',
-  'moodboostremixesworlddance',
   'audio'
 ]);
 
