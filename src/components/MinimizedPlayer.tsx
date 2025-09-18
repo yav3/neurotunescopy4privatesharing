@@ -58,7 +58,7 @@ export const MinimizedPlayer = () => {
   // This prevents the player from disappearing due to race conditions
   if (!track) {
     // Debug: Check if audio is actually playing despite no track in store
-    const audio = (window as any).audioPlayer;
+    const audio = document.querySelector('audio[data-therapeutic="true"]') as HTMLAudioElement;
     const isAudioActuallyPlaying = audio && !audio.paused && !audio.ended && audio.readyState > 2;
     
     if (isAudioActuallyPlaying) {
@@ -71,7 +71,88 @@ export const MinimizedPlayer = () => {
         storeIsPlaying: useAudioStore.getState().isPlaying
       });
       
-      // Don't hide the player if audio is actually playing - show minimal version
+      // Show player with current audio info instead of hiding
+      const progressPercentage = audio.duration > 0 ? (audio.currentTime / audio.duration) * 100 : 0;
+      const audioTitle = audio.src ? decodeURIComponent(audio.src.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'Unknown Track') : 'Playing...';
+      
+      return (
+        <div className="fixed bottom-0 left-0 right-0 z-[9999] backdrop-blur-lg bg-card/30 border-t border-border shadow-glass-lg">
+          {/* Progress bar showing actual audio progress */}
+          <div className="w-full h-1 bg-muted/30">
+            <div 
+              className="h-full bg-primary/70 transition-all duration-300 shadow-sm"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          
+          {/* Player content with actual audio info */}
+          <div 
+            className="px-4 py-3 flex items-center gap-3 cursor-pointer"
+            onClick={() => {
+              console.log('🎵 MinimizedPlayer clicked - switching to full mode');
+              setPlayerMode('full');
+            }}
+          >
+            {/* Album art */}
+            <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
+              <img
+                src={artworkSrc}
+                alt="Playing"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            
+            {/* Track info */}
+            <div className="flex-1 min-w-0">
+              <h3 className="font-medium text-foreground text-sm leading-tight truncate">
+                {TitleFormatter.formatTrackTitle(audioTitle)}
+              </h3>
+              <p className="text-xs text-muted-foreground truncate">
+                {getTherapeuticGoalName()}
+              </p>
+            </div>
+            
+            {/* Controls */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-12 h-12 sm:w-8 sm:h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  if (audio.paused) {
+                    audio.play();
+                  } else {
+                    audio.pause();
+                  }
+                }}
+              >
+                {!audio.paused ? (
+                  <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+                ) : (
+                  <Play className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+                )}
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-foreground/80 hover:text-foreground hover:bg-card/40 touch-manipulation active:scale-95 transition-transform"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  next();
+                }}
+              >
+                <SkipForward className="w-5 h-5 sm:w-4 sm:h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
     } else {
       // Only hide when truly no audio is playing
       return (
