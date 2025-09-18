@@ -49,44 +49,35 @@ class StorageRequestManager {
       return cached.data;
     }
 
-    // Check if request is already pending
+    // Check if request is already pending to prevent race conditions
     if (this.pendingRequests.has(cacheKey)) {
-      console.log(`⏳ Joining existing request for bucket ROOT: ${bucket}`);
+      console.log(`🔄 Request already pending for bucket: ${bucket}, waiting...`);
       return this.pendingRequests.get(cacheKey);
     }
 
-    // Create new request
+    // Create new request promise
     const requestPromise = new Promise<any>((resolve, reject) => {
       const executeRequest = async () => {
         try {
-          console.log(`🔄 Fetching storage list for bucket ROOT ONLY: ${bucket}`);
-          
-          // ALWAYS access bucket root - never subfolders
-          const { data, error } = await supabase.storage
-            .from(bucket)
-            .list('', {  // Empty string = bucket root only
-              limit: 1000,
-              sortBy: { column: 'name', order: 'asc' },
-              // Remove any folder/prefix options that might be passed
-              // ...options
-            });
+          console.log(`🔄 Executing storage request for bucket ROOT: ${bucket}`);
+          const { data, error } = await supabase.storage.from(bucket).list('', {
+            limit: 1000,
+            offset: 0,
+            sortBy: { column: 'name', order: 'asc' },
+            ...options
+          });
 
           if (error) {
-            console.error(`❌ Storage list error for ${bucket} ROOT:`, error);
-            reject(error);
-            return;
+            console.error(`❌ Storage error for ${bucket}:`, error);
+            throw error;
           }
 
           // Cache the result
-          this.requestCache.set(cacheKey, {
-            data,
-            timestamp: Date.now()
-          });
-
-          console.log(`✅ Cached storage list for ${bucket} ROOT: ${data?.length || 0} files`);
-          resolve(data);
+          this.requestCache.set(cacheKey, { data: data || [], timestamp: Date.now() });
+          console.log(`✅ Storage request completed for ${bucket}: ${(data || []).length} files`);
+          resolve(data || []);
         } catch (error) {
-          console.error(`❌ Storage request failed for ${bucket} ROOT:`, error);
+          console.error(`❌ Storage request failed for ${bucket}:`, error);
           reject(error);
         } finally {
           // Clean up pending request
@@ -94,12 +85,13 @@ class StorageRequestManager {
         }
       };
 
-      // Add to queue if at capacity, otherwise execute immediately
+      // Queue the request if we're at capacity
       if (this.activeRequests >= this.MAX_CONCURRENT_REQUESTS) {
-        console.log(`🚦 Queueing storage request for bucket: ${bucket}`);
+        console.log(`🔄 Queueing storage request for ${bucket} (${this.activeRequests}/${this.MAX_CONCURRENT_REQUESTS} active)`);
         this.requestQueue.push(executeRequest);
         this.processQueue();
       } else {
+        // Execute immediately
         this.activeRequests++;
         executeRequest().finally(() => {
           this.activeRequests--;
@@ -108,9 +100,7 @@ class StorageRequestManager {
       }
     });
 
-    // Store pending request
     this.pendingRequests.set(cacheKey, requestPromise);
-
     return requestPromise;
   }
 

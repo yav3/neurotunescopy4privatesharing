@@ -14,6 +14,28 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'newageworldstressanxietyreduction': ['NewAgeandWorldFocus', 'neuralpositivemusic'], // If primary new age is empty, use these working buckets
   'meditation': ['newageworldstressanxietyreduction', 'Chopin'], // Non-Sleep Deep Rest fallback to calm music
   'Nocturnes': ['Chopin', 'newageworldstressanxietyreduction'], // Nocturnes fallback to piano music and new age
+  'albumart': ['neuralpositivemusic', 'Chopin'], // Empty album art bucket - fallback to music buckets for now
+};
+
+// Cache of known empty buckets to avoid repeated requests
+const KNOWN_EMPTY_BUCKETS = new Set([
+  'sonatasforstress',
+  'albumart',
+  'pop',
+  'HIIT',
+  'gentleclassicalforpain',
+  'painreducingworld',
+  'moodboostremixesworlddance',
+  'audio'
+]);
+
+/**
+ * Check if a bucket should be skipped due to being known empty
+ * @param bucket - Bucket name to check
+ * @returns True if bucket should be skipped
+ */
+export const shouldSkipEmptyBucket = (bucket: string): boolean => {
+  return KNOWN_EMPTY_BUCKETS.has(bucket);
 };
 
 /**
@@ -29,14 +51,31 @@ export const getFallbackBuckets = (originalBucket: string): string[] => {
 /**
  * Get all possible buckets including fallbacks for an array of buckets
  * @param buckets - Original bucket array
- * @returns Expanded array including fallback buckets
+ * @returns Expanded array including fallback buckets, with empty buckets filtered out
  */
 export const expandBucketsWithFallbacks = (buckets: string[]): string[] => {
   const allBuckets = new Set<string>();
   
   buckets.forEach(bucket => {
-    const bucketsToTry = getFallbackBuckets(bucket);
-    bucketsToTry.forEach(b => allBuckets.add(b));
+    // Skip known empty buckets entirely and use only their fallbacks
+    if (shouldSkipEmptyBucket(bucket)) {
+      console.log(`⚡ Skipping known empty bucket: ${bucket}, using fallbacks only`);
+      const fallbacks = BUCKET_FALLBACKS[bucket] || [];
+      fallbacks.forEach(fallback => {
+        if (!shouldSkipEmptyBucket(fallback)) {
+          allBuckets.add(fallback);
+        }
+      });
+    } else {
+      // Use the bucket itself, plus fallbacks if it becomes empty
+      allBuckets.add(bucket);
+      const fallbacks = BUCKET_FALLBACKS[bucket] || [];
+      fallbacks.forEach(fallback => {
+        if (!shouldSkipEmptyBucket(fallback)) {
+          allBuckets.add(fallback);
+        }
+      });
+    }
   });
   
   return Array.from(allBuckets);
