@@ -82,13 +82,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: sonatasMistyLake
       },
       {
-        id: 'peaceful-piano',
-        name: 'Chopin',
-        description: 'Gentle Chopin pieces for relaxation',
-        buckets: ['Chopin'],
-        image: chopinMountainPeaks
-      },
-      {
         id: 'samba',
         name: 'Samba',
         description: 'Relaxing Brazilian samba rhythms for stress support',
