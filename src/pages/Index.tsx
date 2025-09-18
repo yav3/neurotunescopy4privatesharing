@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sun, Moon, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { THERAPEUTIC_CATEGORIES } from '@/config/therapeuticCategories';
+import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { GenreSelectionModal } from '@/components/GenreSelectionModal';
 import { cn } from '@/lib/utils';
@@ -22,14 +22,13 @@ import yellowFlowers from '@/assets/yellow-flowers.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
-// Therapeutic goals with diverse images
-const therapeuticGoals = [
-  { id: 'focus-enhancement', name: 'Focus Enhancement', letter: 'F', image: peacefulLake },
-  { id: 'stress-anxiety-support', name: 'Anxiety Reduction', letter: 'A', image: mistyLake },
-  { id: 'pain-support', name: 'Pain Reduction', letter: 'P', image: getAlbumArtByGoal('pain-support') },
-  { id: 'energy-boost', name: 'Energy Boost', letter: 'E', image: tropicalFlowers },
-  { id: 'stress-reduction-alt', name: 'Stress Reduction', letter: 'S', image: getAlbumArtByGoal('stress-anxiety-support'), goalMapping: 'stress-anxiety-support' },
-];
+// Use centralized therapeutic goals configuration
+const therapeuticGoals = THERAPEUTIC_GOALS.map(goal => ({
+  id: goal.id,
+  name: goal.name,
+  letter: goal.name.charAt(0),
+  image: goal.artwork
+}));
 
 // Trending music categories with varied images
 const trendingCategories = [
@@ -49,9 +48,7 @@ const Index = () => {
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
-    // Map stress-reduction-alt to the actual stress-anxiety-support goal
-    const mappedGoalId = goalId === 'stress-reduction-alt' ? 'stress-anxiety-support' : goalId;
-    setSelectedGoalId(mappedGoalId);
+    setSelectedGoalId(goalId);
     setIsModalOpen(true);
   };
 
