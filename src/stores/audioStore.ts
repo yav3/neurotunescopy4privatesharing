@@ -585,9 +585,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      // Configure audio element for better playback
+      // Configure audio element for faster playback
       audio.crossOrigin = null;         // Remove CORS restriction for public storage
-      audio.preload = "metadata";       // Better than "auto" for initial loading
+      audio.preload = "auto";           // Preload full audio for faster start
       (audio as any).playsInline = true;
       
       // Skip URL testing to avoid CORS issues - let audio element handle it directly
@@ -1072,12 +1072,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         // Optimistically set playing state to ensure UI responsiveness
         set({ isPlaying: true, error: undefined });
         
-        // Safari fix: Ensure audio is ready before attempting play
+        // Safari fix: Ensure audio is ready before attempting play (reduced timeout)
         if (audio.readyState === 0) {
           console.log('🎵 Safari fix: Audio not ready, loading first...');
           audio.load();
           
-          // Wait for Safari to be ready (up to 3 seconds)
+          // Wait for Safari to be ready (reduced to 800ms for faster playback)
           await new Promise<void>((resolve) => {
             const onCanPlay = () => {
               audio.removeEventListener('canplay', onCanPlay);
@@ -1099,9 +1099,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
             setTimeout(() => {
               audio.removeEventListener('canplay', onCanPlay);
               audio.removeEventListener('error', onError);
-              console.log('🎵 Safari fix timeout');
+              console.log('🎵 Safari fix timeout (800ms)');
               resolve();
-            }, 3000);
+            }, 800);
           });
         }
         
