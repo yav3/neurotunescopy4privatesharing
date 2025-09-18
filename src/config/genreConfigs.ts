@@ -71,6 +71,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Acoustic country and folk music for focused concentration',
         buckets: ['countryandamericana'],
         image: moodBoostFloralField
+      },
+      {
+        id: 'nocturnes',
+        name: 'Nocturnes',
+        description: 'Gentle nocturne compositions for deep focus and concentration',
+        buckets: ['Nocturnes'],
+        image: focusPianoCherryBlossoms
       }
     ],
     'stress-anxiety-support': [
