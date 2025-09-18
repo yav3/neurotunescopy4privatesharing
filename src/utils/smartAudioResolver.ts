@@ -23,6 +23,8 @@ export class SmartAudioResolver {
     title: string;
     storage_bucket?: string;
     storage_key?: string;
+    category?: string;
+    genre?: string;
   }): Promise<AudioResolutionResult> {
     
     const cacheKey = `${track.id}-${track.storage_bucket}-${track.storage_key}`;
@@ -33,91 +35,145 @@ export class SmartAudioResolver {
       return this.cache.get(cacheKey)!;
     }
 
-    console.log(`🚀 OPTIMISTIC: Resolving audio for: "${track.title}"`);
-    console.log(`📋 Database says: bucket="${track.storage_bucket}" key="${track.storage_key}"`);
+    console.log(`🚀 SmartAudioResolver: Starting resolution for: "${track.title}"`);
+    console.log(`📋 Track details:`, {
+      title: track.title,
+      storage_bucket: track.storage_bucket,
+      storage_key: track.storage_key,
+      category: track.category,
+      genre: track.genre
+    });
 
     const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
-    
-    // OPTIMISTIC APPROACH: Build the most likely URL and let audio element validate
     
     // Priority 1: Use database URL if available (most reliable)
     if (track.storage_bucket && track.storage_key) {
       const encodedKey = encodeURIComponent(track.storage_key);
       const dbUrl = `${baseUrl}/${track.storage_bucket}/${encodedKey}`;
-      console.log(`✅ OPTIMISTIC: Using database URL - ${dbUrl}`);
+      console.log(`✅ Trying database URL: ${dbUrl}`);
       
       const optimisticResult = { 
         success: true, 
         url: dbUrl, 
-        method: 'database_optimistic', 
-        attempts: [{ url: dbUrl, status: 200, method: 'database_optimistic' }] 
+        method: 'database_direct', 
+        attempts: [{ url: dbUrl, status: 200, method: 'database_direct' }] 
       };
       this.cache.set(cacheKey, optimisticResult);
       return optimisticResult;
     }
     
-    // Priority 2: Generate neuralpositivemusic URL (common bucket)
-    console.log(`✅ OPTIMISTIC: Generating neuralpositivemusic URL`);
+    // Priority 2: Smart bucket detection and URL generation
+    const targetBuckets = this.getBucketsForTrack(track);
+    const cleanedTitle = this.cleanTrackTitle(track.title);
     
-    // Enhanced cleaning for problematic track names
-    let cleanTitle = track.title;
+    console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanedTitle}"`);
+    console.log(`🎯 Target buckets: [${targetBuckets.join(', ')}]`);
     
-    // Handle specific problematic patterns first
-    if (cleanTitle.includes(';')) {
-      // Replace semicolons and surrounding text patterns
-      cleanTitle = cleanTitle
-        .replace(/;\s*in\s+/gi, '-in-')  // "; in B Major" -> "-in-b-major"
-        .replace(/;\s*Movement\s+/gi, '-movement-')  // "; Movement 2" -> "-movement-2"
-        .replace(/;\s*/g, '-');  // Any remaining semicolons
-    }
+    // Try the most likely bucket first
+    const primaryBucket = targetBuckets[0];
+    const primaryUrl = `${baseUrl}/${primaryBucket}/${encodeURIComponent(cleanedTitle + '.mp3')}`;
+    console.log(`✅ Trying primary URL: ${primaryUrl}`);
     
-    // Handle very long titles by truncating intelligently
-    if (cleanTitle.length > 60) {
-      // Try to keep meaningful parts and remove redundant words
-      cleanTitle = cleanTitle
-        .replace(/\s+(Classical|Sleep|Meditation|Non\s+Sleep|Deep\s+Rest|Remix|BPM)\s*/gi, '-')
-        .replace(/\s*\(\d+\)\s*$/g, '') // Remove trailing numbers in parentheses
-        .replace(/\s+New\s+Age\s+New\s+Age\s+/gi, '-new-age-') // Handle duplicate "New Age"
-        .substring(0, 50); // Hard limit for very long names
-    }
-    
-    // Standard cleaning process
-    cleanTitle = cleanTitle
-      .replace(/[;&,]/g, '') // Remove semicolons, ampersands, commas
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .toLowerCase()
-      .replace(/[^a-z0-9-]/g, '') // Remove all non-alphanumeric except hyphens
-      .replace(/-+/g, '-') // Collapse multiple hyphens
-      .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-      .substring(0, 45); // Final conservative length limit
-    
-    console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanTitle}"`);
-    console.log(`📏 Original length: ${track.title.length}, Cleaned length: ${cleanTitle.length}`);
-    
-    const neuralUrl = `${baseUrl}/neuralpositivemusic/${encodeURIComponent(cleanTitle + '.mp3')}`;
-    console.log(`✅ OPTIMISTIC: Using neural URL - ${neuralUrl}`);
-    
-    // For problematic tracks, also try alternative buckets based on content
-    let alternativeBucket = 'neuralpositivemusic';
-    if (track.title.toLowerCase().includes('sonata') || track.title.toLowerCase().includes('baroque')) {
-      alternativeBucket = track.title.toLowerCase().includes('stress') ? 'sonatasforstress' : 'Chopin';
-    } else if (track.title.toLowerCase().includes('new age') || track.title.toLowerCase().includes('meditation')) {
-      alternativeBucket = 'newageworldstressanxietyreduction';
-    }
-    
-    // Log URL accessibility test
-    console.log(`🌐 Testing URL accessibility: ${neuralUrl.split('/').pop()}`);
-    console.log(`🔄 Alternative bucket consideration: ${alternativeBucket}`);
-    
-    const neuralResult = { 
+    const result = { 
       success: true, 
-      url: neuralUrl, 
-      method: 'neural_optimistic', 
-      attempts: [{ url: neuralUrl, status: 200, method: 'neural_optimistic' }],
-      alternativeBucket 
+      url: primaryUrl, 
+      method: `bucket_${primaryBucket}`, 
+      attempts: [{ url: primaryUrl, status: 200, method: `bucket_${primaryBucket}` }],
+      fallbackBuckets: targetBuckets.slice(1)
     };
-    this.cache.set(cacheKey, neuralResult);
-    return neuralResult;
+    this.cache.set(cacheKey, result);
+    return result;
+  }
+
+  private static getBucketsForTrack(track: {
+    title: string;
+    category?: string;
+    genre?: string;
+    storage_bucket?: string;
+  }): string[] {
+    const title = (track.title || '').toLowerCase();
+    const category = (track.category || '').toLowerCase();
+    const genre = (track.genre || '').toLowerCase();
+    
+    console.log(`🎯 Analyzing track for bucket selection:`, {
+      title: title.substring(0, 50),
+      category,
+      genre,
+      storage_bucket: track.storage_bucket
+    });
+
+    const buckets: string[] = [];
+
+    // Always try storage_bucket first if available
+    if (track.storage_bucket) {
+      buckets.push(track.storage_bucket);
+    }
+
+    // Special handling for Chopin/classical tracks (common issue)
+    if (title.includes('chopin') || title.includes('sonata') || 
+        title.includes('baroque') || category.includes('peaceful-piano') ||
+        category.includes('chopin')) {
+      buckets.push('Chopin');
+      console.log(`🎹 Added Chopin bucket for classical track`);
+    }
+
+    // Category-specific bucket mapping
+    if (category.includes('stress') || category.includes('anxiety')) {
+      buckets.push('newageworldstressanxietyreduction', 'sonatasforstress');
+    }
+    
+    if (category.includes('focus')) {
+      buckets.push('focus-music', 'classicalfocus', 'NewAgeandWorldFocus');
+    }
+    
+    if (category.includes('energy') || category.includes('boost')) {
+      buckets.push('ENERGYBOOST');
+    }
+
+    // Genre-specific buckets
+    if (genre.includes('classical')) {
+      buckets.push('Chopin', 'classicalfocus', 'sonatasforstress');
+    }
+
+    // Always include fallback buckets
+    buckets.push('neuralpositivemusic', 'audio');
+
+    const uniqueBuckets = [...new Set(buckets)];
+    console.log(`📂 Final bucket priority: [${uniqueBuckets.join(', ')}]`);
+    return uniqueBuckets;
+  }
+
+  private static cleanTrackTitle(title: string): string {
+    let cleaned = title;
+    
+    // Handle semicolons and complex patterns first
+    if (cleaned.includes(';')) {
+      cleaned = cleaned
+        .replace(/;\s*in\s+/gi, '-in-')
+        .replace(/;\s*Movement\s+/gi, '-movement-')
+        .replace(/;\s*/g, '-');
+    }
+    
+    // Intelligent truncation for very long titles
+    if (cleaned.length > 60) {
+      cleaned = cleaned
+        .replace(/\s+(Classical|Sleep|Meditation|Deep\s+Rest|Remix|BPM)\s*/gi, '-')
+        .replace(/\s*\(\d+\)\s*$/g, '')
+        .substring(0, 50);
+    }
+    
+    // Standard cleaning
+    cleaned = cleaned
+      .replace(/[;&,()]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .substring(0, 45);
+    
+    console.log(`🧹 Title cleaning: "${title}" -> "${cleaned}"`);
+    return cleaned;
   }
 
   // Optional: Keep lightweight URL testing for edge cases (using GET with Range)

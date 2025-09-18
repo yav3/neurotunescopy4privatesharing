@@ -538,11 +538,24 @@ export const useAudioStore = create<AudioState>((set, get) => {
       } else {
         // Use Smart Audio Resolver to find working URL
         console.log('🔍 Using SmartAudioResolver to find working URL...');
+        
+        // Extract category from current location if available
+        const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+        const pathParts = currentPath.split('/');
+        const category = pathParts.includes('peaceful-piano') ? 'peaceful-piano' : 
+                        pathParts.includes('stress-anxiety-support') ? 'stress-anxiety-support' :
+                        pathParts.includes('energy-boost') ? 'energy-boost' :
+                        pathParts.includes('focus') ? 'focus' : '';
+        
+        console.log('🎯 Detected category from URL:', category, 'for track:', track.title);
+        
         resolution = await SmartAudioResolver.resolveAudioUrl({
           id: track.id,
           title: track.title || 'Untitled',
           storage_bucket: track.storage_bucket,
-          storage_key: track.storage_key
+          storage_key: track.storage_key,
+          category: category,
+          genre: track.genre
         });
       }
       
