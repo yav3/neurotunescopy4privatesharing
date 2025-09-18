@@ -979,7 +979,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
         console.log(`🎯 Loading tracks from storage service for goal: "${goal}"`);
         
         const { SimpleStorageService } = await import('@/services/simpleStorageService');
-        let tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+        let tracks;
+        
+        // If specific buckets are provided, use them directly instead of goal mapping
+        if (specificBuckets && specificBuckets.length > 0) {
+          console.log(`🎵 Using specific buckets: ${specificBuckets.join(', ')}`);
+          tracks = await SimpleStorageService.getTracksFromBuckets(specificBuckets, 50);
+        } else {
+          console.log(`🎵 Using goal-based bucket mapping for: "${goal}"`);
+          tracks = await SimpleStorageService.getTracksFromCategory(goal, 50);
+        }
         
         console.log(`✅ SimpleStorageService returned ${tracks.length} tracks for ${goal}`);
         
