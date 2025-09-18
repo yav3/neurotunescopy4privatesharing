@@ -34,7 +34,7 @@ const therapeuticGoals = [
 // Trending music categories with varied images
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
-  { id: 'electronic-dance', name: 'Electronic Dance', letter: 'D', image: tropicalFlowers },
+  { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: tropicalFlowers },
   { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: waterfallGreen },
@@ -70,7 +70,7 @@ const Index = () => {
     // Map trending categories to actual music goals for immediate playbook
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'pain-support',
-      'electronic-dance': 'energy-boost',
+      'nocturnes': 'focus-enhancement', // Nocturnes are perfect for focus and relaxation
       'positive-pop': 'energy-boost', // Changed: Pop should use energy-boost which has actual pop in ENERGYBOOST bucket
       'chill-piano': 'focus-enhancement',
       'relaxing-new-age': 'stress-anxiety-support',
