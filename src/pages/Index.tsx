@@ -21,6 +21,7 @@ import forestLakeMist from '@/assets/forest-lake-mist.png';
 import yellowFlowers from '@/assets/yellow-flowers.png';
 import stressLeaf from '@/assets/stress-support-leaf.png';
 import anxietyLake from '@/assets/anxiety-support-lake.png';
+import nocturnesStones from '@/assets/nocturnes-stones.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -53,7 +54,7 @@ const therapeuticGoals = [
 // Trending music categories with varied images
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
-  { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: tropicalFlowers },
+  { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
   { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'relaxing-new-age', name: 'Relaxing New Age', letter: 'N', image: waterfallGreen },
