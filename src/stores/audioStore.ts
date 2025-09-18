@@ -564,16 +564,38 @@ export const useAudioStore = create<AudioState>((set, get) => {
         });
         console.log('📝 Attempted URLs:', resolution.attempts);
         
-        // Save failure info for debugging
-        if (typeof window !== 'undefined') {
-          (window as any).lastBrokenTrack = { track, resolution };
+        // Try alternative bucket fallback for problematic tracks
+        console.log('🔄 Attempting alternative bucket fallbacks...');
+        const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
+        let fallbackUrl = null;
+        
+        // Determine alternative bucket based on track content
+        if (track.title.toLowerCase().includes('sonata') || track.title.toLowerCase().includes('baroque')) {
+          const bucket = track.title.toLowerCase().includes('stress') ? 'sonatasforstress' : 'Chopin';
+          const simpleTitle = track.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 30);
+          fallbackUrl = `${baseUrl}/${bucket}/${encodeURIComponent(simpleTitle + '.mp3')}`;
+          console.log(`🎯 Sonata fallback: ${fallbackUrl}`);
+        } else if (track.title.toLowerCase().includes('new age') || track.title.toLowerCase().includes('meditation')) {
+          const simpleTitle = track.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 30);
+          fallbackUrl = `${baseUrl}/newageworldstressanxietyreduction/${encodeURIComponent(simpleTitle + '.mp3')}`;
+          console.log(`🎯 New Age fallback: ${fallbackUrl}`);
         }
         
-        set({ 
-          error: `Audio file not found. Tried ${resolution.attempts.length} different locations.`,
-          isLoading: false 
-        });
-        return false;
+        if (fallbackUrl) {
+          console.log(`🔄 Using fallback URL: ${fallbackUrl}`);
+          resolution = { success: true, url: fallbackUrl, method: 'fallback_bucket', attempts: [] };
+        } else {
+          // Save failure info for debugging
+          if (typeof window !== 'undefined') {
+            (window as any).lastBrokenTrack = { track, resolution };
+          }
+          
+          set({ 
+            error: `Audio file not found. Tried ${resolution.attempts?.length || 0} different locations.`,
+            isLoading: false 
+          });
+          return false;
+        }
       }
       
       const url = resolution.url;

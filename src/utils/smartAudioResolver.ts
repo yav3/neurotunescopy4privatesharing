@@ -59,15 +59,37 @@ export class SmartAudioResolver {
     // Priority 2: Generate neuralpositivemusic URL (common bucket)
     console.log(`✅ OPTIMISTIC: Generating neuralpositivemusic URL`);
     
-    // Clean title for filename - preserve more characters for complex track names
-    const cleanTitle = track.title
+    // Enhanced cleaning for problematic track names
+    let cleanTitle = track.title;
+    
+    // Handle specific problematic patterns first
+    if (cleanTitle.includes(';')) {
+      // Replace semicolons and surrounding text patterns
+      cleanTitle = cleanTitle
+        .replace(/;\s*in\s+/gi, '-in-')  // "; in B Major" -> "-in-b-major"
+        .replace(/;\s*Movement\s+/gi, '-movement-')  // "; Movement 2" -> "-movement-2"
+        .replace(/;\s*/g, '-');  // Any remaining semicolons
+    }
+    
+    // Handle very long titles by truncating intelligently
+    if (cleanTitle.length > 60) {
+      // Try to keep meaningful parts and remove redundant words
+      cleanTitle = cleanTitle
+        .replace(/\s+(Classical|Sleep|Meditation|Non\s+Sleep|Deep\s+Rest|Remix|BPM)\s*/gi, '-')
+        .replace(/\s*\(\d+\)\s*$/g, '') // Remove trailing numbers in parentheses
+        .replace(/\s+New\s+Age\s+New\s+Age\s+/gi, '-new-age-') // Handle duplicate "New Age"
+        .substring(0, 50); // Hard limit for very long names
+    }
+    
+    // Standard cleaning process
+    cleanTitle = cleanTitle
       .replace(/[;&,]/g, '') // Remove semicolons, ampersands, commas
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .toLowerCase()
       .replace(/[^a-z0-9-]/g, '') // Remove all non-alphanumeric except hyphens
       .replace(/-+/g, '-') // Collapse multiple hyphens
       .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-      .substring(0, 100); // Limit length to prevent overly long URLs
+      .substring(0, 45); // Final conservative length limit
     
     console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanTitle}"`);
     console.log(`📏 Original length: ${track.title.length}, Cleaned length: ${cleanTitle.length}`);
@@ -75,14 +97,24 @@ export class SmartAudioResolver {
     const neuralUrl = `${baseUrl}/neuralpositivemusic/${encodeURIComponent(cleanTitle + '.mp3')}`;
     console.log(`✅ OPTIMISTIC: Using neural URL - ${neuralUrl}`);
     
+    // For problematic tracks, also try alternative buckets based on content
+    let alternativeBucket = 'neuralpositivemusic';
+    if (track.title.toLowerCase().includes('sonata') || track.title.toLowerCase().includes('baroque')) {
+      alternativeBucket = track.title.toLowerCase().includes('stress') ? 'sonatasforstress' : 'Chopin';
+    } else if (track.title.toLowerCase().includes('new age') || track.title.toLowerCase().includes('meditation')) {
+      alternativeBucket = 'newageworldstressanxietyreduction';
+    }
+    
     // Log URL accessibility test
     console.log(`🌐 Testing URL accessibility: ${neuralUrl.split('/').pop()}`);
+    console.log(`🔄 Alternative bucket consideration: ${alternativeBucket}`);
     
     const neuralResult = { 
       success: true, 
       url: neuralUrl, 
       method: 'neural_optimistic', 
-      attempts: [{ url: neuralUrl, status: 200, method: 'neural_optimistic' }] 
+      attempts: [{ url: neuralUrl, status: 200, method: 'neural_optimistic' }],
+      alternativeBucket 
     };
     this.cache.set(cacheKey, neuralResult);
     return neuralResult;
