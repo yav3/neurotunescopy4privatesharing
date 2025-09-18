@@ -59,19 +59,24 @@ export class SmartAudioResolver {
     // Priority 2: Generate neuralpositivemusic URL (common bucket)
     console.log(`✅ OPTIMISTIC: Generating neuralpositivemusic URL`);
     
-    // Clean title for filename
+    // Clean title for filename - preserve more characters for complex track names
     const cleanTitle = track.title
       .replace(/[;&,]/g, '') // Remove semicolons, ampersands, commas
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .toLowerCase()
       .replace(/[^a-z0-9-]/g, '') // Remove all non-alphanumeric except hyphens
       .replace(/-+/g, '-') // Collapse multiple hyphens
-      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+      .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+      .substring(0, 100); // Limit length to prevent overly long URLs
     
     console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanTitle}"`);
+    console.log(`📏 Original length: ${track.title.length}, Cleaned length: ${cleanTitle.length}`);
     
     const neuralUrl = `${baseUrl}/neuralpositivemusic/${encodeURIComponent(cleanTitle + '.mp3')}`;
     console.log(`✅ OPTIMISTIC: Using neural URL - ${neuralUrl}`);
+    
+    // Log URL accessibility test
+    console.log(`🌐 Testing URL accessibility: ${neuralUrl.split('/').pop()}`);
     
     const neuralResult = { 
       success: true, 

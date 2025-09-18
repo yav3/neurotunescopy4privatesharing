@@ -590,8 +590,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
       audio.preload = "auto";           // Preload full audio for faster start
       (audio as any).playsInline = true;
       
-      // Skip URL testing to avoid CORS issues - let audio element handle it directly
+      // Enhanced logging for debug tracking
       console.log('🎵 Setting audio source without pre-testing to avoid CORS issues');
+      console.log('📝 Track info:', {
+        title: track.title,
+        originalLength: track.title.length,
+        bucket: track.storage_bucket,
+        key: track.storage_key,
+        generatedUrl: url.split('/').pop()
+      });
       
       // Skip redundant HEAD request - SmartAudioResolver already validated the URL
       console.log('✅ Using pre-validated URL from SmartAudioResolver:', url);
