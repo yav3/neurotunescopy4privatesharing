@@ -22,13 +22,31 @@ import yellowFlowers from '@/assets/yellow-flowers.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
-// Use centralized therapeutic goals configuration
-const therapeuticGoals = THERAPEUTIC_GOALS.map(goal => ({
-  id: goal.id,
-  name: goal.name,
-  letter: goal.name.charAt(0),
-  image: goal.artwork
-}));
+// Create 6 therapeutic goal cards - split stress & anxiety into separate cards
+const stressAnxietyGoal = THERAPEUTIC_GOALS.find(g => g.id === 'stress-anxiety-support');
+const therapeuticGoals = [
+  ...THERAPEUTIC_GOALS.filter(goal => goal.id !== 'stress-anxiety-support').map(goal => ({
+    id: goal.id,
+    name: goal.name,
+    letter: goal.name.charAt(0),
+    image: goal.artwork
+  })),
+  // Split stress & anxiety into two separate cards
+  {
+    id: 'stress-support',
+    name: 'Stress Support',
+    letter: 'S',
+    image: stressAnxietyGoal?.artwork || mistyLake,
+    goalMapping: 'stress-anxiety-support'
+  },
+  {
+    id: 'anxiety-support', 
+    name: 'Anxiety Support',
+    letter: 'A',
+    image: stressAnxietyGoal?.artwork || mistyLake,
+    goalMapping: 'stress-anxiety-support'
+  }
+];
 
 // Trending music categories with varied images
 const trendingCategories = [
@@ -48,7 +66,11 @@ const Index = () => {
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
-    setSelectedGoalId(goalId);
+    // Map split cards back to original goal
+    const mappedGoalId = goalId === 'stress-support' || goalId === 'anxiety-support' 
+      ? 'stress-anxiety-support' 
+      : goalId;
+    setSelectedGoalId(mappedGoalId);
     setIsModalOpen(true);
   };
 
