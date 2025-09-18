@@ -42,23 +42,23 @@ export const MinimizedPlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Double-tap handler - improved to work with button interactions
-  const handleDoubleTap = (e: React.MouseEvent | React.TouchEvent) => {
+  // Double-tap handler - using pointer events for better reliability
+  const handlePlayerClick = (e: React.MouseEvent | React.TouchEvent) => {
+    console.log('🎵 Player click detected', { target: e.target, currentTarget: e.currentTarget });
+    
     // Only handle clicks on the container, not on buttons
     const target = e.target as HTMLElement;
     if (target.tagName === 'BUTTON' || target.closest('button')) {
+      console.log('🎵 Click on button ignored');
       return;
     }
-    
-    e.preventDefault();
-    e.stopPropagation();
     
     const now = Date.now();
     const timeDiff = now - lastTapTime;
     
-    console.log('🎵 Tap detected on player container', { timeDiff, tapCount, now });
+    console.log('🎵 Processing container click', { timeDiff, tapCount, now });
     
-    if (timeDiff < 400 && tapCount === 1) {
+    if (timeDiff < 500 && tapCount === 1) {
       // Double tap detected
       console.log('🎵 Double-tap detected - expanding to full player');
       setPlayerMode('full');
@@ -72,9 +72,10 @@ export const MinimizedPlayer = () => {
       
       // Reset after timeout if no second tap
       setTimeout(() => {
+        console.log('🎵 Resetting tap count after timeout');
         setTapCount(0);
         setLastTapTime(0);
-      }, 400);
+      }, 500);
     }
   };
 
@@ -128,8 +129,8 @@ export const MinimizedPlayer = () => {
           {/* Player content with actual audio info */}
           <div 
             className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-            onClick={handleDoubleTap}
-            onTouchEnd={handleDoubleTap}
+            onClick={handlePlayerClick}
+            onTouchEnd={handlePlayerClick}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -259,8 +260,8 @@ export const MinimizedPlayer = () => {
       {/* Player content */}
       <div 
         className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-        onClick={handleDoubleTap}
-        onTouchEnd={handleDoubleTap}
+        onClick={handlePlayerClick}
+        onTouchEnd={handlePlayerClick}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
