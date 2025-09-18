@@ -145,6 +145,9 @@ const ensureAudioElement = (): HTMLAudioElement => {
     // Apply therapeutic audio configuration to prevent ANY browser sounds
     configureTherapeuticAudio(audioElement);
     
+    // Add crossOrigin attribute to prevent CORS issues
+    audioElement.crossOrigin = 'anonymous';
+    
     console.log(`🎵 Created therapeutic audio element #${currentElementId} (user-isolated and silent)`);
   } else {
     // Ensure existing element is also configured for therapeutic use
@@ -169,7 +172,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
   
   // Sync initial state with audio element
   setTimeout(() => {
-    const audio = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+    const audio = document.getElementById(getAudioElementId()) as HTMLAudioElement;
     if (audio) {
       const actuallyPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
       if (actuallyPlaying) {
@@ -733,8 +736,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       // Don't attempt autoplay during initial load to avoid browser blocking
-      // Let the user-initiated play() call handle actual playback
-      console.log('🎵 Audio loaded successfully, ready for user-initiated playback');
+      // Actually DO start playing since this is user-initiated via a click
+      console.log('🎵 Audio loaded successfully, attempting autoplay...');
+      
+      try {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+        console.log('✅ Auto-play successful after load');
+        set({ isPlaying: true });
+      } catch (playError: any) {
+        console.log('🎵 Auto-play blocked after load (expected in some browsers):', playError.name);
+        // Don't set error state - just let user manually click play
+        set({ isPlaying: false });
+      }
       
       // Final validation
       if (!isValid()) {

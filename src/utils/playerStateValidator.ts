@@ -1,13 +1,13 @@
 // Player state validation and recovery utilities
 import { useAudioStore } from '@/stores';
-import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { getAudioElementId } from '@/player/constants';
 
 export class PlayerStateValidator {
   static validateAndFix(): boolean {
     console.log('🔧 Validating player state...');
     
     const store = useAudioStore.getState();
-    const audio = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+    const audio = document.getElementById(getAudioElementId()) as HTMLAudioElement;
     
     if (!audio) {
       console.error('❌ No audio element found!');
@@ -50,7 +50,7 @@ export class PlayerStateValidator {
     if (allAudio.length > 1) {
       issues.push(`Multiple audio elements detected: ${allAudio.length}`);
       allAudio.forEach(el => {
-        if (el.id !== AUDIO_ELEMENT_ID) {
+        if (el.id !== getAudioElementId()) {
           el.pause();
           el.remove();
         }
@@ -72,7 +72,7 @@ export class PlayerStateValidator {
   static performEmergencyRecovery(): void {
     console.log('🚨 Performing emergency player recovery...');
     
-    const audio = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+    const audio = document.getElementById(getAudioElementId()) as HTMLAudioElement;
     const store = useAudioStore.getState();
 
     // Step 1: Stop all audio

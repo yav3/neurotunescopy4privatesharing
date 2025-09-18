@@ -1,12 +1,12 @@
 // Player state debugging utilities
 import { useAudioStore } from '@/stores';
-import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { getAudioElementId } from '@/player/constants';
 
 export const debugPlayerState = () => {
   console.group('🎵 Player State Debug');
   
   const store = useAudioStore.getState();
-  const audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+  const audioElement = document.getElementById(getAudioElementId()) as HTMLAudioElement;
   
   console.log('Store State:', {
     isPlaying: store.isPlaying,
@@ -53,7 +53,7 @@ export const fixPlayerState = () => {
   console.log('🔧 Fixing player state...');
   
   const store = useAudioStore.getState();
-  const audioElement = document.getElementById(AUDIO_ELEMENT_ID) as HTMLAudioElement;
+  const audioElement = document.getElementById(getAudioElementId()) as HTMLAudioElement;
   
   if (audioElement) {
     const actuallyPlaying = !audioElement.paused && !audioElement.ended;

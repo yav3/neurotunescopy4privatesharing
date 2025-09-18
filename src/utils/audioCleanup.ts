@@ -1,5 +1,5 @@
 // Audio cleanup utilities to prevent simultaneous playback
-import { AUDIO_ELEMENT_ID } from '@/player/constants';
+import { getAudioElementId } from '@/player/constants';
 
 export class AudioCleanup {
   static ensureSingleAudioElement(): HTMLAudioElement | null {
@@ -9,7 +9,7 @@ export class AudioCleanup {
     console.log(`🔧 Audio cleanup: Found ${allAudio.length} audio elements`);
 
     allAudio.forEach((audio, index) => {
-      if (audio.id === AUDIO_ELEMENT_ID) {
+      if (audio.id === getAudioElementId()) {
         mainAudio = audio;
         console.log(`✅ Main audio element found: ${audio.id}`);
       } else {
