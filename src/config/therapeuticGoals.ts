@@ -83,7 +83,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['sonatasforstress', 'newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana'],
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana'],
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
@@ -99,7 +99,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-indigo-500 to-purple-500',
     bpmRange: { min: 30, max: 60, optimal: 45 },
     vadProfile: { valence: 0.7, arousal: 0.1, dominance: 0.5 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'sonatasforstress', 'Chopin'],
+    musicBuckets: ['newageworldstressanxietyreduction', 'Chopin'],
     synonyms: ['meditation', 'mindfulness', 'zen', 'contemplation', 'spiritual', 'peace']
   },
   {
