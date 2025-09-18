@@ -7,6 +7,7 @@ import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-motivation-updated.png';
 import cardioCard from '@/assets/cardio-mountain-lake.jpg';
+import meditationCard from '@/assets/meditation-support-card.png';
 
 
 // Single source of truth for all therapeutic goals
@@ -86,6 +87,22 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
   },
   {
+    id: 'meditation-support',
+    slug: 'meditation-support',
+    backendKey: 'meditation-support',
+    name: 'Meditation Support',
+    shortName: 'Meditate',
+    description: 'Peaceful music to enhance mindfulness and meditation practice',
+    icon: Shield,
+    artwork: meditationCard,
+    color: 'indigo',
+    gradient: 'from-indigo-500 to-purple-500',
+    bpmRange: { min: 30, max: 60, optimal: 45 },
+    vadProfile: { valence: 0.7, arousal: 0.1, dominance: 0.5 },
+    musicBuckets: ['newageworldstressanxietyreduction', 'sonatasforstress', 'Chopin'],
+    synonyms: ['meditation', 'mindfulness', 'zen', 'contemplation', 'spiritual', 'peace']
+  },
+  {
     id: 'pain-support',
     slug: 'pain-support',
     backendKey: 'pain-support',
@@ -153,7 +170,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - updated to remove mood-boost
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'pain-support' | 'energy-boost';
+export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'meditation-support' | 'pain-support' | 'energy-boost';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);

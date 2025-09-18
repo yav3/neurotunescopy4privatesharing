@@ -64,6 +64,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Gentle piano melodies for deep concentration',
         buckets: ['Chopin'],
         image: focusZenStones
+      },
+      {
+        id: 'americana-bluegrass-country',
+        name: 'Americana, Bluegrass, Country',
+        description: 'Acoustic country and folk music for focused concentration',
+        buckets: ['countryandamericana'],
+        image: moodBoostFloralField
       }
     ],
     'stress-anxiety-support': [
@@ -177,6 +184,29 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Upbeat house music for energy and motivation',
         buckets: ['ENERGYBOOST'],
         image: cardioSunsetBeachFlowers
+      }
+    ],
+    'meditation-support': [
+      {
+        id: 'zen-new-age',
+        name: 'Zen & New Age',
+        description: 'Ethereal new age sounds for deep meditation',
+        buckets: ['newageworldstressanxietyreduction'],
+        image: newAgeLeafDewdrop
+      },
+      {
+        id: 'meditation-sonatas',
+        name: 'Peaceful Sonatas',
+        description: 'Classical sonatas for meditative practice',
+        buckets: ['sonatasforstress'],
+        image: sonatasMistyLake
+      },
+      {
+        id: 'contemplative-piano',
+        name: 'Contemplative Piano',
+        description: 'Gentle piano music for mindfulness and meditation',
+        buckets: ['Chopin'],
+        image: focusZenStones
       }
     ]
   };
