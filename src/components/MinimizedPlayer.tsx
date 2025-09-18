@@ -42,15 +42,23 @@ export const MinimizedPlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Double-tap handler
+  // Double-tap handler - improved to work with button interactions
   const handleDoubleTap = (e: React.MouseEvent | React.TouchEvent) => {
+    // Only handle clicks on the container, not on buttons
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      return;
+    }
+    
     e.preventDefault();
     e.stopPropagation();
     
     const now = Date.now();
     const timeDiff = now - lastTapTime;
     
-    if (timeDiff < 300 && tapCount === 1) {
+    console.log('🎵 Tap detected on player container', { timeDiff, tapCount, now });
+    
+    if (timeDiff < 400 && tapCount === 1) {
       // Double tap detected
       console.log('🎵 Double-tap detected - expanding to full player');
       setPlayerMode('full');
@@ -58,6 +66,7 @@ export const MinimizedPlayer = () => {
       setLastTapTime(0);
     } else {
       // First tap
+      console.log('🎵 First tap registered');
       setTapCount(1);
       setLastTapTime(now);
       
@@ -65,7 +74,7 @@ export const MinimizedPlayer = () => {
       setTimeout(() => {
         setTapCount(0);
         setLastTapTime(0);
-      }, 300);
+      }, 400);
     }
   };
 
