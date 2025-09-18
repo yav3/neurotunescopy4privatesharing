@@ -102,10 +102,25 @@ export class TrackLoadingDebugger {
     console.log(`🎯 SPECIFIC TEST: Pain Reduction New Age (pain-support/new-age-chill)`);
     return this.debugGenreLoading('pain-support', 'new-age-chill');
   }
+  
+  static async testFocusCrossoverSpecifically() {
+    console.log(`🎯 SPECIFIC TEST: Focus Crossover Classical (focus-enhancement/crossover-classical)`);
+    return this.debugGenreLoading('focus-enhancement', 'crossover-classical');
+  }
 }
 
 // Make available in dev mode
 if (import.meta.env.DEV) {
   (window as any).trackLoadingDebugger = TrackLoadingDebugger;
   console.log('🔧 Track loading debugger available as window.trackLoadingDebugger');
+  
+  // Auto-test the problematic Focus Crossover Classical on load
+  setTimeout(() => {
+    console.log('🔬 AUTO-TESTING Focus Crossover Classical...');
+    TrackLoadingDebugger.testFocusCrossoverSpecifically().then(result => {
+      console.log('🔬 AUTO-TEST COMPLETE:', result);
+    }).catch(error => {
+      console.error('🔬 AUTO-TEST FAILED:', error);
+    });
+  }, 2000);
 }
