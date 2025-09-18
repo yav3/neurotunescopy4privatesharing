@@ -244,14 +244,14 @@ const Index = () => {
           <Button 
             onClick={() => {
               import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.testPainReductionSpecifically();
+                TrackLoadingDebugger.debugGenreLoading('stress-anxiety-support', 'bluegrass-americana');
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            🎯 Test Pain/New Age
+            🎯 Test Bluegrass & Americana
           </Button>
         </div>
       )}

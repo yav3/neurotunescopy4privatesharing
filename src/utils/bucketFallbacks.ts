@@ -5,7 +5,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   // Empty buckets → Working buckets with similar content
   'pop': ['ENERGYBOOST'], // Pop music - ENERGYBOOST has actual pop tracks mixed with EDM
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
-  'countryandamericana': ['ENERGYBOOST', 'NewAgeandWorldFocus'], // Country fallback to world music
+  'countryandamericana': ['NewAgeandWorldFocus'], // REMOVED ENERGYBOOST fallback - causes EDM instead of country
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
   'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
