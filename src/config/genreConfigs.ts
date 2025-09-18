@@ -189,7 +189,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     'meditation-support': [
       {
         id: 'zen-new-age',
-        name: 'Zen & New Age',
+        name: 'New Age & World',
         description: 'Ethereal new age sounds for deep meditation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
