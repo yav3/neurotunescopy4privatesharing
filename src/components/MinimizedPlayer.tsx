@@ -24,6 +24,10 @@ export const MinimizedPlayer = () => {
   // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
   // Centralized artwork using ArtworkService to prevent race conditions
   const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
+  
+  // Double-tap detection state
+  const [lastTapTime, setLastTapTime] = useState<number>(0);
+  const [tapCount, setTapCount] = useState<number>(0);
 
   useEffect(() => {
     if (track) {
@@ -36,6 +40,33 @@ export const MinimizedPlayer = () => {
     if (!lastGoal) return 'Therapeutic Music';
     const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
     return goal ? goal.name : 'Therapeutic Music';
+  };
+
+  // Double-tap handler
+  const handleDoubleTap = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const now = Date.now();
+    const timeDiff = now - lastTapTime;
+    
+    if (timeDiff < 300 && tapCount === 1) {
+      // Double tap detected
+      console.log('🎵 Double-tap detected - expanding to full player');
+      setPlayerMode('full');
+      setTapCount(0);
+      setLastTapTime(0);
+    } else {
+      // First tap
+      setTapCount(1);
+      setLastTapTime(now);
+      
+      // Reset after timeout if no second tap
+      setTimeout(() => {
+        setTapCount(0);
+        setLastTapTime(0);
+      }, 300);
+    }
   };
 
   // NOW SAFE TO HAVE CONDITIONAL RETURNS AFTER ALL HOOKS
@@ -88,18 +119,8 @@ export const MinimizedPlayer = () => {
           {/* Player content with actual audio info */}
           <div 
             className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('🎵 MinimizedPlayer clicked - switching to full mode');
-              setPlayerMode('full');
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('🎵 MinimizedPlayer touched - switching to full mode');
-              setPlayerMode('full');
-            }}
+            onClick={handleDoubleTap}
+            onTouchEnd={handleDoubleTap}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -229,18 +250,8 @@ export const MinimizedPlayer = () => {
       {/* Player content */}
       <div 
         className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('🎵 MinimizedPlayer clicked - switching to full mode');
-          setPlayerMode('full');
-        }}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('🎵 MinimizedPlayer touched - switching to full mode');
-          setPlayerMode('full');
-        }}
+        onClick={handleDoubleTap}
+        onTouchEnd={handleDoubleTap}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
