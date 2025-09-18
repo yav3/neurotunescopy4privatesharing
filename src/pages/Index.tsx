@@ -244,14 +244,26 @@ const Index = () => {
           <Button 
             onClick={() => {
               import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.debugGenreLoading('stress-anxiety-support', 'bluegrass-americana');
+                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'contemplative-piano');
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full"
           >
-            🎯 Test Bluegrass & Americana
+            🧘 Test Meditation Piano
+          </Button>
+          <Button 
+            onClick={() => {
+              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
+                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'zen-new-age');
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full"
+          >
+            🧘 Test Meditation New Age
           </Button>
         </div>
       )}

@@ -7,10 +7,11 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
   'countryandamericana': ['NewAgeandWorldFocus'], // REMOVED ENERGYBOOST fallback - causes EDM instead of country
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
-  'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback
+  'sonatasforstress': ['Chopin', 'newageworldstressanxietyreduction'], // Sonatas fallback to working classical buckets
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
   'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty mood boost bucket fallback
   'audio': ['ENERGYBOOST', 'neuralpositivemusic'], // Empty audio bucket fallback
+  'newageworldstressanxietyreduction': ['NewAgeandWorldFocus', 'neuralpositivemusic'], // If primary new age is empty, use these working buckets
 };
 
 /**

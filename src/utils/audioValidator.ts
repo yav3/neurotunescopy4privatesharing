@@ -28,8 +28,8 @@ export class AudioValidator {
       if (!audioElement.crossOrigin) {
         warnings.push('Audio element missing crossOrigin attribute');
       }
-      if (audioElement.preload !== 'metadata') {
-        warnings.push('Audio element preload not set to metadata');
+      if (audioElement.preload !== 'auto') {
+        warnings.push('Audio element preload not set to auto');
       }
     }
     
