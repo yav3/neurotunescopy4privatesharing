@@ -1247,8 +1247,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log(`🎵 Silent skip ${consecutiveFailures} - suppressing UI spam`);
           }
           
-          // Use longer delay for format errors to allow URL resolution
-          scheduleAutoSkip('format not supported', 5000);
+        // Use shorter delay for format errors to speed up playback
+        scheduleAutoSkip('format not supported', 1000);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error - handle more gracefully
           const now = Date.now();
@@ -1321,8 +1321,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             toast.error("Playback issue - trying next track");
           }
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Use longer delay to prevent racing while allowing reasonable error handling
-          scheduleAutoSkip('unknown error', 5000);
+          // Use shorter delay to prevent racing while allowing reasonable error handling
+          scheduleAutoSkip('unknown error', 1000);
         }
       }
     },

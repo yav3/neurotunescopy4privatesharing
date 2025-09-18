@@ -19,6 +19,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
 
 // Cache of known empty buckets to avoid repeated requests
 const KNOWN_EMPTY_BUCKETS = new Set([
+  'sonatasforstress', // Skip this bucket - contains sleep music, not sonatas
   'albumart',
   'pop', 
   'HIIT',
