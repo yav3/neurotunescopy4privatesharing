@@ -585,38 +585,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      // Configure audio element properly for Supabase storage
-      audio.crossOrigin = "anonymous";  // Required for CORS
+      // Configure audio element for better playback
+      audio.crossOrigin = null;         // Remove CORS restriction for public storage
       audio.preload = "metadata";       // Better than "auto" for initial loading
       (audio as any).playsInline = true;
       
-      // Test URL accessibility before setting as audio source
-      console.log('🔍 Testing URL accessibility:', url);
-      try {
-        const testResponse = await fetch(url, { 
-          method: 'HEAD',
-          mode: 'cors',
-          credentials: 'omit'
-        });
-        console.log('🔍 URL test response:', {
-          status: testResponse.status,
-          ok: testResponse.ok,
-          headers: Object.fromEntries(testResponse.headers.entries())
-        });
-        
-        if (!testResponse.ok) {
-          console.error('❌ URL not accessible:', testResponse.status, testResponse.statusText);
-          set({ 
-            error: `Audio file not accessible (HTTP ${testResponse.status})`,
-            isLoading: false 
-          });
-          return false;
-        }
-      } catch (fetchError) {
-        console.error('❌ URL accessibility test failed:', fetchError);
-        // Don't fail completely - some servers block HEAD requests
-        console.log('🔄 Continuing despite HEAD request failure...');
-      }
+      // Skip URL testing to avoid CORS issues - let audio element handle it directly
+      console.log('🎵 Setting audio source without pre-testing to avoid CORS issues');
       
       // Skip redundant HEAD request - SmartAudioResolver already validated the URL
       console.log('✅ Using pre-validated URL from SmartAudioResolver:', url);
