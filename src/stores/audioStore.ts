@@ -426,8 +426,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
         const tracksRemaining = queue.length - (index + 1);
         const timeRemaining = duration - currentTime;
         
-        // Load more tracks if we're near the end of both the current track and queue
-        if (!isLoading && lastGoal && tracksRemaining <= 3 && timeRemaining <= 30 && timeRemaining > 0) {
+        // Load more tracks if we're near the end of both the current track and queue  
+        if (!isLoading && lastGoal && tracksRemaining <= 5 && timeRemaining <= 60 && timeRemaining > 0) {
           console.log(`🔄 Proactively loading more tracks - ${tracksRemaining} tracks remaining, ${Math.round(timeRemaining)}s left in current track`);
           
           // Debounce to prevent multiple simultaneous loads
@@ -436,7 +436,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
               try {
                 const { getTherapeuticTracks } = await import('@/services/therapeuticDatabase');
                 const excludeIds = queue.map(t => t.id);
-                const { tracks: newTracks, error } = await getTherapeuticTracks(lastGoal, 20, excludeIds);
+                const { tracks: newTracks, error } = await getTherapeuticTracks(lastGoal, 30, excludeIds);
                 
                 if (!error && newTracks?.length) {
                   console.log(`✅ Loaded ${newTracks.length} additional tracks for seamless playback`);
@@ -468,7 +468,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
               } finally {
                 loadMoreTracksTimeout = null;
               }
-            }, 2000); // 2 second debounce
+            }, 1000); // 1 second debounce - faster response
           }
         }
       });

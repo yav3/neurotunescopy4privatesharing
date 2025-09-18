@@ -87,7 +87,7 @@ export const MinimizedPlayer = () => {
           
           {/* Player content with actual audio info */}
           <div 
-            className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none"
+            className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -100,10 +100,13 @@ export const MinimizedPlayer = () => {
               console.log('🎵 MinimizedPlayer touched - switching to full mode');
               setPlayerMode('full');
             }}
-            style={{ 
-              touchAction: 'manipulation',
-              WebkitTouchCallout: 'none',
-              WebkitUserSelect: 'none'
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setPlayerMode('full');
+              }
             }}
           >
             {/* Album art */}
@@ -225,7 +228,7 @@ export const MinimizedPlayer = () => {
       
       {/* Player content */}
       <div 
-        className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none"
+        className="px-4 py-3 flex items-center gap-3 cursor-pointer select-none active:bg-accent/50 transition-colors"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -238,10 +241,13 @@ export const MinimizedPlayer = () => {
           console.log('🎵 MinimizedPlayer touched - switching to full mode');
           setPlayerMode('full');
         }}
-        style={{ 
-          touchAction: 'manipulation',
-          WebkitTouchCallout: 'none',
-          WebkitUserSelect: 'none'
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setPlayerMode('full');
+          }
         }}
       >
         {/* Album art with Glass Effect */}
