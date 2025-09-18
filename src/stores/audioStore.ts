@@ -665,7 +665,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         
         const onLoadedData = () => {
           console.log('🎵 Audio data loaded, checking if playable');
-          // Don't resolve immediately, wait for canplay
+          // Accept loadeddata as sufficient for basic playback
+          if (audio.readyState >= 2) {
+            console.log('🎵 Audio has enough data loaded, proceeding with playback');
+            cleanupListeners();
+            resolve(true);
+          }
         };
         
         const onError = (error: any) => {
@@ -695,12 +700,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
         audio.addEventListener('loadeddata', onLoadedData);
         audio.addEventListener('error', onError);
         
-        // Timeout after 20 seconds (increased for better network reliability)
+        // Reduced timeout to 8 seconds for faster user feedback
         setTimeout(() => {
           console.log('🎵 Audio load timeout - readyState:', audio.readyState);
-          cleanupListeners();
-          resolve(false);
-        }, 20000);
+          // If we have some data loaded but not full canplay, still try to proceed
+          if (audio.readyState >= 2) {
+            console.log('🎵 Timeout but sufficient data available, proceeding anyway');
+            cleanupListeners();
+            resolve(true);
+          } else {
+            cleanupListeners();  
+            resolve(false);
+          }
+        }, 8000);
       });
       
       audio.load();
@@ -712,20 +724,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return false;
       }
       
-      try { 
-        console.log('🎵 Audio loaded, attempting to play...');
-        await audio.play(); 
-        console.log('🎵 Audio play successful');
-      } catch (playError) { 
-        // Silent handling - prevent any browser notification sounds
-        console.log('🎵 Autoplay blocked or play failed (handled silently for therapeutic experience)');
-        
-        // Don't throw or emit any sounds - therapeutic apps need silent error handling
-        if (playError instanceof Error && !playError.message.includes('interact')) {
-          // Only log non-user-interaction errors silently
-          console.log('🎵 Silent playback issue:', playError.name);
-        }
-      }
+      // Don't attempt autoplay during initial load to avoid browser blocking
+      // Let the user-initiated play() call handle actual playback
+      console.log('🎵 Audio loaded successfully, ready for user-initiated playback');
       
       // Final validation
       if (!isValid()) {
