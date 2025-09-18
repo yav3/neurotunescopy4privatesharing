@@ -154,8 +154,11 @@ export const FullPagePlayer = () => {
   };
 
   if (!track) {
+    console.log('🎵 FullPagePlayer: No track available, returning null');
     return null;
   }
+  
+  console.log('🎵 FullPagePlayer: Rendering with track:', track.title);
 
   return (
     <div 

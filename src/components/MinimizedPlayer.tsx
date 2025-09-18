@@ -51,7 +51,9 @@ export const MinimizedPlayer = () => {
     }
     
     console.log('🎵 Expanding minimized player to full view');
+    console.log('🎵 Current state:', { track: !!track, playerMode, isPlaying });
     setPlayerMode('full');
+    console.log('🎵 Called setPlayerMode("full")');
   };
 
   // NOW SAFE TO HAVE CONDITIONAL RETURNS AFTER ALL HOOKS
