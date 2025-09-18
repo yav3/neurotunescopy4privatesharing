@@ -208,14 +208,26 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return;
       }
       
+      // Critical fix: Check all transition flags before proceeding
+      if (isNexting || isTransitioning) {
+        console.log('🎵 Auto-skip blocked - transition already in progress');
+        return;
+      }
+      
+      // Rate limiting check
+      const now = Date.now();
+      if (now - lastNextCall < MIN_NEXT_INTERVAL) {
+        console.log('🎵 Auto-skip rate limited - too frequent');
+        return;
+      }
+      
       // Suppress player mode updates during rapid error cascades
       if (consecutiveFailures > 2) {
         console.log(`🎵 Suppressing player updates during error cascade (failure ${consecutiveFailures})`);
       }
       
-      if (!isNexting) {
-        get().next();
-      }
+      console.log('🎵 Auto-skip proceeding with next()');
+      get().next();
     }, delay); // Use provided delay with shorter default for better UX
   };
   
@@ -1338,7 +1350,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
           
         // Use shorter delay for format errors to speed up playback
-        scheduleAutoSkip('format not supported', 1000);
+          // Increased delay to prevent rapid switching
+          scheduleAutoSkip('format not supported', 2500);
         } else if (errorMessage === 'NetworkError' || errorCode === 2) {
           // Network/loading error - handle more gracefully
           const now = Date.now();
@@ -1411,8 +1424,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
             toast.error("Playback issue - trying next track");
           }
           console.log('🎵 Unknown audio error, auto-skipping:', { errorMessage, errorCode, error });
-          // Use shorter delay to prevent racing while allowing reasonable error handling
-          scheduleAutoSkip('unknown error', 1000);
+          // Increased delay to prevent rapid switching  
+          scheduleAutoSkip('unknown error', 2500);
         }
       }
     },
