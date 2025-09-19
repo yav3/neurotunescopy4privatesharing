@@ -99,7 +99,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero-teal">
+    <div className="min-h-screen bg-wave-animated">
       {/* Header */}
       <div className="px-6 py-6">
         <div className="max-w-7xl mx-auto">
@@ -150,7 +150,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-primary/40 dark:to-primary/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-primary/50 dark:to-primary/30" />
                    <div className="relative h-full p-4 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-semibold text-sm leading-tight drop-shadow-lg">
@@ -184,7 +184,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-accent/40 dark:to-accent/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-accent/50 dark:to-accent/30" />
                    <div className="relative h-full p-6 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg">
