@@ -131,11 +131,11 @@ const Index = () => {
           
           {/* Therapeutic Goals Section */}
           <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[2/1] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[1.5/1] border-0"
                   onClick={() => handleGoalSelect(goal.id)}
                 >
                   <img 
@@ -165,11 +165,11 @@ const Index = () => {
           {/* Trending Section */}
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Trending</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[3/2] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[2.25/1.5] border-0"
                   onClick={() => handleTrendingSelect(category.id)}
                 >
                   <img 
