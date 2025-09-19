@@ -42,10 +42,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Globe className="w-4 h-4" />
-              <span>Português</span>
-            </div>
             <div className="text-lg font-normal text-foreground">
               NeuralPositive
             </div>
