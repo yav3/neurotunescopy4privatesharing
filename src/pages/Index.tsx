@@ -96,7 +96,7 @@ const Index = () => {
       'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
       'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
       'new-age-world': { goal: 'meditation-support', buckets: ['meditation'] }, // New Age & World maps to meditation bucket
-      'non-sleep-deep-rest': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Non-Sleep Deep Rest from Nocturnes bucket
+      'non-sleep-deep-rest': { goal: 'meditation-support', buckets: ['meditation'] }, // Non-Sleep Deep Rest from meditation bucket
     };
     
     const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
