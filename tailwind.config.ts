@@ -71,7 +71,14 @@ export default {
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',
 				'music-sleep': 'hsl(var(--music-sleep))',
-				'music-energy': 'hsl(var(--music-energy))'
+				'music-energy': 'hsl(var(--music-energy))',
+				'teal': {
+					'50': 'hsl(var(--teal-50))',
+					'100': 'hsl(var(--teal-100))',
+					'500': 'hsl(var(--teal-500))',
+					'600': 'hsl(var(--teal-600))',
+					'700': 'hsl(var(--teal-700))'
+				}
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',

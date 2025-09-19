@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Mode - Pure White Background with Dark Text */
+    /* Light Mode - Clean White Background with Teal Accents */
     --background: 0 0% 100%; /* Pure white background */
     --foreground: 217 45% 18%; /* Deep blue foreground text */
 
@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%; /* White popover */
     --popover-foreground: 0 0% 9%; /* Almost black popover text */
 
-    --primary: 0 0% 15%; /* Dark gray primary instead of blue */
+    --primary: 173 100% 40%; /* Teal primary color */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
     --secondary: 0 0% 96%; /* Very light gray secondary */
@@ -27,15 +27,22 @@ All colors MUST be HSL.
     --muted: 0 0% 96%; /* Very light gray muted */
     --muted-foreground: 0 0% 45%; /* Medium gray muted text */
 
-    --accent: 0 0% 96%; /* Light gray accent */
-    --accent-foreground: 0 0% 15%; /* Dark gray accent text */
+    --accent: 173 50% 95%; /* Light teal accent */
+    --accent-foreground: 173 100% 25%; /* Dark teal accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
-    --ring: 0 0% 15%;
+    --ring: 173 100% 40%;
+
+    /* Teal color variations */
+    --teal-50: 173 50% 96%;
+    --teal-100: 173 45% 90%;
+    --teal-500: 173 100% 40%;
+    --teal-600: 173 100% 35%;
+    --teal-700: 173 100% 30%;
 
     --radius: 0.75rem;
   }
