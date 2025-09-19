@@ -224,7 +224,7 @@ export const FullPagePlayer = () => {
           <h1 className="text-xl font-normal text-foreground mb-1 leading-tight line-clamp-2">
             {TitleFormatter.formatTrackTitle(track.title)}
           </h1>
-          <p className="text-base text-muted-foreground">{getTherapeuticGoalName()}</p>
+          <p className="text-base text-foreground/70">{getTherapeuticGoalName()}</p>
         </div>
 
         {/* Progress bar */}
@@ -241,7 +241,7 @@ export const FullPagePlayer = () => {
               }
             }}
           />
-          <div className="flex justify-between text-sm text-muted-foreground">
+          <div className="flex justify-between text-sm text-foreground/60">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -284,7 +284,7 @@ export const FullPagePlayer = () => {
         <div className="space-y-3">
           {/* Volume control */}
           <div className="flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm bg-card/30 border border-border/50 shadow-glass-inset">
-            <Volume2 className="w-4 h-4 text-muted-foreground" />
+            <Volume2 className="w-4 h-4 text-foreground/70" />
             <Slider
               value={[volume * 100]}
               max={100}

@@ -216,8 +216,8 @@ export default function GenreView() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6">
-              <h2 className="text-3xl font-bold text-white mb-2">{genre.name}</h2>
-              <p className="text-white/80">{genre.description}</p>
+              <h2 className="text-3xl font-bold text-white drop-shadow-lg mb-2">{genre.name}</h2>
+              <p className="text-white drop-shadow-md">{genre.description}</p>
             </div>
           </div>
         </div>
@@ -240,19 +240,19 @@ export default function GenreView() {
       {isTracksLoading && (
         <div className="text-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p>Loading tracks...</p>
+          <p className="text-foreground/80">Loading tracks...</p>
         </div>
       )}
 
       {error && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground mb-4">{error}</p>
+          <p className="text-foreground/70 mb-4">{error}</p>
         </div>
       )}
 
       {!isTracksLoading && !error && tracks.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No tracks found for this genre.</p>
+          <p className="text-foreground/70">No tracks found for this genre.</p>
         </div>
       )}
 
@@ -269,12 +269,12 @@ export default function GenreView() {
                   <Play className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium">{track.title}</h3>
-                  {track.artist && <p className="text-sm text-muted-foreground">{track.artist}</p>}
-                  {track.bpm && <p className="text-xs text-muted-foreground">{track.bpm} BPM</p>}
+                  <h3 className="font-medium text-foreground">{track.title}</h3>
+                  {track.artist && <p className="text-sm text-foreground/70">{track.artist}</p>}
+                  {track.bpm && <p className="text-xs text-foreground/50">{track.bpm} BPM</p>}
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-foreground/60">
                 {track.duration ? `${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}` : ''}
               </div>
             </div>

@@ -260,14 +260,14 @@ export const MinimizedPlayer = () => {
         </div>
         
         {/* Track info */}
-        <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-foreground text-sm leading-tight truncate">
-            {TitleFormatter.formatTrackTitle(track.title)}
-          </h3>
-          <p className="text-xs text-muted-foreground truncate">
-            {getTherapeuticGoalName()}
-          </p>
-        </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-medium text-foreground text-sm leading-tight truncate">
+                {TitleFormatter.formatTrackTitle(track.title)}
+              </h3>
+              <p className="text-xs text-foreground/60 truncate">
+                {getTherapeuticGoalName()}
+              </p>
+            </div>
         
         {/* Controls with Glass Morphism */}
         <div className="flex items-center gap-1 flex-shrink-0">
