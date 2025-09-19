@@ -8,6 +8,7 @@ import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-motivation-updated.png';
 import cardioCard from '@/assets/cardio-mountain-lake.jpg';
 import meditationCard from '@/assets/meditation-support-card.png';
+import calmMoodBoostCard from '@/assets/calm-mood-boost-leaf.png';
 
 
 // Single source of truth for all therapeutic goals
@@ -78,7 +79,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Gentle music to boost your mood and reduce stress',
     icon: Sparkles,
-    artwork: stressCard,
+    artwork: calmMoodBoostCard,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
