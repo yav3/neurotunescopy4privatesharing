@@ -59,7 +59,30 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       }
     ],
-    'stress-anxiety-support': [
+    'calm-mood-boost': [
+      {
+        id: 'new-age-stress',
+        name: 'New Age & World',
+        description: 'Ethereal new age sounds for deep relaxation',
+        buckets: ['newageworldstressanxietyreduction'],
+        image: newAgeLeafDewdrop
+      },
+      {
+        id: 'samba',
+        name: 'Samba',
+        description: 'Relaxing Brazilian samba rhythms for stress support',
+        buckets: ['samba'],
+        image: sambaTropicalHibiscus
+      },
+      {
+        id: 'bluegrass-americana',
+        name: 'Bluegrass & Americana',
+        description: 'Calming country and americana music for stress relief',
+        buckets: ['countryandamericana'],
+        image: moodBoostFloralField
+      }
+    ],
+    'anxiety-support': [
       {
         id: 'classical-crossover',
         name: 'Classical Crossover',

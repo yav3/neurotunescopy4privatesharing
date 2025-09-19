@@ -36,18 +36,18 @@ const therapeuticGoals = [
   })),
   // Split stress & anxiety into two separate cards
   {
-    id: 'stress-support',
-    name: 'Stress Support',
-    letter: 'S',
+    id: 'calm-mood-boost',
+    name: 'Calm Mood Boost',
+    letter: 'C',
     image: stressLeaf,
-    goalMapping: 'stress-anxiety-support'
+    goalMapping: 'calm-mood-boost'
   },
   {
     id: 'anxiety-support', 
     name: 'Anxiety Support',
     letter: 'A',
     image: anxietyLake,
-    goalMapping: 'stress-anxiety-support'
+    goalMapping: 'anxiety-support'
   }
 ];
 
@@ -70,8 +70,10 @@ const Index = () => {
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
     // Map split cards back to original goal
-    const mappedGoalId = goalId === 'stress-support' || goalId === 'anxiety-support' 
-      ? 'stress-anxiety-support' 
+    const mappedGoalId = goalId === 'calm-mood-boost' 
+      ? 'calm-mood-boost'
+      : goalId === 'anxiety-support'
+      ? 'anxiety-support'
       : goalId;
     setSelectedGoalId(mappedGoalId);
     setIsModalOpen(true);

@@ -71,12 +71,12 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
   },
   {
-    id: 'stress-anxiety-support',
-    slug: 'stress-anxiety-support',
-    backendKey: 'stress-anxiety-support',
-    name: 'Stress & Anxiety Support',
+    id: 'calm-mood-boost',
+    slug: 'calm-mood-boost',
+    backendKey: 'calm-mood-boost',
+    name: 'Calm Mood Boost',
     shortName: 'Calm',
-    description: 'Calm your mind and reduce stress and anxiety',
+    description: 'Gentle music to boost your mood and reduce stress',
     icon: Sparkles,
     artwork: stressCard,
     color: 'green',
@@ -84,7 +84,23 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
     musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana'],
-    synonyms: ['anxiety', 'stress', 'calm', 'relax', 'anxiety_relief', 'stress_reduction', 'anxiety-down', 'chill']
+    synonyms: ['stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost']
+  },
+  {
+    id: 'anxiety-support',
+    slug: 'anxiety-support',
+    backendKey: 'anxiety-support',
+    name: 'Anxiety Support',
+    shortName: 'Anxiety',
+    description: 'Gentle classical music to ease anxiety and promote calm',
+    icon: Sparkles,
+    artwork: stressCard,
+    color: 'blue',
+    gradient: 'from-blue-500 to-indigo-500',
+    bpmRange: { min: 40, max: 70, optimal: 55 },
+    vadProfile: { valence: 0.7, arousal: 0.1, dominance: 0.4 },
+    musicBuckets: ['gentleclassicalforpain', 'Nocturnes'],
+    synonyms: ['anxiety', 'anxiety_relief', 'anxiety-down', 'classical']
   },
   {
     id: 'meditation-support',
@@ -170,7 +186,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - updated to remove mood-boost
-export type GoalSlug = 'stress-anxiety-support' | 'focus-enhancement' | 'meditation-support' | 'pain-support' | 'energy-boost';
+export type GoalSlug = 'calm-mood-boost' | 'anxiety-support' | 'focus-enhancement' | 'meditation-support' | 'pain-support' | 'energy-boost';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
