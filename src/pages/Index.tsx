@@ -100,29 +100,32 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="px-6 py-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Branding */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <Plus className="w-7 h-7 text-primary" />
-              <div>
-                <div className="text-4xl font-bold text-foreground">NeuroTunes</div>
+      {/* Header - Glass Morphism Turquoise */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-cyan-500/20 backdrop-blur-xl"></div>
+        <div className="relative px-6 py-6 bg-teal-500/10 backdrop-blur-2xl border-b border-white/20">
+          <div className="max-w-7xl mx-auto">
+            {/* Branding */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Plus className="w-7 h-7 text-white drop-shadow-lg" />
+                <div>
+                  <div className="text-4xl font-bold text-white drop-shadow-lg">NeuroTunes</div>
+                </div>
               </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={toggle} 
+                className="text-white/90 hover:bg-white/20 backdrop-blur-sm border border-white/20 shadow-lg"
+              >
+                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={toggle} 
-              className="text-foreground hover:bg-accent"
-            >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
+            
+            {/* Greeting */}
+            <h1 className="text-base font-medium text-white/80 drop-shadow-sm">Good morning Let's Personalize! Pick one.</h1>
           </div>
-          
-          {/* Greeting */}
-          <h1 className="text-base font-medium text-muted-foreground">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
@@ -200,10 +203,13 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation - Glass Morphism Turquoise */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-background/95 backdrop-blur-sm border-t border-border">
-          <Navigation />
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-t from-teal-500/30 to-cyan-400/20 backdrop-blur-xl"></div>
+          <div className="relative bg-teal-500/10 backdrop-blur-2xl border-t border-white/20 shadow-2xl">
+            <Navigation />
+          </div>
         </div>
       </div>
 
