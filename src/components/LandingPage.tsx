@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Globe, Zap, Shield, Bookmark, Music, BarChart3, Brain, Heart, Activity, Play, CheckCircle } from 'lucide-react';
 import tealAbstractBg from '@/assets/teal-abstract-bg.jpg';
 import stressReliefBg from '@/assets/stress-relief-bg.jpg';
-import focusEnhancementBg from '@/assets/focus-enhancement-bg.jpg';
+import energyBoostBg from '@/assets/energy-boost-bg.jpg';
 import deepRestBg from '@/assets/deep-rest-bg.jpg';
 
 interface LandingPageProps {
@@ -206,18 +206,18 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Card className="overflow-hidden">
               <div className="relative">
                 <img 
-                  src={focusEnhancementBg} 
-                  alt="Sunrise lake reflection for focus enhancement" 
+                  src={energyBoostBg} 
+                  alt="Sunrise lake reflection for energy boost therapy" 
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-orange-500/90 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Focus Enhancement
+                    Energy Boost
                   </span>
                 </div>
               </div>
               <CardContent className="p-6 text-left">
-                <h3 className="text-xl font-bold text-foreground mb-3">Morning Light Activation</h3>
+                <h3 className="text-xl font-bold text-foreground mb-3">Energy Boost</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Specifically designed for patients with major depressive disorder (MDD), 
                   anxiety disorders, and chronic pain using classical compositions enhanced 
