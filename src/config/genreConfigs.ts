@@ -57,13 +57,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
-      },
-      {
-        id: 'americana-bluegrass-country',
-        name: 'Americana, Bluegrass, Country',
-        description: 'Acoustic country and folk music for focused concentration',
-        buckets: ['countryandamericana'],
-        image: moodBoostFloralField
       }
     ],
     'stress-anxiety-support': [
