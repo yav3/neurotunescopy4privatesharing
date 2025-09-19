@@ -93,7 +93,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 alt="Flowing therapeutic background with smooth animation" 
                 className="w-full h-80 object-cover animate-[float_6s_ease-in-out_infinite]"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-background/10 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
               
               <div className="absolute bottom-6 left-6 right-6">
                 <Card className="bg-background/95 backdrop-blur-sm border border-border shadow-lg">
@@ -131,6 +131,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   src={anxietySupportBg} 
                   alt="Calming water droplets on leaf for anxiety support" 
                   className="w-full h-48 object-cover"
+                  style={{ filter: 'none' }}
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
@@ -158,6 +159,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   src={energyBoostBg} 
                   alt="Sunrise lake reflection for energy boost therapy" 
                   className="w-full h-48 object-cover"
+                  style={{ filter: 'none' }}
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-orange-500/90 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -185,6 +187,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   src={deepRestBg} 
                   alt="Zen stones for deep rest therapy" 
                   className="w-full h-48 object-cover"
+                  style={{ filter: 'none' }}
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-slate-500/90 text-white px-3 py-1 rounded-full text-sm font-medium">
