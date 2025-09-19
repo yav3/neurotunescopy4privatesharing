@@ -108,7 +108,7 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <Plus className="w-7 h-7 text-foreground" />
               <div>
-                <div className="text-4xl font-bold text-foreground">NeuroTunes</div>
+                <div className="text-4xl font-light md:font-bold text-foreground">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -122,17 +122,17 @@ const Index = () => {
           </div>
           
           {/* Greeting */}
-          <h1 className="text-base font-medium text-muted-foreground">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-base font-normal md:font-medium text-muted-foreground">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="px-6 pb-24">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <div className="px-4 md:px-6 pb-24">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
           
           {/* Therapeutic Goals Section */}
           <div>
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3">
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
@@ -151,9 +151,9 @@ const Index = () => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-primary/50 dark:to-primary/30" />
-                   <div className="relative h-full p-4 flex flex-col justify-end">
+                   <div className="relative h-full p-3 md:p-4 flex flex-col justify-end">
                      <div>
-                       <h3 className="text-white font-semibold text-sm leading-tight drop-shadow-lg">
+                       <h3 className="text-white font-normal md:font-semibold text-sm leading-tight drop-shadow-lg">
                          {goal.name}
                        </h3>
                      </div>
@@ -165,8 +165,8 @@ const Index = () => {
 
           {/* Trending Section */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Trending</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <h2 className="text-2xl font-normal md:font-bold text-foreground mb-4 md:mb-6">Trending</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
@@ -185,9 +185,9 @@ const Index = () => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-accent/50 dark:to-accent/30" />
-                   <div className="relative h-full p-6 flex flex-col justify-end">
+                   <div className="relative h-full p-4 md:p-6 flex flex-col justify-end">
                      <div>
-                       <h3 className="text-white font-bold text-lg leading-tight drop-shadow-lg">
+                       <h3 className="text-white font-medium md:font-bold text-lg leading-tight drop-shadow-lg">
                          {category.name}
                        </h3>
                      </div>
