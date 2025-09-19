@@ -697,15 +697,29 @@ export const useAudioStore = create<AudioState>((set, get) => {
         let fallbackUrl = null;
         
         // Determine alternative bucket based on track content
-        if (track.title.toLowerCase().includes('sonata') || track.title.toLowerCase().includes('baroque')) {
-          const bucket = track.title.toLowerCase().includes('stress') ? 'sonatasforstress' : 'Chopin';
-          const simpleTitle = track.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 30);
+        // More precise genre detection to prevent cross-contamination
+        const titleLower = track.title.toLowerCase();
+        
+        if (titleLower.includes('sonata') || titleLower.includes('baroque')) {
+          const bucket = titleLower.includes('stress') ? 'sonatasforstress' : 'Chopin';
+          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
           fallbackUrl = `${baseUrl}/${bucket}/${encodeURIComponent(simpleTitle + '.mp3')}`;
           console.log(`🎯 Sonata fallback: ${fallbackUrl}`);
-        } else if (track.title.toLowerCase().includes('new age') || track.title.toLowerCase().includes('meditation')) {
-          const simpleTitle = track.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 30);
+        } else if (titleLower.includes('bluegrass') || titleLower.includes('country') || titleLower.includes('americana')) {
+          // Route bluegrass/country tracks to the correct bucket
+          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
+          fallbackUrl = `${baseUrl}/countryandamericana/${encodeURIComponent(simpleTitle + '.mp3')}`;
+          console.log(`🎯 Bluegrass/Country fallback: ${fallbackUrl}`);
+        } else if (titleLower.includes('new age') && !titleLower.includes('bluegrass') && !titleLower.includes('country')) {
+          // Only route to New Age if it doesn't contain bluegrass/country
+          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
           fallbackUrl = `${baseUrl}/newageworldstressanxietyreduction/${encodeURIComponent(simpleTitle + '.mp3')}`;
           console.log(`🎯 New Age fallback: ${fallbackUrl}`);
+        } else if (titleLower.includes('meditation') && !titleLower.includes('bluegrass') && !titleLower.includes('country')) {
+          // Only route meditation if it's not bluegrass/country
+          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
+          fallbackUrl = `${baseUrl}/meditation/${encodeURIComponent(simpleTitle + '.mp3')}`;
+          console.log(`🎯 Meditation fallback: ${fallbackUrl}`);
         }
         
         if (fallbackUrl) {
