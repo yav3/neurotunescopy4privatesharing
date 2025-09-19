@@ -121,7 +121,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       {/* Featured Therapy Programs Section */}
       <section className="bg-background py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
+          <h2 className="text-2xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
           <p className="text-xl text-muted-foreground mb-16">
             Clinically-designed music therapy sessions for various conditions and goals
           </p>
