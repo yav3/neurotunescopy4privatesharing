@@ -591,17 +591,71 @@ export const useAudioStore = create<AudioState>((set, get) => {
     return audio;
   };
 
-  // Simplified: Skip pre-validation, let tracks fail gracefully during playback
+  // Improved validation to prevent rapid track switching in UI
   const validateTracks = async (tracks: Track[]): Promise<{ working: Track[], broken: Track[] }> => {
-    console.log(`🎵 Using all ${tracks.length} tracks without pre-validation`);
+    console.log(`🎵 Pre-validating ${tracks.length} tracks to prevent UI shuffling...`);
     
-    // Just check for basic track ID
-    const working = tracks.filter(track => track.id);
-    const broken = tracks.filter(track => !track.id);
+    const working: Track[] = [];
+    const broken: Track[] = [];
     
-    if (broken.length > 0) {
-      console.log(`🎵 Filtered out ${broken.length} tracks without IDs`);
+    // Process tracks in smaller batches to prevent overwhelming
+    const batchSize = 5;
+    for (let i = 0; i < tracks.length; i += batchSize) {
+      const batch = tracks.slice(i, i + batchSize);
+      
+      const batchPromises = batch.map(async (track) => {
+        // Basic validation
+        if (!track.id) {
+          return { track, isWorking: false };
+        }
+        
+        // Check if track has been marked as failed too many times
+        const failureCount = trackFailureCounts.get(track.id) || 0;
+        if (failureCount >= MAX_TRACK_FAILURES) {
+          return { track, isWorking: false };
+        }
+        
+        // Quick URL resolution test without actually loading audio
+        try {
+          const { SmartAudioResolver } = await import('@/utils/smartAudioResolver');
+          const resolution = await SmartAudioResolver.resolveAudioUrl({
+            id: track.id,
+            title: track.title || 'Untitled',
+            storage_bucket: track.storage_bucket,
+            storage_key: track.storage_key,
+            category: '',
+            genre: track.genre
+          });
+          
+          return { track, isWorking: resolution.success && !!resolution.url };
+        } catch (error) {
+          console.log(`🎵 Validation failed for ${track.title}:`, error);
+          return { track, isWorking: false };
+        }
+      });
+      
+      const batchResults = await Promise.all(batchPromises);
+      
+      batchResults.forEach(({ track, isWorking }) => {
+        if (isWorking) {
+          working.push(track);
+        } else {
+          broken.push(track);
+          // Pre-mark broken tracks to prevent them from being tried
+          trackFailureCounts.set(track.id, MAX_TRACK_FAILURES);
+        }
+      });
+      
+      // Stop early if we have enough working tracks
+      if (working.length >= 10) {
+        console.log(`🎵 Found ${working.length} working tracks, stopping validation early`);
+        // Add remaining unchecked tracks as potentially working
+        working.push(...tracks.slice(i + batchSize));
+        break;
+      }
     }
+    
+    console.log(`✅ Validation complete: ${working.length} working, ${broken.length} broken`);
     
     return { working, broken };
   };
@@ -1149,30 +1203,34 @@ export const useAudioStore = create<AudioState>((set, get) => {
       set({ queue: tracks, index: -1, isLoading: true, error: undefined });
       skipped = 0;
       
-      // Fast parallel validation
+      // Show loading message to user during validation
+      console.log('🎵 Validating tracks to ensure smooth playback...');
+      
+      // Improved validation to prevent UI shuffling
       const { working, broken } = await validateTracks(tracks);
       
       // Mark broken tracks with high failure count
       if (broken.length > 0) {
         const { adminLog, userLog } = await import('@/utils/adminLogging');
-        adminLog(`🎵 Marking ${broken.length} broken tracks`);
+        adminLog(`🎵 Pre-filtered ${broken.length} broken tracks`);
         
         // Mark tracks as failed
         broken.forEach(track => {
           trackFailureCounts.set(track.id, MAX_TRACK_FAILURES);
-          console.log('🎵 Marked broken track as exhausted:', track.id, track.title);
+          console.log('🎵 Pre-marked broken track:', track.id, track.title);
         });
         console.log('🎵 Total failed tracks:', trackFailureCounts.size);
         
+        // Don't announce skips during pre-validation to avoid UI spam
         for (let i = 0; i < Math.min(broken.length, 3); i++) {
-          announceSkip();
+          skipped++;
         }
         if (broken.length > 3) {
           const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
           if (shouldShowTechnicalLogs()) {
-            toast.info(`Skipped ${broken.length} broken tracks`);
+            console.log(`Pre-filtered ${broken.length} broken tracks`);
           } else {
-            userLog('🎵 Optimizing your playlist...');
+            console.log('🎵 Optimized playlist for smooth playback');
           }
         }
       }
@@ -1194,6 +1252,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const targetIndex = Math.min(startAt, working.length - 1);
       set({ queue: working, index: targetIndex });
       
+      console.log(`🎵 Loading first track from ${working.length} validated tracks...`);
       const success = await loadTrack(working[targetIndex]);
       if (!success) {
         set({ isLoading: false, error: "Failed to load first track" });
