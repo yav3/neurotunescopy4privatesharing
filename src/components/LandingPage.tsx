@@ -73,10 +73,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 Therapy for <span className="text-primary">Wellness</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                Evidence-based AI platform that creates personalized therapeutic music experiences to support mental health, cognitive enhancement, and emotional well-being.
-              </p>
-              
               <p className="text-muted-foreground mb-8">
                 Based on evidence from 15K+ studies, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
               </p>
