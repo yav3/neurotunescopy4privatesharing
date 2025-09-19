@@ -99,30 +99,30 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-hero-teal">
       {/* Header */}
       <div className="px-6 py-6">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Plus className="w-7 h-7 text-foreground" />
+              <Plus className="w-7 h-7 text-white" />
               <div>
-                <div className="text-4xl font-bold text-foreground">NeuroTunes</div>
+                <div className="text-4xl font-bold text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggle} 
-              className="text-foreground hover:bg-accent"
+              className="text-white hover:bg-white/10 glass-morphism"
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
           </div>
           
           {/* Greeting */}
-          <h1 className="text-base font-medium text-foreground">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-base font-medium text-white/90">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ const Index = () => {
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[1.5/1] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border-0 glass-card"
                   onClick={() => handleGoalSelect(goal.id)}
                 >
                   <img 
@@ -165,12 +165,12 @@ const Index = () => {
 
           {/* Trending Section */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Trending</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Trending</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[2.25/1.5] border-0"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[2.25/1.5] border-0 glass-card"
                   onClick={() => handleTrendingSelect(category.id)}
                 >
                   <img 
@@ -202,7 +202,7 @@ const Index = () => {
 
       {/* Navigation */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="backdrop-blur-sm border-t bg-background/95 border-border">
+        <div className="glass-morphism border-t border-white/20">
           <Navigation />
       </div>
 

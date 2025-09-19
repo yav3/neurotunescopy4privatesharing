@@ -112,6 +112,18 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
+    /* Beautiful teal gradient backgrounds */
+    --gradient-primary-teal: linear-gradient(135deg, hsl(173 100% 35%), hsl(179 85% 45%), hsl(173 75% 55%));
+    --gradient-hero-teal: linear-gradient(180deg, hsl(173 100% 35%), hsl(176 90% 40%), hsl(173 85% 50%));
+    --gradient-card-teal: linear-gradient(135deg, hsl(173 50% 96%), hsl(176 45% 98%), hsl(173 40% 95%));
+    --gradient-glass-teal: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(45, 212, 191, 0.05));
+    
+    /* Enhanced glass morphism effects */
+    --glass-bg-enhanced: rgba(255, 255, 255, 0.15);
+    --glass-border-enhanced: rgba(255, 255, 255, 0.25);
+    --glass-shadow-enhanced: 0 12px 40px 0 rgba(20, 184, 166, 0.15);
+    --glass-backdrop: blur(16px);
+    
     /* Light mode gradient variations for cards */
     --gradient-primary: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 25%), hsl(0 0% 10%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
@@ -760,5 +772,35 @@ All colors MUST be HSL.
       0 4px 6px -2px rgba(0, 0, 0, 0.05),
       0 0 0 1px rgba(255, 255, 255, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Beautiful gradient backgrounds */
+  .bg-gradient-teal {
+    background: var(--gradient-primary-teal);
+  }
+  
+  .bg-gradient-hero-teal {
+    background: var(--gradient-hero-teal);
+  }
+  
+  .bg-gradient-card-teal {
+    background: var(--gradient-card-teal);
+  }
+  
+  /* Enhanced glass morphism effects */
+  .glass-morphism {
+    background: var(--glass-bg-enhanced);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border-enhanced);
+    box-shadow: var(--glass-shadow-enhanced);
+  }
+  
+  .glass-card {
+    background: var(--gradient-glass-teal);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(20, 184, 166, 0.1);
   }
 }
