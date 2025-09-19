@@ -57,20 +57,20 @@ const AnimatedFluidBackground = () => {
     const animate = () => {
       const { width, height } = canvas.getBoundingClientRect();
       
-      // Clear canvas with gradient background
+      // Clear canvas with gradient background (pale, glassmorphic colors)
       const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, 'rgba(20, 184, 166, 0.1)');
-      gradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.15)');
-      gradient.addColorStop(1, 'rgba(14, 165, 233, 0.1)');
+      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.03)');
+      gradient.addColorStop(0.5, 'rgba(240, 253, 244, 0.05)');
+      gradient.addColorStop(1, 'rgba(236, 254, 255, 0.04)');
       
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
       
-      // Draw flowing waves
+      // Draw flowing waves (very pale and glassmorphic)
       waves.forEach((wave, index) => {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(20, 184, 166, ${0.3 - index * 0.1})`;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 - index * 0.02})`;
+        ctx.lineWidth = 1;
         
         for (let x = 0; x <= width; x += 2) {
           const y = height / 2 + 
@@ -102,7 +102,7 @@ const AnimatedFluidBackground = () => {
   return (
     <canvas 
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full opacity-60"
+      className="absolute inset-0 w-full h-full opacity-30"
       style={{ background: 'transparent' }}
     />
   );
@@ -199,8 +199,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             </Button>
             <Button 
               size="lg" 
-              variant="outline"
-              className="border border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-base font-normal rounded-xl"
+              variant="ghost"
+              className="border-2 border-white/40 text-white/90 hover:bg-white/15 hover:border-white/60 backdrop-blur-md px-8 py-4 text-base font-medium rounded-xl bg-white/5 transition-all duration-300"
             >
               <Play className="w-4 h-4 mr-2" />
               Watch Demo
@@ -315,42 +315,44 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Research Section */}
-      <section className="relative py-24 bg-slate-900">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-thin text-white mb-6">
-            Research <span className="font-light text-teal-300">Partnerships</span>
-          </h2>
-          <p className="text-xl text-white/60 mb-16 max-w-3xl mx-auto font-light">
-            Collaborating with leading institutions in neuroscience and technology
-          </p>
+      <section className="relative py-32 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-thin text-white mb-8">
+              Research <span className="font-light text-teal-300">Partnerships</span>
+            </h2>
+            <p className="text-2xl text-white/80 max-w-4xl mx-auto font-light leading-relaxed">
+              Collaborating with leading institutions in neuroscience and technology
+            </p>
+          </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl mx-auto mb-6 flex items-center justify-center">
-                <Brain className="w-6 h-6 text-black" />
+          <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
+                <div className="text-2xl font-bold text-white">CT</div>
               </div>
-              <h3 className="text-lg font-normal text-white mb-4">Cornell Tech</h3>
-              <p className="text-white/60 font-light">
+              <h3 className="text-2xl font-medium text-white mb-6">Cornell Tech</h3>
+              <p className="text-white/70 font-light text-lg leading-relaxed">
                 AI research for therapeutic applications
               </p>
             </Card>
             
-            <Card className="p-8 text-center bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl mx-auto mb-6 flex items-center justify-center">
-                <Heart className="w-6 h-6 text-black" />
+            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
+                <div className="text-2xl font-bold text-white">WC</div>
               </div>
-              <h3 className="text-lg font-normal text-white mb-4">Weill Cornell</h3>
-              <p className="text-white/60 font-light">
+              <h3 className="text-2xl font-medium text-white mb-6">Weill Cornell</h3>
+              <p className="text-white/70 font-light text-lg leading-relaxed">
                 Clinical validation and medical research
               </p>
             </Card>
             
-            <Card className="p-8 text-center bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl mx-auto mb-6 flex items-center justify-center">
-                <Activity className="w-6 h-6 text-black" />
+            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
+                <div className="text-2xl font-bold text-white">SM</div>
               </div>
-              <h3 className="text-lg font-normal text-white mb-4">Stanford Medical</h3>
-              <p className="text-white/60 font-light">
+              <h3 className="text-2xl font-medium text-white mb-6">Stanford Medical</h3>
+              <p className="text-white/70 font-light text-lg leading-relaxed">
                 Neuroscience and intervention development
               </p>
             </Card>
@@ -359,29 +361,29 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 bg-gradient-to-b from-slate-900 to-black">
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-6xl font-thin text-white mb-8">
+      <section className="relative py-32 bg-gradient-to-b from-slate-900 to-black">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+          <h2 className="text-7xl font-thin text-white mb-10">
             Transform Your <span className="font-light text-teal-300">Wellness</span>
           </h2>
-          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto font-light">
+          <p className="text-2xl text-white/80 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
             Join the future of personalized mental health through evidence-based music therapy
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-8 justify-center">
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-black px-10 py-4 text-lg font-medium rounded-xl shadow-2xl"
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-black px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
             >
               Start Free Session
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-6 h-6 ml-3" />
             </Button>
             <Button 
               size="lg" 
-              variant="outline"
+              variant="ghost"
               onClick={handleLogin}
-              className="border border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-10 py-4 text-lg font-normal rounded-xl"
+              className="border-2 border-white/40 text-white/90 hover:bg-white/15 hover:border-white/60 backdrop-blur-md px-12 py-5 text-xl font-medium rounded-xl bg-white/5 transition-all duration-300 hover:scale-105"
             >
               Sign In
             </Button>
