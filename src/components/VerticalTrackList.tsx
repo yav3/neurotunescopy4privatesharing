@@ -36,25 +36,38 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const [blockedTracks, setBlockedTracks] = useState<Set<string>>(new Set());
   const [lightningMode, setLightningMode] = useState(false);
+  const [favoriteLoadingStates, setFavoriteLoadingStates] = useState<Set<string>>(new Set());
 
   const handleFavorite = async (trackId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const track = tracks.find(t => t.id === trackId);
     if (!track) return;
     
+    // Set loading state
+    setFavoriteLoadingStates(prev => new Set(prev).add(trackId));
+    
     const isCurrentlyFavorited = isFavorite(trackId);
     
-    if (isCurrentlyFavorited) {
-      await removeFavorite(trackId);
-      toast({
-        title: "Removed from favorites",
-        description: "Track removed from your favorites",
-      });
-    } else {
-      await addFavorite(track);
-      toast({
-        title: "Added to favorites",
-        description: "Track added to your favorites",
+    try {
+      if (isCurrentlyFavorited) {
+        await removeFavorite(trackId);
+        toast({
+          title: "Removed from favorites",
+          description: "Track removed from your favorites",
+        });
+      } else {
+        await addFavorite(track);
+        toast({
+          title: "Added to favorites",
+          description: "Track added to your favorites",
+        });
+      }
+    } finally {
+      // Remove loading state
+      setFavoriteLoadingStates(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(trackId);
+        return newSet;
       });
     }
   };
@@ -149,6 +162,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
         {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = isFavorite(track.id);
+          const isFavoriteLoading = favoriteLoadingStates.has(track.id);
           
           return (
             <div
@@ -206,19 +220,24 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                {/* Action Buttons with Glass Morphism */}
                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
                  {/* Favorite */}
-                 <Button
-                   variant="ghost"
-                   size="icon"
-                   onClick={(e) => handleFavorite(track.id, e)}
-                   className={cn(
-                     "w-10 h-10 sm:w-8 sm:h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full touch-manipulation active:scale-95",
-                     isFavorited 
-                       ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
-                       : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
-                   )}
-                 >
-                   <Heart className={cn("w-5 h-5 sm:w-4 sm:h-4", isFavorited && "fill-current")} />
-                 </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => handleFavorite(track.id, e)}
+                    disabled={isFavoriteLoading}
+                    className={cn(
+                      "w-10 h-10 sm:w-8 sm:h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full touch-manipulation active:scale-95 disabled:cursor-not-allowed disabled:opacity-60",
+                      isFavorited 
+                        ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                        : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                    )}
+                  >
+                    {isFavoriteLoading ? (
+                      <div className="w-4 h-4 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+                    ) : (
+                      <Heart className={cn("w-5 h-5 sm:w-4 sm:h-4", isFavorited && "fill-current")} />
+                    )}
+                  </Button>
 
                  {/* Thumbs Down */}
                  <Button

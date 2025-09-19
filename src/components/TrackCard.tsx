@@ -124,6 +124,8 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
   const { playTrack } = useAudioStore()
   const { isAdmin } = useAuthContext()
+  const [isImageLoading, setIsImageLoading] = useState(true)
+  const [isPlayLoading, setIsPlayLoading] = useState(false)
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
@@ -134,12 +136,15 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
 
   const handlePlayClick = async () => {
     console.log('▶️ TrackCard play button clicked for track:', track.title, track.id);
+    setIsPlayLoading(true);
     
     try {
       console.log('🔄 Playing single track via TrackCard');
       await playTrack(track);
     } catch (error) {
       console.error('❌ Error in TrackCard play click:', error);
+    } finally {
+      setIsPlayLoading(false);
     }
   };
 
@@ -149,11 +154,20 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
         {/* Album Artwork */}
         <div className="relative flex-shrink-0">
           <div className="w-20 h-20 rounded-lg overflow-hidden relative">
+            {/* Loading State */}
+            {isImageLoading && (
+              <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
+                <div className="w-4 h-4 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
+              </div>
+            )}
+            
             {/* Therapeutic Nature Background */}
             <img 
               src={artwork.url}
               alt={`${frequencyBand} band therapeutic artwork`}
               className="w-full h-full object-cover"
+              onLoad={() => setIsImageLoading(false)}
+              onError={() => setIsImageLoading(false)}
             />
             {/* Therapeutic Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
@@ -162,10 +176,15 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
           {/* Play button overlay */}
           <button
             onClick={handlePlayClick}
-            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center"
+            disabled={isPlayLoading}
+            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center disabled:cursor-not-allowed"
             aria-label="Play track"
           >
-            <Play size={24} className="text-white ml-0.5" />
+            {isPlayLoading ? (
+              <div className="w-6 h-6 border-2 border-white/60 border-t-white rounded-full animate-spin" />
+            ) : (
+              <Play size={24} className="text-white ml-0.5" />
+            )}
           </button>
         </div>
 

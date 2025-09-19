@@ -87,6 +87,8 @@ export default function FullPlayer() {
 
   // Local state for enhanced features
   const [lightningMode, setLightningMode] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
   const handleSpatialAudio = () => {
@@ -109,20 +111,25 @@ export default function FullPlayer() {
   const handleFavorite = async () => {
     if (!track) return;
     
+    setIsFavoriteLoading(true);
     const isCurrentlyFavorited = isFavorite(track.id);
     
-    if (isCurrentlyFavorited) {
-      await removeFavorite(track.id);
-      toast({
-        title: "Removed from favorites",
-        description: track.title,
-      });
-    } else {
-      await addFavorite(track);
-      toast({
-        title: "Added to favorites",
-        description: track.title,
-      });
+    try {
+      if (isCurrentlyFavorited) {
+        await removeFavorite(track.id);
+        toast({
+          title: "Removed from favorites",
+          description: track.title,
+        });
+      } else {
+        await addFavorite(track);
+        toast({
+          title: "Added to favorites",
+          description: track.title,
+        });
+      }
+    } finally {
+      setIsFavoriteLoading(false);
     }
   };
 
@@ -171,12 +178,22 @@ export default function FullPlayer() {
             className="absolute inset-0 bg-gradient-to-br from-card/50 to-secondary/30"
             style={{ background: trackArtwork?.gradient || 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))' }}
           />
+          
+          {/* Loading State */}
+          {isImageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
+            </div>
+          )}
+          
           {trackArtwork?.url && (
             <img
               src={trackArtwork.url}
               alt="Album artwork"
               className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80"
+              onLoad={() => setIsImageLoading(false)}
               onError={(e) => {
+                setIsImageLoading(false);
                 e.currentTarget.style.display = 'none';
               }}
             />
@@ -221,15 +238,20 @@ export default function FullPlayer() {
             variant="ghost" 
             size="lg"
             onClick={handleFavorite}
+            disabled={isFavoriteLoading}
             className={cn(
               "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
-              "hover:scale-105 hover:shadow-xl",
+              "hover:scale-105 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60",
               track && isFavorite(track.id)
                 ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
                 : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
             )}
           >
-            <Heart size={24} className={cn(track && isFavorite(track.id) && "fill-current")} />
+            {isFavoriteLoading ? (
+              <div className="w-6 h-6 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+            ) : (
+              <Heart size={24} className={cn(track && isFavorite(track.id) && "fill-current")} />
+            )}
           </Button>
 
           {/* Thumbs Down */}
