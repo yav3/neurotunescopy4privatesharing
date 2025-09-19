@@ -138,9 +138,14 @@ const Index = () => {
                   className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[2/1] border-0"
                   onClick={() => handleGoalSelect(goal.id)}
                 >
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${goal.image})` }}
+                  <img 
+                    src={goal.image}
+                    alt={`${goal.name} therapy program`}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    style={{ 
+                      imageRendering: 'crisp-edges',
+                      filter: 'contrast(1.05) saturate(1.1) brightness(1.02)'
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/30" />
                    <div className="relative h-full p-4 flex flex-col justify-end">
@@ -165,9 +170,14 @@ const Index = () => {
                   className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-transform duration-200 aspect-[3/2] border-0"
                   onClick={() => handleTrendingSelect(category.id)}
                 >
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${category.image})` }}
+                  <img 
+                    src={category.image}
+                    alt={`${category.name} music category`}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    style={{ 
+                      imageRendering: 'crisp-edges',
+                      filter: 'contrast(1.05) saturate(1.1) brightness(1.02)'
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/40 to-accent/30" />
                    <div className="relative h-full p-6 flex flex-col justify-end">

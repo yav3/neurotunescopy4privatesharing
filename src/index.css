@@ -442,11 +442,20 @@ All colors MUST be HSL.
     }
   }
 
-  /* Ensure images are responsive with performance optimizations */
+  /* Ensure images are responsive with performance optimizations and improved quality */
   img {
     max-width: 100%;
     height: auto;
     display: block;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  /* High DPI image optimization */
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+      image-rendering: -webkit-optimize-contrast;
+    }
   }
 
   /* Lazy loading placeholder */
