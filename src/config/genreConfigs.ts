@@ -94,7 +94,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'classical-acoustic',
         name: 'Classical & Acoustic',
         description: 'Soothing classical and acoustic pieces for deep relaxation',
-        buckets: ['Nocturnes'],
+        buckets: ['gentleclassicalforpain', 'Nocturnes'],
         image: chopinMountainPeaks
       }
     ],
