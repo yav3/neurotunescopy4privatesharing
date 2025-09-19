@@ -25,8 +25,8 @@ const KNOWN_EMPTY_BUCKETS = new Set([
   'HIIT',
   'gentleclassicalforpain',
   'painreducingworld',
-  'audio',
-  'countryandamericana' // This bucket appears to be empty based on user feedback
+  'audio'
+  // Removed countryandamericana - bucket should be used directly
 ]);
 
 /**
