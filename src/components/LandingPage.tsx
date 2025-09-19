@@ -7,6 +7,7 @@ import animatedTealBg from '@/assets/animated-teal-bg.jpg';
 import stressReliefBg from '@/assets/stress-relief-bg.jpg';
 import energyBoostBg from '@/assets/energy-boost-bg.jpg';
 import deepRestBg from '@/assets/deep-rest-bg.jpg';
+import anxietySupportBg from '@/assets/anxiety-support-bg.jpg';
 
 interface LandingPageProps {
   onLogin: () => void;
@@ -45,12 +46,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <Globe className="w-4 h-4" />
               <span>Português</span>
             </div>
-            <Button 
-              onClick={handleSignup}
-              className="bg-primary hover:bg-teal-600 text-primary-foreground"
-            >
-              Start Therapy
-            </Button>
             <div className="text-lg font-normal text-foreground">
               NeuralPositive
             </div>
@@ -133,18 +128,18 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Card className="overflow-hidden">
               <div className="relative">
                 <img 
-                  src={stressReliefBg} 
-                  alt="Peaceful water droplets on leaf for stress relief" 
+                  src={anxietySupportBg} 
+                  alt="Calming water droplets on leaf for anxiety support" 
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                    Stress Reduction
+                    Anxiety Support
                   </span>
                 </div>
               </div>
               <CardContent className="p-6 text-left">
-                <h3 className="text-xl font-normal text-foreground mb-3">Classical Sonatas for Stress Relief</h3>
+                <h3 className="text-xl font-normal text-foreground mb-3">Anxiety Support</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Evidence-based classical music therapy featuring Chopin piano sonatas and 
                   gentle orchestral compositions. Designed to reduce cortisol levels and 
