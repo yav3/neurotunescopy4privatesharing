@@ -64,9 +64,15 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 AI <span className="text-primary">Personalization</span>
               </h1>
               
-              <p className="text-muted-foreground mb-8">
+              <p className="text-muted-foreground mb-4">
                 Evidence-based and crafted by musicians, neuroscientists, and musicians. Powered by cutting edge AI.
               </p>
+              
+              <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-4 mb-8 border border-primary/20">
+                <p className="text-primary font-medium text-lg">
+                  Goals are Personalized Through Genre Selection and Closed Loop Algorithms
+                </p>
+              </div>
               
               <Button 
                 size="lg" 
