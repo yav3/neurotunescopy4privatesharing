@@ -8,9 +8,11 @@ import { Plus, ArrowRight, Play, CheckCircle, Brain, Heart, Activity, Zap } from
 const fluidShape1 = '/src/assets/fluid-shape-1.jpg'; // Image 1
 const fluidShape2 = '/src/assets/fluid-shape-2.jpg'; // Image 2  
 const fluidShape3 = '/src/assets/fluid-shape-3.jpg'; // Image 3
-const fluidShape4 = '/src/assets/fluid-shape-4.jpg'; // Image 4
-const fluidShape5 = '/src/assets/fluid-shape-5.jpg'; // Image 5
-const fluidShape6 = '/src/assets/fluid-shape-6.jpg'; // Image 6
+
+// Therapeutic intervention images
+import therapyStonesWater from '@/assets/therapy-stones-water.png';
+import therapyZenStones from '@/assets/therapy-zen-stones.png';
+import therapyDewdropLeaf from '@/assets/therapy-dewdrop-leaf.png';
 
 interface LandingPageProps {
   onLogin: () => void;
@@ -223,9 +225,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={fluidShape4} 
-                  alt="Anxiety relief therapy visualization" 
-                  className="w-full h-full object-cover mix-blend-screen opacity-60 group-hover:scale-105 transition-transform duration-700"
+                  src={therapyStonesWater} 
+                  alt="Anxiety relief therapy - smooth stones by peaceful water" 
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-white/20 backdrop-blur-sm text-teal-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
@@ -249,9 +251,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={fluidShape5} 
-                  alt="Energy and mood enhancement visualization" 
-                  className="w-full h-full object-cover mix-blend-screen opacity-60 group-hover:scale-105 transition-transform duration-700"
+                  src={therapyDewdropLeaf} 
+                  alt="Energy and mood enhancement - dewdrop on vibrant teal leaf" 
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-white/20 backdrop-blur-sm text-orange-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
@@ -275,9 +277,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
               <div className="relative h-48 overflow-hidden">
                 <img 
-                  src={fluidShape6} 
-                  alt="Deep rest and meditation visualization" 
-                  className="w-full h-full object-cover mix-blend-screen opacity-60 group-hover:scale-105 transition-transform duration-700"
+                  src={therapyZenStones} 
+                  alt="Deep rest and meditation - zen stones stacked for balance and tranquility" 
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-white/20 backdrop-blur-sm text-purple-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
