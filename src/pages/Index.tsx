@@ -141,10 +141,12 @@ const Index = () => {
                   <img 
                     src={goal.image}
                     alt={`${goal.name} therapy program`}
+                    loading="eager"
+                    decoding="sync"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     style={{ 
-                      imageRendering: 'crisp-edges',
-                      filter: 'contrast(1.05) saturate(1.1) brightness(1.02)'
+                      imageRendering: 'auto',
+                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/30" />
@@ -173,10 +175,12 @@ const Index = () => {
                   <img 
                     src={category.image}
                     alt={`${category.name} music category`}
+                    loading="eager"
+                    decoding="sync"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     style={{ 
-                      imageRendering: 'crisp-edges',
-                      filter: 'contrast(1.05) saturate(1.1) brightness(1.02)'
+                      imageRendering: 'auto',
+                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/40 to-accent/30" />
