@@ -115,14 +115,13 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Featured Goals are Personalized Through Genre Selection and Closed Loop Algorithms */}
-      <section className="bg-background py-20">
-        <div className="max-w-5 xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Goals are Personalized Through Genre Selection and Closed Loop Algorithms</h2>
+{/* Featured Goals are Personalized Through Genre Selection and Closed Loop Algorithms */}
+<section className="bg-background py-20">
+<div className="max-w-5 xl mx-auto px-6 text-center">
+<h2 className="text-4xl font-normal text-foreground mb-6">Personalized Closed-Loop Tech</h2>
           <p className="text-xl text-muted-foreground mb-16">
-            Clinically-designed music therapy sessions for various conditions and goals
+            Clinically-designed to address symptoms of anxiety and mood disorders
           </p>
-          
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <Card className="overflow-hidden">
               <div className="relative">
