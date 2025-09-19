@@ -25,13 +25,10 @@ import nocturnesStones from '@/assets/nocturnes-stones.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
-// Create 6 therapeutic goal cards - split stress & anxiety into separate cards
-const stressAnxietyGoal = THERAPEUTIC_GOALS.find(g => g.id === 'stress-anxiety-support');
+// Create therapeutic goal cards
 const therapeuticGoals = [
   ...THERAPEUTIC_GOALS.filter(goal => 
-    goal.id !== 'stress-anxiety-support' && 
-    goal.id !== 'calm-mood-boost' && 
-    goal.id !== 'anxiety-support'
+    goal.id !== 'stress-anxiety-support'
   ).map(goal => ({
     id: goal.id,
     name: goal.name,
