@@ -2,8 +2,11 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Zap, Shield, Bookmark, Music, BarChart3 } from 'lucide-react';
+import { Globe, Zap, Shield, Bookmark, Music, BarChart3, Brain, Heart, Activity, Play, CheckCircle } from 'lucide-react';
 import tealAbstractBg from '@/assets/teal-abstract-bg.jpg';
+import stressReliefBg from '@/assets/stress-relief-bg.jpg';
+import focusEnhancementBg from '@/assets/focus-enhancement-bg.jpg';
+import deepRestBg from '@/assets/deep-rest-bg.jpg';
 
 interface LandingPageProps {
   onLogin: () => void;
@@ -123,41 +126,218 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Science-Based Therapeutic Benefits Section */}
       <section className="bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mb-4">
-                <Shield className="w-8 h-8 text-primary" />
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold text-foreground mb-6">Science-Based Therapeutic Benefits</h2>
+          <p className="text-xl text-muted-foreground mb-16 max-w-4xl mx-auto">
+            Our AI analyzes thousands of musical parameters to create personalized therapy 
+            sessions that target specific mental health and cognitive goals.
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                <Brain className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">Patented</h3>
-              <p className="text-sm text-muted-foreground">Technology</p>
+              <h3 className="text-2xl font-bold text-foreground mb-4">Cognitive Enhancement</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Scientifically-backed music selections to improve focus, memory, 
+                and mental clarity
+              </p>
             </div>
             
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mb-4">
-                <Bookmark className="w-8 h-8 text-primary" />
+            <div className="text-center">
+              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                <Heart className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">Evidence</h3>
-              <p className="text-sm text-muted-foreground">Based Research</p>
+              <h3 className="text-2xl font-bold text-foreground mb-4">Emotional Regulation</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                AI-curated playlists designed to balance mood and reduce stress 
+                responses
+              </p>
             </div>
             
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mb-4">
-                <Music className="w-8 h-8 text-primary" />
+            <div className="text-center">
+              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                <Activity className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">50+</h3>
-              <p className="text-sm text-muted-foreground">Music Library</p>
+              <h3 className="text-2xl font-bold text-foreground mb-4">Physiological Benefits</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Evidence-based frequencies that promote relaxation and 
+                cardiovascular health
+              </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Therapy Programs Section */}
+      <section className="bg-background py-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold text-foreground mb-6">Featured Therapy Programs</h2>
+          <p className="text-xl text-muted-foreground mb-16">
+            Clinically-designed music therapy sessions for various conditions and goals
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="overflow-hidden">
+              <div className="relative">
+                <img 
+                  src={stressReliefBg} 
+                  alt="Peaceful water droplets on leaf for stress relief" 
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-primary/90 text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                    Stress Reduction
+                  </span>
+                </div>
+              </div>
+              <CardContent className="p-6 text-left">
+                <h3 className="text-xl font-bold text-foreground mb-3">Classical Sonatas for Stress Relief</h3>
+                <p className="text-muted-foreground mb-4 leading-relaxed">
+                  Evidence-based classical music therapy featuring Chopin piano sonatas and 
+                  gentle orchestral compositions. Designed to reduce cortisol levels and 
+                  activate parasympathetic nervous system responses for deep relaxation.
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Play className="w-4 h-4" />
+                  <span>258 Clinical Tracks</span>
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mb-4">
-                <BarChart3 className="w-8 h-8 text-primary" />
+            <Card className="overflow-hidden">
+              <div className="relative">
+                <img 
+                  src={focusEnhancementBg} 
+                  alt="Sunrise lake reflection for focus enhancement" 
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-orange-500/90 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Focus Enhancement
+                  </span>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-2">Clinical</h3>
-              <p className="text-sm text-muted-foreground">Insights Analytics</p>
-            </div>
+              <CardContent className="p-6 text-left">
+                <h3 className="text-xl font-bold text-foreground mb-3">Morning Light Activation</h3>
+                <p className="text-muted-foreground mb-4 leading-relaxed">
+                  Specifically designed for patients with major depressive disorder (MDD), 
+                  anxiety disorders, and chronic pain using classical compositions enhanced 
+                  with therapeutic frequencies
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>FDA Researched</span>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="overflow-hidden">
+              <div className="relative">
+                <img 
+                  src={deepRestBg} 
+                  alt="Zen stones for deep rest therapy" 
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-slate-500/90 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Non-Sleep Deep Rest
+                  </span>
+                </div>
+              </div>
+              <CardContent className="p-6 text-left">
+                <h3 className="text-xl font-bold text-foreground mb-3">Delta Wave Induction</h3>
+                <p className="text-muted-foreground mb-4 leading-relaxed">
+                  Scientifically tuned frequencies to synchronize brainwaves and promote 
+                  deep, restorative sleep
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Sleep Lab Tested</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Button 
+            size="lg" 
+            onClick={handleSignup}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-base inline-flex items-center gap-2"
+          >
+            <Zap className="w-5 h-5" />
+            Explore All Programs
+            <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"/>
+            </svg>
+          </Button>
+        </div>
+      </section>
+
+      {/* Leading Research Institutions Section */}
+      <section className="bg-background py-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold text-foreground mb-6">Leading Research Institutions</h2>
+          <p className="text-xl text-muted-foreground mb-16">
+            Our platform is developed in collaboration with world-renowned medical and technology institutions
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="p-8 text-center">
+              <h3 className="text-xl font-bold text-foreground mb-4">Jacobs Technion Institute at Cornell Tech</h3>
+              <p className="text-muted-foreground">
+                Advanced AI and technology research for therapeutic applications
+              </p>
+            </Card>
+            
+            <Card className="p-8 text-center">
+              <h3 className="text-xl font-bold text-foreground mb-4">Weill Cornell Medical College</h3>
+              <p className="text-muted-foreground">
+                Clinical research and medical validation of therapeutic protocols
+              </p>
+            </Card>
+            
+            <Card className="p-8 text-center">
+              <h3 className="text-xl font-bold text-foreground mb-4">Stanford University Medical School</h3>
+              <p className="text-muted-foreground">
+                Neuroscience research and evidence-based treatment development
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-primary py-20">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold text-primary-foreground mb-6">
+            Ready to Transform Your Mental Wellness?
+          </h2>
+          <p className="text-xl text-primary-foreground/90 mb-8">
+            Join thousands of users who have improved their mental health with personalized music therapy
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              onClick={handleSignup}
+              className="bg-background text-primary hover:bg-background/90 px-8 py-3 text-base inline-flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <circle cx="10" cy="10" r="3" fill="currentColor"/>
+              </svg>
+              Start Free Session
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={handleLogin}
+              className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 px-8 py-3 text-base"
+            >
+              Sign In
+            </Button>
           </div>
         </div>
       </section>
