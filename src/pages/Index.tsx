@@ -19,6 +19,7 @@ import dewdropLeaf from '@/assets/dewdrop-leaf.png';
 import dewdropMoon from '@/assets/dewdrop-moon.png';
 import forestLakeMist from '@/assets/forest-lake-mist.png';
 import yellowFlowers from '@/assets/yellow-flowers.png';
+import positivePopDewdrops from '@/assets/positive-pop-dewdrops.png';
 import stressLeaf from '@/assets/stress-support-leaf.png';
 import anxietyLake from '@/assets/anxiety-support-lake.png';
 import nocturnesStones from '@/assets/nocturnes-stones.png';
@@ -41,7 +42,7 @@ const therapeuticGoals = [
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
-  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: mistyLake },
+  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: positivePopDewdrops },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: waterfallGreen },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: yellowFlowers },
