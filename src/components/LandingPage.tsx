@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { Globe, Zap, Shield, Bookmark, Music, BarChart3, Brain, Heart, Activity, Play, CheckCircle } from 'lucide-react';
+import { Globe, Zap, Shield, Bookmark, Music, BarChart3, Brain, Heart, Activity, Play, CheckCircle, Plus } from 'lucide-react';
 import animatedTealBg from '@/assets/animated-teal-bg.jpg';
 import stressReliefBg from '@/assets/stress-relief-bg.jpg';
 import energyBoostBg from '@/assets/energy-boost-bg.jpg';
@@ -33,10 +33,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Zap className="w-6 h-6 text-primary-foreground" />
+              <Plus className="w-6 h-6 text-primary-foreground" strokeWidth={1} />
             </div>
             <div>
-              <div className="text-xl font-bold text-foreground">NeuroTunes</div>
+              <div className="text-xl font-normal text-foreground">NeuroTunes</div>
               <div className="text-sm text-muted-foreground">AI Music Therapy Platform</div>
             </div>
           </div>
@@ -51,8 +51,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             >
               Start Therapy
             </Button>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-sm font-medium text-primary-foreground">D</span>
+            <div className="text-lg font-normal text-foreground">
+              NeuralPositive
             </div>
           </div>
         </div>
@@ -63,12 +63,12 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-teal-50 text-primary px-3 py-2 rounded-full text-sm font-medium mb-6">
-                <Zap className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 bg-teal-50 text-primary px-3 py-2 rounded-full text-sm font-normal mb-6">
+                <Plus className="w-4 h-4" strokeWidth={1} />
                 AI-Powered Music Therapy
               </div>
               
-              <h1 className="text-5xl font-bold text-foreground leading-tight mb-6">
+              <h1 className="text-5xl font-normal text-foreground leading-tight mb-6">
                 Personalized AI Music <br />
                 Therapy for <span className="text-primary">Wellness</span>
               </h1>
@@ -105,7 +105,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-base font-semibold text-foreground">Active Therapy Session</div>
+                        <div className="text-base font-normal text-foreground">Active Therapy Session</div>
                         <div className="text-sm text-muted-foreground">Cognitive Enhancement Protocol</div>
                       </div>
                       <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -123,7 +123,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       {/* Science-Based Therapeutic Benefits Section */}
       <section className="bg-background py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Science-Based Therapeutic Benefits</h2>
+          <h2 className="text-4xl font-normal text-foreground mb-6">Science-Based Therapeutic Benefits</h2>
           <p className="text-xl text-muted-foreground mb-16 max-w-4xl mx-auto">
             Our AI analyzes thousands of musical parameters to create personalized therapy 
             sessions that target specific mental health and cognitive goals.
@@ -134,7 +134,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
                 <Brain className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">Cognitive Enhancement</h3>
+              <h3 className="text-2xl font-normal text-foreground mb-4">Cognitive Enhancement</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Scientifically-backed music selections to improve focus, memory, 
                 and mental clarity
@@ -145,7 +145,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
                 <Heart className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">Emotional Regulation</h3>
+              <h3 className="text-2xl font-normal text-foreground mb-4">Emotional Regulation</h3>
               <p className="text-muted-foreground leading-relaxed">
                 AI-curated playlists designed to balance mood and reduce stress 
                 responses
@@ -156,7 +156,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
                 <Activity className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">Physiological Benefits</h3>
+              <h3 className="text-2xl font-normal text-foreground mb-4">Physiological Benefits</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Evidence-based frequencies that promote relaxation and 
                 cardiovascular health
@@ -169,7 +169,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       {/* Featured Therapy Programs Section */}
       <section className="bg-background py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Featured Therapy Programs</h2>
+          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
           <p className="text-xl text-muted-foreground mb-16">
             Clinically-designed music therapy sessions for various conditions and goals
           </p>
@@ -189,7 +189,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 </div>
               </div>
               <CardContent className="p-6 text-left">
-                <h3 className="text-xl font-bold text-foreground mb-3">Classical Sonatas for Stress Relief</h3>
+                <h3 className="text-xl font-normal text-foreground mb-3">Classical Sonatas for Stress Relief</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Evidence-based classical music therapy featuring Chopin piano sonatas and 
                   gentle orchestral compositions. Designed to reduce cortisol levels and 
@@ -216,7 +216,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 </div>
               </div>
               <CardContent className="p-6 text-left">
-                <h3 className="text-xl font-bold text-foreground mb-3">Energy Boost</h3>
+                <h3 className="text-xl font-normal text-foreground mb-3">Energy Boost</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Specifically designed for patients with major depressive disorder (MDD), 
                   anxiety disorders, and chronic pain using classical compositions enhanced 
@@ -243,7 +243,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 </div>
               </div>
               <CardContent className="p-6 text-left">
-                <h3 className="text-xl font-bold text-foreground mb-3">Delta Wave Induction</h3>
+                <h3 className="text-xl font-normal text-foreground mb-3">Delta Wave Induction</h3>
                 <p className="text-muted-foreground mb-4 leading-relaxed">
                   Scientifically tuned frequencies to synchronize brainwaves and promote 
                   deep, restorative sleep
@@ -273,28 +273,28 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       {/* Leading Research Institutions Section */}
       <section className="bg-background py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Leading Research Institutions</h2>
+          <h2 className="text-4xl font-normal text-foreground mb-6">Leading Research Institutions</h2>
           <p className="text-xl text-muted-foreground mb-16">
             Our platform is developed in collaboration with world-renowned medical and technology institutions
           </p>
           
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="p-8 text-center">
-              <h3 className="text-xl font-bold text-foreground mb-4">Jacobs Technion Institute at Cornell Tech</h3>
+              <h3 className="text-xl font-normal text-foreground mb-4">Jacobs Technion Institute at Cornell Tech</h3>
               <p className="text-muted-foreground">
                 Advanced AI and technology research for therapeutic applications
               </p>
             </Card>
             
             <Card className="p-8 text-center">
-              <h3 className="text-xl font-bold text-foreground mb-4">Weill Cornell Medical College</h3>
+              <h3 className="text-xl font-normal text-foreground mb-4">Weill Cornell Medical College</h3>
               <p className="text-muted-foreground">
                 Clinical research and medical validation of therapeutic protocols
               </p>
             </Card>
             
             <Card className="p-8 text-center">
-              <h3 className="text-xl font-bold text-foreground mb-4">Stanford University Medical School</h3>
+              <h3 className="text-xl font-normal text-foreground mb-4">Stanford University Medical School</h3>
               <p className="text-muted-foreground">
                 Neuroscience research and evidence-based treatment development
               </p>
@@ -306,7 +306,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       {/* CTA Section */}
       <section className="bg-primary py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-primary-foreground mb-6">
+          <h2 className="text-4xl font-normal text-primary-foreground mb-6">
             Ready to Transform Your Mental Wellness?
           </h2>
           <p className="text-xl text-primary-foreground/90 mb-8">
