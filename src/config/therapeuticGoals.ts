@@ -9,6 +9,7 @@ import energyBoostCard from '@/assets/energy-motivation-updated.png';
 import cardioCard from '@/assets/cardio-mountain-lake.jpg';
 import meditationCard from '@/assets/meditation-support-card.png';
 import calmMoodBoostCard from '@/assets/calm-mood-boost-leaf.png';
+import anxietySupportCard from '@/assets/anxiety-support-misty-lake.png';
 
 
 // Single source of truth for all therapeutic goals
@@ -95,7 +96,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Anxiety',
     description: 'Gentle classical music to ease anxiety and promote calm',
     icon: Sparkles,
-    artwork: stressCard,
+    artwork: anxietySupportCard,
     color: 'blue',
     gradient: 'from-blue-500 to-indigo-500',
     bpmRange: { min: 40, max: 70, optimal: 55 },
