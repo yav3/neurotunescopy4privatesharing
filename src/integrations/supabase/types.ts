@@ -2979,24 +2979,6 @@ export type Database = {
       }
     }
     Views: {
-      my_favorites: {
-        Row: {
-          created_at: string | null
-          id: string | null
-          track_id: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string | null
-          track_id?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string | null
-          track_id?: number | null
-        }
-        Relationships: []
-      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
@@ -3070,16 +3052,6 @@ export type Database = {
           wal_bytes: number | null
           wal_fpi: number | null
           wal_records: number | null
-        }
-        Relationships: []
-      }
-      storage_related_columns: {
-        Row: {
-          column_name: unknown | null
-          data_type: string | null
-          reference_type: string | null
-          table_name: unknown | null
-          table_schema: unknown | null
         }
         Relationships: []
       }
