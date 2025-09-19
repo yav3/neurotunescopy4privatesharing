@@ -120,51 +120,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Science-Based Therapeutic Benefits Section */}
-      <section className="bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-normal text-foreground mb-6">Science-Based Therapeutic Benefits</h2>
-          <p className="text-xl text-muted-foreground mb-16 max-w-4xl mx-auto">
-            Our AI analyzes thousands of musical parameters to create personalized therapy 
-            sessions that target specific mental health and cognitive goals.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Brain className="w-10 h-10 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-normal text-foreground mb-4">Cognitive Enhancement</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Scientifically-backed music selections to improve focus, memory, 
-                and mental clarity
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Heart className="w-10 h-10 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-normal text-foreground mb-4">Emotional Regulation</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                AI-curated playlists designed to balance mood and reduce stress 
-                responses
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Activity className="w-10 h-10 text-primary-foreground" />
-              </div>
-              <h3 className="text-2xl font-normal text-foreground mb-4">Physiological Benefits</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Evidence-based frequencies that promote relaxation and 
-                cardiovascular health
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Featured Therapy Programs Section */}
       <section className="bg-background py-20">
