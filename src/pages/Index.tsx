@@ -83,7 +83,7 @@ const Index = () => {
     // Map trending categories to specific genre buckets for targeted playback
     const trendingToBucketsMap: Record<string, { goal: string; buckets: string[] }> = {
       'chill-classical': { goal: 'pain-support', buckets: ['Chopin', 'newageworldstressanxietyreduction'] }, // Use working fallback buckets directly
-      'nocturnes': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Nocturnes bucket specifically
+      'nocturnes': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Use Chopin bucket as fallback since Nocturnes is empty
       'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
       'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
       'new-age-world': { goal: 'meditation-support', buckets: ['meditation'] }, // New Age & World maps to meditation bucket

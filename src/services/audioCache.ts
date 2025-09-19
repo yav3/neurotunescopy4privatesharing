@@ -125,10 +125,11 @@ export class AudioCacheService {
       'hiit': ['energyboost', 'neuralpositivemusic'],
       'country': ['neuralpositivemusic', 'energyboost'],
       'classical': ['chopin', 'newageworldstressanxietyreduction'],
+      'nocturnes': ['chopin'], // Nocturnes should ONLY fallback to classical Chopin music
       'pain-management': ['chopin', 'newageworldstressanxietyreduction'],
       'stress-anxiety': ['newageworldstressanxietyreduction', 'chopin'],
       'sleep': ['newageworldstressanxietyreduction', 'chopin'],
-      'focus': ['chopin', 'neuralpositivemusic'],
+      'focus': ['chopin', 'neuralpositivemusic'], // Focus prioritizes classical before EDM
     };
     
     // Find the best match
