@@ -13,6 +13,7 @@ import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
 import { AudioCacheService } from '@/services/audioCache';
 import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
+import { supabase } from '@/integrations/supabase/client';
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -313,7 +314,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
       });
       
-      // Auto-skip on audio error with better debugging
+      // Auto-skip on audio error with better debugging and session refresh
       audio.addEventListener('error', async (event) => {
         const currentTrack = get().currentTrack;
         const errorDetails = {
@@ -325,6 +326,44 @@ export const useAudioStore = create<AudioState>((set, get) => {
         };
         
         adminError('🎵 Audio error event:', errorDetails);
+        
+        // Check if this might be an authentication error
+        const isAuthError = audio.error?.code === 4 || // MEDIA_ELEMENT_ERROR: MEDIA_ERR_SRC_NOT_SUPPORTED (often 403/401)
+                           audio.networkState === 3;    // NETWORK_NO_SOURCE (network failure)
+        
+        if (isAuthError && currentTrack) {
+          adminLog('🔐 Potential auth error detected, attempting session refresh...');
+          
+          try {
+            // Try to refresh the session
+            const { data: { session }, error: refreshError } = await supabase.auth.refreshSession();
+            
+            if (session && !refreshError) {
+              adminLog('✅ Session refreshed successfully, retrying track...');
+              
+              // Reset failure count for this track since it was an auth issue
+              trackFailureCounts.delete(currentTrack.id);
+              
+              // Retry the same track after a brief delay
+              setTimeout(() => {
+                if (get().currentTrack?.id === currentTrack.id) {
+                  adminLog('🔄 Retrying track after session refresh...');
+                  const audio = ensureAudioElement();
+                  if (audio) {
+                    audio.load(); // Reload the track with fresh auth
+                    audio.play().catch(console.error);
+                  }
+                }
+              }, 2000);
+              
+              return; // Don't proceed with normal error handling
+            } else {
+              adminError('❌ Session refresh failed:', refreshError);
+            }
+          } catch (refreshErr) {
+            adminError('❌ Session refresh error:', refreshErr);
+          }
+        }
         
         // Track consecutive failures for smart error suppression
         const now = Date.now();
