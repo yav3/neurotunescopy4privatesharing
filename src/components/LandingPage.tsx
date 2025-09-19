@@ -115,10 +115,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Featured Therapy Programs Section */}
+      {/* Featured Goals are Personalized Through Genre Selection and Closed Loop Algorithms */}
       <section className="bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
+        <div className="max-w-5 xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Goals are Personalized Through Genre Selection and Closed Loop Algorithms</h2>
           <p className="text-xl text-muted-foreground mb-16">
             Clinically-designed music therapy sessions for various conditions and goals
           </p>
