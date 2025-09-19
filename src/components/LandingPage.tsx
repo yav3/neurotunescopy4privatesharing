@@ -92,17 +92,13 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </Button>
             </div>
             
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden">
-                <div className="relative w-full h-80 rounded-2xl overflow-hidden">
-                  <img 
-                    src={animatedTealBg} 
-                    alt="Flowing therapeutic background with smooth animation" 
-                    className="absolute inset-0 w-full h-full object-cover animate-[float_6s_ease-in-out_infinite] scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
-                </div>
-              </div>
+            <div className="relative rounded-2xl overflow-hidden">
+              <img 
+                src={animatedTealBg} 
+                alt="Flowing therapeutic background with smooth animation" 
+                className="w-full h-80 object-cover animate-[float_6s_ease-in-out_infinite]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
               
               <div className="absolute bottom-6 left-6 right-6">
                 <Card className="bg-background/95 backdrop-blur-sm border border-border shadow-lg">
