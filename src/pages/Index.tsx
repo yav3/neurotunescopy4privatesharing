@@ -37,22 +37,7 @@ const therapeuticGoals = [
     name: goal.name,
     letter: goal.name.charAt(0),
     image: goal.artwork
-  })),
-  // Split stress & anxiety into two separate cards
-  {
-    id: 'calm-mood-boost',
-    name: 'Calm Mood Boost',
-    letter: 'C',
-    image: stressLeaf,
-    goalMapping: 'calm-mood-boost'
-  },
-  {
-    id: 'anxiety-support', 
-    name: 'Anxiety Support',
-    letter: 'A',
-    image: anxietyLake,
-    goalMapping: 'anxiety-support'
-  }
+  }))
 ];
 
 // Trending music categories with varied images
