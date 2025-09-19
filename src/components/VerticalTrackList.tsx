@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { useAudioStore } from '@/stores';
 import { TitleFormatter } from '@/utils/titleFormatter';
+import { useUserFavorites } from '@/hooks/useUserFavorites';
 
 interface Track {
   id: string;
@@ -32,27 +33,30 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
   isLoading
 }) => {
   const { next, spatialAudioEnabled, toggleSpatialAudio } = useAudioStore();
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const [blockedTracks, setBlockedTracks] = useState<Set<string>>(new Set());
   const [lightningMode, setLightningMode] = useState(false);
 
-  const handleFavorite = (trackId: string, e: React.MouseEvent) => {
+  const handleFavorite = async (trackId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(trackId)) {
-      newFavorites.delete(trackId);
+    const track = tracks.find(t => t.id === trackId);
+    if (!track) return;
+    
+    const isCurrentlyFavorited = isFavorite(trackId);
+    
+    if (isCurrentlyFavorited) {
+      await removeFavorite(trackId);
       toast({
         title: "Removed from favorites",
         description: "Track removed from your favorites",
       });
     } else {
-      newFavorites.add(trackId);
+      await addFavorite(track);
       toast({
         title: "Added to favorites",
         description: "Track added to your favorites",
       });
     }
-    setFavorites(newFavorites);
   };
 
   const handleThumbsDown = async (trackId: string, e: React.MouseEvent) => {
@@ -144,7 +148,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
       <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
         {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
-          const isFavorited = favorites.has(track.id);
+          const isFavorited = isFavorite(track.id);
           
           return (
             <div

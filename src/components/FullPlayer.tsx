@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { useUserFavorites } from '@/hooks/useUserFavorites';
 
 // Therapeutic artwork selection (same as TrackCard)
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
@@ -86,7 +87,7 @@ export default function FullPlayer() {
 
   // Local state for enhanced features
   const [lightningMode, setLightningMode] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
   const handleSpatialAudio = () => {
     const willBeEnabled = !spatialAudioEnabled;
@@ -105,12 +106,24 @@ export default function FullPlayer() {
     });
   };
 
-  const handleFavorite = () => {
-    setIsFavorited(!isFavorited);
-    toast({
-      title: isFavorited ? "Removed from favorites" : "Added to favorites",
-      description: track?.title,
-    });
+  const handleFavorite = async () => {
+    if (!track) return;
+    
+    const isCurrentlyFavorited = isFavorite(track.id);
+    
+    if (isCurrentlyFavorited) {
+      await removeFavorite(track.id);
+      toast({
+        title: "Removed from favorites",
+        description: track.title,
+      });
+    } else {
+      await addFavorite(track);
+      toast({
+        title: "Added to favorites",
+        description: track.title,
+      });
+    }
   };
 
   const handleThumbsDown = async () => {
@@ -211,12 +224,12 @@ export default function FullPlayer() {
             className={cn(
               "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
               "hover:scale-105 hover:shadow-xl",
-              isFavorited 
+              track && isFavorite(track.id)
                 ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
                 : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
             )}
           >
-            <Heart size={24} className={cn(isFavorited && "fill-current")} />
+            <Heart size={24} className={cn(track && isFavorite(track.id) && "fill-current")} />
           </Button>
 
           {/* Thumbs Down */}
