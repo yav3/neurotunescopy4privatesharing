@@ -59,25 +59,11 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       },
       {
-        id: 'peaceful-piano',
-        name: 'Peaceful Piano',
-        description: 'Gentle piano melodies for deep concentration',
-        buckets: ['Chopin'],
-        image: focusZenStones
-      },
-      {
         id: 'americana-bluegrass-country',
         name: 'Americana, Bluegrass, Country',
         description: 'Acoustic country and folk music for focused concentration',
         buckets: ['countryandamericana'],
         image: moodBoostFloralField
-      },
-      {
-        id: 'nocturnes',
-        name: 'Nocturnes',
-        description: 'Gentle nocturne compositions for deep focus and concentration',
-        buckets: ['Nocturnes'],
-        image: focusPianoCherryBlossoms
       }
     ],
     'stress-anxiety-support': [
