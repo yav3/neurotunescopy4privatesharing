@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Zap, Shield, Bookmark, Music, BarChart3, Brain, Heart, Activity, Play, CheckCircle } from 'lucide-react';
-import tealAbstractBg from '@/assets/teal-abstract-bg.jpg';
+import animatedTealBg from '@/assets/animated-teal-bg.jpg';
 import stressReliefBg from '@/assets/stress-relief-bg.jpg';
 import energyBoostBg from '@/assets/energy-boost-bg.jpg';
 import deepRestBg from '@/assets/deep-rest-bg.jpg';
@@ -94,11 +94,14 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden">
-                <img 
-                  src={tealAbstractBg} 
-                  alt="Abstract therapeutic background" 
-                  className="w-full h-80 object-cover rounded-2xl"
-                />
+                <div className="relative w-full h-80 rounded-2xl overflow-hidden">
+                  <img 
+                    src={animatedTealBg} 
+                    alt="Flowing therapeutic background with smooth animation" 
+                    className="absolute inset-0 w-full h-full object-cover animate-[float_6s_ease-in-out_infinite] scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
+                </div>
               </div>
               
               <div className="absolute bottom-6 left-6 right-6">
