@@ -74,7 +74,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </h1>
               
               <p className="text-muted-foreground mb-8">
-                Based on evidence from 15K+ studies, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
+                Evidence-based and crafted by musicians, neuroscientists, and musicians. Powered by cutting edge AI.
               </p>
               
               <Button 
