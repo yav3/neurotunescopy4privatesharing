@@ -5,7 +5,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   // Empty buckets → Working buckets with similar content
   'pop': ['ENERGYBOOST'], // Pop music - ENERGYBOOST has actual pop tracks mixed with EDM
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
-  'countryandamericana': ['NewAgeandWorldFocus'], // REMOVED ENERGYBOOST fallback - causes EDM instead of country
+  'countryandamericana': ['newageworldstressanxietyreduction'], // Fallback to stress reduction new age instead of focus
   'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
   'sonatasforstress': ['Chopin'], // Sonatas should ONLY fallback to Chopin classical music
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
@@ -25,7 +25,8 @@ const KNOWN_EMPTY_BUCKETS = new Set([
   'HIIT',
   'gentleclassicalforpain',
   'painreducingworld',
-  'audio'
+  'audio',
+  'countryandamericana' // This bucket appears to be empty based on user feedback
 ]);
 
 /**
