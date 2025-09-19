@@ -64,8 +64,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </div>
               
               <h1 className="text-5xl font-normal text-foreground leading-tight mb-6">
-                Personalized AI Music <br />
-                Therapy for <span className="text-primary">Wellness</span>
+                Music Wellness driven by <br />
+                AI <span className="text-primary">Personalization</span>
               </h1>
               
               <p className="text-muted-foreground mb-8">
