@@ -30,7 +30,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="bg-background border-b border-border px-6 py-4">
+      <nav className="relative z-50 bg-background border-b border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
@@ -50,10 +50,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-background py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="relative bg-background py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="relative z-20">
               <div className="inline-flex items-center gap-2 bg-teal-50 text-primary px-3 py-2 rounded-full text-sm font-normal mb-6">
                 <Plus className="w-4 h-4" strokeWidth={1} />
                 AI-Powered Music Therapy
@@ -64,15 +64,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 AI <span className="text-primary">Personalization</span>
               </h1>
               
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-8">
                 Evidence-based and crafted by musicians, neuroscientists, and musicians. Powered by cutting edge AI.
               </p>
-              
-              <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-4 mb-8 border border-primary/20">
-                <p className="text-primary font-medium text-lg">
-                  Goals are Personalized Through Genre Selection and Closed Loop Algorithms
-                </p>
-              </div>
               
               <Button 
                 size="lg" 
@@ -89,39 +83,42 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </Button>
             </div>
             
-            <div className="relative rounded-2xl overflow-hidden">
-              <img 
-                src={animatedTealBg} 
-                alt="Flowing therapeutic background with smooth animation" 
-                className="w-full h-80 object-cover animate-[float_6s_ease-in-out_infinite]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/10 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite]"></div>
-              
-              <div className="absolute bottom-6 left-6 right-6">
-                <Card className="bg-background/95 backdrop-blur-sm border border-border shadow-lg">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-base font-normal text-foreground">Active Therapy Session</div>
-                        <div className="text-sm text-muted-foreground">Cognitive Enhancement Protocol</div>
+            <div className="relative z-10">
+              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-teal-500/10 to-teal-600/20">
+                <div className="relative w-full h-80">
+                  <img 
+                    src={animatedTealBg} 
+                    alt="Flowing therapeutic background with smooth animation" 
+                    className="absolute inset-0 w-full h-full object-cover animate-[float_6s_ease-in-out_infinite]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-background/5 to-transparent animate-[shimmer-overlay_8s_ease-in-out_infinite] pointer-events-none"></div>
+                </div>
+                
+                <div className="absolute bottom-6 left-6 right-6 z-30">
+                  <Card className="bg-background/95 backdrop-blur-sm border border-border shadow-lg">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-base font-normal text-foreground">Active Therapy Session</div>
+                          <div className="text-sm text-muted-foreground">Cognitive Enhancement Protocol</div>
+                        </div>
+                        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                          <BarChart3 className="w-5 h-5 text-primary-foreground" />
+                        </div>
                       </div>
-                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                        <BarChart3 className="w-5 h-5 text-primary-foreground" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-
       {/* Featured Therapy Programs Section */}
       <section className="bg-background py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
+          <h2 className="text-4xl font-normal text-foreground mb-6">Featured Therapy Programs</h2>
           <p className="text-xl text-muted-foreground mb-16">
             Clinically-designed music therapy sessions for various conditions and goals
           </p>
