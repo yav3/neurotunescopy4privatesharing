@@ -101,6 +101,7 @@ const Index = () => {
     
     const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
     console.log('🎵 Starting playback for category:', categoryId, 'using goal:', mapping.goal, 'buckets:', mapping.buckets);
+    console.log('🔍 DEBUG: Selected category mapping details:', { categoryId, mapping, allMappings: trendingToBucketsMap });
     
     // Use the playFromGenre action from playFromGoal.ts to play from specific buckets
     import('@/actions/playFromGoal').then(({ playFromGenre }) => {
