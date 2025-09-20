@@ -99,30 +99,30 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="px-6 py-6 border-b border-border bg-background">
+      <div className="px-6 py-6 border-b border-border bg-white">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Plus className="w-7 h-7 text-foreground" />
+              <Plus className="w-7 h-7 text-teal-500" />
               <div>
-                <div className="text-4xl font-light md:font-bold text-foreground">NeuroTunes</div>
+                <div className="text-4xl font-light md:font-bold text-gray-900">NeuroTunes</div>
               </div>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggle} 
-              className="text-foreground hover:bg-accent"
+              className="text-gray-900 hover:bg-teal-50"
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
           </div>
           
           {/* Greeting */}
-          <h1 className="text-base font-normal md:font-medium text-muted-foreground">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-base font-normal md:font-medium text-gray-600">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ const Index = () => {
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border border-border bg-card"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border border-gray-200 bg-white"
                   onClick={() => handleGoalSelect(goal.id)}
                 >
                   <img 
@@ -150,7 +150,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-primary/50 dark:to-primary/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-teal-500/50 dark:to-teal-600/30" />
                    <div className="relative h-full p-3 md:p-4 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-normal md:font-semibold text-sm leading-tight drop-shadow-lg">
@@ -165,12 +165,12 @@ const Index = () => {
 
           {/* Trending Section */}
           <div>
-            <h2 className="text-2xl font-normal md:font-bold text-foreground mb-4 md:mb-6">Trending</h2>
+            <h2 className="text-2xl font-normal md:font-bold text-gray-900 mb-4 md:mb-6">Trending</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[2.25/1.5] border border-border bg-card"
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[2.25/1.5] border border-gray-200 bg-white"
                   onClick={() => handleTrendingSelect(category.id)}
                 >
                   <img 
@@ -184,7 +184,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-accent/50 dark:to-accent/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-teal-500/50 dark:to-teal-600/30" />
                    <div className="relative h-full p-4 md:p-6 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-medium md:font-bold text-lg leading-tight drop-shadow-lg">
@@ -201,7 +201,7 @@ const Index = () => {
       </div>
 
       {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200">
         <Navigation />
       </div>
 
