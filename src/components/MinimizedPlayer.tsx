@@ -143,7 +143,7 @@ export const MinimizedPlayer = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-12 h-12 sm:w-8 sm:h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform"
+            className="w-12 h-12 sm:w-8 sm:h-8 bg-gray-900/30 hover:bg-gray-900/40 border border-gray-900/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform dark:bg-white/30 dark:hover:bg-white/40 dark:border-white/50"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -155,9 +155,9 @@ export const MinimizedPlayer = () => {
                 }}
               >
                 {!audio.paused ? (
-                  <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+                  <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-gray-900 dark:text-white" />
                 ) : (
-                  <Play className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+                  <Play className="w-6 h-6 sm:w-4 sm:h-4 text-gray-900 dark:text-white" />
                 )}
               </Button>
               
@@ -300,7 +300,7 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-12 h-12 sm:w-8 sm:h-8 bg-primary/30 hover:bg-primary/40 border border-primary/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform"
+            className="w-12 h-12 sm:w-8 sm:h-8 bg-gray-900/30 hover:bg-gray-900/40 border border-gray-900/50 rounded-full backdrop-blur-sm shadow-glass-inset touch-manipulation active:scale-95 transition-transform dark:bg-white/30 dark:hover:bg-white/40 dark:border-white/50"
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -308,9 +308,9 @@ export const MinimizedPlayer = () => {
             }}
           >
             {isPlaying ? (
-              <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+              <Pause className="w-6 h-6 sm:w-4 sm:h-4 text-gray-900 dark:text-white" />
             ) : (
-              <Play className="w-6 h-6 sm:w-4 sm:h-4 text-primary" />
+              <Play className="w-6 h-6 sm:w-4 sm:h-4 text-gray-900 dark:text-white" />
             )}
           </Button>
           

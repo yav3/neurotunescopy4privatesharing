@@ -260,13 +260,13 @@ export const FullPagePlayer = () => {
           
           <Button
             size="icon"
-            className="w-16 h-16 rounded-full bg-primary hover:bg-primary/90 shadow-glass-lg backdrop-blur-sm"
+            className="w-16 h-16 rounded-full bg-gray-900 hover:bg-gray-800 shadow-glass-lg backdrop-blur-sm dark:bg-white dark:hover:bg-gray-100"
             onClick={() => isPlaying ? pause() : play()}
           >
             {isPlaying ? (
-              <Pause className="w-8 h-8 text-primary-foreground" />
+              <Pause className="w-8 h-8 text-white dark:text-black" />
             ) : (
-              <Play className="w-8 h-8 text-primary-foreground ml-1" />
+              <Play className="w-8 h-8 text-white dark:text-black ml-1" />
             )}
           </Button>
           
