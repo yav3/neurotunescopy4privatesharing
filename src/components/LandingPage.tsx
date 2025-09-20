@@ -122,28 +122,28 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
+    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-emerald-100 text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
       {/* Navigation */}
-      <nav className="relative z-50 bg-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+      <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-green-200/50 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
-              <Plus className="w-4 h-4 text-black font-medium" strokeWidth={2} />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+              <Plus className="w-4 h-4 text-white font-medium" strokeWidth={2} />
             </div>
             <div>
-              <div className="text-lg font-normal text-white">NeuroTunes</div>
-              <div className="text-xs text-white/60">AI Music Therapy</div>
+              <div className="text-lg font-normal text-gray-900">NeuroTunes</div>
+              <div className="text-xs text-gray-600">AI Music Therapy</div>
             </div>
           </div>
           <div className="flex items-center gap-6">
             <Button
               variant="ghost"
               onClick={handleLogin}
-              className="text-white/80 hover:text-white hover:bg-white/10 font-normal"
+              className="text-gray-700 hover:text-gray-900 hover:bg-green-100/50 font-normal"
             >
               Sign In
             </Button>
-            <div className="text-base font-normal text-white/90">
+            <div className="text-base font-normal text-gray-800">
               NeuralPositive
             </div>
           </div>
@@ -160,30 +160,30 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         {/* Floating Glass Morphism Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 opacity-20 animate-pulse">
-            <img src={fluidShape1} alt="" className="w-full h-full object-contain mix-blend-screen" />
+            <img src={fluidShape1} alt="" className="w-full h-full object-contain mix-blend-multiply" />
           </div>
           <div className="absolute top-40 right-20 w-48 h-48 opacity-15 animate-bounce" style={{ animationDuration: '6s' }}>
-            <img src={fluidShape2} alt="" className="w-full h-full object-contain mix-blend-screen" />
+            <img src={fluidShape2} alt="" className="w-full h-full object-contain mix-blend-multiply" />
           </div>
           <div className="absolute bottom-32 left-1/4 w-56 h-56 opacity-10 animate-pulse" style={{ animationDuration: '4s' }}>
-            <img src={fluidShape3} alt="" className="w-full h-full object-contain mix-blend-screen" />
+            <img src={fluidShape3} alt="" className="w-full h-full object-contain mix-blend-multiply" />
           </div>
         </div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-teal-300 px-4 py-2 rounded-full text-sm font-normal mb-8 border border-white/20">
-            <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 bg-green-500/10 backdrop-blur-md text-emerald-700 px-4 py-2 rounded-full text-sm font-normal mb-8 border border-green-300/30">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
             AI-Powered Music Therapy
           </div>
           
-          <h1 className="text-7xl font-thin text-white leading-tight mb-8">
+          <h1 className="text-7xl font-thin text-gray-900 leading-tight mb-8">
             Wellness through<br />
-            <span className="font-light bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
+            <span className="font-light bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
               Personalized Music
             </span>
           </h1>
           
-          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
             Evidence-based therapeutic interventions designed by neuroscientists, 
             powered by cutting-edge AI personalization
           </p>
@@ -192,15 +192,15 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-black px-8 py-4 text-base font-medium rounded-xl shadow-2xl shadow-teal-500/25 hover:shadow-teal-400/30 transition-all duration-300"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white px-8 py-4 text-base font-medium rounded-xl shadow-2xl shadow-emerald-500/25 hover:shadow-emerald-400/30 transition-all duration-300"
             >
               Begin Journey
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
             <Button 
               size="lg" 
-              variant="ghost"
-              className="border-2 border-white/40 text-white/90 hover:bg-white/15 hover:border-white/60 backdrop-blur-md px-8 py-4 text-base font-medium rounded-xl bg-white/5 transition-all duration-300"
+              variant="outline"
+              className="border-2 border-green-300 text-gray-800 hover:bg-green-50 hover:border-green-400 px-8 py-4 text-base font-medium rounded-xl transition-all duration-300"
             >
               <Play className="w-4 h-4 mr-2" />
               Watch Demo
@@ -210,19 +210,19 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Therapy Programs Section */}
-      <section className="relative py-24 bg-gradient-to-b from-black to-slate-900">
+      <section className="relative py-24 bg-gradient-to-b from-green-50 to-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-thin text-white mb-6">
-              Therapeutic <span className="font-light text-teal-300">Interventions</span>
+            <h2 className="text-5xl font-thin text-gray-900 mb-6">
+              Therapeutic <span className="font-light text-emerald-600">Interventions</span>
             </h2>
-            <p className="text-xl text-white/60 max-w-3xl mx-auto font-light">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light">
               Clinically validated protocols for specific mental health conditions
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
+            <Card className="group bg-white/80 backdrop-blur-xl border border-green-200/50 overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyStonesWater} 
@@ -230,25 +230,25 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-white/20 backdrop-blur-sm text-teal-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
+                  <span className="bg-emerald-500/20 backdrop-blur-sm text-emerald-700 px-3 py-1 rounded-full text-sm font-medium border border-emerald-300/50">
                     Anxiety Relief
                   </span>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-normal text-white mb-3">Parasympathetic Activation</h3>
-                <p className="text-white/70 mb-4 leading-relaxed font-light">
+                <h3 className="text-xl font-normal text-gray-900 mb-3">Parasympathetic Activation</h3>
+                <p className="text-gray-700 mb-4 leading-relaxed font-light">
                   Classical compositions engineered to reduce cortisol levels and activate 
                   natural relaxation responses through therapeutic frequencies.
                 </p>
-                <div className="flex items-center gap-3 text-sm text-white/50">
-                  <CheckCircle className="w-4 h-4 text-teal-400" />
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <CheckCircle className="w-4 h-4 text-emerald-500" />
                   <span>Clinical Validation</span>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
+            <Card className="group bg-white/80 backdrop-blur-xl border border-green-200/50 overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyDewdropLeaf} 
@@ -256,25 +256,25 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-white/20 backdrop-blur-sm text-orange-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
+                  <span className="bg-orange-500/20 backdrop-blur-sm text-orange-700 px-3 py-1 rounded-full text-sm font-medium border border-orange-300/50">
                     Energy & Mood
                   </span>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-normal text-white mb-3">Dopaminergic Enhancement</h3>
-                <p className="text-white/70 mb-4 leading-relaxed font-light">
+                <h3 className="text-xl font-normal text-gray-900 mb-3">Dopaminergic Enhancement</h3>
+                <p className="text-gray-700 mb-4 leading-relaxed font-light">
                   Targeted interventions for major depressive disorder using 
                   neuroplasticity-promoting frequency patterns.
                 </p>
-                <div className="flex items-center gap-3 text-sm text-white/50">
-                  <CheckCircle className="w-4 h-4 text-orange-400" />
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <CheckCircle className="w-4 h-4 text-orange-500" />
                   <span>Peer Reviewed</span>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="group bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-500">
+            <Card className="group bg-white/80 backdrop-blur-xl border border-green-200/50 overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyZenStones} 
@@ -282,19 +282,19 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-white/20 backdrop-blur-sm text-purple-300 px-3 py-1 rounded-full text-sm font-medium border border-white/20">
+                  <span className="bg-purple-500/20 backdrop-blur-sm text-purple-700 px-3 py-1 rounded-full text-sm font-medium border border-purple-300/50">
                     Deep Rest
                   </span>
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-normal text-white mb-3">Delta Wave Induction</h3>
-                <p className="text-white/70 mb-4 leading-relaxed font-light">
+                <h3 className="text-xl font-normal text-gray-900 mb-3">Delta Wave Induction</h3>
+                <p className="text-gray-700 mb-4 leading-relaxed font-light">
                   Precision frequencies designed to synchronize brainwaves for 
                   enhanced sleep quality and cognitive recovery.
                 </p>
-                <div className="flex items-center gap-3 text-sm text-white/50">
-                  <CheckCircle className="w-4 h-4 text-purple-400" />
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <CheckCircle className="w-4 h-4 text-purple-500" />
                   <span>EEG Validated</span>
                 </div>
               </CardContent>
@@ -305,7 +305,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-black px-8 py-4 text-base font-medium rounded-xl"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white px-8 py-4 text-base font-medium rounded-xl shadow-xl"
             >
               <Zap className="w-5 h-5 mr-2" />
               Explore Programs
@@ -315,44 +315,44 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Research Section */}
-      <section className="relative py-32 bg-slate-900">
+      <section className="relative py-32 bg-gradient-to-b from-white to-green-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-thin text-white mb-8">
-              Research <span className="font-light text-teal-300">Partnerships</span>
+            <h2 className="text-5xl font-thin text-gray-900 mb-8">
+              Research <span className="font-light text-emerald-600">Partnerships</span>
             </h2>
-            <p className="text-2xl text-white/80 max-w-4xl mx-auto font-light leading-relaxed">
+            <p className="text-2xl text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
               Collaborating with leading institutions in neuroscience and technology
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
-                <div className="text-2xl font-bold text-white">CT</div>
+            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-green-200/50 hover:bg-white/95 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-emerald-100 rounded-2xl backdrop-blur-sm group-hover:bg-emerald-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-emerald-700">CT</div>
               </div>
-              <h3 className="text-2xl font-medium text-white mb-6">Cornell Tech</h3>
-              <p className="text-white/70 font-light text-lg leading-relaxed">
+              <h3 className="text-2xl font-medium text-gray-900 mb-6">Cornell Tech</h3>
+              <p className="text-gray-700 font-light text-lg leading-relaxed">
                 AI research for therapeutic applications
               </p>
             </Card>
             
-            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
-                <div className="text-2xl font-bold text-white">WC</div>
+            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-green-200/50 hover:bg-white/95 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-emerald-100 rounded-2xl backdrop-blur-sm group-hover:bg-emerald-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-emerald-700">WC</div>
               </div>
-              <h3 className="text-2xl font-medium text-white mb-6">Weill Cornell</h3>
-              <p className="text-white/70 font-light text-lg leading-relaxed">
+              <h3 className="text-2xl font-medium text-gray-900 mb-6">Weill Cornell</h3>
+              <p className="text-gray-700 font-light text-lg leading-relaxed">
                 Clinical validation and medical research
               </p>
             </Card>
             
-            <Card className="p-10 text-center bg-white/8 backdrop-blur-xl border border-white/20 hover:bg-white/12 transition-all duration-300 group">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-white/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/15 transition-all duration-300">
-                <div className="text-2xl font-bold text-white">SM</div>
+            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-green-200/50 hover:bg-white/95 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-emerald-100 rounded-2xl backdrop-blur-sm group-hover:bg-emerald-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-emerald-700">SM</div>
               </div>
-              <h3 className="text-2xl font-medium text-white mb-6">Stanford Medical</h3>
-              <p className="text-white/70 font-light text-lg leading-relaxed">
+              <h3 className="text-2xl font-medium text-gray-900 mb-6">Stanford Medical</h3>
+              <p className="text-gray-700 font-light text-lg leading-relaxed">
                 Neuroscience and intervention development
               </p>
             </Card>
@@ -361,12 +361,12 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-b from-slate-900 to-black">
+      <section className="relative py-32 bg-gradient-to-b from-green-50 to-emerald-100">
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-7xl font-thin text-white mb-10">
-            Transform Your <span className="font-light text-teal-300">Wellness</span>
+          <h2 className="text-7xl font-thin text-gray-900 mb-10">
+            Transform Your <span className="font-light text-emerald-600">Wellness</span>
           </h2>
-          <p className="text-2xl text-white/80 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-2xl text-gray-700 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
             Join the future of personalized mental health through evidence-based music therapy
           </p>
           
@@ -374,16 +374,16 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-black px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
             >
               Start Free Session
               <ArrowRight className="w-6 h-6 ml-3" />
             </Button>
             <Button 
               size="lg" 
-              variant="ghost"
+              variant="outline"
               onClick={handleLogin}
-              className="border-2 border-white/40 text-white/90 hover:bg-white/15 hover:border-white/60 backdrop-blur-md px-12 py-5 text-xl font-medium rounded-xl bg-white/5 transition-all duration-300 hover:scale-105"
+              className="border-2 border-green-300 text-gray-800 hover:bg-green-50 hover:border-green-400 px-12 py-5 text-xl font-medium rounded-xl transition-all duration-300 hover:scale-105"
             >
               Sign In
             </Button>
@@ -392,7 +392,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black py-8 border-t border-white/10">
+      <footer className="bg-white py-8 border-t border-green-200">
         <div className="max-w-6xl mx-auto px-6 flex justify-center items-center">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
