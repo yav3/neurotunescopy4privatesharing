@@ -149,7 +149,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-teal-500/50 dark:to-teal-600/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
                    <div className="relative h-full p-3 md:p-4 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-normal md:font-semibold text-sm leading-tight drop-shadow-lg">
@@ -183,7 +183,7 @@ const Index = () => {
                       filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-teal-500/50 dark:to-teal-600/30" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
                    <div className="relative h-full p-4 md:p-6 flex flex-col justify-end">
                      <div>
                        <h3 className="text-white font-medium md:font-bold text-lg leading-tight drop-shadow-lg">
