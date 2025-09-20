@@ -122,8 +122,6 @@ const Index = () => {
             </Button>
           </div>
           
-          {/* Greeting */}
-          <h1 className="text-xs font-normal text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
