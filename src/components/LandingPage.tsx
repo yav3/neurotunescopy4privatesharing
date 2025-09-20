@@ -2,7 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ArrowRight, Play, CheckCircle, Brain, Heart, Activity, Zap } from 'lucide-react';
+import { Plus, ArrowRight, Play, CheckCircle, Brain, Heart, Activity, Zap, Sparkles } from 'lucide-react';
+
+// Hero background image
+import heroBackground from '@/assets/hero-background-teal.png';
 
 // Abstract fluid glass morphism images - temporarily disabled
 // const fluidShape1 = '/src/assets/fluid-shape-1.jpg'; // Image 1
@@ -152,7 +155,16 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background */}
+        {/* Hero Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={heroBackground} 
+            alt="" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        {/* Animated Background Overlay */}
         <div className="absolute inset-0">
           <AnimatedFluidBackground />
         </div>
@@ -172,21 +184,19 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         */}
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-100 to-cyan-100 backdrop-blur-md text-teal-700 px-4 py-2 rounded-full text-sm font-normal mb-8 border border-teal-200/50">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-500 to-cyan-500 animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-teal-400 px-4 py-2 rounded-full text-sm font-medium mb-8 border border-white/20">
+            <Sparkles className="w-4 h-4" />
             AI-Powered Music Therapy
           </div>
           
-          <h1 className="text-7xl font-thin text-gray-900 leading-tight mb-8">
-            Wellness through<br />
-            <span className="font-light bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 bg-clip-text text-transparent">
-              Personalized Music
-            </span>
+          <h1 className="text-6xl md:text-7xl font-black leading-tight mb-8">
+            Personalized AI Music<br />
+            Therapy for <span className="text-teal-400">Wellness</span>
           </h1>
           
-          <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-            Evidence-based therapeutic interventions designed by neuroscientists, 
-            powered by cutting-edge AI personalization
+          <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+            Evidence-based AI platform that creates personalized therapeutic 
+            interventions using neuroscience and music therapy principles
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
