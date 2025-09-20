@@ -372,12 +372,12 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-b from-cyan-50/40 to-white">
+      <section className="relative py-32 bg-gradient-to-br from-teal-500 to-cyan-500">
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-7xl font-thin text-gray-900 mb-10">
-            Transform Your <span className="font-light bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Wellness</span>
+          <h2 className="text-7xl font-thin text-white mb-10">
+            Transform Your <span className="font-light text-white">Wellness</span>
           </h2>
-          <p className="text-2xl text-gray-700 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-2xl text-white/90 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
             Join the future of personalized mental health through evidence-based music therapy
           </p>
           
