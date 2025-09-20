@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { WebAppWrapper, ResponsiveContainer } from '@/components/layout';
 
 import { 
   Brain, 
@@ -51,11 +52,12 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-hero-teal">
+    <WebAppWrapper>
+      <div className="min-h-screen bg-gradient-hero-teal">
       {/* Navigation Header */}
-      <nav className="backdrop-blur-xl bg-background/95 sticky top-0 z-50 border-b border-border">
-        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex justify-between items-center">
+        <nav className="backdrop-blur-xl bg-background/95 sticky top-0 z-50 border-b border-border">
+          <ResponsiveContainer>
+            <div className="flex justify-between items-center py-3 sm:py-4">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg">
                 <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
@@ -73,15 +75,15 @@ const Index = () => {
               >
                 <Link to="/goals">Start Therapy</Link>
               </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      </nav>
+          </ResponsiveContainer>
+        </nav>
 
-      {/* Hero Section */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+        {/* Hero Section */}
+        <section className="py-12 sm:py-16 md:py-20">
+          <ResponsiveContainer>
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
               <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
                 <div className="bg-secondary/50 backdrop-blur-sm px-3 sm:px-4 py-1 border border-border text-primary rounded-full text-xs sm:text-sm font-medium flex items-center space-x-1 sm:space-x-2">
@@ -152,14 +154,14 @@ const Index = () => {
               <div className="absolute -top-4 -right-4 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary to-primary/80 rounded-full opacity-20 blur-2xl"></div>
               <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-primary to-primary/80 rounded-full opacity-10 blur-3xl"></div>
             </div>
-          </div>
-        </div>
-      </section>
+            </div>
+          </ResponsiveContainer>
+        </section>
 
-      {/* Therapeutic Benefits */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-secondary/10">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12 sm:mb-16">
+        {/* Therapeutic Benefits */}
+        <section className="py-12 sm:py-16 md:py-20 bg-secondary/10">
+          <ResponsiveContainer>
+            <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
               Science-Based Therapeutic Benefits
             </h2>
@@ -182,21 +184,21 @@ const Index = () => {
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{benefit.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </ResponsiveContainer>
+        </section>
 
-      {/* Featured Therapy Programs */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-              Featured Therapy Programs
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">
-              Clinically-designed music therapy sessions for various conditions and goals
-            </p>
-          </div>
+        {/* Featured Therapy Programs */}
+        <section className="py-12 sm:py-16 md:py-20">
+          <ResponsiveContainer>
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+                Featured Therapy Programs
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground">
+                Clinically-designed music therapy sessions for various conditions and goals
+              </p>
+            </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="group cursor-pointer">
@@ -299,110 +301,113 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="text-center mt-8 sm:mt-12">
-            <Button 
-              asChild
-              size="lg" 
-              className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg hover:shadow-xl font-semibold text-sm sm:text-base px-6 sm:px-8"
-            >
-              <Link to="/goals" className="inline-flex items-center space-x-2">
-                <Zap className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Explore All Programs</span>
-                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+            <div className="text-center mt-8 sm:mt-12">
+              <Button 
+                asChild
+                size="lg" 
+                className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg hover:shadow-xl font-semibold text-sm sm:text-base px-6 sm:px-8"
+              >
+                <Link to="/goals" className="inline-flex items-center space-x-2">
+                  <Zap className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>Explore All Programs</span>
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Link>
+              </Button>
+            </div>
+          </ResponsiveContainer>
+        </section>
 
-      {/* Research Institutions */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-secondary/10">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
-              Leading Research Institutions
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">
-              Our platform is developed in collaboration with world-renowned medical and technology institutions
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                Jacobs Technion Institute at Cornell Tech
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Advanced AI and technology research for therapeutic applications
+        {/* Research Institutions */}
+        <section className="py-12 sm:py-16 md:py-20 bg-secondary/10">
+          <ResponsiveContainer>
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+                Leading Research Institutions
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground">
+                Our platform is developed in collaboration with world-renowned medical and technology institutions
               </p>
             </div>
             
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                Weill Cornell Medical College
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Clinical research and medical validation of therapeutic protocols
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
+                  Jacobs Technion Institute at Cornell Tech
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Advanced AI and technology research for therapeutic applications
+                </p>
+              </div>
+              
+              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
+                  Weill Cornell Medical College
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Clinical research and medical validation of therapeutic protocols
+                </p>
+              </div>
+              
+              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
+                  Stanford University Medical School
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Neuroscience research and evidence-based treatment development
+                </p>
+              </div>
+            </div>
+          </ResponsiveContainer>
+        </section>
+
+        {/* CTA Section - Now Footer */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+          <ResponsiveContainer>
+            <div className="text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+                Ready to Transform Your Mental Wellness?
+              </h2>
+              <p className="text-lg sm:text-xl opacity-90 mb-6 sm:mb-8">
+                Join thousands of users who have improved their mental health with personalized music therapy
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button 
+                  asChild
+                  size="lg"
+                  className="bg-background text-foreground hover:bg-background/90 font-semibold shadow-lg text-sm sm:text-base px-6 sm:px-8"
+                >
+                  <Link to="/goals" className="flex items-center justify-center space-x-2">
+                    <Headphones className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>Start Free Session</span>
+                  </Link>
+                </Button>
+                <Button 
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-background text-background hover:bg-background/10 font-semibold text-sm sm:text-base px-6 sm:px-8"
+                >
+                  <Link to="/profile" className="flex items-center justify-center space-x-2">
+                    <Activity className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>View Research</span>
+                  </Link>
+                </Button>
+              </div>
             </div>
             
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
-              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                Stanford University Medical School
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Neuroscience research and evidence-based treatment development
-              </p>
+            {/* Admin Access moved into CTA footer */}
+            <div className="text-center mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-primary-foreground/20">
+              <Link 
+                to="/admin" 
+                className="text-xs text-primary-foreground/60 hover:text-primary-foreground/80 transition-colors"
+              >
+                Admin Portal
+              </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - Now Footer */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
-            Ready to Transform Your Mental Wellness?
-          </h2>
-          <p className="text-lg sm:text-xl opacity-90 mb-6 sm:mb-8">
-            Join thousands of users who have improved their mental health with personalized music therapy
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-            <Button 
-              asChild
-              size="lg"
-              className="bg-background text-foreground hover:bg-background/90 font-semibold shadow-lg text-sm sm:text-base px-6 sm:px-8"
-            >
-              <Link to="/goals" className="flex items-center justify-center space-x-2">
-                <Headphones className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Start Free Session</span>
-              </Link>
-            </Button>
-            <Button 
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-2 border-background text-background hover:bg-background/10 font-semibold text-sm sm:text-base px-6 sm:px-8"
-            >
-              <Link to="/profile" className="flex items-center justify-center space-x-2">
-                <Activity className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>View Research</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-        
-        {/* Admin Access moved into CTA footer */}
-        <div className="text-center mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-primary-foreground/20">
-          <Link 
-            to="/admin" 
-            className="text-xs text-primary-foreground/60 hover:text-primary-foreground/80 transition-colors"
-          >
-            Admin Portal
-          </Link>
-        </div>
-      </section>
-    </div>
+          </ResponsiveContainer>
+        </section>
+      </div>
+    </WebAppWrapper>
   );
 };
 
