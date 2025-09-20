@@ -6,7 +6,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'pop': ['ENERGYBOOST'], // Pop music - ENERGYBOOST has actual pop tracks mixed with EDM
   'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
   'countryandamericana': ['newageworldstressanxietyreduction'], // Fallback to stress reduction new age instead of focus
-  'gentleclassicalforpain': ['Chopin', 'newageworldstressanxietyreduction'], // Gentle classical fallback
+  'gentleclassicalforpain': ['Chopin'], // Gentle classical should ONLY fallback to Chopin classical
   'sonatasforstress': ['Chopin'], // Sonatas should ONLY fallback to Chopin classical music
   'painreducingworld': ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'], // World music fallback
   'moodboostremixesworlddance': ['ENERGYBOOST', 'neuralpositivemusic'], // House and dance music fallback
@@ -23,7 +23,7 @@ const KNOWN_EMPTY_BUCKETS = new Set([
   'albumart',
   'pop', 
   'HIIT',
-  'gentleclassicalforpain',
+  // Removed gentleclassicalforpain - let it be used directly first, then fallback to Chopin only
   'painreducingworld',
   'audio'
   // Removed countryandamericana - bucket should be used directly

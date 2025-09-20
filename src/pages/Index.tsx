@@ -80,7 +80,7 @@ const Index = () => {
     
     // Map trending categories to specific genre buckets for targeted playback
     const trendingToBucketsMap: Record<string, { goal: string; buckets: string[] }> = {
-      'chill-classical': { goal: 'pain-support', buckets: ['Chopin', 'newageworldstressanxietyreduction'] }, // Use working fallback buckets directly
+      'chill-classical': { goal: 'pain-support', buckets: ['Chopin'] }, // ONLY use Chopin for classical music
       'nocturnes': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Use actual Nocturnes bucket
       'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
       'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
@@ -91,6 +91,7 @@ const Index = () => {
     const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
     console.log('🎵 Starting playback for category:', categoryId, 'using goal:', mapping.goal, 'buckets:', mapping.buckets);
     console.log('🔍 DEBUG: Selected category mapping details:', { categoryId, mapping, allMappings: trendingToBucketsMap });
+    console.log('🎼 CLASSICAL FIX: Ensuring classical categories only use classical buckets, not New Age');
     
     // Use the playFromGenre action from playFromGoal.ts to play from specific buckets
     import('@/actions/playFromGoal').then(({ playFromGenre }) => {
