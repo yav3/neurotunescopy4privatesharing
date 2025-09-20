@@ -183,12 +183,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         </div>
         */}
         
+        
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-teal-400 px-4 py-2 rounded-full text-sm font-medium mb-8 border border-white/20">
-            <Sparkles className="w-4 h-4" />
-            AI-Powered Music Therapy
-          </div>
-          
           <h1 className="text-6xl md:text-7xl font-black leading-tight mb-8">
             Personalized AI Music<br />
             Therapy for <span className="text-teal-400">Wellness</span>
