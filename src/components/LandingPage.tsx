@@ -122,12 +122,12 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
+    <div className="min-h-screen bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40 text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
       {/* Navigation */}
-      <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 px-6 py-4">
+      <nav className="relative z-50 bg-white/90 backdrop-blur-xl border-b border-teal-200/30 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center">
               <Plus className="w-4 h-4 text-white font-medium" strokeWidth={2} />
             </div>
             <div>
@@ -139,7 +139,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button
               variant="ghost"
               onClick={handleLogin}
-              className="text-gray-700 hover:text-gray-900 hover:bg-accent font-normal"
+              className="text-gray-700 hover:text-gray-900 hover:bg-teal-50 font-normal"
             >
               Sign In
             </Button>
@@ -172,14 +172,14 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         */}
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-md text-primary px-4 py-2 rounded-full text-sm font-normal mb-8 border border-primary/30">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-100 to-cyan-100 backdrop-blur-md text-teal-700 px-4 py-2 rounded-full text-sm font-normal mb-8 border border-teal-200/50">
+            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-500 to-cyan-500 animate-pulse"></div>
             AI-Powered Music Therapy
           </div>
           
           <h1 className="text-7xl font-thin text-gray-900 leading-tight mb-8">
             Wellness through<br />
-            <span className="font-light bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            <span className="font-light bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 bg-clip-text text-transparent">
               Personalized Music
             </span>
           </h1>
@@ -193,7 +193,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-base font-medium rounded-xl shadow-2xl shadow-primary/25 hover:shadow-primary/30 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-8 py-4 text-base font-medium rounded-xl shadow-2xl shadow-teal-500/25 hover:shadow-teal-400/30 transition-all duration-300"
             >
               Begin Journey
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -201,7 +201,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               variant="outline"
-              className="border-2 border-primary/30 text-gray-800 hover:bg-accent hover:border-primary/50 px-8 py-4 text-base font-medium rounded-xl transition-all duration-300"
+              className="border-2 border-teal-300 text-gray-800 hover:bg-teal-50 hover:border-teal-400 px-8 py-4 text-base font-medium rounded-xl transition-all duration-300"
             >
               <Play className="w-4 h-4 mr-2" />
               Watch Demo
@@ -211,11 +211,11 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Therapy Programs Section */}
-      <section className="relative py-24 bg-gradient-to-b from-accent to-white">
+      <section className="relative py-24 bg-gradient-to-b from-teal-50/40 to-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-thin text-gray-900 mb-6">
-              Therapeutic <span className="font-light text-primary">Interventions</span>
+              Therapeutic <span className="font-light bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Interventions</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light">
               Clinically validated protocols for specific mental health conditions
@@ -223,7 +223,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="group bg-white/80 backdrop-blur-xl border border-border overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
+            <Card className="group bg-white/90 backdrop-blur-xl border border-teal-200/30 overflow-hidden hover:bg-white/95 transition-all duration-500 shadow-lg hover:shadow-teal-100">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyStonesWater} 
@@ -231,7 +231,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
-                  <span className="bg-primary/20 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-sm font-medium border border-primary/30">
+                  <span className="bg-teal-500/20 backdrop-blur-sm text-teal-700 px-3 py-1 rounded-full text-sm font-medium border border-teal-300/50">
                     Anxiety Relief
                   </span>
                 </div>
@@ -243,13 +243,13 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                   natural relaxation responses through therapeutic frequencies.
                 </p>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-primary" />
+                  <CheckCircle className="w-4 h-4 text-teal-500" />
                   <span>Clinical Validation</span>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="group bg-white/80 backdrop-blur-xl border border-border overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
+            <Card className="group bg-white/90 backdrop-blur-xl border border-teal-200/30 overflow-hidden hover:bg-white/95 transition-all duration-500 shadow-lg hover:shadow-teal-100">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyDewdropLeaf} 
@@ -275,7 +275,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </CardContent>
             </Card>
             
-            <Card className="group bg-white/80 backdrop-blur-xl border border-border overflow-hidden hover:bg-white/90 transition-all duration-500 shadow-lg">
+            <Card className="group bg-white/90 backdrop-blur-xl border border-teal-200/30 overflow-hidden hover:bg-white/95 transition-all duration-500 shadow-lg hover:shadow-teal-100">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyZenStones} 
@@ -306,7 +306,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-base font-medium rounded-xl shadow-xl"
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-8 py-4 text-base font-medium rounded-xl shadow-xl"
             >
               <Zap className="w-5 h-5 mr-2" />
               Explore Programs
@@ -316,11 +316,11 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Research Section */}
-      <section className="relative py-32 bg-gradient-to-b from-white to-accent">
+      <section className="relative py-32 bg-gradient-to-b from-white to-cyan-50/30">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-thin text-gray-900 mb-8">
-              Research <span className="font-light text-primary">Partnerships</span>
+              Research <span className="font-light bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Partnerships</span>
             </h2>
             <p className="text-2xl text-gray-700 max-w-4xl mx-auto font-light leading-relaxed">
               Collaborating with leading institutions in neuroscience and technology
@@ -328,9 +328,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           </div>
           
           <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-border hover:bg-white/95 transition-all duration-300 group shadow-lg">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-accent rounded-2xl backdrop-blur-sm group-hover:bg-primary/20 transition-all duration-300">
-                <div className="text-2xl font-bold text-primary">CT</div>
+            <Card className="p-10 text-center bg-white/95 backdrop-blur-xl border border-teal-200/40 hover:bg-white/100 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl backdrop-blur-sm group-hover:from-teal-200 group-hover:to-cyan-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-teal-700">CT</div>
               </div>
               <h3 className="text-2xl font-medium text-gray-900 mb-6">Cornell Tech</h3>
               <p className="text-gray-700 font-light text-lg leading-relaxed">
@@ -338,9 +338,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </p>
             </Card>
             
-            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-border hover:bg-white/95 transition-all duration-300 group shadow-lg">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-accent rounded-2xl backdrop-blur-sm group-hover:bg-primary/20 transition-all duration-300">
-                <div className="text-2xl font-bold text-primary">WC</div>
+            <Card className="p-10 text-center bg-white/95 backdrop-blur-xl border border-teal-200/40 hover:bg-white/100 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl backdrop-blur-sm group-hover:from-teal-200 group-hover:to-cyan-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-teal-700">WC</div>
               </div>
               <h3 className="text-2xl font-medium text-gray-900 mb-6">Weill Cornell</h3>
               <p className="text-gray-700 font-light text-lg leading-relaxed">
@@ -348,9 +348,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               </p>
             </Card>
             
-            <Card className="p-10 text-center bg-white/90 backdrop-blur-xl border border-border hover:bg-white/95 transition-all duration-300 group shadow-lg">
-              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-accent rounded-2xl backdrop-blur-sm group-hover:bg-primary/20 transition-all duration-300">
-                <div className="text-2xl font-bold text-primary">SM</div>
+            <Card className="p-10 text-center bg-white/95 backdrop-blur-xl border border-teal-200/40 hover:bg-white/100 transition-all duration-300 group shadow-lg">
+              <div className="w-20 h-20 mx-auto mb-8 flex items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl backdrop-blur-sm group-hover:from-teal-200 group-hover:to-cyan-200 transition-all duration-300">
+                <div className="text-2xl font-bold text-teal-700">SM</div>
               </div>
               <h3 className="text-2xl font-medium text-gray-900 mb-6">Stanford Medical</h3>
               <p className="text-gray-700 font-light text-lg leading-relaxed">
@@ -362,10 +362,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-b from-accent to-white">
+      <section className="relative py-32 bg-gradient-to-b from-cyan-50/40 to-white">
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-7xl font-thin text-gray-900 mb-10">
-            Transform Your <span className="font-light text-primary">Wellness</span>
+            Transform Your <span className="font-light bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Wellness</span>
           </h2>
           <p className="text-2xl text-gray-700 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
             Join the future of personalized mental health through evidence-based music therapy
@@ -375,7 +375,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             <Button 
               size="lg" 
               onClick={handleSignup}
-              className="bg-primary hover:bg-primary/90 text-white px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
             >
               Start Free Session
               <ArrowRight className="w-6 h-6 ml-3" />
@@ -384,7 +384,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               size="lg" 
               variant="outline"
               onClick={handleLogin}
-              className="border-2 border-primary/30 text-gray-800 hover:bg-accent hover:border-primary/50 px-12 py-5 text-xl font-medium rounded-xl transition-all duration-300 hover:scale-105"
+              className="border-2 border-teal-300 text-gray-800 hover:bg-teal-50 hover:border-teal-400 px-12 py-5 text-xl font-medium rounded-xl transition-all duration-300 hover:scale-105"
             >
               Sign In
             </Button>
