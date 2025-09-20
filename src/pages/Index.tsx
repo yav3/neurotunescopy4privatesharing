@@ -105,11 +105,11 @@ const Index = () => {
       <div className="px-6 py-4 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <Plus className="w-6 h-6 text-teal-500" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Plus className="w-5 h-5 text-teal-500" />
               <div>
-                <div className="text-2xl font-light text-gray-900 dark:text-white">NeuroTunes</div>
+                <div className="text-lg font-normal text-gray-900 dark:text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -118,12 +118,12 @@ const Index = () => {
               onClick={toggle} 
               className="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
           </div>
           
           {/* Greeting */}
-          <h1 className="text-sm font-normal text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-xs font-normal text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
