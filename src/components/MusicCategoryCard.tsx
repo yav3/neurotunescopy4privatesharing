@@ -34,10 +34,10 @@ export const MusicCategoryCard = ({ title, image, className, onClick }: MusicCat
         {/* Animated glow effect on hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-t from-primary/50 to-transparent" />
         
-        {/* Content - Fixed positioning for perfect alignment */}
-        <div className="absolute bottom-4 left-4 right-4">
+        {/* Content - Responsive text sizing and better spacing */}
+        <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-4 sm:right-4">
           <div className="transform transition-transform duration-300 group-hover:translate-y-[-2px]">
-            <h3 className="text-foreground font-semibold text-lg leading-tight drop-shadow-lg">{title}</h3>
+            <h3 className="text-foreground font-semibold text-sm sm:text-base md:text-lg leading-tight drop-shadow-lg break-words hyphens-auto">{title}</h3>
           </div>
         </div>
       </div>
