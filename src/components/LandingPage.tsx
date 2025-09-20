@@ -185,9 +185,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
         
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <h1 className="text-6xl md:text-7xl font-black leading-tight mb-8">
+          <h1 className="text-6xl md:text-7xl font-thin leading-tight mb-8">
             Personalized AI Music<br />
-            Therapy for <span className="text-teal-400">Wellness</span>
+            Therapy for <span className="text-white/90 font-normal">Wellness</span>
           </h1>
           
           <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
