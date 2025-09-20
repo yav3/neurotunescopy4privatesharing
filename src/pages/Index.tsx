@@ -109,21 +109,21 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <Plus className="w-7 h-7 text-teal-500" />
               <div>
-                <div className="text-4xl font-light md:font-bold text-foreground">NeuroTunes</div>
+                <div className="text-4xl font-light md:font-bold text-gray-900 dark:text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggle} 
-              className="text-foreground hover:bg-accent"
+              className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
           </div>
           
           {/* Greeting */}
-          <h1 className="text-base font-normal md:font-medium text-muted-foreground">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-base font-normal md:font-medium text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ const Index = () => {
 
           {/* Trending Section */}
           <div>
-            <h2 className="text-2xl font-normal md:font-bold text-foreground mb-4 md:mb-6">Trending</h2>
+            <h2 className="text-2xl font-normal md:font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
               {trendingCategories.map((category) => (
                 <Card 
