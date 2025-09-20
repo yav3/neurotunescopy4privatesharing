@@ -396,15 +396,15 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white py-8 border-t border-green-200">
+      <footer className="bg-white py-8 border-t border-teal-200/20">
         <div className="max-w-6xl mx-auto px-6 flex justify-center items-center">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
-              <Plus className="w-4 h-4 text-black" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+              <Plus className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="text-white font-normal">NeuroTunes</div>
-              <div className="text-white/40 text-sm">© 2025 NeuroTunes. All rights reserved.</div>
+              <div className="text-gray-900 font-medium">NeuroTunes</div>
+              <div className="text-gray-600 text-sm">© 2025 NeuroTunes. All rights reserved.</div>
             </div>
           </div>
         </div>
