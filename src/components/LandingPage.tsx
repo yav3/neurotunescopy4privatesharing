@@ -146,9 +146,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             >
               Sign In
             </Button>
-            <div className="text-lg font-medium text-gray-800 bg-teal-50/50 px-4 py-2 rounded-lg border border-teal-200/50">
-              NeuralPositive
-            </div>
           </div>
         </div>
       </nav>
