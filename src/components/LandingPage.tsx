@@ -138,14 +138,21 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <div className="text-sm text-teal-600 font-medium">Therapeutic Music Platform</div>
             </div>
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-gray-600">
+              <span className="text-lg">🌐</span>
+              <span className="text-lg">🇺🇸</span>
+              <span className="font-medium">English</span>
+            </div>
             <Button
-              variant="ghost"
-              onClick={handleLogin}
-              className="text-gray-700 hover:text-teal-700 hover:bg-teal-50/50 font-medium px-6 py-2 rounded-lg transition-all duration-300"
+              onClick={handleSignup}
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300"
             >
-              Sign In
+              Start Therapy
             </Button>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-medium shadow-lg">
+              D
+            </div>
           </div>
         </div>
       </nav>
@@ -166,19 +173,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <AnimatedFluidBackground />
         </div>
         
-        {/* Floating Glass Morphism Elements - temporarily disabled 
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 opacity-20 animate-pulse">
-            <img src={fluidShape1} alt="" className="w-full h-full object-contain mix-blend-multiply" />
-          </div>
-          <div className="absolute top-40 right-20 w-48 h-48 opacity-15 animate-bounce" style={{ animationDuration: '6s' }}>
-            <img src={fluidShape2} alt="" className="w-full h-full object-contain mix-blend-multiply" />
-          </div>
-          <div className="absolute bottom-32 left-1/4 w-56 h-56 opacity-10 animate-pulse" style={{ animationDuration: '4s' }}>
-            <img src={fluidShape3} alt="" className="w-full h-full object-contain mix-blend-multiply" />
-          </div>
-        </div>
-        */}
+        {/* Floating Glass Morphism Elements - REMOVED */}
         
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
