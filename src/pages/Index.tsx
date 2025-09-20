@@ -102,28 +102,28 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="px-6 py-6 border-b border-border bg-background">
+      <div className="px-6 py-4 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <Plus className="w-7 h-7 text-teal-500" />
+              <Plus className="w-6 h-6 text-teal-500" />
               <div>
-                <div className="text-4xl font-light md:font-bold text-gray-900 dark:text-white">NeuroTunes</div>
+                <div className="text-2xl font-light text-gray-900 dark:text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggle} 
-              className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
           </div>
           
           {/* Greeting */}
-          <h1 className="text-base font-normal md:font-medium text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
+          <h1 className="text-sm font-normal text-gray-600 dark:text-gray-300">Good morning Let's Personalize! Pick one.</h1>
         </div>
       </div>
 
