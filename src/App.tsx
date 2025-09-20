@@ -100,7 +100,7 @@ const App = () => {
               <Route path="/debug" element={<ConnectionDiagnostics />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/landing" element={<LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />} />
+              <Route path="/landing" element={<Index />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="content" element={<ContentManagement />} />
