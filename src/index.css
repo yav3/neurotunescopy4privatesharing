@@ -183,6 +183,7 @@ All colors MUST be HSL.
   * {
     @apply border-border;
     font-family: var(--font-sf) !important;
+    box-sizing: border-box;
   }
 
   html, body {
@@ -190,6 +191,60 @@ All colors MUST be HSL.
     font-family: var(--font-sf) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    font-size: 16px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile viewport fix */
+  @supports (-webkit-appearance: none) {
+    .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+  }
+
+  /* Touch improvements for mobile web */
+  button, 
+  [role="button"],
+  input,
+  textarea,
+  select {
+    touch-action: manipulation;
+  }
+
+  /* Prevent zoom on input focus (mobile web) */
+  @media screen and (max-width: 767px) {
+    input, 
+    select, 
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  /* Focus styles for accessibility */
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  a:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Remove default focus outline */
+  button:focus:not(:focus-visible),
+  input:focus:not(:focus-visible),
+  textarea:focus:not(:focus-visible),
+  select:focus:not(:focus-visible),
+  a:focus:not(:focus-visible) {
+    outline: none;
   }
 
   /* Design System Fix - Additional color and font overrides */
