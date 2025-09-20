@@ -22,6 +22,7 @@ import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
 import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
+import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
 import { MagicAuth } from "./pages/MagicAuth";
@@ -97,6 +98,7 @@ const App = () => {
           <div className="relative min-h-screen">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/goals" element={<TherapeuticGoalsPage />} />
               <Route path="/debug" element={<ConnectionDiagnostics />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />

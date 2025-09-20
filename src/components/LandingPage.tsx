@@ -124,6 +124,10 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
     onSignup();
   };
 
+  const handleStartTherapy = () => {
+    navigate('/goals');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40 text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
       {/* Navigation */}
@@ -145,7 +149,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <span className="font-medium">English</span>
             </div>
             <Button
-              onClick={handleSignup}
+              onClick={handleStartTherapy}
               className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300"
             >
               Start Therapy
