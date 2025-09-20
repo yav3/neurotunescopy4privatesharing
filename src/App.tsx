@@ -15,7 +15,6 @@ import { initializeDebugging } from "@/utils/debugInit";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
 import { LandingPage } from "@/components/LandingPage";
-import NeuralPositiveLanding from "@/components/NeuralPositiveLanding";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { useAudioStore } from "@/stores";
 // Import test utilities for global access
