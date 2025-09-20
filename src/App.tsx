@@ -85,8 +85,8 @@ const App = () => {
       return <AuthPage onBack={() => setShowAuth(false)} />;
     }
     
-    // FORCE ALL users to authenticate - landing page is only for signup/login
-    return <LandingPage onLogin={() => setShowAuth(true)} onSignup={() => setShowAuth(true)} />;
+    // Show the new professional landing page for unauthenticated users
+    return <Index />;
   }
 
   return (
