@@ -127,26 +127,26 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40 text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
       {/* Navigation */}
-      <nav className="relative z-50 bg-white/90 backdrop-blur-xl border-b border-teal-200/30 px-6 py-4">
+      <nav className="relative z-50 bg-white/95 backdrop-blur-xl border-b border-teal-200/20 px-6 py-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center">
-              <Plus className="w-4 h-4 text-white font-medium" strokeWidth={2} />
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+              <Plus className="w-5 h-5 text-white font-medium" strokeWidth={2.5} />
             </div>
             <div>
-              <div className="text-lg font-normal text-gray-900">NeuroTunes</div>
-              <div className="text-xs text-gray-600">AI Music Therapy</div>
+              <div className="text-xl font-semibold text-gray-900">NeuroTunes</div>
+              <div className="text-sm text-teal-600 font-medium">Therapeutic Music Platform</div>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <Button
               variant="ghost"
               onClick={handleLogin}
-              className="text-gray-700 hover:text-gray-900 hover:bg-teal-50 font-normal"
+              className="text-gray-700 hover:text-teal-700 hover:bg-teal-50/50 font-medium px-6 py-2 rounded-lg transition-all duration-300"
             >
               Sign In
             </Button>
-            <div className="text-base font-normal text-gray-800">
+            <div className="text-lg font-medium text-gray-800 bg-teal-50/50 px-4 py-2 rounded-lg border border-teal-200/50">
               NeuralPositive
             </div>
           </div>
