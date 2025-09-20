@@ -383,7 +383,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               onClick={handleSignup}
               className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-12 py-5 text-xl font-medium rounded-xl shadow-2xl hover:scale-105 transition-all duration-300"
             >
-              Start Free Session
+              Enter Code
               <ArrowRight className="w-6 h-6 ml-3" />
             </Button>
             <Button 
