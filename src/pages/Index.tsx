@@ -405,57 +405,8 @@ const Index = () => {
           <div className="absolute bottom-8 right-8 w-40 h-40 bg-white/3 rounded-full blur-3xl"></div>
           
           <ResponsiveContainer>
-            <div className="text-center relative z-10">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 drop-shadow-xl leading-tight">
-                  Ready to Transform Your Mental Wellness?
-                </h2>
-                <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-12 drop-shadow-lg leading-relaxed">
-                  Join thousands of users who have improved their mental health with personalized music therapy
-                </p>
-                
-                {/* Enhanced CTA Buttons with better glass morphism */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-8 sm:mb-12">
-                  <Button 
-                    asChild
-                    size="lg"
-                    className="bg-white/20 backdrop-blur-md text-white shadow-glass-dark-shadow hover:bg-white/30 hover:shadow-2xl font-bold text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-6 border border-white/30 transition-all duration-300 transform hover:scale-105"
-                  >
-                    <Link to="/goals" className="flex items-center justify-center space-x-3">
-                      <Headphones className="h-5 w-5 sm:h-6 sm:w-6" />
-                      <span>Start Free Session</span>
-                      <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </Link>
-                  </Button>
-                  <Button 
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/15 hover:border-white/60 font-bold text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-6 transition-all duration-300 transform hover:scale-105"
-                  >
-                    <Link to="/profile" className="flex items-center justify-center space-x-3">
-                      <Activity className="h-5 w-5 sm:h-6 sm:w-6" />
-                      <span>View Research</span>
-                    </Link>
-                  </Button>
-                </div>
-                
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-white/70 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Shield className="h-4 w-4" />
-                    <span>FDA Researched</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Award className="h-4 w-4" />
-                    <span>Evidence Based</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
             {/* Admin Access in enhanced footer */}
-            <div className="text-center mt-12 sm:mt-16 pt-8 sm:pt-12 border-t border-white/20 relative z-10">
+            <div className="text-center relative z-10">
               <Link 
                 to="/admin" 
                 className="text-sm text-white/50 hover:text-white/80 transition-all duration-300 font-medium backdrop-blur-sm bg-white/5 px-4 py-2 rounded-full border border-white/10 hover:border-white/20"
