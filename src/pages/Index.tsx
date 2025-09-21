@@ -62,9 +62,9 @@ const Index = () => {
 
   return (
     <WebAppWrapper>
-      <div className="min-h-screen bg-gradient-pearlized relative overflow-hidden">
-        {/* Additional pearlized texture overlay */}
-        <div className="absolute inset-0 bg-gradient-textured opacity-80"></div>
+      <div className="min-h-screen bg-gradient-to-br from-brand-50 to-white relative overflow-hidden">
+        {/* Additional brand texture overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-100/20 to-transparent"></div>
         <div className="relative z-10">
         {/* Navigation Header with Enhanced Glass Morphism */}
         <nav className="glass-pearlized sticky top-0 z-50">
@@ -93,7 +93,7 @@ const Index = () => {
         </nav>
 
         {/* Hero Section with Brand Gradient */}
-        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-primary relative overflow-hidden">
+        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-br from-brand-900 to-brand-500 relative overflow-hidden">
           {/* Abstract floating spheres */}
           <div className="floating-sphere floating-sphere-lg top-20 right-20 opacity-30"></div>
           <div className="floating-sphere floating-sphere-md top-40 left-10 opacity-20"></div>
@@ -108,7 +108,7 @@ const Index = () => {
             />
           </div>
           {/* Brand texture overlay */}
-          <div className="absolute inset-0 bg-gradient-hero opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-900/80 to-brand-500/60"></div>
           <ResponsiveContainer>
             <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
             <div className="space-y-8 sm:space-y-10 md:space-y-12">
@@ -118,10 +118,10 @@ const Index = () => {
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="font-sf font-light text-gradient-hero-main leading-[0.85] tracking-tighter drop-shadow-lg" 
+              <h1 className="font-sf font-light text-white leading-[0.85] tracking-tighter drop-shadow-lg" 
                   style={{ fontSize: 'clamp(4rem, 15vw, 20rem)' }}>
                 AI-Personalized, Closed Loop Wellness 
-                <span className="text-gradient-hero-secondary block mt-4 sm:mt-6 md:mt-8"> Meets Beautiful Music</span>
+                <span className="text-brand-100 block mt-4 sm:mt-6 md:mt-8"> Meets Beautiful Music</span>
               </h1>
               <div className="space-y-6 sm:space-y-8 md:space-y-10">
                 <p className="text-xl sm:text-2xl md:text-3xl text-white/95 leading-relaxed drop-shadow-sm font-light">
@@ -137,7 +137,7 @@ const Index = () => {
                 <Button 
                   asChild
                   size="lg"
-                  className="bg-white/20 backdrop-blur-sm text-white shadow-glass-dark-shadow hover:bg-white/30 font-semibold flex items-center justify-center space-x-2 text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 border border-white/30"
+                  className="bg-brand-400 hover:bg-brand-300 text-brand-900 shadow-lg hover:shadow-xl font-semibold flex items-center justify-center space-x-2 text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 rounded-full transition-all duration-300"
                 >
                   <Link to="/goals">
                     <Headphones className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -221,8 +221,8 @@ const Index = () => {
           </ResponsiveContainer>
         </section>
 
-        {/* Featured Therapy Programs with Sophisticated Design */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured relative overflow-hidden">
+        {/* Featured Therapy Programs with Brand Design */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-brand-500 to-brand-600 relative overflow-hidden">
           {/* Abstract floating elements */}
           <div className="floating-sphere floating-sphere-md top-10 right-16 opacity-20"></div>
           <div className="floating-sphere floating-sphere-sm top-1/2 left-8 opacity-15"></div>
@@ -412,15 +412,15 @@ const Index = () => {
           </ResponsiveContainer>
         </section>
 
-        {/* CTA Section - Bottom Footer with Enhanced Textured Turquoise Gradient */}
-        <section className="py-16 sm:py-20 md:py-24 bg-gradient-textured-teal text-white relative overflow-hidden">
+        {/* CTA Section - Bottom Footer with Brand Gradient */}
+        <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-brand-600 to-brand-700 text-white relative overflow-hidden">
           {/* Enhanced Background Pattern with turquoise tint */}
           <div className="absolute inset-0 opacity-8">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${stonesWater})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-teal-900/20 via-transparent to-teal-800/10"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-800/20 via-transparent to-brand-600/10"></div>
           </div>
           
           {/* Decorative Elements */}

@@ -68,16 +68,29 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				// Brand colors - Premium Teal Spectrum (Locked)
+				brand: {
+					900: '#0A2C2D', // Deep blue-green navy
+					800: '#0E3D40',
+					700: '#135455',
+					600: '#176C6F',
+					500: '#1C8587', // Primary deep
+					400: '#26A5A6',
+					300: '#3BC2C1',
+					200: '#79E2DF',
+					100: '#C2F5F3', // Light aqua secondary
+					50: '#E6FCFB'
+				},
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',
 				'music-sleep': 'hsl(var(--music-sleep))',
 				'music-energy': 'hsl(var(--music-energy))',
 				'teal': {
-					'50': 'hsl(var(--teal-50))',
-					'100': 'hsl(var(--teal-100))',
-					'500': 'hsl(var(--teal-500))',
-					'600': 'hsl(var(--teal-600))',
-					'700': 'hsl(var(--teal-700))'
+					'50': '#E6FCFB',
+					'100': '#C2F5F3',
+					'500': '#1C8587',
+					'600': '#176C6F',
+					'700': '#135455'
 				}
 			},
 			backgroundImage: {

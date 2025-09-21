@@ -8,27 +8,27 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Brand Palette - Premium Teal Spectrum (Locked) */
-    --brand-50: 173 75% 95%;  /* #E6FCFB - Light aqua */
-    --brand-100: 176 75% 86%; /* #C2F5F3 - Light aqua secondary */
-    --brand-200: 178 56% 69%; /* #79E2DF - Light teal */
-    --brand-300: 179 58% 50%; /* #3BC2C1 - Medium teal */
-    --brand-400: 181 61% 40%; /* #26A5A6 - Medium teal */
-    --brand-500: 182 63% 32%; /* #1C8587 - Primary deep */
-    --brand-600: 182 61% 26%; /* #176C6F - Darker teal */
-    --brand-700: 182 63% 20%; /* #135455 - Dark teal */
-    --brand-800: 182 64% 15%; /* #0E3D40 - Very dark teal */
-    --brand-900: 182 57% 11%; /* #0A2C2D - Deep blue-green navy */
+    /* CSS variables synchronized with Tailwind brand colors */
+    --brand-900: #0A2C2D;
+    --brand-800: #0E3D40;
+    --brand-700: #135455;
+    --brand-600: #176C6F;
+    --brand-500: #1C8587;
+    --brand-400: #26A5A6;
+    --brand-300: #3BC2C1;
+    --brand-200: #79E2DF;
+    --brand-100: #C2F5F3;
+    --brand-50: #E6FCFB;
 
-    /* Light Mode - Clean White Background with Brand Teal */
+    /* Light Mode using brand colors */
     --background: 0 0% 100%; /* Pure white background */
-    --foreground: 182 57% 11%; /* Deep brand navy foreground */
+    --foreground: 182 57% 11%; /* Brand-900 foreground */
 
     --card: 0 0% 100%; /* Pure white card background */
-    --card-foreground: 182 57% 11%; /* Brand navy card text */
+    --card-foreground: 182 57% 11%; /* Brand-900 card text */
 
     --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 182 57% 11%; /* Brand navy popover text */
+    --popover-foreground: 182 57% 11%; /* Brand-900 popover text */
 
     --primary: 182 63% 32%; /* Brand-500 primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
@@ -49,12 +49,12 @@ All colors MUST be HSL.
     --input: 0 0% 100%; /* White input background */
     --ring: 182 63% 32%; /* Brand-500 ring */
 
-    /* Brand teal variations */
-    --teal-50: 173 75% 95%;  /* Brand-50 */
-    --teal-100: 176 75% 86%; /* Brand-100 */
-    --teal-500: 182 63% 32%; /* Brand-500 */
-    --teal-600: 182 61% 26%; /* Brand-600 */
-    --teal-700: 182 63% 20%; /* Brand-700 */
+    /* Brand teal variations using hex values */
+    --teal-50: 173 75% 95%;
+    --teal-100: 176 75% 86%;
+    --teal-500: 182 63% 32%;
+    --teal-600: 182 61% 26%;
+    --teal-700: 182 63% 20%;
 
     --radius: 0.75rem;
   }
