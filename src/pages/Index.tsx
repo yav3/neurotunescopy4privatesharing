@@ -368,29 +368,21 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
               <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                  Jacobs Technion Institute at Cornell Tech
+                  Weill Cornell Medical College
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                  Advanced AI research and computational music therapy algorithms
+                  Clinical research and medical validation of therapeutic protocols
                 </p>
               </div>
               <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                  Stanford Medicine
+                  Stanford University Medical School
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                  Clinical validation and evidence-based therapy protocols
-                </p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                  Berklee College of Music
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  Music therapy research and therapeutic composition expertise
+                  Neuroscience research and evidence-based treatment development
                 </p>
               </div>
             </div>
@@ -453,10 +445,6 @@ const Index = () => {
                   <div className="flex items-center space-x-2">
                     <Shield className="h-4 w-4" />
                     <span>FDA Researched</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Users className="h-4 w-4" />
-                    <span>10,000+ Users</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Award className="h-4 w-4" />
