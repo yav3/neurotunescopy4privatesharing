@@ -203,7 +203,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
                 <div className="relative h-48 lg:h-56 overflow-hidden">
@@ -223,11 +223,11 @@ const Index = () => {
                     </span>
                   </div>
                 </div>
-                <div className="p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-foreground mb-3">
                     Classical Sonatas for Stress Relief
                   </h3>
-                  <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
                     Evidence-based classical music therapy featuring Chopin piano sonatas and gentle orchestral compositions. Designed to reduce cortisol levels and activate parasympathetic nervous system responses for deep relaxation.
                   </p>
                   <div className="flex items-center justify-between">
@@ -265,11 +265,11 @@ const Index = () => {
                     </span>
                   </div>
                 </div>
-                <div className="p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-foreground mb-3">
                     Morning Light Activation
                   </h3>
-                  <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
                     Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
                   </p>
                   <div className="flex items-center justify-between">
@@ -307,11 +307,11 @@ const Index = () => {
                     </span>
                   </div>
                 </div>
-                <div className="p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-foreground mb-3">
                     Delta Wave Induction
                   </h3>
-                  <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
                     Scientifically tuned frequencies to synchronize brainwaves and promote deep, restorative sleep
                   </p>
                   <div className="flex items-center justify-between">

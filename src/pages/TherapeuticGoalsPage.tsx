@@ -130,7 +130,7 @@ const TherapeuticGoalsPage = () => {
           
           {/* Therapeutic Goals Section */}
           <div>
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
               {therapeuticGoals.map((goal) => (
                 <Card 
                   key={goal.id}
@@ -149,9 +149,9 @@ const TherapeuticGoalsPage = () => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                   <div className="relative h-full p-3 md:p-4 flex flex-col justify-end">
+                   <div className="relative h-full p-2 sm:p-3 md:p-4 flex flex-col justify-end">
                      <div>
-                       <h3 className="text-white font-normal md:font-semibold text-sm leading-tight drop-shadow-lg">
+                       <h3 className="text-white font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
                          {goal.name}
                        </h3>
                      </div>
@@ -164,7 +164,7 @@ const TherapeuticGoalsPage = () => {
           {/* Trending Section */}
           <div>
             <h2 className="text-2xl font-normal md:font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {trendingCategories.map((category) => (
                 <Card 
                   key={category.id}
@@ -183,9 +183,9 @@ const TherapeuticGoalsPage = () => {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                   <div className="relative h-full p-4 md:p-6 flex flex-col justify-end">
+                   <div className="relative h-full p-3 sm:p-4 md:p-6 flex flex-col justify-end">
                      <div>
-                       <h3 className="text-white font-medium md:font-bold text-lg leading-tight drop-shadow-lg">
+                       <h3 className="text-white font-medium sm:font-semibold md:font-bold text-sm sm:text-base md:text-lg leading-tight drop-shadow-lg break-words hyphens-auto">
                          {category.name}
                        </h3>
                      </div>
