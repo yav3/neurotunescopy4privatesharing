@@ -396,30 +396,6 @@ const Index = () => {
             </div>
           </ResponsiveContainer>
         </section>
-                  Advanced AI and technology research for therapeutic applications
-                </p>
-              </div>
-              
-              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                  Weill Cornell Medical College
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  Clinical research and medical validation of therapeutic protocols
-                </p>
-              </div>
-              
-              <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
-                  Stanford University Medical School
-                </h3>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  Neuroscience research and evidence-based treatment development
-                </p>
-              </div>
-            </div>
-          </ResponsiveContainer>
-        </section>
 
         {/* CTA Section - Now Footer */}
         <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
