@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { WebAppWrapper, ResponsiveContainer } from '@/components/layout';
 
-// Import nature images for therapy protocols - using placeholders temporarily
-const stackedStones = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop';
-const sereneLake = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
-const oceanWave = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
-const waterDropLeaf = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop';
-const dewLeaf = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop';
-const stonesWater = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop';
-const forestLake = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
+// Import nature images for therapy protocols
+import stackedStones from '@/assets/stacked-stones.png';
+import sereneLake from '@/assets/serene-lake.png';
+import oceanWave from '@/assets/ocean-wave.png';
+import waterDropLeaf from '@/assets/water-drop-leaf.png';
+import dewLeaf from '@/assets/dew-leaf.png';
+import stonesWater from '@/assets/stones-water.png';
+import mountainLake from '@/assets/mountain-lake.png';
 
 import { 
   Brain, 
@@ -89,13 +89,13 @@ const Index = () => {
           </ResponsiveContainer>
         </nav>
 
-        {/* Hero Section with Dark Turquoise Gradient */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-dark-teal relative overflow-hidden">
+        {/* Hero Section with Rich Textured Turquoise Gradient */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured-teal relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${sereneLake})` }}
+              style={{ backgroundImage: `url(${mountainLake})` }}
             />
           </div>
           <ResponsiveContainer>
@@ -209,12 +209,12 @@ const Index = () => {
         </section>
 
         {/* Featured Therapy Programs with Nature Images */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-dark-teal relative overflow-hidden">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured-teal relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${forestLake})` }}
+              style={{ backgroundImage: `url(${mountainLake})` }}
             />
           </div>
           <ResponsiveContainer>
@@ -397,8 +397,8 @@ const Index = () => {
           </ResponsiveContainer>
         </section>
 
-        {/* CTA Section - Bottom Footer with Enhanced Dark Turquoise Gradient */}
-        <section className="py-16 sm:py-20 md:py-24 bg-gradient-dark-teal text-white relative overflow-hidden">
+        {/* CTA Section - Bottom Footer with Enhanced Textured Turquoise Gradient */}
+        <section className="py-16 sm:py-20 md:py-24 bg-gradient-textured-teal text-white relative overflow-hidden">
           {/* Enhanced Background Pattern with turquoise tint */}
           <div className="absolute inset-0 opacity-8">
             <div 

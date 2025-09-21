@@ -112,12 +112,13 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Darker, richer turquoise gradient backgrounds */
-    --gradient-primary-teal: linear-gradient(135deg, hsl(173 100% 20%), hsl(176 95% 25%), hsl(179 90% 30%));
-    --gradient-hero-teal: linear-gradient(180deg, hsl(173 100% 18%), hsl(176 95% 22%), hsl(179 85% 28%), hsl(0 0% 95%));
-    --gradient-card-teal: linear-gradient(135deg, hsl(173 60% 88%), hsl(176 55% 92%), hsl(0 0% 98%));
-    --gradient-glass-teal: linear-gradient(135deg, rgba(6, 78, 59, 0.2), rgba(20, 184, 166, 0.1));
-    --gradient-dark-teal: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 22%));
+    /* Richer, more textured turquoise gradients based on reference screenshots */
+    --gradient-primary-teal: linear-gradient(135deg, hsl(174 85% 25%), hsl(177 88% 30%), hsl(180 82% 35%));
+    --gradient-hero-teal: linear-gradient(180deg, hsl(174 90% 22%), hsl(177 85% 26%), hsl(180 78% 32%), hsl(185 65% 45%));
+    --gradient-card-teal: linear-gradient(135deg, hsl(174 75% 85%), hsl(177 70% 88%), hsl(180 65% 92%));
+    --gradient-glass-teal: linear-gradient(135deg, hsl(174 85% 20% / 0.3), hsl(177 80% 28% / 0.2));
+    --gradient-dark-teal: linear-gradient(135deg, hsl(174 90% 18%), hsl(177 85% 22%), hsl(180 78% 28%));
+    --gradient-textured-teal: radial-gradient(circle at 30% 70%, hsl(174 88% 24%), hsl(177 82% 26%)), linear-gradient(135deg, hsl(174 85% 20%), hsl(180 75% 30%));
     --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     
     /* Enhanced glass morphism effects with darker tones - using HSL */

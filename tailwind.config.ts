@@ -93,6 +93,7 @@ export default {
 				'gradient-card-teal': 'var(--gradient-card-teal)',
 				'gradient-glass-teal': 'var(--gradient-glass-teal)',
 				'gradient-dark-teal': 'var(--gradient-dark-teal)',
+				'gradient-textured-teal': 'var(--gradient-textured-teal)',
 				'gradient-white-section': 'var(--gradient-white-section)',
 				'glass-gradient': 'var(--glass-bg)',
 				'glass-border': 'var(--glass-border)'
