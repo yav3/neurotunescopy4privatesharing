@@ -63,8 +63,8 @@ const Index = () => {
   return (
     <WebAppWrapper>
       <div className="min-h-screen bg-gradient-hero-teal">
-      {/* Navigation Header with Glass Morphism */}
-        <nav className="backdrop-blur-xl bg-glass-dark-bg sticky top-0 z-50 border-b border-glass-dark-border shadow-glass-dark-shadow">
+        {/* Navigation Header with Glass Morphism */}
+        <nav className="backdrop-blur-xl bg-glass-dark-bg sticky top-0 z-50 shadow-glass-dark-shadow">
           <ResponsiveContainer>
             <div className="flex justify-between items-center py-3 sm:py-4">
             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -107,15 +107,15 @@ const Index = () => {
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
-                Personalized AI Music Therapy for 
-                <span className="text-white/90"> Wellness</span>
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
+                AI-Personalized, Closed Loop Wellness 
+                <span className="text-white/90"> Meets Beautiful Music</span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-white/90 mb-4 sm:mb-6 md:mb-8 leading-relaxed drop-shadow-sm">
+              <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-8 leading-relaxed drop-shadow-sm">
                 Evidence-based AI platform that creates personalized therapeutic music experiences 
                 to support mental health, cognitive enhancement, and emotional well-being.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-white/80 mb-6 sm:mb-8 leading-relaxed drop-shadow-sm">
+              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 leading-relaxed drop-shadow-sm">
                 Based on evidence from 15K+ studies, utilizing the science of music therapy — 
                 a field with 50+ years of successful implementation in clinical settings.
               </p>

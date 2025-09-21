@@ -112,23 +112,23 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Richer, more textured turquoise gradients based on reference screenshots */
-    --gradient-primary-teal: linear-gradient(135deg, hsl(174 85% 25%), hsl(177 88% 30%), hsl(180 82% 35%));
-    --gradient-hero-teal: linear-gradient(180deg, hsl(174 90% 22%), hsl(177 85% 26%), hsl(180 78% 32%), hsl(185 65% 45%));
+    /* Richer, more textured turquoise gradients with higher contrast */
+    --gradient-primary-teal: linear-gradient(135deg, hsl(174 90% 18%), hsl(177 95% 22%), hsl(180 88% 28%));
+    --gradient-hero-teal: linear-gradient(180deg, hsl(174 95% 15%), hsl(177 90% 18%), hsl(180 85% 22%), hsl(185 75% 35%));
     --gradient-card-teal: linear-gradient(135deg, hsl(174 75% 85%), hsl(177 70% 88%), hsl(180 65% 92%));
     --gradient-glass-teal: linear-gradient(135deg, hsl(174 85% 20% / 0.3), hsl(177 80% 28% / 0.2));
-    --gradient-dark-teal: linear-gradient(135deg, hsl(174 90% 18%), hsl(177 85% 22%), hsl(180 78% 28%));
-    --gradient-textured-teal: radial-gradient(circle at 30% 70%, hsl(174 88% 24%), hsl(177 82% 26%)), linear-gradient(135deg, hsl(174 85% 20%), hsl(180 75% 30%));
+    --gradient-dark-teal: linear-gradient(135deg, hsl(174 95% 12%), hsl(177 90% 15%), hsl(180 85% 20%));
+    --gradient-textured-teal: radial-gradient(circle at 30% 70%, hsl(174 95% 16%), hsl(177 88% 18%)), linear-gradient(135deg, hsl(174 90% 12%), hsl(180 80% 22%));
     --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     
     /* Enhanced glass morphism effects with darker tones - using HSL */
-    --glass-bg-enhanced: 0 0% 100% / 0.10;
-    --glass-border-enhanced: 0 0% 100% / 0.20;
-    --glass-shadow-enhanced: 0 16px 48px 0 hsl(173 85% 16% / 0.25), 0 8px 24px 0 hsl(173 80% 35% / 0.15);
+    --glass-bg-enhanced: 0 0% 100% / 0.25;
+    --glass-border-enhanced: 0 0% 100% / 0.35;
+    --glass-shadow-enhanced: 0 16px 48px 0 hsl(173 85% 16% / 0.4), 0 8px 24px 0 hsl(173 80% 35% / 0.25);
     --glass-backdrop: blur(20px);
-    --glass-dark-bg: 173 85% 16% / 0.15;
-    --glass-dark-border: 173 80% 35% / 0.25;
-    --glass-dark-shadow: 0 20px 60px 0 hsl(173 85% 16% / 0.4);
+    --glass-dark-bg: 173 85% 16% / 0.25;
+    --glass-dark-border: 173 80% 35% / 0.4;
+    --glass-dark-shadow: 0 20px 60px 0 hsl(173 85% 16% / 0.6);
     
     /* Light mode gradient variations for cards with better contrast */
     --gradient-primary: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%));
