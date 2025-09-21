@@ -111,24 +111,23 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-brand-900/80 to-brand-500/60"></div>
           <ResponsiveContainer>
             <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
-            <div className="space-y-8 sm:space-y-10 md:space-y-12">
+            <div className="space-y-8">
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <div className="bg-white/20 backdrop-blur-sm px-4 sm:px-6 py-2 border border-white/30 text-white rounded-full text-sm sm:text-base font-medium flex items-center space-x-2">
                   <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="font-sf font-light text-white leading-[0.85] tracking-tighter drop-shadow-lg" 
-                  style={{ fontSize: 'clamp(4rem, 15vw, 20rem)' }}>
+              <h1 className="text-display-1 text-white drop-shadow-lg mb-6">
                 AI-Personalized, Closed Loop Wellness 
-                <span className="text-brand-100 block mt-4 sm:mt-6 md:mt-8"> Meets Beautiful Music</span>
+                <span className="text-brand-100 block mt-2"> Meets Beautiful Music</span>
               </h1>
-              <div className="space-y-6 sm:space-y-8 md:space-y-10">
-                <p className="text-xl sm:text-2xl md:text-3xl text-white/95 leading-relaxed drop-shadow-sm font-light">
+              <div className="space-y-6">
+                <p className="text-body-large text-white/95 drop-shadow-sm max-w-2xl">
                   Evidence-based AI platform that creates personalized therapeutic music experiences 
                   to support mental health, cognitive enhancement, and emotional well-being.
                 </p>
-                <p className="text-lg sm:text-xl md:text-2xl text-white/85 leading-relaxed drop-shadow-sm font-light">
+                <p className="text-body text-white/85 drop-shadow-sm max-w-2xl">
                   Based on evidence from 15K+ studies, utilizing the science of music therapy — 
                   a field with 50+ years of successful implementation in clinical settings.
                 </p>
@@ -195,10 +194,10 @@ const Index = () => {
         <section className="py-12 sm:py-16 md:py-20 bg-gradient-white-section">
           <ResponsiveContainer>
             <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4">
+            <h2 className="text-heading-1 text-foreground mb-4">
               Science-Based Therapeutic Benefits
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-body text-muted-foreground max-w-2xl mx-auto">
               Our AI analyzes thousands of musical parameters to create personalized therapy sessions 
               that target specific mental health and cognitive goals.
             </p>
@@ -237,10 +236,10 @@ const Index = () => {
           </div>
           <ResponsiveContainer>
             <div className="text-center mb-12 sm:mb-16 relative z-10">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg">
+              <h2 className="text-heading-1 text-white mb-4 drop-shadow-lg">
                 Featured Therapy Programs
               </h2>
-              <p className="text-base sm:text-lg text-white/90 drop-shadow-sm">
+              <p className="text-body text-white/90 drop-shadow-sm">
                 Clinically-designed music therapy sessions for various conditions and goals
               </p>
             </div>
