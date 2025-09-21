@@ -71,12 +71,12 @@ const Index = () => {
           <ResponsiveContainer>
             <div className="flex justify-between items-center py-3 sm:py-4">
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-white to-white/80 rounded-lg flex items-center justify-center shadow-lg">
-                <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg">
+                <div className="text-white font-light text-2xl sm:text-3xl leading-none">+</div>
               </div>
               <div>
-                <h1 className="text-lg sm:text-xl font-semibold text-white text-shadow-dramatic">NeuroTunes</h1>
-                <p className="text-xs text-white/70 hidden sm:block">AI Music Therapy Platform</p>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-sf font-light text-white text-shadow-dramatic">NeuroTunes</h1>
+                <p className="text-sm text-white/70 hidden sm:block font-sf">AI Music Therapy Platform</p>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -112,9 +112,10 @@ const Index = () => {
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light text-gradient-hero-main mb-8 sm:mb-10 md:mb-12 leading-[0.95] tracking-tight drop-shadow-lg">
+              <h1 className="font-sf font-light text-gradient-hero-main leading-[0.85] tracking-tighter drop-shadow-lg" 
+                  style={{ fontSize: 'clamp(4rem, 15vw, 20rem)' }}>
                 AI-Personalized, Closed Loop Wellness 
-                <span className="text-gradient-hero-secondary block mt-2 sm:mt-3 md:mt-4"> Meets Beautiful Music</span>
+                <span className="text-gradient-hero-secondary block mt-4 sm:mt-6 md:mt-8"> Meets Beautiful Music</span>
               </h1>
               <div className="space-y-6 sm:space-y-8 md:space-y-10">
                 <p className="text-xl sm:text-2xl md:text-3xl text-white/95 leading-relaxed drop-shadow-sm font-light">
