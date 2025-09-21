@@ -1185,4 +1185,19 @@ All colors MUST be HSL.
   .text-shadow-dramatic {
     text-shadow: 0 4px 12px hsl(173 100% 5% / 0.8), 0 2px 6px hsl(173 95% 8% / 0.6);
   }
+
+  /* Scrolling text animation for track titles */
+  @keyframes scroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+  }
+
+  .animate-scroll {
+    animation: scroll 8s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .group:hover .animate-scroll {
+    animation-play-state: running;
+  }
 }

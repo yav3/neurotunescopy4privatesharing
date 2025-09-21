@@ -158,97 +158,104 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
       </div>
 
       {/* Playlist with Glass Morphism */}
-      <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
+      <div className="max-h-[60vh] overflow-y-auto pr-2">
         {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = isFavorite(track.id);
           const isFavoriteLoading = favoriteLoadingStates.has(track.id);
           
           return (
-            <div
-              key={track.id}
-              className={cn(
-                "flex items-center gap-3 p-3 rounded-xl backdrop-blur-sm border border-white/10 hover:shadow-glass transition-all duration-200 group cursor-pointer shadow-glass-inset",
-                isCurrentTrack 
-                  ? "bg-primary/20 border-primary/30 shadow-glass" 
-                  : "bg-card/20 hover:bg-card/40"
-              )}
-              onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
-            >
-              {/* Track Number / Play Button */}
-              <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full bg-card/50 border border-white/10">
-                {isLoading && isCurrentTrack ? (
-                  <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-                ) : isCurrentTrack && isPlaying ? (
-                  <Pause className="w-4 h-4 text-primary" />
-                ) : (
-                  <div className="relative">
-                    <span className="text-sm text-muted-foreground group-hover:opacity-0 transition-opacity">
-                      {(index + 1).toString().padStart(2, '0')}
-                    </span>
-                    <Play className="w-4 h-4 text-primary absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+            <div key={track.id}>
+              <div
+                className={cn(
+                  "flex items-center gap-3 p-3 backdrop-blur-sm border border-white/10 hover:shadow-glass transition-all duration-200 group cursor-pointer shadow-glass-inset",
+                  isCurrentTrack 
+                    ? "bg-primary/20 border-primary/30 shadow-glass" 
+                    : "bg-card/20 hover:bg-card/40"
                 )}
-              </div>
+                onClick={() => isCurrentTrack ? onTogglePlay() : onTrackPlay(track)}
+              >
+                {/* Track Number / Play Button - Fixed Size */}
+                <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 rounded-full bg-card/50 border border-white/10">
+                  {isLoading && isCurrentTrack ? (
+                    <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                  ) : isCurrentTrack && isPlaying ? (
+                    <Pause className="w-5 h-5 text-primary" />
+                  ) : (
+                    <div className="relative">
+                      <span className="text-sm text-muted-foreground group-hover:opacity-0 transition-opacity">
+                        {(index + 1).toString().padStart(2, '0')}
+                      </span>
+                      <Play className="w-5 h-5 text-primary absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  )}
+                </div>
 
-              {/* Album Art with Glass Effect */}
-              <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
-                {track.artwork_url ? (
-                  <img 
-                    src={track.artwork_url} 
-                    alt={TitleFormatter.formatTrackTitle(track.title)}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">♪</div>
-                )}
+                {/* Album Art with Glass Effect */}
+                <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
+                  {track.artwork_url ? (
+                    <img 
+                      src={track.artwork_url} 
+                      alt={TitleFormatter.formatTrackTitle(track.title)}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">♪</div>
+                  )}
+                </div>
+                
+                {/* Track Info with Vertical Scrolling Title */}
+                <div className="flex-1 min-w-0">
+                  <div className="h-5 overflow-hidden">
+                    <h3 className="font-medium text-foreground text-sm leading-tight animate-scroll whitespace-nowrap">
+                      {TitleFormatter.formatTrackTitle(track.title)}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-muted-foreground truncate">
+                    Therapeutic Music
+                  </p>
+                </div>
+
+                 {/* Action Buttons with Glass Morphism - Fixed Size */}
+                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
+                   {/* Favorite */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => handleFavorite(track.id, e)}
+                      disabled={isFavoriteLoading}
+                      className={cn(
+                        "w-10 h-10 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full touch-manipulation active:scale-95 disabled:cursor-not-allowed disabled:opacity-60",
+                        isFavorited 
+                          ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
+                          : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                      )}
+                    >
+                      {isFavoriteLoading ? (
+                        <div className="w-4 h-4 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+                      ) : (
+                        <Heart className={cn("w-4 h-4", isFavorited && "fill-current")} />
+                      )}
+                    </Button>
+
+                   {/* Thumbs Down */}
+                   <Button
+                     variant="ghost"
+                     size="icon"
+                     onClick={(e) => handleThumbsDown(track.id, e)}
+                     className="w-10 h-10 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 touch-manipulation active:scale-95"
+                   >
+                     <ThumbsDown className="w-4 h-4" />
+                   </Button>
+                 </div>
               </div>
               
-              {/* Track Info */}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-foreground text-sm leading-tight truncate max-w-[200px]">
-                  {TitleFormatter.formatTrackTitle(track.title).split(' ').slice(0, 4).join(' ')}
-                  {TitleFormatter.formatTrackTitle(track.title).split(' ').length > 4 ? '...' : ''}
-                </h3>
-                <p className="text-xs text-muted-foreground truncate">
-                  Therapeutic Music
-                </p>
-              </div>
-
-               {/* Action Buttons with Glass Morphism */}
-               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
-                 {/* Favorite */}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => handleFavorite(track.id, e)}
-                    disabled={isFavoriteLoading}
-                    className={cn(
-                      "w-10 h-10 sm:w-8 sm:h-8 transition-all duration-200 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full touch-manipulation active:scale-95 disabled:cursor-not-allowed disabled:opacity-60",
-                      isFavorited 
-                        ? "text-red-500 hover:text-red-600 bg-red-500/20 border-red-500/30" 
-                        : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
-                    )}
-                  >
-                    {isFavoriteLoading ? (
-                      <div className="w-4 h-4 border-2 border-current/60 border-t-current rounded-full animate-spin" />
-                    ) : (
-                      <Heart className={cn("w-5 h-5 sm:w-4 sm:h-4", isFavorited && "fill-current")} />
-                    )}
-                  </Button>
-
-                 {/* Thumbs Down */}
-                 <Button
-                   variant="ghost"
-                   size="icon"
-                   onClick={(e) => handleThumbsDown(track.id, e)}
-                   className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm border border-white/10 bg-card/30 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 touch-manipulation active:scale-95"
-                 >
-                   <ThumbsDown className="w-5 h-5 sm:w-4 sm:h-4" />
-                 </Button>
-               </div>
+              {/* Separator Line */}
+              {index < filteredTracks.length - 1 && (
+                <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-2" />
+              )}
             </div>
           );
         })}
