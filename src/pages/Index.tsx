@@ -30,9 +30,12 @@ const Index = () => {
 
   // Handler for action buttons - show auth if not logged in, go to app if logged in
   const handleActionClick = () => {
+    console.log('🔘 Action button clicked, user:', !!user, 'loading:', loading);
     if (user) {
+      console.log('🎯 User authenticated, navigating to goals');
       navigate('/goals');
     } else {
+      console.log('🔐 User not authenticated, showing auth');
       setShowAuth(true);
     }
   };
