@@ -206,9 +206,16 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl">
-                    <Heart className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                <div className="relative h-48 lg:h-56 overflow-hidden">
+                  <img 
+                    src="/src/assets/nature-5.png" 
+                    alt="Stress reduction therapy" 
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl">
+                      <Heart className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                    </div>
                   </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
@@ -241,9 +248,16 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-info/10 to-info/5 flex items-center justify-center">
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-info to-info/80 flex items-center justify-center shadow-xl">
-                    <Brain className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                <div className="relative h-48 lg:h-56 overflow-hidden">
+                  <img 
+                    src="/src/assets/nature-6.png" 
+                    alt="Focus enhancement therapy" 
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-info/20 to-info/10 flex items-center justify-center">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-info to-info/80 flex items-center justify-center shadow-xl">
+                      <Brain className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                    </div>
                   </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
@@ -276,9 +290,16 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-success/10 to-success/5 flex items-center justify-center">
-                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center shadow-xl">
-                    <Activity className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                <div className="relative h-48 lg:h-56 overflow-hidden">
+                  <img 
+                    src="/src/assets/nature-7.png" 
+                    alt="Deep rest therapy" 
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-success/10 flex items-center justify-center">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center shadow-xl">
+                      <Activity className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                    </div>
                   </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">

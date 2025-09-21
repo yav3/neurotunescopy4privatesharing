@@ -7,10 +7,11 @@ import { Plus, ArrowRight, Play, CheckCircle, Brain, Heart, Activity, Zap, Spark
 // Hero background image
 import heroBackground from '@/assets/hero-background-teal.png';
 
-// Abstract fluid glass morphism images - temporarily disabled
-// const fluidShape1 = '/src/assets/fluid-shape-1.jpg'; // Image 1
-// const fluidShape2 = '/src/assets/fluid-shape-2.jpg'; // Image 2  
-// const fluidShape3 = '/src/assets/fluid-shape-3.jpg'; // Image 3
+// Nature background images
+import nature1 from '@/assets/nature-1.png';
+import nature2 from '@/assets/nature-2.png'; 
+import nature3 from '@/assets/nature-3.png';
+import nature4 from '@/assets/nature-4.png';
 
 // Therapeutic intervention images
 import therapyStonesWater from '@/assets/therapy-stones-water.png';
@@ -177,7 +178,38 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <AnimatedFluidBackground />
         </div>
         
-        {/* Floating Glass Morphism Elements - REMOVED */}
+        {/* Floating Glass Morphism Elements */}
+        <div className="absolute top-20 left-10 opacity-60">
+          <img 
+            src={nature1} 
+            alt="" 
+            className="w-32 h-32 rounded-3xl shadow-2xl transform rotate-12 hover:rotate-6 transition-transform duration-700"
+          />
+        </div>
+        
+        <div className="absolute top-40 right-16 opacity-50">
+          <img 
+            src={nature2} 
+            alt="" 
+            className="w-40 h-40 rounded-3xl shadow-2xl transform -rotate-12 hover:rotate-0 transition-transform duration-700"
+          />
+        </div>
+        
+        <div className="absolute bottom-32 left-20 opacity-70">
+          <img 
+            src={nature3} 
+            alt="" 
+            className="w-36 h-36 rounded-3xl shadow-2xl transform rotate-6 hover:rotate-12 transition-transform duration-700"
+          />
+        </div>
+        
+        <div className="absolute bottom-20 right-32 opacity-55">
+          <img 
+            src={nature4} 
+            alt="" 
+            className="w-44 h-44 rounded-3xl shadow-2xl transform -rotate-6 hover:-rotate-12 transition-transform duration-700"
+          />
+        </div>
         
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
