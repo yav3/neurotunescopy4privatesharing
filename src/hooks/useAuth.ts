@@ -198,7 +198,12 @@ export function useAuth() {
 
         // Only synchronous state updates here
         setSession(session);
-        setUser(null); // Will be set properly by profile fetch
+        
+        // Don't reset user to null if we already have a user and session is still valid
+        // This prevents the "kicking out" issue during profile reloads
+        if (!session?.user) {
+          setUser(null);
+        }
         
         // Update admin logging role
         import('@/utils/adminLogging').then(({ updateUserRole }) => {
@@ -210,7 +215,7 @@ export function useAuth() {
           setTimeout(() => {
             if (mounted) {
               getUserWithProfile(session.user).then(userWithProfile => {
-                if (mounted) {
+                if (mounted && session?.user) { // Double check session is still valid
                   console.log('✅ Profile loaded via timeout:', !!userWithProfile);
                   setUser(userWithProfile);
                   // Update admin logging with user role

@@ -73,7 +73,8 @@ const App = () => {
   }
 
   // ENFORCE AUTHENTICATION: No anonymous usage allowed
-  if (!user) {
+  // But don't redirect if we're still loading auth state
+  if (!user && !loading) {
     // Handle unauthenticated password reset routes
     const currentPath = window.location.pathname;
     if (currentPath === '/reset-password' || currentPath === '/verify') {
