@@ -112,47 +112,62 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Ultra-Dramatic Gradients - Competitor Inspired */
-    --gradient-primary-teal: linear-gradient(135deg, 
-      hsl(185, 100%, 8%) 0%,
-      hsl(180, 95%, 15%) 10%,
-      hsl(175, 90%, 25%) 20%,
-      hsl(170, 85%, 35%) 30%,
-      hsl(165, 80%, 45%) 40%,
-      hsl(160, 75%, 55%) 50%,
-      hsl(155, 70%, 65%) 60%,
-      hsl(150, 65%, 75%) 70%,
-      hsl(145, 60%, 85%) 80%,
-      hsl(140, 55%, 92%) 90%,
-      hsl(0, 0%, 100%) 100%
+    /* Ultra-Dramatic Gradients - Enhanced with Pearlized Textures */
+    --gradient-primary-teal: radial-gradient(ellipse at top left, 
+      hsl(190, 100%, 2%) 0%,
+      hsl(185, 95%, 4%) 15%,
+      hsl(180, 90%, 8%) 30%,
+      hsl(175, 85%, 15%) 50%,
+      hsl(170, 80%, 25%) 70%,
+      hsl(165, 75%, 40%) 85%,
+      hsl(160, 70%, 60%) 100%
+    ), 
+    radial-gradient(ellipse at bottom right, 
+      hsl(195, 100%, 1%) 0%,
+      hsl(190, 95%, 3%) 25%,
+      hsl(185, 90%, 6%) 50%,
+      hsl(180, 85%, 12%) 75%,
+      hsl(175, 80%, 20%) 100%
+    ),
+    linear-gradient(135deg, 
+      hsl(190, 100%, 1%) 0%,
+      hsl(185, 95%, 3%) 20%,
+      hsl(180, 90%, 6%) 40%,
+      hsl(175, 85%, 10%) 60%,
+      hsl(170, 80%, 18%) 80%,
+      hsl(165, 75%, 28%) 100%
     );
-    --gradient-hero-teal: linear-gradient(180deg, 
-      hsl(190, 100%, 5%) 0%,
-      hsl(185, 95%, 8%) 8%,
-      hsl(180, 90%, 12%) 16%,
-      hsl(175, 85%, 18%) 24%,
-      hsl(170, 80%, 25%) 32%,
-      hsl(165, 75%, 35%) 40%,
-      hsl(160, 70%, 45%) 48%,
-      hsl(155, 65%, 55%) 56%,
-      hsl(150, 60%, 65%) 64%,
-      hsl(145, 55%, 75%) 72%,
-      hsl(140, 50%, 82%) 80%,
-      hsl(135, 45%, 88%) 88%,
-      hsl(130, 40%, 94%) 94%,
-      hsl(0, 0%, 100%) 100%
+    --gradient-hero-teal: radial-gradient(ellipse at 30% 20%, 
+      hsl(190, 100%, 1%) 0%,
+      hsl(185, 95%, 2%) 25%,
+      hsl(180, 90%, 4%) 50%,
+      hsl(175, 85%, 8%) 75%,
+      hsl(170, 80%, 15%) 100%
+    ),
+    radial-gradient(ellipse at 70% 80%, 
+      hsl(195, 100%, 2%) 0%,
+      hsl(190, 95%, 4%) 30%,
+      hsl(185, 90%, 7%) 60%,
+      hsl(180, 85%, 12%) 100%
+    ),
+    linear-gradient(135deg, 
+      hsl(190, 100%, 1%) 0%,
+      hsl(180, 90%, 3%) 50%,
+      hsl(170, 80%, 8%) 100%
     );
     --gradient-card-teal: linear-gradient(135deg, 
-      hsl(174, 85%, 78%) 0%, 
-      hsl(177, 80%, 82%) 25%, 
-      hsl(180, 75%, 88%) 50%, 
-      hsl(183, 70%, 92%) 75%,
-      hsl(0, 0%, 100%) 100%
+      hsl(175, 85%, 85%) 0%,
+      hsl(170, 80%, 88%) 25%,
+      hsl(165, 75%, 91%) 50%,
+      hsl(160, 70%, 94%) 75%,
+      hsl(155, 65%, 97%) 100%
     );
-    --gradient-glass-teal: linear-gradient(135deg, 
-      hsl(174, 95%, 15% / 0.4) 0%, 
-      hsl(177, 90%, 22% / 0.3) 50%, 
-      hsl(180, 85%, 28% / 0.2) 100%
+    --gradient-glass-teal: radial-gradient(circle at 40% 40%, 
+      hsl(190, 100%, 8% / 0.95) 0%,
+      hsl(185, 95%, 12% / 0.85) 25%,
+      hsl(180, 90%, 18% / 0.75) 50%,
+      hsl(175, 85%, 25% / 0.65) 75%,
+      hsl(170, 80%, 35% / 0.55) 100%
     );
     --gradient-dark-teal: linear-gradient(135deg, 
       hsl(190, 100%, 2%) 0%,
@@ -162,38 +177,35 @@ All colors MUST be HSL.
       hsl(170, 85%, 18%) 80%,
       hsl(165, 80%, 25%) 100%
     );
-    --gradient-textured-teal: radial-gradient(ellipse at 25% 65%, 
-      hsl(190, 100%, 5%) 0%,
-      hsl(185, 95%, 8%) 25%,
-      hsl(180, 90%, 12%) 50%,
-      hsl(175, 85%, 18%) 75%,
-      hsl(170, 80%, 25%) 100%
+    --gradient-textured-teal: radial-gradient(ellipse at 20% 30%, 
+      hsl(190, 100%, 1%) 0%,
+      hsl(185, 95%, 2%) 20%,
+      hsl(180, 90%, 4%) 40%,
+      hsl(175, 85%, 7%) 60%,
+      hsl(170, 80%, 12%) 80%,
+      hsl(165, 75%, 20%) 100%
     ), 
-    radial-gradient(ellipse at 75% 35%, 
-      hsl(185, 95%, 8%) 0%,
-      hsl(180, 90%, 15%) 25%,
-      hsl(175, 85%, 22%) 50%,
-      hsl(170, 80%, 30%) 75%,
-      hsl(165, 75%, 38%) 100%
+    radial-gradient(ellipse at 80% 70%, 
+      hsl(195, 100%, 2%) 0%,
+      hsl(190, 95%, 3%) 25%,
+      hsl(185, 90%, 5%) 50%,
+      hsl(180, 85%, 8%) 75%,
+      hsl(175, 80%, 15%) 100%
     ), 
-    linear-gradient(135deg, 
-      hsl(195, 100%, 3%) 0%,
-      hsl(190, 95%, 6%) 20%,
-      hsl(185, 90%, 10%) 40%,
-      hsl(180, 85%, 15%) 60%,
-      hsl(175, 80%, 22%) 80%,
-      hsl(170, 75%, 30%) 100%
+    linear-gradient(45deg, 
+      hsl(190, 100%, 1%) 0%,
+      hsl(180, 90%, 2%) 50%,
+      hsl(170, 80%, 4%) 100%
     );
-    --gradient-white-section: linear-gradient(180deg,
+    --gradient-white-section: linear-gradient(135deg, 
       hsl(0, 0%, 100%) 0%,
-      hsl(180, 20%, 98%) 20%,
-      hsl(180, 25%, 96%) 40%,
-      hsl(180, 30%, 94%) 60%,
-      hsl(180, 35%, 92%) 80%,
-      hsl(180, 40%, 90%) 100%
+      hsl(180, 10%, 98%) 25%,
+      hsl(180, 15%, 96%) 50%,
+      hsl(180, 20%, 98%) 75%,
+      hsl(0, 0%, 100%) 100%
     );
 
-    /* Gradient Text Effects */
+    /* Enhanced Gradient Text Effects with Better Hierarchy */
     --gradient-text-primary: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
       hsl(180, 20%, 95%) 25%,
@@ -207,6 +219,23 @@ All colors MUST be HSL.
       hsl(180, 30%, 92%) 30%,
       hsl(180, 50%, 88%) 60%,
       hsl(180, 70%, 84%) 100%
+    );
+    
+    --gradient-text-hero-main: linear-gradient(135deg,
+      hsl(0, 0%, 100%) 0%,
+      hsl(180, 15%, 98%) 20%,
+      hsl(180, 25%, 95%) 40%,
+      hsl(180, 35%, 92%) 60%,
+      hsl(180, 45%, 88%) 80%,
+      hsl(180, 55%, 85%) 100%
+    );
+    
+    --gradient-text-hero-secondary: linear-gradient(135deg,
+      hsl(180, 30%, 85%) 0%,
+      hsl(175, 35%, 82%) 25%,
+      hsl(170, 40%, 78%) 50%,
+      hsl(165, 45%, 75%) 75%,
+      hsl(160, 50%, 70%) 100%
     );
     
     --gradient-text-accent: linear-gradient(45deg,
@@ -472,14 +501,25 @@ All colors MUST be HSL.
 
 /* Utility Classes for Competitor-Inspired Design */
 @layer utilities {
-  /* Gradient Text Effects */
-  .text-gradient-hero {
-    background: var(--gradient-text-hero);
+  /* Enhanced Gradient Text Effects with Hierarchy */
+  .text-gradient-hero-main {
+    background: var(--gradient-text-hero-main);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    font-weight: 400;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  
+  .text-gradient-hero-secondary {
+    background: var(--gradient-text-hero-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-weight: 500;
+    letter-spacing: -0.01em;
   }
   
   .text-gradient-primary {

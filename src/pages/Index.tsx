@@ -92,57 +92,61 @@ const Index = () => {
           </ResponsiveContainer>
         </nav>
 
-        {/* Hero Section with Rich Textured Turquoise Gradient */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured-teal relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
+        {/* Hero Section with Enhanced Dramatic Gradients */}
+        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-hero-teal relative overflow-hidden">
+          {/* Enhanced Background Pattern with Opacity */}
+          <div className="absolute inset-0 opacity-5">
             <div 
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${mountainLake})` }}
             />
           </div>
+          {/* Additional pearlized texture overlay */}
+          <div className="absolute inset-0 bg-gradient-textured opacity-70"></div>
           <ResponsiveContainer>
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center relative z-10">
-            <div>
-              <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
-                <div className="bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium flex items-center space-x-1 sm:space-x-2">
-                  <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
+            <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
+            <div className="space-y-8 sm:space-y-10 md:space-y-12">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div className="bg-white/20 backdrop-blur-sm px-4 sm:px-6 py-2 border border-white/30 text-white rounded-full text-sm sm:text-base font-medium flex items-center space-x-2">
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-gradient-hero mb-4 sm:mb-6 leading-tight drop-shadow-lg">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light text-gradient-hero-main mb-8 sm:mb-10 md:mb-12 leading-[0.95] tracking-tight drop-shadow-lg">
                 AI-Personalized, Closed Loop Wellness 
-                <span className="text-white/90"> Meets Beautiful Music</span>
+                <span className="text-gradient-hero-secondary block mt-2 sm:mt-3 md:mt-4"> Meets Beautiful Music</span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-8 leading-relaxed drop-shadow-sm">
-                Evidence-based AI platform that creates personalized therapeutic music experiences 
-                to support mental health, cognitive enhancement, and emotional well-being.
-              </p>
-              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 leading-relaxed drop-shadow-sm">
-                Based on evidence from 15K+ studies, utilizing the science of music therapy — 
-                a field with 50+ years of successful implementation in clinical settings.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="space-y-6 sm:space-y-8 md:space-y-10">
+                <p className="text-xl sm:text-2xl md:text-3xl text-white/95 leading-relaxed drop-shadow-sm font-light">
+                  Evidence-based AI platform that creates personalized therapeutic music experiences 
+                  to support mental health, cognitive enhancement, and emotional well-being.
+                </p>
+                <p className="text-lg sm:text-xl md:text-2xl text-white/85 leading-relaxed drop-shadow-sm font-light">
+                  Based on evidence from 15K+ studies, utilizing the science of music therapy — 
+                  a field with 50+ years of successful implementation in clinical settings.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <Button 
                   asChild
                   size="lg"
-                  className="bg-white/20 backdrop-blur-sm text-white shadow-glass-dark-shadow hover:bg-white/30 font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 border border-white/30"
+                  className="bg-white/20 backdrop-blur-sm text-white shadow-glass-dark-shadow hover:bg-white/30 font-semibold flex items-center justify-center space-x-2 text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 border border-white/30"
                 >
                   <Link to="/goals">
-                    <Headphones className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <Headphones className="h-5 w-5 sm:h-6 sm:w-6" />
                     <span>Begin Therapy Session</span>
-                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
                   </Link>
                 </Button>
               </div>
               
-              {/* Stats with Glass Morphism */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              {/* Stats with Enhanced Glass Morphism */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mt-12 sm:mt-16">
                 {stats.map((stat, index) => (
-                  <div key={index} className="bg-white/10 backdrop-blur-sm text-center p-3 sm:p-4 md:p-6 border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-300 shadow-glass-dark-shadow">
-                    <stat.icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white mx-auto mb-2 sm:mb-3 md:mb-4" />
-                    <div className="font-bold text-white text-sm sm:text-base mb-1 sm:mb-2">{stat.value}</div>
-                    <div className="text-xs sm:text-sm text-white/80 font-medium">{stat.label}</div>
+                  <div key={index} className="bg-white/10 backdrop-blur-sm text-center p-4 sm:p-6 md:p-8 border border-white/20 rounded-xl hover:bg-white/20 transition-all duration-300 shadow-glass-dark-shadow">
+                    <stat.icon className="h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 text-white mx-auto mb-3 sm:mb-4 md:mb-5" />
+                    <div className="font-bold text-white text-base sm:text-lg mb-2">{stat.value}</div>
+                    <div className="text-sm sm:text-base text-white/80 font-medium">{stat.label}</div>
                   </div>
                 ))}
               </div>
