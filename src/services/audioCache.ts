@@ -122,7 +122,7 @@ export class AudioCacheService {
   private static getRelatedGenres(genreKey: string): string[] {
     const fallbackMap: Record<string, string[]> = {
       'pop': ['energyboost', 'neuralpositivemusic'],
-      'hiit': ['energyboost', 'neuralpositivemusic'],
+      // HIIT removed from fallbacks - should only use HIIT bucket
       'country': ['neuralpositivemusic', 'energyboost'],
       'classical': ['chopin', 'newageworldstressanxietyreduction'],
       'nocturnes': ['chopin'], // Nocturnes should ONLY fallback to classical Chopin music
@@ -154,7 +154,8 @@ export class AudioCacheService {
       'chopin', 
       'newageworldstressanxietyreduction',
       'energyboost',
-      'newageandworldfocus'
+      'newageandworldfocus',
+      'HIIT' // Added HIIT bucket for proper scanning
     ];
     
     const validatedTracks: GenreFallbacks = {};

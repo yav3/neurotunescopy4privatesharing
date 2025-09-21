@@ -4,7 +4,7 @@
 export const BUCKET_FALLBACKS: Record<string, string[]> = {
   // Empty buckets → Working buckets with similar content
   'pop': ['ENERGYBOOST'], // Pop music - ENERGYBOOST has actual pop tracks mixed with EDM
-  'HIIT': ['ENERGYBOOST', 'neuralpositivemusic'], // HIIT fallback to high-energy music
+  // HIIT removed from fallbacks - should only use HIIT bucket
   'countryandamericana': ['newageworldstressanxietyreduction'], // Fallback to stress reduction new age instead of focus
   'gentleclassicalforpain': ['Chopin'], // Gentle classical should ONLY fallback to Chopin classical
   'sonatasforstress': ['Chopin'], // Sonatas should ONLY fallback to Chopin classical music
@@ -21,8 +21,8 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
 const KNOWN_EMPTY_BUCKETS = new Set([
   'sonatasforstress', // Skip this bucket - contains sleep music, not sonatas
   'albumart',
-  'pop', 
-  'HIIT',
+  'pop',
+  // HIIT removed from empty buckets - should use HIIT bucket directly
   // Removed gentleclassicalforpain - let it be used directly first, then fallback to Chopin only
   'painreducingworld',
   'audio'
@@ -75,13 +75,18 @@ export const expandBucketsWithFallbacks = (buckets: string[]): string[] => {
       // Use the bucket itself, plus fallbacks if it becomes empty
       console.log(`✅ Using original bucket: ${bucket}`);
       allBuckets.add(bucket);
-      const fallbacks = BUCKET_FALLBACKS[bucket] || [];
-      fallbacks.forEach(fallback => {
-        if (!shouldSkipEmptyBucket(fallback)) {
-          console.log(`📈 Adding additional fallback: ${fallback}`);
-          allBuckets.add(fallback);
-        }
-      });
+      // Special handling for HIIT - no additional fallbacks
+      if (bucket === 'HIIT') {
+        console.log(`🎯 HIIT bucket used directly - no fallbacks added`);
+      } else {
+        const fallbacks = BUCKET_FALLBACKS[bucket] || [];
+        fallbacks.forEach(fallback => {
+          if (!shouldSkipEmptyBucket(fallback)) {
+            console.log(`📈 Adding additional fallback: ${fallback}`);
+            allBuckets.add(fallback);
+          }
+        });
+      }
     }
   });
   
