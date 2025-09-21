@@ -112,26 +112,29 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Richer, more textured turquoise gradients with higher contrast */
-    --gradient-primary-teal: linear-gradient(135deg, hsl(174 90% 18%), hsl(177 95% 22%), hsl(180 88% 28%));
-    --gradient-hero-teal: linear-gradient(180deg, hsl(174 95% 15%), hsl(177 90% 18%), hsl(180 85% 22%), hsl(185 75% 35%));
-    --gradient-card-teal: linear-gradient(135deg, hsl(174 75% 85%), hsl(177 70% 88%), hsl(180 65% 92%));
-    --gradient-glass-teal: linear-gradient(135deg, hsl(174 85% 20% / 0.3), hsl(177 80% 28% / 0.2));
-    --gradient-dark-teal: linear-gradient(135deg, hsl(174 95% 12%), hsl(177 90% 15%), hsl(180 85% 20%));
-    --gradient-textured-teal: radial-gradient(circle at 30% 70%, hsl(174 95% 16%), hsl(177 88% 18%)), linear-gradient(135deg, hsl(174 90% 12%), hsl(180 80% 22%));
+    /* Dramatically enhanced turquoise gradients with 50% more intensity and pearlized textures */
+    --gradient-primary-teal: linear-gradient(135deg, hsl(174 100% 8%), hsl(177 100% 12%), hsl(180 95% 18%), hsl(183 90% 25%));
+    --gradient-hero-teal: linear-gradient(180deg, hsl(174 100% 5%), hsl(177 95% 8%), hsl(180 90% 12%), hsl(183 85% 18%), hsl(186 80% 28%));
+    --gradient-card-teal: linear-gradient(135deg, hsl(174 85% 78%), hsl(177 80% 82%), hsl(180 75% 88%), hsl(183 70% 92%));
+    --gradient-glass-teal: linear-gradient(135deg, hsl(174 95% 15% / 0.4), hsl(177 90% 22% / 0.3), hsl(180 85% 28% / 0.2));
+    --gradient-dark-teal: linear-gradient(135deg, hsl(174 100% 3%), hsl(177 98% 6%), hsl(180 95% 10%), hsl(183 90% 15%));
+    --gradient-textured-teal: radial-gradient(ellipse at 25% 65%, hsl(174 100% 8%), hsl(177 95% 12%)), radial-gradient(ellipse at 75% 35%, hsl(180 90% 15%), hsl(183 85% 20%)), linear-gradient(135deg, hsl(174 100% 5%), hsl(180 90% 18%));
     --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     
-    /* Enhanced glass morphism effects with darker tones - using HSL */
-    --glass-bg-enhanced: 0 0% 100% / 0.25;
-    --glass-border-enhanced: 0 0% 100% / 0.35;
-    --glass-shadow-enhanced: 0 16px 48px 0 hsl(173 85% 16% / 0.4), 0 8px 24px 0 hsl(173 80% 35% / 0.25);
-    --glass-backdrop: blur(20px);
-    --glass-dark-bg: 173 85% 16% / 0.25;
-    --glass-dark-border: 173 80% 35% / 0.4;
-    --glass-dark-shadow: 0 20px 60px 0 hsl(173 85% 16% / 0.6);
+    /* Dramatically enhanced glass morphism with pearlized effects */
+    --glass-bg-enhanced: 0 0% 100% / 0.35;
+    --glass-border-enhanced: 0 0% 100% / 0.45;
+    --glass-shadow-enhanced: 0 20px 60px 0 hsl(173 95% 8% / 0.6), 0 12px 36px 0 hsl(173 85% 18% / 0.4), 0 4px 12px 0 hsl(173 90% 25% / 0.3);
+    --glass-backdrop: blur(24px) saturate(1.8);
+    --glass-dark-bg: 173 95% 8% / 0.4;
+    --glass-dark-border: 173 90% 25% / 0.6;
+    --glass-dark-shadow: 0 24px 80px 0 hsl(173 95% 8% / 0.8), 0 8px 32px 0 hsl(173 85% 18% / 0.5);
     
-    /* Light mode gradient variations for cards with better contrast */
-    --gradient-primary: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%));
+    /* Dramatically enhanced gradient variations with pearlized depth */
+    --gradient-primary: linear-gradient(135deg, hsl(173 100% 5%), hsl(176 98% 8%), hsl(179 95% 3%), hsl(182 92% 10%));
+    --gradient-secondary: linear-gradient(135deg, hsl(173 90% 82%), hsl(176 85% 85%), hsl(179 80% 88%), hsl(182 75% 90%));
+    --gradient-accent: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%), hsl(182 88% 20%));
+    --gradient-pearlized: radial-gradient(circle at 30% 30%, hsl(174 100% 8% / 0.9)), radial-gradient(circle at 70% 70%, hsl(180 95% 12% / 0.8)), linear-gradient(135deg, hsl(173 100% 5%), hsl(182 90% 15%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 96%), hsl(0 0% 98%));
     --gradient-card-medium: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 94%), hsl(0 0% 96%));
@@ -846,5 +849,27 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(0 0% 100% / 0.2);
     box-shadow: 0 8px 32px hsl(173 80% 35% / 0.1);
+  }
+  .bg-gradient-pearlized {
+    background: var(--gradient-pearlized);
+  }
+
+  .bg-gradient-dramatic {
+    background: var(--gradient-primary-teal);
+  }
+
+  .bg-gradient-textured {
+    background: var(--gradient-textured-teal);
+  }
+
+  .glass-pearlized {
+    background: hsl(var(--glass-dark-bg));
+    backdrop-filter: var(--glass-backdrop);
+    border: 1px solid hsl(var(--glass-dark-border));
+    box-shadow: var(--glass-dark-shadow);
+  }
+
+  .text-shadow-dramatic {
+    text-shadow: 0 4px 12px hsl(173 100% 5% / 0.8), 0 2px 6px hsl(173 95% 8% / 0.6);
   }
 }

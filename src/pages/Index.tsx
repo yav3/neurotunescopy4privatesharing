@@ -62,9 +62,12 @@ const Index = () => {
 
   return (
     <WebAppWrapper>
-      <div className="min-h-screen bg-gradient-hero-teal">
-        {/* Navigation Header with Glass Morphism */}
-        <nav className="backdrop-blur-xl bg-glass-dark-bg sticky top-0 z-50 shadow-glass-dark-shadow">
+      <div className="min-h-screen bg-gradient-pearlized relative overflow-hidden">
+        {/* Additional pearlized texture overlay */}
+        <div className="absolute inset-0 bg-gradient-textured opacity-80"></div>
+        <div className="relative z-10">
+        {/* Navigation Header with Enhanced Glass Morphism */}
+        <nav className="glass-pearlized sticky top-0 z-50">
           <ResponsiveContainer>
             <div className="flex justify-between items-center py-3 sm:py-4">
             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -72,7 +75,7 @@ const Index = () => {
                 <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
               </div>
               <div>
-                <h1 className="text-lg sm:text-xl font-semibold text-white">NeuroTunes</h1>
+                <h1 className="text-lg sm:text-xl font-semibold text-white text-shadow-dramatic">NeuroTunes</h1>
                 <p className="text-xs text-white/70 hidden sm:block">AI Music Therapy Platform</p>
               </div>
             </div>
@@ -80,7 +83,7 @@ const Index = () => {
               <Button 
                 asChild
                 size="sm"
-                className="bg-white/20 backdrop-blur-sm text-white shadow-glass-dark-shadow hover:bg-white/30 font-medium text-sm sm:text-base px-3 sm:px-4 border border-white/30"
+                className="glass-pearlized text-white shadow-glass-dark-shadow hover:bg-white/30 font-medium text-sm sm:text-base px-3 sm:px-4 border border-white/30 transition-all duration-300"
               >
                 <Link to="/goals">Start Therapy</Link>
               </Button>
@@ -420,6 +423,8 @@ const Index = () => {
             </div>
           </ResponsiveContainer>
         </section>
+        </div>
+        </div>
       </div>
     </WebAppWrapper>
   );
