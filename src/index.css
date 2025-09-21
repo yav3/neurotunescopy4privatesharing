@@ -145,6 +145,9 @@ All colors MUST be HSL.
     );
     
     /* Glass effects - subtle brand tints */
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
     --gradient-glass: linear-gradient(135deg, 
       hsl(182, 63%, 32% / 0.1) 0%,  /* brand-500 with opacity */
       hsl(176, 75%, 86% / 0.05) 100% /* brand-100 with opacity */
@@ -167,40 +170,41 @@ All colors MUST be HSL.
     /* Enhanced Gradient Text Effects with Sophisticated Blues */
     --gradient-text-primary: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(250, 20%, 95%) 25%,
-      hsl(255, 40%, 90%) 50%,
-      hsl(260, 60%, 85%) 75%,
-      hsl(265, 80%, 80%) 100%
+      hsl(176, 75%, 95%) 25%,   /* brand-50 */
+      hsl(178, 56%, 85%) 50%,   /* brand-200 */
+      hsl(179, 58%, 75%) 75%,   /* brand-300 */
+      hsl(182, 63%, 65%) 100%   /* brand-500 */
     );
     
     --gradient-text-hero: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(245, 30%, 92%) 30%,
-      hsl(250, 50%, 88%) 60%,
-      hsl(255, 70%, 84%) 100%
+      hsl(176, 75%, 92%) 30%,   /* brand-50 */
+      hsl(178, 56%, 82%) 60%,   /* brand-200 */
+      hsl(179, 58%, 72%) 100%   /* brand-300 */
     );
     
+    /* Text gradients for brand hero */
     --gradient-text-hero-main: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(240, 15%, 98%) 20%,
-      hsl(245, 25%, 95%) 40%,
-      hsl(250, 35%, 92%) 60%,
-      hsl(255, 45%, 88%) 80%,
-      hsl(260, 55%, 85%) 100%
+      hsl(0, 0%, 98%) 20%,
+      hsl(176, 75%, 95%) 40%,   /* brand-50 */
+      hsl(176, 75%, 90%) 60%,   /* lighter brand */
+      hsl(178, 56%, 85%) 80%,   /* brand-200 */
+      hsl(179, 58%, 80%) 100%   /* brand-300 */
     );
     
     --gradient-text-hero-secondary: linear-gradient(135deg,
-      hsl(250, 30%, 85%) 0%,
-      hsl(255, 35%, 82%) 25%,
-      hsl(260, 40%, 78%) 50%,
-      hsl(265, 45%, 75%) 75%,
-      hsl(270, 50%, 70%) 100%
+      hsl(176, 75%, 86%) 0%,    /* brand-100 */
+      hsl(178, 56%, 80%) 25%,   /* lighter brand */
+      hsl(179, 58%, 75%) 50%,   /* brand-300 */
+      hsl(181, 61%, 70%) 75%,   /* brand-400 */
+      hsl(182, 63%, 65%) 100%   /* brand-500 */
     );
     
     --gradient-text-accent: linear-gradient(45deg,
-      hsl(240, 100%, 70%) 0%,
-      hsl(250, 90%, 75%) 50%,
-      hsl(260, 80%, 80%) 100%
+      hsl(179, 58%, 70%) 0%,    /* brand-300 */
+      hsl(181, 61%, 65%) 50%,   /* brand-400 */
+      hsl(182, 63%, 60%) 100%   /* brand-500 */
     );
     
     /* Dramatically enhanced glass morphism with sophisticated blue effects */
@@ -989,17 +993,25 @@ All colors MUST be HSL.
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
-  /* Beautiful gradient backgrounds - Sophisticated Blues */
+  /* Brand gradient utility classes */
   .bg-gradient-primary {
-    background: var(--gradient-primary-blue);
+    background: var(--gradient-primary);
   }
   
-  .bg-gradient-hero-blue {
-    background: var(--gradient-hero-blue);
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
   }
   
-  .bg-gradient-card-blue {
-    background: var(--gradient-card-blue);
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  .bg-gradient-surface {
+    background: var(--gradient-surface);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
   }
   
   /* Enhanced glass morphism effects */
@@ -1012,34 +1024,27 @@ All colors MUST be HSL.
   }
   
   .glass-card {
-    background: var(--gradient-glass-blue);
+    background: var(--gradient-glass);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid hsl(245 70% 50% / 0.3);
-    box-shadow: 0 12px 40px hsl(240 80% 15% / 0.3), 0 4px 16px hsl(245 90% 10% / 0.2);
+    border: 1px solid hsl(var(--brand-200) / 0.3);
+    box-shadow: 0 12px 40px hsl(var(--brand-900) / 0.3), 0 4px 16px hsl(var(--brand-800) / 0.2);
   }
-  .bg-gradient-pearlized {
-    background: var(--gradient-primary-blue);
-  }
-
-  .bg-gradient-dramatic {
-    background: var(--gradient-primary-blue);
-  }
-
+  
   .bg-gradient-textured {
-    background: var(--gradient-textured-blue);
+    background: var(--gradient-primary);
   }
 
-  /* Abstract floating elements */
+  /* Abstract floating elements with brand colors */
   .floating-sphere {
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, 
-      hsl(245, 80%, 50% / 0.4) 0%, 
-      hsl(250, 70%, 40% / 0.2) 50%, 
-      hsl(255, 60%, 30% / 0.1) 100%);
+      hsl(var(--brand-500) / 0.4) 0%, 
+      hsl(var(--brand-400) / 0.2) 50%, 
+      hsl(var(--brand-300) / 0.1) 100%);
     backdrop-filter: blur(8px);
-    border: 1px solid hsl(245, 60%, 50% / 0.2);
+    border: 1px solid hsl(var(--brand-400) / 0.2);
     animation: float 6s ease-in-out infinite;
   }
 

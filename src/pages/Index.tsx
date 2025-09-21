@@ -92,8 +92,8 @@ const Index = () => {
           </ResponsiveContainer>
         </nav>
 
-        {/* Hero Section with Sophisticated Blue Gradients */}
-        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-hero-blue relative overflow-hidden">
+        {/* Hero Section with Brand Gradient */}
+        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-primary relative overflow-hidden">
           {/* Abstract floating spheres */}
           <div className="floating-sphere floating-sphere-lg top-20 right-20 opacity-30"></div>
           <div className="floating-sphere floating-sphere-md top-40 left-10 opacity-20"></div>
@@ -107,8 +107,8 @@ const Index = () => {
               style={{ backgroundImage: `url(${mountainLake})` }}
             />
           </div>
-          {/* Sophisticated blue texture overlay */}
-          <div className="absolute inset-0 bg-gradient-textured opacity-80"></div>
+          {/* Brand texture overlay */}
+          <div className="absolute inset-0 bg-gradient-hero opacity-80"></div>
           <ResponsiveContainer>
             <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
             <div className="space-y-8 sm:space-y-10 md:space-y-12">
