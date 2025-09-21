@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, UserPlus, AlertTriangle } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, UserPlus, AlertTriangle, Key } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
 
 interface SignupFormProps {
@@ -11,14 +11,21 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    displayName: ''
+    displayName: '',
+    invitationCode: ''
   });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.email && formData.password && formData.displayName) {
+    if (formData.email && formData.password && formData.displayName && formData.invitationCode) {
       clearError();
+      
+      // Basic invitation code validation (you can customize this logic)
+      if (!formData.invitationCode.trim()) {
+        return; // Form validation will handle this
+      }
+      
       const result = await signUp(formData.email, formData.password, formData.displayName);
       if (result.success) {
         // Show success message or redirect
@@ -51,6 +58,26 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Invitation Code
+          </label>
+          <div className="relative">
+            <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              value={formData.invitationCode}
+              onChange={handleChange('invitationCode')}
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Enter your invitation code"
+              required
+            />
+          </div>
+          <p className="text-gray-400 text-xs mt-1">
+            Don't have a code? Contact support to request access.
+          </p>
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Display Name
@@ -111,7 +138,7 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
 
         <button
           type="submit"
-          disabled={loading || !formData.email || !formData.password || !formData.displayName}
+          disabled={loading || !formData.email || !formData.password || !formData.displayName || !formData.invitationCode}
           className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-green-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
         >
           {loading ? 'Creating Account...' : 'Create Account'}
