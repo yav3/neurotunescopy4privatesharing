@@ -207,14 +207,14 @@ All colors MUST be HSL.
       hsl(182, 63%, 60%) 100%   /* brand-500 */
     );
     
-    /* Dramatically enhanced glass morphism with sophisticated blue effects */
-    --glass-bg-enhanced: 240 100% 8% / 0.4;
-    --glass-border-enhanced: 245 90% 25% / 0.6;
-    --glass-shadow-enhanced: 0 20px 60px 0 hsl(240 95% 6% / 0.8), 0 12px 36px 0 hsl(245 85% 12% / 0.6), 0 4px 12px 0 hsl(250 90% 18% / 0.4);
+    /* Enhanced glass morphism with brand teal effects */
+    --glass-bg-enhanced: 182 57% 8% / 0.4;
+    --glass-border-enhanced: 180 60% 25% / 0.6;
+    --glass-shadow-enhanced: 0 20px 60px 0 hsl(182 55% 6% / 0.8), 0 12px 36px 0 hsl(180 50% 12% / 0.6), 0 4px 12px 0 hsl(179 60% 18% / 0.4);
     --glass-backdrop: blur(24px) saturate(1.8);
-    --glass-dark-bg: 240 95% 6% / 0.5;
-    --glass-dark-border: 245 90% 20% / 0.7;
-    --glass-dark-shadow: 0 24px 80px 0 hsl(240 95% 6% / 0.9), 0 8px 32px 0 hsl(245 85% 12% / 0.6);
+    --glass-dark-bg: 182 55% 6% / 0.5;
+    --glass-dark-border: 180 60% 20% / 0.7;
+    --glass-dark-shadow: 0 24px 80px 0 hsl(182 55% 6% / 0.9), 0 8px 32px 0 hsl(180 50% 12% / 0.6);
     
     /* Dramatically enhanced gradient variations with pearlized depth */
     --gradient-primary: linear-gradient(135deg, hsl(173 100% 5%), hsl(176 98% 8%), hsl(179 95% 3%), hsl(182 92% 10%));
