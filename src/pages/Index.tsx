@@ -422,11 +422,10 @@ const Index = () => {
               </Link>
             </div>
           </ResponsiveContainer>
-        </section>
-        </div>
-        </div>
-      </div>
-    </WebAppWrapper>
+         </section>
+         </div>
+       </div>
+     </WebAppWrapper>
   );
 };
 
