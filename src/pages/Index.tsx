@@ -20,11 +20,12 @@ import {
   TrendingUp,
   Award
 } from 'lucide-react';
-import sereneLeafDewdrops from '../assets/serene-leaf-dewdrops-enhanced.png';
-import mistyMountainLake from '../assets/misty-mountain-lake-sunrise.png';
-import zenStonesBeach from '../assets/zen-stones-meditation.png';
-import activeTherapySession from '../assets/active-therapy-session-professional.png';
-import neurotunesBrandIcon from '../assets/neurotunes-brand-icon.png';
+// Using placeholder images for demo
+const sereneLeafDewdrops = "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=300&fit=crop";
+const mistyMountainLake = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop";
+const zenStonesBeach = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&h=300&fit=crop";
+const activeTherapySession = "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=400&fit=crop";
+const neurotunesBrandIcon = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=64&h=64&fit=crop";
 
 const Index = () => {
 
