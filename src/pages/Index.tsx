@@ -110,7 +110,7 @@ const Index = () => {
                   <span>AI-Powered Music Therapy</span>
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal text-white mb-4 sm:mb-6 leading-tight drop-shadow-lg">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-gradient-hero mb-4 sm:mb-6 leading-tight drop-shadow-lg">
                 AI-Personalized, Closed Loop Wellness 
                 <span className="text-white/90"> Meets Beautiful Music</span>
               </h1>
@@ -197,7 +197,7 @@ const Index = () => {
             {therapeuticBenefits.map((benefit, index) => (
               <div 
                 key={index} 
-                className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:bg-white/90"
+                className={`bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:bg-white/90 card-hover-lift card-animate-up card-stagger-${index + 1}`}
               >
                 <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 sm:mb-6 shadow-lg">
                   <benefit.icon className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
@@ -230,8 +230,8 @@ const Index = () => {
             </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 relative z-10">
-            <div className="group cursor-pointer">
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
+            <div className="group cursor-pointer card-animate-up card-stagger-1">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 card-hover-lift">
                  <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${dewLeaf})` }}
@@ -266,8 +266,8 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="group cursor-pointer">
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
+            <div className="group cursor-pointer card-animate-up card-stagger-2">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 card-hover-lift">
                  <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${waterDropLeaf})` }}
@@ -302,8 +302,8 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="group cursor-pointer">
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
+            <div className="group cursor-pointer card-animate-up card-stagger-3">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 card-hover-lift">
                  <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${oceanWave})` }}
@@ -368,7 +368,7 @@ const Index = () => {
             </div>
             
             <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
+              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90 card-hover-lift card-animate-up card-stagger-1">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
                   Jacobs Technion Institute at Cornell Tech
                 </h3>
@@ -376,7 +376,7 @@ const Index = () => {
                   Advanced AI research and computational music therapy algorithms
                 </p>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
+              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90 card-hover-lift card-animate-up card-stagger-2">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
                   Weill Cornell Medical College
                 </h3>
@@ -384,7 +384,7 @@ const Index = () => {
                   Clinical research and medical validation of therapeutic protocols
                 </p>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
+              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90 card-hover-lift card-animate-up card-stagger-3">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
                   Stanford University Medical School
                 </h3>

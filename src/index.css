@@ -112,14 +112,108 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Dramatically enhanced turquoise gradients with 50% more intensity and pearlized textures */
-    --gradient-primary-teal: linear-gradient(135deg, hsl(174 100% 8%), hsl(177 100% 12%), hsl(180 95% 18%), hsl(183 90% 25%));
-    --gradient-hero-teal: linear-gradient(180deg, hsl(174 100% 5%), hsl(177 95% 8%), hsl(180 90% 12%), hsl(183 85% 18%), hsl(186 80% 28%));
-    --gradient-card-teal: linear-gradient(135deg, hsl(174 85% 78%), hsl(177 80% 82%), hsl(180 75% 88%), hsl(183 70% 92%));
-    --gradient-glass-teal: linear-gradient(135deg, hsl(174 95% 15% / 0.4), hsl(177 90% 22% / 0.3), hsl(180 85% 28% / 0.2));
-    --gradient-dark-teal: linear-gradient(135deg, hsl(174 100% 3%), hsl(177 98% 6%), hsl(180 95% 10%), hsl(183 90% 15%));
-    --gradient-textured-teal: radial-gradient(ellipse at 25% 65%, hsl(174 100% 8%), hsl(177 95% 12%)), radial-gradient(ellipse at 75% 35%, hsl(180 90% 15%), hsl(183 85% 20%)), linear-gradient(135deg, hsl(174 100% 5%), hsl(180 90% 18%));
-    --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
+    /* Ultra-Dramatic Gradients - Competitor Inspired */
+    --gradient-primary-teal: linear-gradient(135deg, 
+      hsl(185, 100%, 8%) 0%,
+      hsl(180, 95%, 15%) 10%,
+      hsl(175, 90%, 25%) 20%,
+      hsl(170, 85%, 35%) 30%,
+      hsl(165, 80%, 45%) 40%,
+      hsl(160, 75%, 55%) 50%,
+      hsl(155, 70%, 65%) 60%,
+      hsl(150, 65%, 75%) 70%,
+      hsl(145, 60%, 85%) 80%,
+      hsl(140, 55%, 92%) 90%,
+      hsl(0, 0%, 100%) 100%
+    );
+    --gradient-hero-teal: linear-gradient(180deg, 
+      hsl(190, 100%, 5%) 0%,
+      hsl(185, 95%, 8%) 8%,
+      hsl(180, 90%, 12%) 16%,
+      hsl(175, 85%, 18%) 24%,
+      hsl(170, 80%, 25%) 32%,
+      hsl(165, 75%, 35%) 40%,
+      hsl(160, 70%, 45%) 48%,
+      hsl(155, 65%, 55%) 56%,
+      hsl(150, 60%, 65%) 64%,
+      hsl(145, 55%, 75%) 72%,
+      hsl(140, 50%, 82%) 80%,
+      hsl(135, 45%, 88%) 88%,
+      hsl(130, 40%, 94%) 94%,
+      hsl(0, 0%, 100%) 100%
+    );
+    --gradient-card-teal: linear-gradient(135deg, 
+      hsl(174, 85%, 78%) 0%, 
+      hsl(177, 80%, 82%) 25%, 
+      hsl(180, 75%, 88%) 50%, 
+      hsl(183, 70%, 92%) 75%,
+      hsl(0, 0%, 100%) 100%
+    );
+    --gradient-glass-teal: linear-gradient(135deg, 
+      hsl(174, 95%, 15% / 0.4) 0%, 
+      hsl(177, 90%, 22% / 0.3) 50%, 
+      hsl(180, 85%, 28% / 0.2) 100%
+    );
+    --gradient-dark-teal: linear-gradient(135deg, 
+      hsl(190, 100%, 2%) 0%,
+      hsl(185, 98%, 4%) 20%,
+      hsl(180, 95%, 8%) 40%,
+      hsl(175, 90%, 12%) 60%,
+      hsl(170, 85%, 18%) 80%,
+      hsl(165, 80%, 25%) 100%
+    );
+    --gradient-textured-teal: radial-gradient(ellipse at 25% 65%, 
+      hsl(190, 100%, 5%) 0%,
+      hsl(185, 95%, 8%) 25%,
+      hsl(180, 90%, 12%) 50%,
+      hsl(175, 85%, 18%) 75%,
+      hsl(170, 80%, 25%) 100%
+    ), 
+    radial-gradient(ellipse at 75% 35%, 
+      hsl(185, 95%, 8%) 0%,
+      hsl(180, 90%, 15%) 25%,
+      hsl(175, 85%, 22%) 50%,
+      hsl(170, 80%, 30%) 75%,
+      hsl(165, 75%, 38%) 100%
+    ), 
+    linear-gradient(135deg, 
+      hsl(195, 100%, 3%) 0%,
+      hsl(190, 95%, 6%) 20%,
+      hsl(185, 90%, 10%) 40%,
+      hsl(180, 85%, 15%) 60%,
+      hsl(175, 80%, 22%) 80%,
+      hsl(170, 75%, 30%) 100%
+    );
+    --gradient-white-section: linear-gradient(180deg,
+      hsl(0, 0%, 100%) 0%,
+      hsl(180, 20%, 98%) 20%,
+      hsl(180, 25%, 96%) 40%,
+      hsl(180, 30%, 94%) 60%,
+      hsl(180, 35%, 92%) 80%,
+      hsl(180, 40%, 90%) 100%
+    );
+
+    /* Gradient Text Effects */
+    --gradient-text-primary: linear-gradient(135deg,
+      hsl(0, 0%, 100%) 0%,
+      hsl(180, 20%, 95%) 25%,
+      hsl(180, 40%, 90%) 50%,
+      hsl(180, 60%, 85%) 75%,
+      hsl(180, 80%, 80%) 100%
+    );
+    
+    --gradient-text-hero: linear-gradient(135deg,
+      hsl(0, 0%, 100%) 0%,
+      hsl(180, 30%, 92%) 30%,
+      hsl(180, 50%, 88%) 60%,
+      hsl(180, 70%, 84%) 100%
+    );
+    
+    --gradient-text-accent: linear-gradient(45deg,
+      hsl(180, 100%, 70%) 0%,
+      hsl(170, 90%, 75%) 50%,
+      hsl(160, 80%, 80%) 100%
+    );
     
     /* Dramatically enhanced glass morphism with pearlized effects */
     --glass-bg-enhanced: 0 0% 100% / 0.35;
@@ -376,20 +470,95 @@ All colors MUST be HSL.
     background: hsl(var(--muted-foreground) / 0.5);
   }
 
-  /* Line clamp utilities for text truncation */
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+/* Utility Classes for Competitor-Inspired Design */
+@layer utilities {
+  /* Gradient Text Effects */
+  .text-gradient-hero {
+    background: var(--gradient-text-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-weight: 400;
   }
-
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  
+  .text-gradient-primary {
+    background: var(--gradient-text-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
   }
+  
+  .text-gradient-accent {
+    background: var(--gradient-text-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Card Animation Effects */
+  .card-hover-lift {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-hover-lift:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 32px 64px hsl(173 95% 8% / 0.25), 0 16px 32px hsl(173 85% 18% / 0.15);
+  }
+  
+  .card-animate-up {
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .card-stagger-1 { animation-delay: 0.1s; }
+  .card-stagger-2 { animation-delay: 0.2s; }
+  .card-stagger-3 { animation-delay: 0.3s; }
+  
+  /* Enhanced Glass Effects */
+  .glass-pearlized {
+    background: linear-gradient(135deg, 
+      hsl(var(--glass-bg-enhanced)) 0%,
+      hsl(var(--glass-dark-bg)) 100%
+    );
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: 1px solid hsl(var(--glass-border-enhanced));
+    box-shadow: var(--glass-shadow-enhanced);
+  }
+  
+  /* Ultra-Dramatic Background Gradients */
+  .bg-gradient-pearlized {
+    background: var(--gradient-primary-teal);
+  }
+  
+  .bg-gradient-textured {
+    background: var(--gradient-textured-teal);
+  }
+  
+  .bg-gradient-textured-teal {
+    background: var(--gradient-textured-teal);
+  }
+  
+  .bg-gradient-white-section {
+    background: var(--gradient-white-section);
+  }
+  
+  /* Text Shadow Effects */
+  .text-shadow-dramatic {
+    text-shadow: 0 4px 12px hsl(173 100% 5% / 0.8), 0 2px 6px hsl(173 95% 8% / 0.6);
+  }
+}
 
   /* Container with responsive max-width */
   .container {
