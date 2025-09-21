@@ -75,8 +75,8 @@ const Index = () => {
                 <div className="text-white font-light text-2xl sm:text-3xl leading-none">+</div>
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-sf font-light text-white text-shadow-dramatic">NeuroTunes</h1>
-                <p className="text-sm text-white/70 hidden sm:block font-sf">AI Music Therapy Platform</p>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-sf font-light text-white text-shadow-dramatic">NeuroTunes</h1>
+                <p className="text-base text-white/70 hidden sm:block font-sf">AI Music Therapy Platform</p>
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">

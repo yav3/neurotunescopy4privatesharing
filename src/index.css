@@ -496,10 +496,32 @@ All colors MUST be HSL.
     font-weight: 400;
   }
 
-  /* Responsive Typography */
+  /* Responsive Typography - Larger mobile sizes */
   @media (max-width: 768px) {
     .text-display-1 {
+      font-size: var(--text-5xl); /* Larger on tablet */
+    }
+    
+    .text-display-2 {
       font-size: var(--text-4xl);
+    }
+    
+    .text-heading-1 {
+      font-size: var(--text-3xl); /* Larger headings */
+    }
+    
+    .text-heading-2 {
+      font-size: var(--text-2xl);
+    }
+    
+    .text-body-large {
+      font-size: var(--text-xl);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .text-display-1 {
+      font-size: var(--text-4xl); /* Still prominent on mobile */
     }
     
     .text-display-2 {
@@ -507,24 +529,6 @@ All colors MUST be HSL.
     }
     
     .text-heading-1 {
-      font-size: var(--text-2xl);
-    }
-    
-    .text-heading-2 {
-      font-size: var(--text-xl);
-    }
-    
-    .text-body-large {
-      font-size: var(--text-lg);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .text-display-1 {
-      font-size: var(--text-3xl);
-    }
-    
-    .text-display-2 {
       font-size: var(--text-2xl);
     }
   }
