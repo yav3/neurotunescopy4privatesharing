@@ -22,12 +22,6 @@ import {
   TrendingUp,
   Award
 } from 'lucide-react';
-// Using placeholder images for demo
-const sereneLeafDewdrops = "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&h=300&fit=crop";
-const mistyMountainLake = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop";
-const zenStonesBeach = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&h=300&fit=crop";
-const activeTherapySession = "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=400&fit=crop";
-const neurotunesBrandIcon = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=64&h=64&fit=crop";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -147,31 +141,19 @@ const Index = () => {
             </div>
 
             <div className="relative">
-              <div className="glass-card relative z-10 rounded-2xl border-glass-border overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500">
-                <img 
-                  src={activeTherapySession} 
-                  alt="Active Therapy Session Interface" 
-                  className="w-full h-80 lg:h-96 object-cover"
-                />
-                <div className="p-6 lg:p-8">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-foreground text-lg mb-1">Active Therapy Session</h3>
-                      <p className="text-sm text-muted-foreground">Cognitive Enhancement Protocol</p>
-                    </div>
-                    <div className="ml-6">
-                      <img 
-                        src={neurotunesBrandIcon} 
-                        alt="NeuroTunes Brand" 
-                        className="w-12 h-12 opacity-90"
-                      />
-                    </div>
-                  </div>
+              <div className="glass-card relative z-10 rounded-2xl border-glass-border overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 p-12 lg:p-16 text-center">
+                <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mx-auto mb-6 shadow-xl">
+                  <Headphones className="h-10 w-10 lg:h-12 lg:w-12 text-white" />
+                </div>
+                <h3 className="font-semibold text-foreground text-xl lg:text-2xl mb-2">Active Therapy Session</h3>
+                <p className="text-muted-foreground">Cognitive Enhancement Protocol</p>
+                <div className="mt-6 flex items-center justify-center space-x-2 text-primary">
+                  <Activity className="h-5 w-5" />
+                  <span className="text-sm font-medium">Real-time Monitoring</span>
                 </div>
               </div>
               <div className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl"></div>
-            </div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl"></div>            </div>
           </div>
         </div>
       </section>
@@ -221,18 +203,15 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <img 
-                    src={sereneLeafDewdrops} 
-                    alt="Stress Reduction Program" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl">
+                    <Heart className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                  </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Stress Reduction
                     </span>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/30 to-transparent"></div>
                 </div>
                 <div className="p-6 lg:p-8">
                   <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
@@ -259,18 +238,15 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <img 
-                    src={mistyMountainLake} 
-                    alt="Focus Enhancement Program" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-info/10 to-info/5 flex items-center justify-center">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-info to-info/80 flex items-center justify-center shadow-xl">
+                    <Brain className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                  </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Focus Enhancement
                     </span>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-teal-900/30 to-transparent"></div>
                 </div>
                 <div className="p-6 lg:p-8">
                   <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
@@ -297,18 +273,15 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="glass-card border-glass-border rounded-2xl overflow-hidden hover:shadow-glass-shadow-hover transition-all duration-500 group-hover:-translate-y-3">
-                <div className="relative h-48 lg:h-56 overflow-hidden">
-                  <img 
-                    src={zenStonesBeach} 
-                    alt="Meditation Program" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <div className="relative h-48 lg:h-56 overflow-hidden bg-gradient-to-br from-success/10 to-success/5 flex items-center justify-center">
+                  <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center shadow-xl">
+                    <Activity className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
+                  </div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Non-Sleep Deep Rest
                     </span>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent"></div>
                 </div>
                 <div className="p-6 lg:p-8">
                   <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-3">
