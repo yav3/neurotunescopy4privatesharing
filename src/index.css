@@ -8,41 +8,53 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Mode - Clean White Background with Teal Accents */
+    /* Brand Palette - Premium Teal Spectrum (Locked) */
+    --brand-50: 173 75% 95%;  /* #E6FCFB - Light aqua */
+    --brand-100: 176 75% 86%; /* #C2F5F3 - Light aqua secondary */
+    --brand-200: 178 56% 69%; /* #79E2DF - Light teal */
+    --brand-300: 179 58% 50%; /* #3BC2C1 - Medium teal */
+    --brand-400: 181 61% 40%; /* #26A5A6 - Medium teal */
+    --brand-500: 182 63% 32%; /* #1C8587 - Primary deep */
+    --brand-600: 182 61% 26%; /* #176C6F - Darker teal */
+    --brand-700: 182 63% 20%; /* #135455 - Dark teal */
+    --brand-800: 182 64% 15%; /* #0E3D40 - Very dark teal */
+    --brand-900: 182 57% 11%; /* #0A2C2D - Deep blue-green navy */
+
+    /* Light Mode - Clean White Background with Brand Teal */
     --background: 0 0% 100%; /* Pure white background */
-    --foreground: 217 45% 18%; /* Deep blue foreground text */
+    --foreground: 182 57% 11%; /* Deep brand navy foreground */
 
     --card: 0 0% 100%; /* Pure white card background */
-    --card-foreground: 0 0% 9%; /* Almost black card text */
+    --card-foreground: 182 57% 11%; /* Brand navy card text */
 
     --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 0 0% 9%; /* Almost black popover text */
+    --popover-foreground: 182 57% 11%; /* Brand navy popover text */
 
-    --primary: 173 100% 40%; /* Teal primary color */
+    --primary: 182 63% 32%; /* Brand-500 primary */
     --primary-foreground: 0 0% 100%; /* White primary text */
 
-    --secondary: 0 0% 96%; /* Very light gray secondary */
-    --secondary-foreground: 0 0% 15%; /* Dark gray secondary text */
+    --secondary: 173 75% 95%; /* Brand-50 secondary */
+    --secondary-foreground: 182 57% 11%; /* Brand-900 secondary text */
 
     --muted: 0 0% 96%; /* Very light gray muted */
     --muted-foreground: 0 0% 45%; /* Medium gray muted text */
 
-    --accent: 173 50% 95%; /* Light teal accent */
-    --accent-foreground: 173 100% 25%; /* Dark teal accent text */
+    --accent: 176 75% 86%; /* Brand-100 accent */
+    --accent-foreground: 182 63% 20%; /* Brand-700 accent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
-    --ring: 173 100% 40%;
+    --ring: 182 63% 32%; /* Brand-500 ring */
 
-    /* Teal color variations */
-    --teal-50: 173 50% 96%;
-    --teal-100: 173 45% 90%;
-    --teal-500: 173 100% 40%;
-    --teal-600: 173 100% 35%;
-    --teal-700: 173 100% 30%;
+    /* Brand teal variations */
+    --teal-50: 173 75% 95%;  /* Brand-50 */
+    --teal-100: 176 75% 86%; /* Brand-100 */
+    --teal-500: 182 63% 32%; /* Brand-500 */
+    --teal-600: 182 61% 26%; /* Brand-600 */
+    --teal-700: 182 63% 20%; /* Brand-700 */
 
     --radius: 0.75rem;
   }
@@ -112,92 +124,39 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Sophisticated Blue-to-Purple Gradients (Mandolin-inspired) */
-    --gradient-primary-blue: radial-gradient(ellipse at top left, 
-      hsl(240, 100%, 8%) 0%,
-      hsl(245, 95%, 12%) 15%,
-      hsl(250, 90%, 18%) 30%,
-      hsl(255, 85%, 25%) 50%,
-      hsl(260, 80%, 35%) 70%,
-      hsl(265, 75%, 45%) 85%,
-      hsl(270, 70%, 55%) 100%
-    ), 
-    radial-gradient(ellipse at bottom right, 
-      hsl(235, 100%, 6%) 0%,
-      hsl(240, 95%, 10%) 25%,
-      hsl(245, 90%, 15%) 50%,
-      hsl(250, 85%, 22%) 75%,
-      hsl(255, 80%, 30%) 100%
-    ),
-    linear-gradient(135deg, 
-      hsl(240, 100%, 6%) 0%,
-      hsl(245, 95%, 10%) 20%,
-      hsl(250, 90%, 15%) 40%,
-      hsl(255, 85%, 20%) 60%,
-      hsl(260, 80%, 28%) 80%,
-      hsl(265, 75%, 38%) 100%
+    /* Brand Gradient System - Locked Teal Spectrum */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-900)), hsl(var(--brand-500)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-500)), hsl(var(--brand-200)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--brand-50)), #ffffff);
+    
+    /* Hero gradients - deep premium teal */
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(182, 57%, 11%) 0%,    /* brand-900 */
+      hsl(182, 64%, 15%) 25%,   /* brand-800 */
+      hsl(182, 63%, 20%) 50%,   /* brand-700 */
+      hsl(182, 63%, 32%) 100%   /* brand-500 */
     );
-    --gradient-hero-blue: radial-gradient(ellipse at 30% 20%, 
-      hsl(240, 100%, 6%) 0%,
-      hsl(245, 95%, 8%) 25%,
-      hsl(250, 90%, 12%) 50%,
-      hsl(255, 85%, 18%) 75%,
-      hsl(260, 80%, 25%) 100%
-    ),
-    radial-gradient(ellipse at 70% 80%, 
-      hsl(235, 100%, 8%) 0%,
-      hsl(240, 95%, 12%) 30%,
-      hsl(245, 90%, 18%) 60%,
-      hsl(250, 85%, 25%) 100%
-    ),
-    linear-gradient(135deg, 
-      hsl(240, 100%, 6%) 0%,
-      hsl(250, 95%, 12%) 50%,
-      hsl(260, 90%, 20%) 100%
+    
+    /* Card gradients - light and airy */
+    --gradient-card: linear-gradient(135deg, 
+      hsl(173, 75%, 95%) 0%,    /* brand-50 */
+      #ffffff 50%,
+      hsl(176, 75%, 86%) 100%   /* brand-100 */
     );
-    --gradient-card-blue: linear-gradient(135deg, 
-      hsl(240, 50%, 85%) 0%,
-      hsl(245, 45%, 88%) 25%,
-      hsl(250, 40%, 91%) 50%,
-      hsl(255, 35%, 94%) 75%,
-      hsl(260, 30%, 97%) 100%
+    
+    /* Glass effects - subtle brand tints */
+    --gradient-glass: linear-gradient(135deg, 
+      hsl(182, 63%, 32% / 0.1) 0%,  /* brand-500 with opacity */
+      hsl(176, 75%, 86% / 0.05) 100% /* brand-100 with opacity */
     );
-    --gradient-glass-blue: radial-gradient(circle at 40% 40%, 
-      hsl(240, 90%, 15% / 0.95) 0%,
-      hsl(245, 85%, 20% / 0.85) 25%,
-      hsl(250, 80%, 25% / 0.75) 50%,
-      hsl(255, 75%, 30% / 0.65) 75%,
-      hsl(260, 70%, 38% / 0.55) 100%
+    
+    /* Text gradients */
+    --gradient-text: linear-gradient(135deg, 
+      hsl(182, 63%, 32%) 0%,    /* brand-500 */
+      hsl(179, 58%, 50%) 100%   /* brand-300 */
     );
-    --gradient-dark-blue: linear-gradient(135deg, 
-      hsl(240, 100%, 8%) 0%,
-      hsl(245, 95%, 12%) 20%,
-      hsl(250, 90%, 18%) 40%,
-      hsl(255, 85%, 24%) 60%,
-      hsl(260, 80%, 32%) 80%,
-      hsl(265, 75%, 40%) 100%
-    );
-    --gradient-textured-blue: radial-gradient(ellipse at 20% 30%, 
-      hsl(240, 100%, 6%) 0%,
-      hsl(245, 95%, 8%) 20%,
-      hsl(250, 90%, 12%) 40%,
-      hsl(255, 85%, 18%) 60%,
-      hsl(260, 80%, 26%) 80%,
-      hsl(265, 75%, 35%) 100%
-    ), 
-    radial-gradient(ellipse at 80% 70%, 
-      hsl(235, 100%, 8%) 0%,
-      hsl(240, 95%, 12%) 25%,
-      hsl(245, 90%, 18%) 50%,
-      hsl(250, 85%, 24%) 75%,
-      hsl(255, 80%, 32%) 100%
-    ), 
-    linear-gradient(45deg, 
-      hsl(240, 100%, 6%) 0%,
-      hsl(250, 95%, 12%) 50%,
-      hsl(260, 90%, 20%) 100%
-    );
-    --gradient-white-section: linear-gradient(135deg, 
+    
+    --gradient-white-section: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
       hsl(180, 10%, 98%) 25%,
       hsl(180, 15%, 96%) 50%,
