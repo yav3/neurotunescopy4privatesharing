@@ -66,27 +66,29 @@ const Index = () => {
         {/* Additional brand texture overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-brand-100/20 to-transparent"></div>
         <div className="relative z-10">
-        {/* Navigation Header with Enhanced Glass Morphism */}
-        <nav className="glass-pearlized sticky top-0 z-50">
+        {/* Navigation Header - Refined and Elegant */}
+        <nav className="bg-gradient-to-r from-brand-900/95 to-brand-800/95 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
           <ResponsiveContainer>
-            <div className="flex justify-between items-center py-3 sm:py-4">
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-lg">
-                <div className="text-white font-light text-2xl sm:text-3xl leading-none">+</div>
+            <div className="flex justify-between items-center py-4 sm:py-5">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="relative w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-br from-white/20 to-white/10 rounded-xl flex items-center justify-center shadow-lg border border-white/20 backdrop-blur-sm">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-brand-600 rounded-full"></div>
+                  </div>
+                </div>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-sf font-medium text-white tracking-tight">NeuroTunes</h1>
+                  <p className="text-sm sm:text-base text-white/60 hidden sm:block font-sf font-light tracking-wide">Therapeutic AI Music Platform</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-sf font-light text-white text-shadow-dramatic">NeuroTunes</h1>
-                <p className="text-base text-white/70 hidden sm:block font-sf">AI Music Therapy Platform</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <Button 
-                asChild
-                size="sm"
-                className="glass-pearlized text-white shadow-glass-dark-shadow hover:bg-white/30 font-medium text-sm sm:text-base px-3 sm:px-4 border border-white/30 transition-all duration-300"
-              >
-                <Link to="/goals">Start Therapy</Link>
-              </Button>
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <Button 
+                  asChild
+                  size="sm"
+                  className="bg-white/15 hover:bg-white/25 text-white shadow-lg hover:shadow-xl font-medium text-sm sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 border border-white/20 rounded-full transition-all duration-300 backdrop-blur-sm"
+                >
+                  <Link to="/goals">Start Therapy</Link>
+                </Button>
               </div>
             </div>
           </ResponsiveContainer>
