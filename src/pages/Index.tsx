@@ -230,14 +230,14 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 relative z-10">
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
-                <div 
+                 <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
                   style={{ backgroundImage: `url(${dewLeaf})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                   <Heart className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
-                    <span className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium">
+                    <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Stress Reduction
                     </span>
                   </div>
@@ -267,14 +267,14 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
-                <div 
+                 <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
                   style={{ backgroundImage: `url(${waterDropLeaf})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                   <Brain className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
-                    <span className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium">
+                    <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Focus Enhancement
                     </span>
                   </div>
@@ -304,14 +304,14 @@ const Index = () => {
 
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
-                <div 
+                 <div 
                   className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
                   style={{ backgroundImage: `url(${oceanWave})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                   <Activity className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
-                    <span className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium">
+                    <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Non-Sleep Deep Rest
                     </span>
                   </div>
@@ -397,21 +397,28 @@ const Index = () => {
           </ResponsiveContainer>
         </section>
 
-        {/* CTA Section - Now Footer */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+        {/* CTA Section - Now Footer with Dark Turquoise Gradient */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-dark-teal text-white relative overflow-hidden">
+          {/* Background Pattern with reduced opacity */}
+          <div className="absolute inset-0 opacity-5">
+            <div 
+              className="w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${stonesWater})` }}
+            />
+          </div>
           <ResponsiveContainer>
-            <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+            <div className="text-center relative z-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg">
                 Ready to Transform Your Mental Wellness?
               </h2>
-              <p className="text-lg sm:text-xl opacity-90 mb-6 sm:mb-8">
+              <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 drop-shadow-sm">
                 Join thousands of users who have improved their mental health with personalized music therapy
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Button 
                   asChild
                   size="lg"
-                  className="bg-background text-foreground hover:bg-background/90 font-semibold shadow-lg text-sm sm:text-base px-6 sm:px-8"
+                  className="bg-white/20 backdrop-blur-sm text-white shadow-glass-dark-shadow hover:bg-white/30 font-semibold text-sm sm:text-base px-6 sm:px-8 border border-white/30"
                 >
                   <Link to="/goals" className="flex items-center justify-center space-x-2">
                     <Headphones className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -422,7 +429,7 @@ const Index = () => {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="border-2 border-background text-background hover:bg-background/10 font-semibold text-sm sm:text-base px-6 sm:px-8"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 font-semibold text-sm sm:text-base px-6 sm:px-8 backdrop-blur-sm"
                 >
                   <Link to="/profile" className="flex items-center justify-center space-x-2">
                     <Activity className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -433,10 +440,10 @@ const Index = () => {
             </div>
             
             {/* Admin Access moved into CTA footer */}
-            <div className="text-center mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-primary-foreground/20">
+            <div className="text-center mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20 relative z-10">
               <Link 
                 to="/admin" 
-                className="text-xs text-primary-foreground/60 hover:text-primary-foreground/80 transition-colors"
+                className="text-xs text-white/60 hover:text-white/80 transition-colors"
               >
                 Admin Portal
               </Link>
