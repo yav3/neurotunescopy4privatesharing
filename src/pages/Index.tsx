@@ -31,7 +31,7 @@ const Index = () => {
   // Handler for action buttons - show auth if not logged in, go to app if logged in
   const handleActionClick = () => {
     if (user) {
-      navigate('/therapeutic-music');
+      navigate('/goals');
     } else {
       setShowAuth(true);
     }
