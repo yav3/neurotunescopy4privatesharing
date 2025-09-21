@@ -97,7 +97,7 @@ const App = () => {
           <Sonner />
           <div className="relative min-h-screen">
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<TherapeuticGoalsPage />} />
               <Route path="/goals" element={<TherapeuticGoalsPage />} />
               <Route path="/debug" element={<ConnectionDiagnostics />} />
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
@@ -113,7 +113,7 @@ const App = () => {
                 <Route path="monitoring" element={<DataMonitoring />} />
                 <Route path="storage" element={<StorageManager />} />
               </Route>
-              <Route path="*" element={<Index />} />
+              <Route path="*" element={<TherapeuticGoalsPage />} />
             </Routes>
             
             {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
