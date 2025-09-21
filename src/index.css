@@ -457,7 +457,7 @@ All colors MUST be HSL.
 
   /* Typography Classes */
   .text-display-1 {
-    font-size: var(--text-6xl);
+    font-size: 4.5rem; /* 72px - Much larger for hero headlines */
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tighter);
     font-weight: 300;
@@ -499,7 +499,7 @@ All colors MUST be HSL.
   /* Responsive Typography - Larger mobile sizes */
   @media (max-width: 768px) {
     .text-display-1 {
-      font-size: var(--text-5xl); /* Larger on tablet */
+      font-size: 3.5rem; /* 56px - Larger on tablet */
     }
     
     .text-display-2 {
@@ -521,7 +521,7 @@ All colors MUST be HSL.
   
   @media (max-width: 480px) {
     .text-display-1 {
-      font-size: var(--text-4xl); /* Still prominent on mobile */
+      font-size: 2.75rem; /* 44px - Much more prominent on mobile */
     }
     
     .text-display-2 {
