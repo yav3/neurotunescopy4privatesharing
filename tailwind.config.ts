@@ -102,6 +102,8 @@ export default {
 				'player': 'var(--shadow-player)',
 				'glass': 'var(--glass-shadow)',
 				'glass-lg': 'var(--glass-shadow)',
+				'glass-enhanced': 'var(--glass-shadow-enhanced)',
+				'glass-dark-shadow': 'var(--glass-dark-shadow)',
 				'glass-inset': 'inset 0 1px 0 0 hsl(var(--border) / 0.1)'
 			},
 			borderRadius: {

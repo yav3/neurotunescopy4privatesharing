@@ -98,10 +98,10 @@ All colors MUST be HSL.
     --card-darker: 240 56% 4%; /* Much darker charcoal blue */
     --card-darkest: 240 100% 1%; /* Ultra deep */
 
-    /* Dark mode glass morphism effects - darker */
-    --glass-bg: rgba(0, 0, 13, 0.4); /* Darker glass */
-    --glass-border: rgba(0, 0, 13, 0.6); /* Darker border */
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 6, 0.9); /* Much darker shadow */
+    /* Dark mode glass morphism effects - darker - using HSL */
+    --glass-bg: 240 100% 1% / 0.4; /* Darker glass HSL */
+    --glass-border: 240 100% 1% / 0.6; /* Darker border HSL */
+    --glass-shadow: 0 8px 32px 0 hsl(240 100% 1% / 0.9); /* Much darker shadow HSL */
 
     /* Dark mode music categories - ultra deep */
     --music-focus: 240 100% 1.5%; /* Ultra deep for focus cards */
@@ -120,14 +120,14 @@ All colors MUST be HSL.
     --gradient-dark-teal: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 22%));
     --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     
-    /* Enhanced glass morphism effects with darker tones */
-    --glass-bg-enhanced: rgba(255, 255, 255, 0.10);
-    --glass-border-enhanced: rgba(255, 255, 255, 0.20);
-    --glass-shadow-enhanced: 0 16px 48px 0 rgba(6, 78, 59, 0.25), 0 8px 24px 0 rgba(20, 184, 166, 0.15);
+    /* Enhanced glass morphism effects with darker tones - using HSL */
+    --glass-bg-enhanced: 0 0% 100% / 0.10;
+    --glass-border-enhanced: 0 0% 100% / 0.20;
+    --glass-shadow-enhanced: 0 16px 48px 0 hsl(173 85% 16% / 0.25), 0 8px 24px 0 hsl(173 80% 35% / 0.15);
     --glass-backdrop: blur(20px);
-    --glass-dark-bg: rgba(6, 78, 59, 0.15);
-    --glass-dark-border: rgba(20, 184, 166, 0.25);
-    --glass-dark-shadow: 0 20px 60px 0 rgba(6, 78, 59, 0.4);
+    --glass-dark-bg: 173 85% 16% / 0.15;
+    --glass-dark-border: 173 80% 35% / 0.25;
+    --glass-dark-shadow: 0 20px 60px 0 hsl(173 85% 16% / 0.4);
     
     /* Light mode gradient variations for cards with better contrast */
     --gradient-primary: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%));
@@ -143,10 +143,10 @@ All colors MUST be HSL.
     /* San Francisco font system */
     --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
     
-    /* Glass morphism effects */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* Glass morphism effects - using HSL */
+    --glass-bg: 0 0% 100% / 0.1;
+    --glass-border: 0 0% 100% / 0.2;
+    --glass-shadow: 0 8px 32px 0 hsl(228 45% 32% / 0.37);
     
     /* Clean neutral text colors for white background */
     --text-white: 0 0% 100%;
@@ -259,37 +259,20 @@ All colors MUST be HSL.
     font-family: var(--font-sf) !important;
   }
 
-  /* Override all text colors for white background */
-  h1, h2, h3, h4, h5, h6 {
-    color: hsl(var(--text-gray-900)) !important;
+  /* Remove aggressive global text color overrides that break component styling */
+  
+  /* Global font application only */
+  * {
     font-family: var(--font-sf) !important;
   }
 
-  p, span, div, label, button {
-    font-family: var(--font-sf) !important;
-  }
-
-  /* Button text colors */
-  button {
-    font-family: var(--font-sf) !important;
-  }
-
+  /* Only apply text colors where they won't conflict with component styles */
   .btn-primary {
     color: hsl(var(--text-white)) !important;
   }
 
   .btn-secondary {
     color: hsl(var(--text-gray-800)) !important;
-  }
-
-  /* Link colors */
-  a {
-    color: hsl(0 0% 15%) !important;
-    font-family: var(--font-sf) !important;
-  }
-
-  a:hover {
-    color: hsl(0 0% 25%) !important;
   }
 
   /* Form elements */
@@ -860,7 +843,7 @@ All colors MUST be HSL.
     background: var(--gradient-glass-teal);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(20, 184, 166, 0.1);
+    border: 1px solid hsl(0 0% 100% / 0.2);
+    box-shadow: 0 8px 32px hsl(173 80% 35% / 0.1);
   }
 }
