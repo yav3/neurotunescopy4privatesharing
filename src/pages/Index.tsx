@@ -148,12 +148,11 @@ const Index = () => {
             <div className="relative mt-8 lg:mt-0">
               <div className="bg-white/10 backdrop-blur-sm relative z-10 rounded-2xl border border-white/20 overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-300">
                 <div 
-                  className="w-full h-60 sm:h-72 md:h-80 flex items-center justify-center bg-cover bg-center relative"
+                  className="w-full h-60 sm:h-72 md:h-80 bg-cover bg-center relative"
                   style={{ backgroundImage: `url(${stackedStones})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="text-center relative z-10">
-                    <Music className="h-16 w-16 sm:h-20 sm:w-20 text-white mx-auto mb-4 drop-shadow-lg" />
+                  <div className="absolute bottom-4 left-4 relative z-10">
                     <h3 className="text-lg sm:text-xl font-semibold text-white drop-shadow-lg">Music Therapy Interface</h3>
                   </div>
                 </div>
@@ -231,11 +230,10 @@ const Index = () => {
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
                  <div 
-                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
+                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${dewLeaf})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  <Heart className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
                     <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Stress Reduction
@@ -268,11 +266,10 @@ const Index = () => {
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
                  <div 
-                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
+                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${waterDropLeaf})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  <Brain className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
                     <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Focus Enhancement
@@ -305,11 +302,10 @@ const Index = () => {
             <div className="group cursor-pointer">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden hover:shadow-glass-dark-shadow transition-all duration-500 group-hover:-translate-y-2">
                  <div 
-                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center flex items-center justify-center"
+                  className="relative h-40 sm:h-48 overflow-hidden bg-cover bg-center"
                   style={{ backgroundImage: `url(${oceanWave})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  <Activity className="h-12 w-12 text-white drop-shadow-lg relative z-10" />
                   <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-10">
                     <span className="bg-white/15 backdrop-blur-sm px-2 sm:px-3 py-1 border border-white/25 text-white rounded-full text-xs sm:text-sm font-medium">
                       Non-Sleep Deep Rest
@@ -368,7 +364,15 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
+                  Jacobs Technion Institute at Cornell Tech
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Advanced AI research and computational music therapy algorithms
+                </p>
+              </div>
               <div className="bg-white/80 backdrop-blur-sm border border-border rounded-xl p-6 sm:p-8 text-center hover:shadow-xl transition-all duration-300 hover:bg-white/90">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4">
                   Weill Cornell Medical College
