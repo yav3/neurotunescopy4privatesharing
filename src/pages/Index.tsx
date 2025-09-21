@@ -1,6 +1,8 @@
 /* Professional Music Therapy AI Platform Landing Page */
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../components/auth/AuthProvider';
+import { AuthPage } from '../components/auth/AuthPage';
 
 import { Button } from '../components/ui/button';
 
@@ -28,6 +30,23 @@ const activeTherapySession = "https://images.unsplash.com/photo-1571019613454-1c
 const neurotunesBrandIcon = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=64&h=64&fit=crop";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuthContext();
+  const [showAuth, setShowAuth] = useState(false);
+
+  // Handler for action buttons - show auth if not logged in, go to app if logged in
+  const handleActionClick = () => {
+    if (user) {
+      navigate('/therapeutic-music');
+    } else {
+      setShowAuth(true);
+    }
+  };
+
+  // Show the auth page when requested
+  if (showAuth) {
+    return <AuthPage onBack={() => setShowAuth(false)} />;
+  }
 
   const therapeuticBenefits = [
     {
@@ -74,11 +93,11 @@ const Index = () => {
             </div>
             <div className="flex items-center space-x-4">
               <Button 
-                asChild
                 size="sm"
+                onClick={handleActionClick}
                 className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-lg hover:shadow-xl font-medium px-6"
               >
-                <Link to="/therapeutic-music">Start Therapy</Link>
+                {user ? 'Start Therapy' : 'Sign Up to Start'}
               </Button>
             </div>
           </div>
@@ -105,15 +124,13 @@ const Index = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
                 <Button 
-                  asChild
                   size="lg"
-                  className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto"
+                  onClick={handleActionClick}
+                  className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto flex items-center justify-center space-x-2"
                 >
-                  <Link to="/therapeutic-music" className="flex items-center justify-center space-x-2">
-                    <Headphones className="h-5 w-5" />
-                    <span>Begin Therapy Session</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
+                  <Headphones className="h-5 w-5" />
+                  <span>{user ? 'Begin Therapy Session' : 'Sign Up to Begin'}</span>
+                  <ArrowRight className="h-5 w-5" />
                 </Button>
               </div>
               
@@ -229,12 +246,12 @@ const Index = () => {
                       <Shield className="h-4 w-4 text-success" />
                       <span>258 Clinical Tracks</span>
                     </div>
-                    <Link 
-                      to="/therapeutic-music"
+                    <button 
+                      onClick={handleActionClick}
                       className="w-10 h-10 glass-card border-glass-border hover:bg-gradient-to-br hover:from-primary hover:to-primary/80 hover:text-white text-primary rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg"
                     >
                       <Play className="h-4 w-4" />
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -267,7 +284,10 @@ const Index = () => {
                       <Shield className="h-4 w-4 text-success" />
                       <span>FDA Researched</span>
                     </div>
-                    <button className="w-10 h-10 glass-card border-glass-border hover:bg-gradient-to-br hover:from-primary hover:to-primary/80 hover:text-white text-primary rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg">
+                    <button 
+                      onClick={handleActionClick}
+                      className="w-10 h-10 glass-card border-glass-border hover:bg-gradient-to-br hover:from-primary hover:to-primary/80 hover:text-white text-primary rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg"
+                    >
                       <Play className="h-4 w-4" />
                     </button>
                   </div>
@@ -302,7 +322,10 @@ const Index = () => {
                       <Shield className="h-4 w-4 text-success" />
                       <span>Sleep Lab Tested</span>
                     </div>
-                    <button className="w-10 h-10 glass-card border-glass-border hover:bg-gradient-to-br hover:from-primary hover:to-primary/80 hover:text-white text-primary rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg">
+                    <button 
+                      onClick={handleActionClick}
+                      className="w-10 h-10 glass-card border-glass-border hover:bg-gradient-to-br hover:from-primary hover:to-primary/80 hover:text-white text-primary rounded-full flex items-center justify-center transition-all duration-300 hover:shadow-lg"
+                    >
                       <Play className="h-4 w-4" />
                     </button>
                   </div>
@@ -313,15 +336,13 @@ const Index = () => {
 
           <div className="text-center mt-12 lg:mt-16">
             <Button 
-              asChild
               size="lg" 
-              className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto"
+              onClick={handleActionClick}
+              className="bg-gradient-to-r from-primary to-primary/80 text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto inline-flex items-center space-x-2"
             >
-              <Link to="/therapeutic-music" className="inline-flex items-center space-x-2">
-                <Zap className="h-5 w-5" />
-                <span>Explore All Programs</span>
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+              <Zap className="h-5 w-5" />
+              <span>{user ? 'Explore All Programs' : 'Sign Up to Explore'}</span>
+              <ArrowRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -381,25 +402,21 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
-              asChild
               size="lg"
-              className="bg-white text-primary hover:bg-white/90 font-semibold shadow-xl text-base px-8 py-4 h-auto"
+              onClick={handleActionClick}
+              className="bg-white text-primary hover:bg-white/90 font-semibold shadow-xl text-base px-8 py-4 h-auto flex items-center justify-center space-x-2"
             >
-              <Link to="/therapeutic-music" className="flex items-center justify-center space-x-2">
-                <Headphones className="h-5 w-5" />
-                <span>Start Free Session</span>
-              </Link>
+              <Headphones className="h-5 w-5" />
+              <span>{user ? 'Start Free Session' : 'Sign Up for Free'}</span>
             </Button>
             <Button 
-              asChild
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-semibold text-base px-8 py-4 h-auto"
+              onClick={handleActionClick}
+              className="border-2 border-white text-white hover:bg-white/10 font-semibold text-base px-8 py-4 h-auto flex items-center justify-center space-x-2"
             >
-              <Link to="/dashboard" className="flex items-center justify-center space-x-2">
-                <Activity className="h-5 w-5" />
-                <span>View Research</span>
-              </Link>
+              <Activity className="h-5 w-5" />
+              <span>{user ? 'View Research' : 'Learn More'}</span>
             </Button>
           </div>
         </div>
