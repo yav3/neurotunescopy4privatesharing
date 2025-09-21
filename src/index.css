@@ -112,20 +112,25 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Beautiful teal gradient backgrounds */
-    --gradient-primary-teal: linear-gradient(135deg, hsl(173 100% 35%), hsl(179 85% 45%), hsl(173 75% 55%));
-    --gradient-hero-teal: linear-gradient(180deg, hsl(173 100% 35%), hsl(176 90% 40%), hsl(173 85% 50%));
-    --gradient-card-teal: linear-gradient(135deg, hsl(173 50% 96%), hsl(176 45% 98%), hsl(173 40% 95%));
-    --gradient-glass-teal: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(45, 212, 191, 0.05));
+    /* Darker, richer turquoise gradient backgrounds */
+    --gradient-primary-teal: linear-gradient(135deg, hsl(173 100% 20%), hsl(176 95% 25%), hsl(179 90% 30%));
+    --gradient-hero-teal: linear-gradient(180deg, hsl(173 100% 18%), hsl(176 95% 22%), hsl(179 85% 28%), hsl(0 0% 95%));
+    --gradient-card-teal: linear-gradient(135deg, hsl(173 60% 88%), hsl(176 55% 92%), hsl(0 0% 98%));
+    --gradient-glass-teal: linear-gradient(135deg, rgba(6, 78, 59, 0.2), rgba(20, 184, 166, 0.1));
+    --gradient-dark-teal: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 22%));
+    --gradient-white-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     
-    /* Enhanced glass morphism effects */
-    --glass-bg-enhanced: rgba(255, 255, 255, 0.15);
-    --glass-border-enhanced: rgba(255, 255, 255, 0.25);
-    --glass-shadow-enhanced: 0 12px 40px 0 rgba(20, 184, 166, 0.15);
-    --glass-backdrop: blur(16px);
+    /* Enhanced glass morphism effects with darker tones */
+    --glass-bg-enhanced: rgba(255, 255, 255, 0.10);
+    --glass-border-enhanced: rgba(255, 255, 255, 0.20);
+    --glass-shadow-enhanced: 0 16px 48px 0 rgba(6, 78, 59, 0.25), 0 8px 24px 0 rgba(20, 184, 166, 0.15);
+    --glass-backdrop: blur(20px);
+    --glass-dark-bg: rgba(6, 78, 59, 0.15);
+    --glass-dark-border: rgba(20, 184, 166, 0.25);
+    --glass-dark-shadow: 0 20px 60px 0 rgba(6, 78, 59, 0.4);
     
-    /* Light mode gradient variations for cards */
-    --gradient-primary: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 25%), hsl(0 0% 10%));
+    /* Light mode gradient variations for cards with better contrast */
+    --gradient-primary: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
     --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 96%), hsl(0 0% 98%));
     --gradient-card-medium: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 94%), hsl(0 0% 96%));
