@@ -112,12 +112,6 @@ const Index = () => {
           <ResponsiveContainer>
             <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
             <div className="space-y-8">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="bg-white/20 backdrop-blur-sm px-4 sm:px-6 py-2 border border-white/30 text-white rounded-full text-sm sm:text-base font-medium flex items-center space-x-2">
-                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>AI-Powered Music Therapy</span>
-                </div>
-              </div>
               <h1 className="text-display-1 text-white drop-shadow-lg mb-6">
                 AI-Personalized, Closed Loop Wellness 
                 <span className="text-brand-100 block mt-2"> Meets Beautiful Music</span>
