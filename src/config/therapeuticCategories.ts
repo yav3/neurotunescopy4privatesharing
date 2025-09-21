@@ -32,10 +32,24 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
   },
   {
     id: 'energy-boost',
-    name: 'Energy & Motivation',
-    description: 'Uplifting music for energy and motivation',
-    buckets: ['ENERGYBOOST', 'pop', 'HIIT'],
+    name: 'Energy Boost',
+    description: 'High-energy electronic and dance music',
+    buckets: ['ENERGYBOOST'],
     image: energyBoostCard
+  },
+  {
+    id: 'pop-energy',
+    name: 'Pop Energy',
+    description: 'Upbeat pop music for motivation',
+    buckets: ['pop'],
+    image: energyBoostCard
+  },
+  {
+    id: 'hiit-energy',
+    name: 'HIIT Workout',
+    description: 'High-intensity interval training music',
+    buckets: ['HIIT'],
+    image: cardioCard
   },
   {
     id: 'mood-boost',
