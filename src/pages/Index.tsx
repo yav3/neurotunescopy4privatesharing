@@ -92,8 +92,14 @@ const Index = () => {
           </ResponsiveContainer>
         </nav>
 
-        {/* Hero Section with Enhanced Dramatic Gradients */}
-        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-hero-teal relative overflow-hidden">
+        {/* Hero Section with Sophisticated Blue Gradients */}
+        <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-hero-blue relative overflow-hidden">
+          {/* Abstract floating spheres */}
+          <div className="floating-sphere floating-sphere-lg top-20 right-20 opacity-30"></div>
+          <div className="floating-sphere floating-sphere-md top-40 left-10 opacity-20"></div>
+          <div className="floating-sphere floating-sphere-sm bottom-32 right-1/3 opacity-25"></div>
+          <div className="floating-sphere floating-sphere-md bottom-20 left-1/4 opacity-15"></div>
+          
           {/* Enhanced Background Pattern with Opacity */}
           <div className="absolute inset-0 opacity-5">
             <div 
@@ -101,8 +107,8 @@ const Index = () => {
               style={{ backgroundImage: `url(${mountainLake})` }}
             />
           </div>
-          {/* Additional pearlized texture overlay */}
-          <div className="absolute inset-0 bg-gradient-textured opacity-70"></div>
+          {/* Sophisticated blue texture overlay */}
+          <div className="absolute inset-0 bg-gradient-textured opacity-80"></div>
           <ResponsiveContainer>
             <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 items-center relative z-10">
             <div className="space-y-8 sm:space-y-10 md:space-y-12">
@@ -215,8 +221,13 @@ const Index = () => {
           </ResponsiveContainer>
         </section>
 
-        {/* Featured Therapy Programs with Nature Images */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured-teal relative overflow-hidden">
+        {/* Featured Therapy Programs with Sophisticated Design */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-textured relative overflow-hidden">
+          {/* Abstract floating elements */}
+          <div className="floating-sphere floating-sphere-md top-10 right-16 opacity-20"></div>
+          <div className="floating-sphere floating-sphere-sm top-1/2 left-8 opacity-15"></div>
+          <div className="floating-sphere floating-sphere-lg bottom-16 right-1/4 opacity-25"></div>
+          
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div 

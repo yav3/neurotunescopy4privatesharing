@@ -112,90 +112,90 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
-    /* Ultra-Dramatic Ocean Gradients - Teal & Turquoise with Pearly Blues */
-    --gradient-primary-teal: radial-gradient(ellipse at top left, 
-      hsl(190, 85%, 12%) 0%,
-      hsl(185, 80%, 18%) 15%,
-      hsl(180, 75%, 25%) 30%,
-      hsl(175, 70%, 35%) 50%,
-      hsl(170, 75%, 45%) 70%,
-      hsl(165, 80%, 55%) 85%,
-      hsl(160, 85%, 65%) 100%
+    /* Sophisticated Blue-to-Purple Gradients (Mandolin-inspired) */
+    --gradient-primary-blue: radial-gradient(ellipse at top left, 
+      hsl(240, 100%, 8%) 0%,
+      hsl(245, 95%, 12%) 15%,
+      hsl(250, 90%, 18%) 30%,
+      hsl(255, 85%, 25%) 50%,
+      hsl(260, 80%, 35%) 70%,
+      hsl(265, 75%, 45%) 85%,
+      hsl(270, 70%, 55%) 100%
     ), 
     radial-gradient(ellipse at bottom right, 
-      hsl(195, 90%, 8%) 0%,
-      hsl(190, 85%, 15%) 25%,
-      hsl(185, 80%, 22%) 50%,
-      hsl(180, 75%, 30%) 75%,
-      hsl(175, 70%, 40%) 100%
+      hsl(235, 100%, 6%) 0%,
+      hsl(240, 95%, 10%) 25%,
+      hsl(245, 90%, 15%) 50%,
+      hsl(250, 85%, 22%) 75%,
+      hsl(255, 80%, 30%) 100%
     ),
     linear-gradient(135deg, 
-      hsl(190, 85%, 8%) 0%,
-      hsl(185, 80%, 15%) 20%,
-      hsl(180, 75%, 22%) 40%,
-      hsl(175, 70%, 30%) 60%,
-      hsl(170, 75%, 38%) 80%,
-      hsl(165, 80%, 48%) 100%
+      hsl(240, 100%, 6%) 0%,
+      hsl(245, 95%, 10%) 20%,
+      hsl(250, 90%, 15%) 40%,
+      hsl(255, 85%, 20%) 60%,
+      hsl(260, 80%, 28%) 80%,
+      hsl(265, 75%, 38%) 100%
     );
-    --gradient-hero-teal: radial-gradient(ellipse at 30% 20%, 
-      hsl(190, 90%, 8%) 0%,
-      hsl(185, 85%, 12%) 25%,
-      hsl(180, 80%, 18%) 50%,
-      hsl(175, 75%, 25%) 75%,
-      hsl(170, 70%, 35%) 100%
+    --gradient-hero-blue: radial-gradient(ellipse at 30% 20%, 
+      hsl(240, 100%, 6%) 0%,
+      hsl(245, 95%, 8%) 25%,
+      hsl(250, 90%, 12%) 50%,
+      hsl(255, 85%, 18%) 75%,
+      hsl(260, 80%, 25%) 100%
     ),
     radial-gradient(ellipse at 70% 80%, 
-      hsl(195, 85%, 10%) 0%,
-      hsl(190, 80%, 16%) 30%,
-      hsl(185, 75%, 24%) 60%,
-      hsl(180, 75%, 35%) 100%
+      hsl(235, 100%, 8%) 0%,
+      hsl(240, 95%, 12%) 30%,
+      hsl(245, 90%, 18%) 60%,
+      hsl(250, 85%, 25%) 100%
     ),
     linear-gradient(135deg, 
-      hsl(190, 85%, 8%) 0%,
-      hsl(180, 80%, 15%) 50%,
-      hsl(170, 75%, 22%) 100%
+      hsl(240, 100%, 6%) 0%,
+      hsl(250, 95%, 12%) 50%,
+      hsl(260, 90%, 20%) 100%
     );
-    --gradient-card-teal: linear-gradient(135deg, 
-      hsl(175, 85%, 85%) 0%,
-      hsl(170, 80%, 88%) 25%,
-      hsl(165, 75%, 91%) 50%,
-      hsl(160, 70%, 94%) 75%,
-      hsl(155, 65%, 97%) 100%
+    --gradient-card-blue: linear-gradient(135deg, 
+      hsl(240, 50%, 85%) 0%,
+      hsl(245, 45%, 88%) 25%,
+      hsl(250, 40%, 91%) 50%,
+      hsl(255, 35%, 94%) 75%,
+      hsl(260, 30%, 97%) 100%
     );
-    --gradient-glass-teal: radial-gradient(circle at 40% 40%, 
-      hsl(190, 90%, 18% / 0.95) 0%,
-      hsl(185, 85%, 25% / 0.85) 25%,
-      hsl(180, 80%, 32% / 0.75) 50%,
-      hsl(175, 75%, 40% / 0.65) 75%,
-      hsl(170, 70%, 48% / 0.55) 100%
+    --gradient-glass-blue: radial-gradient(circle at 40% 40%, 
+      hsl(240, 90%, 15% / 0.95) 0%,
+      hsl(245, 85%, 20% / 0.85) 25%,
+      hsl(250, 80%, 25% / 0.75) 50%,
+      hsl(255, 75%, 30% / 0.65) 75%,
+      hsl(260, 70%, 38% / 0.55) 100%
     );
-    --gradient-dark-teal: linear-gradient(135deg, 
-      hsl(190, 90%, 12%) 0%,
-      hsl(185, 85%, 18%) 20%,
-      hsl(180, 80%, 25%) 40%,
-      hsl(175, 75%, 32%) 60%,
-      hsl(170, 70%, 40%) 80%,
-      hsl(165, 75%, 48%) 100%
+    --gradient-dark-blue: linear-gradient(135deg, 
+      hsl(240, 100%, 8%) 0%,
+      hsl(245, 95%, 12%) 20%,
+      hsl(250, 90%, 18%) 40%,
+      hsl(255, 85%, 24%) 60%,
+      hsl(260, 80%, 32%) 80%,
+      hsl(265, 75%, 40%) 100%
     );
-    --gradient-textured-teal: radial-gradient(ellipse at 20% 30%, 
-      hsl(190, 90%, 8%) 0%,
-      hsl(185, 85%, 12%) 20%,
-      hsl(180, 80%, 18%) 40%,
-      hsl(175, 75%, 25%) 60%,
-      hsl(170, 70%, 35%) 80%,
-      hsl(165, 75%, 45%) 100%
+    --gradient-textured-blue: radial-gradient(ellipse at 20% 30%, 
+      hsl(240, 100%, 6%) 0%,
+      hsl(245, 95%, 8%) 20%,
+      hsl(250, 90%, 12%) 40%,
+      hsl(255, 85%, 18%) 60%,
+      hsl(260, 80%, 26%) 80%,
+      hsl(265, 75%, 35%) 100%
     ), 
     radial-gradient(ellipse at 80% 70%, 
-      hsl(195, 85%, 10%) 0%,
-      hsl(190, 80%, 15%) 25%,
-      hsl(185, 75%, 22%) 50%,
-      hsl(180, 70%, 30%) 75%,
-      hsl(175, 75%, 38%) 100%
+      hsl(235, 100%, 8%) 0%,
+      hsl(240, 95%, 12%) 25%,
+      hsl(245, 90%, 18%) 50%,
+      hsl(250, 85%, 24%) 75%,
+      hsl(255, 80%, 32%) 100%
     ), 
     linear-gradient(45deg, 
-      hsl(190, 85%, 8%) 0%,
-      hsl(180, 80%, 15%) 50%,
-      hsl(170, 75%, 25%) 100%
+      hsl(240, 100%, 6%) 0%,
+      hsl(250, 95%, 12%) 50%,
+      hsl(260, 90%, 20%) 100%
     );
     --gradient-white-section: linear-gradient(135deg, 
       hsl(0, 0%, 100%) 0%,
@@ -205,53 +205,53 @@ All colors MUST be HSL.
       hsl(0, 0%, 100%) 100%
     );
 
-    /* Enhanced Gradient Text Effects with Better Hierarchy */
+    /* Enhanced Gradient Text Effects with Sophisticated Blues */
     --gradient-text-primary: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(180, 20%, 95%) 25%,
-      hsl(180, 40%, 90%) 50%,
-      hsl(180, 60%, 85%) 75%,
-      hsl(180, 80%, 80%) 100%
+      hsl(250, 20%, 95%) 25%,
+      hsl(255, 40%, 90%) 50%,
+      hsl(260, 60%, 85%) 75%,
+      hsl(265, 80%, 80%) 100%
     );
     
     --gradient-text-hero: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(180, 30%, 92%) 30%,
-      hsl(180, 50%, 88%) 60%,
-      hsl(180, 70%, 84%) 100%
+      hsl(245, 30%, 92%) 30%,
+      hsl(250, 50%, 88%) 60%,
+      hsl(255, 70%, 84%) 100%
     );
     
     --gradient-text-hero-main: linear-gradient(135deg,
       hsl(0, 0%, 100%) 0%,
-      hsl(180, 15%, 98%) 20%,
-      hsl(180, 25%, 95%) 40%,
-      hsl(180, 35%, 92%) 60%,
-      hsl(180, 45%, 88%) 80%,
-      hsl(180, 55%, 85%) 100%
+      hsl(240, 15%, 98%) 20%,
+      hsl(245, 25%, 95%) 40%,
+      hsl(250, 35%, 92%) 60%,
+      hsl(255, 45%, 88%) 80%,
+      hsl(260, 55%, 85%) 100%
     );
     
     --gradient-text-hero-secondary: linear-gradient(135deg,
-      hsl(180, 30%, 85%) 0%,
-      hsl(175, 35%, 82%) 25%,
-      hsl(170, 40%, 78%) 50%,
-      hsl(165, 45%, 75%) 75%,
-      hsl(160, 50%, 70%) 100%
+      hsl(250, 30%, 85%) 0%,
+      hsl(255, 35%, 82%) 25%,
+      hsl(260, 40%, 78%) 50%,
+      hsl(265, 45%, 75%) 75%,
+      hsl(270, 50%, 70%) 100%
     );
     
     --gradient-text-accent: linear-gradient(45deg,
-      hsl(180, 100%, 70%) 0%,
-      hsl(170, 90%, 75%) 50%,
-      hsl(160, 80%, 80%) 100%
+      hsl(240, 100%, 70%) 0%,
+      hsl(250, 90%, 75%) 50%,
+      hsl(260, 80%, 80%) 100%
     );
     
-    /* Dramatically enhanced glass morphism with pearlized effects */
-    --glass-bg-enhanced: 0 0% 100% / 0.35;
-    --glass-border-enhanced: 0 0% 100% / 0.45;
-    --glass-shadow-enhanced: 0 20px 60px 0 hsl(173 95% 8% / 0.6), 0 12px 36px 0 hsl(173 85% 18% / 0.4), 0 4px 12px 0 hsl(173 90% 25% / 0.3);
+    /* Dramatically enhanced glass morphism with sophisticated blue effects */
+    --glass-bg-enhanced: 240 100% 8% / 0.4;
+    --glass-border-enhanced: 245 90% 25% / 0.6;
+    --glass-shadow-enhanced: 0 20px 60px 0 hsl(240 95% 6% / 0.8), 0 12px 36px 0 hsl(245 85% 12% / 0.6), 0 4px 12px 0 hsl(250 90% 18% / 0.4);
     --glass-backdrop: blur(24px) saturate(1.8);
-    --glass-dark-bg: 173 95% 8% / 0.4;
-    --glass-dark-border: 173 90% 25% / 0.6;
-    --glass-dark-shadow: 0 24px 80px 0 hsl(173 95% 8% / 0.8), 0 8px 32px 0 hsl(173 85% 18% / 0.5);
+    --glass-dark-bg: 240 95% 6% / 0.5;
+    --glass-dark-border: 245 90% 20% / 0.7;
+    --glass-dark-shadow: 0 24px 80px 0 hsl(240 95% 6% / 0.9), 0 8px 32px 0 hsl(245 85% 12% / 0.6);
     
     /* Dramatically enhanced gradient variations with pearlized depth */
     --gradient-primary: linear-gradient(135deg, hsl(173 100% 5%), hsl(176 98% 8%), hsl(179 95% 3%), hsl(182 92% 10%));
@@ -1030,17 +1030,17 @@ All colors MUST be HSL.
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
-  /* Beautiful gradient backgrounds */
-  .bg-gradient-teal {
-    background: var(--gradient-primary-teal);
+  /* Beautiful gradient backgrounds - Sophisticated Blues */
+  .bg-gradient-primary {
+    background: var(--gradient-primary-blue);
   }
   
-  .bg-gradient-hero-teal {
-    background: var(--gradient-hero-teal);
+  .bg-gradient-hero-blue {
+    background: var(--gradient-hero-blue);
   }
   
-  .bg-gradient-card-teal {
-    background: var(--gradient-card-teal);
+  .bg-gradient-card-blue {
+    background: var(--gradient-card-blue);
   }
   
   /* Enhanced glass morphism effects */
@@ -1053,22 +1053,65 @@ All colors MUST be HSL.
   }
   
   .glass-card {
-    background: var(--gradient-glass-teal);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(0 0% 100% / 0.2);
-    box-shadow: 0 8px 32px hsl(173 80% 35% / 0.1);
+    background: var(--gradient-glass-blue);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(245 70% 50% / 0.3);
+    box-shadow: 0 12px 40px hsl(240 80% 15% / 0.3), 0 4px 16px hsl(245 90% 10% / 0.2);
   }
   .bg-gradient-pearlized {
-    background: var(--gradient-pearlized);
+    background: var(--gradient-primary-blue);
   }
 
   .bg-gradient-dramatic {
-    background: var(--gradient-primary-teal);
+    background: var(--gradient-primary-blue);
   }
 
   .bg-gradient-textured {
-    background: var(--gradient-textured-teal);
+    background: var(--gradient-textured-blue);
+  }
+
+  /* Abstract floating elements */
+  .floating-sphere {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, 
+      hsl(245, 80%, 50% / 0.4) 0%, 
+      hsl(250, 70%, 40% / 0.2) 50%, 
+      hsl(255, 60%, 30% / 0.1) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid hsl(245, 60%, 50% / 0.2);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .floating-sphere-lg {
+    width: 200px;
+    height: 200px;
+    animation-delay: -2s;
+  }
+
+  .floating-sphere-md {
+    width: 120px;
+    height: 120px;
+    animation-delay: -1s;
+  }
+
+  .floating-sphere-sm {
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+  }
+
+  @keyframes float {
+    0%, 100% { 
+      transform: translate(0, 0) rotate(0deg);
+    }
+    33% { 
+      transform: translate(10px, -10px) rotate(120deg);
+    }
+    66% { 
+      transform: translate(-10px, 10px) rotate(240deg);
+    }
   }
 
   .glass-pearlized {
