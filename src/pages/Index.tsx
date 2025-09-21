@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { WebAppWrapper, ResponsiveContainer } from '@/components/layout';
 
-// Import nature images for therapy protocols
-import stackedStones from '@/assets/stacked-stones.jpg';
-import sereneLake from '@/assets/serene-lake.jpg';
-import oceanWave from '@/assets/ocean-wave.jpg';
-import waterDropLeaf from '@/assets/water-drop-leaf.jpg';
-import dewLeaf from '@/assets/dew-leaf.jpg';
-import stonesWater from '@/assets/stones-water.jpg';
-import forestLake from '@/assets/forest-lake.jpg';
+// Import nature images for therapy protocols - using placeholders temporarily
+const stackedStones = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop';
+const sereneLake = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
+const oceanWave = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
+const waterDropLeaf = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop';
+const dewLeaf = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop';
+const stonesWater = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop';
+const forestLake = 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop';
 
 import { 
   Brain, 
