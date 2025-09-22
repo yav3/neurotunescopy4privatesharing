@@ -172,7 +172,7 @@ const Index = () => {
       </section>
 
       {/* Therapeutic Benefits */}
-      <section className="py-6 bg-gradient-to-br from-gray-900 to-black">
+      <section className="py-6 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-lg lg:text-xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-3">
@@ -355,7 +355,7 @@ const Index = () => {
       </section>
 
       {/* Research Institutions */}
-      <section className="py-6 bg-gradient-to-br from-gray-900 to-black">
+      <section className="py-6 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-lg lg:text-xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-3">
