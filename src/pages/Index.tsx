@@ -231,7 +231,7 @@ const Index = () => {
                 </div>
                 <div className="p-3">
                   <h3 className="text-sm font-medium font-headers text-white mb-1">
-                    Binaural Beats for Focus
+                    Classical Crossover for Anxiety Reduction
                   </h3>
                   <p className="text-xs font-body text-gray-300 mb-2 leading-relaxed">
                     Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
@@ -269,7 +269,7 @@ const Index = () => {
                 </div>
                 <div className="p-3">
                   <h3 className="text-sm font-medium font-headers text-white mb-1">
-                    Morning Light Activation
+                    Nocturnes for Meditation
                   </h3>
                   <p className="text-xs font-body text-gray-300 mb-2 leading-relaxed">
                     Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
