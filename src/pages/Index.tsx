@@ -9,6 +9,7 @@ import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
 import stanfordMedicineLogo from '../assets/stanford-medicine.png';
 import weillCornellLogo from '../assets/weill-cornell.png';
+import leafDropletImage from '../assets/leaf-droplet.png';
 
 import { Button } from '../components/ui/button';
 
@@ -111,23 +112,22 @@ const Index = () => {
       {/* Hero Section */}
       <section className="py-8 sm:py-10 lg:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16 items-center">
-            <div className="lg:pr-4 space-y-4">
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 items-start">
+            <div className="space-y-3">
               <h1 className="text-3xl lg:text-4xl font-semibold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
-                <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
+                <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-1">Meets Beautiful Music</span>
               </h1>
-              <p className="text-base font-body text-gray-300 leading-relaxed max-w-2xl">
+              <p className="text-sm font-body text-gray-300 leading-relaxed max-w-lg">
                 Evidence-based AI platform that creates personalized therapeutic music experiences 
                 to support mental health, cognitive enhancement, and emotional well-being.
               </p>
-              <p className="text-sm font-body text-gray-400 leading-relaxed">
+              <p className="text-xs font-body text-gray-400 leading-relaxed max-w-lg">
                 Based on evidence from 15K+ studies, utilizing the science of music therapy — 
                 a field with 50+ years of successful implementation in clinical settings.
               </p>
               
-              
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button 
                   size="sm"
                   onClick={handleActionClick}
@@ -140,7 +140,7 @@ const Index = () => {
               </div>
               
               {/* Stats - Horizontal Scrolling Layout */}
-              <div className="w-full overflow-hidden pt-3">
+              <div className="w-full overflow-hidden pt-4">
                 <div className="horizontal-scroll scrollbar-hide">
                   <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                     {stats.map((stat, index) => (
@@ -156,27 +156,15 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="relative max-w-xs ml-auto">
-              <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
-                <div className="relative aspect-square overflow-hidden">
-                  <img 
-                    src={nocturnesImage} 
-                    alt="Nocturnes" 
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/30"></div>
-                </div>
-                <div className="p-3 text-center">
-                  <h3 className="font-medium font-headers text-white text-sm mb-1">Nocturnes</h3>
-                  <p className="font-body text-gray-300 text-xs">Calming Night Compositions</p>
-                  <div className="mt-2 flex items-center justify-center space-x-1 text-white/70">
-                    <Activity className="h-3 w-3 stroke-1" />
-                    <span className="text-xs font-medium font-body">Real-time Monitoring</span>
-                  </div>
-                </div>
+            {/* Leaf Image - Positioned to span from below "Meets Beautiful Music" to stats level */}
+            <div className="relative flex justify-center lg:justify-end">
+              <div className="relative max-w-sm lg:max-w-md xl:max-w-lg">
+                <img 
+                  src={leafDropletImage} 
+                  alt="Leaf with water droplet" 
+                  className="w-full h-auto object-contain rounded-2xl"
+                />
               </div>
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-teal-500/20 to-transparent rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-full blur-3xl"></div>
             </div>
           </div>
         </div>
