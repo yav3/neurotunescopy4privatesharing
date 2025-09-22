@@ -81,13 +81,8 @@ const App = () => {
       return <ResetPasswordForm />;
     }
     
-    // Show auth page if explicitly requested
-    if (showAuth) {
-      return <AuthPage onBack={() => setShowAuth(false)} />;
-    }
-    
-    // Show the new professional landing page for unauthenticated users
-    return <Index />;
+    // Force authentication - no access to app without login
+    return <AuthPage />;
   }
 
   return (

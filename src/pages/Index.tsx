@@ -213,122 +213,120 @@ const Index = () => {
             </p>
           </div>
 
+          {/* Horizontal scrollable container */}
           <div className="relative">
-            {/* Gradient fade at top */}
-            <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
+            {/* Gradient fade at left */}
+            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
             
-            {/* Scrollable content */}
-            <div className="h-80 overflow-y-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent">
-              <div className="space-y-3 pt-6 pb-6 px-2">
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+            {/* Horizontal scrollable content */}
+            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
+              <div className="flex space-x-4 pl-8 pr-8 min-w-max">
+                {/* Classical Crossover for Anxiety Reduction */}
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
+                  <div className="flex flex-col space-y-3">
+                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
                       <img 
                         src="/src/assets/wave-splash-1.png" 
                         alt="Classical Crossover for Anxiety Reduction" 
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-1 left-1">
+                      <div className="absolute top-2 left-2">
                         <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
                           Anxiety Relief
                         </span>
                       </div>
+                      <button 
+                        onClick={handleActionClick}
+                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                      >
+                        <Play className="h-4 w-4 stroke-1" />
+                      </button>
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div>
                       <h3 className="text-sm font-medium font-headers text-white mb-1">
                         Classical Crossover for Anxiety Reduction
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2">
+                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
                         Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
                       </p>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center space-x-2 text-xs text-gray-400">
-                          <Shield className="h-3 w-3 text-white stroke-1" />
-                          <span className="font-body">Neuroscience Validated</span>
-                        </div>
-                        <button 
-                          onClick={handleActionClick}
-                          className="w-6 h-6 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
-                        >
-                          <Play className="h-3 w-3 stroke-1" />
-                        </button>
+                      <div className="flex items-center space-x-2 text-xs text-gray-400">
+                        <Shield className="h-3 w-3 text-white stroke-1" />
+                        <span className="font-body">Neuroscience Validated</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                {/* Nocturnes for Meditation */}
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
+                  <div className="flex flex-col space-y-3">
+                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
                       <img 
                         src="/src/assets/zen-stones.png" 
                         alt="Nocturnes for Meditation" 
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-1 left-1">
+                      <div className="absolute top-2 left-2">
                         <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
                           Focus Enhancement
                         </span>
                       </div>
+                      <button 
+                        onClick={handleActionClick}
+                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                      >
+                        <Play className="h-4 w-4 stroke-1" />
+                      </button>
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div>
                       <h3 className="text-sm font-medium font-headers text-white mb-1">
                         Nocturnes for Meditation
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2">
+                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
                         Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
                       </p>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center space-x-2 text-xs text-gray-400">
-                          <Shield className="h-3 w-3 text-white stroke-1" />
-                          <span className="font-body">FDA Researched</span>
-                        </div>
-                        <button 
-                          onClick={handleActionClick}
-                          className="w-6 h-6 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
-                        >
-                          <Play className="h-3 w-3 stroke-1" />
-                        </button>
+                      <div className="flex items-center space-x-2 text-xs text-gray-400">
+                        <Shield className="h-3 w-3 text-white stroke-1" />
+                        <span className="font-body">FDA Researched</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                {/* Delta Wave Induction */}
+                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
+                  <div className="flex flex-col space-y-3">
+                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
                       <img 
                         src="/src/assets/peaceful-stones.png" 
                         alt="Delta Wave Induction" 
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-1 left-1">
+                      <div className="absolute top-2 left-2">
                         <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
                           Non-Sleep Deep Rest
                         </span>
                       </div>
+                      <button 
+                        onClick={handleActionClick}
+                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                      >
+                        <Play className="h-4 w-4 stroke-1" />
+                      </button>
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div>
                       <h3 className="text-sm font-medium font-headers text-white mb-1">
                         Delta Wave Induction
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2">
+                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
                         Scientifically tuned frequencies to synchronize brainwaves and promote deep, restorative sleep
                       </p>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center space-x-2 text-xs text-gray-400">
-                          <Shield className="h-3 w-3 text-white stroke-1" />
-                          <span className="font-body">Sleep Lab Tested</span>
-                        </div>
-                        <button 
-                          onClick={handleActionClick}
-                          className="w-6 h-6 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
-                        >
-                          <Play className="h-3 w-3 stroke-1" />
-                        </button>
+                      <div className="flex items-center space-x-2 text-xs text-gray-400">
+                        <Shield className="h-3 w-3 text-white stroke-1" />
+                        <span className="font-body">Sleep Lab Tested</span>
                       </div>
                     </div>
                   </div>
@@ -336,8 +334,8 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Gradient fade at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
+            {/* Gradient fade at right */}
+            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
           </div>
 
           <div className="text-center mt-8">
