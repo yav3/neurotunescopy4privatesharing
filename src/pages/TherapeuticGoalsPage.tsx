@@ -100,9 +100,9 @@ const TherapeuticGoalsPage = () => {
           {/* Branding */}
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
-              <Plus className="w-5 h-5 text-gray-900 dark:text-white" />
+              <Plus className="w-7 h-7 text-gray-900 dark:text-white" />
               <div>
-                <div className="text-lg font-normal text-gray-900 dark:text-white">NeuroTunes</div>
+                <div className="text-3xl font-sf font-medium text-gray-900 dark:text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -123,7 +123,7 @@ const TherapeuticGoalsPage = () => {
           
           {/* Trending Section */}
           <div>
-            <h2 className="text-2xl font-normal md:font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
+            <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             <div className="overflow-x-auto">
               <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                 {trendingCategories.map((category) => (
@@ -147,7 +147,7 @@ const TherapeuticGoalsPage = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
                      <div className="relative h-full p-2 flex flex-col justify-end">
                        <div>
-                         <h3 className="text-white font-medium text-xs leading-tight drop-shadow-lg break-words hyphens-auto">
+                         <h3 className="text-white font-didot font-medium text-xs leading-tight drop-shadow-lg break-words hyphens-auto">
                            {category.name}
                          </h3>
                        </div>
@@ -159,7 +159,8 @@ const TherapeuticGoalsPage = () => {
           </div>
 
           {/* Therapeutic Goals Section */}
-          <div>
+          <div className="mt-8">
+            <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
               {therapeuticGoals.map((goal) => (
                 <Card 
@@ -181,7 +182,7 @@ const TherapeuticGoalsPage = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
                    <div className="relative h-full p-2 sm:p-3 md:p-4 flex flex-col justify-end">
                      <div>
-                       <h3 className="text-white font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
+                       <h3 className="text-white font-didot font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
                          {goal.name}
                        </h3>
                      </div>
