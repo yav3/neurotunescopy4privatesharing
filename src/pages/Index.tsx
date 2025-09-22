@@ -80,19 +80,19 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-teal-700 to-blue-800 rounded-lg flex items-center justify-center shadow-lg">
-                <Zap className="h-6 w-6 text-white" />
+              <div className="w-8 h-8 border-2 border-white/60 rounded flex items-center justify-center">
+                <div className="w-3 h-3 border-t-[1.5px] border-r-[1.5px] border-white/80 rotate-45"></div>
               </div>
               <div>
-                <h1 className="text-xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
-                <p className="text-sm font-body text-gray-400 hidden sm:block">AI Music Therapy Platform</p>
+                <h1 className="text-4xl font-headers font-bold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
+                <p className="text-xs font-body text-gray-500">by NeuralPositive</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <Button 
                 size="sm"
                 onClick={handleActionClick}
-                className="bg-gradient-to-r from-teal-800 to-blue-900 text-white shadow-lg hover:shadow-xl font-medium font-headers px-6 hover:from-teal-700 hover:to-blue-800 transition-all duration-300"
+                className="bg-gradient-to-r from-teal-600 to-blue-600 text-white shadow-lg hover:shadow-xl font-medium font-headers px-6 hover:from-teal-500 hover:to-blue-500 transition-all duration-300"
               >
                 {user ? 'Start Therapy' : 'Enter Code'}
               </Button>
@@ -108,7 +108,7 @@ const Index = () => {
             <div className="lg:pr-8 xl:pr-12 space-y-8">
               <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
-                <span className="block bg-gradient-to-r from-teal-700 via-blue-800 to-blue-900 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
+                <span className="block bg-gradient-to-r from-teal-600 via-blue-600 to-blue-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
               <p className="text-lg font-body text-gray-300 leading-relaxed max-w-2xl">
                 Evidence-based AI platform that creates personalized therapeutic music experiences 
@@ -124,7 +124,7 @@ const Index = () => {
                 <Button 
                   size="lg"
                   onClick={handleActionClick}
-                  className="bg-gradient-to-r from-teal-800 via-blue-900 to-blue-900 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto flex items-center justify-center space-x-2 hover:from-teal-700 hover:via-blue-800 hover:to-blue-800 transition-all duration-300"
+                  className="bg-gradient-to-r from-teal-600 via-blue-600 to-blue-700 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto flex items-center justify-center space-x-2 hover:from-teal-500 hover:via-blue-500 hover:to-blue-600 transition-all duration-300"
                 >
                   <Headphones className="h-5 w-5" />
                   <span>{user ? 'Begin Therapy Session' : 'Request Enterprise Code'}</span>
@@ -135,8 +135,8 @@ const Index = () => {
               {/* Stats - Enhanced Layout */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 pt-8">
                 {stats.map((stat, index) => (
-                  <div key={index} className="text-center p-4 lg:p-6 border border-white/10 hover:border-white/20 transition-all duration-300 rounded-xl">
-                    <stat.icon className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-1 mx-auto mb-3" />
+                  <div key={index} className="text-center p-4 lg:p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl">
+                    <stat.icon className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-[1.5] mx-auto mb-3" />
                     <div className="font-bold font-headers text-white text-sm lg:text-base mb-1">{stat.value}</div>
                     <div className="text-xs font-body text-gray-400 font-medium">{stat.label}</div>
                   </div>
@@ -325,11 +325,11 @@ const Index = () => {
             <Button 
               size="lg" 
               onClick={handleActionClick}
-              className="bg-gradient-to-r from-teal-800 via-blue-900 to-blue-900 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto inline-flex items-center space-x-2 hover:from-teal-700 hover:via-blue-800 hover:to-blue-800 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-600 via-blue-600 to-blue-700 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto inline-flex items-center space-x-2 hover:from-teal-500 hover:via-blue-500 hover:to-blue-600 transition-all duration-300"
             >
-              <Zap className="h-5 w-5 stroke-1" />
+              <Zap className="h-5 w-5 stroke-[1.5]" />
               <span>{user ? 'Explore All Programs' : 'Enter Code'}</span>
-              <ArrowRight className="h-5 w-5 stroke-1" />
+              <ArrowRight className="h-5 w-5 stroke-[1.5]" />
             </Button>
           </div>
         </div>
@@ -421,16 +421,16 @@ const Index = () => {
             <Button 
               size="lg"
               onClick={handleActionClick}
-              className="bg-gradient-to-r from-teal-800 via-blue-900 to-blue-900 font-headers text-white shadow-2xl hover:shadow-3xl font-semibold text-lg px-12 py-6 h-auto flex items-center justify-center space-x-3 hover:from-teal-700 hover:via-blue-800 hover:to-blue-800 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-600 via-blue-600 to-blue-700 font-headers text-white shadow-2xl hover:shadow-3xl font-semibold text-lg px-12 py-6 h-auto flex items-center justify-center space-x-3 hover:from-teal-500 hover:via-blue-500 hover:to-blue-600 transition-all duration-300"
             >
-              <Headphones className="h-6 w-6 stroke-1" />
+              <Headphones className="h-6 w-6 stroke-[1.5]" />
               <span>{user ? 'Begin Your Therapy Session' : 'Request Enterprise Code'}</span>
-              <ArrowRight className="h-6 w-6 stroke-1" />
+              <ArrowRight className="h-6 w-6 stroke-[1.5]" />
             </Button>
           </div>
           
           <p className="text-sm font-body text-gray-500 mb-8">
-            Professional licensing available for healthcare providers
+            Request a license for your enterprise
           </p>
           
           <div className="border-t border-white/10 pt-8">
@@ -438,7 +438,7 @@ const Index = () => {
               to="/admin" 
               className="inline-flex items-center space-x-2 text-gray-400 hover:text-teal-500 transition-colors duration-300 font-medium font-body"
             >
-              <Shield className="h-4 w-4 stroke-1" />
+              <Shield className="h-4 w-4 stroke-[1.5]" />
               <span>Admin Portal</span>
             </Link>
           </div>
