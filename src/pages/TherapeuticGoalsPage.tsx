@@ -140,39 +140,41 @@ const TherapeuticGoalsPage = () => {
           <div>
             <h2 className="text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             
-            {/* Responsive grid with smaller cards for trending */}
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
-              {trendingCategories.map((category) => (
-                <div key={category.id} className="flex flex-col items-start w-full">
-                  <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
-                    onClick={() => handleTrendingSelect(category.id)}
-                  >
-                    <img 
-                      src={category.image}
-                      alt={`${category.name} music category`}
-                      loading="eager"
-                      decoding="sync"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      style={{ 
-                        imageRendering: 'auto',
-                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
-                    
-                    {/* Hover text overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                      <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                        Play
-                      </span>
-                    </div>
-                  </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-1.5 text-left leading-tight break-words w-full">
-                    {category.name}
-                  </h3>
-                </div>
-              ))}
+            {/* Horizontal scrolling container for trending */}
+            <div className="overflow-x-auto pb-2">
+              <div className="flex gap-3 min-w-max">
+                {trendingCategories.map((category) => (
+                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
+                      onClick={() => handleTrendingSelect(category.id)}
+                    >
+                      <img 
+                        src={category.image}
+                        alt={`${category.name} music category`}
+                        loading="eager"
+                        decoding="sync"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ 
+                          imageRendering: 'auto',
+                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
+                      
+                      {/* Hover text overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                          Play
+                        </span>
+                      </div>
+                    </Card>
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-1.5 text-left leading-tight break-words w-full">
+                      {category.name}
+                    </h3>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
