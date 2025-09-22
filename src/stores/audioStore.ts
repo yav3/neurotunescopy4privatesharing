@@ -139,7 +139,7 @@ let currentAbort: AbortController | null = null;
 
 // Track failure counts instead of permanent blacklist
 let trackFailureCounts = new Map<string, number>();
-const MAX_TRACK_FAILURES = 3; // Allow 3 attempts before giving up
+const MAX_TRACK_FAILURES = 8; // Allow more attempts before giving up to prevent premature playlist endings
 
 // Track consecutive failures to suppress UI spam
 let consecutiveFailures = 0;
@@ -1730,10 +1730,54 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
         }
         
-        // If no more tracks in current queue, show message and stop gracefully
+        // Check if queue is getting low and try to fetch more tracks
+        const remainingTracks = queue.length - index - 1;
+        if (remainingTracks <= 2 && lastGoal) {
+          console.log('🎵 Queue running low, fetching more tracks for goal:', lastGoal);
+          try {
+            const excludeIds = queue.map(t => t.id.toString());
+            const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 20, 0, excludeIds);
+            
+            if (newTracks && newTracks.length > 0) {
+              console.log('🎵 Added', newTracks.length, 'new tracks to queue');
+              const convertedTracks: Track[] = newTracks.map((track: any) => ({
+                id: track.id,
+                title: track.title,
+                artist: track.artist || 'Neural Positive Music',
+                duration: track.duration || 0,
+                storage_bucket: track.storage_bucket || 'audio',
+                storage_key: track.storage_key,
+                stream_url: track.stream_url,
+                audio_status: track.audio_status || 'working',
+              }));
+              
+              // Add new tracks to the end of the queue
+              const newQueue = [...queue, ...convertedTracks];
+              set({ queue: newQueue });
+              queue = newQueue;
+              console.log('🎵 Queue extended with', convertedTracks.length, 'tracks, new total:', newQueue.length);
+              
+              // Try to continue playing from the extended queue
+              for (let j = index + 1; j < queue.length; j++) {
+                const success = await loadTrack(queue[j]);
+                if (success) {
+                  set({ index: j });
+                  await get().play();
+                  console.log('🎵 Successfully resumed with extended queue at index', j);
+                  isNexting = false;
+                  return;
+                }
+              }
+            }
+          } catch (error) {
+            console.error('🎵 Failed to fetch more tracks:', error);
+          }
+        }
+        
+        // If no more tracks available even after trying to fetch more
         console.log('🎵 Queue exhausted - no more tracks available');
-        set({ error: "No more tracks in this playlist", isPlaying: false });
-        toast.info("End of playlist - select a new category to continue");
+        set({ error: "No more tracks available", isPlaying: false });
+        toast.info("Playlist ended - select a new goal to continue listening");
         
         console.log('🎵 No more working tracks available');
         const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
