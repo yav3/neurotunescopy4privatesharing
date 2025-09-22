@@ -118,57 +118,58 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-4 md:px-6 pb-24">
-        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-24">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-10 lg:space-y-12">
           
           {/* Trending Section */}
           <div>
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
-            <div className="overflow-x-auto">
-              <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
-                {trendingCategories.map((category) => (
-                  <div key={category.id} className="flex flex-col items-center flex-shrink-0">
-                    <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card"
-                      style={{ width: '140px', height: '90px' }}
-                      onClick={() => handleTrendingSelect(category.id)}
-                      title="Pick a genre"
-                    >
-                      <img 
-                        src={category.image}
-                        alt={`${category.name} music category`}
-                        loading="eager"
-                        decoding="sync"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        style={{ 
-                          imageRendering: 'auto',
-                          filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
-                      
-                      {/* Hover text overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                          Pick a genre
-                        </span>
-                      </div>
-                    </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-2 text-left leading-tight break-words">
-                      {category.name}
-                    </h3>
-                  </div>
-                ))}
-              </div>
+            
+            {/* Responsive grid that uses available space efficiently */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6">
+              {trendingCategories.map((category) => (
+                <div key={category.id} className="flex flex-col items-start w-full">
+                  <Card 
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1.55/1]"
+                    onClick={() => handleTrendingSelect(category.id)}
+                    title="Pick a genre"
+                  >
+                    <img 
+                      src={category.image}
+                      alt={`${category.name} music category`}
+                      loading="eager"
+                      decoding="sync"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={{ 
+                        imageRendering: 'auto',
+                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
+                    
+                    {/* Hover text overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                      <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                        Pick a genre
+                      </span>
+                    </div>
+                  </Card>
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words w-full">
+                    {category.name}
+                  </h3>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Therapeutic Goals Section */}
           <div className="mt-8">
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+            
+            {/* Improved responsive grid with better spacing utilization */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6">
               {therapeuticGoals.map((goal) => (
-                <div key={goal.id} className="flex flex-col items-center">
+                <div key={goal.id} className="flex flex-col items-start w-full">
                   <Card 
                     className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card w-full"
                     onClick={() => handleGoalSelect(goal.id)}
@@ -194,7 +195,7 @@ const TherapeuticGoalsPage = () => {
                       </span>
                     </div>
                   </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words">
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words w-full">
                     {goal.name}
                   </h3>
                 </div>
