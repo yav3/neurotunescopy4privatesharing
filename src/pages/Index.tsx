@@ -26,7 +26,8 @@ import {
   Headphones,
   Sparkles,
   TrendingUp,
-  Award
+  Award,
+  Plus
 } from 'lucide-react';
 
 const Index = () => {
@@ -87,7 +88,7 @@ const Index = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 border-2 border-white/60 rounded flex items-center justify-center">
-                <div className="w-3 h-3 border-t-[1.5px] border-r-[1.5px] border-white/80 rotate-45"></div>
+                <Plus className="w-3 h-3 text-white/80" strokeWidth={2.5} />
               </div>
               <div>
                 <h1 className="text-4xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
