@@ -166,7 +166,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 lg:mb-20">
             <h2 className="text-heading-1 font-bold text-foreground mb-6">
-              Science-Based Therapeutic Benefits
+              Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Our AI analyzes thousands of musical parameters to create personalized therapy sessions 
@@ -212,11 +212,7 @@ const Index = () => {
                     alt="Stress reduction therapy" 
                     className="w-full h-full object-cover opacity-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl">
-                      <Heart className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10"></div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Stress Reduction
@@ -254,11 +250,7 @@ const Index = () => {
                     alt="Focus enhancement therapy" 
                     className="w-full h-full object-cover opacity-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-info/20 to-info/10 flex items-center justify-center">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-info to-info/80 flex items-center justify-center shadow-xl">
-                      <Brain className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-info/20 to-info/10"></div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Focus Enhancement
@@ -296,11 +288,7 @@ const Index = () => {
                     alt="Deep rest therapy" 
                     className="w-full h-full object-cover opacity-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-success/10 flex items-center justify-center">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-success to-success/80 flex items-center justify-center shadow-xl">
-                      <Activity className="h-8 w-8 lg:h-10 lg:w-10 text-white" />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-success/10"></div>
                   <div className="absolute top-4 left-4">
                     <span className="glass-card px-3 py-1 border-glass-border text-primary rounded-full text-sm font-medium backdrop-blur-lg">
                       Non-Sleep Deep Rest
