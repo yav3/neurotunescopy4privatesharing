@@ -127,32 +127,37 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto">
               <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
                 {trendingCategories.map((category) => (
-                  <Card 
-                    key={category.id}
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card flex-shrink-0"
-                    style={{ width: '140px', height: '90px' }}
-                    onClick={() => handleTrendingSelect(category.id)}
-                  >
-                    <img 
-                      src={category.image}
-                      alt={`${category.name} music category`}
-                      loading="eager"
-                      decoding="sync"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      style={{ 
-                        imageRendering: 'auto',
-                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                     <div className="relative h-full p-2 flex flex-col justify-end">
-                       <div>
-                         <h3 className="text-white font-didot font-medium text-xs leading-tight drop-shadow-lg break-words hyphens-auto">
-                           {category.name}
-                         </h3>
-                       </div>
-                     </div>
-                  </Card>
+                  <div key={category.id} className="flex flex-col items-center flex-shrink-0">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card"
+                      style={{ width: '140px', height: '90px' }}
+                      onClick={() => handleTrendingSelect(category.id)}
+                      title="Pick a genre"
+                    >
+                      <img 
+                        src={category.image}
+                        alt={`${category.name} music category`}
+                        loading="eager"
+                        decoding="sync"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ 
+                          imageRendering: 'auto',
+                          filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
+                      
+                      {/* Hover text overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                          Pick a genre
+                        </span>
+                      </div>
+                    </Card>
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-2 text-center leading-tight break-words">
+                      {category.name}
+                    </h3>
+                  </div>
                 ))}
               </div>
             </div>
@@ -163,31 +168,36 @@ const TherapeuticGoalsPage = () => {
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
               {therapeuticGoals.map((goal) => (
-                <Card 
-                  key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card"
-                  onClick={() => handleGoalSelect(goal.id)}
-                >
-                  <img 
-                    src={goal.image}
-                    alt={`${goal.name} therapy program`}
-                    loading="eager"
-                    decoding="sync"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    style={{ 
-                      imageRendering: 'auto',
-                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                   <div className="relative h-full p-2 sm:p-3 md:p-4 flex flex-col justify-end">
-                     <div>
-                       <h3 className="text-white font-didot font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
-                         {goal.name}
-                       </h3>
-                     </div>
-                   </div>
-                </Card>
+                <div key={goal.id} className="flex flex-col items-center">
+                  <Card 
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card w-full"
+                    onClick={() => handleGoalSelect(goal.id)}
+                    title="Pick a genre"
+                  >
+                    <img 
+                      src={goal.image}
+                      alt={`${goal.name} therapy program`}
+                      loading="eager"
+                      decoding="sync"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={{ 
+                        imageRendering: 'auto',
+                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
+                    
+                    {/* Hover text overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                      <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                        Pick a genre
+                      </span>
+                    </div>
+                  </Card>
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-center leading-tight break-words">
+                    {goal.name}
+                  </h3>
+                </div>
               ))}
             </div>
           </div>
