@@ -118,7 +118,7 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-24">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-24 pt-8 md:pt-12 lg:pt-16">
         <div className="max-w-7xl mx-auto space-y-8 md:space-y-10 lg:space-y-12">
           
           {/* Trending Section */}
