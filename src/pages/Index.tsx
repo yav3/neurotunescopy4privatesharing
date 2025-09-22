@@ -190,19 +190,31 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            {therapeuticBenefits.map((benefit, index) => (
-              <div 
-                key={index} 
-                className="border border-white/10 rounded-xl p-4 hover:border-white/20 transition-all duration-500 group"
-              >
-                <div className="w-8 h-8 rounded-xl border-2 border-white/30 flex items-center justify-center mb-3 group-hover:border-white/50 transition-all duration-300">
-                  <benefit.icon className="h-4 w-4 text-white stroke-1" />
-                </div>
-                <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
-                <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+          {/* Horizontal scrollable container */}
+          <div className="relative">
+            {/* Gradient fade at left */}
+            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+            
+            {/* Horizontal scrollable content */}
+            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
+              <div className="flex space-x-8 pl-8 pr-8 min-w-max">
+                {therapeuticBenefits.map((benefit, index) => (
+                  <div 
+                    key={index} 
+                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group w-80 flex-shrink-0"
+                  >
+                    <div className="w-8 h-8 rounded-xl border-2 border-white/30 flex items-center justify-center mb-3 group-hover:border-white/50 transition-all duration-300">
+                      <benefit.icon className="h-4 w-4 text-white stroke-1" />
+                    </div>
+                    <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
+                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            
+            {/* Gradient fade at right */}
+            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
           </div>
         </div>
       </section>
@@ -370,60 +382,72 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
-                <img 
-                  src={stanfordMedicineLogo} 
-                  alt="Stanford Medicine" 
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
-                />
-              </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Stanford Medicine</h3>
-              <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
-                Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
-              </p>
-              <div className="flex items-center justify-center space-x-2 text-xs text-teal-400">
-                <Star className="h-3 w-3 stroke-1" />
-                <span className="font-body">Lead Research Partner</span>
-              </div>
-            </div>
+          {/* Horizontal scrollable container */}
+          <div className="relative">
+            {/* Gradient fade at left */}
+            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+            
+            {/* Horizontal scrollable content */}
+            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
+              <div className="flex space-x-12 pl-8 pr-8 min-w-max">
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
+                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <img 
+                      src={stanfordMedicineLogo} 
+                      alt="Stanford Medicine" 
+                      className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                  <h3 className="text-sm font-medium font-headers text-white mb-2">Stanford Medicine</h3>
+                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                    Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-xs text-teal-400">
+                    <Star className="h-3 w-3 stroke-1" />
+                    <span className="font-body">Lead Research Partner</span>
+                  </div>
+                </div>
 
-            <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
-                <img 
-                  src={jacobsTechnionLogo} 
-                  alt="Jacobs Technion-Cornell Institute" 
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
-                />
-              </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Jacobs Technion-Cornell</h3>
-              <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
-                Advanced technology research for therapeutic applications and digital health innovation
-              </p>
-              <div className="flex items-center justify-center space-x-2 text-xs text-teal-500">
-                <TrendingUp className="h-3 w-3 stroke-1" />
-                <span className="font-body">Technology Innovation</span>
-              </div>
-            </div>
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
+                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <img 
+                      src={jacobsTechnionLogo} 
+                      alt="Jacobs Technion-Cornell Institute" 
+                      className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                  <h3 className="text-sm font-medium font-headers text-white mb-2">Jacobs Technion-Cornell</h3>
+                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                    Advanced technology research for therapeutic applications and digital health innovation
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-xs text-teal-500">
+                    <TrendingUp className="h-3 w-3 stroke-1" />
+                    <span className="font-body">Technology Innovation</span>
+                  </div>
+                </div>
 
-            <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
-                <img 
-                  src={weillCornellLogo} 
-                  alt="Weill Cornell Medicine" 
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
-                />
-              </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Weill Cornell Medicine</h3>
-              <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
-                Clinical research and medical validation of therapeutic music protocols in healthcare settings
-              </p>
-              <div className="flex items-center justify-center space-x-2 text-xs text-cyan-500">
-                <Zap className="h-3 w-3 stroke-1" />
-                <span className="font-body">Clinical Validation</span>
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
+                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                    <img 
+                      src={weillCornellLogo} 
+                      alt="Weill Cornell Medicine" 
+                      className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                  <h3 className="text-sm font-medium font-headers text-white mb-2">Weill Cornell Medicine</h3>
+                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                    Clinical research and medical validation of therapeutic music protocols in healthcare settings
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-xs text-cyan-500">
+                    <Zap className="h-3 w-3 stroke-1" />
+                    <span className="font-body">Clinical Validation</span>
+                  </div>
+                </div>
               </div>
             </div>
+            
+            {/* Gradient fade at right */}
+            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
           </div>
         </div>
       </section>
