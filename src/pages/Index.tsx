@@ -74,7 +74,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+    <div className="min-h-screen" style={{ background: 'var(--gradient-white-section)' }}>
       {/* Navigation Header */}
       <nav className="glass-card sticky top-0 z-50 border-b border-glass-border backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
