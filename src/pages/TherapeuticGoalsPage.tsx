@@ -126,13 +126,12 @@ const TherapeuticGoalsPage = () => {
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             
             {/* Responsive grid with smaller cards for trending */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-8 gap-2 sm:gap-3 md:gap-4 lg:gap-4 xl:gap-5">
+            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
               {trendingCategories.map((category) => (
                 <div key={category.id} className="flex flex-col items-start w-full">
                   <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1.2/1]"
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
                     onClick={() => handleTrendingSelect(category.id)}
-                    title="Pick a genre"
                   >
                     <img 
                       src={category.image}
@@ -150,11 +149,11 @@ const TherapeuticGoalsPage = () => {
                     {/* Hover text overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
                       <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                        Pick a genre
+                        Play
                       </span>
                     </div>
                   </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words w-full">
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-1.5 text-left leading-tight break-words w-full">
                     {category.name}
                   </h3>
                 </div>
@@ -166,12 +165,12 @@ const TherapeuticGoalsPage = () => {
           <div className="mt-8">
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
             
-            {/* Improved responsive grid with better spacing utilization */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6">
+            {/* Larger therapeutic goals cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
               {therapeuticGoals.map((goal) => (
                 <div key={goal.id} className="flex flex-col items-start w-full">
                   <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card w-full"
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.3/1] border bg-card w-full"
                     onClick={() => handleGoalSelect(goal.id)}
                     title="Pick a genre"
                   >
