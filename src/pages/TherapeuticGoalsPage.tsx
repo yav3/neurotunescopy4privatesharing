@@ -121,39 +121,6 @@ const TherapeuticGoalsPage = () => {
       <div className="px-4 md:px-6 pb-24">
         <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
           
-          {/* Therapeutic Goals Section */}
-          <div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
-              {therapeuticGoals.map((goal) => (
-                <Card 
-                  key={goal.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card"
-                  onClick={() => handleGoalSelect(goal.id)}
-                >
-                  <img 
-                    src={goal.image}
-                    alt={`${goal.name} therapy program`}
-                    loading="eager"
-                    decoding="sync"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    style={{ 
-                      imageRendering: 'auto',
-                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                   <div className="relative h-full p-2 sm:p-3 md:p-4 flex flex-col justify-end">
-                     <div>
-                       <h3 className="text-white font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
-                         {goal.name}
-                       </h3>
-                     </div>
-                   </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-
           {/* Trending Section */}
           <div>
             <h2 className="text-2xl font-normal md:font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
@@ -188,6 +155,39 @@ const TherapeuticGoalsPage = () => {
                   </Card>
                 ))}
               </div>
+            </div>
+          </div>
+
+          {/* Therapeutic Goals Section */}
+          <div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+              {therapeuticGoals.map((goal) => (
+                <Card 
+                  key={goal.id}
+                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.5/1] border bg-card"
+                  onClick={() => handleGoalSelect(goal.id)}
+                >
+                  <img 
+                    src={goal.image}
+                    alt={`${goal.name} therapy program`}
+                    loading="eager"
+                    decoding="sync"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    style={{ 
+                      imageRendering: 'auto',
+                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
+                   <div className="relative h-full p-2 sm:p-3 md:p-4 flex flex-col justify-end">
+                     <div>
+                       <h3 className="text-white font-medium text-xs sm:text-sm md:text-sm leading-tight drop-shadow-lg break-words hyphens-auto">
+                         {goal.name}
+                       </h3>
+                     </div>
+                   </div>
+                </Card>
+              ))}
             </div>
           </div>
           
