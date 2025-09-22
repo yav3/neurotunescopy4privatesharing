@@ -165,12 +165,12 @@ const TherapeuticGoalsPage = () => {
           <div className="mt-8">
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
             
-            {/* Larger therapeutic goals cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+            {/* Larger therapeutic goals cards with proper mobile/tablet layout */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
               {therapeuticGoals.map((goal) => (
                 <div key={goal.id} className="flex flex-col items-start w-full">
                   <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.3/1] border bg-card w-full"
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.2/1] border bg-card w-full"
                     onClick={() => handleGoalSelect(goal.id)}
                     title="Pick a genre"
                   >
