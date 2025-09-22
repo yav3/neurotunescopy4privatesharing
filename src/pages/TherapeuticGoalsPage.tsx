@@ -142,10 +142,10 @@ const TherapeuticGoalsPage = () => {
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       style={{ 
                         imageRendering: 'auto',
-                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
                     
                     {/* Hover text overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
@@ -183,10 +183,10 @@ const TherapeuticGoalsPage = () => {
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       style={{ 
                         imageRendering: 'auto',
-                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 dark:from-black/70 dark:to-black/50" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
                     
                     {/* Hover text overlay */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
