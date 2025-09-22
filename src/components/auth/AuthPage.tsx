@@ -14,21 +14,21 @@ export function AuthPage({ onBack }: AuthPageProps) {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        {/* Clean background with subtle teal accent */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-teal-50/5" />
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        {/* All black background */}
+        <div className="absolute inset-0 bg-black" />
         
         {onBack && (
           <Button
             variant="ghost"
             onClick={onBack}
-            className="absolute top-6 left-6 text-muted-foreground hover:text-foreground hover:bg-accent z-50"
+            className="absolute top-6 left-6 text-gray-400 hover:text-white hover:bg-gray-800 z-50"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
         )}
-        <div className="relative z-40 bg-card backdrop-blur-sm rounded-2xl p-8 w-full max-w-md border border-border shadow-lg ring-1 ring-primary/5">
+        <div className="relative z-40 bg-black backdrop-blur-sm rounded-2xl p-8 w-full max-w-md border border-gray-800 shadow-lg">
           {isLoginMode ? (
             <LoginForm onToggleMode={() => setIsLoginMode(false)} />
           ) : (

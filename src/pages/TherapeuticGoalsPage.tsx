@@ -102,7 +102,7 @@ const TherapeuticGoalsPage = () => {
             <div className="flex items-center gap-2">
               <Plus className="w-7 h-7 text-gray-900 dark:text-white" />
               <div>
-                <div className="text-3xl font-sf font-medium text-gray-900 dark:text-white">NeuroTunes</div>
+                <div className="text-6xl font-sf font-medium text-gray-900 dark:text-white">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -123,7 +123,7 @@ const TherapeuticGoalsPage = () => {
           
           {/* Trending Section */}
           <div>
-            <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
+            <h2 className="text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             
             {/* Responsive grid with smaller cards for trending */}
             <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9 2xl:grid-cols-10 gap-2">
@@ -163,7 +163,7 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section */}
           <div className="mt-8">
-            <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
+            <h2 className="text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
             
             {/* Larger therapeutic goals cards with proper mobile/tablet layout */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
