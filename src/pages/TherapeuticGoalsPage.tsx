@@ -23,6 +23,8 @@ import positivePopDewdrops from '@/assets/positive-pop-dewdrops.png';
 import stressLeaf from '@/assets/stress-support-leaf.png';
 import anxietyLake from '@/assets/anxiety-support-lake.png';
 import nocturnesStones from '@/assets/nocturnes-stones.png';
+import chillTropicalHouse from '@/assets/chill-tropical-house.png';
+import socialTimeFlowers from '@/assets/social-time-flowers.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -46,6 +48,8 @@ const trendingCategories = [
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: waterfallGreen },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: yellowFlowers },
+  { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
+  { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeFlowers },
 ];
 
 const TherapeuticGoalsPage = () => {
@@ -88,6 +92,8 @@ const TherapeuticGoalsPage = () => {
       'chill-piano': 'focus-enhancement',
       'new-age-world': 'meditation-support',
       'non-sleep-deep-rest': 'meditation-support',
+      'chill-tropical-house': 'calm-mood-boost',
+      'social-time': 'calm-mood-boost',
     };
     
     const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
