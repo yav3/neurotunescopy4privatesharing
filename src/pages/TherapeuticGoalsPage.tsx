@@ -118,7 +118,7 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-24 pt-8 md:pt-12 lg:pt-16">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-8 md:pt-12 lg:pt-16">
         <div className="max-w-7xl mx-auto space-y-8 md:space-y-10 lg:space-y-12">
           
           {/* Trending Section */}
@@ -212,7 +212,7 @@ const TherapeuticGoalsPage = () => {
 
       {/* Debug button in development */}
       {import.meta.env.DEV && (
-        <div className="fixed bottom-20 right-4 z-50 space-y-2">
+        <div className="fixed bottom-32 sm:bottom-20 right-4 z-40 space-y-2 max-w-[200px]">
           <Button 
             onClick={() => {
               import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
@@ -221,7 +221,7 @@ const TherapeuticGoalsPage = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
             🔍 Debug All Buckets
           </Button>
@@ -233,7 +233,7 @@ const TherapeuticGoalsPage = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
             🎯 Check Pain/New Age
           </Button>
@@ -245,7 +245,7 @@ const TherapeuticGoalsPage = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
             🎯 Test Pop Energy
           </Button>
@@ -257,7 +257,7 @@ const TherapeuticGoalsPage = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
             🧘 Test Meditation Piano
           </Button>
@@ -269,7 +269,7 @@ const TherapeuticGoalsPage = () => {
             }}
             variant="outline"
             size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
             🧘 Test Non-Sleep Deep Rest
           </Button>
