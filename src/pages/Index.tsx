@@ -150,7 +150,7 @@ const Index = () => {
                   <Headphones className="h-8 w-8 lg:h-10 lg:w-10 text-white stroke-1" />
                 </div>
                 <h3 className="font-semibold font-headers text-white text-lg lg:text-xl mb-2">Active Therapy Session</h3>
-                <p className="font-body text-gray-300 text-sm">Cognitive Enhancement Protocol</p>
+                <p className="font-body text-gray-300 text-sm">Classical Sonatas for Stress Relief</p>
                 <div className="mt-6 flex items-center justify-center space-x-2 text-white/70">
                   <Activity className="h-4 w-4 stroke-1" />
                   <span className="text-xs font-medium font-body">Real-time Monitoring</span>
@@ -223,15 +223,15 @@ const Index = () => {
                 </div>
                 <div className="p-6 lg:p-8">
                   <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3">
-                    Classical Sonatas for Stress Relief
+                    Binaural Beats for Focus
                   </h3>
                   <p className="text-sm lg:text-base font-body text-gray-300 mb-6 leading-relaxed">
-                    Evidence-based classical music therapy featuring Chopin piano sonatas and gentle orchestral compositions. Designed to reduce cortisol levels and activate parasympathetic nervous system responses for deep relaxation.
+                    Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-sm text-gray-400">
                       <Shield className="h-4 w-4 text-white stroke-1" />
-                      <span className="font-body">258 Clinical Tracks</span>
+                      <span className="font-body">Neuroscience Validated</span>
                     </div>
                     <button 
                       onClick={handleActionClick}
@@ -347,46 +347,60 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid md:grid-cols-4 gap-8 lg:gap-12">
             <div className="border border-white/10 rounded-2xl p-8 lg:p-10 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-white/30 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-white/50 transition-all duration-300 mx-auto">
-                <Award className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-1" />
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-blue-500/50 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-blue-400/70 transition-all duration-300 mx-auto">
+                <Award className="h-6 w-6 lg:h-8 lg:w-8 text-blue-400 stroke-1" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Stanford Medicine</h3>
+              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Stanford University Medical School</h3>
               <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed mb-6">
                 Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
               </p>
-              <div className="flex items-center justify-center space-x-2 text-sm text-white/70">
+              <div className="flex items-center justify-center space-x-2 text-sm text-blue-400">
                 <Star className="h-4 w-4 stroke-1" />
                 <span className="font-body">Lead Research Partner</span>
               </div>
             </div>
 
             <div className="border border-white/10 rounded-2xl p-8 lg:p-10 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-white/30 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-white/50 transition-all duration-300 mx-auto">
-                <Users className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-1" />
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-teal-600/50 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-teal-500/70 transition-all duration-300 mx-auto">
+                <Users className="h-6 w-6 lg:h-8 lg:w-8 text-teal-500 stroke-1" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Johns Hopkins</h3>
+              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Jacobs Cornell Technion Institute</h3>
               <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed mb-6">
-                Clinical trials for therapeutic music interventions in psychiatric and pain management settings
+                Advanced technology research for therapeutic applications and digital health innovation
               </p>
-              <div className="flex items-center justify-center space-x-2 text-sm text-white/70">
+              <div className="flex items-center justify-center space-x-2 text-sm text-teal-500">
                 <TrendingUp className="h-4 w-4 stroke-1" />
+                <span className="font-body">Technology Innovation</span>
+              </div>
+            </div>
+
+            <div className="border border-white/10 rounded-2xl p-8 lg:p-10 text-center hover:border-white/20 transition-all duration-500 group">
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-teal-700/50 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-teal-600/70 transition-all duration-300 mx-auto">
+                <Sparkles className="h-6 w-6 lg:h-8 lg:w-8 text-teal-600 stroke-1" />
+              </div>
+              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Weill Cornell Medical College</h3>
+              <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed mb-6">
+                Clinical research and medical validation of therapeutic music protocols in healthcare settings
+              </p>
+              <div className="flex items-center justify-center space-x-2 text-sm text-teal-600">
+                <Zap className="h-4 w-4 stroke-1" />
                 <span className="font-body">Clinical Validation</span>
               </div>
             </div>
 
             <div className="border border-white/10 rounded-2xl p-8 lg:p-10 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-white/30 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-white/50 transition-all duration-300 mx-auto">
-                <Sparkles className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-1" />
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-2 border-blue-600/50 flex items-center justify-center mb-6 lg:mb-8 group-hover:border-blue-500/70 transition-all duration-300 mx-auto">
+                <Brain className="h-6 w-6 lg:h-8 lg:w-8 text-blue-500 stroke-1" />
               </div>
-              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">MIT Technology</h3>
+              <h3 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-4 lg:mb-6">Columbia University</h3>
               <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed mb-6">
-                Advanced AI algorithms for personalized music therapy optimization and real-time adaptation
+                Neuroscience studies on therapeutic music effects and evidence-based treatment development
               </p>
-              <div className="flex items-center justify-center space-x-2 text-sm text-white/70">
-                <Zap className="h-4 w-4 stroke-1" />
-                <span className="font-body">AI Innovation</span>
+              <div className="flex items-center justify-center space-x-2 text-sm text-blue-500">
+                <Heart className="h-4 w-4 stroke-1" />
+                <span className="font-body">Neuroscience Research</span>
               </div>
             </div>
           </div>
