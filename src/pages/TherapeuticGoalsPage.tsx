@@ -125,12 +125,12 @@ const TherapeuticGoalsPage = () => {
           <div>
             <h2 className="text-3xl font-sf font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
             
-            {/* Responsive grid that uses available space efficiently */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6">
+            {/* Responsive grid with smaller cards for trending */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-8 gap-2 sm:gap-3 md:gap-4 lg:gap-4 xl:gap-5">
               {trendingCategories.map((category) => (
                 <div key={category.id} className="flex flex-col items-start w-full">
                   <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1.55/1]"
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1.2/1]"
                     onClick={() => handleTrendingSelect(category.id)}
                     title="Pick a genre"
                   >
