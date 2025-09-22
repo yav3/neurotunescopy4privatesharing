@@ -99,7 +99,13 @@ const completeListeningSession = async () => {
         currentSession.tracksPlayed[0]?.id?.toString() || '',
         currentSession.totalDuration,
         frequencyBand,
-        user.id
+        user.id,
+        {
+          tracksPlayed: currentSession.tracksPlayed,
+          skipCount: currentSession.skipCount,
+          dominantGenres: currentSession.dominantGenres,
+          totalDuration: currentSession.totalDuration
+        }
       );
       
       console.log('🎵 Completed listening session:', {

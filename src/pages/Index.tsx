@@ -156,38 +156,45 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right side with Active Therapy Session */}
-            <div className="relative flex justify-center lg:justify-end">
-              <div className="relative max-w-sm lg:max-w-md xl:max-w-lg">
-                {/* Active Therapy Session Card */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden">
-                  {/* Background leaf image */}
-                  <div className="absolute inset-0 opacity-30">
-                    <img 
-                      src="/src/assets/leaf-therapy.png"
-                      alt="" 
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+            {/* Placeholder for moved Active Therapy Session */}
+            <div className="hidden lg:block">
+              {/* This space is intentionally left for visual balance */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Active Therapy Session */}
+      <section className="py-6 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center">
+            <div className="relative max-w-md">
+              {/* Active Therapy Session Card */}
+              <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden">
+                {/* Background leaf image */}
+                <div className="absolute inset-0 opacity-30">
+                  <img 
+                    src="/src/assets/leaf-therapy.png"
+                    alt="" 
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                </div>
+                
+                {/* Content */}
+                <div className="relative z-10 flex flex-col items-center justify-center space-y-4">
+                  {/* Headphones Icon */}
+                  <div className="w-16 h-16 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Headphones className="h-8 w-8 text-white" />
                   </div>
                   
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col items-center justify-center min-h-[200px]">
-                    {/* Headphones Icon - smaller and positioned lower */}
-                    <div className="flex justify-center mb-3">
-                      <div className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <Headphones className="h-6 w-6 text-white" />
-                      </div>
-                    </div>
-                    
-                    {/* Session Info - smaller text beneath the image */}
-                    <div className="text-center space-y-2">
-                      <h3 className="text-lg font-semibold font-headers text-white">Active Therapy Session</h3>
-                      <p className="text-xs font-body text-gray-300">Classical Sonatas for Stress Relief</p>
-                      <div className="flex items-center justify-center space-x-1 text-white/80">
-                        <Activity className="h-3 w-3" />
-                        <span className="text-xs font-medium font-body">Real-time Monitoring</span>
-                      </div>
+                  {/* Session Info */}
+                  <div className="text-center space-y-3">
+                    <h3 className="text-xl font-semibold font-headers text-white">Active Therapy Session</h3>
+                    <p className="text-sm font-body text-gray-300">Classical Sonatas for Stress Relief</p>
+                    <div className="flex items-center justify-center space-x-2 text-white/80">
+                      <Activity className="h-4 w-4" />
+                      <span className="text-sm font-medium font-body">Real-time Monitoring</span>
                     </div>
                   </div>
                 </div>

@@ -19,25 +19,17 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated to save favorites' };
       }
 
-      // For now, store favorites in localStorage since the DB table creation is pending
-      const existingFavorites = await this.getLocalFavorites();
-      const newFavorite: UserFavorite = {
-        id: crypto.randomUUID(),
-        user_id: user.id,
-        track_id: track.id,
-        track_title: track.title,
-        track_data: {
-          storage_bucket: track.storage_bucket,
-          storage_key: track.storage_key,
-          goal: track.goal,
-          therapeutic_use: track.therapeutic_use,
-          genre: track.genre
-        },
-        created_at: new Date().toISOString()
-      };
+      const { error } = await supabase
+        .from('favorites')
+        .insert({
+          user_id: user.id,
+          track_id: parseInt(track.id.toString())
+        });
 
-      const updated = [...existingFavorites.filter(f => f.track_id !== track.id), newFavorite];
-      localStorage.setItem(`user_favorites_${user.id.substring(0, 8)}`, JSON.stringify(updated));
+      if (error) {
+        console.error('Error adding favorite:', error);
+        return { success: false, error: error.message };
+      }
 
       return { success: true };
     } catch (error) {
@@ -54,9 +46,16 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated' };
       }
 
-      const existingFavorites = await this.getLocalFavorites();
-      const updated = existingFavorites.filter(f => f.track_id !== trackId);
-      localStorage.setItem(`user_favorites_${user.id.substring(0, 8)}`, JSON.stringify(updated));
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('track_id', parseInt(trackId));
+
+      if (error) {
+        console.error('Error removing favorite:', error);
+        return { success: false, error: error.message };
+      }
 
       return { success: true };
     } catch (error) {
@@ -73,7 +72,23 @@ export class UserFavoritesService {
         return [];
       }
 
-      return await this.getLocalFavorites();
+      const { data: favorites, error } = await supabase
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error fetching favorites:', error);
+        return [];
+      }
+
+      // Convert track_id from number to string to match interface
+      const formattedFavorites = favorites?.map(fav => ({
+        ...fav,
+        track_id: fav.track_id.toString()
+      })) || [];
+
+      return formattedFavorites;
     } catch (error) {
       console.error('Error fetching favorites:', error);
       return [];
@@ -82,10 +97,21 @@ export class UserFavoritesService {
 
   static async isFavorite(trackId: string): Promise<boolean> {
     try {
-      const favorites = await this.getUserFavorites();
-      return favorites.some(f => f.track_id === trackId);
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        return false;
+      }
+
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('track_id', parseInt(trackId))
+        .single();
+
+      return !error && !!data;
     } catch (error) {
-      console.error('Error checking if favorite:', error);
       return false;
     }
   }

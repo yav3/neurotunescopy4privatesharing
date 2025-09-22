@@ -192,7 +192,13 @@ export class SupabaseService {
     trackId: string, 
     duration: number, 
     frequencyBand: FrequencyBand,
-    userId?: string
+    userId?: string,
+    sessionData?: {
+      tracksPlayed: any[];
+      skipCount: number;
+      dominantGenres: string[];
+      totalDuration: number;
+    }
   ) {
     try {
       // Get current user if not provided
@@ -202,19 +208,22 @@ export class SupabaseService {
         patientId = user?.id || null;
       }
 
-      const sessionData = {
+      const sessionDurationMinutes = Math.floor(duration / 60);
+      const skipRate = sessionData ? (sessionData.tracksPlayed.length > 0 ? sessionData.skipCount / sessionData.tracksPlayed.length : 0) : 0;
+
+      const insertData = {
         patient_id: patientId,
-        session_duration_minutes: Math.floor(duration / 60),
-        tracks_played: 1,
-        dominant_genres: [frequencyBand],
+        session_duration_minutes: sessionDurationMinutes,
+        tracks_played: sessionData?.tracksPlayed?.length || 1,
+        dominant_genres: sessionData?.dominantGenres || [frequencyBand],
         session_date: new Date().toISOString(),
-        skip_rate: 0,
+        skip_rate: skipRate,
         average_complexity_score: null
       };
 
       const { error } = await supabase
         .from('listening_sessions')
-        .insert(sessionData);
+        .insert(insertData);
 
       if (error) throw error;
 
@@ -222,7 +231,9 @@ export class SupabaseService {
         trackId, 
         duration, 
         frequencyBand,
-        patientId
+        patientId,
+        tracksPlayed: insertData.tracks_played,
+        skipRate: Math.round(skipRate * 100)
       });
     } catch (error) {
       logger.error('Failed to track therapeutic session', { trackId, error });
