@@ -71,32 +71,25 @@ const TherapeuticGoalsPage = () => {
     setSelectedGoalId('');
   };
 
-  const handleTrendingSelect = async (categoryId: string) => {
+  const handleTrendingSelect = (categoryId: string) => {
     console.log('🎵 Navigating to trending category:', categoryId);
     
-    // Run full diagnostic first to identify issues
-    console.log('🔧 Running audio system diagnostic...');
-    await audioSystemDebugger.testFullSystem();
-    
-    // Map trending categories to specific genre buckets for targeted playback
-    const trendingToBucketsMap: Record<string, { goal: string; buckets: string[] }> = {
-      'chill-classical': { goal: 'pain-support', buckets: ['Chopin'] }, // ONLY use Chopin for classical music
-      'nocturnes': { goal: 'focus-enhancement', buckets: ['Nocturnes'] }, // Use actual Nocturnes bucket
-      'positive-pop': { goal: 'energy-boost', buckets: ['pop'] }, // Actual pop music
-      'chill-piano': { goal: 'focus-enhancement', buckets: ['Chopin'] }, // Piano music specifically
-      'new-age-world': { goal: 'meditation-support', buckets: ['meditation'] }, // New Age & World maps to meditation bucket
-      'non-sleep-deep-rest': { goal: 'meditation-support', buckets: ['meditation'] }, // Non-Sleep Deep Rest from meditation bucket
+    // Map trending categories to their corresponding therapeutic goals
+    const trendingToGoalMap: Record<string, string> = {
+      'chill-classical': 'pain-support',
+      'nocturnes': 'focus-enhancement', 
+      'positive-pop': 'energy-boost',
+      'chill-piano': 'focus-enhancement',
+      'new-age-world': 'meditation-support',
+      'non-sleep-deep-rest': 'meditation-support',
     };
     
-    const mapping = trendingToBucketsMap[categoryId] || { goal: 'focus-enhancement', buckets: [] };
-    console.log('🎵 Starting playback for category:', categoryId, 'using goal:', mapping.goal, 'buckets:', mapping.buckets);
-    console.log('🔍 DEBUG: Selected category mapping details:', { categoryId, mapping, allMappings: trendingToBucketsMap });
-    console.log('🎼 CLASSICAL FIX: Ensuring classical categories only use classical buckets, not New Age');
+    const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
+    console.log('🎵 Opening genre selection for:', categoryId, 'mapped to goal:', goalId);
     
-    // Use the playFromGenre action from playFromGoal.ts to play from specific buckets
-    import('@/actions/playFromGoal').then(({ playFromGenre }) => {
-      playFromGenre(mapping.goal, mapping.buckets);
-    });
+    // Open genre selection modal for consistent user experience
+    setSelectedGoalId(goalId);
+    setIsModalOpen(true);
   };
 
   return (
