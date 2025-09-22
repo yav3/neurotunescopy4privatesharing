@@ -190,30 +190,24 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Mobile-Adaptive Horizontal scrollable container */}
-          <div className="relative -mx-4 sm:mx-0">
-            {/* Horizontal scrollable content with touch support */}
-            <div className="horizontal-scroll scrollbar-hide pb-4">
-              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
-                {therapeuticBenefits.map((benefit, index) => (
+          {/* Horizontal Scrolling Container */}
+          <div className="w-full overflow-hidden">
+            <div className="horizontal-scroll scrollbar-hide">
+              <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
+                {[...therapeuticBenefits, ...therapeuticBenefits].map((benefit, index) => (
                   <div 
                     key={index} 
-                    className="border border-white/10 rounded-xl p-4 sm:p-6 hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start"
+                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
+                    style={{ width: '280px', minWidth: '280px' }}
                   >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
-                      <benefit.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
+                      <benefit.icon className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-base sm:text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
-                    <p className="text-sm sm:text-base font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
+                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
                   </div>
                 ))}
               </div>
-            </div>
-            
-            {/* Scroll indicators for larger screens */}
-            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
-              <div className="w-8 h-16 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
-              <div className="w-8 h-16 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
             </div>
           </div>
         </div>
@@ -231,15 +225,15 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Mobile-Adaptive Horizontal scrollable container */}
-          <div className="relative -mx-4 sm:mx-0">
-            {/* Horizontal scrollable content with touch support */}
-            <div className="horizontal-scroll scrollbar-hide pb-4">
-              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
+          {/* Horizontal Scrolling Container */}
+          <div className="w-full overflow-hidden">
+            <div className="horizontal-scroll scrollbar-hide">
+              <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
                 {/* Classical Crossover for Anxiety Reduction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
+                     style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/wave-splash-1.png" 
                         alt="Classical Crossover for Anxiety Reduction" 
@@ -247,26 +241,26 @@ const Index = () => {
                       />
                       <div className="absolute inset-0 bg-black/30"></div>
                       <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
                           Anxiety Relief
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <Play className="h-5 w-5" />
                       </button>
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
+                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
                         Classical Crossover for Anxiety Reduction
                       </h3>
-                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
+                      <p className="text-sm font-body text-gray-300 leading-relaxed">
                         Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
                       </p>
-                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-teal-400">
-                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <div className="flex items-center space-x-2 text-sm text-teal-400">
+                        <Shield className="h-4 w-4" />
                         <span className="font-body font-medium">Neuroscience Validated</span>
                       </div>
                     </div>
@@ -274,9 +268,10 @@ const Index = () => {
                 </div>
 
                 {/* Nocturnes for Meditation */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
+                     style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/zen-stones.png" 
                         alt="Nocturnes for Meditation" 
@@ -284,26 +279,26 @@ const Index = () => {
                       />
                       <div className="absolute inset-0 bg-black/30"></div>
                       <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
                           Focus Enhancement
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <Play className="h-5 w-5" />
                       </button>
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
+                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
                         Nocturnes for Meditation
                       </h3>
-                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
+                      <p className="text-sm font-body text-gray-300 leading-relaxed">
                         Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
                       </p>
-                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-cyan-400">
-                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <div className="flex items-center space-x-2 text-sm text-cyan-400">
+                        <Shield className="h-4 w-4" />
                         <span className="font-body font-medium">FDA Researched</span>
                       </div>
                     </div>
@@ -311,9 +306,10 @@ const Index = () => {
                 </div>
 
                 {/* Delta Wave Induction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
+                     style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/peaceful-stones.png" 
                         alt="Delta Wave Induction" 
@@ -321,38 +317,108 @@ const Index = () => {
                       />
                       <div className="absolute inset-0 bg-black/30"></div>
                       <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
                           Non-Sleep Deep Rest
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <Play className="h-5 w-5" />
                       </button>
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
+                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
                         Delta Wave Induction
                       </h3>
-                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
+                      <p className="text-sm font-body text-gray-300 leading-relaxed">
                         Scientifically tuned frequencies to synchronize brainwaves and promote deep, restorative sleep
                       </p>
-                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-purple-400">
-                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <div className="flex items-center space-x-2 text-sm text-purple-400">
+                        <Shield className="h-4 w-4" />
                         <span className="font-body font-medium">Sleep Lab Tested</span>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Alpha Wave Focus */}
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
+                     style={{ width: '320px', minWidth: '320px' }}>
+                  <div className="flex flex-col space-y-4">
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
+                      <img 
+                        src="/src/assets/classical-sonatas.png" 
+                        alt="Alpha Wave Focus" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/30"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
+                          Productivity Enhancement
+                        </span>
+                      </div>
+                      <button 
+                        onClick={handleActionClick}
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                      >
+                        <Play className="h-5 w-5" />
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
+                        Alpha Wave Focus Sessions
+                      </h3>
+                      <p className="text-sm font-body text-gray-300 leading-relaxed">
+                        Optimized alpha wave entrainment combined with classical compositions to enhance creative thinking and sustained attention for knowledge work.
+                      </p>
+                      <div className="flex items-center space-x-2 text-sm text-emerald-400">
+                        <Shield className="h-4 w-4" />
+                        <span className="font-body font-medium">Cognitive Lab Tested</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stress Recovery */}
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
+                     style={{ width: '320px', minWidth: '320px' }}>
+                  <div className="flex flex-col space-y-4">
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
+                      <img 
+                        src="/src/assets/nocturnes.png" 
+                        alt="Stress Recovery" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/30"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
+                          Stress Relief
+                        </span>
+                      </div>
+                      <button 
+                        onClick={handleActionClick}
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                      >
+                        <Play className="h-5 w-5" />
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
+                        Adaptive Stress Recovery
+                      </h3>
+                      <p className="text-sm font-body text-gray-300 leading-relaxed">
+                        AI-powered stress detection and recovery protocols using nature sounds and gentle harmonics to activate the parasympathetic nervous system.
+                      </p>
+                      <div className="flex items-center space-x-2 text-sm text-blue-400">
+                        <Shield className="h-4 w-4" />
+                        <span className="font-body font-medium">Wellness Protocol Certified</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            {/* Scroll indicators for larger screens */}
-            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
-              <div className="w-8 h-20 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
-              <div className="w-8 h-20 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
             </div>
           </div>
 
@@ -382,71 +448,101 @@ const Index = () => {
             </p>
           </div>
           
-          {/* Mobile-Adaptive Horizontal scrollable container */}
-          <div className="relative -mx-4 sm:mx-0">
-            {/* Horizontal scrollable content with touch support */}
-            <div className="horizontal-scroll scrollbar-hide pb-4">
-              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-8">
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
-                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
+          {/* Horizontal Scrolling Container */}
+          <div className="w-full overflow-hidden">
+            <div className="horizontal-scroll scrollbar-hide">
+              <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '280px', minWidth: '280px' }}>
+                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={stanfordMedicineLogo} 
                       alt="Stanford Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Stanford Medicine</h3>
-                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
+                  <h3 className="text-base font-medium font-headers text-white mb-3">Stanford Medicine</h3>
+                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-teal-400">
-                    <Star className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <div className="flex items-center justify-center space-x-2 text-sm text-teal-400">
+                    <Star className="h-4 w-4" />
                     <span className="font-body font-medium">Lead Research Partner</span>
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
-                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '280px', minWidth: '280px' }}>
+                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={jacobsTechnionLogo} 
                       alt="Jacobs Technion-Cornell Institute" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Jacobs Technion-Cornell</h3>
-                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
+                  <h3 className="text-base font-medium font-headers text-white mb-3">Jacobs Technion-Cornell</h3>
+                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Advanced technology research for therapeutic applications and digital health innovation
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-cyan-400">
-                    <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <div className="flex items-center justify-center space-x-2 text-sm text-cyan-400">
+                    <TrendingUp className="h-4 w-4" />
                     <span className="font-body font-medium">Technology Innovation</span>
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
-                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '280px', minWidth: '280px' }}>
+                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={weillCornellLogo} 
                       alt="Weill Cornell Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Weill Cornell Medicine</h3>
-                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
+                  <h3 className="text-base font-medium font-headers text-white mb-3">Weill Cornell Medicine</h3>
+                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Clinical research and medical validation of therapeutic music protocols in healthcare settings
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-purple-400">
-                    <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <div className="flex items-center justify-center space-x-2 text-sm text-purple-400">
+                    <Zap className="h-4 w-4" />
                     <span className="font-body font-medium">Clinical Validation</span>
                   </div>
                 </div>
+
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '280px', minWidth: '280px' }}>
+                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <img 
+                      src={cornellLogo} 
+                      alt="Cornell University" 
+                      className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                  <h3 className="text-base font-medium font-headers text-white mb-3">Cornell University</h3>
+                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
+                    Psychology and neuroscience research department collaboration for cognitive enhancement studies
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-sm text-emerald-400">
+                    <Brain className="h-4 w-4" />
+                    <span className="font-body font-medium">Cognitive Research</span>
+                  </div>
+                </div>
+
+                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '280px', minWidth: '280px' }}>
+                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5 rounded-lg">
+                    <Users className="h-8 w-8 text-white opacity-80" />
+                  </div>
+                  <h3 className="text-base font-medium font-headers text-white mb-3">MIT Media Lab</h3>
+                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
+                    Artificial intelligence and human-computer interaction research for adaptive therapeutic systems
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-sm text-blue-400">
+                    <Activity className="h-4 w-4" />
+                    <span className="font-body font-medium">AI Research</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            {/* Scroll indicators for larger screens */}
-            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
-              <div className="w-8 h-16 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
-              <div className="w-8 h-16 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
             </div>
           </div>
         </div>
