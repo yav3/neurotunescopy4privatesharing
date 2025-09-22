@@ -74,11 +74,17 @@ const TherapeuticGoalsPage = () => {
   const handleTrendingSelect = (categoryId: string) => {
     console.log('🎵 Navigating to trending category:', categoryId);
     
+    // For positive-pop, navigate directly to pop music without modal
+    if (categoryId === 'positive-pop') {
+      console.log('🎵 Navigating directly to positive pop music');
+      navigate('/genre/mood-boost/pop');
+      return;
+    }
+    
     // Map trending categories to their corresponding therapeutic goals
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'pain-support',
       'nocturnes': 'focus-enhancement', 
-      'positive-pop': 'energy-boost',
       'chill-piano': 'focus-enhancement',
       'new-age-world': 'meditation-support',
       'non-sleep-deep-rest': 'meditation-support',

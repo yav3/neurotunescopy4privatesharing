@@ -32,6 +32,10 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import Analytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
+import Storage from "./pages/Storage";
+import Monitoring from "./pages/Monitoring";
+import Settings from "./pages/Settings";
+import AnalyticsPage from "./pages/Analytics";
 import { MagicLinksPage } from "./pages/admin/MagicLinks";
 import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
@@ -99,6 +103,10 @@ const App = () => {
               <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/landing" element={<Index />} />
+              <Route path="/storage" element={<Storage />} />
+              <Route path="/monitoring" element={<Monitoring />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="content" element={<ContentManagement />} />
