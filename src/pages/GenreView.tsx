@@ -265,8 +265,18 @@ export default function GenreView() {
               onClick={() => handleTrackPlay(track)}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Play className="h-5 w-5 text-primary" />
+                <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                  {track.artwork_url ? (
+                    <img 
+                      src={track.artwork_url} 
+                      alt={track.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-primary/20 rounded"></div>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h3 className="font-medium text-foreground">{track.title}</h3>
@@ -274,8 +284,8 @@ export default function GenreView() {
                   {track.bpm && <p className="text-xs text-foreground/50">{track.bpm} BPM</p>}
                 </div>
               </div>
-              <div className="text-sm text-foreground/60">
-                {track.duration ? `${Math.floor(track.duration / 60)}:${(track.duration % 60).toString().padStart(2, '0')}` : ''}
+              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors">
+                <Play className="h-4 w-4 text-primary" />
               </div>
             </div>
           ))}

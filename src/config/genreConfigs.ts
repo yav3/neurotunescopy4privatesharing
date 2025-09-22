@@ -22,7 +22,7 @@ import maximumEnergyEdmDj from '@/assets/maximum-energy-edm-dj.png';
 import focusZenStones from '@/assets/focus-zen-stones.png';
 import focusCrossoverClassicalLandscape from '@/assets/focus-crossover-classical-landscape.jpg';
 import hiitForestPath from '@/assets/hiit-forest-path.png';
-import gentleClassicalMistyLake from '@/assets/gentle-classical-misty-lake.png';
+import oceanWaveClear from '@/assets/ocean-wave-clear.png';
 import painSonatasYellowFlowers from '@/assets/pain-sonatas-yellow-flowers.jpg';
 import painPeacefulPianoMountainLake from '@/assets/pain-peaceful-piano-mountain-lake.jpg';
 import edmCrossoverCactus from '@/assets/edm-crossover-cactus.jpg';
@@ -88,7 +88,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Classical Crossover',
         description: 'Gentle classical crossover music for anxiety relief',
         buckets: ['gentleclassicalforpain'],
-        image: gentleClassicalMistyLake
+        image: oceanWaveClear
       },
       {
         id: 'classical-acoustic',
@@ -148,7 +148,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Gentle Classical',
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
-        image: gentleClassicalMistyLake,
+        image: oceanWaveClear,
       },
       {
         id: 'peaceful-piano',
