@@ -190,31 +190,31 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Horizontal scrollable container */}
-          <div className="relative">
-            {/* Gradient fade at left */}
-            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-            
-            {/* Horizontal scrollable content */}
-            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
-              <div className="flex space-x-8 pl-8 pr-8 min-w-max">
+          {/* Mobile-Adaptive Horizontal scrollable container */}
+          <div className="relative -mx-4 sm:mx-0">
+            {/* Horizontal scrollable content with touch support */}
+            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
                 {therapeuticBenefits.map((benefit, index) => (
                   <div 
                     key={index} 
-                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group w-80 flex-shrink-0"
+                    className="border border-white/10 rounded-xl p-4 sm:p-6 hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start"
                   >
-                    <div className="w-8 h-8 rounded-xl border-2 border-white/30 flex items-center justify-center mb-3 group-hover:border-white/50 transition-all duration-300">
-                      <benefit.icon className="h-4 w-4 text-white stroke-1" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
+                      <benefit.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
-                    <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
-                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-base sm:text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
+                    <p className="text-sm sm:text-base font-body text-gray-300 leading-relaxed">{benefit.description}</p>
                   </div>
                 ))}
               </div>
             </div>
             
-            {/* Gradient fade at right */}
-            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+            {/* Scroll indicators for larger screens */}
+            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
+              <div className="w-8 h-16 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
+              <div className="w-8 h-16 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -231,120 +231,117 @@ const Index = () => {
             </p>
           </div>
 
-          {/* Horizontal scrollable container */}
-          <div className="relative">
-            {/* Gradient fade at left */}
-            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-            
-            {/* Horizontal scrollable content */}
-            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
-              <div className="flex space-x-4 pl-8 pr-8 min-w-max">
+          {/* Mobile-Adaptive Horizontal scrollable container */}
+          <div className="relative -mx-4 sm:mx-0">
+            {/* Horizontal scrollable content with touch support */}
+            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
                 {/* Classical Crossover for Anxiety Reduction */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
-                  <div className="flex flex-col space-y-3">
-                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="flex flex-col space-y-4">
+                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/wave-splash-1.png" 
                         alt="Classical Crossover for Anxiety Reduction" 
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-2 left-2">
-                        <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
+                      <div className="absolute inset-0 bg-black/30"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
                           Anxiety Relief
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 stroke-1" />
+                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                       </button>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-medium font-headers text-white mb-1">
+                    <div className="space-y-3">
+                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
                         Classical Crossover for Anxiety Reduction
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
+                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
                         Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
                       </p>
-                      <div className="flex items-center space-x-2 text-xs text-gray-400">
-                        <Shield className="h-3 w-3 text-white stroke-1" />
-                        <span className="font-body">Neuroscience Validated</span>
+                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-teal-400">
+                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="font-body font-medium">Neuroscience Validated</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Nocturnes for Meditation */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
-                  <div className="flex flex-col space-y-3">
-                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="flex flex-col space-y-4">
+                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/zen-stones.png" 
                         alt="Nocturnes for Meditation" 
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-2 left-2">
-                        <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
+                      <div className="absolute inset-0 bg-black/30"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
                           Focus Enhancement
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 stroke-1" />
+                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                       </button>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-medium font-headers text-white mb-1">
+                    <div className="space-y-3">
+                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
                         Nocturnes for Meditation
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
+                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
                         Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
                       </p>
-                      <div className="flex items-center space-x-2 text-xs text-gray-400">
-                        <Shield className="h-3 w-3 text-white stroke-1" />
-                        <span className="font-body">FDA Researched</span>
+                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-cyan-400">
+                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="font-body font-medium">FDA Researched</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Delta Wave Induction */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/10 transition-all duration-300 w-80 flex-shrink-0">
-                  <div className="flex flex-col space-y-3">
-                    <div className="relative w-full h-32 rounded-lg overflow-hidden">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="flex flex-col space-y-4">
+                    <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/peaceful-stones.png" 
                         alt="Delta Wave Induction" 
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute top-2 left-2">
-                        <span className="bg-black/50 backdrop-blur-sm px-2 py-1 border border-white/20 text-white rounded-full text-xs font-medium font-body">
+                      <div className="absolute inset-0 bg-black/30"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-xs sm:text-sm font-medium font-body">
                           Non-Sleep Deep Rest
                         </span>
                       </div>
                       <button 
                         onClick={handleActionClick}
-                        className="absolute bottom-2 right-2 w-8 h-8 border border-white/20 hover:border-white/40 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-all duration-300"
+                        className="absolute bottom-3 right-3 w-10 h-10 sm:w-12 sm:h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
                       >
-                        <Play className="h-4 w-4 stroke-1" />
+                        <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                       </button>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-medium font-headers text-white mb-1">
+                    <div className="space-y-3">
+                      <h3 className="text-base sm:text-lg font-medium font-headers text-white leading-tight">
                         Delta Wave Induction
                       </h3>
-                      <p className="text-xs font-body text-gray-300 leading-relaxed line-clamp-2 mb-2">
+                      <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed">
                         Scientifically tuned frequencies to synchronize brainwaves and promote deep, restorative sleep
                       </p>
-                      <div className="flex items-center space-x-2 text-xs text-gray-400">
-                        <Shield className="h-3 w-3 text-white stroke-1" />
-                        <span className="font-body">Sleep Lab Tested</span>
+                      <div className="flex items-center space-x-2 text-xs sm:text-sm text-purple-400">
+                        <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="font-body font-medium">Sleep Lab Tested</span>
                       </div>
                     </div>
                   </div>
@@ -352,8 +349,11 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Gradient fade at right */}
-            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+            {/* Scroll indicators for larger screens */}
+            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
+              <div className="w-8 h-20 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
+              <div className="w-8 h-20 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
+            </div>
           </div>
 
           <div className="text-center mt-8">
@@ -382,72 +382,72 @@ const Index = () => {
             </p>
           </div>
           
-          {/* Horizontal scrollable container */}
-          <div className="relative">
-            {/* Gradient fade at left */}
-            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-            
-            {/* Horizontal scrollable content */}
-            <div className="overflow-x-auto scrollbar-hide hover:scrollbar-thin hover:scrollbar-thumb-gray-600 hover:scrollbar-track-transparent pb-2">
-              <div className="flex space-x-12 pl-8 pr-8 min-w-max">
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
-                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+          {/* Mobile-Adaptive Horizontal scrollable container */}
+          <div className="relative -mx-4 sm:mx-0">
+            {/* Horizontal scrollable content with touch support */}
+            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+              <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-8">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={stanfordMedicineLogo} 
                       alt="Stanford Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm font-medium font-headers text-white mb-2">Stanford Medicine</h3>
-                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Stanford Medicine</h3>
+                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs text-teal-400">
-                    <Star className="h-3 w-3 stroke-1" />
-                    <span className="font-body">Lead Research Partner</span>
+                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-teal-400">
+                    <Star className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="font-body font-medium">Lead Research Partner</span>
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
-                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={jacobsTechnionLogo} 
                       alt="Jacobs Technion-Cornell Institute" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm font-medium font-headers text-white mb-2">Jacobs Technion-Cornell</h3>
-                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Jacobs Technion-Cornell</h3>
+                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Advanced technology research for therapeutic applications and digital health innovation
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs text-teal-500">
-                    <TrendingUp className="h-3 w-3 stroke-1" />
-                    <span className="font-body">Technology Innovation</span>
+                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-cyan-400">
+                    <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="font-body font-medium">Technology Innovation</span>
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group w-96 flex-shrink-0">
-                  <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                  <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={weillCornellLogo} 
                       alt="Weill Cornell Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-sm font-medium font-headers text-white mb-2">Weill Cornell Medicine</h3>
-                  <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
+                  <h3 className="text-sm sm:text-base font-medium font-headers text-white mb-3">Weill Cornell Medicine</h3>
+                  <p className="text-xs sm:text-sm font-body text-gray-300 leading-relaxed mb-4">
                     Clinical research and medical validation of therapeutic music protocols in healthcare settings
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-xs text-cyan-500">
-                    <Zap className="h-3 w-3 stroke-1" />
-                    <span className="font-body">Clinical Validation</span>
+                  <div className="flex items-center justify-center space-x-2 text-xs sm:text-sm text-purple-400">
+                    <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="font-body font-medium">Clinical Validation</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* Gradient fade at right */}
-            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+            {/* Scroll indicators for larger screens */}
+            <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none">
+              <div className="w-8 h-16 bg-gradient-to-r from-black via-black/80 to-transparent rounded-r-lg"></div>
+              <div className="w-8 h-16 bg-gradient-to-l from-black via-black/80 to-transparent rounded-l-lg"></div>
+            </div>
           </div>
         </div>
       </section>
