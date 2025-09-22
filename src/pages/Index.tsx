@@ -156,7 +156,7 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Leaf Image - Positioned to span from below "Meets Beautiful Music" to stats level */}
+            {/* Right side with leaf image and Nocturnes card */}
             <div className="relative flex justify-center lg:justify-end">
               <div className="relative max-w-sm lg:max-w-md xl:max-w-lg">
                 <img 
@@ -164,6 +164,28 @@ const Index = () => {
                   alt="Leaf with water droplet" 
                   className="w-full h-auto object-contain rounded-2xl"
                 />
+                
+                {/* Nocturnes card positioned over the leaf image */}
+                <div className="absolute bottom-4 right-4 w-48 max-w-[45%]">
+                  <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-lg border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
+                    <div className="relative aspect-square overflow-hidden">
+                      <img 
+                        src={nocturnesImage} 
+                        alt="Nocturnes" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div className="p-2 text-center">
+                      <h3 className="font-medium font-headers text-white text-xs mb-1">Nocturnes</h3>
+                      <p className="font-body text-gray-300 text-[10px] mb-1">Calming Night Compositions</p>
+                      <div className="flex items-center justify-center space-x-1 text-white/70">
+                        <Activity className="h-2.5 w-2.5 stroke-1" />
+                        <span className="text-[9px] font-medium font-body">Real-time Monitoring</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
