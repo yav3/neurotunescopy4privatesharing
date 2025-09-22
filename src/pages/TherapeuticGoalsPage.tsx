@@ -26,6 +26,8 @@ import nocturnesStones from '@/assets/nocturnes-stones.png';
 import chillTropicalHouse from '@/assets/chill-tropical-house.png';
 import socialTimeFlowers from '@/assets/social-time-flowers.png';
 import peacefulRiverBrook from '@/assets/peaceful-river-brook.png';
+import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
+import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -47,8 +49,8 @@ const trendingCategories = [
   { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
   { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: positivePopDewdrops },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
-  { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: waterfallGreen },
-  { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: yellowFlowers },
+  { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
+  { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
   { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeFlowers },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: peacefulRiverBrook },
