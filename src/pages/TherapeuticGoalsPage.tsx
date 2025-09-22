@@ -157,34 +157,37 @@ const TherapeuticGoalsPage = () => {
           {/* Trending Section */}
           <div>
             <h2 className="text-2xl font-normal md:font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {trendingCategories.map((category) => (
-                <Card 
-                  key={category.id}
-                  className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[2.25/1.5] border bg-card"
-                  onClick={() => handleTrendingSelect(category.id)}
-                >
-                  <img 
-                    src={category.image}
-                    alt={`${category.name} music category`}
-                    loading="eager"
-                    decoding="sync"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    style={{ 
-                      imageRendering: 'auto',
-                      filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
-                   <div className="relative h-full p-3 sm:p-4 md:p-6 flex flex-col justify-end">
-                     <div>
-                       <h3 className="text-white font-medium sm:font-semibold md:font-bold text-sm sm:text-base md:text-lg leading-tight drop-shadow-lg break-words hyphens-auto">
-                         {category.name}
-                       </h3>
+            <div className="overflow-x-auto">
+              <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
+                {trendingCategories.map((category) => (
+                  <Card 
+                    key={category.id}
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card flex-shrink-0"
+                    style={{ width: '140px', height: '90px' }}
+                    onClick={() => handleTrendingSelect(category.id)}
+                  >
+                    <img 
+                      src={category.image}
+                      alt={`${category.name} music category`}
+                      loading="eager"
+                      decoding="sync"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={{ 
+                        imageRendering: 'auto',
+                        filter: 'contrast(1.08) saturate(1.05) brightness(1.01)'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/20 dark:from-black/50 dark:to-black/30" />
+                     <div className="relative h-full p-2 flex flex-col justify-end">
+                       <div>
+                         <h3 className="text-white font-medium text-xs leading-tight drop-shadow-lg break-words hyphens-auto">
+                           {category.name}
+                         </h3>
+                       </div>
                      </div>
-                   </div>
-                </Card>
-              ))}
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
           
