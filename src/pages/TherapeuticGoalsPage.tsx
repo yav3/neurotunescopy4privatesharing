@@ -82,10 +82,22 @@ const TherapeuticGoalsPage = () => {
   const handleTrendingSelect = (categoryId: string) => {
     console.log('🎵 Navigating to trending category:', categoryId);
     
-    // For positive-pop, navigate directly to pop music without modal
+    // Direct navigation for specific categories to avoid wrong genre selection
     if (categoryId === 'positive-pop') {
       console.log('🎵 Navigating directly to positive pop music');
       navigate('/genre/mood-boost/pop');
+      return;
+    }
+    
+    if (categoryId === 'chill-folk-bluegrass') {
+      console.log('🎵 Navigating directly to bluegrass & americana music');
+      navigate('/genre/calm-mood-boost/bluegrass-americana');
+      return;
+    }
+    
+    if (categoryId === 'new-age-world') {
+      console.log('🎵 Navigating directly to new age & world music');
+      navigate('/genre/calm-mood-boost/new-age-stress');
       return;
     }
     
