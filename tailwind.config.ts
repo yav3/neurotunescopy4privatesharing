@@ -18,8 +18,10 @@ export default {
 		extend: {
 			fontFamily: {
 				'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
-				'sans': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
-				'didot': ['Didot', 'Times New Roman', 'serif'],
+				'sans': ['Playfair Display', 'Times New Roman', 'serif'],
+				'didot': ['Playfair Display', 'Times New Roman', 'serif'],
+				'headers': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
+				'body': ['Playfair Display', 'Times New Roman', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
