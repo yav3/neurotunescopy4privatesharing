@@ -153,7 +153,7 @@ const Index = () => {
 
             <div className="relative">
               <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
-                <div className="relative h-24 w-24 mx-auto overflow-hidden rounded-t-xl">
+                <div className="relative aspect-square overflow-hidden">
                   <img 
                     src={nocturnesImage} 
                     alt="Nocturnes" 
