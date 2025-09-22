@@ -172,21 +172,21 @@ const Index = () => {
                   </div>
                   
                   {/* Content */}
-                  <div className="relative z-10">
-                    {/* Headphones Icon */}
-                    <div className="flex justify-center mb-4">
-                      <div className="w-16 h-16 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <Headphones className="h-8 w-8 text-white" />
+                  <div className="relative z-10 flex flex-col items-center justify-center min-h-[200px]">
+                    {/* Headphones Icon - smaller and positioned lower */}
+                    <div className="flex justify-center mb-3">
+                      <div className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <Headphones className="h-6 w-6 text-white" />
                       </div>
                     </div>
                     
-                    {/* Session Info */}
-                    <div className="text-center space-y-3">
-                      <h3 className="text-xl font-semibold font-headers text-white">Active Therapy Session</h3>
-                      <p className="text-sm font-body text-gray-300">Classical Sonatas for Stress Relief</p>
-                      <div className="flex items-center justify-center space-x-2 text-white/80">
-                        <Activity className="h-4 w-4" />
-                        <span className="text-sm font-medium font-body">Real-time Monitoring</span>
+                    {/* Session Info - smaller text beneath the image */}
+                    <div className="text-center space-y-2">
+                      <h3 className="text-lg font-semibold font-headers text-white">Active Therapy Session</h3>
+                      <p className="text-xs font-body text-gray-300">Classical Sonatas for Stress Relief</p>
+                      <div className="flex items-center justify-center space-x-1 text-white/80">
+                        <Activity className="h-3 w-3" />
+                        <span className="text-xs font-medium font-body">Real-time Monitoring</span>
                       </div>
                     </div>
                   </div>
