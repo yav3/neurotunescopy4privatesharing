@@ -191,28 +191,41 @@ export class SupabaseService {
   static async trackTherapeuticSession(
     trackId: string, 
     duration: number, 
-    frequencyBand: FrequencyBand
+    frequencyBand: FrequencyBand,
+    userId?: string
   ) {
     try {
+      // Get current user if not provided
+      let patientId = userId;
+      if (!patientId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        patientId = user?.id || null;
+      }
+
+      const sessionData = {
+        patient_id: patientId,
+        session_duration_minutes: Math.floor(duration / 60),
+        tracks_played: 1,
+        dominant_genres: [frequencyBand],
+        session_date: new Date().toISOString(),
+        skip_rate: 0,
+        average_complexity_score: null
+      };
+
       const { error } = await supabase
         .from('listening_sessions')
-        .insert({
-          patient_id: null, // For anonymous sessions
-          session_duration_minutes: Math.floor(duration / 60),
-          tracks_played: 1,
-          dominant_genres: [frequencyBand],
-          session_date: new Date().toISOString()
-        })
+        .insert(sessionData);
 
-      if (error) throw error
+      if (error) throw error;
 
       logger.info('Therapeutic session tracked', { 
         trackId, 
         duration, 
-        frequencyBand 
-      })
+        frequencyBand,
+        patientId
+      });
     } catch (error) {
-      logger.error('Failed to track therapeutic session', { trackId, error })
+      logger.error('Failed to track therapeutic session', { trackId, error });
     }
   }
 }

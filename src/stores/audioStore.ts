@@ -14,6 +14,108 @@ import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandl
 import { AudioCacheService } from '@/services/audioCache';
 import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
 import { supabase } from '@/integrations/supabase/client';
+import { SupabaseService } from '@/services/supabase';
+
+// Session tracking data
+interface ListeningSession {
+  sessionId: string;
+  startTime: Date;
+  tracksPlayed: Track[];
+  totalDuration: number;
+  skipCount: number;
+  dominantGenres: string[];
+}
+
+let currentSession: ListeningSession | null = null;
+
+// Session tracking functions
+const startListeningSession = async () => {
+  try {
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return; // Don't track sessions for anonymous users
+    
+    currentSession = {
+      sessionId: crypto.randomUUID(),
+      startTime: new Date(),
+      tracksPlayed: [],
+      totalDuration: 0,
+      skipCount: 0,
+      dominantGenres: []
+    };
+    
+    console.log('🎵 Started new listening session:', currentSession.sessionId);
+  } catch (error) {
+    console.error('Failed to start listening session:', error);
+  }
+};
+
+const trackPlayedTrack = (track: Track, duration: number, wasSkipped: boolean = false) => {
+  if (!currentSession) return;
+  
+  currentSession.tracksPlayed.push(track);
+  currentSession.totalDuration += duration;
+  
+  if (wasSkipped) {
+    currentSession.skipCount++;
+  }
+  
+  // Add genre to dominant genres
+  if (track.genre && !currentSession.dominantGenres.includes(track.genre)) {
+    currentSession.dominantGenres.push(track.genre);
+  }
+};
+
+const completeListeningSession = async () => {
+  if (!currentSession) return;
+  
+  try {
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    
+    const sessionDurationMinutes = Math.floor(currentSession.totalDuration / 60);
+    const skipRate = currentSession.tracksPlayed.length > 0 
+      ? currentSession.skipCount / currentSession.tracksPlayed.length 
+      : 0;
+    
+    // Only save sessions with meaningful data
+    if (sessionDurationMinutes > 0 || currentSession.tracksPlayed.length > 0) {
+      // Map genre to frequency band
+      const mapGenreToFrequencyBand = (genre: string): 'delta' | 'theta' | 'alpha' | 'beta' | 'gamma' => {
+        const genreMap: Record<string, 'delta' | 'theta' | 'alpha' | 'beta' | 'gamma'> = {
+          'classical': 'delta',
+          'ambient': 'theta', 
+          'jazz': 'alpha',
+          'rock': 'beta',
+          'electronic': 'gamma'
+        };
+        return genreMap[genre.toLowerCase()] || 'alpha';
+      };
+      
+      const frequencyBand = mapGenreToFrequencyBand(currentSession.dominantGenres[0] || 'alpha');
+      
+      await SupabaseService.trackTherapeuticSession(
+        currentSession.tracksPlayed[0]?.id?.toString() || '',
+        currentSession.totalDuration,
+        frequencyBand,
+        user.id
+      );
+      
+      console.log('🎵 Completed listening session:', {
+        sessionId: currentSession.sessionId,
+        duration: sessionDurationMinutes,
+        tracks: currentSession.tracksPlayed.length,
+        skipRate: Math.round(skipRate * 100)
+      });
+    }
+    
+    currentSession = null;
+  } catch (error) {
+    console.error('Failed to complete listening session:', error);
+    currentSession = null;
+  }
+};
 
 // Session management integration
 let sessionManager: { trackProgress: (t: number, d: number) => void; completeSession: () => Promise<void> } | null = null;
@@ -1055,6 +1157,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
         const success = await loadTrack(track);
         if (success) {
           set({ queue: [track], index: 0 });
+          
+          // Start a new listening session if none exists
+          if (!currentSession) {
+            await startListeningSession();
+          }
+          
           await get().play();
         } else {
           // If loading fails, restore the previous track or clear if none
@@ -1068,6 +1176,12 @@ export const useAudioStore = create<AudioState>((set, get) => {
     stop: () => {
       console.log('🛑 STOP called - clearing currentTrack');
       console.trace('🛑 Stop called from:');
+      
+      // Complete any active listening session
+      if (currentSession) {
+        completeListeningSession();
+      }
+      
       const audio = initAudio();
       audio.pause();
       audio.src = '';
