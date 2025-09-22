@@ -156,32 +156,37 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Right side with leaf image and Nocturnes card */}
+            {/* Right side with Active Therapy Session */}
             <div className="relative flex justify-center lg:justify-end">
               <div className="relative max-w-sm lg:max-w-md xl:max-w-lg">
-                <img 
-                  src={leafDropletImage} 
-                  alt="Leaf with water droplet" 
-                  className="w-full h-auto object-contain rounded-2xl"
-                />
-                
-                {/* Nocturnes card positioned over the leaf image */}
-                <div className="absolute bottom-4 right-4 w-48 max-w-[45%]">
-                  <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-lg border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
-                    <div className="relative aspect-square overflow-hidden">
-                      <img 
-                        src={nocturnesImage} 
-                        alt="Nocturnes" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/30"></div>
+                {/* Active Therapy Session Card */}
+                <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden">
+                  {/* Background leaf image */}
+                  <div className="absolute inset-0 opacity-30">
+                    <img 
+                      src="/src/assets/leaf-therapy.png"
+                      alt="" 
+                      className="w-full h-full object-cover rounded-2xl"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    {/* Headphones Icon */}
+                    <div className="flex justify-center mb-4">
+                      <div className="w-16 h-16 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <Headphones className="h-8 w-8 text-white" />
+                      </div>
                     </div>
-                    <div className="p-2 text-center">
-                      <h3 className="font-medium font-headers text-white text-xs mb-1">Nocturnes</h3>
-                      <p className="font-body text-gray-300 text-[10px] mb-1">Calming Night Compositions</p>
-                      <div className="flex items-center justify-center space-x-1 text-white/70">
-                        <Activity className="h-2.5 w-2.5 stroke-1" />
-                        <span className="text-[9px] font-medium font-body">Real-time Monitoring</span>
+                    
+                    {/* Session Info */}
+                    <div className="text-center space-y-3">
+                      <h3 className="text-xl font-semibold font-headers text-white">Active Therapy Session</h3>
+                      <p className="text-sm font-body text-gray-300">Classical Sonatas for Stress Relief</p>
+                      <div className="flex items-center justify-center space-x-2 text-white/80">
+                        <Activity className="h-4 w-4" />
+                        <span className="text-sm font-medium font-body">Real-time Monitoring</span>
                       </div>
                     </div>
                   </div>
