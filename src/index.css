@@ -340,6 +340,36 @@ All colors MUST be HSL.
     touch-action: manipulation;
   }
 
+  /* Scrollbar hiding for horizontal scroll containers */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Enhanced horizontal scroll with touch support */
+  .horizontal-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+
   /* Prevent zoom on input focus (mobile web) */
   @media screen and (max-width: 767px) {
     input, 

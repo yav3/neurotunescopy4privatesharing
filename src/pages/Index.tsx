@@ -193,12 +193,12 @@ const Index = () => {
           {/* Mobile-Adaptive Horizontal scrollable container */}
           <div className="relative -mx-4 sm:mx-0">
             {/* Horizontal scrollable content with touch support */}
-            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+            <div className="horizontal-scroll scrollbar-hide pb-4">
               <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
                 {therapeuticBenefits.map((benefit, index) => (
                   <div 
                     key={index} 
-                    className="border border-white/10 rounded-xl p-4 sm:p-6 hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start"
+                    className="border border-white/10 rounded-xl p-4 sm:p-6 hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
                       <benefit.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
@@ -234,10 +234,10 @@ const Index = () => {
           {/* Mobile-Adaptive Horizontal scrollable container */}
           <div className="relative -mx-4 sm:mx-0">
             {/* Horizontal scrollable content with touch support */}
-            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+            <div className="horizontal-scroll scrollbar-hide pb-4">
               <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-6">
                 {/* Classical Crossover for Anxiety Reduction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="flex flex-col space-y-4">
                     <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
@@ -274,7 +274,7 @@ const Index = () => {
                 </div>
 
                 {/* Nocturnes for Meditation */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="flex flex-col space-y-4">
                     <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
@@ -311,7 +311,7 @@ const Index = () => {
                 </div>
 
                 {/* Delta Wave Induction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="flex flex-col space-y-4">
                     <div className="relative w-full h-36 sm:h-40 rounded-xl overflow-hidden">
                       <img 
@@ -385,9 +385,9 @@ const Index = () => {
           {/* Mobile-Adaptive Horizontal scrollable container */}
           <div className="relative -mx-4 sm:mx-0">
             {/* Horizontal scrollable content with touch support */}
-            <div className="overflow-x-auto overflow-y-hidden scrollbar-hide pb-4" style={{scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch'}}>
+            <div className="horizontal-scroll scrollbar-hide pb-4">
               <div className="flex space-x-4 px-4 sm:px-0 sm:space-x-8">
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={stanfordMedicineLogo} 
@@ -405,7 +405,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={jacobsTechnionLogo} 
@@ -423,7 +423,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 snap-start">
+                <div className="border border-white/10 rounded-xl p-4 sm:p-6 text-center hover:border-white/20 transition-all duration-500 group w-72 sm:w-80 lg:w-96 flex-shrink-0 scroll-snap-start">
                   <div className="w-16 h-12 sm:w-20 sm:h-16 mx-auto mb-4 flex items-center justify-center">
                     <img 
                       src={weillCornellLogo} 
