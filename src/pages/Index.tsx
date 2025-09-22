@@ -467,94 +467,47 @@ const Index = () => {
           <div className="w-full overflow-hidden">
             <div className="horizontal-scroll scrollbar-hide">
               <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
-                     style={{ width: '280px', minWidth: '280px' }}>
-                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '200px', minWidth: '200px' }}>
+                  <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
                       src={stanfordMedicineLogo} 
                       alt="Stanford Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-base font-medium font-headers text-white mb-3">Stanford Medicine</h3>
-                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
-                    Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-teal-400">
-                    <Star className="h-4 w-4" />
-                    <span className="font-body font-medium">Lead Research Partner</span>
-                  </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
-                     style={{ width: '280px', minWidth: '280px' }}>
-                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '200px', minWidth: '200px' }}>
+                  <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
                       src={jacobsTechnionLogo} 
                       alt="Jacobs Technion-Cornell Institute" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-base font-medium font-headers text-white mb-3">Jacobs Technion-Cornell</h3>
-                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
-                    Advanced technology research for therapeutic applications and digital health innovation
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-cyan-400">
-                    <TrendingUp className="h-4 w-4" />
-                    <span className="font-body font-medium">Technology Innovation</span>
-                  </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
-                     style={{ width: '280px', minWidth: '280px' }}>
-                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '200px', minWidth: '200px' }}>
+                  <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
                       src={weillCornellLogo} 
                       alt="Weill Cornell Medicine" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
                   </div>
-                  <h3 className="text-base font-medium font-headers text-white mb-3">Weill Cornell Medicine</h3>
-                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
-                    Clinical research and medical validation of therapeutic music protocols in healthcare settings
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-purple-400">
-                    <Zap className="h-4 w-4" />
-                    <span className="font-body font-medium">Clinical Validation</span>
-                  </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
-                     style={{ width: '280px', minWidth: '280px' }}>
-                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center">
+                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                     style={{ width: '200px', minWidth: '200px' }}>
+                  <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
                       src={cornellLogo} 
                       alt="Cornell University" 
                       className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
                     />
-                  </div>
-                  <h3 className="text-base font-medium font-headers text-white mb-3">Cornell University</h3>
-                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
-                    Psychology and neuroscience research department collaboration for cognitive enhancement studies
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-emerald-400">
-                    <Brain className="h-4 w-4" />
-                    <span className="font-body font-medium">Cognitive Research</span>
-                  </div>
-                </div>
-
-                <div className="border border-white/10 rounded-xl p-6 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
-                     style={{ width: '280px', minWidth: '280px' }}>
-                  <div className="w-20 h-16 mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5 rounded-lg">
-                    <Users className="h-8 w-8 text-white opacity-80" />
-                  </div>
-                  <h3 className="text-base font-medium font-headers text-white mb-3">MIT Media Lab</h3>
-                  <p className="text-sm font-body text-gray-300 leading-relaxed mb-4">
-                    Artificial intelligence and human-computer interaction research for adaptive therapeutic systems
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-blue-400">
-                    <Activity className="h-4 w-4" />
-                    <span className="font-body font-medium">AI Research</span>
                   </div>
                 </div>
               </div>
