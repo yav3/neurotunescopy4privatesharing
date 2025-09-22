@@ -139,15 +139,20 @@ const Index = () => {
                 </Button>
               </div>
               
-              {/* Stats - Enhanced Layout */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center p-2 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl">
-                    <stat.icon className="h-4 w-4 text-white stroke-[1.5] mx-auto mb-1" />
-                    <div className="font-semibold font-headers text-white text-xs mb-1">{stat.value}</div>
-                    <div className="text-xs font-body text-gray-400 font-medium">{stat.label}</div>
+              {/* Stats - Horizontal Scrolling Layout */}
+              <div className="w-full overflow-hidden pt-3">
+                <div className="horizontal-scroll scrollbar-hide">
+                  <div className="flex gap-3 pb-2" style={{ width: 'max-content' }}>
+                    {stats.map((stat, index) => (
+                      <div key={index} className="text-center p-4 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
+                           style={{ width: '140px', minWidth: '140px' }}>
+                        <stat.icon className="h-6 w-6 text-white stroke-[1.5] mx-auto mb-2" />
+                        <div className="font-semibold font-headers text-white text-sm mb-1">{stat.value}</div>
+                        <div className="text-xs font-body text-gray-400 font-medium">{stat.label}</div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 
