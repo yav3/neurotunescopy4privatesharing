@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { AuthPage } from '../components/auth/AuthPage';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
+import nocturnesImage from '../assets/nocturnes.png';
 import columbiaLogo from '../assets/columbia-university.png';
 import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
@@ -154,15 +155,15 @@ const Index = () => {
               <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
                 <div className="relative h-32 overflow-hidden rounded-t-xl">
                   <img 
-                    src={classicalSonatasImage} 
-                    alt="Classical Sonatas for Stress Relief" 
+                    src={nocturnesImage} 
+                    alt="Nocturnes" 
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30"></div>
                 </div>
                 <div className="p-3 text-center">
-                  <h3 className="font-medium font-headers text-white text-sm mb-1">Active Therapy Session</h3>
-                  <p className="font-body text-gray-300 text-xs">Classical Sonatas for Stress Relief</p>
+                  <h3 className="font-medium font-headers text-white text-sm mb-1">Nocturnes</h3>
+                  <p className="font-body text-gray-300 text-xs">Calming Night Compositions</p>
                   <div className="mt-2 flex items-center justify-center space-x-1 text-white/70">
                     <Activity className="h-3 w-3 stroke-1" />
                     <span className="text-xs font-medium font-body">Real-time Monitoring</span>
