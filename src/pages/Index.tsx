@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { AuthPage } from '../components/auth/AuthPage';
+import classicalSonatasImage from '../assets/classical-sonatas.png';
 
 import { Button } from '../components/ui/button';
 
@@ -84,7 +85,7 @@ const Index = () => {
                 <div className="w-3 h-3 border-t-[1.5px] border-r-[1.5px] border-white/80 rotate-45"></div>
               </div>
               <div>
-                <h1 className="text-4xl font-headers font-bold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
+                <h1 className="text-4xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
                 <p className="text-xs font-body text-gray-500">by NeuralPositive</p>
               </div>
             </div>
@@ -106,9 +107,9 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 xl:gap-24 items-center">
             <div className="lg:pr-8 xl:pr-12 space-y-8">
-              <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold font-headers text-white leading-tight">
+              <h1 className="text-3xl lg:text-4xl xl:text-5xl font-semibold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
-                <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-cyan-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
+                <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
               <p className="text-lg font-body text-gray-300 leading-relaxed max-w-2xl">
                 Evidence-based AI platform that creates personalized therapeutic music experiences 
@@ -124,10 +125,10 @@ const Index = () => {
                 <Button 
                   size="lg"
                   onClick={handleActionClick}
-                  className="bg-gradient-to-r from-teal-500 via-teal-600 to-cyan-700 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto flex items-center justify-center space-x-2 hover:from-teal-400 hover:via-teal-500 hover:to-cyan-600 transition-all duration-300"
+                  className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 font-headers text-white shadow-xl hover:shadow-2xl font-medium text-base px-8 py-4 h-auto flex items-center justify-center space-x-2 hover:from-teal-400 hover:via-teal-500 hover:to-teal-600 transition-all duration-300"
                 >
                   <Headphones className="h-5 w-5" />
-                  <span>{user ? 'Begin Therapy Session' : 'Request Enterprise Code'}</span>
+                  <span>{user ? 'Enter Code' : 'Request Enterprise Code'}</span>
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </div>
@@ -137,7 +138,7 @@ const Index = () => {
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center p-3 lg:p-4 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl">
                     <stat.icon className="h-5 w-5 lg:h-6 lg:w-6 text-white stroke-[1.5] mx-auto mb-2" />
-                    <div className="font-bold font-headers text-white text-xs lg:text-sm mb-1">{stat.value}</div>
+                    <div className="font-semibold font-headers text-white text-xs lg:text-sm mb-1">{stat.value}</div>
                     <div className="text-xs font-body text-gray-400 font-medium">{stat.label}</div>
                   </div>
                 ))}
@@ -145,15 +146,22 @@ const Index = () => {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-2xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500 p-8 lg:p-12 text-center">
-                <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full border-2 border-white/40 flex items-center justify-center mx-auto mb-4 shadow-xl">
-                  <Headphones className="h-6 w-6 lg:h-8 lg:w-8 text-white stroke-1" />
+              <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-2xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
+                <div className="relative h-48 overflow-hidden rounded-t-2xl">
+                  <img 
+                    src={classicalSonatasImage} 
+                    alt="Classical Sonatas for Stress Relief" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30"></div>
                 </div>
-                <h3 className="font-semibold font-headers text-white text-base lg:text-lg mb-2">Active Therapy Session</h3>
-                <p className="font-body text-gray-300 text-sm">Classical Sonatas for Stress Relief</p>
-                <div className="mt-4 flex items-center justify-center space-x-2 text-white/70">
-                  <Activity className="h-4 w-4 stroke-1" />
-                  <span className="text-xs font-medium font-body">Real-time Monitoring</span>
+                <div className="p-6 text-center">
+                  <h3 className="font-medium font-headers text-white text-base lg:text-lg mb-2">Active Therapy Session</h3>
+                  <p className="font-body text-gray-300 text-sm">Classical Sonatas for Stress Relief</p>
+                  <div className="mt-4 flex items-center justify-center space-x-2 text-white/70">
+                    <Activity className="h-4 w-4 stroke-1" />
+                    <span className="text-xs font-medium font-body">Real-time Monitoring</span>
+                  </div>
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-teal-500/20 to-transparent rounded-full blur-2xl"></div>
@@ -167,7 +175,7 @@ const Index = () => {
       <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-900 to-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold font-headers bg-gradient-to-r from-white via-teal-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+            <h2 className="text-2xl lg:text-3xl xl:text-4xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-6">
               Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
             </h2>
             <p className="text-base font-body text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -185,7 +193,7 @@ const Index = () => {
                 <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl border-2 border-white/30 flex items-center justify-center mb-4 lg:mb-6 group-hover:border-white/50 transition-all duration-300">
                   <benefit.icon className="h-5 w-5 lg:h-6 lg:w-6 text-white stroke-1" />
                 </div>
-                <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3 lg:mb-4">{benefit.title}</h3>
+                <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3 lg:mb-4">{benefit.title}</h3>
                 <p className="text-sm lg:text-base font-body text-gray-300 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
@@ -197,7 +205,7 @@ const Index = () => {
       <section className="py-12 sm:py-16 lg:py-20 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl lg:text-3xl font-bold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
+            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
               Featured Therapy Programs
             </h2>
             <p className="text-base font-body text-gray-300 max-w-2xl mx-auto">
@@ -222,7 +230,7 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="p-4 lg:p-6">
-                  <h3 className="text-base lg:text-lg font-semibold font-headers text-white mb-2">
+                  <h3 className="text-base lg:text-lg font-medium font-headers text-white mb-2">
                     Binaural Beats for Focus
                   </h3>
                   <p className="text-sm font-body text-gray-300 mb-4 leading-relaxed">
@@ -260,7 +268,7 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3">
+                  <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3">
                     Morning Light Activation
                   </h3>
                   <p className="text-sm lg:text-base font-body text-gray-300 mb-6 leading-relaxed">
@@ -298,7 +306,7 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3">
+                  <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3">
                     Delta Wave Induction
                   </h3>
                   <p className="text-sm lg:text-base font-body text-gray-300 mb-6 leading-relaxed">
@@ -325,7 +333,7 @@ const Index = () => {
             <Button 
               size="lg" 
               onClick={handleActionClick}
-              className="bg-gradient-to-r from-teal-500 via-teal-600 to-cyan-700 font-headers text-white shadow-xl hover:shadow-2xl font-semibold text-base px-8 py-4 h-auto inline-flex items-center space-x-2 hover:from-teal-400 hover:via-teal-500 hover:to-cyan-600 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 font-headers text-white shadow-xl hover:shadow-2xl font-medium text-base px-8 py-4 h-auto inline-flex items-center space-x-2 hover:from-teal-400 hover:via-teal-500 hover:to-teal-600 transition-all duration-300"
             >
               <Zap className="h-5 w-5 stroke-[1.5]" />
               <span>{user ? 'Explore All Programs' : 'Enter Code'}</span>
@@ -339,7 +347,7 @@ const Index = () => {
       <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-900 to-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-2xl lg:text-3xl font-bold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
+            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
               Leading Research Institutions
             </h2>
             <p className="text-base font-body text-gray-300 max-w-3xl mx-auto">
@@ -352,7 +360,7 @@ const Index = () => {
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl border-2 border-teal-500/50 flex items-center justify-center mb-4 lg:mb-6 group-hover:border-teal-400/70 transition-all duration-300 mx-auto">
                 <Award className="h-5 w-5 lg:h-6 lg:w-6 text-teal-400 stroke-1" />
               </div>
-              <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3 lg:mb-4">Stanford University Medical School</h3>
+              <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3 lg:mb-4">Stanford University Medical School</h3>
               <p className="text-sm lg:text-base font-body text-gray-300 leading-relaxed mb-4">
                 Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
               </p>
@@ -366,7 +374,7 @@ const Index = () => {
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl border-2 border-teal-600/50 flex items-center justify-center mb-4 lg:mb-6 group-hover:border-teal-500/70 transition-all duration-300 mx-auto">
                 <Users className="h-5 w-5 lg:h-6 lg:w-6 text-teal-500 stroke-1" />
               </div>
-              <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3 lg:mb-4">Jacobs Cornell Technion Institute</h3>
+              <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3 lg:mb-4">Jacobs Cornell Technion Institute</h3>
               <p className="text-sm lg:text-base font-body text-gray-300 leading-relaxed mb-4">
                 Advanced technology research for therapeutic applications and digital health innovation
               </p>
@@ -380,7 +388,7 @@ const Index = () => {
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl border-2 border-cyan-600/50 flex items-center justify-center mb-4 lg:mb-6 group-hover:border-cyan-500/70 transition-all duration-300 mx-auto">
                 <Sparkles className="h-5 w-5 lg:h-6 lg:w-6 text-cyan-500 stroke-1" />
               </div>
-              <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3 lg:mb-4">Weill Cornell Medical College</h3>
+              <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3 lg:mb-4">Weill Cornell Medical College</h3>
               <p className="text-sm lg:text-base font-body text-gray-300 leading-relaxed mb-4">
                 Clinical research and medical validation of therapeutic music protocols in healthcare settings
               </p>
@@ -394,7 +402,7 @@ const Index = () => {
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl border-2 border-teal-700/50 flex items-center justify-center mb-4 lg:mb-6 group-hover:border-teal-600/70 transition-all duration-300 mx-auto">
                 <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-teal-600 stroke-1" />
               </div>
-              <h3 className="text-lg lg:text-xl font-semibold font-headers text-white mb-3 lg:mb-4">Columbia University</h3>
+              <h3 className="text-lg lg:text-xl font-medium font-headers text-white mb-3 lg:mb-4">Columbia University</h3>
               <p className="text-sm lg:text-base font-body text-gray-300 leading-relaxed mb-4">
                 Neuroscience studies on therapeutic music effects and evidence-based treatment development
               </p>
@@ -410,7 +418,7 @@ const Index = () => {
       {/* Call to Action */}
       <section className="py-12 sm:py-16 lg:py-20 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold font-headers bg-gradient-to-r from-white via-teal-200 to-cyan-200 bg-clip-text text-transparent mb-6 lg:mb-8">
+          <h2 className="text-2xl lg:text-3xl xl:text-4xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-6 lg:mb-8">
             Start Your Personalized Music Therapy Journey
           </h2>
           <p className="text-base lg:text-lg font-body text-gray-300 mb-8 lg:mb-10 leading-relaxed">
@@ -421,10 +429,10 @@ const Index = () => {
             <Button 
               size="lg"
               onClick={handleActionClick}
-              className="bg-gradient-to-r from-teal-500 via-teal-600 to-cyan-700 font-headers text-white shadow-2xl hover:shadow-3xl font-semibold text-lg px-12 py-6 h-auto flex items-center justify-center space-x-3 hover:from-teal-400 hover:via-teal-500 hover:to-cyan-600 transition-all duration-300"
+              className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 font-headers text-white shadow-2xl hover:shadow-3xl font-medium text-lg px-12 py-6 h-auto flex items-center justify-center space-x-3 hover:from-teal-400 hover:via-teal-500 hover:to-teal-600 transition-all duration-300"
             >
               <Headphones className="h-6 w-6 stroke-[1.5]" />
-              <span>{user ? 'Begin Your Therapy Session' : 'Request Enterprise Code'}</span>
+              <span>{user ? 'Enter Code' : 'Request Enterprise Code'}</span>
               <ArrowRight className="h-6 w-6 stroke-[1.5]" />
             </Button>
           </div>
