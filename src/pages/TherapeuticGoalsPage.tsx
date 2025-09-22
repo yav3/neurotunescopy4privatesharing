@@ -154,7 +154,7 @@ const TherapeuticGoalsPage = () => {
                         </span>
                       </div>
                     </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-2 text-center leading-tight break-words">
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-2 text-left leading-tight break-words">
                       {category.name}
                     </h3>
                   </div>
@@ -194,7 +194,7 @@ const TherapeuticGoalsPage = () => {
                       </span>
                     </div>
                   </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-center leading-tight break-words">
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words">
                     {goal.name}
                   </h3>
                 </div>
