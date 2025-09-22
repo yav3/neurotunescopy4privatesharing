@@ -467,7 +467,7 @@ const Index = () => {
           <div className="w-full overflow-hidden">
             <div className="horizontal-scroll scrollbar-hide">
               <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
-                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                <div className="p-8 text-center transition-all duration-500 group scroll-snap-start"
                      style={{ width: '200px', minWidth: '200px' }}>
                   <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
@@ -478,7 +478,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                <div className="p-8 text-center transition-all duration-500 group scroll-snap-start"
                      style={{ width: '200px', minWidth: '200px' }}>
                   <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
@@ -489,7 +489,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                <div className="p-8 text-center transition-all duration-500 group scroll-snap-start"
                      style={{ width: '200px', minWidth: '200px' }}>
                   <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
@@ -500,7 +500,7 @@ const Index = () => {
                   </div>
                 </div>
 
-                <div className="border border-white/10 rounded-xl p-8 text-center hover:border-white/20 transition-all duration-500 group scroll-snap-start bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm"
+                <div className="p-8 text-center transition-all duration-500 group scroll-snap-start"
                      style={{ width: '200px', minWidth: '200px' }}>
                   <div className="w-24 h-20 mx-auto flex items-center justify-center">
                     <img 
