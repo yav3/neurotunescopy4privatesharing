@@ -5,7 +5,6 @@ import { useAuthContext } from '../components/auth/AuthProvider';
 import { AuthPage } from '../components/auth/AuthPage';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
-import columbiaLogo from '../assets/columbia-university.png';
 import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
 import stanfordMedicineLogo from '../assets/stanford-medicine.png';
@@ -151,7 +150,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative max-w-xs">
               <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
                 <div className="relative aspect-square overflow-hidden">
                   <img 
@@ -422,24 +421,6 @@ const Index = () => {
               <div className="flex items-center justify-center space-x-2 text-xs text-cyan-500">
                 <Zap className="h-3 w-3 stroke-1" />
                 <span className="font-body">Clinical Validation</span>
-              </div>
-            </div>
-
-            <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
-                <img 
-                  src={columbiaLogo} 
-                  alt="Columbia University" 
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
-                />
-              </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Columbia University</h3>
-              <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
-                Neuroscience studies on therapeutic music effects and evidence-based treatment development
-              </p>
-              <div className="flex items-center justify-center space-x-2 text-xs text-teal-600">
-                <Heart className="h-3 w-3 stroke-1" />
-                <span className="font-body">Neuroscience Research</span>
               </div>
             </div>
           </div>
