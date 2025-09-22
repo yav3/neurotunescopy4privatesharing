@@ -25,7 +25,7 @@ import anxietyLake from '@/assets/anxiety-support-lake.png';
 import nocturnesStones from '@/assets/nocturnes-stones.png';
 import chillTropicalHouse from '@/assets/chill-tropical-house.png';
 import socialTimeFlowers from '@/assets/social-time-flowers.png';
-import cookingScene from '@/assets/cooking-scene.png';
+import peacefulRiverBrook from '@/assets/peaceful-river-brook.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -51,7 +51,7 @@ const trendingCategories = [
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: yellowFlowers },
   { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeFlowers },
-  { id: 'cooking', name: 'Cooking', letter: 'C', image: cookingScene },
+  { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: peacefulRiverBrook },
 ];
 
 const TherapeuticGoalsPage = () => {
@@ -96,7 +96,7 @@ const TherapeuticGoalsPage = () => {
       'non-sleep-deep-rest': 'meditation-support',
       'chill-tropical-house': 'calm-mood-boost',
       'social-time': 'calm-mood-boost',
-      'cooking': 'focus-enhancement',
+      'chill-folk-bluegrass': 'calm-mood-boost',
     };
     
     const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
