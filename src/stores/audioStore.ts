@@ -339,6 +339,54 @@ export const useAudioStore = create<AudioState>((set, get) => {
       get().next();
     }, delay); // Use provided delay with shorter default for better UX
   };
+
+  // Background queue management - automatically fetch more tracks when queue gets low
+  const maintainQueueBuffer = async () => {
+    const { queue, index, lastGoal, isLoading } = get();
+    const remainingTracks = queue.length - index - 1;
+    
+    // Don't fetch if already loading or no goal set
+    if (isLoading || !lastGoal) return;
+    
+    // Fetch more tracks when we have 8 or fewer remaining
+    if (remainingTracks <= 8) {
+      console.log('🎵 Background: Queue buffer low, fetching more tracks');
+      
+      try {
+        const excludeIds = queue.map(t => t.id.toString());
+        const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 25, 0, excludeIds);
+        
+        if (newTracks && newTracks.length > 0) {
+          const convertedTracks: Track[] = newTracks.map((track: any) => ({
+            id: track.id,
+            title: track.title,
+            artist: track.artist || 'Neural Positive Music',
+            duration: track.duration || 0,
+            storage_bucket: track.storage_bucket || 'audio',
+            storage_key: track.storage_key,
+            stream_url: track.stream_url,
+            audio_status: track.audio_status || 'working',
+          }));
+          
+          const newQueue = [...queue, ...convertedTracks];
+          set({ queue: newQueue });
+          console.log('🎵 Background: Added', convertedTracks.length, 'tracks to queue, total:', newQueue.length);
+        }
+      } catch (error) {
+        console.error('🎵 Background: Failed to fetch more tracks:', error);
+      }
+    }
+  };
+
+  // Start background queue monitoring
+  if (typeof window !== 'undefined') {
+    const queueMonitorInterval = setInterval(maintainQueueBuffer, 15000); // Check every 15 seconds
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      clearInterval(queueMonitorInterval);
+    });
+  }
   
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
@@ -1730,13 +1778,13 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
         }
         
-        // Check if queue is getting low and try to fetch more tracks
+        // Check if queue is getting low and try to fetch more tracks (more proactive threshold)
         const remainingTracks = queue.length - index - 1;
-        if (remainingTracks <= 2 && lastGoal) {
+        if (remainingTracks <= 5 && lastGoal) {
           console.log('🎵 Queue running low, fetching more tracks for goal:', lastGoal);
           try {
             const excludeIds = queue.map(t => t.id.toString());
-            const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 20, 0, excludeIds);
+            const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 30, 0, excludeIds);
             
             if (newTracks && newTracks.length > 0) {
               console.log('🎵 Added', newTracks.length, 'new tracks to queue');
@@ -1756,28 +1804,41 @@ export const useAudioStore = create<AudioState>((set, get) => {
               set({ queue: newQueue });
               queue = newQueue;
               console.log('🎵 Queue extended with', convertedTracks.length, 'tracks, new total:', newQueue.length);
-              
-              // Try to continue playing from the extended queue
-              for (let j = index + 1; j < queue.length; j++) {
-                const success = await loadTrack(queue[j]);
-                if (success) {
-                  set({ index: j });
-                  await get().play();
-                  console.log('🎵 Successfully resumed with extended queue at index', j);
-                  isNexting = false;
-                  return;
-                }
-              }
             }
           } catch (error) {
             console.error('🎵 Failed to fetch more tracks:', error);
           }
         }
         
-        // If no more tracks available even after trying to fetch more
-        console.log('🎵 Queue exhausted - no more tracks available');
-        set({ error: "No more tracks available", isPlaying: false });
-        toast.info("Playlist ended - select a new goal to continue listening");
+        // Continue with next track logic after queue extension
+        for (let i = index + 1; i < queue.length; i++) {
+          console.log('🎵 Trying next track at index', i, ':', queue[i].title);
+          const success = await loadTrack(queue[i]);
+          if (success) {
+            set({ index: i });
+            await get().play();
+            console.log('🎵 Successfully skipped to track:', queue[i].title);
+            // Reset flag immediately on success
+            isNexting = false;
+            return;
+          }
+          
+          // Track failure count instead of immediate removal
+          const failures = (trackFailureCounts.get(queue[i].id) || 0) + 1;
+          trackFailureCounts.set(queue[i].id, failures);
+          
+          if (failures >= MAX_TRACK_FAILURES) {
+            console.log('🎵 Removing exhausted track from queue:', queue[i].title);
+            console.log('🎵 Track failed', failures, 'times - removing permanently');
+            announceSkip();
+            queue = removeAt(queue, i);
+            i--; // Adjust index since we removed an item
+            set({ queue });
+          } else {
+            console.log('🎵 Track failed', failures, 'of', MAX_TRACK_FAILURES, 'attempts - skipping for now');
+            // Continue to next track without double-incrementing
+          }
+        }
         
         console.log('🎵 No more working tracks available');
         const { shouldShowTechnicalLogs } = await import('@/utils/adminLogging');
