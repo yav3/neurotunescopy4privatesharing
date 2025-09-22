@@ -4,6 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { AuthPage } from '../components/auth/AuthPage';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
+import columbiaLogo from '../assets/columbia-university.png';
+import cornellLogo from '../assets/cornell-university.png';
+import jacobsTechnionLogo from '../assets/jacobs-technion.png';
+import stanfordMedicineLogo from '../assets/stanford-medicine.png';
+import weillCornellLogo from '../assets/weill-cornell.png';
 
 import { Button } from '../components/ui/button';
 
@@ -366,10 +371,14 @@ const Index = () => {
           
           <div className="grid md:grid-cols-4 gap-4">
             <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-8 h-8 rounded-xl border-2 border-teal-500/50 flex items-center justify-center mb-3 group-hover:border-teal-400/70 transition-all duration-300 mx-auto">
-                <Award className="h-4 w-4 text-teal-400 stroke-1" />
+              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src={stanfordMedicineLogo} 
+                  alt="Stanford Medicine" 
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                />
               </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Stanford University Medical School</h3>
+              <h3 className="text-sm font-medium font-headers text-white mb-2">Stanford Medicine</h3>
               <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
                 Collaborative research on neuroplasticity and music-based cognitive rehabilitation protocols
               </p>
@@ -380,10 +389,14 @@ const Index = () => {
             </div>
 
             <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-8 h-8 rounded-xl border-2 border-teal-600/50 flex items-center justify-center mb-3 group-hover:border-teal-500/70 transition-all duration-300 mx-auto">
-                <Users className="h-4 w-4 text-teal-500 stroke-1" />
+              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src={jacobsTechnionLogo} 
+                  alt="Jacobs Technion-Cornell Institute" 
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                />
               </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Jacobs Cornell Technion Institute</h3>
+              <h3 className="text-sm font-medium font-headers text-white mb-2">Jacobs Technion-Cornell</h3>
               <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
                 Advanced technology research for therapeutic applications and digital health innovation
               </p>
@@ -394,10 +407,14 @@ const Index = () => {
             </div>
 
             <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-8 h-8 rounded-xl border-2 border-cyan-600/50 flex items-center justify-center mb-3 group-hover:border-cyan-500/70 transition-all duration-300 mx-auto">
-                <Sparkles className="h-4 w-4 text-cyan-500 stroke-1" />
+              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src={weillCornellLogo} 
+                  alt="Weill Cornell Medicine" 
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                />
               </div>
-              <h3 className="text-sm font-medium font-headers text-white mb-2">Weill Cornell Medical College</h3>
+              <h3 className="text-sm font-medium font-headers text-white mb-2">Weill Cornell Medicine</h3>
               <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
                 Clinical research and medical validation of therapeutic music protocols in healthcare settings
               </p>
@@ -408,8 +425,12 @@ const Index = () => {
             </div>
 
             <div className="border border-white/10 rounded-xl p-4 text-center hover:border-white/20 transition-all duration-500 group">
-              <div className="w-8 h-8 rounded-xl border-2 border-teal-700/50 flex items-center justify-center mb-3 group-hover:border-teal-600/70 transition-all duration-300 mx-auto">
-                <Brain className="h-4 w-4 text-teal-600 stroke-1" />
+              <div className="w-20 h-16 mx-auto mb-3 flex items-center justify-center">
+                <img 
+                  src={columbiaLogo} 
+                  alt="Columbia University" 
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-all duration-300"
+                />
               </div>
               <h3 className="text-sm font-medium font-headers text-white mb-2">Columbia University</h3>
               <p className="text-xs font-body text-gray-300 leading-relaxed mb-2">
