@@ -110,17 +110,17 @@ const Index = () => {
       {/* Hero Section */}
       <section className="py-8 sm:py-10 lg:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="lg:pr-4 space-y-4">
-              <h1 className="text-2xl lg:text-3xl font-semibold font-headers text-white leading-tight">
+              <h1 className="text-3xl lg:text-4xl font-semibold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
                 <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
-              <p className="text-sm font-body text-gray-300 leading-relaxed max-w-2xl">
+              <p className="text-base font-body text-gray-300 leading-relaxed max-w-2xl">
                 Evidence-based AI platform that creates personalized therapeutic music experiences 
                 to support mental health, cognitive enhancement, and emotional well-being.
               </p>
-              <p className="text-xs font-body text-gray-400 leading-relaxed">
+              <p className="text-sm font-body text-gray-400 leading-relaxed">
                 Based on evidence from 15K+ studies, utilizing the science of music therapy — 
                 a field with 50+ years of successful implementation in clinical settings.
               </p>
@@ -150,7 +150,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="relative max-w-xs">
+            <div className="relative max-w-xs ml-auto">
               <div className="bg-gradient-to-br from-white/10 to-white/5 relative z-10 rounded-xl border border-white/20 backdrop-blur-sm overflow-hidden hover:from-white/15 hover:to-white/10 transition-all duration-500">
                 <div className="relative aspect-square overflow-hidden">
                   <img 
