@@ -109,13 +109,6 @@ const Index = () => {
                 a field with 50+ years of successful implementation in clinical settings.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <div className="bg-gradient-to-r from-gray-600 to-gray-700 font-headers text-gray-300 shadow-xl font-medium px-8 py-4 h-auto flex items-center justify-center space-x-3 rounded-lg cursor-not-allowed">
-                  <Headphones className="h-5 w-5" />
-                  <span>Contact for Enterprise Access</span>
-                </div>
-              </div>
-              
               {/* Stats - Horizontal Scrolling Layout */}
               <div className="w-full overflow-hidden pt-6">
                 <div className="horizontal-scroll scrollbar-hide">
