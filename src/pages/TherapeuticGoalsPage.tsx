@@ -55,7 +55,7 @@ const trendingCategories = [
   { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouseStones },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
-  { id: 'americana-jam-band', name: 'Americana & Jam Band', letter: 'A', image: americanaJamBandStones },
+  { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
 ];
 
 const TherapeuticGoalsPage = () => {
