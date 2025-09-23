@@ -24,8 +24,8 @@ import stressLeaf from '@/assets/stress-support-leaf.png';
 import anxietyLake from '@/assets/anxiety-support-lake.png';
 import nocturnesStones from '@/assets/nocturnes-stones.png';
 import chillTropicalHouse from '@/assets/chill-tropical-house.png';
-import socialTimeFlowers from '@/assets/social-time-flowers.png';
-import peacefulRiverBrook from '@/assets/peaceful-river-brook.png';
+import socialTimeLotus from '@/assets/social-time-lotus.png';
+import chillFolkBluegrassLake from '@/assets/chill-folk-bluegrass-lake.png';
 import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
 import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
@@ -52,8 +52,8 @@ const trendingCategories = [
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
   { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
-  { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeFlowers },
-  { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: peacefulRiverBrook },
+  { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
+  { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
 ];
 
 const TherapeuticGoalsPage = () => {

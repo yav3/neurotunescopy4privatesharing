@@ -9,7 +9,9 @@ import energyBoostCard from '@/assets/energy-motivation-updated.png';
 import cardioCard from '@/assets/cardio-mountain-lake.jpg';
 import meditationCard from '@/assets/meditation-support-card.png';
 import calmMoodBoostCard from '@/assets/calm-mood-boost-leaf.png';
-import anxietySupportCard from '@/assets/anxiety-support-misty-lake.png';
+import anxietySupportCard from '@/assets/anxiety-support-lotus.png';
+import painSupportCard from '@/assets/pain-support-buds.png';
+import calmMoodBoostCardNew from '@/assets/calm-mood-boost-lotus.png';
 
 
 // Single source of truth for all therapeutic goals
@@ -80,7 +82,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Calm',
     description: 'Gentle music to boost your mood and reduce stress',
     icon: Sparkles,
-    artwork: calmMoodBoostCard,
+    artwork: calmMoodBoostCardNew,
     color: 'green',
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
@@ -128,7 +130,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Relief',
     description: 'Provide comfort and pain relief support',
     icon: Flower,
-    artwork: painCard,
+    artwork: painSupportCard,
     color: 'gray',
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
