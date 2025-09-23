@@ -177,7 +177,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'energetic-house',
         name: 'Energetic House',
         description: 'Upbeat house music for energy and motivation',
-        buckets: ['moodboostremixesworlddance'],
+        buckets: ['ENERGYBOOST', 'HIIT'],
         image: cardioSunsetBeachFlowers
       }
     ],
