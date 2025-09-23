@@ -3191,6 +3191,10 @@ export type Database = {
           track_id: string
         }[]
       }
+      has_medical_access: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
