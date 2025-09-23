@@ -103,7 +103,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'house-music',
         name: 'House Music', 
         description: 'Energetic house beats for motivation and energy',
-        buckets: ['HIIT'],
+        buckets: ['ENERGYBOOST'],
         image: moodBoostCoastalCove,
       },
       {
@@ -170,7 +170,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'hiit-energy',
         name: 'HIIT Energy',
         description: 'High-intensity interval training music for peak performance',
-        buckets: ['HIIT'],
+        buckets: ['ENERGYBOOST'],
         image: hiitForestPath
       },
       {
