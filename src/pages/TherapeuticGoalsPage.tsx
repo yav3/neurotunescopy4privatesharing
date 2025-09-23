@@ -23,7 +23,7 @@ import positivePopDewdrops from '@/assets/positive-pop-dewdrops.png';
 import stressLeaf from '@/assets/stress-support-leaf.png';
 import anxietyLake from '@/assets/anxiety-support-lake.png';
 import nocturnesStones from '@/assets/nocturnes-stones.png';
-import chillTropicalHouse from '@/assets/chill-tropical-house.png';
+import chillTropicalHouseStones from '@/assets/chill-tropical-house-stones.png';
 import socialTimeLotus from '@/assets/social-time-lotus.png';
 import chillFolkBluegrassLake from '@/assets/chill-folk-bluegrass-lake.png';
 import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
@@ -52,7 +52,7 @@ const trendingCategories = [
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
-  { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
+  { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouseStones },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Americana & Jam Band', letter: 'A', image: americanaJamBandStones },
