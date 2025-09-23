@@ -15,6 +15,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
   'meditation': ['newageworldstressanxietyreduction', 'Chopin'], // Non-Sleep Deep Rest fallback to calm music
   'Nocturnes': [], // Nocturnes should ONLY use Nocturnes bucket - no fallbacks
   'albumart': ['neuralpositivemusic', 'Chopin'], // Empty album art bucket - fallback to music buckets for now
+  'tropicalhouse': ['ENERGYBOOST'], // Tropical house is empty, fallback to energetic music
 };
 
 // Cache of known empty buckets to avoid repeated requests
@@ -25,7 +26,8 @@ const KNOWN_EMPTY_BUCKETS = new Set([
   // HIIT removed from empty buckets - should use HIIT bucket directly
   // Removed gentleclassicalforpain - let it be used directly first, then fallback to Chopin only
   'painreducingworld',
-  'audio'
+  'audio',
+  'tropicalhouse' // Empty tropical house bucket
   // Removed countryandamericana - bucket should be used directly
 ]);
 

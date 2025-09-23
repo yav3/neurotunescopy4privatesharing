@@ -113,6 +113,7 @@ const TherapeuticGoalsPage = () => {
       'chill-tropical-house': 'calm-mood-boost',
       'social-time': 'calm-mood-boost',
       'chill-folk-bluegrass': 'calm-mood-boost',
+      'americana-jam-band': 'calm-mood-boost',
     };
     
     const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
