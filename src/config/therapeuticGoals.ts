@@ -1,8 +1,8 @@
 import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
 
 // Import the new therapeutic goal card images
-import focusCard from '@/assets/therapeutic-card-1.png';
-import stressCard from '@/assets/therapeutic-card-2.png';
+import focusEnhancementCard from '@/assets/focus-enhancement-dewdrop.png';
+import energyBoostCardNew from '@/assets/energy-boost-mountain-lake.png';
 import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-motivation-updated.png';
@@ -66,7 +66,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Focus',
     description: 'Instrumental music designed to entrain, amplifying focus to create a "flow state."',
     icon: Brain,
-    artwork: focusCard,
+    artwork: focusEnhancementCard,
     color: 'blue',
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
@@ -146,7 +146,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     shortName: 'Energize',
     description: 'High-energy music to boost motivation and physical performance',
     icon: Waves,
-    artwork: energyBoostCard,
+    artwork: energyBoostCardNew,
     color: 'orange',
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
