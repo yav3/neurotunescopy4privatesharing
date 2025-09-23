@@ -52,7 +52,7 @@ const trendingCategories = [
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
-  { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouseStones },
+  { id: 'chill-tropical-house', name: 'Mood Boosting Tropical House', letter: 'M', image: chillTropicalHouseStones },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
