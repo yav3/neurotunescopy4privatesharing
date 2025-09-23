@@ -75,6 +75,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: sambaTropicalHibiscus
       },
       {
+        id: 'tropical-house',
+        name: 'Tropical House',
+        description: 'Relaxing tropical house music for calm mood enhancement',
+        buckets: ['tropicalhouse'],
+        image: sambaTropicalHibiscus
+      },
+      {
         id: 'bluegrass-americana',
         name: 'Bluegrass & Americana',
         description: 'Calming country and americana music for stress relief',
