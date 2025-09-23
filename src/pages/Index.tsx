@@ -1,8 +1,7 @@
 /* Professional Music Therapy AI Platform Landing Page */
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
-import { AuthPage } from '../components/auth/AuthPage';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
 import cornellLogo from '../assets/cornell-university.png';
@@ -34,26 +33,7 @@ import {
 } from 'lucide-react';
 
 const Index = () => {
-  const navigate = useNavigate();
   const { user, loading } = useAuthContext();
-  const [showAuth, setShowAuth] = useState(false);
-
-  // Handler for action buttons - show auth if not logged in, go to app if logged in
-  const handleActionClick = () => {
-    console.log('🔘 Action button clicked, user:', !!user, 'loading:', loading);
-    if (user) {
-      console.log('🎯 User authenticated, navigating to goals');
-      navigate('/goals');
-    } else {
-      console.log('🔐 User not authenticated, showing auth');
-      setShowAuth(true);
-    }
-  };
-
-  // Show the auth page when requested
-  if (showAuth) {
-    return <AuthPage onBack={() => setShowAuth(false)} />;
-  }
 
   const therapeuticBenefits = [
     {
@@ -103,13 +83,9 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button 
-                size="sm"
-                onClick={handleActionClick}
-                className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white shadow-lg hover:shadow-xl font-medium font-headers px-6 hover:from-teal-400 hover:to-cyan-500 transition-all duration-300"
-              >
-                {user ? 'Admin Login' : 'Enter Code'}
-              </Button>
+              <div className="text-sm font-medium text-gray-400 font-headers px-6 py-2 border border-gray-600 rounded-md">
+                Authorized Users Only
+              </div>
             </div>
           </div>
         </div>
@@ -134,15 +110,10 @@ const Index = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button 
-                  size="lg"
-                  onClick={handleActionClick}
-                  className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 font-headers text-white shadow-xl hover:shadow-2xl font-medium px-8 py-4 h-auto flex items-center justify-center space-x-3 hover:from-teal-400 hover:via-teal-500 hover:to-teal-600 transition-all duration-300"
-                >
+                <div className="bg-gradient-to-r from-gray-600 to-gray-700 font-headers text-gray-300 shadow-xl font-medium px-8 py-4 h-auto flex items-center justify-center space-x-3 rounded-lg cursor-not-allowed">
                   <Headphones className="h-5 w-5" />
-                  <span>{user ? 'Enter Code' : 'Request Enterprise Code'}</span>
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
+                  <span>Contact for Enterprise Access</span>
+                </div>
               </div>
               
               {/* Stats - Horizontal Scrolling Layout */}
@@ -269,12 +240,11 @@ const Index = () => {
                           Anxiety Relief
                         </span>
                       </div>
-                      <button 
-                        onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                      <div 
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
                       >
                         <Play className="h-5 w-5" />
-                      </button>
+                      </div>
                     </div>
                     <div className="space-y-3">
                       <h3 className="text-lg font-medium font-headers text-white leading-tight">
@@ -307,12 +277,11 @@ const Index = () => {
                           Focus Enhancement
                         </span>
                       </div>
-                      <button 
-                        onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                      <div 
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
                       >
                         <Play className="h-5 w-5" />
-                      </button>
+                      </div>
                     </div>
                     <div className="space-y-3">
                       <h3 className="text-lg font-medium font-headers text-white leading-tight">
@@ -345,12 +314,11 @@ const Index = () => {
                           Non-Sleep Deep Rest
                         </span>
                       </div>
-                      <button 
-                        onClick={handleActionClick}
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 hover:border-white/50 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                      <div 
+                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
                       >
                         <Play className="h-5 w-5" />
-                      </button>
+                      </div>
                     </div>
                     <div className="space-y-3">
                       <h3 className="text-lg font-medium font-headers text-white leading-tight">
@@ -446,12 +414,9 @@ const Index = () => {
               Join thousands who have discovered the therapeutic power of AI-personalized music
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link 
-                to="/admin" 
-                className="text-teal-300 hover:text-teal-200 font-medium font-body underline underline-offset-4 transition-colors duration-300"
-              >
-                Admin Portal →
-              </Link>
+              <span className="text-gray-400 font-medium font-body text-sm">
+                Authorized Users Only
+              </span>
             </div>
           </div>
         </div>
