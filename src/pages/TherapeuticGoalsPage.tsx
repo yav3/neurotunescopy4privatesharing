@@ -28,6 +28,7 @@ import socialTimeLotus from '@/assets/social-time-lotus.png';
 import chillFolkBluegrassLake from '@/assets/chill-folk-bluegrass-lake.png';
 import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
 import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
+import americanaJamBandMeadow from '@/assets/americana-jam-band-meadow.png';
 import { getAlbumArtByGoal } from '@/utils/albumArtPool';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
@@ -54,6 +55,7 @@ const trendingCategories = [
   { id: 'chill-tropical-house', name: 'Chill Tropical House', letter: 'C', image: chillTropicalHouse },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
+  { id: 'americana-jam-band', name: 'Americana & Jam Band', letter: 'A', image: americanaJamBandMeadow },
 ];
 
 const TherapeuticGoalsPage = () => {
