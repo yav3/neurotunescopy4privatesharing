@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { User, Settings, Music, Clock, Edit3, Calendar, TrendingUp, ArrowLeft } from "lucide-react";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import neurotunesLogo from '@/assets/neurotunes-logo.png';
 
 interface SessionStats {
   totalSessions: number;

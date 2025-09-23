@@ -10,6 +10,8 @@ import jacobsTechnionLogo from '../assets/jacobs-technion.png';
 import stanfordMedicineLogo from '../assets/stanford-medicine.png';
 import weillCornellLogo from '../assets/weill-cornell.png';
 import leafDropletImage from '../assets/leaf-droplet.png';
+import neurotunesLogo from '@/assets/neurotunes-logo.png';
+import liquidGlassGradient from '@/assets/liquid-glass-gradient.png';
 
 import { Button } from '../components/ui/button';
 
@@ -88,8 +90,12 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 border-2 border-white/60 rounded flex items-center justify-center">
-                <Plus className="w-3 h-3 text-white/80" strokeWidth={2.5} />
+              <div className="w-8 h-8 rounded flex items-center justify-center overflow-hidden">
+                <img 
+                  src={neurotunesLogo} 
+                  alt="NeuroTunes Logo"
+                  className="w-6 h-6 object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-4xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
@@ -420,8 +426,18 @@ const Index = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 relative overflow-hidden border-t border-white/10">
+        {/* Liquid glass gradient background */}
+        <div className="absolute inset-0">
+          <img 
+            src={liquidGlassGradient} 
+            alt=""
+            className="w-full h-full object-cover opacity-80"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="max-w-4xl mx-auto space-y-8">
             <h2 className="text-3xl lg:text-4xl xl:text-5xl font-semibold font-headers text-white mb-6">
               Ready to Begin Your Musical Wellness Journey?
@@ -430,15 +446,6 @@ const Index = () => {
               Join thousands who have discovered the therapeutic power of AI-personalized music
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Button 
-                size="lg"
-                onClick={handleActionClick}
-                className="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 font-headers text-white shadow-xl hover:shadow-2xl font-medium px-10 py-5 h-auto flex items-center justify-center space-x-3 hover:from-teal-400 hover:via-teal-500 hover:to-teal-600 transition-all duration-300 text-lg"
-              >
-                <Sparkles className="h-6 w-6" />
-                <span>Start Your Journey</span>
-                <ArrowRight className="h-6 w-6" />
-              </Button>
               <Link 
                 to="/admin" 
                 className="text-teal-300 hover:text-teal-200 font-medium font-body underline underline-offset-4 transition-colors duration-300"
