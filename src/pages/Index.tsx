@@ -160,31 +160,31 @@ const Index = () => {
             <div className="flex justify-center lg:justify-end">
               <div className="relative max-w-sm w-full">
                 {/* Active Therapy Session Card */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden">
+                <div className="bg-gradient-to-br from-white/8 to-white/3 border border-white/20 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden">
                   {/* Background leaf image */}
-                  <div className="absolute inset-0 opacity-30">
+                  <div className="absolute inset-0 opacity-60">
                     <img 
                       src="/src/assets/leaf-therapy.png"
                       alt="" 
                       className="w-full h-full object-cover rounded-2xl"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40"></div>
                   </div>
                   
                   {/* Content */}
                   <div className="relative z-10 flex flex-col items-center justify-center space-y-4">
                     {/* Headphones Icon */}
-                    <div className="w-16 h-16 bg-white/10 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Headphones className="h-8 w-8 text-white" />
+                    <div className="w-16 h-16 bg-white/20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg">
+                      <Headphones className="h-8 w-8 text-white drop-shadow-sm" />
                     </div>
                     
                     {/* Session Info */}
                     <div className="text-center space-y-3">
-                      <h3 className="text-xl font-semibold font-headers text-white">Active Therapy Session</h3>
-                      <p className="text-sm font-body text-gray-300">Classical Sonatas for Stress Relief</p>
-                      <div className="flex items-center justify-center space-x-2 text-white/80">
-                        <Activity className="h-4 w-4" />
-                        <span className="text-sm font-medium font-body">Real-time Monitoring</span>
+                      <h3 className="text-xl font-semibold font-headers text-white drop-shadow-lg">Active Therapy Session</h3>
+                      <p className="text-sm font-body text-gray-200 drop-shadow-md">Classical Sonatas for Stress Relief</p>
+                      <div className="flex items-center justify-center space-x-2 text-white/90">
+                        <Activity className="h-4 w-4 drop-shadow-sm" />
+                        <span className="text-sm font-medium font-body drop-shadow-sm">Real-time Monitoring</span>
                       </div>
                     </div>
                   </div>
