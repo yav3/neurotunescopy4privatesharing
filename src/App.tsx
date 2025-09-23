@@ -17,6 +17,7 @@ import { AuthPage } from "@/components/auth/AuthPage";
 import { LandingPage } from "@/components/LandingPage";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { useAudioStore } from "@/stores";
+import { AccessTrackingProvider } from "@/components/analytics/AccessTrackingProvider";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
@@ -93,38 +94,40 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ErrorBoundary>
-          <Toaster />
-          <Sonner />
-          <div className="relative min-h-screen">
-            <Routes>
-              <Route path="/" element={<TherapeuticGoalsPage />} />
-              <Route path="/goals" element={<TherapeuticGoalsPage />} />
-              <Route path="/debug" element={<ConnectionDiagnostics />} />
-              <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/landing" element={<Index />} />
-              <Route path="/storage" element={<Storage />} />
-              <Route path="/monitoring" element={<Monitoring />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="content" element={<ContentManagement />} />
-                <Route path="magic-links" element={<MagicLinksPage />} />
-                <Route path="magic-auth" element={<MagicAuth />} />
-                <Route path="analytics" element={<Analytics />} />
-                <Route path="settings" element={<SystemSettings />} />
-                <Route path="monitoring" element={<DataMonitoring />} />
-                <Route path="storage" element={<StorageManager />} />
-              </Route>
-              <Route path="*" element={<TherapeuticGoalsPage />} />
-            </Routes>
-            
-            {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
-            {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
-            
-          </div>
-          <DevDebugPanel />
+          <AccessTrackingProvider>
+            <Toaster />
+            <Sonner />
+            <div className="relative min-h-screen">
+              <Routes>
+                <Route path="/" element={<TherapeuticGoalsPage />} />
+                <Route path="/goals" element={<TherapeuticGoalsPage />} />
+                <Route path="/debug" element={<ConnectionDiagnostics />} />
+                <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/landing" element={<Index />} />
+                <Route path="/storage" element={<Storage />} />
+                <Route path="/monitoring" element={<Monitoring />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/analytics" element={<AnalyticsPage />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="content" element={<ContentManagement />} />
+                  <Route path="magic-links" element={<MagicLinksPage />} />
+                  <Route path="magic-auth" element={<MagicAuth />} />
+                  <Route path="analytics" element={<Analytics />} />
+                  <Route path="settings" element={<SystemSettings />} />
+                  <Route path="monitoring" element={<DataMonitoring />} />
+                  <Route path="storage" element={<StorageManager />} />
+                </Route>
+                <Route path="*" element={<TherapeuticGoalsPage />} />
+              </Routes>
+              
+              {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
+              {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
+              
+            </div>
+            <DevDebugPanel />
+          </AccessTrackingProvider>
         </ErrorBoundary>
       </TooltipProvider>
     </QueryClientProvider>

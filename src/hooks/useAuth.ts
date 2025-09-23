@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { Analytics } from '@/utils/analytics';
 
 type UserRole = 'super_admin' | 'admin' | 'moderator' | 'premium_user' | 'user';
 type UserStatus = 'active' | 'suspended' | 'pending' | 'banned';
@@ -86,6 +87,9 @@ export function useAuth() {
     try {
       setLoading(true);
       setError(null);
+      
+      // Track signup attempt
+      Analytics.trackAuthAttempt('signup', email);
 
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -96,12 +100,20 @@ export function useAuth() {
         }
       });
 
-      if (signUpError) throw signUpError;
+      if (signUpError) {
+        Analytics.trackAuthFailure('signup', signUpError.message, email);
+        throw signUpError;
+      }
+      
+      if (data.user) {
+        Analytics.trackAuthSuccess('signup', data.user.id);
+      }
 
       return { success: true, user: data.user };
     } catch (err: any) {
       const errorMessage = err.message || 'Sign up failed';
       setError(errorMessage);
+      Analytics.trackAuthFailure('signup', errorMessage, email);
       return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
@@ -113,18 +125,31 @@ export function useAuth() {
     try {
       setLoading(true);
       setError(null);
+      
+      // Track login attempt
+      Analytics.trackAuthAttempt('login', email);
 
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
-      if (signInError) throw signInError;
+      if (signInError) {
+        Analytics.trackAuthFailure('login', signInError.message, email);
+        throw signInError;
+      }
+      
+      if (data.user) {
+        // Get user with profile to track role
+        const userWithProfile = await getUserWithProfile(data.user);
+        Analytics.trackAuthSuccess('login', data.user.id, userWithProfile?.role);
+      }
 
       return { success: true, user: data.user };
     } catch (err: any) {
       const errorMessage = err.message || 'Sign in failed';
       setError(errorMessage);
+      Analytics.trackAuthFailure('login', errorMessage, email);
       return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
@@ -135,6 +160,12 @@ export function useAuth() {
   const signOut = async () => {
     try {
       setLoading(true);
+      
+      // Track session end before signing out
+      if (user) {
+        Analytics.trackSessionEnd(user.id);
+      }
+      
       await supabase.auth.signOut();
     } catch (err: any) {
       setError(err.message || 'Sign out failed');
@@ -205,28 +236,28 @@ export function useAuth() {
           setUser(null);
         }
         
-        // Update admin logging role
-        import('@/utils/adminLogging').then(({ updateUserRole }) => {
-          updateUserRole(null);
-        });
-        
-        // Defer profile fetching to avoid deadlock
-        if (session?.user) {
-          setTimeout(() => {
-            if (mounted) {
-              getUserWithProfile(session.user).then(userWithProfile => {
-                if (mounted && session?.user) { // Double check session is still valid
-                  console.log('✅ Profile loaded via timeout:', !!userWithProfile);
-                  setUser(userWithProfile);
-                  // Update admin logging with user role
-                  import('@/utils/adminLogging').then(({ updateUserRole }) => {
-                    updateUserRole(userWithProfile?.role || 'user');
-                  });
-                }
-              });
-            }
-          }, 0);
+        // Track session start for new logins
+        if (event === 'SIGNED_IN') {
+          Analytics.trackSessionStart(session.user.id);
         }
+        
+          // Defer profile fetching to avoid deadlock
+          if (session?.user) {
+            setTimeout(() => {
+              if (mounted) {
+                getUserWithProfile(session.user).then(userWithProfile => {
+                  if (mounted && session?.user) { // Double check session is still valid
+                    console.log('✅ Profile loaded via timeout:', !!userWithProfile);
+                    setUser(userWithProfile);
+                    // Update admin logging with user role
+                    import('@/utils/adminLogging').then(({ updateUserRole }) => {
+                      updateUserRole(userWithProfile?.role || 'user');
+                    });
+                  }
+                });
+              }
+            }, 0);
+          }
         
         console.log('⏰ Setting loading to false from auth state change');
         setLoading(false);
@@ -245,15 +276,17 @@ export function useAuth() {
         if (session?.user) {
           console.log('👤 Loading user profile...');
           const userWithProfile = await getUserWithProfile(session.user);
-          if (mounted) {
-            setUser(userWithProfile);
-            setSession(session);
-            // Update admin logging with user role
-            import('@/utils/adminLogging').then(({ updateUserRole }) => {
-              updateUserRole(userWithProfile?.role || 'user');
-            });
-            console.log('✅ Auth initialization complete');
-          }
+            if (mounted) {
+              setUser(userWithProfile);
+              setSession(session);
+              // Track session start for existing sessions
+              Analytics.trackSessionStart(session.user.id, userWithProfile?.role);
+              // Update admin logging with user role
+              import('@/utils/adminLogging').then(({ updateUserRole }) => {
+                updateUserRole(userWithProfile?.role || 'user');
+              });
+              console.log('✅ Auth initialization complete');
+            }
         } else {
           console.log('📭 No session found');
           if (mounted) {

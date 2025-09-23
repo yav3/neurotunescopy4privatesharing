@@ -11,6 +11,70 @@ export class Analytics {
     if (event.includes('play') || event.includes('therapeutic')) {
       logger.info(`Therapeutic Event: ${event}`, properties)
     }
+    
+    // Log all access and authentication events
+    if (event.includes('auth') || event.includes('access') || event.includes('session')) {
+      logger.info(`Access Event: ${event}`, properties)
+    }
+  }
+  
+  static trackAppAccess(properties?: Record<string, any>) {
+    this.track('app_accessed', {
+      timestamp: new Date().toISOString(),
+      user_agent: navigator.userAgent,
+      referrer: document.referrer,
+      ...properties
+    })
+  }
+  
+  static trackAuthAttempt(method: 'login' | 'signup', email?: string) {
+    this.track('auth_attempt', {
+      method,
+      email,
+      timestamp: new Date().toISOString()
+    })
+  }
+  
+  static trackAuthSuccess(method: 'login' | 'signup', userId: string, userRole?: string) {
+    this.track('auth_success', {
+      method,
+      user_id: userId,
+      user_role: userRole,
+      timestamp: new Date().toISOString()
+    })
+  }
+  
+  static trackAuthFailure(method: 'login' | 'signup', error: string, email?: string) {
+    this.track('auth_failure', {
+      method,
+      error_message: error,
+      email,
+      timestamp: new Date().toISOString()
+    })
+  }
+  
+  static trackUnauthorizedAccess(attemptedRoute: string, userAgent?: string) {
+    this.track('unauthorized_access_attempt', {
+      attempted_route: attemptedRoute,
+      user_agent: userAgent || navigator.userAgent,
+      timestamp: new Date().toISOString()
+    })
+  }
+  
+  static trackSessionStart(userId: string, userRole?: string) {
+    this.track('session_start', {
+      user_id: userId,
+      user_role: userRole,
+      timestamp: new Date().toISOString()
+    })
+  }
+  
+  static trackSessionEnd(userId: string, sessionDuration?: number) {
+    this.track('session_end', {
+      user_id: userId,
+      session_duration_ms: sessionDuration,
+      timestamp: new Date().toISOString()
+    })
   }
   
   static trackTherapeuticSession(trackId: string, duration: number, frequency_band: string) {

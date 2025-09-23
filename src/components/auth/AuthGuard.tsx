@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from './AuthProvider';
+import { Analytics } from '@/utils/analytics';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -31,6 +32,8 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
 
   if (!user) {
     console.log('🔒 AuthGuard: User not authenticated, redirecting to', redirectTo);
+    // Track unauthorized access attempt
+    Analytics.trackUnauthorizedAccess(location.pathname);
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
