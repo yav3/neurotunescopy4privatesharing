@@ -109,6 +109,12 @@ const TherapeuticGoalsPage = () => {
       return;
     }
     
+    if (categoryId === 'americana-jam-band') {
+      console.log('🎵 Navigating directly to americana & jam band music');
+      navigate('/genre/calm-mood-boost/americana-jam-band');
+      return;
+    }
+    
     // Map trending categories to their corresponding therapeutic goals
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'pain-support',
