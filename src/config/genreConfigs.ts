@@ -193,6 +193,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Upbeat house music for energy and motivation',
         buckets: ['ENERGYBOOST', 'HIIT'],
         image: cardioSunsetBeachFlowers
+      },
+      {
+        id: 'reggaeton',
+        name: 'Reggaeton',
+        description: 'High-energy reggaeton beats for motivation',
+        buckets: ['reggaeton'],
+        image: cardioMountainWildflowers
       }
     ],
     'meditation-support': [
