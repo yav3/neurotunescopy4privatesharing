@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Users, Activity, Shield, AlertTriangle, Clock, TrendingUp, Eye, LogIn } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { SecurityIncidents } from './SecurityIncidents';
 
 interface AccessMetrics {
   totalUsers: number;
@@ -293,6 +294,9 @@ export const RealTimeAnalytics: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Detailed Security Incidents Analysis */}
+      <SecurityIncidents />
     </div>
   );
 };
