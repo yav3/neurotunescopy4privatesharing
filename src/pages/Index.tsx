@@ -83,8 +83,8 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm font-medium text-gray-400 font-headers px-6 py-2 border border-gray-600 rounded-md">
-                Authorized Users Only
+              <div className="text-sm font-medium text-gray-300 font-headers px-6 py-2 border border-gray-500 rounded-lg bg-gray-700/50 backdrop-blur-sm">
+                Authorized User Sign-In
               </div>
             </div>
           </div>
@@ -414,8 +414,8 @@ const Index = () => {
               Join thousands who have discovered the therapeutic power of AI-personalized music
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <span className="text-gray-400 font-medium font-body text-sm">
-                Authorized Users Only
+              <span className="text-gray-300 font-medium font-body text-lg px-6 py-3 border border-gray-500 rounded-lg bg-gray-700/50 backdrop-blur-sm">
+                Authorized User Sign-In
               </span>
             </div>
           </div>
