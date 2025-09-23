@@ -144,13 +144,7 @@ const TherapeuticGoalsPage = () => {
           {/* Branding */}
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center overflow-hidden">
-                <img 
-                  src={neurotunesLogo} 
-                  alt="NeuroTunes Logo"
-                  className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-                />
-              </div>
+              <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900 dark:text-white" />
               <div>
                 <div className="text-4xl sm:text-5xl md:text-6xl font-sf font-medium text-gray-900 dark:text-white leading-tight">NeuroTunes</div>
               </div>
