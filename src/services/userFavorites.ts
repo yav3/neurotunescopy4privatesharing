@@ -19,11 +19,19 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated to save favorites' };
       }
 
+      // Ensure track_id is stored as bigint (number)
+      const trackId = typeof track.id === 'string' ? parseInt(track.id, 10) : track.id;
+      
+      if (isNaN(trackId)) {
+        console.error('Invalid track ID:', track.id);
+        return { success: false, error: 'Invalid track ID' };
+      }
+
       const { error } = await supabase
         .from('favorites')
         .insert({
           user_id: user.id,
-          track_id: parseInt(track.id.toString())
+          track_id: trackId
         });
 
       if (error) {
@@ -46,11 +54,19 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated' };
       }
 
+      // Ensure track_id is converted to number for comparison
+      const numericTrackId = typeof trackId === 'string' ? parseInt(trackId, 10) : trackId;
+      
+      if (isNaN(numericTrackId)) {
+        console.error('Invalid track ID for removal:', trackId);
+        return { success: false, error: 'Invalid track ID' };
+      }
+
       const { error } = await supabase
         .from('favorites')
         .delete()
         .eq('user_id', user.id)
-        .eq('track_id', parseInt(trackId));
+        .eq('track_id', numericTrackId);
 
       if (error) {
         console.error('Error removing favorite:', error);
@@ -103,12 +119,19 @@ export class UserFavoritesService {
         return false;
       }
 
+      // Ensure track_id is converted to number for comparison
+      const numericTrackId = typeof trackId === 'string' ? parseInt(trackId, 10) : trackId;
+      
+      if (isNaN(numericTrackId)) {
+        return false;
+      }
+
       const { data, error } = await supabase
         .from('favorites')
         .select('id')
         .eq('user_id', user.id)
-        .eq('track_id', parseInt(trackId))
-        .single();
+        .eq('track_id', numericTrackId)
+        .maybeSingle();
 
       return !error && !!data;
     } catch (error) {

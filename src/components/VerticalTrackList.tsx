@@ -161,7 +161,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
       <div className="max-h-[60vh] overflow-y-auto pr-2">
         {filteredTracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
-          const isFavorited = isFavorite(track.id);
+          const isFavorited = React.useMemo(() => isFavorite(track.id), [isFavorite, track.id]);
           const isFavoriteLoading = favoriteLoadingStates.has(track.id);
           
           return (
