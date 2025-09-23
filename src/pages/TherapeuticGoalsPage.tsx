@@ -103,6 +103,12 @@ const TherapeuticGoalsPage = () => {
       return;
     }
     
+    if (categoryId === 'chill-tropical-house') {
+      console.log('🎵 Navigating directly to chill tropical house music');
+      navigate('/genre/calm-mood-boost/chill-tropical-house');
+      return;
+    }
+    
     // Map trending categories to their corresponding therapeutic goals
     const trendingToGoalMap: Record<string, string> = {
       'chill-classical': 'pain-support',
