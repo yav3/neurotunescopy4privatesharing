@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings as SettingsIcon, User, Bell, Shield, Palette } from 'lucide-react';
+import { ArrowLeft, Settings as SettingsIcon, User, Bell, Shield, Palette, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { useAppStore } from '@/stores/appStore';
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { preferences, setPreference } = useAppStore();
 
   const handleGoBack = () => {
     navigate(-1);
@@ -52,17 +54,39 @@ const Settings = () => {
 
           <div className="bg-card border border-border rounded-lg p-6">
             <div className="flex items-center space-x-3 mb-4">
-              <Bell className="h-6 w-6 text-primary" />
-              <h2 className="text-lg font-medium text-card-foreground">Notifications</h2>
+              <Music className="h-6 w-6 text-primary" />
+              <h2 className="text-lg font-medium text-card-foreground">Audio Playback</h2>
             </div>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <div className="font-medium text-foreground">Session Reminders</div>
-                  <div className="text-sm text-muted-foreground">Get reminded about scheduled sessions</div>
+                  <div className="font-medium text-foreground">Continuous Play</div>
+                  <div className="text-sm text-muted-foreground">Automatically play next track when current song ends</div>
                 </div>
-                <Switch defaultChecked />
+                <Switch 
+                  checked={preferences.autoplay} 
+                  onCheckedChange={(checked) => setPreference('autoplay', checked)}
+                />
               </div>
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="font-medium text-foreground">Session Reminders</div>
+                  <div className="text-sm text-muted-foreground">Get reminded about scheduled therapeutic sessions</div>
+                </div>
+                <Switch 
+                  checked={preferences.sessionReminders} 
+                  onCheckedChange={(checked) => setPreference('sessionReminders', checked)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-lg p-6">
+            <div className="flex items-center space-x-3 mb-4">
+              <Bell className="h-6 w-6 text-primary" />
+              <h2 className="text-lg font-medium text-card-foreground">Notifications</h2>
+            </div>
+            <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <div>
                   <div className="font-medium text-foreground">Progress Updates</div>
