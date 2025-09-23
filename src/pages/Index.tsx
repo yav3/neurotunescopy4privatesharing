@@ -181,10 +181,10 @@ const Index = () => {
                     {/* Session Info */}
                     <div className="text-center space-y-3">
                       <h3 className="text-xl font-semibold font-headers text-white drop-shadow-lg">Active Therapy Session</h3>
-                      <p className="text-sm font-body text-gray-200 drop-shadow-md">Classical Sonatas for Stress Relief</p>
+                      <p className="text-xs font-body text-gray-200 drop-shadow-md">Classical Sonatas for Stress Relief</p>
                       <div className="flex items-center justify-center space-x-2 text-white/90">
-                        <Activity className="h-4 w-4 drop-shadow-sm" />
-                        <span className="text-sm font-medium font-body drop-shadow-sm">Real-time Monitoring</span>
+                        <Activity className="h-3 w-3 drop-shadow-sm" />
+                        <span className="text-xs font-medium font-body drop-shadow-sm">Real-time Monitoring</span>
                       </div>
                     </div>
                   </div>
