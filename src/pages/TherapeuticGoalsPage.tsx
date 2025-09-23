@@ -127,11 +127,11 @@ const TherapeuticGoalsPage = () => {
       <div className="px-6 py-2 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <Plus className="w-7 h-7 text-gray-900 dark:text-white" />
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <div className="flex items-center gap-3">
+              <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900 dark:text-white" />
               <div>
-                <div className="text-6xl font-sf font-medium text-gray-900 dark:text-white">NeuroTunes</div>
+                <div className="text-4xl sm:text-5xl md:text-6xl font-sf font-medium text-gray-900 dark:text-white leading-tight">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -147,12 +147,12 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-8 md:pt-12 lg:pt-16">
-        <div className="max-w-7xl mx-auto space-y-8 md:space-y-10 lg:space-y-12">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-6 sm:pt-8 md:pt-12 lg:pt-16">
+        <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12 md:space-y-14 lg:space-y-16">
           
           {/* Trending Section */}
           <div>
-            <h2 className="text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6">Trending</h2>
+            <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Trending</h2>
             
             {/* Horizontal scrolling container for trending */}
             <div className="overflow-x-auto pb-2">
@@ -183,7 +183,7 @@ const TherapeuticGoalsPage = () => {
                         </span>
                       </div>
                     </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs mt-1.5 text-left leading-tight break-words w-full">
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-3 sm:mt-3.5 text-left leading-tight break-words w-full px-0.5">
                       {category.name}
                     </h3>
                   </div>
@@ -193,11 +193,11 @@ const TherapeuticGoalsPage = () => {
           </div>
 
           {/* Therapeutic Goals Section */}
-          <div className="mt-8">
-            <h2 className="text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6">Personalize Your Goal</h2>
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Personalize Your Goal</h2>
             
             {/* Larger therapeutic goals cards with proper mobile/tablet layout */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 lg:gap-7">
               {therapeuticGoals.map((goal) => (
                 <div key={goal.id} className="flex flex-col items-start w-full">
                   <Card 
@@ -225,7 +225,7 @@ const TherapeuticGoalsPage = () => {
                       </span>
                     </div>
                   </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-tight break-words w-full">
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-3 sm:mt-4 text-left leading-snug break-words w-full px-0.5">
                     {goal.name}
                   </h3>
                 </div>
