@@ -201,6 +201,14 @@ export class SupabaseService {
     }
   ) {
     try {
+      console.log('🔄 Starting trackTherapeuticSession with:', {
+        trackId,
+        duration,
+        frequencyBand,
+        userId,
+        sessionData
+      });
+
       // Get current user if not provided
       let currentUserId = userId;
       if (!currentUserId) {
@@ -209,19 +217,28 @@ export class SupabaseService {
       }
 
       if (!currentUserId) {
-        console.warn('No user ID available for session tracking');
+        console.warn('❌ No user ID available for session tracking');
         return;
       }
+
+      console.log('👤 Using user ID:', currentUserId);
 
       const sessionDurationMinutes = Math.floor(duration / 60);
       const skipRate = sessionData ? (sessionData.tracksPlayed.length > 0 ? sessionData.skipCount / sessionData.tracksPlayed.length : 0) : 0;
 
+      console.log('📈 Session metrics:', {
+        sessionDurationMinutes,
+        skipRate,
+        tracksPlayedCount: sessionData?.tracksPlayed?.length || 0
+      });
+
       // Get or create patient record for this user
+      console.log('🏥 Getting/creating patient record...');
       const { data: patientId, error: patientError } = await supabase
         .rpc('get_or_create_patient_for_user', { user_id: currentUserId });
       
       if (patientError) {
-        console.error('Error getting/creating patient record:', patientError);
+        console.error('❌ Error getting/creating patient record:', patientError);
         // Fallback: store with user_id only
         const insertData = {
           user_id: currentUserId,
@@ -235,13 +252,22 @@ export class SupabaseService {
           average_complexity_score: null
         };
 
+        console.log('💾 Inserting session with user_id fallback:', insertData);
+
         const { error } = await supabase
           .from('listening_sessions')
           .insert(insertData);
 
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Failed to insert session (fallback):', error);
+          throw error;
+        }
+        
+        console.log('✅ Session saved successfully (fallback mode)');
         return;
       }
+
+      console.log('🏥 Patient ID obtained:', patientId);
 
       // Store with both patient_id and user_id for compatibility
       const insertData = {
@@ -256,11 +282,18 @@ export class SupabaseService {
         average_complexity_score: null
       };
 
+      console.log('💾 Inserting session data:', insertData);
+
       const { error } = await supabase
         .from('listening_sessions')
         .insert(insertData);
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Failed to insert session:', error);
+        throw error;
+      }
+
+      console.log('✅ Session tracked successfully!');
 
       logger.info('Therapeutic session tracked', { 
         trackId, 
@@ -271,6 +304,7 @@ export class SupabaseService {
         skipRate: Math.round(skipRate * 100)
       });
     } catch (error) {
+      console.error('❌ Failed to track therapeutic session:', error);
       logger.error('Failed to track therapeutic session', { trackId, error });
     }
   }

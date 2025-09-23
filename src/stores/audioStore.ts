@@ -95,6 +95,16 @@ const completeListeningSession = async () => {
       
       const frequencyBand = mapGenreToFrequencyBand(currentSession.dominantGenres[0] || 'alpha');
       
+      console.log('📊 About to track therapeutic session:', {
+        trackId: currentSession.tracksPlayed[0]?.id?.toString() || '',
+        totalDuration: currentSession.totalDuration,
+        frequencyBand,
+        userId: user.id,
+        tracksPlayedCount: currentSession.tracksPlayed.length,
+        skipCount: currentSession.skipCount,
+        dominantGenres: currentSession.dominantGenres
+      });
+
       await SupabaseService.trackTherapeuticSession(
         currentSession.tracksPlayed[0]?.id?.toString() || '',
         currentSession.totalDuration,
@@ -108,6 +118,7 @@ const completeListeningSession = async () => {
         }
       );
       
+      console.log('✅ Successfully tracked therapeutic session');
       console.log('🎵 Completed listening session:', {
         sessionId: currentSession.sessionId,
         duration: sessionDurationMinutes,
