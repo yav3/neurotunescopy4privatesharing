@@ -961,6 +961,7 @@ export type Database = {
           session_duration_minutes: number | null
           skip_rate: number | null
           tracks_played: number | null
+          user_id: string | null
         }
         Insert: {
           average_complexity_score?: number | null
@@ -973,6 +974,7 @@ export type Database = {
           session_duration_minutes?: number | null
           skip_rate?: number | null
           tracks_played?: number | null
+          user_id?: string | null
         }
         Update: {
           average_complexity_score?: number | null
@@ -985,6 +987,7 @@ export type Database = {
           session_duration_minutes?: number | null
           skip_rate?: number | null
           tracks_played?: number | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -3150,6 +3153,10 @@ export type Database = {
       }
       get_histogram_timings: {
         Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_or_create_patient_for_user: {
+        Args: { user_id: string }
         Returns: string
       }
       get_therapeutic_recommendations: {

@@ -202,22 +202,57 @@ export class SupabaseService {
   ) {
     try {
       // Get current user if not provided
-      let patientId = userId;
-      if (!patientId) {
+      let currentUserId = userId;
+      if (!currentUserId) {
         const { data: { user } } = await supabase.auth.getUser();
-        patientId = user?.id || null;
+        currentUserId = user?.id || null;
+      }
+
+      if (!currentUserId) {
+        console.warn('No user ID available for session tracking');
+        return;
       }
 
       const sessionDurationMinutes = Math.floor(duration / 60);
       const skipRate = sessionData ? (sessionData.tracksPlayed.length > 0 ? sessionData.skipCount / sessionData.tracksPlayed.length : 0) : 0;
 
+      // Get or create patient record for this user
+      const { data: patientId, error: patientError } = await supabase
+        .rpc('get_or_create_patient_for_user', { user_id: currentUserId });
+      
+      if (patientError) {
+        console.error('Error getting/creating patient record:', patientError);
+        // Fallback: store with user_id only
+        const insertData = {
+          user_id: currentUserId,
+          patient_id: null,
+          session_date: new Date().toISOString(),
+          session_duration_minutes: sessionDurationMinutes,
+          tracks_played: sessionData?.tracksPlayed?.length || 1,
+          skip_rate: skipRate,
+          dominant_genres: sessionData?.dominantGenres || [frequencyBand],
+          mood_progression: null,
+          average_complexity_score: null
+        };
+
+        const { error } = await supabase
+          .from('listening_sessions')
+          .insert(insertData);
+
+        if (error) throw error;
+        return;
+      }
+
+      // Store with both patient_id and user_id for compatibility
       const insertData = {
+        user_id: currentUserId,
         patient_id: patientId,
+        session_date: new Date().toISOString(),
         session_duration_minutes: sessionDurationMinutes,
         tracks_played: sessionData?.tracksPlayed?.length || 1,
-        dominant_genres: sessionData?.dominantGenres || [frequencyBand],
-        session_date: new Date().toISOString(),
         skip_rate: skipRate,
+        dominant_genres: sessionData?.dominantGenres || [frequencyBand],
+        mood_progression: null,
         average_complexity_score: null
       };
 

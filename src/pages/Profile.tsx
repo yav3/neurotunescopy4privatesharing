@@ -57,11 +57,11 @@ const Profile = () => {
     if (!user?.id) return;
     
     try {
-      // Get listening sessions with detailed data
+      // Get listening sessions with detailed data - support both patient_id and user_id
       const { data: sessions } = await supabase
         .from('listening_sessions')
         .select('*')
-        .eq('patient_id', user.id);
+        .or(`patient_id.eq.${user.id},user_id.eq.${user.id}`);
 
       const totalSessions = sessions?.length || 0;
       const totalListenTime = sessions?.reduce((sum, session) => 
@@ -167,7 +167,7 @@ const Profile = () => {
       const { data: sessions } = await supabase
         .from('listening_sessions')
         .select('session_date')
-        .eq('patient_id', userId)
+        .or(`patient_id.eq.${userId},user_id.eq.${userId}`)
         .order('session_date', { ascending: false })
         .limit(30);
 
@@ -205,7 +205,7 @@ const Profile = () => {
       const { data: sessions } = await supabase
         .from('listening_sessions')
         .select('*')
-        .eq('patient_id', user.id)
+        .or(`patient_id.eq.${user.id},user_id.eq.${user.id}`)
         .order('session_date', { ascending: false })
         .limit(10);
 
