@@ -29,7 +29,7 @@ import chillFolkBluegrassLake from '@/assets/chill-folk-bluegrass-lake.png';
 import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
 import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
 import americanaJamBandStones from '@/assets/americana-jam-band-stones.png';
-import { getAlbumArtByGoal } from '@/utils/albumArtPool';
+import chillSambaTropical from '@/assets/chill-samba-tropical.png';
 import { audioSystemDebugger } from '@/utils/audioSystemDebugger';
 
 // Create therapeutic goal cards
@@ -48,7 +48,7 @@ const therapeuticGoals = [
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
-  { id: 'positive-pop', name: 'Positive Pop', letter: 'P', image: positivePopDewdrops },
+  { id: 'chill-samba', name: 'Chill Samba', letter: 'C', image: chillSambaTropical },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
@@ -85,13 +85,13 @@ const TherapeuticGoalsPage = () => {
     console.log('🎵 Navigating to trending category:', categoryId);
     
     // Direct navigation for specific categories to avoid wrong genre selection
-    if (categoryId === 'positive-pop') {
-      console.log('🎵 Navigating directly to positive pop music');
-      navigate('/genre/mood-boost/pop');
+    if (categoryId === 'chill-samba') {
+      console.log('🎵 Navigating directly to chill samba music');
+      navigate('/genre/calm-mood-boost/samba');
       return;
     }
     
-    if (categoryId === 'chill-folk-bluegrass') {
+    if (categoryId === 'new-age-world') {
       console.log('🎵 Navigating directly to bluegrass & americana music');
       navigate('/genre/calm-mood-boost/bluegrass-americana');
       return;
