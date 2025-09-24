@@ -33,10 +33,11 @@ export const AdvancedAuthGuard: React.FC<AdvancedAuthGuardProps> = ({
       const userAgent = navigator.userAgent;
       const timestamp = Date.now();
 
-      // Check for suspicious access patterns
+      // Check for suspicious access patterns (but allow neuralpositive.com emails)
       const isSuspiciousAccess = 
         currentPath.includes('/admin') && 
-        (userAgent.includes('curl') || userAgent.includes('Postman') || userAgent.includes('bot'));
+        (userAgent.includes('curl') || userAgent.includes('Postman') || userAgent.includes('bot')) &&
+        !user?.email?.endsWith('@neuralpositive.com');
 
       if (isSuspiciousAccess) {
         // Log security incident
@@ -88,8 +89,8 @@ export const AdvancedAuthGuard: React.FC<AdvancedAuthGuardProps> = ({
 
       // Additional admin checks
       if (adminOnly || requiredRole === 'admin') {
-        // Verify admin status (you might want to add admin role checking here)
-        const isAdmin = user.email?.includes('@neuralpositive.com') || 
+        // Verify admin status for @neuralpositive.com emails
+        const isAdmin = user.email?.endsWith('@neuralpositive.com') || 
                        user.user_metadata?.role === 'admin';
 
         if (!isAdmin) {

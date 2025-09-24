@@ -263,9 +263,23 @@ class SecureApiService {
   /**
    * Secure Supabase query wrapper
    */
-  async secureQuery(tableName: string, operation: 'select' | 'insert' | 'update' | 'delete' = 'select') {
+  async secureQuery(tableName: string, operation: 'select' | 'insert' | 'update' | 'delete' = 'select', options: any = {}) {
     return this.secureRequest(
-      () => supabase.from(tableName),
+      async () => {
+        const query = supabase.from(tableName as any);
+        switch (operation) {
+          case 'select':
+            return await query.select(options.select || '*');
+          case 'insert':
+            return await query.insert(options.data);
+          case 'update':
+            return await query.update(options.data);
+          case 'delete':
+            return await query.delete();
+          default:
+            return await query.select('*');
+        }
+      },
       `/rest/v1/${tableName}`,
       operation.toUpperCase()
     );

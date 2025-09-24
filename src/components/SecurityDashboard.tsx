@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { secureApi } from '@/services/secureApi';
 import { securityMonitoring } from '@/services/securityMonitoring';
 import { Shield, AlertTriangle, Ban, Activity, RefreshCw } from 'lucide-react';
+import { AdminUserManager } from './AdminUserManager';
 
 export const SecurityDashboard: React.FC = () => {
   const [securityStats, setSecurityStats] = useState({
@@ -69,6 +70,9 @@ export const SecurityDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Admin User Management */}
+      <AdminUserManager />
+      
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Security Dashboard</h2>
         <div className="flex gap-2">
