@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, X, Heart, Plus } from "lucide-react";
+import { Play, Pause, SkipForward, X, Heart, Plus, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from "@/utils/titleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 
 export const MinimizedPlayer = () => {
+  const navigate = useNavigate();
   const { 
     play, 
     pause, 
@@ -274,6 +276,20 @@ export const MinimizedPlayer = () => {
           <Button
             variant="ghost"
             size="icon"
+            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 touch-manipulation active:scale-95 transition-transform"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              navigate('/profile');
+            }}
+            title="View Profile"
+          >
+            <User className="w-5 h-5 sm:w-4 sm:h-4" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="icon"
             className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-500/10 touch-manipulation active:scale-95 transition-transform"
             onClick={(e) => {
               e.stopPropagation();
@@ -282,19 +298,6 @@ export const MinimizedPlayer = () => {
             }}
           >
             <Heart className="w-5 h-5 sm:w-4 sm:h-4" />
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-10 h-10 sm:w-8 sm:h-8 backdrop-blur-sm bg-card/30 border border-border/50 rounded-full text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10 touch-manipulation active:scale-95 transition-transform"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              // TODO: Add lightning playlist functionality
-            }}
-          >
-            <Plus className="w-5 h-5 sm:w-4 sm:h-4" strokeWidth={1} />
           </Button>
           
           <Button
