@@ -41,6 +41,7 @@ import AnalyticsPage from "./pages/Analytics";
 import { MagicLinksPage } from "./pages/admin/MagicLinks";
 import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
+import Users from "./pages/admin/Users";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,7 @@ const App = () => {
                 <Route path="/analytics" element={<AdvancedAuthGuard><AnalyticsPage /></AdvancedAuthGuard>} />
                 <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
                   <Route index element={<AdminDashboard />} />
+                  <Route path="users" element={<Users />} />
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="magic-links" element={<MagicLinksPage />} />
                   <Route path="magic-auth" element={<MagicAuth />} />
