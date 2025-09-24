@@ -43,7 +43,7 @@ interface TherapeuticSessionData {
 const defaultPreferences: UserPreferences = {
   preferredBands: ['alpha'],
   volume: 0.8,
-  autoplay: false,
+  autoplay: true, // Enable continuous play by default for better user experience
   sessionReminders: true,
   analytics: true
 }
