@@ -292,7 +292,7 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container max-w-4xl mx-auto px-4 py-6 mb-16 sm:mb-20">
+      <div className="container max-w-4xl mx-auto px-4 py-6 pb-32 sm:pb-36 mb-safe">
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8">
           <div>

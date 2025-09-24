@@ -122,6 +122,15 @@ All colors MUST be HSL.
     --music-energy: 240 100% 1.5%; /* Ultra deep for energy cards */
   }
 
+  /* Safe area support for mobile devices */
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
   /* Common variables for both themes */
   :root {
     /* Brand Gradient System - Locked Teal Spectrum */
