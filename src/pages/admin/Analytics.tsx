@@ -112,14 +112,33 @@ export default function Analytics() {
 
   const fetchSecurityMetrics = async () => {
     try {
-      // Since we're tracking analytics in the browser, we'll simulate metrics here
-      // In a real implementation, these would come from your analytics database
+      // Fetch real security incidents data
+      const { data: securityData, error: securityError } = await supabase
+        .from('security_incidents')
+        .select('incident_type, created_at')
+        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+      if (securityError) throw securityError;
+
+      // Fetch listening sessions for login approximation
+      const { data: sessionData, error: sessionError } = await supabase
+        .from('listening_sessions')
+        .select('patient_id, created_at')
+        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+      if (sessionError) throw sessionError;
+
+      const failedLogins = securityData?.filter(s => s.incident_type === 'failed_login').length || 0;
+      const unauthorizedAccess = securityData?.filter(s => s.incident_type === 'unauthorized_access').length || 0;
+      const successfulSessions = sessionData?.length || 0;
+      const activeUsers = new Set(sessionData?.map(s => s.patient_id).filter(Boolean)).size || Math.floor((analytics.totalUsers || 0) * 0.3);
+
       setSecurityMetrics({
-        loginAttempts: Math.floor(Math.random() * 100) + 50,
-        successfulLogins: Math.floor(Math.random() * 80) + 45,
-        failedLogins: Math.floor(Math.random() * 10) + 2,
-        unauthorizedAccess: Math.floor(Math.random() * 5),
-        activeUsers: Math.floor((analytics.totalUsers || 0) * 0.7)
+        loginAttempts: successfulSessions + failedLogins,
+        successfulLogins: successfulSessions,
+        failedLogins,
+        unauthorizedAccess,
+        activeUsers
       });
     } catch (error) {
       console.error('Error fetching security metrics:', error);
