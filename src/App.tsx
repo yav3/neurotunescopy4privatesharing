@@ -37,7 +37,7 @@ import DataMonitoring from "./pages/admin/DataMonitoring";
 import Storage from "./pages/Storage";
 import Monitoring from "./pages/Monitoring";
 import Settings from "./pages/Settings";
-import AnalyticsPage from "./pages/Analytics";
+import UserAnalytics from "./pages/Analytics";
 import { MagicLinksPage } from "./pages/admin/MagicLinks";
 import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
@@ -116,7 +116,7 @@ const App = () => {
                 <Route path="/storage" element={<AdvancedAuthGuard><Storage /></AdvancedAuthGuard>} />
                 <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
                 <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
-                <Route path="/analytics" element={<AdvancedAuthGuard><AnalyticsPage /></AdvancedAuthGuard>} />
+                <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
                 <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="users" element={<Users />} />
