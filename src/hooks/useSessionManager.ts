@@ -1,127 +1,224 @@
-// Session management hook that mirrors backend session lifecycle
-import { useEffect, useCallback, useRef } from 'react'
-import { API } from '@/lib/api'
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import type { User } from '@supabase/supabase-js';
 
-// Helper to create user-specific storage keys
-const getUserSpecificKey = (key: string) => {
-  try {
-    const supabaseAuth = JSON.parse(localStorage.getItem('sb-pbtgvcjniayedqlajjzz-auth-token') || '{}');
-    const userId = supabaseAuth.user?.id;
-    return userId ? `${key}_${userId.substring(0, 8)}` : `${key}_anon`;
-  } catch {
-    return `${key}_anon`;
-  }
-};
-
-interface SessionManager {
-  trackProgress: (currentTime: number, duration: number) => void
-  completeSession: () => Promise<void>
-  startNewSession: (sessionId: string) => void
+interface DeviceInfo {
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  [key: string]: any; // Make it compatible with Json type
 }
 
-export const useSessionManager = (): SessionManager => {
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
-  const lastProgressTime = useRef<number>(0)
-  const sessionCompletedRef = useRef<boolean>(false)
+interface UserSession {
+  id: string;
+  device_info: DeviceInfo;
+  last_accessed: string;
+  ip_address?: string | null;
+  user_agent: string | null;
+  is_active: boolean;
+  created_at: string;
+  user_id: string;
+}
 
-  // Track progress every 30 seconds (mirror backend expectations)
-  const trackProgress = useCallback((currentTime: number, duration: number) => {
-    const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
-    if (!sessionId || sessionCompletedRef.current) return
+export function useSessionManager(user: User | null) {
+  const [sessions, setSessions] = useState<UserSession[]>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
 
-    const now = Date.now()
-    const timeSinceLastProgress = now - lastProgressTime.current
+  const getDeviceInfo = (): DeviceInfo => {
+    const ua = navigator.userAgent;
+    
+    // Browser detection
+    let browser = 'Unknown';
+    if (ua.indexOf('Chrome') > -1) browser = 'Chrome';
+    else if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
+    else if (ua.indexOf('Safari') > -1) browser = 'Safari';
+    else if (ua.indexOf('Edge') > -1) browser = 'Edge';
+    
+    // OS detection
+    let os = 'Unknown';
+    if (ua.indexOf('Windows') > -1) os = 'Windows';
+    else if (ua.indexOf('Mac') > -1) os = 'macOS';
+    else if (ua.indexOf('Linux') > -1) os = 'Linux';
+    else if (ua.indexOf('Android') > -1) os = 'Android';
+    else if (ua.indexOf('iOS') > -1) os = 'iOS';
+    
+    // Device detection
+    let device = 'Desktop';
+    if (/Mobi|Android/i.test(ua)) device = 'Mobile';
+    else if (/Tablet|iPad/i.test(ua)) device = 'Tablet';
+    
+    return {
+      browser,
+      os,
+      device,
+      screen: `${screen.width}x${screen.height}`
+    };
+  };
 
-    // Send progress every 30 seconds or at significant intervals
-    if (timeSinceLastProgress > 30000) {
-      console.log('📊 Sending session progress to backend:', {
-        sessionId,
-        currentTime: Math.floor(currentTime),
-        progress: `${Math.floor(currentTime)}/${Math.floor(duration)}`
-      })
+  const createSession = async () => {
+    if (!user) return;
 
-      // Handle both beacon and fetch return types
-      const progressResult = API.progress(sessionId, Math.floor(currentTime))
-      if (progressResult && typeof progressResult === 'object' && 'then' in progressResult) {
-        progressResult.then(() => {
-          // Progress sent successfully
-        }).catch((error) => {
-          console.warn('⚠️ Failed to send session progress:', error)
+    const deviceInfo = getDeviceInfo();
+    
+    try {
+      const { data, error } = await supabase
+        .from('user_sessions')
+        .insert({
+          user_id: user.id,
+          device_info: deviceInfo,
+          user_agent: navigator.userAgent
         })
+        .select('id')
+        .single();
+
+      if (!error && data) {
+        setCurrentSessionId(data.id);
+        localStorage.setItem('session_id', data.id);
+        console.log('Session created:', data.id);
       }
-
-      lastProgressTime.current = now
+    } catch (error) {
+      console.error('Error creating session:', error);
     }
-  }, [])
+  };
 
-  // Complete session - mirror backend completion
-  const completeSession = useCallback(async () => {
-    const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
-    if (!sessionId || sessionCompletedRef.current) return
+  const updateSessionActivity = async () => {
+    const sessionId = currentSessionId || localStorage.getItem('session_id');
+    if (!sessionId || !user) return;
 
     try {
-      console.log('✅ Completing session in backend:', sessionId)
-      await API.complete(sessionId)
+      const { error } = await supabase.rpc('update_session_activity', {
+        session_id: sessionId
+      });
       
-      // Calculate session metrics
-      const startTime = sessionStorage.getItem(getUserSpecificKey('sessionStartTime'))
-      const sessionDuration = startTime ? Date.now() - parseInt(startTime) : 0
-      
-      console.log('📈 Session completed:', {
-        sessionId,
-        duration: Math.floor(sessionDuration / 1000) + 's',
-        timestamp: new Date().toISOString()
-      })
-
-      // Clean up user-specific session storage
-      sessionStorage.removeItem(getUserSpecificKey('currentSessionId'))
-      sessionStorage.removeItem(getUserSpecificKey('sessionStartTime'))
-      sessionCompletedRef.current = true
+      if (error) {
+        console.error('Error updating session activity:', error);
+      }
     } catch (error) {
-      console.error('❌ Failed to complete session:', error)
+      console.error('Error updating session activity:', error);
     }
-  }, [])
+  };
 
-  // Start new session tracking
-  const startNewSession = useCallback((sessionId: string) => {
-    console.log('🔄 Starting new session management for:', sessionId)
-    sessionCompletedRef.current = false
-    lastProgressTime.current = 0
-    
-    // Clear any existing progress interval
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current)
-    }
-  }, [])
+  const loadUserSessions = async () => {
+    if (!user) return;
 
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current)
+    try {
+      const { data, error } = await supabase
+        .from('user_sessions')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .order('last_accessed', { ascending: false });
+
+      if (!error && data) {
+        // Map the data to ensure it matches our interface structure
+        const mappedSessions = data.map(session => ({
+          id: session.id,
+          device_info: session.device_info as DeviceInfo,
+          last_accessed: session.last_accessed,
+          ip_address: session.ip_address as string | null,
+          user_agent: session.user_agent as string | null,
+          is_active: session.is_active,
+          created_at: session.created_at,
+          user_id: session.user_id
+        }));
+        setSessions(mappedSessions);
       }
+    } catch (error) {
+      console.error('Error loading sessions:', error);
     }
-  }, [])
+  };
 
-  // Auto-complete session on page unload
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      const sessionId = sessionStorage.getItem(getUserSpecificKey('currentSessionId'))
-      if (sessionId && !sessionCompletedRef.current) {
-        // Use API.complete for reliable completion on page exit
-        API.complete(sessionId).catch(error => {
-          console.warn('Failed to complete session on unload:', error)
-        })
+  const revokeSession = async (sessionId: string) => {
+    try {
+      const { error } = await supabase
+        .from('user_sessions')
+        .update({ is_active: false })
+        .eq('id', sessionId)
+        .eq('user_id', user?.id);
+
+      if (!error) {
+        setSessions(prev => prev.filter(s => s.id !== sessionId));
+        
+        // If revoking current session, clear local storage
+        if (sessionId === currentSessionId) {
+          localStorage.removeItem('session_id');
+          setCurrentSessionId(null);
+        }
       }
+    } catch (error) {
+      console.error('Error revoking session:', error);
     }
+  };
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [])
+  const revokeAllOtherSessions = async () => {
+    const sessionId = currentSessionId || localStorage.getItem('session_id');
+    if (!sessionId || !user) return;
+
+    try {
+      const { error } = await supabase
+        .from('user_sessions')
+        .update({ is_active: false })
+        .eq('user_id', user.id)
+        .neq('id', sessionId);
+
+      if (!error) {
+        setSessions(prev => prev.filter(s => s.id === sessionId));
+      }
+    } catch (error) {
+      console.error('Error revoking other sessions:', error);
+    }
+  };
+
+  // Initialize session when user logs in
+  useEffect(() => {
+    if (user) {
+      const existingSessionId = localStorage.getItem('session_id');
+      
+      if (existingSessionId) {
+        setCurrentSessionId(existingSessionId);
+        updateSessionActivity();
+      } else {
+        createSession();
+      }
+      
+      loadUserSessions();
+    } else {
+      // Clear session data when user logs out
+      localStorage.removeItem('session_id');
+      setCurrentSessionId(null);
+      setSessions([]);
+    }
+  }, [user]);
+
+  // Update session activity periodically
+  useEffect(() => {
+    if (!user) return;
+
+    const interval = setInterval(() => {
+      updateSessionActivity();
+    }, 5 * 60 * 1000); // Update every 5 minutes
+
+    return () => clearInterval(interval);
+  }, [user, currentSessionId]);
+
+  // Update activity on page visibility change
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        updateSessionActivity();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   return {
-    trackProgress,
-    completeSession, 
-    startNewSession
-  }
+    sessions,
+    currentSessionId,
+    revokeSession,
+    revokeAllOtherSessions,
+    refreshSessions: loadUserSessions
+  };
 }

@@ -9,11 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { User, Music, Clock, Edit3, Heart, Calendar, Settings, TrendingUp, TrendingDown, Minus, Headphones, Volume2, Shuffle, BarChart3, Shield } from "lucide-react";
+import { User, Music, Clock, Edit3, Heart, Calendar, Settings, TrendingUp, TrendingDown, Minus, Headphones, Volume2, Shuffle, BarChart3, Shield, Download, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import type { FrequencyBand } from '@/types'
 import { useAppStore } from "@/stores/appStore";
+import { DeviceManager } from "@/components/DeviceManager";
 
 interface UserStats {
   totalSessions: number;

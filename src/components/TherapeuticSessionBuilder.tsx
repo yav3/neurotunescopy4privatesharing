@@ -10,7 +10,6 @@ import { useTherapeuticGoals } from '@/hooks/useTherapeuticGoals'
 import { useToast } from '@/hooks/use-toast'
 import { API } from '@/lib/api'
 import { useAudioStore } from '@/stores'
-import { useSessionManager } from '@/hooks/useSessionManager'
 
 interface TherapeuticSessionBuilderProps {
   onSessionStart: (tracks: any[]) => void
@@ -27,13 +26,8 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   const [intensity, setIntensity] = useState([3])
   const [isBuilding, setIsBuilding] = useState(false)
   const { toast } = useToast()
-  const sessionManager = useSessionManager()
 
-  // 🔄 MIRROR BACKEND: Connect session manager to audio store (FIXED - no dependency array to prevent loops)
-  useEffect(() => {
-    const setSessionManager = useAudioStore.getState().setSessionManager;
-    setSessionManager(sessionManager);
-  }, []); // Empty dependency array to run only once
+  // Remove the sessionManager usage that was causing errors
 
   // Memoized slider handlers to prevent infinite loops
   const handleDurationChange = useCallback((value: number[]) => {

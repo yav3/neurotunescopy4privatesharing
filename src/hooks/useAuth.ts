@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { Analytics } from '@/utils/analytics';
+import { useSessionManager } from './useSessionManager';
 
 type UserRole = 'super_admin' | 'admin' | 'moderator' | 'premium_user' | 'user';
 type UserStatus = 'active' | 'suspended' | 'pending' | 'banned';
@@ -29,6 +30,9 @@ export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Initialize session manager
+  const sessionManager = useSessionManager(user);
 
   // Get user with profile and role
   const getUserWithProfile = async (authUser: User): Promise<ExtendedUser | null> => {
@@ -333,6 +337,7 @@ export function useAuth() {
     hasRole,
     isAdmin,
     canManageUsers,
-    clearError
+    clearError,
+    sessionManager
   };
 }

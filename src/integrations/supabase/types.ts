@@ -3044,6 +3044,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_sessions: {
+        Row: {
+          created_at: string
+          device_info: Json | null
+          expires_at: string
+          id: string
+          ip_address: unknown | null
+          is_active: boolean
+          last_accessed: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_info?: Json | null
+          expires_at?: string
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean
+          last_accessed?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_info?: Json | null
+          expires_at?: string
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean
+          last_accessed?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       weather_data: {
         Row: {
           country: string | null
@@ -3267,6 +3303,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      cleanup_expired_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       create_magic_link_for_vip: {
         Args: {
           expires_in_hours?: number
@@ -3448,6 +3488,10 @@ export type Database = {
       safe_key: {
         Args: { raw: string }
         Returns: string
+      }
+      update_session_activity: {
+        Args: { session_id: string }
+        Returns: undefined
       }
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
