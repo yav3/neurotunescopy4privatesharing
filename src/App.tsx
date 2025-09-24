@@ -16,6 +16,7 @@ import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
 import { LandingPage } from "@/components/LandingPage";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
+import { AdvancedAuthGuard } from "@/components/security/AdvancedAuthGuard";
 import { useAudioStore } from "@/stores";
 import { AccessTrackingProvider } from "@/components/analytics/AccessTrackingProvider";
 // Import test utilities for global access
@@ -104,18 +105,18 @@ const App = () => {
             <Sonner />
             <div className="relative min-h-screen">
               <Routes>
-                <Route path="/" element={<TherapeuticGoalsPage />} />
-                <Route path="/goals" element={<TherapeuticGoalsPage />} />
-                <Route path="/debug" element={<ConnectionDiagnostics />} />
-                <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/landing" element={<Index />} />
+                <Route path="/" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+                <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+                <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
+                <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
+                <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
+                <Route path="/landing" element={<AdvancedAuthGuard><Index /></AdvancedAuthGuard>} />
                 <Route path="/auth" element={<AuthPage />} />
-                <Route path="/storage" element={<Storage />} />
-                <Route path="/monitoring" element={<Monitoring />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/admin" element={<AdminLayout />}>
+                <Route path="/storage" element={<AdvancedAuthGuard><Storage /></AdvancedAuthGuard>} />
+                <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
+                <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
+                <Route path="/analytics" element={<AdvancedAuthGuard><AnalyticsPage /></AdvancedAuthGuard>} />
+                <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="magic-links" element={<MagicLinksPage />} />
@@ -125,7 +126,7 @@ const App = () => {
                   <Route path="monitoring" element={<DataMonitoring />} />
                   <Route path="storage" element={<StorageManager />} />
                 </Route>
-                <Route path="*" element={<TherapeuticGoalsPage />} />
+                <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
               </Routes>
               
               {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
