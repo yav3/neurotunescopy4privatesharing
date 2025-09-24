@@ -5,7 +5,7 @@ import { Navigation } from "@/components/Navigation";
 import { ProfileEditForm } from "@/components/ProfileEditForm";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Music, Clock, Edit3, ArrowLeft, Heart, Calendar } from "lucide-react";
+import { User, Music, Clock, Edit3, Heart, Calendar } from "lucide-react";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -152,29 +152,9 @@ const Profile = () => {
       <Header />
       
       <div className="container max-w-2xl mx-auto px-4 py-6 mb-16 sm:mb-20">
-        {/* Back Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate('/')}
-          className="mb-6 text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Home
-        </Button>
-
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <User className="h-6 w-6 text-primary" />
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Profile</h1>
-              <p className="text-muted-foreground">
-                Your music therapy journey
-              </p>
-            </div>
-          </div>
-          {!isEditing && (
+        {/* Edit Profile Button */}
+        {!isEditing && (
+          <div className="flex justify-end mb-6">
             <Button
               onClick={() => setIsEditing(true)}
               variant="outline"
@@ -184,8 +164,8 @@ const Profile = () => {
               <Edit3 className="h-4 w-4" />
               Edit Profile
             </Button>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="space-y-6">
           {/* Profile Info */}
