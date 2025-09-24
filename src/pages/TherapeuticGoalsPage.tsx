@@ -172,9 +172,9 @@ const TherapeuticGoalsPage = () => {
             
             {/* Horizontal scrolling container for trending */}
             <div className="overflow-x-auto pb-2">
-              <div className="flex gap-3 min-w-max">
+              <div className="flex gap-4 min-w-max">
                 {trendingCategories.map((category) => (
-                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
+                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-32 sm:w-36 md:w-40">
                     <Card 
                       className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
                       onClick={() => handleTrendingSelect(category.id)}
@@ -199,7 +199,7 @@ const TherapeuticGoalsPage = () => {
                         </span>
                       </div>
                     </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-5 sm:mt-6 text-left leading-tight break-words w-full px-0.5">
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
                       {category.name}
                     </h3>
                   </div>
@@ -241,7 +241,7 @@ const TherapeuticGoalsPage = () => {
                       </span>
                     </div>
                   </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-5 sm:mt-6 text-left leading-snug break-words w-full px-0.5">
+                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-relaxed break-words w-full card-title">
                     {goal.name}
                   </h3>
                 </div>

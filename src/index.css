@@ -48,6 +48,15 @@ All colors MUST be HSL.
     --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
     --ring: 182 63% 32%; /* Brand-500 ring */
+  }
+
+  /* Card title styling - override global h3 styles for better mobile text */
+  .card-title {
+    hyphens: none !important;
+    word-break: normal !important;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+  }
 
     /* Brand teal variations using hex values */
     --teal-50: 173 75% 95%;
@@ -307,7 +316,6 @@ All colors MUST be HSL.
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 0 0% 15%;
   }
-}
 
 @layer base {
   * {
