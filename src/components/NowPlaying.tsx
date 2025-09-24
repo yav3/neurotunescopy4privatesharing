@@ -9,6 +9,7 @@ import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { useUserFavorites } from '@/hooks/useUserFavorites';
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
@@ -119,8 +120,9 @@ export const NowPlaying: React.FC = () => {
   } = useAudioStore();
 
   // Local state for enhanced features
-  const [isFavorited, setIsFavorited] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
+  const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -137,12 +139,29 @@ export const NowPlaying: React.FC = () => {
     }
   };
 
-  const handleFavorite = () => {
-    setIsFavorited(!isFavorited);
-    toast({
-      title: isFavorited ? "Removed from favorites" : "Added to favorites",
-      description: track?.title,
-    });
+  const handleFavorite = async () => {
+    if (!track) return;
+    
+    setIsFavoriteLoading(true);
+    const isCurrentlyFavorited = isFavorite(track.id);
+    
+    try {
+      if (isCurrentlyFavorited) {
+        await removeFavorite(track.id);
+        toast({
+          title: "Removed from favorites",
+          description: track.title,
+        });
+      } else {
+        await addFavorite(track);
+        toast({
+          title: "Added to favorites",
+          description: track.title,
+        });
+      }
+    } finally {
+      setIsFavoriteLoading(false);
+    }
   };
 
   const handleThumbsDown = async () => {
@@ -292,12 +311,17 @@ export const NowPlaying: React.FC = () => {
                   variant="ghost" 
                   size="icon" 
                   onClick={handleFavorite}
+                  disabled={isFavoriteLoading}
                   className={cn(
-                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-red-500 hover:bg-accent/50 hover:scale-105",
-                    isFavorited ? "text-red-500 hover:text-red-400 bg-red-50/10 border-red-500/30" : "text-muted-foreground hover:text-foreground"
+                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-red-500 hover:bg-accent/50 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60",
+                    track && isFavorite(track.id) ? "text-red-500 hover:text-red-400 bg-red-50/10 border-red-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Heart size={22} className={cn(isFavorited && "fill-current")} />
+                  {isFavoriteLoading ? (
+                    <div className="w-5 h-5 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+                  ) : (
+                    <Heart size={22} className={cn(track && isFavorite(track.id) && "fill-current")} />
+                  )}
                 </Button>
 
                 <Button 
@@ -409,12 +433,17 @@ export const NowPlaying: React.FC = () => {
             variant="ghost" 
             size="icon" 
             onClick={handleFavorite}
+            disabled={isFavoriteLoading}
             className={cn(
-              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50",
-              isFavorited ? "text-red-500 hover:text-red-400" : "text-muted-foreground hover:text-foreground"
+              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50 disabled:cursor-not-allowed disabled:opacity-60",
+              track && isFavorite(track.id) ? "text-red-500 hover:text-red-400" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Heart size={18} className={cn(isFavorited && "fill-current")} />
+            {isFavoriteLoading ? (
+              <div className="w-4 h-4 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+            ) : (
+              <Heart size={18} className={cn(track && isFavorite(track.id) && "fill-current")} />
+            )}
           </Button>
 
           {/* Thumbs Down */}

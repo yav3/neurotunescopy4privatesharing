@@ -11,6 +11,7 @@ import { TitleFormatter } from "@/utils/titleFormatter";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { blockTrack } from '@/services/blockedTracks';
+import { useUserFavorites } from '@/hooks/useUserFavorites';
 
 interface MusicPlayerProps {
   open: boolean;
@@ -18,15 +19,33 @@ interface MusicPlayerProps {
 }
 
 export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { play, pause, next, prev, isPlaying, currentTrack: track, lastGoal } = useAudioStore();
   const { isAdmin } = useAuthContext();
+  const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
     if (!lastGoal) return 'Therapeutic Music';
     const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
     return goal ? goal.name : 'Therapeutic Music';
+  };
+
+  const handleFavorite = async () => {
+    if (!track) return;
+    
+    setIsFavoriteLoading(true);
+    const isCurrentlyFavorited = isFavorite(track.id);
+    
+    try {
+      if (isCurrentlyFavorited) {
+        await removeFavorite(track.id);
+      } else {
+        await addFavorite(track);
+      }
+    } finally {
+      setIsFavoriteLoading(false);
+    }
   };
 
   const handleBlockTrack = async () => {
@@ -135,12 +154,17 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  "transition-colors duration-200",
-                  isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
+                  "transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60",
+                  track && isFavorite(track.id) ? "text-red-500 hover:text-red-600" : "text-muted-foreground"
                 )}
-                onClick={() => setIsLiked(!isLiked)}
+                onClick={handleFavorite}
+                disabled={isFavoriteLoading}
               >
-                <Heart className={cn("w-5 h-5", isLiked && "fill-current")} />
+                {isFavoriteLoading ? (
+                  <div className="w-5 h-5 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+                ) : (
+                  <Heart className={cn("w-5 h-5", track && isFavorite(track.id) && "fill-current")} />
+                )}
               </Button>
               
               <Button
