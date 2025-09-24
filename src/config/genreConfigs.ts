@@ -85,14 +85,14 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'americana-jam-band',
         name: 'Americana & Jam Band',
         description: 'Smooth jam band and americana music for relaxation',
-        buckets: ['countryandamericana'],
+        buckets: ['jamband', 'countryandamericana'],
         image: moodBoostFloralField
       },
       {
         id: 'jam-band-funk',
         name: 'Jam Band & Funk',
         description: 'Smooth jam band and funk rhythms for relaxation',
-        buckets: ['countryandamericana', 'ENERGYBOOST'],
+        buckets: ['jamband'],
         image: moodBoostFloralField
       },
       {
