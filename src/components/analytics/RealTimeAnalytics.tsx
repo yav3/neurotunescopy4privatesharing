@@ -54,7 +54,7 @@ export const RealTimeAnalytics: React.FC = () => {
       // Fetch user count from profiles
       const { count: userCount, error: userError } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
 
       if (userError) throw userError;
 
