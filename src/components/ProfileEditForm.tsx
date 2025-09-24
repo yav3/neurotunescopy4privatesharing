@@ -233,39 +233,39 @@ export function ProfileEditForm({ isEditing, onSave, onCancel }: ProfileEditForm
 
         {/* Bio Section */}
         <div>
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio" className="text-base font-medium">Bio</Label>
           <Textarea
             id="bio"
             value={formData.bio}
             onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
             placeholder="Tell us about yourself and your therapeutic music journey..."
-            className="mt-1 min-h-[100px]"
+            className="mt-2 min-h-[100px] text-base"
           />
         </div>
 
         {/* Favorite Goals */}
         <div>
-          <Label>Favorite Therapeutic Goals</Label>
-          <div className="flex flex-wrap gap-2 mt-2">
+          <Label className="text-base font-medium">Favorite Therapeutic Goals</Label>
+          <div className="flex flex-wrap gap-3 mt-3">
             {therapeuticGoals.map((goal) => (
               <Badge
                 key={goal}
                 variant={formData.favorite_goals.includes(goal) ? "default" : "outline"}
-                className="cursor-pointer hover:opacity-80 transition-opacity"
+                className="cursor-pointer hover:opacity-80 transition-all px-4 py-2 text-sm font-medium"
                 onClick={() => handleGoalToggle(goal)}
               >
                 {goal}
               </Badge>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-base text-foreground/90 mt-3">
             Click to toggle your favorite therapeutic goals
           </p>
         </div>
 
         {/* Session Preferences */}
         <div>
-          <Label htmlFor="session_duration">Default Session Duration (minutes)</Label>
+          <Label htmlFor="session_duration" className="text-base font-medium">Default Session Duration (minutes)</Label>
           <Input
             id="session_duration"
             type="number"
@@ -276,15 +276,15 @@ export function ProfileEditForm({ isEditing, onSave, onCancel }: ProfileEditForm
               ...prev, 
               default_session_duration: parseInt(e.target.value) || 15 
             }))}
-            className="mt-1 max-w-32"
+            className="mt-2 max-w-32 text-base"
           />
         </div>
 
         {/* Notification Preferences */}
         <div>
-          <Label>Notification Preferences</Label>
-          <div className="space-y-2 mt-2">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <Label className="text-base font-medium">Notification Preferences</Label>
+          <div className="space-y-3 mt-3">
+            <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-accent/50 transition-colors">
               <input
                 type="checkbox"
                 checked={formData.notification_preferences.email}
@@ -295,11 +295,11 @@ export function ProfileEditForm({ isEditing, onSave, onCancel }: ProfileEditForm
                     email: e.target.checked
                   }
                 }))}
-                className="rounded border-input bg-background"
+                className="rounded border-input bg-background w-4 h-4"
               />
-              <span className="text-sm">Email notifications</span>
+              <span className="text-base font-medium text-foreground">Email notifications</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-accent/50 transition-colors">
               <input
                 type="checkbox"
                 checked={formData.notification_preferences.push}
@@ -310,9 +310,9 @@ export function ProfileEditForm({ isEditing, onSave, onCancel }: ProfileEditForm
                     push: e.target.checked
                   }
                 }))}
-                className="rounded border-input bg-background"
+                className="rounded border-input bg-background w-4 h-4"
               />
-              <span className="text-sm">Push notifications</span>
+              <span className="text-base font-medium text-foreground">Push notifications</span>
             </label>
           </div>
         </div>
