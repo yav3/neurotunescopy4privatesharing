@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Mail, Lock, LogIn, AlertTriangle } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onToggleMode: () => void;
 }
 
 export function LoginForm({ onToggleMode }: LoginFormProps) {
-  const { signIn, loading, error, clearError } = useAuthContext();
+  const { signIn, loading, error, clearError, user } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  // Redirect to main app when user is authenticated
+  useEffect(() => {
+    if (user) {
+      console.log('✅ User authenticated, redirecting to main app');
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

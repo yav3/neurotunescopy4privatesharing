@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, UserPlus, AlertTriangle, Key } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 interface SignupFormProps {
   onToggleMode: () => void;
 }
 
 export function SignupForm({ onToggleMode }: SignupFormProps) {
-  const { signUp, loading, error, clearError } = useAuthContext();
+  const { signUp, loading, error, clearError, user } = useAuthContext();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,6 +16,15 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
     invitationCode: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  // Redirect to main app when user is authenticated
+  useEffect(() => {
+    if (user) {
+      console.log('✅ User authenticated, redirecting to main app');
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
