@@ -29,7 +29,8 @@ import chillFolkBluegrassLake from '@/assets/chill-folk-bluegrass-lake.png';
 import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
 import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
 import americanaJamBandStones from '@/assets/americana-jam-band-stones.png';
-import chillSambaTropical from '@/assets/chill-samba-tropical.png';
+import chillSambaTropical from '@/assets/chill-samba-bg.png';
+import tropicalHousePartyBg from '@/assets/tropical-house-party-bg.png';
 import neurotunesLogo from '@/assets/neurotunes-logo.png';
 
 // Create therapeutic goal cards
@@ -52,7 +53,7 @@ const trendingCategories = [
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
-  { id: 'chill-tropical-house', name: 'Mood Boosting Tropical House', letter: 'M', image: chillTropicalHouseStones },
+  { id: 'chill-tropical-house', name: 'Tropical House Party', letter: 'T', image: tropicalHousePartyBg },
   { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
