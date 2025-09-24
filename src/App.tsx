@@ -46,9 +46,7 @@ import Users from "./pages/admin/Users";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { user, loading } = useAuthContext();
   const { currentTrack, playerMode } = useAudioStore();
-  const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
     initializeDebugging();
@@ -72,6 +70,26 @@ const App = () => {
     // Don't cleanup on unmount to preserve audio across navigation
     // return cleanup;
   }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ErrorBoundary>
+          <AccessTrackingProvider>
+            <Toaster />
+            <Sonner />
+            <AppContent />
+          </AccessTrackingProvider>
+        </ErrorBoundary>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
+
+// This component can safely use useAuthContext since it's inside the AuthProvider
+const AppContent = () => {
+  const { user, loading } = useAuthContext();
+  const { currentTrack, playerMode } = useAudioStore();
 
   if (loading) {
     return (
@@ -98,48 +116,38 @@ const App = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ErrorBoundary>
-          <AccessTrackingProvider>
-            <Toaster />
-            <Sonner />
-            <div className="relative min-h-screen">
-              <Routes>
-                <Route path="/" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
-                <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
-                <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
-                <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
-                <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
-                <Route path="/landing" element={<AdvancedAuthGuard><Index /></AdvancedAuthGuard>} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/storage" element={<AdvancedAuthGuard><Storage /></AdvancedAuthGuard>} />
-                <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
-                <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
-                <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
-                <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="users" element={<Users />} />
-                  <Route path="content" element={<ContentManagement />} />
-                  <Route path="magic-links" element={<MagicLinksPage />} />
-                  <Route path="magic-auth" element={<MagicAuth />} />
-                  <Route path="analytics" element={<AdminAnalytics />} />
-                  <Route path="settings" element={<SystemSettings />} />
-                  <Route path="monitoring" element={<DataMonitoring />} />
-                  <Route path="storage" element={<StorageManager />} />
-                </Route>
-                <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
-              </Routes>
-              
-              {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
-              {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
-              
-            </div>
-            <DevDebugPanel />
-          </AccessTrackingProvider>
-        </ErrorBoundary>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <div className="relative min-h-screen">
+      <Routes>
+        <Route path="/" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+        <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+        <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
+        <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
+        <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
+        <Route path="/landing" element={<AdvancedAuthGuard><Index /></AdvancedAuthGuard>} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/storage" element={<AdvancedAuthGuard><Storage /></AdvancedAuthGuard>} />
+        <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
+        <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
+        <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
+        <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="content" element={<ContentManagement />} />
+          <Route path="magic-links" element={<MagicLinksPage />} />
+          <Route path="magic-auth" element={<MagicAuth />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="settings" element={<SystemSettings />} />
+          <Route path="monitoring" element={<DataMonitoring />} />
+          <Route path="storage" element={<StorageManager />} />
+        </Route>
+        <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+      </Routes>
+      
+      {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
+      {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
+      
+      <DevDebugPanel />
+    </div>
   );
 };
 
