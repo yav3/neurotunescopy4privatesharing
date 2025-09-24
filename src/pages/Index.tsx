@@ -1,6 +1,6 @@
 /* Professional Music Therapy AI Platform Landing Page */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
@@ -34,6 +34,7 @@ import {
 
 const Index = () => {
   const { user, loading } = useAuthContext();
+  const navigate = useNavigate();
 
   const therapeuticBenefits = [
     {
@@ -83,9 +84,13 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm font-medium text-gray-300 font-headers px-6 py-2 border border-gray-500 rounded-lg bg-gray-700/50 backdrop-blur-sm">
+              <Button
+                variant="outline"
+                onClick={() => navigate('/auth')}
+                className="text-sm font-medium text-gray-300 font-headers px-6 py-2 border-gray-500 bg-gray-700/50 backdrop-blur-sm hover:bg-gray-600/50 hover:text-white transition-colors"
+              >
                 Authorized User Sign-In
-              </div>
+              </Button>
             </div>
           </div>
         </div>

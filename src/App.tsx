@@ -110,6 +110,7 @@ const App = () => {
                 <Route path="/genre/:goalId/:genreId" element={<GenreView />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/landing" element={<Index />} />
+                <Route path="/auth" element={<AuthPage />} />
                 <Route path="/storage" element={<Storage />} />
                 <Route path="/monitoring" element={<Monitoring />} />
                 <Route path="/settings" element={<Settings />} />
