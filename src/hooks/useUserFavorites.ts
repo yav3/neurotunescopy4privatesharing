@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { UserFavoritesService, type UserFavorite } from '@/services/userFavorites';
 import type { Track } from '@/types';
 import { useAuthContext } from '@/components/auth/AuthProvider';
@@ -46,9 +46,9 @@ export const useUserFavorites = () => {
     return result;
   };
 
-  const isFavorite = (trackId: string): boolean => {
+  const isFavorite = useCallback((trackId: string): boolean => {
     return favorites.some(f => f.track_id === trackId);
-  };
+  }, [favorites]);
 
   return {
     favorites,
