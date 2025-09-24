@@ -3423,6 +3423,10 @@ export type Database = {
         Args: { _bucket: number; _quryid: number }
         Returns: Record<string, unknown>[]
       }
+      is_vip_member: {
+        Args: { _user_id?: string }
+        Returns: boolean
+      }
       mark_likely_missing_tracks: {
         Args: Record<PropertyKey, never>
         Returns: number

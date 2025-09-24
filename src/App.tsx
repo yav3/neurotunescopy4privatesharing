@@ -31,7 +31,7 @@ import { MagicAuth } from "./pages/MagicAuth";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ContentManagement from "./pages/admin/ContentManagement";
-import Analytics from "./pages/admin/Analytics";
+import AdminAnalytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
 import Storage from "./pages/Storage";
@@ -123,7 +123,7 @@ const App = () => {
                   <Route path="content" element={<ContentManagement />} />
                   <Route path="magic-links" element={<MagicLinksPage />} />
                   <Route path="magic-auth" element={<MagicAuth />} />
-                  <Route path="analytics" element={<Analytics />} />
+                  <Route path="analytics" element={<AdminAnalytics />} />
                   <Route path="settings" element={<SystemSettings />} />
                   <Route path="monitoring" element={<DataMonitoring />} />
                   <Route path="storage" element={<StorageManager />} />

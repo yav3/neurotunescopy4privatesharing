@@ -1,6 +1,7 @@
-import { Home, User } from "lucide-react";
+import { Home, User, BarChart3 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/components/auth/AuthProvider";
 
 interface NavigationProps {
   activeTab?: string;
@@ -10,6 +11,7 @@ interface NavigationProps {
 export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { hasRole } = useAuthContext();
   
   const tabs = [
     { id: "home", icon: Home, path: "/" },
@@ -58,11 +60,29 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
                   ? "text-foreground bg-foreground/20" 
                   : "text-foreground/70 hover:text-foreground"
               )}
+              title={`Navigate to ${tab.id}`}
             >
-              <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+              <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
           );
         })}
+        
+        {/* Analytics navigation for VIP members */}
+        {hasRole(['premium_user', 'moderator', 'admin', 'super_admin']) && (
+          <button
+            onClick={() => handleTabClick({ id: "analytics", path: "/analytics" })}
+            className={cn(
+              "flex items-center justify-center p-2.5 sm:p-3 transition-all duration-200 rounded-full",
+              "hover:bg-foreground/10 active:scale-95 min-w-[44px] min-h-[44px]",
+              location.pathname === "/analytics"
+                ? "text-foreground bg-foreground/20" 
+                : "text-foreground/70 hover:text-foreground"
+            )}
+            title="Analytics Dashboard"
+          >
+            <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6" />
+          </button>
+        )}
       </div>
     </nav>
   );
