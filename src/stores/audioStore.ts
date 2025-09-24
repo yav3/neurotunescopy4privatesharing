@@ -242,14 +242,18 @@ const ensureAudioElement = (): HTMLAudioElement => {
   console.log('🔧 ensureAudioElement called - current element exists:', !!audioElement);
   if (audioElement && document.body.contains(audioElement)) return audioElement;
   
-  // Clean up any existing audio elements first
-  // Remove old audio elements from other users/sessions to prevent interference
+  // Only clean up old audio elements if they're not currently playing
+  // This prevents interrupting playback during navigation
   document.querySelectorAll("audio").forEach(el => {
     const currentElementId = getAudioElementId();
-    if (el.id && el.id !== currentElementId && el.id.startsWith('audio-player-')) {
+    const isPlaying = !el.paused && !el.ended && el.currentTime > 0;
+    
+    if (el.id && el.id !== currentElementId && el.id.startsWith('audio-player-') && !isPlaying) {
       console.warn(`[audio] Removing old user audio element: ${el.id}`);
       el.pause();
       el.remove();
+    } else if (isPlaying && el.id !== currentElementId) {
+      console.log(`[audio] Preserving playing audio element during navigation: ${el.id}`);
     }
   });
   
@@ -393,9 +397,29 @@ export const useAudioStore = create<AudioState>((set, get) => {
   if (typeof window !== 'undefined') {
     const queueMonitorInterval = setInterval(maintainQueueBuffer, 15000); // Check every 15 seconds
     
-    // Cleanup on page unload
+    // Only cleanup interval on actual page unload, not navigation
     window.addEventListener('beforeunload', () => {
       clearInterval(queueMonitorInterval);
+      // Complete session on actual page unload
+      if (sessionManager) {
+        sessionManager.completeSession();
+      }
+      completeListeningSession();
+    });
+    
+    // Preserve playback across route changes by preventing pagehide cleanup
+    window.addEventListener('pagehide', (event) => {
+      if (event.persisted) {
+        // Page is being cached (back/forward), don't cleanup
+        console.log('🎵 Page cached - preserving audio playback');
+      } else {
+        // Page is actually being unloaded
+        console.log('🎵 Page unloaded - completing session');
+        if (sessionManager) {
+          sessionManager.completeSession();
+        }
+        completeListeningSession();
+      }
     });
   }
   
@@ -431,18 +455,25 @@ export const useAudioStore = create<AudioState>((set, get) => {
     
     console.log('🎵 Audio element initialized:', audio.id, 'src:', audio.src);
     
-    // Add safety check for multiple audio elements
+    // Only clean up extra audio elements if current audio is NOT playing
+    // This prevents interrupting playback during navigation
     const allAudioElements = document.querySelectorAll('audio');
     if (allAudioElements.length > 1) {
       console.warn('🚨 Multiple audio elements detected!', allAudioElements.length);
       const currentElementId = getAudioElementId();
-      allAudioElements.forEach((el, i) => {
-        if (el.id !== currentElementId) {
-          console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
-          el.pause();
-          el.remove();
-        }
-      });
+      const isCurrentlyPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
+      
+      if (!isCurrentlyPlaying) {
+        allAudioElements.forEach((el, i) => {
+          if (el.id !== currentElementId) {
+            console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
+            el.pause();
+            el.remove();
+          }
+        });
+      } else {
+        console.log('🎵 Preserving multiple elements during active playback to avoid interruption');
+      }
     }
     
     // Critical fix: Only add event listeners once per audio element

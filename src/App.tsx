@@ -51,19 +51,24 @@ const App = () => {
   useEffect(() => {
     initializeDebugging();
     
-    // Force cleanup any old audio elements on page load  
+    // Only cleanup old audio elements if they're not playing
     const cleanup = () => {
-      // Remove old audio elements if they exist
-      const oldAudio = document.getElementById('np-audio');
+      const oldAudio = document.getElementById('np-audio') as HTMLAudioElement;
       if (oldAudio) {
-        oldAudio.remove();
-        console.log('🧹 Cleaned up old np-audio element');
+        const isPlaying = !oldAudio.paused && !oldAudio.ended && oldAudio.currentTime > 0;
+        if (!isPlaying) {
+          oldAudio.remove();
+          console.log('🧹 Cleaned up old np-audio element');
+        } else {
+          console.log('🎵 Preserving playing np-audio element');
+        }
       }
     };
     
     cleanup();
     
-    return cleanup;
+    // Don't cleanup on unmount to preserve audio across navigation
+    // return cleanup;
   }, []);
 
   if (loading) {
