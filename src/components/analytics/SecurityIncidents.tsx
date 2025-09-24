@@ -73,171 +73,59 @@ export const SecurityIncidents: React.FC = () => {
     try {
       setLoading(true);
 
-      // Simulate fetching security incidents data
-      // In a real app, this would come from your security monitoring system
-      const mockIncidents: SecurityIncident[] = [
-        {
-          id: '1',
-          timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-          attempted_route: '/admin/settings',
-          user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          ip_address: '45.76.213.67',
-          location: 'Los Angeles, CA, US',
-          location_details: {
-            country: 'United States',
-            country_code: 'US',
-            region: 'California',
-            city: 'Los Angeles',
-            latitude: 34.0522,
-            longitude: -118.2437,
-            timezone: 'America/Los_Angeles',
-            isp: 'Vultr Holdings LLC',
-            organization: 'Cloud Infrastructure',
-            asn: 'AS20473',
-            threat_level: 'medium',
-            vpn_detected: true,
-            proxy_detected: false
-          },
-          blocked: true,
-          severity: 'high',
-          session_id: 'sess_suspicious_001',
-          referer: 'https://google.com',
-          device_fingerprint: 'fp_win10_chrome_001',
-          browser_language: 'en-US',
-          screen_resolution: '1920x1080',
-          connection_type: 'broadband'
-        },
-        {
-          id: '2',
-          timestamp: new Date(Date.now() - 1000 * 60 * 32).toISOString(),
-          attempted_route: '/admin',
-          user_agent: 'curl/7.68.0',
-          ip_address: '185.220.102.8',
-          location: 'Amsterdam, NL',
-          location_details: {
-            country: 'Netherlands',
-            country_code: 'NL',
-            region: 'North Holland',
-            city: 'Amsterdam',
-            latitude: 52.3676,
-            longitude: 4.9041,
-            timezone: 'Europe/Amsterdam',
-            isp: 'Tor Exit Node',
-            organization: 'The Tor Project',
-            asn: 'AS13335',
-            threat_level: 'high',
-            vpn_detected: false,
-            proxy_detected: true
-          },
-          blocked: true,
-          severity: 'high',
-          referer: 'direct',
-          device_fingerprint: 'fp_curl_automated',
-          connection_type: 'tor'
-        },
-        {
-          id: '3',
-          timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-          attempted_route: '/goals',
-          user_agent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)',
-          ip_address: '91.108.56.165',
-          location: 'Moscow, RU',
-          location_details: {
-            country: 'Russian Federation',
-            country_code: 'RU',
-            region: 'Moscow',
-            city: 'Moscow',
-            latitude: 55.7558,
-            longitude: 37.6176,
-            timezone: 'Europe/Moscow',
-            isp: 'Telegram Messenger Inc',
-            organization: 'Mobile Network',
-            asn: 'AS62014',
-            threat_level: 'medium',
-            vpn_detected: false,
-            proxy_detected: false
-          },
-          blocked: true,
-          severity: 'medium',
-          referer: 'https://neurotunes.app/landing',
-          device_fingerprint: 'fp_ios15_safari',
-          browser_language: 'ru-RU',
-          screen_resolution: '390x844',
-          connection_type: 'cellular'
-        },
-        {
-          id: '4',
-          timestamp: new Date(Date.now() - 1000 * 60 * 67).toISOString(),
-          attempted_route: '/monitoring',
-          user_agent: 'PostmanRuntime/7.29.2',
-          ip_address: '13.107.42.14',
-          location: 'Seattle, WA, US',
-          location_details: {
-            country: 'United States',
-            country_code: 'US',
-            region: 'Washington',
-            city: 'Seattle',
-            latitude: 47.6038,
-            longitude: -122.3301,
-            timezone: 'America/Los_Angeles',
-            isp: 'Microsoft Corporation',
-            organization: 'Azure Cloud Services',
-            asn: 'AS8075',
-            threat_level: 'low',
-            vpn_detected: false,
-            proxy_detected: false
-          },
-          blocked: true,
-          severity: 'medium',
-          referer: 'direct',
-          device_fingerprint: 'fp_postman_api',
-          connection_type: 'datacenter'
-        },
-        {
-          id: '5',
-          timestamp: new Date(Date.now() - 1000 * 60 * 89).toISOString(),
-          attempted_route: '/admin/analytics',
-          user_agent: 'Mozilla/5.0 (Linux; Android 10; SM-G975F)',
-          ip_address: '39.156.69.79',
-          location: 'Beijing, CN',
-          location_details: {
-            country: 'China',
-            country_code: 'CN',
-            region: 'Beijing',
-            city: 'Beijing',
-            latitude: 39.9042,
-            longitude: 116.4074,
-            timezone: 'Asia/Shanghai',
-            isp: 'Alibaba Cloud',
-            organization: 'Cloud Computing',
-            asn: 'AS37963',
-            threat_level: 'high',
-            vpn_detected: true,
-            proxy_detected: true
-          },
-          blocked: true,
-          severity: 'high',
-          referer: 'https://suspicious-site.com',
-          device_fingerprint: 'fp_android10_chrome',
-          browser_language: 'zh-CN',
-          screen_resolution: '412x915',
-          connection_type: 'mobile'
-        }
-      ];
+      // Import security monitoring service
+      const { securityMonitoring } = await import('@/services/securityMonitoring');
+      
+      // Fetch real security incidents from database
+      const [incidents, stats] = await Promise.all([
+        securityMonitoring.getRecentIncidents(50, timeFilter),
+        securityMonitoring.getSecurityStats(timeFilter)
+      ]);
 
-      const mockStats: SecurityStats = {
-        totalIncidents: mockIncidents.length,
-        blockedAttempts: mockIncidents.filter(i => i.blocked).length,
-        uniqueIPs: new Set(mockIncidents.map(i => i.ip_address)).size,
-        mostTargetedRoute: '/admin',
-        riskLevel: mockIncidents.some(i => i.severity === 'high') ? 'high' : 'medium',
-        trendsLastHour: mockIncidents.filter(i => 
-          new Date(i.timestamp).getTime() > Date.now() - 1000 * 60 * 60
-        ).length
+      // Transform database incidents to match component interface
+      const transformedIncidents: SecurityIncident[] = incidents.map(incident => ({
+        id: incident.id,
+        timestamp: incident.timestamp,
+        attempted_route: incident.attempted_route,
+        user_agent: incident.user_agent || 'Unknown',
+        ip_address: incident.ip_address,
+        location: incident.city && incident.country ? `${incident.city}, ${incident.country}` : incident.country || 'Unknown',
+        location_details: {
+          country: incident.country,
+          country_code: incident.country_code,
+          region: incident.region,
+          city: incident.city,
+          latitude: incident.latitude ? parseFloat(incident.latitude) : undefined,
+          longitude: incident.longitude ? parseFloat(incident.longitude) : undefined,
+          timezone: incident.timezone,
+          isp: incident.isp,
+          organization: incident.organization,
+          asn: incident.asn,
+          threat_level: incident.threat_level,
+          vpn_detected: incident.vpn_detected,
+          proxy_detected: incident.proxy_detected
+        },
+        blocked: incident.blocked,
+        severity: incident.severity,
+        session_id: incident.session_id,
+        referer: incident.referer,
+        device_fingerprint: incident.device_fingerprint,
+        browser_language: incident.browser_language,
+        screen_resolution: incident.screen_resolution,
+        connection_type: incident.connection_type
+      }));
+
+      const transformedStats: SecurityStats = {
+        totalIncidents: stats.totalIncidents,
+        blockedAttempts: stats.blockedAttempts,
+        uniqueIPs: stats.uniqueIPs,
+        mostTargetedRoute: stats.mostTargetedRoute,
+        riskLevel: stats.riskLevel,
+        trendsLastHour: stats.trendsLastHour
       };
 
-      setIncidents(mockIncidents);
-      setStats(mockStats);
+      setIncidents(transformedIncidents);
+      setStats(transformedStats);
 
     } catch (error: any) {
       console.error('Error fetching security incidents:', error);

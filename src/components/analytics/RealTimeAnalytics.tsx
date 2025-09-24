@@ -4,6 +4,7 @@ import { Users, Activity, Shield, AlertTriangle, Clock, TrendingUp, Eye, LogIn }
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { SecurityIncidents } from './SecurityIncidents';
+import { SecurityMonitoringPanel } from '../SecurityMonitoringPanel';
 
 interface AccessMetrics {
   totalUsers: number;
@@ -295,6 +296,9 @@ export const RealTimeAnalytics: React.FC = () => {
         </Card>
       </div>
 
+      {/* Real-time Security Monitoring */}
+      <SecurityMonitoringPanel />
+      
       {/* Detailed Security Incidents Analysis */}
       <SecurityIncidents />
     </div>

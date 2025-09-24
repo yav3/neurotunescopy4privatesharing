@@ -949,6 +949,36 @@ export type Database = {
         }
         Relationships: []
       }
+      ip_whitelist: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          ip_address: unknown
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address: unknown
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          ip_address?: unknown
+        }
+        Relationships: []
+      }
       listening_sessions: {
         Row: {
           average_complexity_score: number | null
@@ -1709,6 +1739,153 @@ export type Database = {
           status?: string | null
           storage_bucket?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      security_incidents: {
+        Row: {
+          asn: string | null
+          attack_pattern: string | null
+          attempted_route: string
+          blocked: boolean
+          browser_language: string | null
+          browser_name: string | null
+          browser_version: string | null
+          city: string | null
+          connection_type: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          datacenter_detected: boolean | null
+          device_fingerprint: string | null
+          follow_up_required: boolean | null
+          headers: Json | null
+          id: string
+          incident_type: string
+          investigated_at: string | null
+          investigated_by: string | null
+          ip_address: unknown | null
+          isp: string | null
+          latitude: number | null
+          longitude: number | null
+          mitigation_action: string | null
+          notes: string | null
+          organization: string | null
+          payload_size: number | null
+          platform: string | null
+          proxy_detected: boolean | null
+          referer: string | null
+          region: string | null
+          request_body: string | null
+          response_code: number | null
+          risk_score: number | null
+          screen_resolution: string | null
+          session_id: string | null
+          severity: string
+          threat_level: string | null
+          timestamp: string
+          timezone: string | null
+          tor_detected: boolean | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+          vpn_detected: boolean | null
+        }
+        Insert: {
+          asn?: string | null
+          attack_pattern?: string | null
+          attempted_route: string
+          blocked?: boolean
+          browser_language?: string | null
+          browser_name?: string | null
+          browser_version?: string | null
+          city?: string | null
+          connection_type?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          datacenter_detected?: boolean | null
+          device_fingerprint?: string | null
+          follow_up_required?: boolean | null
+          headers?: Json | null
+          id?: string
+          incident_type?: string
+          investigated_at?: string | null
+          investigated_by?: string | null
+          ip_address?: unknown | null
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mitigation_action?: string | null
+          notes?: string | null
+          organization?: string | null
+          payload_size?: number | null
+          platform?: string | null
+          proxy_detected?: boolean | null
+          referer?: string | null
+          region?: string | null
+          request_body?: string | null
+          response_code?: number | null
+          risk_score?: number | null
+          screen_resolution?: string | null
+          session_id?: string | null
+          severity: string
+          threat_level?: string | null
+          timestamp?: string
+          timezone?: string | null
+          tor_detected?: boolean | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          vpn_detected?: boolean | null
+        }
+        Update: {
+          asn?: string | null
+          attack_pattern?: string | null
+          attempted_route?: string
+          blocked?: boolean
+          browser_language?: string | null
+          browser_name?: string | null
+          browser_version?: string | null
+          city?: string | null
+          connection_type?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          datacenter_detected?: boolean | null
+          device_fingerprint?: string | null
+          follow_up_required?: boolean | null
+          headers?: Json | null
+          id?: string
+          incident_type?: string
+          investigated_at?: string | null
+          investigated_by?: string | null
+          ip_address?: unknown | null
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mitigation_action?: string | null
+          notes?: string | null
+          organization?: string | null
+          payload_size?: number | null
+          platform?: string | null
+          proxy_detected?: boolean | null
+          referer?: string | null
+          region?: string | null
+          request_body?: string | null
+          response_code?: number | null
+          risk_score?: number | null
+          screen_resolution?: string | null
+          session_id?: string | null
+          severity?: string
+          threat_level?: string | null
+          timestamp?: string
+          timezone?: string | null
+          tor_detected?: boolean | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          vpn_detected?: boolean | null
         }
         Relationships: []
       }

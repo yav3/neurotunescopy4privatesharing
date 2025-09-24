@@ -58,7 +58,42 @@ export class Analytics {
       attempted_route: attemptedRoute,
       user_agent: userAgent || navigator.userAgent,
       timestamp: new Date().toISOString()
-    })
+    });
+
+    // Log detailed security incident
+    import('@/services/securityMonitoring').then(({ securityMonitoring }) => {
+      securityMonitoring.logSecurityIncident({
+        attempted_route: attemptedRoute,
+        ip_address: this.getClientIP(),
+        user_agent: userAgent || navigator.userAgent,
+        referer: document.referrer,
+        session_id: this.generateSessionId(),
+        blocked: true,
+        severity: attemptedRoute.includes('/admin') ? 'high' : 'medium',
+        incident_type: 'unauthorized_access_attempt',
+        headers: this.collectRequestHeaders(),
+        response_code: 401
+      });
+    });
+  }
+
+  private static getClientIP(): string {
+    // In a real application, you'd get this from the server
+    // For now, we'll return a placeholder
+    return 'unknown';
+  }
+
+  private static generateSessionId(): string {
+    return `sess_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private static collectRequestHeaders(): Record<string, string> {
+    return {
+      'user-agent': navigator.userAgent,
+      'accept-language': navigator.language,
+      'referrer': document.referrer,
+      'timestamp': new Date().toISOString()
+    };
   }
   
   static trackSessionStart(userId: string, userRole?: string) {
