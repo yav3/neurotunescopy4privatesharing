@@ -85,9 +85,8 @@ const Index = () => {
             </div>
             <div className="flex items-center space-x-4">
               <Button
-                variant="outline"
                 onClick={() => navigate('/auth')}
-                className="text-sm font-medium text-gray-300 font-headers px-6 py-2 border-gray-500 bg-gray-700/50 backdrop-blur-sm hover:bg-gray-600/50 hover:text-white transition-colors"
+                className="text-sm font-medium font-headers px-6 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-teal-500/25"
               >
                 Authorized User Sign-In
               </Button>
