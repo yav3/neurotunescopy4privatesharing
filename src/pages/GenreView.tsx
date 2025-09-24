@@ -9,6 +9,7 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { SimpleStorageService } from '@/services/simpleStorageService';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 import { useAuthContext } from '@/components/auth/AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -49,44 +50,94 @@ export default function GenreView() {
   // Safe async effect for loading tracks with race condition protection - BUCKET ROOTS ONLY
   useAsyncEffect(
     async (signal: AbortSignal) => {
+      console.log(`🎵 AMERICANA & JAM BAND DEBUG: Starting load for ${genreId} in goal: ${goalId}`);
+      
       if (!genre) {
+        console.error(`❌ AMERICANA & JAM BAND DEBUG: Genre not found for ${genreId}`);
         throw new Error('Genre not found.');
       }
       
+      console.log(`🎯 AMERICANA & JAM BAND DEBUG: Found genre config:`, genre);
+      console.log(`📦 AMERICANA & JAM BAND DEBUG: Using buckets:`, genre.buckets);
+      
       // Check if request was aborted before making network call
       if (signal.aborted) {
+        console.log(`🚫 AMERICANA & JAM BAND DEBUG: Request aborted before network call`);
         throw new Error('Request aborted');
       }
       
-      // Use optimized SimpleStorageService - same as rest of app
-      const rawTracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
+      // Add timeout protection
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        console.error(`⏰ AMERICANA & JAM BAND DEBUG: Loading timeout for ${genreId}`);
+        controller.abort();
+      }, 15000); // 15 second timeout
       
-      // Check if request was aborted after network call
-      if (signal.aborted) {
-        throw new Error('Request aborted');
-      }
-      
-      // rawTracks is already in correct SimpleTrack format from SimpleStorageService
-      const tracks: SimpleTrack[] = rawTracks.map(track => ({
-        ...track,
-        artist: track.artist || 'Neural Positive Music'
-      }));
-      
-      // Validate bucket content matches expected genre
-      if (genre.buckets.length > 0) {
-        import('@/utils/bucketContentValidator').then(({ BucketContentValidator }) => {
-          genre.buckets.forEach(bucketName => {
-            const bucketTracks = rawTracks.filter(track => track.bucket === bucketName);
-            if (bucketTracks.length > 0) {
-              BucketContentValidator.logValidationResults(bucketName, bucketTracks);
+      try {
+        console.log(`🚀 AMERICANA & JAM BAND DEBUG: Starting SimpleStorageService request...`);
+        
+        // Use optimized SimpleStorageService - same as rest of app
+        const rawTracks = await SimpleStorageService.getTracksFromBuckets(genre.buckets, 200);
+        
+        clearTimeout(timeoutId);
+        console.log(`✅ AMERICANA & JAM BAND DEBUG: Received ${rawTracks.length} raw tracks`);
+        
+        // Check if request was aborted after network call
+        if (signal.aborted) {
+          console.log(`🚫 AMERICANA & JAM BAND DEBUG: Request aborted after network call`);
+          throw new Error('Request aborted');
+        }
+        
+        // rawTracks is already in correct SimpleTrack format from SimpleStorageService
+        const tracks: SimpleTrack[] = rawTracks.map(track => ({
+          ...track,
+          artist: track.artist || 'Neural Positive Music'
+        }));
+        
+        console.log(`🎵 AMERICANA & JAM BAND DEBUG: Processed ${tracks.length} tracks`);
+        
+        // Debug individual buckets if no tracks found
+        if (tracks.length === 0) {
+          console.warn(`⚠️ AMERICANA & JAM BAND DEBUG: No tracks found, checking buckets individually...`);
+          
+          for (const bucket of genre.buckets) {
+            try {
+              console.log(`🔍 AMERICANA & JAM BAND DEBUG: Checking bucket ${bucket}...`);
+              const { data: files, error } = await supabase.storage.from(bucket).list('', { limit: 10 });
+              
+              if (error) {
+                console.error(`❌ AMERICANA & JAM BAND DEBUG: Error checking bucket ${bucket}:`, error);
+              } else {
+                console.log(`📂 AMERICANA & JAM BAND DEBUG: Bucket ${bucket} has ${files?.length || 0} files:`, 
+                  files?.slice(0, 3)?.map(f => f.name) || []);
+              }
+            } catch (bucketError) {
+              console.error(`❌ AMERICANA & JAM BAND DEBUG: Exception checking bucket ${bucket}:`, bucketError);
             }
+          }
+        }
+        
+        // Validate bucket content matches expected genre
+        if (genre.buckets.length > 0) {
+          import('@/utils/bucketContentValidator').then(({ BucketContentValidator }) => {
+            genre.buckets.forEach(bucketName => {
+              const bucketTracks = rawTracks.filter(track => track.bucket === bucketName);
+              if (bucketTracks.length > 0) {
+                BucketContentValidator.logValidationResults(bucketName, bucketTracks);
+              }
+            });
           });
-        });
+        }
+        
+        return tracks;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        console.error(`❌ AMERICANA & JAM BAND DEBUG: Error in loading:`, error);
+        throw error;
       }
-      
-      return tracks;
     },
     (tracks: SimpleTrack[]) => {
+      console.log(`✅ AMERICANA & JAM BAND DEBUG: Setting ${tracks.length} tracks in state`);
       if (tracks.length > 0) {
         setTracks(tracks);
         setError(null);
@@ -97,6 +148,7 @@ export default function GenreView() {
       setIsTracksLoading(false);
     },
     (error: Error) => {
+      console.error(`❌ AMERICANA & JAM BAND DEBUG: Error callback:`, error);
       setError('Failed to load music tracks.');
       setTracks([]);
       setIsTracksLoading(false);
