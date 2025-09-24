@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { Analytics } from '@/utils/analytics';
@@ -26,6 +26,12 @@ interface ExtendedUser extends User {
 }
 
 export function useAuth() {
+  // Debug: Ensure React hooks are available
+  if (typeof useState === 'undefined') {
+    console.error('🚨 useState is undefined! React hooks not properly imported.');
+    throw new Error('React hooks are not available. Please check your React installation.');
+  }
+
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
