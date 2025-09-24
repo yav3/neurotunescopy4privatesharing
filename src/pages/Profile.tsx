@@ -197,46 +197,46 @@ const Profile = () => {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-4">
-            <Card className="p-4 text-center">
-              <Music className="h-8 w-8 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.totalSessions}</div>
-              <div className="text-sm text-muted-foreground">Sessions Completed</div>
+            <Card className="p-6 text-center border-2">
+              <Music className="h-10 w-10 text-primary mx-auto mb-3" />
+              <div className="text-3xl font-bold text-foreground mb-1">{stats.totalSessions}</div>
+              <div className="text-sm font-medium text-foreground/80">Sessions Completed</div>
             </Card>
             
-            <Card className="p-4 text-center">
-              <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.totalHours}</div>
-              <div className="text-sm text-muted-foreground">Hours Listened</div>
+            <Card className="p-6 text-center border-2">
+              <Clock className="h-10 w-10 text-primary mx-auto mb-3" />
+              <div className="text-3xl font-bold text-foreground mb-1">{stats.totalHours}</div>
+              <div className="text-sm font-medium text-foreground/80">Hours Listened</div>
             </Card>
           </div>
 
           {/* Favorites & Streak */}
           <div className="grid grid-cols-2 gap-4">
-            <Card className="p-4 text-center">
-              <Heart className="h-8 w-8 text-red-500 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.favoriteTracksCount}</div>
-              <div className="text-sm text-muted-foreground">Favorite Tracks</div>
+            <Card className="p-6 text-center border-2">
+              <Heart className="h-10 w-10 text-red-600 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-foreground mb-1">{stats.favoriteTracksCount}</div>
+              <div className="text-sm font-medium text-foreground/80">Favorite Tracks</div>
             </Card>
             
-            <Card className="p-4 text-center">
-              <Calendar className="h-8 w-8 text-orange-500 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-foreground">{stats.currentStreak}</div>
-              <div className="text-sm text-muted-foreground">Day Streak</div>
+            <Card className="p-6 text-center border-2">
+              <Calendar className="h-10 w-10 text-orange-600 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-foreground mb-1">{stats.currentStreak}</div>
+              <div className="text-sm font-medium text-foreground/80">Day Streak</div>
             </Card>
           </div>
 
           {/* Favorite Genres */}
           {stats.favoriteGenres.length > 0 && (
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
-                <Music className="w-5 h-5 mr-2 text-primary" />
+            <Card className="p-6 border-2">
+              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
+                <Music className="w-6 h-6 mr-3 text-primary" />
                 Your Favorite Genres
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {stats.favoriteGenres.map((genre, index) => (
                   <span 
                     key={index} 
-                    className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20"
+                    className="px-4 py-2 bg-primary text-white rounded-full text-sm font-semibold border-2 border-primary"
                   >
                     {genre}
                   </span>
@@ -247,15 +247,15 @@ const Profile = () => {
 
           {/* Getting Started */}
           {stats.totalSessions === 0 && (
-            <Card className="p-6 text-center">
-              <Music className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+            <Card className="p-8 text-center border-2 border-dashed">
+              <Music className="h-16 w-16 text-primary mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-foreground mb-3">
                 Ready to start your music therapy journey?
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-foreground/80 mb-6 text-base">
                 Explore our therapeutic music collections designed to help you relax, focus, and feel better.
               </p>
-              <Button onClick={() => navigate('/')}>
+              <Button onClick={() => navigate('/')} size="lg" className="text-base px-8 py-3">
                 Start Listening
               </Button>
             </Card>
