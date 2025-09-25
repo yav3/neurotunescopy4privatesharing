@@ -59,6 +59,14 @@ export default function GenreView() {
       
       console.log(`🎯 AMERICANA & JAM BAND DEBUG: Found genre config:`, genre);
       console.log(`📦 AMERICANA & JAM BAND DEBUG: Using buckets:`, genre.buckets);
+
+      // Test storage access with service client for debugging
+      if (genreId === 'americana-jam-band') {
+        console.log('🧪 Running service client storage test...');
+        const { testAmericanaJamBandAccess } = await import('@/utils/storageAccessTest');
+        const testResults = await testAmericanaJamBandAccess();
+        console.log('🧪 Service client test results:', testResults);
+      }
       
       // Check if request was aborted before making network call
       if (signal.aborted) {
