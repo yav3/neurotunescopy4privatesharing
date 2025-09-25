@@ -306,8 +306,9 @@ serve(async (req: Request) => {
     
     // Use background task for long-running process
     // @ts-ignore - EdgeRuntime is available in Supabase Edge Functions
-    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime.waitUntil) {
-      EdgeRuntime.waitUntil(processAudioBucket());
+    if (typeof EdgeRuntime !== 'undefined' && (EdgeRuntime as any).waitUntil) {
+      // @ts-ignore - EdgeRuntime typing issue
+      (EdgeRuntime as any).waitUntil(processAudioBucket());
     } else {
       // Fallback for local development
       processAudioBucket();
@@ -343,5 +344,5 @@ serve(async (req: Request) => {
 
 // Handle graceful shutdown
 addEventListener('beforeunload', (ev) => {
-  console.log('Function shutdown due to:', ev.detail?.reason);
+  console.log('Function shutdown due to:', (ev as any).detail?.reason);
 });

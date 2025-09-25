@@ -156,7 +156,7 @@ Deno.serve(async (req) => {
             .from('repair_map')
             .update({ 
               status: 'failed',
-              error_message: error.message,
+              error_message: error instanceof Error ? error.message : String(error),
               completed_at: new Date().toISOString()
             })
             .eq('id', repair.id)
@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
           old_name: repair.old_key,
           new_name: repair.new_key,
           status: 'error',
-          error: error.message,
+          error: error instanceof Error ? error.message : String(error),
           action: 'failed'
         })
         
@@ -199,7 +199,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: 'Internal server error', 
-        details: error.message 
+        details: error instanceof Error ? error.message : String(error) 
       }),
       { 
         status: 500, 

@@ -65,12 +65,6 @@ function wordsFor(goal: string): string[] {
   // Get words from both the original goal and the normalized version
   const words = [g, normalized, ...(alias[g] ?? [])];
   
-  log('playlist:goal_processing', { 
-    originalGoal: goal, 
-    normalizedGoal: normalized, 
-    searchTerms: words 
-  });
-  
   return words;
 }
 
@@ -637,7 +631,7 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
     });
 
   } catch (error) {
-    log(id, 'audit:error', { error: error.message });
+    log(id, 'audit:error', { error: error instanceof Error ? error.message : String(error) });
     return json({ error: 'Audit failed' }, 500);
   }
 }
@@ -748,9 +742,10 @@ async function handleSessionBuild(req: Request): Promise<Response> {
     });
 
   } catch (error) {
-    log(id, 'session:build_error', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    log(id, 'session:build_error', { error: errorMessage });
     return json({ 
-      error: error.message || 'Session build failed' 
+      error: errorMessage || 'Session build failed' 
     }, 500);
   }
 }

@@ -132,7 +132,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Complete analysis error:', error)
     return new Response(JSON.stringify({
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       success: false
     }), {
       status: 500,
@@ -170,7 +170,7 @@ function generateComprehensiveAnalysis(track: any) {
   // Generate Camelot code if not available
   let camelotCode = track.camelot_code
   if (!camelotCode) {
-    camelotCode = CAMELOT_WHEEL[musicalKey] || '1A'
+    camelotCode = (CAMELOT_WHEEL as any)[musicalKey] || '1A'
   }
 
   // Generate mode (major/minor)

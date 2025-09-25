@@ -193,7 +193,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('❌ Analysis failed:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       summary: { error: true }
     }), {
       status: 500,

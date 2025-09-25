@@ -141,7 +141,7 @@ Deno.serve(async (req) => {
             title: track.title,
             oldStatus: 'working',
             newStatus: 'error',
-            action: `Error during verification: ${error.message}`
+            action: `Error during verification: ${error instanceof Error ? error.message : String(error)}`
           }
         }
       })
@@ -174,7 +174,7 @@ Deno.serve(async (req) => {
     console.error('Fix error:', error)
     return Response.json({ 
       error: 'Internal server error', 
-      details: error.message 
+      details: error instanceof Error ? error.message : String(error) 
     }, { 
       status: 500, 
       headers: corsHeaders 

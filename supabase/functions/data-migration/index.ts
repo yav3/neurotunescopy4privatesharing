@@ -108,9 +108,14 @@ serve(async (req: Request) => {
     migrationSteps[2].status = 'running';
     console.log('🔍 Step 3: Resolving duplicate storage keys...');
     
-    const { data: duplicateQuery } = await supabase
-      .rpc('find_duplicate_storage_keys')
-      .catch(() => ({ data: null }));
+    let duplicateQuery = null;
+    try {
+      const { data } = await supabase.rpc('find_duplicate_storage_keys');
+      duplicateQuery = data;
+    } catch (error) {
+      console.log('RPC function not available, using manual approach');
+      duplicateQuery = null;
+    }
 
     // If RPC doesn't exist, find duplicates manually
     const { data: allTracks } = await supabase

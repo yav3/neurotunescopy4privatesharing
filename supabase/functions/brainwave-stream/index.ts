@@ -47,7 +47,7 @@ serve(async (req) => {
       console.log(`🎵 Generating brainwave stream:`, { frequency, goal, duration });
       
       // Validate parameters
-      if (frequency && !FREQUENCY_BANDS[frequency]) {
+      if (frequency && !(FREQUENCY_BANDS as any)[frequency]) {
         return new Response(
           JSON.stringify({ error: 'Invalid frequency band. Use: delta, theta, alpha, beta, gamma' }), 
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -55,9 +55,9 @@ serve(async (req) => {
       }
 
       // Determine frequency parameters
-      const targetFreq = frequency || GOAL_FREQUENCIES[goal]?.band || 'alpha';
-      const freqConfig = GOAL_FREQUENCIES[goal] || GOAL_FREQUENCIES['focus'];
-      const bandConfig = FREQUENCY_BANDS[targetFreq];
+      const targetFreq = frequency || (GOAL_FREQUENCIES as any)[goal]?.band || 'alpha';
+      const freqConfig = (GOAL_FREQUENCIES as any)[goal] || (GOAL_FREQUENCIES as any)['focus'];
+      const bandConfig = (FREQUENCY_BANDS as any)[targetFreq];
 
       // Generate streaming response
       const stream = generateBrainwaveStream(freqConfig, bandConfig, duration);
@@ -94,7 +94,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('❌ Brainwave stream error:', error);
     return new Response(
-      JSON.stringify({ error: 'Stream generation failed', details: error.message }), 
+      JSON.stringify({ error: 'Stream generation failed', details: error instanceof Error ? error.message : String(error) }), 
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
