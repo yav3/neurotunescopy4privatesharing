@@ -196,7 +196,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'americana-jam-band',
-        name: 'Americana & Jam Band',
+        name: 'Uptempo Americana',
         description: 'Smooth jam band and americana music for emotional wellbeing',
         buckets: ['jamband', 'countryandamericana'],
         image: moodBoostFloralField
