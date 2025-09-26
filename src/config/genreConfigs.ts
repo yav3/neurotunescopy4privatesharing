@@ -188,32 +188,11 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       },
       {
-        id: 'samba',
-        name: 'Samba',
-        description: 'Relaxing Brazilian samba rhythms for mood support',
-        buckets: ['samba'],
-        image: sambaTropicalHibiscus
-      },
-      {
-        id: 'bluegrass-americana',
-        name: 'Bluegrass & Americana',
-        description: 'Calming country and americana music for emotional support',
-        buckets: ['countryandamericana'],
-        image: moodBoostFloralField
-      },
-      {
         id: 'classical-meditation',
         name: 'Classical Meditation',
         description: 'Peaceful classical music for mindfulness and emotional healing',
         buckets: ['Chopin'],
         image: focusPianoCherryBlossoms
-      },
-      {
-        id: 'world-music-focus',
-        name: 'World Music Focus',
-        description: 'Soothing world music for restorative rest and deep relaxation',
-        buckets: ['NewAgeandWorldFocus'],
-        image: newAgeLeafDewdrop
       }
     ]
   };
