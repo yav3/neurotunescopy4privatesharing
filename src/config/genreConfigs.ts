@@ -165,6 +165,15 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: cardioMountainWildflowers
       }
     ],
+    'non-sleep-deep-rest': [
+      {
+        id: 'meditative-classical',
+        name: 'Meditative Classical',
+        description: 'Peaceful classical music for deep relaxation and meditation',
+        buckets: ['meditation'],
+        image: focusClassicalMountainLake
+      }
+    ],
     'depression-support': [
       {
         id: 'new-age-stress',
