@@ -216,6 +216,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Ethereal new age sounds for deep meditation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
+      },
+      {
+        id: 'classical-meditation',
+        name: 'Classical Meditation',
+        description: 'Peaceful classical music for mindfulness practice',
+        buckets: ['Chopin'],
+        image: focusPianoCherryBlossoms
       }
     ],
     'non-sleep-deep-rest': [

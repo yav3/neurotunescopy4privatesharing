@@ -262,6 +262,30 @@ const TherapeuticGoalsPage = () => {
         <div className="fixed bottom-32 sm:bottom-20 right-4 z-40 space-y-2 max-w-[200px]">
           <Button 
             onClick={() => {
+              import('@/utils/meditationDebugger').then(({ MeditationDebugger }) => {
+                MeditationDebugger.debugMeditationMode();
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
+          >
+            🧘 Debug Meditation Mode
+          </Button>
+          <Button 
+            onClick={() => {
+              import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
+                ModePlaybackDebugger.testSpecificMode('meditation-support');
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
+          >
+            🧘 Test Meditation Tracks
+          </Button>
+          <Button 
+            onClick={() => {
               import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
                 ModePlaybackDebugger.testAllModes();
               });
@@ -275,62 +299,14 @@ const TherapeuticGoalsPage = () => {
           <Button 
             onClick={() => {
               import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-                BucketDiagnostics.checkAllBuckets();
+                BucketDiagnostics.checkSpecificGenre('meditation-support', 'zen-new-age');
               });
             }}
             variant="outline"
             size="sm"
             className="bg-background/90 backdrop-blur-sm block w-full text-xs"
           >
-            🔍 Debug All Buckets
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-                BucketDiagnostics.checkSpecificGenre('pain-support', 'new-age-chill');
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🎯 Check Pain/New Age
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.testPopEnergySpecifically();
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🎯 Test Pop Energy
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'contemplative-piano');
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🧘 Test Meditation Piano
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/trackLoadingDebugger').then(({ TrackLoadingDebugger }) => {
-                TrackLoadingDebugger.debugGenreLoading('meditation-support', 'non-sleep-deep-rest');
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🧘 Test Non-Sleep Deep Rest
+            🎯 Check Meditation Buckets
           </Button>
         </div>
       )}
