@@ -50,7 +50,7 @@ const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'chill-samba', name: 'Chill Samba', letter: 'C', image: chillSambaTropical },
   { id: 'chill-piano', name: 'New Age Focus', letter: 'N', image: forestLakeMist },
-  { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
+  { id: 'non-sleep-deep-rest', name: 'Deep Relaxation', letter: 'D', image: nonSleepDeepRestLeaf },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
 ];
