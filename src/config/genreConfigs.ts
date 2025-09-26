@@ -111,6 +111,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop,
       },
+      {
+        id: 'samba',
+        name: 'Chill Samba',
+        description: 'Relaxing Brazilian samba rhythms for mood enhancement',
+        buckets: ['samba'],
+        image: sambaTropicalHibiscus,
+      },
     ],
     'pain-support': [
       {
