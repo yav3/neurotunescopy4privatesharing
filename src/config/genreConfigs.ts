@@ -200,6 +200,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Peaceful classical music for mindfulness and emotional healing',
         buckets: ['Chopin'],
         image: focusPianoCherryBlossoms
+      },
+      {
+        id: 'mood-boosting-samba',
+        name: 'Mood Boosting Samba',
+        description: 'Uplifting Brazilian samba rhythms for emotional support and mood elevation',
+        buckets: ['samba'],
+        image: sambaTropicalHibiscus
       }
     ]
   };
