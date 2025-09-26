@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { formatTime } from "@/lib/utils";
 import { useAuthContext } from "@/components/auth/AuthProvider";
-import { TitleFormatter } from "@/utils/titleFormatter";
+import { SmartTitle } from "@/components/ui/SmartTitle";
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { blockTrack } from '@/services/blockedTracks';
@@ -119,7 +119,13 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
           </div>
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">{TitleFormatter.formatTrackTitle(track.title)}</h2>
+            <SmartTitle 
+              title={track.title}
+              context="player"
+              maxLength={60}
+              showMetadata={true}
+              className="text-2xl font-bold text-foreground mb-2"
+            />
             <p className="text-lg text-muted-foreground mb-1">{getTherapeuticGoalName()}</p>
             {isAdmin() && (
               <p className="text-sm text-muted-foreground">
