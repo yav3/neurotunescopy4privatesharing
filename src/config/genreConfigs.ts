@@ -188,27 +188,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: sambaTropicalHibiscus
       },
       {
-        id: 'chill-tropical-house',
-        name: 'Chill Tropical House',
-        description: 'Relaxing tropical house music for calm mood enhancement',
-        buckets: ['ENERGYBOOST'],
-        image: sambaTropicalHibiscus
-      },
-      {
-        id: 'americana-jam-band',
-        name: 'Uptempo Americana',
-        description: 'Smooth jam band and americana music for emotional wellbeing',
-        buckets: ['jamband', 'countryandamericana'],
-        image: moodBoostFloralField
-      },
-      {
-        id: 'jam-band-funk',
-        name: 'Jam Band & Funk',
-        description: 'Smooth jam band and funk rhythms for mood support',
-        buckets: ['jamband'],
-        image: moodBoostFloralField
-      },
-      {
         id: 'bluegrass-americana',
         name: 'Bluegrass & Americana',
         description: 'Calming country and americana music for emotional support',
