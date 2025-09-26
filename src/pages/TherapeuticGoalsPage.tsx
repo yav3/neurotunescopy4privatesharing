@@ -106,7 +106,7 @@ const TherapeuticGoalsPage = () => {
       'chill-classical': 'pain-support',
       'nocturnes': 'focus-enhancement', 
       'chill-piano': 'focus-enhancement',
-      'non-sleep-deep-rest': 'non-sleep-deep-rest',
+      'non-sleep-deep-rest': 'depression-support',
       'chill-tropical-house': 'calm-mood-boost',
       'social-time': 'calm-mood-boost',
       'chill-folk-bluegrass': 'calm-mood-boost',
