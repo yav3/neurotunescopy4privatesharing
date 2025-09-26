@@ -52,50 +52,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: newAgeLeafDewdrop
       }
     ],
-    'calm-mood-boost': [
-      {
-        id: 'new-age-stress',
-        name: 'New Age & World',
-        description: 'Ethereal new age sounds for deep relaxation',
-        buckets: ['newageworldstressanxietyreduction'],
-        image: newAgeLeafDewdrop
-      },
-      {
-        id: 'samba',
-        name: 'Samba',
-        description: 'Relaxing Brazilian samba rhythms for stress support',
-        buckets: ['samba'],
-        image: sambaTropicalHibiscus
-      },
-      {
-        id: 'chill-tropical-house',
-        name: 'Chill Tropical House',
-        description: 'Relaxing tropical house music for calm mood enhancement',
-        buckets: ['ENERGYBOOST'],
-        image: sambaTropicalHibiscus
-      },
-      {
-        id: 'americana-jam-band',
-        name: 'Americana & Jam Band',
-        description: 'Smooth jam band and americana music for relaxation',
-        buckets: ['jamband', 'countryandamericana'],
-        image: moodBoostFloralField
-      },
-      {
-        id: 'jam-band-funk',
-        name: 'Jam Band & Funk',
-        description: 'Smooth jam band and funk rhythms for relaxation',
-        buckets: ['jamband'],
-        image: moodBoostFloralField
-      },
-      {
-        id: 'bluegrass-americana',
-        name: 'Bluegrass & Americana',
-        description: 'Calming country and americana music for stress relief',
-        buckets: ['countryandamericana'],
-        image: moodBoostFloralField
-      }
-    ],
     'anxiety-support': [
       {
         id: 'classical-crossover',
@@ -211,32 +167,58 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     ],
     'depression-support': [
       {
-        id: 'zen-new-age',
+        id: 'new-age-stress',
         name: 'New Age & World',
-        description: 'Ethereal new age sounds for deep meditation',
+        description: 'Ethereal new age sounds for deep relaxation and emotional support',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
+      },
+      {
+        id: 'samba',
+        name: 'Samba',
+        description: 'Relaxing Brazilian samba rhythms for mood support',
+        buckets: ['samba'],
+        image: sambaTropicalHibiscus
+      },
+      {
+        id: 'chill-tropical-house',
+        name: 'Chill Tropical House',
+        description: 'Relaxing tropical house music for calm mood enhancement',
+        buckets: ['ENERGYBOOST'],
+        image: sambaTropicalHibiscus
+      },
+      {
+        id: 'americana-jam-band',
+        name: 'Americana & Jam Band',
+        description: 'Smooth jam band and americana music for emotional wellbeing',
+        buckets: ['jamband', 'countryandamericana'],
+        image: moodBoostFloralField
+      },
+      {
+        id: 'jam-band-funk',
+        name: 'Jam Band & Funk',
+        description: 'Smooth jam band and funk rhythms for mood support',
+        buckets: ['jamband'],
+        image: moodBoostFloralField
+      },
+      {
+        id: 'bluegrass-americana',
+        name: 'Bluegrass & Americana',
+        description: 'Calming country and americana music for emotional support',
+        buckets: ['countryandamericana'],
+        image: moodBoostFloralField
       },
       {
         id: 'classical-meditation',
         name: 'Classical Meditation',
-        description: 'Peaceful classical music for mindfulness practice',
+        description: 'Peaceful classical music for mindfulness and emotional healing',
         buckets: ['Chopin'],
         image: focusPianoCherryBlossoms
-      }
-    ],
-    'non-sleep-deep-rest': [
-      {
-        id: 'new-age-world',
-        name: 'New Age',
-        description: 'Calming new age music for deep rest and recovery',
-        buckets: ['newageworldstressanxietyreduction'],
-        image: newAgeLeafDewdrop
       },
       {
-        id: 'world-music',
-        name: 'World',
-        description: 'Soothing world music for restorative rest',
+        id: 'world-music-focus',
+        name: 'World Music Focus',
+        description: 'Soothing world music for restorative rest and deep relaxation',
         buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       }
