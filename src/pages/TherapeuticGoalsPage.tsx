@@ -48,13 +48,10 @@ const therapeuticGoals = [
 // Trending music categories with varied images
 const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
-  { id: 'nocturnes', name: 'Nocturnes', letter: 'N', image: nocturnesStones },
   { id: 'chill-samba', name: 'Chill Samba', letter: 'C', image: chillSambaTropical },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
   { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
-  { id: 'chill-tropical-house', name: 'Tropical House Party', letter: 'T', image: tropicalHousePartyBg },
-  { id: 'social-time', name: 'Social Time', letter: 'S', image: socialTimeLotus },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
 ];
