@@ -170,6 +170,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Gentle piano melodies for comfort and relaxation',
         buckets: ['Chopin'],
         image: painPeacefulPianoMountainLake,
+      },
+      {
+        id: 'comorbid-pain-anxiety',
+        name: 'Comorbid Pain & Anxiety',
+        description: 'Specialized nocturnes for complex pain and anxiety conditions',
+        buckets: ['Nocturnes'],
+        image: sonatasMistyLake,
       }
     ],
     'energy-boost': [
