@@ -59,25 +59,39 @@ class StorageRequestManager {
     const requestPromise = new Promise<any>((resolve, reject) => {
       const executeRequest = async () => {
         try {
-          console.log(`🔄 Executing storage request for bucket ROOT: ${bucket}`);
-          const { data, error } = await supabase.storage.from(bucket).list('', {
-            limit: 1000,
-            offset: 0,
-            sortBy: { column: 'name', order: 'asc' },
-            ...options
+          console.log(`🔄 Executing storage request via edge function for bucket: ${bucket}`);
+          
+          // Use storage-access edge function for proper authentication
+          const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/storage-access?bucket=${bucket}&limit=1000`, {
+            headers: {
+              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE`,
+              'Content-Type': 'application/json'
+            }
           });
 
-          if (error) {
-            console.error(`❌ Storage error for ${bucket}:`, error);
-            throw error;
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`❌ Storage edge function error for ${bucket}:`, response.status, errorText);
+            throw new Error(`Storage access failed: ${response.status} ${errorText}`);
           }
 
+          const result = await response.json();
+          const files = result.tracks || [];
+          
+          // Convert edge function response back to storage list format
+          const storageFiles = files.map((track: any) => ({
+            name: track.storage_key,
+            metadata: { size: track.file_size },
+            updated_at: track.last_modified,
+            created_at: track.last_modified
+          }));
+
           // Cache the result
-          this.requestCache.set(cacheKey, { data: data || [], timestamp: Date.now() });
-          console.log(`✅ Storage request completed for ${bucket}: ${(data || []).length} files`);
-          resolve(data || []);
+          this.requestCache.set(cacheKey, { data: storageFiles, timestamp: Date.now() });
+          console.log(`✅ Storage edge function completed for ${bucket}: ${storageFiles.length} files`);
+          resolve(storageFiles);
         } catch (error) {
-          console.error(`❌ Storage request failed for ${bucket}:`, error);
+          console.error(`❌ Storage edge function request failed for ${bucket}:`, error);
           reject(error);
         } finally {
           // Clean up pending request
