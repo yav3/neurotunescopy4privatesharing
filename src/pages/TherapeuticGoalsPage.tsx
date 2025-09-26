@@ -262,6 +262,18 @@ const TherapeuticGoalsPage = () => {
         <div className="fixed bottom-32 sm:bottom-20 right-4 z-40 space-y-2 max-w-[200px]">
           <Button 
             onClick={() => {
+              import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
+                ModePlaybackDebugger.testAllModes();
+              });
+            }}
+            variant="outline"
+            size="sm"
+            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
+          >
+            🔍 Test All Modes
+          </Button>
+          <Button 
+            onClick={() => {
               import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
                 BucketDiagnostics.checkAllBuckets();
               });

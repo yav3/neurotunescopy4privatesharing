@@ -22,7 +22,7 @@ export const BUCKET_FALLBACKS: Record<string, string[]> = {
 const KNOWN_EMPTY_BUCKETS = new Set([
   'sonatasforstress', // Skip this bucket - contains sleep music, not sonatas
   'albumart',
-  'pop',
+  // 'pop' removed - let it try first before fallback
   // HIIT removed from empty buckets - should use HIIT bucket directly
   // Removed gentleclassicalforpain - let it be used directly first, then fallback to Chopin only
   'painreducingworld',

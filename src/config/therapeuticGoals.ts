@@ -87,7 +87,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-green-500 to-teal-500',
     bpmRange: { min: 40, max: 80, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana'],
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband'],
     synonyms: ['stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost']
   },
   {
@@ -135,7 +135,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-gray-500 to-blue-500',
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    musicBuckets: ['gentleclassicalforpain'],
+    musicBuckets: ['gentleclassicalforpain', 'Chopin'],
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   },
   {
@@ -151,8 +151,24 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-orange-500 to-red-500',
     bpmRange: { min: 120, max: 160, optimal: 140 },
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
-    musicBuckets: ['ENERGYBOOST', 'pop', 'HIIT'],
+    musicBuckets: ['ENERGYBOOST', 'pop', 'HIIT', 'reggaeton'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
+  },
+  {
+    id: 'non-sleep-deep-rest',
+    slug: 'non-sleep-deep-rest',
+    backendKey: 'non-sleep-deep-rest', 
+    name: 'Non-Sleep Deep Rest',
+    shortName: 'Deep Rest',
+    description: 'Restorative music for deep rest and recovery without sleep',
+    icon: Flower,
+    artwork: meditationCard,
+    color: 'purple',
+    gradient: 'from-purple-500 to-indigo-500',
+    bpmRange: { min: 30, max: 55, optimal: 40 },
+    vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.3 },
+    musicBuckets: ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'],
+    synonyms: ['nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
   }
 ];
 
@@ -190,7 +206,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - updated to remove mood-boost
-export type GoalSlug = 'calm-mood-boost' | 'anxiety-support' | 'focus-enhancement' | 'meditation-support' | 'pain-support' | 'energy-boost';
+export type GoalSlug = 'calm-mood-boost' | 'anxiety-support' | 'focus-enhancement' | 'meditation-support' | 'pain-support' | 'energy-boost' | 'non-sleep-deep-rest';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);

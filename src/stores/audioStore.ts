@@ -1408,9 +1408,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
           error: error instanceof Error ? error.message : "Failed to load tracks" 
         });
         
-        // Show user-friendly error in UI
+        // Show user-friendly error in UI with more helpful message
         import('@/utils/adminLogging').then(({ userLog }) => {
-          userLog(`❌ Could not load music for ${goal}. Please try again.`);
+          if (error.message.includes('No tracks found')) {
+            userLog(`❌ No music available for ${goal}. This mode may not be set up yet.`);
+          } else if (error.message.includes('buckets')) {
+            userLog(`❌ Configuration issue with ${goal}. Please try a different mode.`);
+          } else {
+            userLog(`❌ Could not load music for ${goal}. Please try again or try a different mode.`);
+          }
         });
         
         return 0;
