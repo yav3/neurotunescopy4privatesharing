@@ -50,7 +50,6 @@ const trendingCategories = [
   { id: 'chill-classical', name: 'Chill Classical', letter: 'C', image: peacefulLake },
   { id: 'chill-samba', name: 'Chill Samba', letter: 'C', image: chillSambaTropical },
   { id: 'chill-piano', name: 'Chill Piano', letter: 'P', image: forestLakeMist },
-  { id: 'new-age-world', name: 'New Age & World', letter: 'N', image: newAgeWorldLandscape },
   { id: 'non-sleep-deep-rest', name: 'Non-Sleep Deep Rest', letter: 'N', image: nonSleepDeepRestLeaf },
   { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
   { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
@@ -89,17 +88,6 @@ const TherapeuticGoalsPage = () => {
       return;
     }
     
-    if (categoryId === 'new-age-world') {
-      console.log('🎵 Navigating directly to bluegrass & americana music');
-      navigate('/genre/calm-mood-boost/bluegrass-americana');
-      return;
-    }
-    
-    if (categoryId === 'new-age-world') {
-      console.log('🎵 Navigating directly to new age & world music');
-      navigate('/genre/calm-mood-boost/new-age-stress');
-      return;
-    }
     
     if (categoryId === 'chill-tropical-house') {
       console.log('🎵 Navigating directly to chill tropical house music');
@@ -118,7 +106,6 @@ const TherapeuticGoalsPage = () => {
       'chill-classical': 'pain-support',
       'nocturnes': 'focus-enhancement', 
       'chill-piano': 'focus-enhancement',
-      'new-age-world': 'meditation-support',
       'non-sleep-deep-rest': 'non-sleep-deep-rest',
       'chill-tropical-house': 'calm-mood-boost',
       'social-time': 'calm-mood-boost',
