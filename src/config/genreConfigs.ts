@@ -216,12 +216,21 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Ethereal new age sounds for deep meditation',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
+      }
+    ],
+    'non-sleep-deep-rest': [
+      {
+        id: 'new-age-world',
+        name: 'New Age',
+        description: 'Calming new age music for deep rest and recovery',
+        buckets: ['newageworldstressanxietyreduction'],
+        image: newAgeLeafDewdrop
       },
       {
-        id: 'non-sleep-deep-rest',
-        name: 'Non-Sleep Deep Rest',
-        description: 'Specialized audio for deep rest and recovery without sleep',
-        buckets: ['meditation'],
+        id: 'world-music',
+        name: 'World',
+        description: 'Soothing world music for restorative rest',
+        buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
       }
     ]

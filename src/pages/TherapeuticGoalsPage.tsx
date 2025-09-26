@@ -122,7 +122,7 @@ const TherapeuticGoalsPage = () => {
       'nocturnes': 'focus-enhancement', 
       'chill-piano': 'focus-enhancement',
       'new-age-world': 'meditation-support',
-      'non-sleep-deep-rest': 'meditation-support',
+      'non-sleep-deep-rest': 'non-sleep-deep-rest',
       'chill-tropical-house': 'calm-mood-boost',
       'social-time': 'calm-mood-boost',
       'chill-folk-bluegrass': 'calm-mood-boost',
