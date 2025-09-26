@@ -118,6 +118,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['samba'],
         image: sambaTropicalHibiscus,
       },
+      {
+        id: 'americana-jam-band',
+        name: 'Mood Boosting Americana & Jam Band',
+        description: 'Uplifting americana and jam band music for mood enhancement',
+        buckets: ['countryandamericana'],
+        image: moodBoostFloralField,
+      },
     ],
     'pain-support': [
       {
