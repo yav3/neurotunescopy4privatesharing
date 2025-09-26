@@ -75,22 +75,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
   },
   {
-    id: 'calm-mood-boost',
-    slug: 'calm-mood-boost',
-    backendKey: 'calm-mood-boost',
-    name: 'Calm Mood Boost',
-    shortName: 'Calm',
-    description: 'Gentle music to boost your mood and reduce stress',
-    icon: Sparkles,
-    artwork: calmMoodBoostCardNew,
-    color: 'green',
-    gradient: 'from-green-500 to-teal-500',
-    bpmRange: { min: 40, max: 80, optimal: 60 },
-    vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband'],
-    synonyms: ['stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost']
-  },
-  {
     id: 'anxiety-support',
     slug: 'anxiety-support',
     backendKey: 'anxiety-support',
@@ -112,15 +96,15 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     backendKey: 'depression-support',
     name: 'Depression Support',
     shortName: 'Depression',
-    description: 'Uplifting music to support mood enhancement and emotional wellbeing',
+    description: 'Comprehensive mood support combining calming, uplifting, and restorative music for emotional wellbeing',
     icon: Shield,
     artwork: meditationCard,
     color: 'indigo',
     gradient: 'from-indigo-500 to-purple-500',
-    bpmRange: { min: 30, max: 60, optimal: 45 },
-    vadProfile: { valence: 0.7, arousal: 0.1, dominance: 0.5 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'Chopin'],
-    synonyms: ['depression', 'mood', 'emotional-support', 'wellbeing', 'uplifting', 'healing']
+    bpmRange: { min: 30, max: 80, optimal: 50 },
+    vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.4 },
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus'],
+    synonyms: ['depression', 'mood', 'emotional-support', 'wellbeing', 'uplifting', 'healing', 'stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost', 'nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
   },
   {
     id: 'pain-support',
@@ -153,22 +137,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
     musicBuckets: ['ENERGYBOOST', 'pop', 'HIIT', 'reggaeton'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
-  },
-  {
-    id: 'non-sleep-deep-rest',
-    slug: 'non-sleep-deep-rest',
-    backendKey: 'non-sleep-deep-rest', 
-    name: 'Non-Sleep Deep Rest',
-    shortName: 'Deep Rest',
-    description: 'Restorative music for deep rest and recovery without sleep',
-    icon: Flower,
-    artwork: meditationCard,
-    color: 'purple',
-    gradient: 'from-purple-500 to-indigo-500',
-    bpmRange: { min: 30, max: 55, optimal: 40 },
-    vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.3 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'],
-    synonyms: ['nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
   }
 ];
 
@@ -205,8 +173,8 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
   return acc;
 }, {} as Record<string, TherapeuticGoal>);
 
-// Legacy type for backwards compatibility - updated to remove mood-boost
-export type GoalSlug = 'calm-mood-boost' | 'anxiety-support' | 'focus-enhancement' | 'depression-support' | 'pain-support' | 'energy-boost' | 'non-sleep-deep-rest';
+// Legacy type for backwards compatibility - updated to combine goals
+export type GoalSlug = 'anxiety-support' | 'focus-enhancement' | 'depression-support' | 'pain-support' | 'energy-boost';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
