@@ -84,20 +84,20 @@ const TherapeuticGoalsPage = () => {
     // Direct navigation for specific categories to avoid wrong genre selection
     if (categoryId === 'chill-samba') {
       console.log('🎵 Navigating directly to chill samba music');
-      navigate('/genre/calm-mood-boost/samba');
+      navigate('/genre/mood-boost/samba');
       return;
     }
     
     
     if (categoryId === 'chill-tropical-house') {
       console.log('🎵 Navigating directly to chill tropical house music');
-      navigate('/genre/calm-mood-boost/chill-tropical-house');
+      navigate('/genre/mood-boost/chill-tropical-house');
       return;
     }
     
     if (categoryId === 'americana-jam-band') {
       console.log('🎵 Navigating directly to americana & jam band music');
-      navigate('/genre/calm-mood-boost/americana-jam-band');
+      navigate('/genre/mood-boost/americana-jam-band');
       return;
     }
     
@@ -107,10 +107,10 @@ const TherapeuticGoalsPage = () => {
       'nocturnes': 'focus-enhancement', 
       'chill-piano': 'focus-enhancement',
       'non-sleep-deep-rest': 'depression-support',
-      'chill-tropical-house': 'calm-mood-boost',
-      'social-time': 'calm-mood-boost',
-      'chill-folk-bluegrass': 'calm-mood-boost',
-      'americana-jam-band': 'calm-mood-boost',
+      'chill-tropical-house': 'mood-boost',
+      'social-time': 'mood-boost',
+      'chill-folk-bluegrass': 'mood-boost',
+      'americana-jam-band': 'mood-boost',
     };
     
     const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
