@@ -19,19 +19,14 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated to save favorites' };
       }
 
-      // Ensure track_id is stored as bigint (number)
-      const trackId = typeof track.id === 'string' ? parseInt(track.id, 10) : track.id;
-      
-      if (isNaN(trackId)) {
-        console.error('Invalid track ID:', track.id);
-        return { success: false, error: 'Invalid track ID' };
-      }
+      // Generate a consistent numeric ID from the string track ID
+      const trackIdHash = this.generateTrackHash(track.id);
 
       const { error } = await supabase
         .from('favorites')
         .insert({
           user_id: user.id,
-          track_id: trackId
+          track_id: trackIdHash
         });
 
       if (error) {
@@ -54,19 +49,14 @@ export class UserFavoritesService {
         return { success: false, error: 'User must be authenticated' };
       }
 
-      // Ensure track_id is converted to number for comparison
-      const numericTrackId = typeof trackId === 'string' ? parseInt(trackId, 10) : trackId;
-      
-      if (isNaN(numericTrackId)) {
-        console.error('Invalid track ID for removal:', trackId);
-        return { success: false, error: 'Invalid track ID' };
-      }
+      // Generate consistent hash for track ID lookup
+      const trackIdHash = this.generateTrackHash(trackId);
 
       const { error } = await supabase
         .from('favorites')
         .delete()
         .eq('user_id', user.id)
-        .eq('track_id', numericTrackId);
+        .eq('track_id', trackIdHash);
 
       if (error) {
         console.error('Error removing favorite:', error);
@@ -119,24 +109,33 @@ export class UserFavoritesService {
         return false;
       }
 
-      // Ensure track_id is converted to number for comparison
-      const numericTrackId = typeof trackId === 'string' ? parseInt(trackId, 10) : trackId;
-      
-      if (isNaN(numericTrackId)) {
-        return false;
-      }
+      // Generate consistent hash for track ID lookup
+      const trackIdHash = this.generateTrackHash(trackId);
 
       const { data, error } = await supabase
         .from('favorites')
         .select('id')
         .eq('user_id', user.id)
-        .eq('track_id', numericTrackId)
+        .eq('track_id', trackIdHash)
         .maybeSingle();
 
       return !error && !!data;
     } catch (error) {
       return false;
     }
+  }
+
+  /**
+   * Generate a consistent numeric hash from string track ID
+   */
+  private static generateTrackHash(trackId: string): number {
+    let hash = 0;
+    for (let i = 0; i < trackId.length; i++) {
+      const char = trackId.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash);
   }
 
   private static async getLocalFavorites(): Promise<UserFavorite[]> {

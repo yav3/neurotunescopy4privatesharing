@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { Analytics } from '@/utils/analytics';
 
 // Therapeutic artwork selection (same as TrackCard)
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
@@ -116,17 +117,45 @@ export default function FullPlayer() {
     
     try {
       if (isCurrentlyFavorited) {
-        await removeFavorite(track.id);
-        toast({
-          title: "Removed from favorites",
-          description: track.title,
-        });
+        const result = await removeFavorite(track.id);
+        if (result.success) {
+          toast({
+            title: "Removed from favorites",
+            description: track.title,
+          });
+          // Track analytics
+          Analytics.trackUserAction('track_unfavorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast({
+            title: "Error removing favorite",
+            description: result.error,
+            variant: "destructive"
+          });
+        }
       } else {
-        await addFavorite(track);
-        toast({
-          title: "Added to favorites",
-          description: track.title,
-        });
+        const result = await addFavorite(track);
+        if (result.success) {
+          toast({
+            title: "Added to favorites",
+            description: track.title,
+          });
+          // Track analytics
+          Analytics.trackUserAction('track_favorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast({
+            title: "Error adding favorite",
+            description: result.error,
+            variant: "destructive"
+          });
+        }
       }
     } finally {
       setIsFavoriteLoading(false);

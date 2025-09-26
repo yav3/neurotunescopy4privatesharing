@@ -12,6 +12,8 @@ import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { blockTrack } from '@/services/blockedTracks';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { Analytics } from '@/utils/analytics';
+import { toast } from 'sonner';
 
 interface MusicPlayerProps {
   open: boolean;
@@ -33,15 +35,35 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
 
   const handleFavorite = async () => {
     if (!track) return;
-    
+
     setIsFavoriteLoading(true);
     const isCurrentlyFavorited = isFavorite(track.id);
-    
+
     try {
       if (isCurrentlyFavorited) {
-        await removeFavorite(track.id);
+        const result = await removeFavorite(track.id);
+        if (result.success) {
+          toast.success(`Removed "${track.title}" from favorites`);
+          Analytics.trackUserAction('track_unfavorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast.error(result.error || 'Failed to remove favorite');
+        }
       } else {
-        await addFavorite(track);
+        const result = await addFavorite(track);
+        if (result.success) {
+          toast.success(`Added "${track.title}" to favorites`);
+          Analytics.trackUserAction('track_favorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast.error(result.error || 'Failed to add favorite');
+        }
       }
     } finally {
       setIsFavoriteLoading(false);
@@ -53,8 +75,14 @@ export const MusicPlayer = ({ open, onOpenChange }: MusicPlayerProps) => {
     
     const success = await blockTrack(track.id, track.title);
     if (success) {
-      // Skip to next track after blocking
-      await next();
+      // Track analytics for block
+      Analytics.trackUserAction('track_blocked', {
+        track_id: track.id,
+        track_title: track.title,
+        goal: track.goal || 'unknown'
+      });
+      
+      next();
     }
   };
 

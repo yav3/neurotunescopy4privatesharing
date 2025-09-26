@@ -20,18 +20,15 @@ export const blockTrack = async (trackId: string, trackTitle?: string): Promise<
       return false;
     }
 
-    // Convert trackId to hash since track IDs are strings but DB expects numbers
-    const trackIdHash = trackId.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
+    // Convert trackId to consistent hash
+    const trackIdHash = createTrackHash(trackId);
 
     // Check if already blocked
     const { data: existing } = await supabase
       .from('blocked_tracks')
       .select('id')
       .eq('user_id', user.id)
-      .eq('track_id', Math.abs(trackIdHash))
+        .eq('track_id', trackIdHash)
       .single();
 
     if (existing) {
@@ -44,7 +41,7 @@ export const blockTrack = async (trackId: string, trackTitle?: string): Promise<
       .from('blocked_tracks')
       .insert({
         user_id: user.id,
-        track_id: Math.abs(trackIdHash),
+        track_id: trackIdHash,
         blocked_at: new Date().toISOString()
       });
 
@@ -75,17 +72,14 @@ export const unblockTrack = async (trackId: string, trackTitle?: string): Promis
       return false;
     }
 
-    // Convert trackId to hash
-    const trackIdHash = trackId.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
+    // Convert trackId to consistent hash
+    const trackIdHash = createTrackHash(trackId);
 
     const { error } = await supabase
       .from('blocked_tracks')
       .delete()
       .eq('user_id', user.id)
-      .eq('track_id', Math.abs(trackIdHash));
+      .eq('track_id', trackIdHash);
 
     if (error) {
       console.error('Error unblocking track:', error);
@@ -141,17 +135,14 @@ export const isTrackBlocked = async (trackId: string): Promise<boolean> => {
       return false;
     }
 
-    // Convert trackId to hash
-    const trackIdHash = trackId.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
+    // Convert trackId to consistent hash
+    const trackIdHash = createTrackHash(trackId);
 
     const { data, error } = await supabase
       .from('blocked_tracks')
       .select('id')
       .eq('user_id', user.id)
-      .eq('track_id', Math.abs(trackIdHash))
+      .eq('track_id', trackIdHash)
       .single();
 
     return !error && !!data;
@@ -164,10 +155,12 @@ export const isTrackBlocked = async (trackId: string): Promise<boolean> => {
  * Create a hash from track ID for consistent blocking
  */
 const createTrackHash = (trackId: string): number => {
-  const hash = trackId.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a;
-  }, 0);
+  let hash = 0;
+  for (let i = 0; i < trackId.length; i++) {
+    const char = trackId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
   return Math.abs(hash);
 };
 
