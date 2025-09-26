@@ -57,6 +57,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Refined classical crossover music for enhanced concentration',
         buckets: ['classicalfocus'],
         image: focusCrossoverClassicalLandscape
+      },
+      {
+        id: 'tropical-house-focus',
+        name: 'Tropical House for Focus',
+        description: 'Uplifting tropical house rhythms for enhanced focus and concentration',
+        buckets: ['WorldHouseFocus'],
+        image: oceanWaveClear
       }
     ],
     'anxiety-support': [
