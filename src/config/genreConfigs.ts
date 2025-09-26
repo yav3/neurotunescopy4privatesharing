@@ -189,7 +189,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'classical-meditation',
-        name: 'Classical Meditation',
+        name: 'Meditative Classical Crossover',
         description: 'Peaceful classical music for mindfulness and emotional healing',
         buckets: ['Chopin'],
         image: focusPianoCherryBlossoms
