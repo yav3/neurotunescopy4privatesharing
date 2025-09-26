@@ -209,7 +209,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: cardioMountainWildflowers
       }
     ],
-    'meditation-support': [
+    'depression-support': [
       {
         id: 'zen-new-age',
         name: 'New Age & World',
