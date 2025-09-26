@@ -45,13 +45,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
   const genreConfigs: Record<string, GenreConfig[]> = {
     'focus-enhancement': [
       {
-        id: 'crossover-classical',
-        name: 'Crossover Classical',
-        description: 'Modern classical compositions for concentration',
-        buckets: ['classicalfocus'],
-        image: focusCrossoverClassicalLandscape
-      },
-      {
         id: 'new-age',
         name: 'New Age & World Focus',
         description: 'Ethereal soundscapes for enhanced focus',
