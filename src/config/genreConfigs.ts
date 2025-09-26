@@ -50,6 +50,13 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
+      },
+      {
+        id: 'classical-crossover-focus',
+        name: 'Classical Crossover for Focus',
+        description: 'Refined classical crossover music for enhanced concentration',
+        buckets: ['classicalfocus'],
+        image: focusCrossoverClassicalLandscape
       }
     ],
     'anxiety-support': [
