@@ -5,9 +5,10 @@ import { serviceSupabase } from '@/integrations/supabase/service-client';
 export const getAlbumArtworkUrl = (filename: string): string => {
   try {
     const { data } = serviceSupabase.storage.from('albumart').getPublicUrl(filename);
+    console.log('🖼️ Generated artwork URL for', filename, ':', data.publicUrl);
     return data.publicUrl;
   } catch (error) {
-    console.warn('Failed to generate artwork URL for:', filename);
+    console.warn('❌ Failed to generate artwork URL for:', filename, error);
     return '/placeholder.svg'; // Fallback to placeholder
   }
 };
