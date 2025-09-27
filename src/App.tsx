@@ -42,6 +42,7 @@ import { MagicLinksPage } from "./pages/admin/MagicLinks";
 import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
 import Users from "./pages/admin/Users";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -129,6 +130,7 @@ const AppContent = () => {
         <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
         <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
         <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
+        <Route path="/faq" element={<AdvancedAuthGuard><FAQ /></AdvancedAuthGuard>} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
