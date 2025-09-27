@@ -18,6 +18,7 @@ import { LandingPage } from "@/components/LandingPage";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { AdvancedAuthGuard } from "@/components/security/AdvancedAuthGuard";
 import { useAudioStore } from "@/stores";
+import { GlobalSessionTracker } from "@/components/GlobalSessionTracker";
 import { AccessTrackingProvider } from "@/components/analytics/AccessTrackingProvider";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
@@ -77,6 +78,7 @@ const App = () => {
       <TooltipProvider>
         <ErrorBoundary>
           <AccessTrackingProvider>
+            <GlobalSessionTracker />
             <Toaster />
             <Sonner />
             <AppContent />
