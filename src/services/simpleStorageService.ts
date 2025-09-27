@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { serviceSupabase } from '@/integrations/supabase/service-client';
 import { Track, cleanTitle } from '@/types/simpleTrack';
 import { expandBucketsWithFallbacks, isBucketEmpty } from '@/utils/bucketFallbacks';
 import { storageRequestManager } from '@/services/storageRequestManager';
@@ -133,8 +134,8 @@ export class SimpleStorageService {
 
         // Convert to Track objects - ALL from bucket root
         for (const file of audioFiles) {
-          // Use Supabase client to get properly encoded public URL
-          const { data } = supabase.storage.from(bucketName).getPublicUrl(file.name);
+          // Use service client for elevated permissions to access all buckets
+          const { data } = serviceSupabase.storage.from(bucketName).getPublicUrl(file.name);
           const publicUrl = data.publicUrl;
 
           // Generate deterministic ID to prevent duplicates and race conditions

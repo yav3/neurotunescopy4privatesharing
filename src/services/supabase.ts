@@ -73,15 +73,23 @@ export class SupabaseService {
     genre?: string
     limit?: number
     offset?: number
+    buckets?: string[]  // Add support for multiple buckets
   } = {}): Promise<any[]> {
     try {
     let query = supabase
       .from('tracks')
       .select('*')
-      .eq('storage_bucket', 'audio')
       .not('camelot', 'is', null)
       .eq('audio_status', 'working')
       .order('created_at', { ascending: false })
+
+      // Support multiple buckets or default to 'audio'
+      const targetBuckets = options?.buckets || ['audio'];
+      if (targetBuckets.length === 1) {
+        query = query.eq('storage_bucket', targetBuckets[0]);
+      } else {
+        query = query.in('storage_bucket', targetBuckets);
+      }
 
       if (options?.limit) {
         query = query.limit(options.limit)
@@ -171,7 +179,22 @@ export class SupabaseService {
       filterOptions = categoryMap[category] || {}
       console.log('Using filter options:', filterOptions);
       
-      let tracks = await this.fetchTracks({ ...filterOptions, limit: 10 })
+      // Pass buckets to fetchTracks if available from genre config  
+      let fetchOptions = { ...filterOptions, limit: 10 };
+      
+      // Try to get buckets for this category
+      try {
+        const { getBucketsForGoal } = await import('@/config/therapeuticGoals');
+        const buckets = getBucketsForGoal(category);
+        if (buckets && buckets.length > 0) {
+          fetchOptions = { ...fetchOptions, buckets } as any;
+          console.log('Using buckets for category:', buckets);
+        }
+      } catch (error) {
+        console.log('Could not get buckets for category, using default');
+      }
+      
+      let tracks = await this.fetchTracks(fetchOptions)
       
       // If no tracks found with specific genre, get any tracks for testing
       if (tracks.length === 0) {
