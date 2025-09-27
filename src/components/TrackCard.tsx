@@ -5,6 +5,7 @@ import type { Track } from '@/types'
 import { SmartTitle } from '@/components/ui/SmartTitle'
 import { ArtworkService } from '@/services/artworkService'
 import { useAudioStore } from '@/stores'
+import { getAlbumArtworkUrl, handleImageError } from '@/utils/imageUtils'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
   therapeutic_applications?: Array<{
@@ -47,41 +48,33 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Expanded album art collection with beautiful nature imagery
+  // Album art collection using actual files from albumart bucket
   const albumArtwork = [
-    '/lovable-uploads/d37bdb73-8ea1-4150-a35d-e08dbd929ff2.png', // Pink cosmos flowers in field
-    '/lovable-uploads/4d20a0a1-857e-4d94-b1cb-6a9d68ae6910.png', // Field with butterflies and yellow flowers
-    '/lovable-uploads/2526e614-65b3-4f38-8875-49396cbf8334.png', // Colorful daisies (yellow, orange, pink)
-    '/lovable-uploads/d1dc4c39-c585-469c-b524-10ff6f1e6818.png', // Tropical beach with palm trees
-    '/lovable-uploads/c17d43a8-c471-41ec-95d5-1131804b5181.png', // Mountain landscape with river
-    '/lovable-uploads/71121ed8-7b8f-4d60-97d4-282e33ca08b2.png', // Yellow flowers under starry sky
-    '/lovable-uploads/19a2f398-e797-4f64-b18b-ac2e3b736d30.png', // Vintage piano in flowering field
-    '/lovable-uploads/5734dabc-389d-4cdc-9163-5494ea1da3ae.png', // Garden path through flower meadow
-    '/lovable-uploads/19ca5ad8-bc5b-45c7-b13f-f3182585ae23.png', // Garden path with sunlight
-    '/lovable-uploads/d8b56c80-98c4-4a08-be13-deb891d9ecee.png', // Guitars in meadow with flowers
-    '/lovable-uploads/9e1bc0cb-0051-4860-86be-69529a277181.png', // Field of pink/white flowers
-    '/lovable-uploads/0f6c961c-91b2-4686-b3fe-3a6064af4bc7.png', // Field with butterflies and wildflowers
-    '/lovable-uploads/dbaf206d-bc29-4f4c-aeed-34b611a6dc64.png', // Colorful flowers (orange, yellow, pink)
-    '/lovable-uploads/e9f49ad3-57da-487a-9db7-f3dafba05e56.png', // Colorful electric guitar
-    '/lovable-uploads/3c8ddd8c-7d5a-4d6a-a985-e6509d4fdcbf.png', // Starry/cosmic sky scene
-    '/lovable-uploads/fb52f9d9-56f9-4dc4-81c4-f06dd182984b.png', // Forest scene with lights and guitar
-    '/lovable-uploads/folk-instruments-meadow.png',
-    '/lovable-uploads/classical-meadow-ensemble.png', 
-    '/lovable-uploads/string-quartet-studio.png',
-    '/lovable-uploads/european-classical-terrace.png',
-    '/lovable-uploads/acoustic-sunset-field.png',
-    '/lovable-uploads/delta-moonlit-lake.png',
-    '/lovable-uploads/theta-misty-path.png',
-    '/lovable-uploads/alpha-mountain-lake.png',
-    '/lovable-uploads/beta-waterfall.png',
-    '/lovable-uploads/gamma-sunbeam-forest.png',
-    '/lovable-uploads/262b2035-e633-446a-a217-97d2ec10d8a1.png',
-    '/lovable-uploads/4e6f957d-a660-4a2e-9019-364f45cebb99.png',
-    '/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png',
-    '/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png',
-    '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-    '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-    '/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png'
+    'Barcelona Part Three Tropical House  (1).mp3',
+    'Tropical House Focus 2.mp3',
+    'Oud and strings tropcial house focus 5.mp3',
+    'Tropical House Focus 2 (2).mp3',
+    'Oud Tropical House 2 (1).mp3',
+    'Tropical House Focus 2 (3).mp3',
+    'Tropical House Focus (Cover) (2).mp3',
+    'Tropical House Focus (4).mp3',
+    'Oud Classical World House Focus.mp3',
+    'Barcelona Tropical House (1).mp3',
+    'Tropical House Focus (1).mp3',
+    'Meditations on Intonation .mp3',
+    'Barcelona Part Two Tropical House  (1).mp3',
+    'Oud and mandolin tropical house focus.mp3',
+    'Malaga Tropical House Focus 2.mp3',
+    'Malaga Tropical House Focus (1).mp3',
+    'Malaga Tropical House Focus.mp3',
+    'Oud and mandolin tropical house focus 3.mp3',
+    'Malaga Tropical House (2).mp3',
+    'Malaga Tropical House.mp3',
+    'Oud house.mp3',
+    'Tropical House Focus (Cover) (1).mp3',
+    'Oud Tropical House .mp3',
+    'Barcelona Part Three Tropical House .mp3',
+    'Malaga Tropical House (1).mp3'
   ]
   
   // Enhanced seed generation for better distribution
@@ -114,7 +107,7 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
   }
   
   return {
-    url: albumArtwork[artworkIndex],
+    url: getAlbumArtworkUrl(albumArtwork[artworkIndex]),
     position: 'object-cover',
     gradient: gradientMap[frequencyBand as keyof typeof gradientMap] || gradientMap.alpha
   }
@@ -167,7 +160,10 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
               alt={`${frequencyBand} band therapeutic artwork`}
               className="w-full h-full object-cover"
               onLoad={() => setIsImageLoading(false)}
-              onError={() => setIsImageLoading(false)}
+              onError={(e) => {
+                setIsImageLoading(false);
+                handleImageError(e);
+              }}
             />
             {/* Therapeutic Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />

@@ -1,4 +1,16 @@
 // Image utility functions for handling responsive images and fallbacks
+import { serviceSupabase } from '@/integrations/supabase/service-client';
+
+// Generate artwork URL from albumart bucket using service client
+export const getAlbumArtworkUrl = (filename: string): string => {
+  try {
+    const { data } = serviceSupabase.storage.from('albumart').getPublicUrl(filename);
+    return data.publicUrl;
+  } catch (error) {
+    console.warn('Failed to generate artwork URL for:', filename);
+    return '/placeholder.svg'; // Fallback to placeholder
+  }
+};
 
 export const handleImageError = (
   event: React.SyntheticEvent<HTMLImageElement, Event>

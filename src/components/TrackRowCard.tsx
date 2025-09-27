@@ -5,7 +5,7 @@ import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SmartTitleParser } from '@/utils/smartTitleParser';
 import { ArtworkService } from '@/services/artworkService';
-import { handleImageError } from '@/utils/imageUtils';
+import { handleImageError, getAlbumArtworkUrl } from '@/utils/imageUtils';
 
 interface TrackRowCardProps {
   track: {
@@ -21,32 +21,33 @@ interface TrackRowCardProps {
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Expanded album art collection with beautiful nature imagery
+  // Album art collection using actual files from albumart bucket
   const albumArtwork = [
-    '/lovable-uploads/acoustic-sunset-field.png',
-    '/lovable-uploads/classical-meadow-ensemble.png', 
-    '/lovable-uploads/european-classical-terrace.png',
-    '/lovable-uploads/folk-instruments-meadow.png',
-    '/lovable-uploads/string-quartet-studio.png',
-    '/lovable-uploads/delta-moonlit-lake.png',
-    '/lovable-uploads/theta-misty-path.png',
-    '/lovable-uploads/alpha-mountain-lake.png',
-    '/lovable-uploads/beta-waterfall.png',
-    '/lovable-uploads/gamma-sunbeam-forest.png',
-    '/lovable-uploads/262b2035-e633-446a-a217-97d2ec10d8a1.png',
-    '/lovable-uploads/4e6f957d-a660-4a2e-9019-364f45cebb99.png',
-    '/lovable-uploads/6fa80e74-6c84-4add-bc17-db4cb527a0a2.png',
-    '/lovable-uploads/703143dc-8c8a-499e-bd2c-8e526bbe62d5.png',
-    '/lovable-uploads/81d914ac-e118-4490-b539-e4dfa81be820.png',
-    '/lovable-uploads/bd9f321d-961d-4c98-b4ba-32de014d6a9b.png',
-    '/lovable-uploads/f252233e-2545-4bdc-ae4f-7aee7b58db7f.png',
-    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
-    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
-    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
-    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
-    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
-    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
-    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
+    'Barcelona Part Three Tropical House  (1).mp3',
+    'Tropical House Focus 2.mp3',
+    'Oud and strings tropcial house focus 5.mp3',
+    'Tropical House Focus 2 (2).mp3',
+    'Oud Tropical House 2 (1).mp3',
+    'Tropical House Focus 2 (3).mp3',
+    'Tropical House Focus (Cover) (2).mp3',
+    'Tropical House Focus (4).mp3',
+    'Oud Classical World House Focus.mp3',
+    'Barcelona Tropical House (1).mp3',
+    'Tropical House Focus (1).mp3',
+    'Meditations on Intonation .mp3',
+    'Barcelona Part Two Tropical House  (1).mp3',
+    'Oud and mandolin tropical house focus.mp3',
+    'Malaga Tropical House Focus 2.mp3',
+    'Malaga Tropical House Focus (1).mp3',
+    'Malaga Tropical House Focus.mp3',
+    'Oud and mandolin tropical house focus 3.mp3',
+    'Malaga Tropical House (2).mp3',
+    'Malaga Tropical House.mp3',
+    'Oud house.mp3',
+    'Tropical House Focus (Cover) (1).mp3',
+    'Oud Tropical House .mp3',
+    'Barcelona Part Three Tropical House .mp3',
+    'Malaga Tropical House (1).mp3'
   ];
   
   // Simple but effective unique selection based on track ID
@@ -71,7 +72,7 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
   const gradient = gradients[frequencyBand as keyof typeof gradients] || gradients.default;
   
   return {
-    url: albumArtwork[artworkIndex],
+    url: getAlbumArtworkUrl(albumArtwork[artworkIndex]),
     position: 'center',
     gradient
   };
@@ -113,9 +114,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
         }}
         onError={(e) => {
           console.warn('❌ Failed to load track card artwork:', artwork.url);
-          // Fallback to a solid gradient when image fails
-          e.currentTarget.style.backgroundImage = 'none';
-          e.currentTarget.style.background = 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))';
+          handleImageError(e as any);
         }}
       />
       
