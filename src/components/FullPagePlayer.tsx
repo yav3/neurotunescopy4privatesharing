@@ -8,6 +8,7 @@ import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
+import { blockTrack } from "@/services/blockedTracks";
 
 // Import artwork for different therapeutic goals
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
@@ -129,11 +130,23 @@ export const FullPagePlayer = () => {
   };
 
   const handleThumbsDown = async () => {
-    toast({
-      title: "Track disliked",
-      description: "Skipping to next track",
-    });
-    await next();
+    if (!track) return;
+    
+    try {
+      await blockTrack(track.id, track.title);
+      toast({
+        title: "Track disliked",
+        description: "Blocked and skipping to next track",
+      });
+      await next();
+    } catch (error) {
+      console.error('Failed to block track:', error);
+      toast({
+        title: "Error",
+        description: "Failed to block track, but skipping anyway",
+      });
+      await next();
+    }
   };
 
   const handleLightningMode = () => {

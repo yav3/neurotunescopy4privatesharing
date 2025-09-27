@@ -7,6 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { formatTime, cn } from '@/lib/utils';
 import { useAudioStore } from '@/stores';
 import { toast } from '@/hooks/use-toast';
+import { blockTrack } from '@/services/blockedTracks';
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
@@ -165,11 +166,23 @@ export const NowPlaying: React.FC = () => {
   };
 
   const handleThumbsDown = async () => {
-    toast({
-      title: "Track disliked",
-      description: "Skipping to next track",
-    });
-    await next();
+    if (!track) return;
+    
+    try {
+      await blockTrack(track.id, track.title);
+      toast({
+        title: "Track disliked",
+        description: "Blocked and skipping to next track",
+      });
+      await next();
+    } catch (error) {
+      console.error('Failed to block track:', error);
+      toast({
+        title: "Error",
+        description: "Failed to block track, but skipping anyway",
+      });
+      await next();
+    }
   };
 
   const handleSpatialAudio = () => {
