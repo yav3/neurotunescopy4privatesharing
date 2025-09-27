@@ -3277,6 +3277,15 @@ export type Database = {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
       }
+      analyze_session_coverage: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          analysis_type: string
+          count_value: number
+          details: string
+          percentage: number
+        }[]
+      }
       analyze_storage_columns: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -3341,6 +3350,17 @@ export type Database = {
           suggested_bucket: string
           title: string
           track_id: string
+        }[]
+      }
+      find_users_without_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          days_since_signup: number
+          email: string
+          has_profile: boolean
+          last_sign_in_at: string
+          user_id: string
         }[]
       }
       generate_magic_link_token: {
@@ -3492,6 +3512,16 @@ export type Database = {
       safe_key: {
         Args: { raw: string }
         Returns: string
+      }
+      session_data_quality_check: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          check_type: string
+          description: string
+          issue_count: number
+          percentage: number
+          total_sessions: number
+        }[]
       }
       update_session_activity: {
         Args: { session_id: string }
