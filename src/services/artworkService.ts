@@ -110,12 +110,21 @@ export class ArtworkService {
 
   // Get therapeutic artwork based on frequency band (consistent algorithm)
   static getTherapeuticArtwork(frequencyBand: string, trackId: string): { url: string; gradient: string } {
+    console.log('🎨 ArtworkService.getTherapeuticArtwork called:', { frequencyBand, trackId });
+    
     const artworks = this.therapeuticArtwork[frequencyBand as keyof typeof this.therapeuticArtwork] 
       || this.therapeuticArtwork.default;
+    
+    console.log('🖼️ Available artworks for', frequencyBand, ':', artworks);
     
     // Consistent selection based on track ID
     const hash = Math.abs(trackId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
     const selectedFilename = artworks[hash % artworks.length];
+
+    console.log('🎯 Selected filename:', selectedFilename, 'for trackId:', trackId);
+
+    const url = getAlbumArtworkUrl(selectedFilename);
+    console.log('🔗 Final artwork URL:', url);
 
     // Consistent gradient based on frequency band
     const gradients = {
@@ -128,7 +137,7 @@ export class ArtworkService {
     };
 
     return {
-      url: getAlbumArtworkUrl(selectedFilename),
+      url,
       gradient: gradients[frequencyBand as keyof typeof gradients] || gradients.default
     };
   }

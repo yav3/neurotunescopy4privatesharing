@@ -106,10 +106,12 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   
   const primaryApp = track.therapeutic_applications?.[0]
   const frequencyBand = primaryApp?.frequency_band_primary || 'alpha'
-  const artwork = React.useMemo(() => 
-    ArtworkService.getTherapeuticArtwork(frequencyBand, track.id), 
-    [frequencyBand, track.id]
-  )
+  const artwork = React.useMemo(() => {
+    console.log('🎨 Getting artwork for track:', track.id, 'frequency:', frequencyBand);
+    const result = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+    console.log('🖼️ Artwork result:', result);
+    return result;
+  }, [frequencyBand, track.id])
 
   const handlePlayClick = async () => {
     console.log('▶️ TrackCard play button clicked for track:', track.title, track.id);
