@@ -52,21 +52,13 @@ const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: s
   const albumArtwork = [
     '0376232F-FE92-48B6-A567-7C41465B4FC9.jpeg',
     '0567F220-7680-45A5-8A8F-2FBECEB7897A.png',
+    '0567F220-7680-45A5-8A8F-2FBECEB7897A (1).png',
     '060CF7F4-0364-413A-B67C-918425A65E00.png',
     '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png',
+    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C (1).png',
     '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
     '20250923_1807_Raindrops on Flowers_remix_01k5w9sreqfr09xb2z6weqharz.png',
-    '20250923_1807_Raindrops on Flowers_remix_01k5w9sreteg2926newecbemk2.png',
-    '23BBBDD8-DEFE-4E5E-ACE8-3AD7236A8DB4.png',
-    '2ACA42CF-B561-4B75-9791-6CBCFA027324.png',
-    '4908E73D-F244-481F-AF7D-07C2B940A896.png',
-    '4FAB6938-003B-495E-8F76-E023ECFE3FED.png',
-    '5117186C-B343-411F-B723-7D81AE9CFCFC.png',
-    '6B3C9F3D-1E42-4DCB-8842-6A839A0D1522.png',
-    '858E4960-5081-4611-B555-AC7A4E368D74.png',
-    '8881A6E9-7010-4BFB-8126-3B956FEABDBC.png',
-    '906DB39C-81D6-437B-A009-BEC981F73116.png',
-    '9578DACE-A5C2-43BF-BAA9-76FAF94C2E1F.png'
+    '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif'
   ]
   
   // Enhanced seed generation for better distribution
