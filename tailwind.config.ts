@@ -71,29 +71,29 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Brand colors - Premium Teal Spectrum (Locked)
+				// Brand colors - Premium Teal Spectrum (HSL format)
 				brand: {
-					900: '#0A2C2D', // Deep blue-green navy
-					800: '#0E3D40',
-					700: '#135455',
-					600: '#176C6F',
-					500: '#1C8587', // Primary deep
-					400: '#26A5A6',
-					300: '#3BC2C1',
-					200: '#79E2DF',
-					100: '#C2F5F3', // Light aqua secondary
-					50: '#E6FCFB'
+					900: 'hsl(182, 57%, 11%)', // Deep blue-green navy
+					800: 'hsl(182, 64%, 15%)',
+					700: 'hsl(182, 63%, 20%)',
+					600: 'hsl(182, 61%, 26%)',
+					500: 'hsl(182, 63%, 32%)', // Primary deep
+					400: 'hsl(179, 58%, 50%)',
+					300: 'hsl(179, 58%, 60%)',
+					200: 'hsl(178, 56%, 75%)',
+					100: 'hsl(176, 75%, 86%)', // Light aqua secondary
+					50: 'hsl(173, 75%, 95%)'
 				},
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',
 				'music-sleep': 'hsl(var(--music-sleep))',
 				'music-energy': 'hsl(var(--music-energy))',
 				'teal': {
-					'50': '#E6FCFB',
-					'100': '#C2F5F3',
-					'500': '#1C8587',
-					'600': '#176C6F',
-					'700': '#135455'
+					'50': 'hsl(173, 75%, 95%)',
+					'100': 'hsl(176, 75%, 86%)',
+					'500': 'hsl(182, 63%, 32%)',
+					'600': 'hsl(182, 61%, 26%)',
+					'700': 'hsl(182, 63%, 20%)'
 				}
 			},
 			backgroundImage: {

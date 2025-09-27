@@ -24,17 +24,19 @@ export const MinimizedPlayer = () => {
   } = useAudioStore();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
-  // Centralized artwork using ArtworkService to prevent race conditions
-  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
-  
-  // Remove unused double-tap state since we're using simple click now
-  // const [lastTapTime, setLastTapTime] = useState<number>(0);
-  // const [tapCount, setTapCount] = useState<number>(0);
+  // Generate frequency band from track properties for artwork selection  
+  const getFrequencyBand = (track: any): string => {
+    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+    const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return bands[hash % bands.length];
+  };
 
-  useEffect(() => {
-    if (track) {
-      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
-    }
+  // Use therapeutic artwork system (same as FullPagePlayer and TrackCard)
+  const artwork = React.useMemo(() => {
+    if (!track) return { url: '/src/assets/album-art-leaf-droplets.png', gradient: '' };
+    
+    const frequencyBand = getFrequencyBand(track);
+    return ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
   }, [track?.id]);
 
   // Get therapeutic goal display name
@@ -122,7 +124,7 @@ export const MinimizedPlayer = () => {
             {/* Album art */}
             <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
               <img
-                src={artworkSrc}
+                src={artwork.url}
                 alt="Playing"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -253,7 +255,7 @@ export const MinimizedPlayer = () => {
         {/* Album art with Glass Effect */}
         <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
           <img
-            src={artworkSrc}
+            src={artwork.url}
             alt={TitleFormatter.formatTrackTitle(track.title)}
             className="w-full h-full object-cover"
             loading="lazy"
