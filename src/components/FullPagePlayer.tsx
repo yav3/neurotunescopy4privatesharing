@@ -111,13 +111,22 @@ export const FullPagePlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Unified artwork using ArtworkService (same as MinimizedPlayer)
-  const [artworkSrc, setArtworkSrc] = useState<string>('/src/assets/album-art-leaf-droplets.png');
+  // Generate frequency band from track properties for artwork selection
+  const getFrequencyBand = (track: any): string => {
+    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+    const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return bands[hash % bands.length];
+  };
 
-  useEffect(() => {
-    if (track) {
-      ArtworkService.getTrackArtwork(track).then(setArtworkSrc);
-    }
+  // Use therapeutic artwork system (same as TrackCard)
+  const artwork = React.useMemo(() => {
+    if (!track) return { url: focusArtwork, gradient: '' };
+    
+    console.log('🎨 FullPagePlayer: Getting artwork for track:', track.id);
+    const frequencyBand = getFrequencyBand(track);
+    const result = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+    console.log('🖼️ FullPagePlayer: Artwork result:', result);
+    return result;
   }, [track?.id]);
 
   // Enhanced control handlers
@@ -223,7 +232,7 @@ export const FullPagePlayer = () => {
         {/* Album artwork with Glass Morphism - optimized size */}
         <div className="aspect-square relative mb-6 rounded-2xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg max-w-[240px] mx-auto">
           <img 
-            src={artworkSrc}
+            src={artwork.url}
             alt={TitleFormatter.formatTrackTitle(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
             className="w-full h-full object-cover"
             loading="lazy"
