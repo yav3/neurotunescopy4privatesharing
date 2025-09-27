@@ -21,33 +21,25 @@ interface TrackRowCardProps {
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Album art collection using actual files from albumart bucket
+  // Album art collection using actual image files from albumart bucket
   const albumArtwork = [
-    'Barcelona Part Three Tropical House  (1).mp3',
-    'Tropical House Focus 2.mp3',
-    'Oud and strings tropcial house focus 5.mp3',
-    'Tropical House Focus 2 (2).mp3',
-    'Oud Tropical House 2 (1).mp3',
-    'Tropical House Focus 2 (3).mp3',
-    'Tropical House Focus (Cover) (2).mp3',
-    'Tropical House Focus (4).mp3',
-    'Oud Classical World House Focus.mp3',
-    'Barcelona Tropical House (1).mp3',
-    'Tropical House Focus (1).mp3',
-    'Meditations on Intonation .mp3',
-    'Barcelona Part Two Tropical House  (1).mp3',
-    'Oud and mandolin tropical house focus.mp3',
-    'Malaga Tropical House Focus 2.mp3',
-    'Malaga Tropical House Focus (1).mp3',
-    'Malaga Tropical House Focus.mp3',
-    'Oud and mandolin tropical house focus 3.mp3',
-    'Malaga Tropical House (2).mp3',
-    'Malaga Tropical House.mp3',
-    'Oud house.mp3',
-    'Tropical House Focus (Cover) (1).mp3',
-    'Oud Tropical House .mp3',
-    'Barcelona Part Three Tropical House .mp3',
-    'Malaga Tropical House (1).mp3'
+    '0376232F-FE92-48B6-A567-7C41465B4FC9.jpeg',
+    '0567F220-7680-45A5-8A8F-2FBECEB7897A.png',
+    '060CF7F4-0364-413A-B67C-918425A65E00.png',
+    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png',
+    '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
+    '20250923_1807_Raindrops on Flowers_remix_01k5w9sreqfr09xb2z6weqharz.png',
+    '20250923_1807_Raindrops on Flowers_remix_01k5w9sreteg2926newecbemk2.png',
+    '23BBBDD8-DEFE-4E5E-ACE8-3AD7236A8DB4.png',
+    '2ACA42CF-B561-4B75-9791-6CBCFA027324.png',
+    '4908E73D-F244-481F-AF7D-07C2B940A896.png',
+    '4FAB6938-003B-495E-8F76-E023ECFE3FED.png',
+    '5117186C-B343-411F-B723-7D81AE9CFCFC.png',
+    '6B3C9F3D-1E42-4DCB-8842-6A839A0D1522.png',
+    '858E4960-5081-4611-B555-AC7A4E368D74.png',
+    '8881A6E9-7010-4BFB-8126-3B956FEABDBC.png',
+    '906DB39C-81D6-437B-A009-BEC981F73116.png',
+    '9578DACE-A5C2-43BF-BAA9-76FAF94C2E1F.png'
   ];
   
   // Simple but effective unique selection based on track ID
