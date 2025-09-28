@@ -133,7 +133,7 @@ export class EnhancedTrackSelectionService {
   }
   
   /**
-   * Create diverse selection with favorites mixed in
+   * Create diverse selection with strategic spacing to avoid back-to-back similar tracks
    */
   private static createDiverseSelection(
     tracks: EnhancedTrack[],
@@ -157,13 +157,142 @@ export class EnhancedTrackSelectionService {
       .sort(() => Math.random() - 0.5) // Randomize favorites
       .slice(0, favoriteCount);
     
-    // Combine and shuffle
-    const finalSelection = [...selectedNonFavorites, ...selectedFavorites]
-      .sort(() => Math.random() - 0.5);
+    // Combine tracks and strategically space them to avoid similar tracks back-to-back
+    const allTracks = [...selectedNonFavorites, ...selectedFavorites];
+    const spacedTracks = this.createOptimalSpacing(allTracks);
     
-    console.log(`🎵 Final selection: ${selectedNonFavorites.length} variety tracks + ${selectedFavorites.length} favorites`);
+    console.log(`🎵 Final selection: ${selectedNonFavorites.length} variety tracks + ${selectedFavorites.length} favorites with optimal spacing`);
     
-    return finalSelection;
+    return spacedTracks;
+  }
+
+  /**
+   * Create optimal spacing between similar tracks to avoid back-to-back remixes
+   */
+  private static createOptimalSpacing(tracks: Track[]): Track[] {
+    if (tracks.length <= 2) return tracks;
+
+    const result: Track[] = [];
+    const remaining = [...tracks];
+    
+    // Start with a random track
+    const firstIndex = Math.floor(Math.random() * remaining.length);
+    result.push(remaining.splice(firstIndex, 1)[0]);
+    
+    // For each subsequent position, find the track that's least similar to recent tracks
+    while (remaining.length > 0) {
+      let bestTrack: Track | null = null;
+      let bestIndex = -1;
+      let lowestSimilarity = Infinity;
+      
+      for (let i = 0; i < remaining.length; i++) {
+        const candidate = remaining[i];
+        
+        // Check similarity to last 3 tracks (or all if fewer)
+        const recentTracks = result.slice(-3);
+        let maxSimilarity = 0;
+        
+        for (const recentTrack of recentTracks) {
+          const similarity = this.calculateTrackSimilarity(candidate, recentTrack);
+          maxSimilarity = Math.max(maxSimilarity, similarity);
+        }
+        
+        // Add variety bonus based on position (encourage different types throughout)
+        const positionVariety = this.calculatePositionVariety(candidate, result);
+        const adjustedSimilarity = maxSimilarity - (positionVariety * 0.2);
+        
+        if (adjustedSimilarity < lowestSimilarity) {
+          lowestSimilarity = adjustedSimilarity;
+          bestTrack = candidate;
+          bestIndex = i;
+        }
+      }
+      
+      if (bestTrack && bestIndex >= 0) {
+        result.push(bestTrack);
+        remaining.splice(bestIndex, 1);
+      }
+    }
+    
+    console.log(`🎼 Applied optimal spacing to ${result.length} tracks`);
+    return result;
+  }
+
+  /**
+   * Calculate similarity between two tracks for spacing purposes
+   */
+  private static calculateTrackSimilarity(track1: Track, track2: Track): number {
+    let similarity = 0;
+    let factors = 0;
+
+    // Title similarity (catch remixes, edits, versions)
+    const title1Words = this.extractMeaningfulWords(track1.title);
+    const title2Words = this.extractMeaningfulWords(track2.title);
+    const intersection = title1Words.filter(word => title2Words.includes(word));
+    
+    if (title1Words.length > 0 && title2Words.length > 0) {
+      const titleSimilarity = intersection.length / Math.max(title1Words.length, title2Words.length);
+      similarity += titleSimilarity * 0.7; // High weight for title similarity
+      factors++;
+    }
+
+    // BPM similarity
+    if (track1.bpm && track2.bpm) {
+      const bpmDiff = Math.abs(track1.bpm - track2.bpm);
+      const bpmSimilarity = Math.max(0, 1 - (bpmDiff / 30)); // Similar if within 30 BPM
+      similarity += bpmSimilarity * 0.2;
+      factors++;
+    }
+
+    // Energy similarity
+    if (track1.energy_level && track2.energy_level) {
+      const energyDiff = Math.abs(track1.energy_level - track2.energy_level);
+      const energySimilarity = Math.max(0, 1 - (energyDiff / 4)); // Similar if within 4 energy levels
+      similarity += energySimilarity * 0.1;
+      factors++;
+    }
+
+    return factors > 0 ? similarity / factors : 0;
+  }
+
+  /**
+   * Calculate variety bonus based on track position and playlist diversity
+   */
+  private static calculatePositionVariety(candidate: Track, existingTracks: Track[]): number {
+    if (existingTracks.length === 0) return 0;
+
+    let varietyScore = 0;
+
+    // Energy level variety
+    const recentEnergies = existingTracks.slice(-5).map(t => t.energy_level).filter(Boolean);
+    if (candidate.energy_level && recentEnergies.length > 0) {
+      const avgRecentEnergy = recentEnergies.reduce((a, b) => a + b, 0) / recentEnergies.length;
+      const energyDiff = Math.abs(candidate.energy_level - avgRecentEnergy);
+      varietyScore += energyDiff / 10; // Normalize energy difference
+    }
+
+    // BPM variety
+    const recentBPMs = existingTracks.slice(-5).map(t => t.bpm).filter(Boolean);
+    if (candidate.bpm && recentBPMs.length > 0) {
+      const avgRecentBPM = recentBPMs.reduce((a, b) => a + b, 0) / recentBPMs.length;
+      const bpmDiff = Math.abs(candidate.bpm - avgRecentBPM);
+      varietyScore += bpmDiff / 50; // Normalize BPM difference
+    }
+
+    return Math.min(varietyScore, 1); // Cap at 1
+  }
+
+  /**
+   * Extract meaningful words from track title for similarity comparison
+   */
+  private static extractMeaningfulWords(title: string): string[] {
+    const commonWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'among', 'against', 'within', 'without', 'throughout', 'towards', 'upon', 'concerning']);
+    
+    return title
+      .toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2 && !commonWords.has(word));
   }
   
   /**
