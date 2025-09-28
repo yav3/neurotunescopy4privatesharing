@@ -1815,11 +1815,22 @@ export const useAudioStore = create<AudioState>((set, get) => {
         let { queue, index, lastGoal } = get();
         console.log('🎵 Next operation starting - current index:', index, 'queue length:', queue.length, 'lastGoal:', lastGoal);
         
-        for (let i = index + 1; i < queue.length; i++) {
+        // IMMEDIATE UI FEEDBACK - increment index right away for responsiveness
+        const nextIndex = index + 1;
+        if (nextIndex < queue.length) {
+          set({ index: nextIndex, currentTrack: queue[nextIndex], isLoading: true });
+          console.log('🎵 Immediate UI update - showing next track:', queue[nextIndex].title);
+        }
+        
+        // Then load the track in background
+        for (let i = nextIndex; i < queue.length; i++) {
           console.log('🎵 Trying next track at index', i, ':', queue[i].title);
           const success = await loadTrack(queue[i]);
           if (success) {
-            set({ index: i });
+            if (i !== nextIndex) {
+              // If we had to skip some tracks, update the index
+              set({ index: i });
+            }
             await get().play();
             console.log('🎵 Successfully skipped to track:', queue[i].title);
             // Reset flag immediately on success
