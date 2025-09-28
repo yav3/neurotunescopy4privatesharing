@@ -203,7 +203,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'new-age-stress',
-        name: 'New Age & World',
+        name: 'New Age & World for Agitation',
         description: 'Ethereal new age sounds for deep relaxation and emotional support',
         buckets: ['newageworldstressanxietyreduction'],
         image: newAgeLeafDewdrop
