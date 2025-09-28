@@ -143,7 +143,25 @@ let isNexting = false;
 let isPlaying = false;
 let isTransitioning = false; // Global transition lock
 let lastNextCall = 0;
-const MIN_NEXT_INTERVAL = 1000; // Minimum 1 second between next calls to prevent racing
+const MIN_NEXT_INTERVAL = 300; // Reduced to 300ms for better responsiveness
+
+// Recovery mechanism to reset stuck flags
+const resetTransitionFlags = () => {
+  if (isNexting || isTransitioning) {
+    console.log('🔧 Resetting stuck transition flags');
+    isNexting = false;
+    isTransitioning = false;
+  }
+};
+
+// Auto-reset stuck flags after 5 seconds
+setInterval(() => {
+  const now = Date.now();
+  if ((isNexting || isTransitioning) && (now - lastNextCall > 5000)) {
+    console.warn('🔧 Auto-resetting stuck transition flags after 5s timeout');
+    resetTransitionFlags();
+  }
+}, 1000);
 
 // Network hang protection  
 let currentAbort: AbortController | null = null;
@@ -1971,3 +1989,16 @@ export const playTrackNow = async (track: Track) => {
 // Export debug utilities for development
 export { debugPlayerState, fixPlayerState } from '@/utils/playerStateDebug';
 export { PlayerStateValidator } from '@/utils/playerStateValidator';
+
+// Export forward button fix for immediate debugging
+export const forceResetPlayerFlags = () => {
+  isNexting = false;
+  isTransitioning = false;
+  lastNextCall = 0;
+  console.log('🔧 Force reset all player flags - forward button should work now');
+};
+
+// Make available globally for debugging
+if (typeof window !== 'undefined') {
+  (window as any).forceResetPlayerFlags = forceResetPlayerFlags;
+}
