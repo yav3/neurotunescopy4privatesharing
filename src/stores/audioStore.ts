@@ -143,7 +143,7 @@ let isNexting = false;
 let isPlaying = false;
 let isTransitioning = false; // Global transition lock
 let lastNextCall = 0;
-const MIN_NEXT_INTERVAL = 300; // Reduced to 300ms for better responsiveness
+const MIN_NEXT_INTERVAL = 100; // Reduced for better responsiveness
 
 // Recovery mechanism to reset stuck flags
 const resetTransitionFlags = () => {
@@ -154,11 +154,11 @@ const resetTransitionFlags = () => {
   }
 };
 
-// Auto-reset stuck flags after 5 seconds
+// Auto-reset stuck flags after 3 seconds
 setInterval(() => {
   const now = Date.now();
-  if ((isNexting || isTransitioning) && (now - lastNextCall > 5000)) {
-    console.warn('🔧 Auto-resetting stuck transition flags after 5s timeout');
+  if ((isNexting || isTransitioning) && (now - lastNextCall > 3000)) {
+    console.warn('🔧 Auto-resetting stuck transition flags after 3s timeout');
     resetTransitionFlags();
   }
 }, 1000);
@@ -168,7 +168,7 @@ let currentAbort: AbortController | null = null;
 
 // Track failure counts instead of permanent blacklist
 let trackFailureCounts = new Map<string, number>();
-const MAX_TRACK_FAILURES = 8; // Allow more attempts before giving up to prevent premature playlist endings
+const MAX_TRACK_FAILURES = 8;
 
 // Track consecutive failures to suppress UI spam
 let consecutiveFailures = 0;
@@ -337,8 +337,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
     });
   }, 100);
   
-  // Immediate auto-skip function for seamless playback - LESS aggressive for user experience
-  const scheduleAutoSkip = (reason: string, delay: number = 3000) => { // Shorter default for better UX
+  // Immediate auto-skip function for seamless playback
+  const scheduleAutoSkip = (reason: string, delay: number = 3000) => {
     if (autoSkipTimeout) clearTimeout(autoSkipTimeout);
     autoSkipTimeout = setTimeout(() => {
       console.log(`🎵 Auto-skip triggered after ${delay}ms: ${reason}`);
@@ -363,14 +363,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         return;
       }
       
-      // Suppress player mode updates during rapid error cascades
-      if (consecutiveFailures > 2) {
-        console.log(`🎵 Suppressing player updates during error cascade (failure ${consecutiveFailures})`);
-      }
-      
       console.log('🎵 Auto-skip proceeding with next()');
       get().next();
-    }, delay); // Use provided delay with shorter default for better UX
+    }, delay);
   };
 
   // Background queue management - automatically fetch more tracks when queue gets low
@@ -1785,7 +1780,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
     },
 
     next: async () => {
-      // Rate limiting to prevent racing behavior
+      console.log('🎵 Skip button pressed - checking state:', {
+        isNexting,
+        isTransitioning,
+        now: Date.now(),
+        lastNextCall,
+        timeSinceLastCall: Date.now() - lastNextCall
+      });
+
+      // Reduced rate limiting for better responsiveness
       const now = Date.now();
       if (now - lastNextCall < MIN_NEXT_INTERVAL) {
         console.log('🎵 Next call rate limited - preventing racing behavior');
@@ -1793,17 +1796,23 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       lastNextCall = now;
       
-      // Prevent concurrent operations with transition lock
+      // Check for stuck flags and auto-reset them
       if (isNexting || isTransitioning) {
-        console.log('🎵 Next already in progress or transitioning, skipping');
-        return;
+        const timeSinceLastCall = now - lastNextCall;
+        if (timeSinceLastCall > 3000) { // If stuck for more than 3 seconds
+          console.warn('🔧 Auto-resetting stuck flags - skip button was blocked');
+          isNexting = false;
+          isTransitioning = false;
+        } else {
+          console.log('🎵 Next already in progress, skipping');
+          return;
+        }
       }
       
       isNexting = true;
       isTransitioning = true;
       
-      // Add debug logging for button tap responsiveness
-      console.log('🎵 Next button pressed - starting operation');
+      console.log('🎵 Skip operation starting');
       
       try {
         // Clear any pending auto-skip timeouts
@@ -1812,50 +1821,56 @@ export const useAudioStore = create<AudioState>((set, get) => {
           autoSkipTimeout = null;
         }
         
-        let { queue, index, lastGoal } = get();
-        console.log('🎵 Next operation starting - current index:', index, 'queue length:', queue.length, 'lastGoal:', lastGoal);
+        let { queue, index } = get();
+        console.log('🎵 Current state - index:', index, 'queue length:', queue.length);
+        
+        // Check if we have tracks to skip to
+        if (index >= queue.length - 1) {
+          console.log('🎵 No more tracks in queue to skip to');
+          set({ isLoading: false, error: "No more tracks available" });
+          return;
+        }
         
         // IMMEDIATE UI FEEDBACK - increment index right away for responsiveness
         const nextIndex = index + 1;
-        if (nextIndex < queue.length) {
-          set({ index: nextIndex, currentTrack: queue[nextIndex], isLoading: true });
-          console.log('🎵 Immediate UI update - showing next track:', queue[nextIndex].title);
+        set({ index: nextIndex, currentTrack: queue[nextIndex], isLoading: true });
+        console.log('🎵 Immediate UI update - showing next track:', queue[nextIndex].title);
+        
+        // Load and play the track
+        const success = await loadTrack(queue[nextIndex]);
+        if (success) {
+          await get().play();
+          console.log('🎵 Successfully skipped to track:', queue[nextIndex].title);
+          set({ isLoading: false });
+          return;
         }
         
-        // Then load the track in background
-        for (let i = nextIndex; i < queue.length; i++) {
+        // If immediate next track failed, try subsequent tracks
+        for (let i = nextIndex + 1; i < queue.length; i++) {
           console.log('🎵 Trying next track at index', i, ':', queue[i].title);
           const success = await loadTrack(queue[i]);
           if (success) {
-            if (i !== nextIndex) {
-              // If we had to skip some tracks, update the index
-              set({ index: i });
-            }
+            set({ index: i });
             await get().play();
             console.log('🎵 Successfully skipped to track:', queue[i].title);
-            // Reset flag immediately on success
-            isNexting = false;
+            set({ isLoading: false });
             return;
           }
           
-          // Track failure count instead of immediate removal
+          // Track failure count
           const failures = (trackFailureCounts.get(queue[i].id) || 0) + 1;
           trackFailureCounts.set(queue[i].id, failures);
           
           if (failures >= MAX_TRACK_FAILURES) {
             console.log('🎵 Removing exhausted track from queue:', queue[i].title);
-            console.log('🎵 Track failed', failures, 'times - removing permanently');
             announceSkip();
             queue = removeAt(queue, i);
             i--; // Adjust index since we removed an item
             set({ queue });
-          } else {
-            console.log('🎵 Track failed', failures, 'of', MAX_TRACK_FAILURES, 'attempts - skipping for now');
-            // Continue to next track without double-incrementing
-          }
         }
         
         // Check if queue is getting low and try to fetch more tracks (more proactive threshold)
+        const { lastGoal } = get(); // Get lastGoal for queue extension
         const remainingTracks = queue.length - index - 1;
         if (remainingTracks <= 5 && lastGoal) {
           console.log('🎵 Queue running low, fetching more tracks for goal:', lastGoal);
@@ -1886,35 +1901,6 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.error('🎵 Failed to fetch more tracks:', error);
           }
         }
-        
-        // Continue with next track logic after queue extension
-        for (let i = index + 1; i < queue.length; i++) {
-          console.log('🎵 Trying next track at index', i, ':', queue[i].title);
-          const success = await loadTrack(queue[i]);
-          if (success) {
-            set({ index: i });
-            await get().play();
-            console.log('🎵 Successfully skipped to track:', queue[i].title);
-            // Reset flag immediately on success
-            isNexting = false;
-            return;
-          }
-          
-          // Track failure count instead of immediate removal
-          const failures = (trackFailureCounts.get(queue[i].id) || 0) + 1;
-          trackFailureCounts.set(queue[i].id, failures);
-          
-          if (failures >= MAX_TRACK_FAILURES) {
-            console.log('🎵 Removing exhausted track from queue:', queue[i].title);
-            console.log('🎵 Track failed', failures, 'times - removing permanently');
-            announceSkip();
-            queue = removeAt(queue, i);
-            i--; // Adjust index since we removed an item
-            set({ queue });
-          } else {
-            console.log('🎵 Track failed', failures, 'of', MAX_TRACK_FAILURES, 'attempts - skipping for now');
-            // Continue to next track without double-incrementing
-          }
         }
         
         console.log('🎵 No more working tracks available');
