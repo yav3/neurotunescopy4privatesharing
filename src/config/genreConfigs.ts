@@ -92,7 +92,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'pop',
-        name: 'Pop',
+        name: 'Pop Warm Up',
         description: 'Uplifting pop music for instant mood elevation',
         buckets: ['pop'],
         image: moodBoostSunsetFlowers,
