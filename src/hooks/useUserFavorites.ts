@@ -47,7 +47,9 @@ export const useUserFavorites = () => {
   };
 
   const isFavorite = useCallback((trackId: string): boolean => {
-    return favorites.some(f => f.track_id === trackId);
+    const result = favorites.some(f => f.track_id === trackId);
+    console.log(`🤍 isFavorite check for ${trackId}: ${result} (total favorites: ${favorites.length})`);
+    return result;
   }, [favorites]);
 
   return {

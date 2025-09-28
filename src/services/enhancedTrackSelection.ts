@@ -1,5 +1,6 @@
 import { UserFavoritesService } from '@/services/userFavorites';
 import { SimpleStorageService } from '@/services/simpleStorageService';
+import { MusicalSimilarityService } from '@/services/musicalSimilarityDetection';
 import type { Track } from '@/services/therapeuticDatabase';
 
 interface EnhancedTrack extends Track {
@@ -115,14 +116,20 @@ export class EnhancedTrackSelectionService {
     
     const recentTracks = recentlyPlayed.get(userId) || new Set();
     
-    // Always include favorites even if recently played
-    const filtered = tracks.filter(track => 
-      track.is_favorite || !recentTracks.has(track.id)
-    );
+    // Filter by recently played AND musical similarity
+    const filtered = tracks.filter(track => {
+      // Always include favorites even if recently played (but check similarity)
+      if (track.is_favorite) {
+        return !MusicalSimilarityService.isTooSimilar(track, userId, 0.8); // Stricter threshold for favorites
+      }
+      
+      // For non-favorites, check both recently played and similarity
+      return !recentTracks.has(track.id) && !MusicalSimilarityService.isTooSimilar(track, userId, 0.7);
+    });
     
-    console.log(`🔄 Filtered ${tracks.length - filtered.length} recently played tracks (keeping ${tracks.filter(t => t.is_favorite).length} favorites)`);
+    console.log(`🔄 Filtered ${tracks.length - filtered.length} tracks: ${tracks.length - filtered.length - (tracks.filter(t => !recentTracks.has(t.id)).length - filtered.length)} for similarity, rest for recency`);
     
-    return filtered.length > 0 ? filtered : tracks; // Fallback to all tracks if too many filtered
+    return filtered.length > 0 ? filtered : tracks.slice(0, Math.ceil(tracks.length * 0.3)); // Fallback to 30% if too aggressive
   }
   
   /**
@@ -169,8 +176,11 @@ export class EnhancedTrackSelectionService {
     
     const userRecent = recentlyPlayed.get(userId)!;
     
-    // Add new tracks
-    tracks.forEach(track => userRecent.add(track.id));
+    // Add new tracks to both recency and musical similarity tracking
+    tracks.forEach(track => {
+      userRecent.add(track.id);
+      MusicalSimilarityService.addToHistory(track, userId);
+    });
     
     // Keep only recent tracks (prevent memory bloat)
     if (userRecent.size > RECENT_TRACKS_LIMIT) {
@@ -179,7 +189,7 @@ export class EnhancedTrackSelectionService {
       recentlyPlayed.set(userId, new Set(toKeep));
     }
     
-    console.log(`📝 Updated recently played: ${userRecent.size} tracks for user ${userId.substring(0, 8)}...`);
+    console.log(`📝 Updated tracking: ${userRecent.size} recent tracks, musical similarity for user ${userId.substring(0, 8)}...`);
   }
   
   /**
@@ -187,6 +197,18 @@ export class EnhancedTrackSelectionService {
    */
   static clearRecentlyPlayed(userId: string): void {
     recentlyPlayed.delete(userId);
-    console.log(`🗑️ Cleared recently played tracks for user ${userId.substring(0, 8)}...`);
+    MusicalSimilarityService.clearHistory(userId);
+    console.log(`🗑️ Cleared recently played tracks and musical history for user ${userId.substring(0, 8)}...`);
+  }
+  
+  /**
+   * Get debugging information for track selection
+   */
+  static getDebugInfo(userId: string): any {
+    const userRecent = recentlyPlayed.get(userId) || new Set();
+    return {
+      recentlyPlayed: Array.from(userRecent),
+      musicalSimilarity: MusicalSimilarityService.getSimilarityReport(userId)
+    };
   }
 }

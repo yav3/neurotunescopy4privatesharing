@@ -127,15 +127,16 @@ export class UserFavoritesService {
 
   /**
    * Generate a consistent numeric hash from string track ID
+   * Using a better hash function to reduce collisions
    */
   private static generateTrackHash(trackId: string): number {
-    let hash = 0;
+    let hash = 5381; // Use djb2 hash algorithm for better distribution
     for (let i = 0; i < trackId.length; i++) {
-      const char = trackId.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = ((hash << 5) + hash) + trackId.charCodeAt(i);
       hash = hash & hash; // Convert to 32-bit integer
     }
-    return Math.abs(hash);
+    // Ensure positive number and add length component to further reduce collisions
+    return Math.abs(hash) + trackId.length * 1000000;
   }
 
   private static async getLocalFavorites(): Promise<UserFavorite[]> {
