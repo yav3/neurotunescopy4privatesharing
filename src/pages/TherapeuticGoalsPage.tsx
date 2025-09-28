@@ -107,10 +107,10 @@ const TherapeuticGoalsPage = () => {
       'nocturnes': 'focus-enhancement', 
       'chill-piano': 'focus-enhancement',
       'non-sleep-deep-rest': 'depression-support',
-      'chill-tropical-house': 'mood-boost',
-      'social-time': 'mood-boost',
-      'chill-folk-bluegrass': 'mood-boost',
-      'americana-jam-band': 'mood-boost',
+      'chill-tropical-house': 'depression-support',
+      'social-time': 'depression-support',
+      'chill-folk-bluegrass': 'depression-support',
+      'americana-jam-band': 'depression-support',
     };
     
     const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
