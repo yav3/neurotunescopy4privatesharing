@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
 import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
+import { ScreenWakeLock } from '@/utils/screenWakeLock';
 import { AudioCacheService } from '@/services/audioCache';
 import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
 import { supabase } from '@/integrations/supabase/client';
@@ -1605,6 +1606,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         console.log('✅ Audio.play() successful - track should be playing');
+        
+        // Request wake lock to prevent screen sleep during playback
+        await ScreenWakeLock.request();
+        
         set({ error: undefined, isPlaying: true });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
@@ -1775,6 +1780,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const audio = initAudio();
       console.log('🎵 Pause called - audio paused:', audio.paused);
       audio.pause();
+      
+      // Release wake lock when pausing to save battery
+      ScreenWakeLock.release();
+      
       // Ensure state is synchronized immediately
       set({ isPlaying: false });
     },

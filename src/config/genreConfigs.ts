@@ -46,7 +46,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     'focus-enhancement': [
       {
         id: 'new-age',
-        name: 'New Age for Focus',
+        name: 'New Age & World for Focus',
         description: 'Ethereal soundscapes for enhanced focus',
         buckets: ['NewAgeandWorldFocus'],
         image: newAgeLeafDewdrop
