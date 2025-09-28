@@ -196,40 +196,42 @@ const TherapeuticGoalsPage = () => {
           <div>
             <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Personalize Your Goal</h2>
             
-            {/* Larger therapeutic goals cards with proper mobile/tablet layout */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 lg:gap-7">
-              {therapeuticGoals.map((goal) => (
-                <div key={goal.id} className="flex flex-col items-start w-full">
-                  <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 aspect-[1.2/1] border bg-card w-full"
-                    onClick={() => handleGoalSelect(goal.id)}
-                    title="Pick a genre"
-                  >
-                    <img 
-                      src={goal.image}
-                      alt={`${goal.name} therapy program`}
-                      loading="eager"
-                      decoding="sync"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      style={{ 
-                        imageRendering: 'auto',
-                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
-                    
-                    {/* Hover text overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                      <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                        Pick a genre
-                      </span>
-                    </div>
-                  </Card>
-                  <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-relaxed break-words w-full card-title">
-                    {goal.name}
-                  </h3>
-                </div>
-              ))}
+            {/* Horizontal scrolling container for therapeutic goals */}
+            <div className="overflow-x-auto pb-2">
+              <div className="flex gap-4 min-w-max">
+                {therapeuticGoals.map((goal) => (
+                  <div key={goal.id} className="flex flex-col items-start flex-shrink-0 w-32 sm:w-36 md:w-40">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
+                      onClick={() => handleGoalSelect(goal.id)}
+                      title="Pick a genre"
+                    >
+                      <img 
+                        src={goal.image}
+                        alt={`${goal.name} therapy program`}
+                        loading="eager"
+                        decoding="sync"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ 
+                          imageRendering: 'auto',
+                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
+                      
+                      {/* Hover text overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                          Pick a genre
+                        </span>
+                      </div>
+                    </Card>
+                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
+                      {goal.name}
+                    </h3>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           
