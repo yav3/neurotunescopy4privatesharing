@@ -505,18 +505,10 @@ export const useAudioStore = create<AudioState>((set, get) => {
           return;
         }
         
-        // Auto-advance to next track when current track ends (if autoplay is enabled)
+        // Auto-advance to next track when current track ends (continuous play)
         if (!isNexting) {
-          // Import app store to check autoplay preference
-          const { useAppStore } = await import('@/stores/appStore');
-          const autoplayEnabled = useAppStore.getState().preferences.autoplay;
-          
-          if (autoplayEnabled) {
-            console.log('🎵 Track ended naturally, advancing to next (autoplay enabled)');
-            get().next();
-          } else {
-            console.log('🎵 Track ended naturally, but autoplay is disabled');
-          }
+          console.log('🎵 Track ended naturally, advancing to next track');
+          get().next();
         }
       });
       
