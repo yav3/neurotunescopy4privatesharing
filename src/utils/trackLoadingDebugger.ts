@@ -114,13 +114,13 @@ if (import.meta.env.DEV) {
   (window as any).trackLoadingDebugger = TrackLoadingDebugger;
   console.log('🔧 Track loading debugger available as window.trackLoadingDebugger');
   
-  // Auto-test the problematic Focus Crossover Classical on load
+  // Auto-test the problematic Pop Energy connection on load
   setTimeout(() => {
-    console.log('🔬 AUTO-TESTING Focus Crossover Classical...');
-    TrackLoadingDebugger.testFocusCrossoverSpecifically().then(result => {
-      console.log('🔬 AUTO-TEST COMPLETE:', result);
+    console.log('🔬 AUTO-TESTING Pop Energy Bucket Connection...');
+    TrackLoadingDebugger.testPopEnergySpecifically().then(result => {
+      console.log('🔬 POP ENERGY AUTO-TEST COMPLETE:', result);
     }).catch(error => {
-      console.error('🔬 AUTO-TEST FAILED:', error);
+      console.error('🔬 POP ENERGY AUTO-TEST FAILED:', error);
     });
   }, 2000);
 }
