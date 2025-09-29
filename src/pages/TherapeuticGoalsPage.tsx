@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { GenreSelectionModal } from '@/components/GenreSelectionModal';
-import { VoiceGuidedInterface } from '@/components/VoiceGuidedInterface';
+
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
@@ -155,11 +155,6 @@ const TherapeuticGoalsPage = () => {
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-6 sm:pt-8 md:pt-12 lg:pt-16">
         <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12 md:space-y-14 lg:space-y-16">
           
-          {/* Voice-Guided Interface */}
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Voice Commands</h2>
-            <VoiceGuidedInterface />
-          </div>
 
           {/* Trending Section */}
           <div>

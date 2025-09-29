@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
-import { VoiceGuidedInterface } from '../components/VoiceGuidedInterface';
+
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
@@ -209,21 +209,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Voice-Guided Interface Section */}
-      <section className="py-16 bg-black">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-4">
-              Voice-Activated Access for Easy Use
-            </h2>
-            <p className="text-base font-body text-gray-300 max-w-2xl mx-auto leading-relaxed">
-              Specially designed for elderly patients and those who prefer hands-free navigation
-            </p>
-          </div>
-          <VoiceGuidedInterface />
         </div>
       </section>
 
