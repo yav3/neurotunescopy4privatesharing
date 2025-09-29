@@ -97,9 +97,8 @@ export const VoiceActivationButton: React.FC<VoiceActivationButtonProps> = ({
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Say "Hello NeuroTunes" then tell me what you need
           </p>
-          <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-            <p>Try: "I need anxiety support" or "play focus music"</p>
-            <p>Say "help" to hear all available commands</p>
+          <div className="text-xs text-gray-600 dark:text-gray-400">
+            <p>Visit the FAQ (?) for complete voice command guide</p>
           </div>
         </div>
       )}

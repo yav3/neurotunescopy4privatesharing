@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, HelpCircle, Music, Target, Heart, ThumbsDown, ThumbsUp, Clock, Shuffle } from 'lucide-react';
+import { ArrowLeft, HelpCircle, Music, Target, Heart, ThumbsDown, ThumbsUp, Clock, Shuffle, Headphones } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -88,6 +88,32 @@ const FAQ = () => {
         {
           question: "Will my blocked tracks ever play again?",
           answer: "No, once you thumbs down a track, it's permanently blocked from all future sessions. However, you can manage your blocked tracks list in your profile settings if you want to unblock something later."
+        }
+      ]
+    },
+    {
+      title: "Voice Commands",
+      icon: Headphones,
+      questions: [
+        {
+          question: "How do I use voice commands?",
+          answer: "Enable voice commands on the main page, then say 'Hello NeuroTunes' followed by your request. The app is designed especially for elderly patients who may find it easier to speak than navigate touch interfaces."
+        },
+        {
+          question: "What voice commands are available for health support?",
+          answer: "You can say: 'I need anxiety support', 'Help with stress', 'I'm in pain', or 'I need sleep help'. The app will automatically start appropriate therapeutic music sessions."
+        },
+        {
+          question: "What voice commands help with enhancement and mood?",
+          answer: "Try: 'I need energy boost', 'Help me focus', 'Start meditation', or 'Improve my mood'. Each command will curate specific music designed for that mental state."
+        },
+        {
+          question: "What navigation voice commands can I use?",
+          answer: "You can say: 'Go home', 'Show me goals', 'Stop music', or 'Help' to navigate the app hands-free. Perfect for users who prefer voice control over touch navigation."
+        },
+        {
+          question: "How do I get started with voice commands?",
+          answer: "1. Enable voice commands on the main page, 2. Say 'Hello NeuroTunes' and wait for the response, 3. Tell the app what you need, 4. The app will respond and take action automatically."
         }
       ]
     },

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { VoiceCommandProcessor } from '@/utils/VoiceActivation';
 import { VoiceActivationButton } from './VoiceActivationButton';
 import { Card } from '@/components/ui/card';
-import { Headphones, Heart } from 'lucide-react';
+import { Headphones } from 'lucide-react';
 
 export const VoiceGuidedInterface: React.FC = () => {
   const navigate = useNavigate();
@@ -63,57 +63,6 @@ export const VoiceGuidedInterface: React.FC = () => {
         />
       </Card>
 
-      {/* Quick Guide */}
-      <Card className="p-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <Heart className="w-6 h-6 text-red-500" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Voice Commands Guide
-          </h3>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-900 dark:text-white">Health Support:</h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-              <li>"I need anxiety support"</li>
-              <li>"Help with stress"</li>
-              <li>"I'm in pain"</li>
-              <li>"I need sleep help"</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-900 dark:text-white">Enhancement:</h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-              <li>"I need energy boost"</li>
-              <li>"Help me focus"</li>
-              <li>"Start meditation"</li>
-              <li>"Improve my mood"</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-900 dark:text-white">Navigation:</h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-              <li>"Go home"</li>
-              <li>"Show me goals"</li>
-              <li>"Stop music"</li>
-              <li>"Help"</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-900 dark:text-white">Getting Started:</h4>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-              <li>1. Enable voice commands above</li>
-              <li>2. Say "Hello NeuroTunes"</li>
-              <li>3. Wait for the response</li>
-              <li>4. Tell me what you need</li>
-            </ul>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 };
