@@ -1,7 +1,10 @@
-import { Home, User, BarChart3, HelpCircle } from "lucide-react";
+import { Home, User, BarChart3, HelpCircle, Headphones } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/components/auth/AuthProvider";
+import { VoiceActivationButton } from "./VoiceActivationButton";
+import { VoiceCommandProcessor } from "@/utils/VoiceActivation";
+import { useEffect, useRef } from "react";
 
 interface NavigationProps {
   activeTab?: string;
@@ -12,6 +15,25 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { hasRole } = useAuthContext();
+  const voiceProcessorRef = useRef<VoiceCommandProcessor | null>(null);
+
+  useEffect(() => {
+    voiceProcessorRef.current = new VoiceCommandProcessor(navigate);
+    return () => {
+      voiceProcessorRef.current?.stop();
+    };
+  }, [navigate]);
+
+  const handleVoiceToggle = (enabled: boolean) => {
+    if (enabled) {
+      voiceProcessorRef.current?.start();
+      voiceProcessorRef.current?.speak('Voice commands are now active.');
+    } else {
+      voiceProcessorRef.current?.stop();
+    }
+  };
+
+  const isSupported = voiceProcessorRef.current?.isSupported() ?? false;
   
   const tabs = [
     { id: "home", icon: Home, path: "/" },
@@ -43,7 +65,20 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   };
 
   return (
-    <nav className="px-4 sm:px-6 py-3 sm:py-4">
+    <div className="space-y-4">
+      {/* Voice Activation - Compact version for navigation */}
+      <div className="px-4 sm:px-6">
+        <div className="max-w-sm mx-auto">
+          <VoiceActivationButton
+            onToggle={handleVoiceToggle}
+            isSupported={isSupported}
+            className="scale-90"
+          />
+        </div>
+      </div>
+      
+      {/* Navigation Bar */}
+      <nav className="px-4 sm:px-6 py-3 sm:py-4">
       {/* Simple icon-only navigation */}
       <div className="flex justify-center items-center gap-8 sm:gap-12">
         {tabs.map((tab) => {
@@ -86,5 +121,6 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
         )}
       </div>
     </nav>
+    </div>
   );
 };
