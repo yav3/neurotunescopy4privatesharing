@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
+import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
 import cornellLogo from '../assets/cornell-university.png';
@@ -35,6 +36,9 @@ import {
 const Index = () => {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
+  
+  // Welcome returning users
+  useWelcomeMessage();
 
   const therapeuticBenefits = [
     {

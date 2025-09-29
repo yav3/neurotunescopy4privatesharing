@@ -8,6 +8,7 @@ import { Navigation } from '@/components/Navigation';
 import { GenreSelectionModal } from '@/components/GenreSelectionModal';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
 
 // Import beautiful nature images
 import peacefulLake from '@/assets/peaceful-lake-sunset.png';
@@ -60,6 +61,9 @@ const TherapeuticGoalsPage = () => {
   const { isDark, toggle } = useDarkMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState<string>('');
+  
+  // Welcome returning users
+  useWelcomeMessage();
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
