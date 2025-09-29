@@ -59,7 +59,7 @@ export const RealTimeAnalytics: React.FC = () => {
     try {
       setLoading(true);
 
-      // Fetch comprehensive user behavior data
+      // Get comprehensive user data from auth.users for accurate count
       const { count: totalUsers, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact' })
@@ -67,19 +67,27 @@ export const RealTimeAnalytics: React.FC = () => {
 
       if (userError) throw userError;
 
-      // Fetch detailed listening session analytics
-      const { data: sessionAnalytics, error: sessionAnalyticsError } = await supabase
+      // Fetch ALL listening sessions (not just last 30 days) to get complete picture
+      const { data: allSessions, error: sessionError } = await supabase
         .from('listening_sessions')
         .select(`
           user_id,
+          patient_id,
           session_duration_minutes,
           skip_rate,
           tracks_played,
           created_at
-        `)
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+        `);
 
-      if (sessionAnalyticsError) throw sessionAnalyticsError;
+      if (sessionError) throw sessionError;
+
+      // Get recent sessions for activity analysis
+      const recentSessions = allSessions?.filter(s => 
+        new Date(s.created_at) >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      ) || [];
+
+      // For now, use empty user events array until comprehensive tracking is implemented
+      const userEvents: any[] = [];
 
       // Fetch favorites data
       const { count: favoritesCount, error: favoritesError } = await supabase
@@ -97,28 +105,60 @@ export const RealTimeAnalytics: React.FC = () => {
 
       if (blockedError) throw blockedError;
 
-      // Calculate comprehensive metrics
-      const activeListeners = new Set(sessionAnalytics?.map(s => s.user_id).filter(Boolean)).size || 0;
-      const totalSessions = sessionAnalytics?.length || 0;
-      const totalListeningTime = sessionAnalytics?.reduce((sum, s) => sum + (s.session_duration_minutes || 0), 0) || 0;
+      // Calculate metrics with proper user identification
+      const allUserIds = new Set();
+      const recentUserIds = new Set();
+      
+      // Count users from both listening sessions and activity events
+      allSessions?.forEach(s => {
+        if (s.user_id) allUserIds.add(s.user_id);
+        if (s.patient_id) allUserIds.add(s.patient_id);
+      });
+      
+      recentSessions.forEach(s => {
+        if (s.user_id) recentUserIds.add(s.user_id);
+        if (s.patient_id) recentUserIds.add(s.patient_id);
+      });
+
+      userEvents.forEach(e => {
+        if (e.user_id) recentUserIds.add(e.user_id);
+      });
+
+      const totalActiveUsers = allUserIds.size;
+      const recentActiveUsers = recentUserIds.size;
+      const totalSessions = allSessions?.length || 0;
+      const recentSessionCount = recentSessions.length;
+      
+      const totalListeningTime = allSessions?.reduce((sum, s) => sum + (s.session_duration_minutes || 0), 0) || 0;
       const avgSessionDuration = totalSessions > 0 ? totalListeningTime / totalSessions : 0;
-      const avgSkipRate = sessionAnalytics?.length > 0 
-        ? sessionAnalytics.reduce((sum, s) => sum + (s.skip_rate || 0), 0) / sessionAnalytics.length
+      const avgSkipRate = allSessions?.length > 0 
+        ? allSessions.reduce((sum, s) => sum + (s.skip_rate || 0), 0) / allSessions.length
         : 0;
 
-      // Calculate user engagement rate (users who have listened vs total registered)
-      const engagementRate = totalUsers ? (activeListeners / totalUsers) * 100 : 0;
+      // Calculate TRUE engagement rate (users with ANY tracked activity vs total registered)
+      const trueEngagementRate = totalUsers ? (Math.max(totalActiveUsers, recentActiveUsers) / totalUsers) * 100 : 0;
 
-      // Get recent daily activity for trends
-      const recentDays = sessionAnalytics?.reduce((acc, session) => {
+      // Get recent daily activity trends including ALL activity types
+      const recentDays: Record<string, { sessions: number; totalDuration: number; events: number }> = {};
+      
+      // Add listening sessions to daily breakdown
+      recentSessions.forEach(session => {
         const date = new Date(session.created_at).toISOString().split('T')[0];
-        if (!acc[date]) {
-          acc[date] = { sessions: 0, totalDuration: 0 };
+        if (!recentDays[date]) {
+          recentDays[date] = { sessions: 0, totalDuration: 0, events: 0 };
         }
-        acc[date].sessions++;
-        acc[date].totalDuration += session.session_duration_minutes || 0;
-        return acc;
-      }, {} as Record<string, { sessions: number; totalDuration: number }>) || {};
+        recentDays[date].sessions++;
+        recentDays[date].totalDuration += session.session_duration_minutes || 0;
+      });
+
+      // Add user activity events to daily breakdown
+      userEvents.forEach(event => {
+        const date = new Date(event.timestamp).toISOString().split('T')[0];
+        if (!recentDays[date]) {
+          recentDays[date] = { sessions: 0, totalDuration: 0, events: 0 };
+        }
+        recentDays[date].events++;
+      });
 
       const topListeningDays = Object.entries(recentDays)
         .map(([date, data]) => ({
@@ -131,16 +171,16 @@ export const RealTimeAnalytics: React.FC = () => {
 
       const comprehensiveMetrics: UserBehaviorMetrics = {
         totalRegisteredUsers: totalUsers || 0,
-        activeListeners,
+        activeListeners: totalActiveUsers,
         totalListeningSessions: totalSessions,
         totalListeningTime,
         averageSessionDuration: Math.round(avgSessionDuration * 10) / 10,
         averageSkipRate: Math.round(avgSkipRate * 1000) / 10, // Convert to percentage with 1 decimal
         totalFavorites: favoritesCount || 0,
         totalBlockedTracks: blockedCount || 0,
-        userEngagementRate: Math.round(engagementRate * 10) / 10,
-        dailyActiveUsers: activeListeners, // Simplified for now
-        weeklyRetentionRate: totalUsers ? Math.round((activeListeners / totalUsers) * 100) : 0,
+        userEngagementRate: Math.round(trueEngagementRate * 10) / 10,
+        dailyActiveUsers: recentActiveUsers,
+        weeklyRetentionRate: totalUsers ? Math.round((recentActiveUsers / totalUsers) * 100) : 0,
         topListeningDays
       };
 
@@ -149,12 +189,26 @@ export const RealTimeAnalytics: React.FC = () => {
       // Generate detailed recent activity from real data
       const realActivity: RecentActivity[] = [];
 
+      // Add recent user activity events
+      userEvents.slice(-3).forEach((event, index) => {
+        realActivity.push({
+          id: `event-${index}`,
+          event_type: event.event_type,
+          user_id: event.user_id || 'anonymous',
+          timestamp: event.timestamp,
+          details: { 
+            page: event.page_path,
+            type: event.event_type
+          }
+        });
+      });
+
       // Add recent listening sessions with detailed info
-      sessionAnalytics?.slice(-5).forEach((session, index) => {
+      recentSessions.slice(-3).forEach((session, index) => {
         realActivity.push({
           id: `session-${index}`,
           event_type: 'listening_session',
-          user_id: session.user_id || 'anonymous',
+          user_id: session.user_id || session.patient_id || 'anonymous',
           timestamp: session.created_at,
           details: { 
             duration: session.session_duration_minutes,
@@ -165,31 +219,37 @@ export const RealTimeAnalytics: React.FC = () => {
         });
       });
 
-      // Add user engagement summary
-      if (activeListeners > 0) {
-        realActivity.push({
-          id: 'engagement-summary',
-          event_type: 'user_engagement',
+      // Add critical data quality warning if engagement is low
+      if (trueEngagementRate < 10) {
+        realActivity.unshift({
+          id: 'data-quality-warning',
+          event_type: 'data_quality_issue',
           user_id: 'system',
           timestamp: new Date().toISOString(),
           details: { 
-            activeUsers: activeListeners,
-            engagementRate: Math.round(engagementRate),
-            totalSessions: totalSessions
+            issue: 'Low session tracking coverage',
+            engagementRate: Math.round(trueEngagementRate),
+            totalUsers,
+            usersWithSessions: totalActiveUsers,
+            recommendation: 'Check session tracking implementation'
           }
         });
       }
 
-      // Add system status if no activity
-      if (realActivity.length === 0) {
-        realActivity.push({
-          id: 'system-status',
-          event_type: 'system_healthy',
-          user_id: 'system',
-          timestamp: new Date().toISOString(),
-          details: { status: 'All systems operational', totalUsers }
-        });
-      }
+      // Add user engagement summary
+      realActivity.push({
+        id: 'engagement-summary',
+        event_type: 'user_engagement',
+        user_id: 'system',
+        timestamp: new Date().toISOString(),
+        details: { 
+          activeUsers: totalActiveUsers,
+          recentUsers: recentActiveUsers,
+          engagementRate: Math.round(trueEngagementRate),
+          totalSessions: totalSessions,
+          recentSessions: recentSessionCount
+        }
+      });
 
       setRecentActivity(realActivity.reverse());
 
@@ -221,6 +281,10 @@ export const RealTimeAnalytics: React.FC = () => {
         return <Activity className="h-4 w-4 text-purple-500" />;
       case 'system_healthy':
         return <Shield className="h-4 w-4 text-green-500" />;
+      case 'user_engagement':
+        return <TrendingUp className="h-4 w-4 text-blue-500" />;
+      case 'data_quality_issue':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
       default:
         return <Activity className="h-4 w-4 text-gray-500" />;
     }
@@ -382,15 +446,17 @@ export const RealTimeAnalytics: React.FC = () => {
                         {new Date(activity.timestamp).toLocaleTimeString()}
                       </p>
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {activity.event_type === 'listening_session' && `Duration: ${activity.details.duration}min`}
-                      {activity.event_type === 'page_view' && `Page: ${activity.details.page}`}
-                      {activity.event_type === 'user_login' && `Method: ${activity.details.method}`}
-                      {activity.event_type === 'unauthorized_access' && `Severity: ${activity.details.severity}`}
-                      {activity.event_type === 'failed_login' && `Severity: ${activity.details.severity}`}
-                      {activity.event_type === 'session_start' && `Device: ${activity.details.device}`}
-                      {activity.event_type === 'system_healthy' && `Status: ${activity.details.status}`}
-                    </p>
+                     <p className="text-xs text-muted-foreground truncate">
+                       {activity.event_type === 'listening_session' && `Duration: ${activity.details.duration}min, Skip Rate: ${activity.details.skipRate}%`}
+                       {activity.event_type === 'page_view' && `Page: ${activity.details.page}`}
+                       {activity.event_type === 'user_login' && `Method: ${activity.details.method}`}
+                       {activity.event_type === 'unauthorized_access' && `Severity: ${activity.details.severity}`}
+                       {activity.event_type === 'failed_login' && `Severity: ${activity.details.severity}`}
+                       {activity.event_type === 'session_start' && `Device: ${activity.details.device}`}
+                       {activity.event_type === 'system_healthy' && `Status: ${activity.details.status}`}
+                       {activity.event_type === 'user_engagement' && `${activity.details.activeUsers} active, ${activity.details.engagementRate}% engagement`}
+                       {activity.event_type === 'data_quality_issue' && `⚠️ ${activity.details.issue} - ${activity.details.recommendation}`}
+                     </p>
                   </div>
                 </div>
               ))}

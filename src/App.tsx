@@ -21,6 +21,7 @@ import { AdvancedAuthGuard } from "@/components/security/AdvancedAuthGuard";
 import { useAudioStore } from "@/stores";
 import { GlobalSessionTracker } from "@/components/GlobalSessionTracker";
 import { AccessTrackingProvider } from "@/components/analytics/AccessTrackingProvider";
+import { useComprehensiveTracking } from "@/hooks/useComprehensiveTracking";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
@@ -94,6 +95,9 @@ const App = () => {
 const AppContent = () => {
   const { user, loading } = useAuthContext();
   const { currentTrack, playerMode } = useAudioStore();
+  
+  // Initialize comprehensive user behavior tracking
+  useComprehensiveTracking();
 
   if (loading) {
     return (
