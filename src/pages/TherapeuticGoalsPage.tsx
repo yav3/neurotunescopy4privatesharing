@@ -162,9 +162,9 @@ const TherapeuticGoalsPage = () => {
             
             {/* Horizontal scrolling container for trending */}
             <div className="overflow-x-auto pb-2">
-              <div className="flex gap-4 min-w-max">
+              <div className="flex gap-3 min-w-max">
                 {trendingCategories.map((category) => (
-                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-32 sm:w-36 md:w-40">
+                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
                     <Card 
                       className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
                       onClick={() => handleTrendingSelect(category.id)}
