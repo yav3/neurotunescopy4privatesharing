@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { VoiceGuidedInterface } from '../components/VoiceGuidedInterface';
+import { QADashboard } from '@/components/QADashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
 import cornellLogo from '../assets/cornell-university.png';
