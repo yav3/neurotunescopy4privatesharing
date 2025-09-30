@@ -509,17 +509,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
         });
         
-        // Complete session when queue ends
-        const { queue, index } = get();
-        const isLastTrack = index >= queue.length - 1;
-        
-        if (isLastTrack && sessionManager) {
-          console.log('🎵 Session completed - last track finished');
-          sessionManager.completeSession().catch(console.error);
-          return;
-        }
-        
         // Auto-advance to next track when current track ends (continuous play)
+        // The next() function will handle queue refilling and session completion
         if (!isNexting) {
           console.log('🎵 Track ended naturally, advancing to next track');
           get().next();
@@ -1833,11 +1824,64 @@ export const useAudioStore = create<AudioState>((set, get) => {
         let { queue, index } = get();
         console.log('🎵 Current state - index:', index, 'queue length:', queue.length);
         
-        // Check if we have tracks to skip to
+        // Check if we're at the end of queue and try to fetch more tracks
         if (index >= queue.length - 1) {
-          console.log('🎵 No more tracks in queue to skip to');
-          set({ isLoading: false, error: "No more tracks available" });
-          return;
+          console.log('🎵 At end of queue - attempting to fetch more tracks');
+          
+          const { lastGoal } = get();
+          if (lastGoal) {
+            try {
+              const excludeIds = queue.map(t => t.id.toString());
+              const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 30, 0, excludeIds);
+              
+              if (newTracks && newTracks.length > 0) {
+                console.log('🎵 Fetched', newTracks.length, 'new tracks to continue playback');
+                const convertedTracks: Track[] = newTracks.map((track: any) => ({
+                  id: track.id,
+                  title: track.title,
+                  artist: track.artist || 'Neural Positive Music',
+                  duration: track.duration || 0,
+                  storage_bucket: track.storage_bucket || 'audio',
+                  storage_key: track.storage_key,
+                  stream_url: track.stream_url,
+                  audio_status: track.audio_status || 'working',
+                }));
+                
+                // Add new tracks and update queue
+                const newQueue = [...queue, ...convertedTracks];
+                set({ queue: newQueue });
+                queue = newQueue;
+                console.log('🎵 Continuous play enabled - queue extended to', newQueue.length, 'tracks');
+                
+                // Don't return early - continue to play the next track
+              } else {
+                console.log('🎵 No more tracks available from API');
+                // Complete session when we truly run out of tracks
+                if (sessionManager) {
+                  console.log('🎵 Completing session - no more tracks to play');
+                  sessionManager.completeSession().catch(console.error);
+                }
+                set({ isLoading: false, error: "No more tracks available" });
+                return;
+              }
+            } catch (error) {
+              console.error('🎵 Failed to fetch more tracks:', error);
+              // Complete session on error
+              if (sessionManager) {
+                sessionManager.completeSession().catch(console.error);
+              }
+              set({ isLoading: false, error: "No more tracks available" });
+              return;
+            }
+          } else {
+            console.log('🎵 No goal set - cannot fetch more tracks');
+            // Complete session when no goal is set
+            if (sessionManager) {
+              sessionManager.completeSession().catch(console.error);
+            }
+            set({ isLoading: false, error: "No more tracks available" });
+            return;
+          }
         }
         
         // IMMEDIATE UI FEEDBACK - increment index right away for responsiveness
