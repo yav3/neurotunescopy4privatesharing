@@ -92,11 +92,11 @@ const mockHealthMetrics = {
 };
 
 const mockUserBehaviorData = [
-  { date: '2024-01-01', pageViews: 120, audioPlays: 89, clicks: 234 },
-  { date: '2024-01-02', pageViews: 142, audioPlays: 95, clicks: 267 },
-  { date: '2024-01-03', pageViews: 138, audioPlays: 102, clicks: 289 },
-  { date: '2024-01-04', pageViews: 165, audioPlays: 118, clicks: 312 },
-  { date: '2024-01-05', pageViews: 148, audioPlays: 98, clicks: 298 }
+  { date: '2025-09-26', pageViews: 120, audioPlays: 89, clicks: 234 },
+  { date: '2025-09-27', pageViews: 142, audioPlays: 95, clicks: 267 },
+  { date: '2025-09-28', pageViews: 138, audioPlays: 102, clicks: 289 },
+  { date: '2025-09-29', pageViews: 165, audioPlays: 118, clicks: 312 },
+  { date: '2025-09-30', pageViews: 148, audioPlays: 98, clicks: 298 }
 ];
 
 const mockHealthTrends = [
@@ -117,9 +117,9 @@ const mockFeatureUsage = [
 ];
 
 const mockAlerts = [
-  { id: 1, type: 'warning', message: 'High response time detected', severity: 'medium', timestamp: '2024-01-05T10:30:00Z' },
-  { id: 2, type: 'info', message: 'System maintenance scheduled', severity: 'low', timestamp: '2024-01-05T09:15:00Z' },
-  { id: 3, type: 'error', message: 'Database connection timeout', severity: 'high', timestamp: '2024-01-05T08:45:00Z' }
+  { id: 1, type: 'warning', message: 'High response time detected', severity: 'medium', timestamp: '2025-09-30T10:30:00Z' },
+  { id: 2, type: 'info', message: 'System maintenance scheduled', severity: 'low', timestamp: '2025-09-30T09:15:00Z' },
+  { id: 3, type: 'error', message: 'Database connection timeout', severity: 'high', timestamp: '2025-09-30T08:45:00Z' }
 ];
 
 // Main Admin Dashboard Component
