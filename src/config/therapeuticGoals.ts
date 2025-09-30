@@ -1,4 +1,4 @@
-import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield } from 'lucide-react';
+import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield, Moon } from 'lucide-react';
 
 // Import the new therapeutic goal card images
 import focusEnhancementCard from '@/assets/focus-enhancement-dewdrop.png';
@@ -12,6 +12,7 @@ import calmMoodBoostCard from '@/assets/calm-mood-boost-leaf.png';
 import anxietySupportCard from '@/assets/anxiety-support-lotus.png';
 import painSupportCard from '@/assets/pain-support-buds.png';
 import calmMoodBoostCardNew from '@/assets/calm-mood-boost-lotus.png';
+import sleepPreparationCard from '@/assets/non-sleep-deep-rest-leaf.png';
 
 
 // Single source of truth for all therapeutic goals
@@ -123,6 +124,22 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   },
   {
+    id: 'sleep-preparation',
+    slug: 'sleep-preparation',
+    backendKey: 'sleep-preparation',
+    name: 'Sleep Preparation',
+    shortName: 'Sleep',
+    description: 'Calming music to prepare your mind and body for restful sleep',
+    icon: Moon,
+    artwork: sleepPreparationCard,
+    color: 'indigo',
+    gradient: 'from-indigo-500 to-blue-500',
+    bpmRange: { min: 30, max: 60, optimal: 45 },
+    vadProfile: { valence: 0.5, arousal: -0.5, dominance: 0.2 },
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'gentleclassicalforpain'],
+    synonyms: ['sleep', 'rest', 'bedtime', 'wind-down', 'nsdr', 'non-sleep-deep-rest', 'deep-rest', 'relaxation']
+  },
+  {
     id: 'energy-boost',
     slug: 'energy-boost',
     backendKey: 'energy-boost',
@@ -174,7 +191,7 @@ export const SYNONYM_TO_GOAL = THERAPEUTIC_GOALS.reduce((acc, goal) => {
 }, {} as Record<string, TherapeuticGoal>);
 
 // Legacy type for backwards compatibility - updated to combine goals
-export type GoalSlug = 'anxiety-support' | 'focus-enhancement' | 'depression-support' | 'pain-support' | 'energy-boost';
+export type GoalSlug = 'anxiety-support' | 'focus-enhancement' | 'depression-support' | 'pain-support' | 'energy-boost' | 'sleep-preparation';
 
 // Export goal slugs array for backwards compatibility
 export const GOALS: GoalSlug[] = THERAPEUTIC_GOALS.map(g => g.slug as GoalSlug);
