@@ -80,7 +80,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
 
       const updateRecentlyPlayed = (trackIds: string[]) => {
         const recent = getRecentlyPlayed();
-        const updated = [...trackIds, ...recent].slice(0, 100); // Keep last 100 tracks
+        const updated = [...trackIds, ...recent].slice(0, 200); // Increased to 200 tracks
         localStorage.setItem('recentlyPlayedTracks', JSON.stringify(updated));
       };
 

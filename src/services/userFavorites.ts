@@ -22,6 +22,19 @@ export class UserFavoritesService {
       // Generate a consistent numeric ID from the string track ID
       const trackIdHash = this.generateTrackHash(track.id);
 
+      // Check if already favorited to prevent duplicates
+      const { data: existing } = await supabase
+        .from('favorites')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('track_id', trackIdHash)
+        .maybeSingle();
+
+      if (existing) {
+        console.log('🤍 Track already favorited, skipping');
+        return { success: true };
+      }
+
       const { error } = await supabase
         .from('favorites')
         .insert({
@@ -34,6 +47,7 @@ export class UserFavoritesService {
         return { success: false, error: error.message };
       }
 
+      console.log('🤍 Successfully favorited track:', track.id);
       return { success: true };
     } catch (error) {
       console.error('Error adding favorite:', error);
@@ -155,17 +169,24 @@ export class UserFavoritesService {
   }
 
   /**
-   * Generate a consistent numeric hash from string track ID
-   * Using a better hash function to reduce collisions
+   * Generate a unique numeric hash from string track ID
+   * Uses improved hashing with better collision resistance
    */
   private static generateTrackHash(trackId: string): number {
-    let hash = 5381; // Use djb2 hash algorithm for better distribution
+    // Use FNV-1a hash algorithm for better distribution
+    let hash = 2166136261; // FNV offset basis
     for (let i = 0; i < trackId.length; i++) {
-      hash = ((hash << 5) + hash) + trackId.charCodeAt(i);
-      hash = hash & hash; // Convert to 32-bit integer
+      hash ^= trackId.charCodeAt(i);
+      hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
     }
-    // Ensure positive number and add length component to further reduce collisions
-    return Math.abs(hash) + trackId.length * 1000000;
+    // Ensure positive number and add additional uniqueness
+    const uniqueHash = Math.abs(hash >>> 0) + (trackId.length * 10000000);
+    
+    // Add first/last char codes for extra collision resistance
+    const firstChar = trackId.charCodeAt(0) * 100000;
+    const lastChar = trackId.charCodeAt(trackId.length - 1) * 10000;
+    
+    return uniqueHash + firstChar + lastChar;
   }
 
   private static async getLocalFavorites(): Promise<UserFavorite[]> {

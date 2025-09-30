@@ -11,7 +11,7 @@ interface EnhancedTrack extends Track {
 
 // Track recently played tracks per user to avoid repetition
 const recentlyPlayed = new Map<string, Set<string>>();
-const RECENT_TRACKS_LIMIT = 50; // Remember last 50 tracks per user
+const RECENT_TRACKS_LIMIT = 150; // Increased to remember last 150 tracks per user
 
 export class EnhancedTrackSelectionService {
   
@@ -86,26 +86,28 @@ export class EnhancedTrackSelectionService {
   }
   
   /**
-   * Calculate variety score based on audio features
+   * Calculate variety score with stronger novelty weighting
    */
   private static calculateVarietyScore(track: Track): number {
-    let score = Math.random(); // Base randomness
+    let score = Math.random() * 0.5; // Higher base randomness for novelty
     
-    // Boost score for variety in BPM ranges
+    // INCREASED: Boost score for variety in BPM ranges
     if (track.bpm) {
-      if (track.bpm < 80 || track.bpm > 140) score += 0.2; // Unusual tempos get variety boost
+      if (track.bpm < 80 || track.bpm > 140) score += 0.4; // Doubled from 0.2
+      score += Math.abs(track.bpm - 120) / 200; // Add granular BPM variety
     }
     
-    // Boost score for variety in energy levels
+    // INCREASED: Boost score for variety in energy levels
     if (track.energy_level) {
-      if (track.energy_level < 3 || track.energy_level > 7) score += 0.2; // Extreme energy gets variety boost
+      if (track.energy_level < 3 || track.energy_level > 7) score += 0.4; // Doubled from 0.2
+      score += Math.abs(track.energy_level - 5) / 10; // Add granular energy variety
     }
     
-    // Boost score for tracks with unique characteristics
-    if (track.camelot_key) score += 0.1; // Harmonic information adds variety
-    if (track.valence && (track.valence < 0.3 || track.valence > 0.8)) score += 0.1; // Extreme moods
+    // INCREASED: Boost score for tracks with unique characteristics
+    if (track.camelot_key) score += 0.3; // Tripled from 0.1
+    if (track.valence && (track.valence < 0.3 || track.valence > 0.8)) score += 0.3; // Tripled from 0.1
     
-    return Math.min(score, 1); // Cap at 1.0
+    return Math.min(score, 1.5); // Increased cap to allow higher variety scores
   }
   
   /**
@@ -133,35 +135,40 @@ export class EnhancedTrackSelectionService {
   }
   
   /**
-   * Create diverse selection with strategic spacing to avoid back-to-back similar tracks
+   * Create diverse selection with stronger novelty preference
    */
   private static createDiverseSelection(
     tracks: EnhancedTrack[],
     favorites: any[],
     count: number
   ): Track[] {
-    const favoriteCount = Math.min(Math.ceil(count * 0.3), favorites.length); // 30% favorites
+    // ADJUSTED: 85% variety, 15% favorites for more novelty
+    const favoriteCount = Math.min(Math.ceil(count * 0.15), favorites.length);
     const varietyCount = count - favoriteCount;
     
-    // Sort by variety score for non-favorites
+    // Sort by variety score for non-favorites with randomization
     const nonFavorites = tracks.filter(t => !t.is_favorite);
     const favoritesTracks = tracks.filter(t => t.is_favorite);
     
-    // Select high-variety non-favorites
+    // Select high-variety non-favorites with shuffling for novelty
     const selectedNonFavorites = nonFavorites
-      .sort((a, b) => (b.variety_score || 0) - (a.variety_score || 0))
+      .sort((a, b) => {
+        const scoreA = (a.variety_score || 0) + (Math.random() * 0.3);
+        const scoreB = (b.variety_score || 0) + (Math.random() * 0.3);
+        return scoreB - scoreA;
+      })
       .slice(0, varietyCount);
     
-    // Select favorites
+    // Select favorites with more randomization
     const selectedFavorites = favoritesTracks
-      .sort(() => Math.random() - 0.5) // Randomize favorites
+      .sort(() => Math.random() - 0.5)
       .slice(0, favoriteCount);
     
     // Combine tracks and strategically space them to avoid similar tracks back-to-back
     const allTracks = [...selectedNonFavorites, ...selectedFavorites];
     const spacedTracks = this.createOptimalSpacing(allTracks);
     
-    console.log(`🎵 Final selection: ${selectedNonFavorites.length} variety tracks + ${selectedFavorites.length} favorites with optimal spacing`);
+    console.log(`🎵 Enhanced variety: ${selectedNonFavorites.length} diverse tracks + ${selectedFavorites.length} favorites with optimal spacing`);
     
     return spacedTracks;
   }
