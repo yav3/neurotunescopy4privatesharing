@@ -895,6 +895,129 @@ export type Database = {
         }
         Relationships: []
       }
+      genre_market_trends: {
+        Row: {
+          audio_feature_trends: Json | null
+          award_season_factor: number | null
+          created_at: string
+          critical_reception_trends: Json | null
+          crossover_potential: Json | null
+          emerging_subgenres: Json | null
+          genre: string
+          id: string
+          instrumentation_trends: Json | null
+          production_trends: Json | null
+          successful_track_characteristics: Json | null
+          trend_date: string
+          trend_window_days: number
+        }
+        Insert: {
+          audio_feature_trends?: Json | null
+          award_season_factor?: number | null
+          created_at?: string
+          critical_reception_trends?: Json | null
+          crossover_potential?: Json | null
+          emerging_subgenres?: Json | null
+          genre: string
+          id?: string
+          instrumentation_trends?: Json | null
+          production_trends?: Json | null
+          successful_track_characteristics?: Json | null
+          trend_date: string
+          trend_window_days?: number
+        }
+        Update: {
+          audio_feature_trends?: Json | null
+          award_season_factor?: number | null
+          created_at?: string
+          critical_reception_trends?: Json | null
+          crossover_potential?: Json | null
+          emerging_subgenres?: Json | null
+          genre?: string
+          id?: string
+          instrumentation_trends?: Json | null
+          production_trends?: Json | null
+          successful_track_characteristics?: Json | null
+          trend_date?: string
+          trend_window_days?: number
+        }
+        Relationships: []
+      }
+      genre_prediction_models: {
+        Row: {
+          created_at: string
+          genre: string
+          genre_specific_features: Json | null
+          id: string
+          is_active: boolean
+          model_name: string
+          model_params: Json | null
+          model_type: string
+          model_version: string
+          performance_metrics: Json | null
+          success_criteria: Json
+          training_data_sources: Json
+        }
+        Insert: {
+          created_at?: string
+          genre: string
+          genre_specific_features?: Json | null
+          id?: string
+          is_active?: boolean
+          model_name: string
+          model_params?: Json | null
+          model_type: string
+          model_version: string
+          performance_metrics?: Json | null
+          success_criteria: Json
+          training_data_sources: Json
+        }
+        Update: {
+          created_at?: string
+          genre?: string
+          genre_specific_features?: Json | null
+          id?: string
+          is_active?: boolean
+          model_name?: string
+          model_params?: Json | null
+          model_type?: string
+          model_version?: string
+          performance_metrics?: Json | null
+          success_criteria?: Json
+          training_data_sources?: Json
+        }
+        Relationships: []
+      }
+      genre_success_metrics: {
+        Row: {
+          created_at: string
+          genre: string
+          id: string
+          metric_name: string
+          success_metric_type: string
+          threshold_value: number | null
+          weight_factor: number
+        }
+        Insert: {
+          created_at?: string
+          genre: string
+          id?: string
+          metric_name: string
+          success_metric_type: string
+          threshold_value?: number | null
+          weight_factor?: number
+        }
+        Update: {
+          created_at?: string
+          genre?: string
+          id?: string
+          metric_name?: string
+          success_metric_type?: string
+          threshold_value?: number | null
+          weight_factor?: number
+        }
+        Relationships: []
+      }
       hedging_positions: {
         Row: {
           contract_duration_months: number | null
@@ -946,6 +1069,51 @@ export type Database = {
           position_date?: string
           scenario_protection?: string | null
           underlying_commodity?: string
+        }
+        Relationships: []
+      }
+      hit_prediction_models: {
+        Row: {
+          created_at: string
+          features_used: Json
+          id: string
+          is_active: boolean
+          model_binary: string | null
+          model_name: string
+          model_params: Json | null
+          model_type: string
+          model_version: string
+          performance_metrics: Json | null
+          training_data_end: string
+          training_data_start: string
+        }
+        Insert: {
+          created_at?: string
+          features_used: Json
+          id?: string
+          is_active?: boolean
+          model_binary?: string | null
+          model_name: string
+          model_params?: Json | null
+          model_type: string
+          model_version: string
+          performance_metrics?: Json | null
+          training_data_end: string
+          training_data_start: string
+        }
+        Update: {
+          created_at?: string
+          features_used?: Json
+          id?: string
+          is_active?: boolean
+          model_binary?: string | null
+          model_name?: string
+          model_params?: Json | null
+          model_type?: string
+          model_version?: string
+          performance_metrics?: Json | null
+          training_data_end?: string
+          training_data_start?: string
         }
         Relationships: []
       }
@@ -1326,6 +1494,51 @@ export type Database = {
           sawdust_recovery_rate?: number | null
           updated_at?: string
           uptime_percent?: number | null
+        }
+        Relationships: []
+      }
+      music_awards: {
+        Row: {
+          award_name: string
+          category: string
+          created_at: string
+          genre_classification: string | null
+          id: string
+          is_nominee: boolean
+          is_winner: boolean
+          spotify_track_id: string | null
+          winner_album_name: string | null
+          winner_artist_name: string | null
+          winner_track_name: string | null
+          year: number
+        }
+        Insert: {
+          award_name: string
+          category: string
+          created_at?: string
+          genre_classification?: string | null
+          id?: string
+          is_nominee?: boolean
+          is_winner?: boolean
+          spotify_track_id?: string | null
+          winner_album_name?: string | null
+          winner_artist_name?: string | null
+          winner_track_name?: string | null
+          year: number
+        }
+        Update: {
+          award_name?: string
+          category?: string
+          created_at?: string
+          genre_classification?: string | null
+          id?: string
+          is_nominee?: boolean
+          is_winner?: boolean
+          spotify_track_id?: string | null
+          winner_album_name?: string | null
+          winner_artist_name?: string | null
+          winner_track_name?: string | null
+          year?: number
         }
         Relationships: []
       }
@@ -1970,6 +2183,249 @@ export type Database = {
         }
         Relationships: []
       }
+      spotify_chart_history: {
+        Row: {
+          album_name: string | null
+          artist_name: string
+          chart_date: string
+          chart_name: string
+          created_at: string
+          id: string
+          popularity_score: number
+          position: number | null
+          track_id: string
+          track_name: string
+        }
+        Insert: {
+          album_name?: string | null
+          artist_name: string
+          chart_date: string
+          chart_name: string
+          created_at?: string
+          id?: string
+          popularity_score: number
+          position?: number | null
+          track_id: string
+          track_name: string
+        }
+        Update: {
+          album_name?: string | null
+          artist_name?: string
+          chart_date?: string
+          chart_name?: string
+          created_at?: string
+          id?: string
+          popularity_score?: number
+          position?: number | null
+          track_id?: string
+          track_name?: string
+        }
+        Relationships: []
+      }
+      spotify_market_trends: {
+        Row: {
+          avg_danceability: number | null
+          avg_energy: number | null
+          avg_loudness: number | null
+          avg_popularity: number | null
+          avg_tempo: number | null
+          avg_valence: number | null
+          created_at: string
+          dominant_keys: Json | null
+          energy_trend: number | null
+          feature_centroid: Json | null
+          genre: string | null
+          id: string
+          rising_artists: Json | null
+          tempo_trend: number | null
+          trend_date: string
+          trend_window_days: number
+          valence_trend: number | null
+        }
+        Insert: {
+          avg_danceability?: number | null
+          avg_energy?: number | null
+          avg_loudness?: number | null
+          avg_popularity?: number | null
+          avg_tempo?: number | null
+          avg_valence?: number | null
+          created_at?: string
+          dominant_keys?: Json | null
+          energy_trend?: number | null
+          feature_centroid?: Json | null
+          genre?: string | null
+          id?: string
+          rising_artists?: Json | null
+          tempo_trend?: number | null
+          trend_date: string
+          trend_window_days?: number
+          valence_trend?: number | null
+        }
+        Update: {
+          avg_danceability?: number | null
+          avg_energy?: number | null
+          avg_loudness?: number | null
+          avg_popularity?: number | null
+          avg_tempo?: number | null
+          avg_valence?: number | null
+          created_at?: string
+          dominant_keys?: Json | null
+          energy_trend?: number | null
+          feature_centroid?: Json | null
+          genre?: string | null
+          id?: string
+          rising_artists?: Json | null
+          tempo_trend?: number | null
+          trend_date?: string
+          trend_window_days?: number
+          valence_trend?: number | null
+        }
+        Relationships: []
+      }
+      spotify_playlists: {
+        Row: {
+          country_code: string | null
+          created_at: string
+          description: string | null
+          follower_count: number | null
+          id: string
+          is_chart: boolean
+          last_synced_at: string | null
+          playlist_name: string
+          spotify_playlist_id: string
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          follower_count?: number | null
+          id?: string
+          is_chart?: boolean
+          last_synced_at?: string | null
+          playlist_name: string
+          spotify_playlist_id: string
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          follower_count?: number | null
+          id?: string
+          is_chart?: boolean
+          last_synced_at?: string | null
+          playlist_name?: string
+          spotify_playlist_id?: string
+        }
+        Relationships: []
+      }
+      spotify_track_features: {
+        Row: {
+          acousticness: number | null
+          artist_name: string
+          avg_section_duration: number | null
+          chart_peak_position: number | null
+          chorus_start_time: number | null
+          created_at: string
+          danceability: number | null
+          duration_ms: number | null
+          energy: number | null
+          fade_in_duration: number | null
+          fade_out_duration: number | null
+          hit_probability: number | null
+          hit_score: number | null
+          id: string
+          instrumentalness: number | null
+          key_confidence: number | null
+          key_signature: number | null
+          liveness: number | null
+          loudness: number | null
+          mode: number | null
+          mode_confidence: number | null
+          popularity: number | null
+          popularity_velocity: number | null
+          section_count: number | null
+          speechiness: number | null
+          spotify_track_id: string
+          tempo: number | null
+          tempo_confidence: number | null
+          time_signature: number | null
+          track_name: string
+          updated_at: string
+          valence: number | null
+          weeks_on_chart: number | null
+        }
+        Insert: {
+          acousticness?: number | null
+          artist_name: string
+          avg_section_duration?: number | null
+          chart_peak_position?: number | null
+          chorus_start_time?: number | null
+          created_at?: string
+          danceability?: number | null
+          duration_ms?: number | null
+          energy?: number | null
+          fade_in_duration?: number | null
+          fade_out_duration?: number | null
+          hit_probability?: number | null
+          hit_score?: number | null
+          id?: string
+          instrumentalness?: number | null
+          key_confidence?: number | null
+          key_signature?: number | null
+          liveness?: number | null
+          loudness?: number | null
+          mode?: number | null
+          mode_confidence?: number | null
+          popularity?: number | null
+          popularity_velocity?: number | null
+          section_count?: number | null
+          speechiness?: number | null
+          spotify_track_id: string
+          tempo?: number | null
+          tempo_confidence?: number | null
+          time_signature?: number | null
+          track_name: string
+          updated_at?: string
+          valence?: number | null
+          weeks_on_chart?: number | null
+        }
+        Update: {
+          acousticness?: number | null
+          artist_name?: string
+          avg_section_duration?: number | null
+          chart_peak_position?: number | null
+          chorus_start_time?: number | null
+          created_at?: string
+          danceability?: number | null
+          duration_ms?: number | null
+          energy?: number | null
+          fade_in_duration?: number | null
+          fade_out_duration?: number | null
+          hit_probability?: number | null
+          hit_score?: number | null
+          id?: string
+          instrumentalness?: number | null
+          key_confidence?: number | null
+          key_signature?: number | null
+          liveness?: number | null
+          loudness?: number | null
+          mode?: number | null
+          mode_confidence?: number | null
+          popularity?: number | null
+          popularity_velocity?: number | null
+          section_count?: number | null
+          speechiness?: number | null
+          spotify_track_id?: string
+          tempo?: number | null
+          tempo_confidence?: number | null
+          time_signature?: number | null
+          track_name?: string
+          updated_at?: string
+          valence?: number | null
+          weeks_on_chart?: number | null
+        }
+        Relationships: []
+      }
       staging_files: {
         Row: {
           bucket: string
@@ -2383,6 +2839,129 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      track_genre_success_scores: {
+        Row: {
+          award_potential_score: number | null
+          composite_success_score: number | null
+          critical_acclaim_score: number | null
+          genre: string
+          genre_hit_score: number | null
+          id: string
+          mainstream_hit_score: number | null
+          model_id: string | null
+          recommendations: Json | null
+          scored_at: string
+          success_factors: Json | null
+          track_id: string | null
+        }
+        Insert: {
+          award_potential_score?: number | null
+          composite_success_score?: number | null
+          critical_acclaim_score?: number | null
+          genre: string
+          genre_hit_score?: number | null
+          id?: string
+          mainstream_hit_score?: number | null
+          model_id?: string | null
+          recommendations?: Json | null
+          scored_at?: string
+          success_factors?: Json | null
+          track_id?: string | null
+        }
+        Update: {
+          award_potential_score?: number | null
+          composite_success_score?: number | null
+          critical_acclaim_score?: number | null
+          genre?: string
+          genre_hit_score?: number | null
+          id?: string
+          mainstream_hit_score?: number | null
+          model_id?: string | null
+          recommendations?: Json | null
+          scored_at?: string
+          success_factors?: Json | null
+          track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_genre_success_scores_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "genre_prediction_models"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_genre_success_scores_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      track_hit_predictions: {
+        Row: {
+          actionable_deltas: Json | null
+          confidence_interval: Json | null
+          distance_to_hit_profile: number | null
+          feature_importance: Json | null
+          genre_adjusted_score: number | null
+          hit_probability: number | null
+          hit_score: number | null
+          id: string
+          model_id: string | null
+          predicted_at: string
+          predicted_popularity: number | null
+          track_id: string | null
+          trend_alignment_score: number | null
+        }
+        Insert: {
+          actionable_deltas?: Json | null
+          confidence_interval?: Json | null
+          distance_to_hit_profile?: number | null
+          feature_importance?: Json | null
+          genre_adjusted_score?: number | null
+          hit_probability?: number | null
+          hit_score?: number | null
+          id?: string
+          model_id?: string | null
+          predicted_at?: string
+          predicted_popularity?: number | null
+          track_id?: string | null
+          trend_alignment_score?: number | null
+        }
+        Update: {
+          actionable_deltas?: Json | null
+          confidence_interval?: Json | null
+          distance_to_hit_profile?: number | null
+          feature_importance?: Json | null
+          genre_adjusted_score?: number | null
+          hit_probability?: number | null
+          hit_score?: number | null
+          id?: string
+          model_id?: string | null
+          predicted_at?: string
+          predicted_popularity?: number | null
+          track_id?: string | null
+          trend_alignment_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_hit_predictions_model_id_fkey"
+            columns: ["model_id"]
+            isOneToOne: false
+            referencedRelation: "hit_prediction_models"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_hit_predictions_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tracks: {
         Row: {
@@ -3304,6 +3883,27 @@ export type Database = {
           table_name: string
         }[]
       }
+      calculate_genre_success_score: {
+        Args: {
+          _award_nominations?: number
+          _award_wins?: number
+          _chart_position?: number
+          _critical_score?: number
+          _genre: string
+          _streaming_count?: number
+          _track_id: string
+        }
+        Returns: number
+      }
+      calculate_hit_score: {
+        Args: {
+          feature_alignment?: number
+          genre_weight?: number
+          popularity_score: number
+          trend_alignment?: number
+        }
+        Returns: number
+      }
       clean_track_title_from_filename: {
         Args: { storage_key: string }
         Returns: string
@@ -3388,9 +3988,23 @@ export type Database = {
         Args: { cmd_type: number }
         Returns: string
       }
+      get_genre_appropriate_recommendations: {
+        Args: { _genre: string; _track_id: string }
+        Returns: Json
+      }
       get_histogram_timings: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_hit_potential_tracks: {
+        Args: { limit_count?: number; min_score?: number }
+        Returns: {
+          actionable_deltas: Json
+          hit_probability: number
+          hit_score: number
+          title: string
+          track_id: string
+        }[]
       }
       get_or_create_patient_for_user: {
         Args: { user_id: string }

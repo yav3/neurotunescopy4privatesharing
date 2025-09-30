@@ -101,6 +101,35 @@ export class UserFavoritesService {
     }
   }
 
+  /**
+   * Get all favorites from all users (requires public read access or admin role)
+   * Useful for analytics and admin dashboards
+   */
+  static async getAllFavorites(): Promise<UserFavorite[]> {
+    try {
+      const { data: favorites, error } = await supabase
+        .from('favorites')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching all favorites:', error);
+        return [];
+      }
+
+      // Convert track_id from number to string to match interface
+      const formattedFavorites = favorites?.map(fav => ({
+        ...fav,
+        track_id: fav.track_id.toString()
+      })) || [];
+
+      return formattedFavorites;
+    } catch (error) {
+      console.error('Error fetching all favorites:', error);
+      return [];
+    }
+  }
+
   static async isFavorite(trackId: string): Promise<boolean> {
     try {
       const { data: { user } } = await supabase.auth.getUser();
