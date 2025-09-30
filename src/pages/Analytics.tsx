@@ -25,6 +25,8 @@ import { useAuthContext } from '@/components/auth/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { format, subDays, startOfDay, endOfDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { UserJourneyVisualization } from '@/components/analytics/UserJourneyVisualization';
+import { QAAutomationMonitor } from '@/components/analytics/QAAutomationMonitor';
 
 interface AnalyticsData {
   totalUsers: number;
@@ -399,6 +401,8 @@ const Analytics: React.FC = () => {
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">User Details</TabsTrigger>
+            <TabsTrigger value="journeys">User Journeys</TabsTrigger>
+            <TabsTrigger value="qa">QA Automation</TabsTrigger>
             <TabsTrigger value="engagement">Engagement</TabsTrigger>
             <TabsTrigger value="devices">Devices</TabsTrigger>
           </TabsList>
@@ -544,6 +548,14 @@ const Analytics: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="journeys" className="space-y-6">
+            <UserJourneyVisualization />
+          </TabsContent>
+
+          <TabsContent value="qa" className="space-y-6">
+            <QAAutomationMonitor />
           </TabsContent>
 
           <TabsContent value="engagement">
