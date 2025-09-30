@@ -12,6 +12,7 @@ import { adminLog, adminWarn, adminError } from '@/utils/adminLogging';
 import { filterBlockedTracks } from '@/services/blockedTracks';
 import { configureTherapeuticAudio, initTherapeuticAudio, createSilentErrorHandler } from '@/utils/therapeuticAudioConfig';
 import { ScreenWakeLock } from '@/utils/screenWakeLock';
+import { MediaSessionService } from '@/services/mediaSession';
 import { AudioCacheService } from '@/services/audioCache';
 import { WorkingEdgeCollectionService } from '@/services/workingEdgeCollection';
 import { supabase } from '@/integrations/supabase/client';
@@ -646,6 +647,29 @@ export const useAudioStore = create<AudioState>((set, get) => {
             }
           }
         }
+        
+        // Setup media session for background playback and device controls
+        if (currentTrack) {
+          MediaSessionService.setupMediaSession(
+            {
+              title: currentTrack.title,
+              artist: currentTrack.artist || 'NeuroTunes',
+              artwork: get().currentTrackArtwork || undefined
+            },
+            {
+              play: () => get().play(),
+              pause: () => get().pause(),
+              previoustrack: () => get().prev(),
+              nexttrack: () => get().next(),
+              seekto: (details) => {
+                if (details.seekTime !== undefined) {
+                  get().seek(details.seekTime);
+                }
+              }
+            }
+          );
+        }
+        
         set({ isPlaying: true });
       });
       
@@ -723,6 +747,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
           set({ isPlaying: actuallyPlaying, currentTime, duration });
         } else {
           set({ currentTime, duration });
+        }
+        
+        // Update media session position for seek bar in device controls
+        if (duration > 0 && actuallyPlaying) {
+          MediaSessionService.updatePositionState(duration, currentTime);
         }
         
         // Track session progress
@@ -1286,6 +1315,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
       const audio = initAudio();
       audio.pause();
       audio.src = '';
+      
+      // Clear media session and release wake lock
+      MediaSessionService.clear();
+      ScreenWakeLock.release();
+      
       set({ 
         isPlaying: false, 
         currentTrack: null, 
@@ -1601,6 +1635,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
         // Request wake lock to prevent screen sleep during playback
         await ScreenWakeLock.request();
         
+        // Update media session for background playback and device controls
+        MediaSessionService.setPlaybackState('playing');
+        
         set({ error: undefined, isPlaying: true });
       } catch (error: any) {
         console.error('🎵 Play failed:', error);
@@ -1774,6 +1811,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
       
       // Release wake lock when pausing to save battery
       ScreenWakeLock.release();
+      
+      // Update media session state
+      MediaSessionService.setPlaybackState('paused');
       
       // Ensure state is synchronized immediately
       set({ isPlaying: false });
