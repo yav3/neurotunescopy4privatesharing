@@ -27,6 +27,7 @@ import { format, subDays, startOfDay, endOfDay } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { UserJourneyVisualization } from '@/components/analytics/UserJourneyVisualization';
 import { QAAutomationMonitor } from '@/components/analytics/QAAutomationMonitor';
+import { SingleUserJourneyDebugger } from '@/components/analytics/SingleUserJourneyDebugger';
 
 interface AnalyticsData {
   totalUsers: number;
@@ -551,6 +552,7 @@ const Analytics: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="journeys" className="space-y-6">
+            <SingleUserJourneyDebugger />
             <UserJourneyVisualization />
           </TabsContent>
 
