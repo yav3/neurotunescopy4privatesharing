@@ -151,7 +151,7 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-4 sm:pt-5 md:pt-6 lg:pt-8">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-2 sm:pt-3 md:pt-4">
         <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12 md:space-y-14 lg:space-y-16">
           
 
