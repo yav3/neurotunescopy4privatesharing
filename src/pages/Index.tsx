@@ -6,6 +6,7 @@ import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
 import classicalSonatasImage from '../assets/classical-sonatas.png';
 import nocturnesImage from '../assets/nocturnes.png';
 import cornellLogo from '../assets/cornell-university.png';
@@ -173,6 +174,13 @@ const Index = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Comprehensive Insights Dashboard */}
+      <section className="py-16 bg-gradient-to-b from-black to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ComprehensiveInsightsDashboard />
         </div>
       </section>
 
