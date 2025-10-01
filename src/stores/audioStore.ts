@@ -262,22 +262,18 @@ const ensureAudioElement = (): HTMLAudioElement => {
   console.log('🔧 ensureAudioElement called - current element exists:', !!audioElement);
   if (audioElement && document.body.contains(audioElement)) return audioElement;
   
-  // Only clean up old audio elements if they're not currently playing
-  // This prevents interrupting playback during navigation
+  // Always clean up ALL other audio elements to prevent multiple playback
+  const currentElementId = getAudioElementId();
   document.querySelectorAll("audio").forEach(el => {
-    const currentElementId = getAudioElementId();
-    const isPlaying = !el.paused && !el.ended && el.currentTime > 0;
-    
-    if (el.id && el.id !== currentElementId && el.id.startsWith('audio-player-') && !isPlaying) {
-      console.warn(`[audio] Removing old user audio element: ${el.id}`);
+    if (el.id !== currentElementId) {
+      console.warn(`[audio] Stopping and removing audio element: ${el.id}`);
       el.pause();
+      el.currentTime = 0;
+      el.src = '';
       el.remove();
-    } else if (isPlaying && el.id !== currentElementId) {
-      console.log(`[audio] Preserving playing audio element during navigation: ${el.id}`);
     }
   });
   
-  const currentElementId = getAudioElementId();
   audioElement = document.getElementById(currentElementId) as HTMLAudioElement;
   if (!audioElement) {
     audioElement = document.createElement("audio");
@@ -470,25 +466,19 @@ export const useAudioStore = create<AudioState>((set, get) => {
     
     console.log('🎵 Audio element initialized:', audio.id, 'src:', audio.src);
     
-    // Only clean up extra audio elements if current audio is NOT playing
-    // This prevents interrupting playback during navigation
+    // Always clean up ALL extra audio elements to prevent simultaneous playback
     const allAudioElements = document.querySelectorAll('audio');
     if (allAudioElements.length > 1) {
       console.warn('🚨 Multiple audio elements detected!', allAudioElements.length);
       const currentElementId = getAudioElementId();
-      const isCurrentlyPlaying = !audio.paused && !audio.ended && audio.currentTime > 0;
-      
-      if (!isCurrentlyPlaying) {
-        allAudioElements.forEach((el, i) => {
-          if (el.id !== currentElementId) {
-            console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
-            el.pause();
-            el.remove();
-          }
-        });
-      } else {
-        console.log('🎵 Preserving multiple elements during active playback to avoid interruption');
-      }
+      allAudioElements.forEach((el, i) => {
+        if (el.id !== currentElementId) {
+          console.warn('🗑️ Removing extra audio element:', el.id || `unnamed-${i}`);
+          el.pause();
+          el.src = '';
+          el.remove();
+        }
+      });
     }
     
     // Critical fix: Only add event listeners once per audio element
