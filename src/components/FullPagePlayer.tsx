@@ -9,6 +9,8 @@ import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
+import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { Analytics } from '@/utils/analytics';
 
 // Import artwork for different therapeutic goals
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
@@ -51,9 +53,10 @@ export const FullPagePlayer = () => {
   }, [track?.id, isPlaying]);
 
   // Local state for enhanced features
-  const [isFavorited, setIsFavorited] = useState(false);
   const [lightningMode, setLightningMode] = useState(false);
   const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
+  const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
   // Local fallback art (user-provided examples)
   const localArtPool = [
@@ -130,12 +133,55 @@ export const FullPagePlayer = () => {
   }, [track?.id]);
 
   // Enhanced control handlers
-  const handleFavorite = () => {
-    setIsFavorited(!isFavorited);
-    toast({
-      title: isFavorited ? "Removed from favorites" : "Added to favorites",
-      description: track?.title,
-    });
+  const handleFavorite = async () => {
+    if (!track) return;
+    
+    setIsFavoriteLoading(true);
+    const isCurrentlyFavorited = isFavorite(track.id);
+    
+    try {
+      if (isCurrentlyFavorited) {
+        const result = await removeFavorite(track.id);
+        if (result.success) {
+          toast({
+            title: "Removed from favorites",
+            description: track.title,
+          });
+          Analytics.trackUserAction('track_unfavorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast({
+            title: "Error removing favorite",
+            description: result.error,
+            variant: "destructive"
+          });
+        }
+      } else {
+        const result = await addFavorite(track);
+        if (result.success) {
+          toast({
+            title: "Added to favorites",
+            description: track.title,
+          });
+          Analytics.trackUserAction('track_favorited', {
+            track_id: track.id,
+            track_title: track.title,
+            goal: track.goal || 'unknown'
+          });
+        } else {
+          toast({
+            title: "Error adding favorite",
+            description: result.error,
+            variant: "destructive"
+          });
+        }
+      }
+    } finally {
+      setIsFavoriteLoading(false);
+    }
   };
 
   const handleThumbsDown = async () => {
@@ -323,14 +369,19 @@ export const FullPagePlayer = () => {
               variant="ghost"
               size="icon"
               onClick={handleFavorite}
+              disabled={isFavoriteLoading}
               className={cn(
-                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
-                isFavorited 
+                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60",
+                track && isFavorite(track.id)
                   ? "text-red-400 bg-red-500/30 border-red-400/50 shadow-red-500/20" 
                   : "text-foreground hover:text-red-400 hover:bg-red-500/20 hover:border-red-400/30"
               )}
             >
-              <Heart className={cn("w-5 h-5", isFavorited && "fill-current")} />
+              {isFavoriteLoading ? (
+                <div className="w-5 h-5 border-2 border-current/60 border-t-current rounded-full animate-spin" />
+              ) : (
+                <Heart className={cn("w-5 h-5", track && isFavorite(track.id) && "fill-current")} />
+              )}
             </Button>
 
             {/* Thumbs Down */}
