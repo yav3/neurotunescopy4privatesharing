@@ -136,7 +136,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-indigo-500 to-blue-500',
     bpmRange: { min: 30, max: 60, optimal: 45 },
     vadProfile: { valence: 0.5, arousal: -0.5, dominance: 0.2 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus', 'gentleclassicalforpain'],
+    musicBuckets: ['Nocturnes', 'newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus', 'gentleclassicalforpain'],
     synonyms: ['sleep', 'rest', 'bedtime', 'wind-down', 'nsdr', 'non-sleep-deep-rest', 'deep-rest', 'relaxation']
   },
   {
