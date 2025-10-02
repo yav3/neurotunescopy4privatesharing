@@ -304,7 +304,7 @@ const Index = () => {
                 className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
+                  filter: 'grayscale(100%) invert(1) brightness(1.8)'
                 }}
               />
             </div>
@@ -315,7 +315,7 @@ const Index = () => {
                 className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
+                  filter: 'grayscale(100%) invert(1) brightness(1.8)'
                 }}
               />
             </div>
@@ -326,7 +326,7 @@ const Index = () => {
                 className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
+                  filter: 'grayscale(100%) invert(1) brightness(1.8)'
                 }}
               />
             </div>
@@ -337,7 +337,7 @@ const Index = () => {
                 className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
+                  filter: 'grayscale(100%) invert(1) brightness(1.8)'
                 }}
               />
             </div>
