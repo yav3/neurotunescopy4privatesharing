@@ -6,6 +6,7 @@ import { toast } from '@/hooks/use-toast';
 import { useAudioStore } from '@/stores';
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { blockTrack } from '@/services/blockedTracks';
 
 interface Track {
   id: string;
@@ -34,7 +35,6 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
 }) => {
   const { next, spatialAudioEnabled, toggleSpatialAudio } = useAudioStore();
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
-  const [blockedTracks, setBlockedTracks] = useState<Set<string>>(new Set());
   const [lightningMode, setLightningMode] = useState(false);
   const [favoriteLoadingStates, setFavoriteLoadingStates] = useState<Set<string>>(new Set());
 
@@ -74,19 +74,33 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
 
   const handleThumbsDown = async (trackId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const newBlocked = new Set(blockedTracks);
-    newBlocked.add(trackId);
-    setBlockedTracks(newBlocked);
+    const track = tracks.find(t => t.id === trackId);
+    if (!track) return;
     
-    toast({
-      title: "Track disliked",
-      description: "Skipping and blocking this track",
-    });
-    
-    // Skip to next track if this is the current track
-    const isCurrentTrack = currentTrack?.id === trackId;
-    if (isCurrentTrack) {
-      await next();
+    try {
+      await blockTrack(trackId, track.title);
+      toast({
+        title: "Track disliked",
+        description: "Blocked and skipping to next track",
+      });
+      
+      // Skip to next track if this is the current track
+      const isCurrentTrack = currentTrack?.id === trackId;
+      if (isCurrentTrack) {
+        await next();
+      }
+    } catch (error) {
+      console.error('Failed to block track:', error);
+      toast({
+        title: "Error",
+        description: "Failed to block track, but skipping anyway",
+      });
+      
+      // Still skip even if blocking failed
+      const isCurrentTrack = currentTrack?.id === trackId;
+      if (isCurrentTrack) {
+        await next();
+      }
     }
   };
 
@@ -109,8 +123,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
     });
   };
 
-  // Filter out blocked tracks
-  const filteredTracks = tracks.filter(track => !blockedTracks.has(track.id));
+  // No need to filter - blocked tracks won't appear in future sessions
 
   return (
     <div className="w-full">
@@ -159,7 +172,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
 
       {/* Playlist with Glass Morphism */}
       <div className="max-h-[60vh] overflow-y-auto pr-2">
-        {filteredTracks.map((track, index) => {
+        {tracks.map((track, index) => {
           const isCurrentTrack = currentTrack?.id === track.id;
           const isFavorited = React.useMemo(() => isFavorite(track.id), [isFavorite, track.id]);
           const isFavoriteLoading = favoriteLoadingStates.has(track.id);
@@ -253,7 +266,7 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
               </div>
               
               {/* Separator Line */}
-              {index < filteredTracks.length - 1 && (
+              {index < tracks.length - 1 && (
                 <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-2" />
               )}
             </div>
