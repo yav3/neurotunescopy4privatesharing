@@ -109,10 +109,7 @@ const Index = () => {
                 <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
               <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed max-w-3xl mt-6">
-                Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
-              </p>
-              <p className="text-base font-body text-gray-400 leading-relaxed max-w-3xl">
-                Our AI analyzes thousands of musical parameters to create personalized therapy sessions that target specific mental health and cognitive goals.
+                Personalized, closed loop music designed to delight. Powered by novel, patented AI, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
               </p>
               
               {/* Stats - Animated Horizontal Carousel */}
@@ -272,15 +269,6 @@ const Index = () => {
       {/* Therapeutic Benefits - Consolidated Features */}
       <section className="py-16 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-6">
-              Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
-            </h2>
-            <p className="text-base font-body text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Our AI analyzes thousands of musical parameters to create personalized therapy sessions 
-              that target specific mental health and cognitive goals.
-            </p>
-          </div>
 
           {/* Horizontal Scrolling Container */}
           <div className="w-full overflow-hidden">
