@@ -108,13 +108,11 @@ const Index = () => {
                 AI-Personalized, Closed Loop Wellness
                 <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
-              <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed max-w-xl">
-                Evidence-based AI platform that creates personalized therapeutic music experiences 
-                to support mental health, cognitive enhancement, and emotional well-being.
+              <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed max-w-3xl mt-6">
+                Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
               </p>
-              <p className="text-sm font-body text-gray-400 leading-relaxed max-w-xl">
-                Based on evidence from 15K+ studies, utilizing the science of music therapy — 
-                a field with 50+ years of successful implementation in clinical settings.
+              <p className="text-base font-body text-gray-400 leading-relaxed max-w-3xl">
+                Our AI analyzes thousands of musical parameters to create personalized therapy sessions that target specific mental health and cognitive goals.
               </p>
               
               {/* Stats - Animated Horizontal Carousel */}
@@ -315,10 +313,10 @@ const Index = () => {
               <img 
                 src={cornellLogo} 
                 alt="Cornell University"
-                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
                 }}
               />
             </div>
@@ -326,10 +324,10 @@ const Index = () => {
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion"
-                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
                 }}
               />
             </div>
@@ -337,10 +335,10 @@ const Index = () => {
               <img 
                 src={stanfordMedicineLogo} 
                 alt="Stanford Medicine"
-                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
                 }}
               />
             </div>
@@ -348,10 +346,10 @@ const Index = () => {
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell"
-                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                className="w-20 h-20 object-contain"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                  filter: 'grayscale(100%) brightness(1.2) contrast(1.3)'
                 }}
               />
             </div>
