@@ -10,6 +10,8 @@ import { GenreSelectionModal } from '@/components/GenreSelectionModal';
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
+import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
+import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 
 // Import beautiful nature images
 import peacefulLake from '@/assets/peaceful-lake-sunset.png';
@@ -64,6 +66,9 @@ const TherapeuticGoalsPage = () => {
   
   // Welcome returning users
   useWelcomeMessage();
+  
+  // Post-session survey
+  const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
@@ -307,6 +312,12 @@ const TherapeuticGoalsPage = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         goalId={selectedGoalId}
+      />
+      
+      {/* Post-Session Survey */}
+      <PostSessionSurvey
+        open={showSurvey}
+        onClose={closeSurvey}
       />
     </div>
   );

@@ -3,6 +3,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
+import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
+import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -43,6 +45,9 @@ const Index = () => {
   
   // Welcome returning users
   useWelcomeMessage();
+  
+  // Post-session survey
+  const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
   const therapeuticBenefits = [
     {
@@ -433,6 +438,12 @@ const Index = () => {
           </div>
         </div>
       </section>
+      
+      {/* Post-Session Survey */}
+      <PostSessionSurvey
+        open={showSurvey}
+        onClose={closeSurvey}
+      />
     </div>
   );
 };
