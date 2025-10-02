@@ -50,36 +50,43 @@ const Index = () => {
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
+  // Map display names to existing therapeutic goals (keeping music buckets intact)
   const therapeuticCards = [
     {
       title: "Relaxation",
       description: "Calm your mind",
-      image: relaxationCard
+      image: relaxationCard,
+      goalId: "stress-anxiety-support" // Keeps existing music buckets
     },
     {
       title: "Recovery",
       description: "Restore and heal",
-      image: recoveryCard
+      image: recoveryCard,
+      goalId: "pain-support" // Keeps existing music buckets
     },
     {
       title: "Focus+",
       description: "Enhance concentration",
-      image: focusCard
+      image: focusCard,
+      goalId: "focus-enhancement" // Keeps existing music buckets
     },
     {
       title: "Rest",
       description: "Deep relaxation",
-      image: restCard
+      image: restCard,
+      goalId: "meditation-support" // Keeps existing music buckets
     },
     {
       title: "Exercise",
       description: "Energize your workout",
-      image: exerciseCard
+      image: exerciseCard,
+      goalId: "energy-vitality" // Keeps existing music buckets
     },
     {
       title: "Boost",
       description: "Elevate your mood",
-      image: boostCard
+      image: boostCard,
+      goalId: "calm-mood-boost" // Keeps existing music buckets
     }
   ];
 
