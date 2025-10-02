@@ -112,21 +112,6 @@ const Index = () => {
                 Personalized, closed loop music designed to delight. Powered by novel, patented AI, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
               </p>
               
-              {/* Stats - Animated Horizontal Carousel */}
-              <div className="w-full overflow-hidden pt-6">
-                <div className="relative">
-                  <div className="flex gap-4 animate-scroll-infinite">
-                    {[...stats, ...stats, ...stats].map((stat, index) => (
-                      <div key={index} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm flex-shrink-0"
-                           style={{ width: '160px', minWidth: '160px' }}>
-                        <stat.icon className="h-7 w-7 text-white stroke-[1.5] mx-auto mb-3" />
-                        <div className="font-semibold font-headers text-white text-base mb-2">{stat.value}</div>
-                        <div className="text-sm font-body text-gray-400 font-medium">{stat.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -134,149 +119,35 @@ const Index = () => {
 
 
 
-      {/* Featured Therapy Programs */}
+      {/* Sponsored Research & Features Carousel */}
       <section className="py-16 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
-              Featured Therapy Programs
+              Sponsored Research Behind First-In-Class Tech
             </h2>
-            <p className="text-base font-body text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Clinically-designed music therapy sessions for various conditions and goals
-            </p>
           </div>
 
-          {/* Horizontal Scrolling Container */}
-          <div className="w-full overflow-hidden">
-            <div className="horizontal-scroll scrollbar-hide">
-              <div className="flex gap-6 pb-4" style={{ width: 'max-content' }}>
-                {/* Classical Crossover for Anxiety Reduction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
-                     style={{ width: '320px', minWidth: '320px' }}>
-                  <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
-                      <img 
-                        src="/src/assets/wave-splash-1.png" 
-                        alt="Classical Crossover for Anxiety Reduction" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/30"></div>
-                      <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
-                          Anxiety Relief
-                        </span>
-                      </div>
-                      <div 
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
-                      >
-                        <Play className="h-5 w-5" />
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
-                        Classical Crossover for Anxiety Reduction
-                      </h3>
-                      <p className="text-sm font-body text-gray-300 leading-relaxed">
-                        Precisely calibrated binaural beat frequencies to enhance concentration and mental clarity for cognitive tasks and deep work sessions.
-                      </p>
-                      <div className="flex items-center space-x-2 text-sm text-teal-400">
-                        <Shield className="h-4 w-4" />
-                        <span className="font-body font-medium">Neuroscience Validated</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Nocturnes for Meditation */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
-                     style={{ width: '320px', minWidth: '320px' }}>
-                  <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
-                      <img 
-                        src="/src/assets/zen-stones.png" 
-                        alt="Nocturnes for Meditation" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/30"></div>
-                      <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
-                          Focus Enhancement
-                        </span>
-                      </div>
-                      <div 
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
-                      >
-                        <Play className="h-5 w-5" />
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
-                        Nocturnes for Meditation
-                      </h3>
-                      <p className="text-sm font-body text-gray-300 leading-relaxed">
-                        Specifically designed for patients with major depressive disorder (MDD), anxiety disorders, and chronic pain using classical compositions enhanced with therapeutic frequencies
-                      </p>
-                      <div className="flex items-center space-x-2 text-sm text-cyan-400">
-                        <Shield className="h-4 w-4" />
-                        <span className="font-body font-medium">FDA Researched</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Delta Wave Induction */}
-                <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
-                     style={{ width: '320px', minWidth: '320px' }}>
-                  <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
-                      <img 
-                        src="/src/assets/peaceful-stones.png" 
-                        alt="Delta Wave Induction" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/30"></div>
-                      <div className="absolute top-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm px-3 py-1.5 border border-white/30 text-white rounded-full text-sm font-medium font-body">
-                          Non-Sleep Deep Rest
-                        </span>
-                      </div>
-                      <div 
-                        className="absolute bottom-3 right-3 w-12 h-12 border-2 border-white/30 text-white/50 rounded-full flex items-center justify-center backdrop-blur-sm cursor-not-allowed"
-                      >
-                        <Play className="h-5 w-5" />
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-medium font-headers text-white leading-tight">
-                        Delta Wave Induction
-                      </h3>
-                      <p className="text-sm font-body text-gray-300 leading-relaxed">
-                        Advanced sleep therapy using low-frequency sounds and binaural beats to promote deep restorative sleep for insomnia and sleep disorders.
-                      </p>
-                      <div className="flex items-center space-x-2 text-sm text-purple-400">
-                        <Shield className="h-4 w-4" />
-                        <span className="font-body font-medium">Sleep Study Verified</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Therapeutic Benefits - Consolidated Features */}
-      <section className="py-16 bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Horizontal Scrolling Container */}
+          {/* Unified Features Carousel */}
           <div className="w-full overflow-hidden">
             <div className="horizontal-scroll scrollbar-hide">
               <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
-                {[...therapeuticBenefits, ...therapeuticBenefits].map((benefit, index) => (
+                {/* Stats Cards */}
+                {stats.map((stat, index) => (
+                  <div key={`stat-${index}`} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm flex-shrink-0"
+                       style={{ width: '220px', minWidth: '220px' }}>
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mx-auto mb-4">
+                      <stat.icon className="h-6 w-6 text-white stroke-[1.5]" />
+                    </div>
+                    <div className="font-semibold font-headers text-white text-lg mb-2">{stat.value}</div>
+                    <div className="text-sm font-body text-gray-400 font-medium">{stat.label}</div>
+                  </div>
+                ))}
+                
+                {/* Therapeutic Benefits Cards */}
+                {therapeuticBenefits.map((benefit, index) => (
                   <div 
-                    key={index} 
+                    key={`benefit-${index}`} 
                     className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
                     style={{ width: '280px', minWidth: '280px' }}
                   >
