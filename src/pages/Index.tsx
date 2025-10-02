@@ -119,12 +119,12 @@ const Index = () => {
                 a field with 50+ years of successful implementation in clinical settings.
               </p>
               
-              {/* Stats - Horizontal Scrolling Layout */}
+              {/* Stats - Animated Horizontal Carousel */}
               <div className="w-full overflow-hidden pt-6">
-                <div className="horizontal-scroll scrollbar-hide">
-                  <div className="flex gap-4 pb-2" style={{ width: 'max-content' }}>
-                    {stats.map((stat, index) => (
-                      <div key={index} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
+                <div className="relative">
+                  <div className="flex gap-4 animate-scroll-infinite">
+                    {[...stats, ...stats, ...stats].map((stat, index) => (
+                      <div key={index} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm flex-shrink-0"
                            style={{ width: '160px', minWidth: '160px' }}>
                         <stat.icon className="h-7 w-7 text-white stroke-[1.5] mx-auto mb-3" />
                         <div className="font-semibold font-headers text-white text-base mb-2">{stat.value}</div>
@@ -196,7 +196,7 @@ const Index = () => {
                 <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
                      style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/wave-splash-1.png" 
                         alt="Classical Crossover for Anxiety Reduction" 
@@ -233,7 +233,7 @@ const Index = () => {
                 <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
                      style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/zen-stones.png" 
                         alt="Nocturnes for Meditation" 
@@ -270,7 +270,7 @@ const Index = () => {
                 <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-all duration-300 scroll-snap-start"
                      style={{ width: '320px', minWidth: '320px' }}>
                   <div className="flex flex-col space-y-4">
-                    <div className="relative w-full h-40 rounded-xl overflow-hidden">
+                    <div className="relative w-full h-28 rounded-xl overflow-hidden">
                       <img 
                         src="/src/assets/peaceful-stones.png" 
                         alt="Delta Wave Induction" 
