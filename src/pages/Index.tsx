@@ -53,26 +53,32 @@ const Index = () => {
   const therapeuticCards = [
     {
       title: "Relaxation",
+      description: "Calm your mind",
       image: relaxationCard
     },
     {
       title: "Recovery",
+      description: "Restore and heal",
       image: recoveryCard
     },
     {
       title: "Focus+",
+      description: "Enhance concentration",
       image: focusCard
     },
     {
       title: "Rest",
+      description: "Deep relaxation",
       image: restCard
     },
     {
       title: "Exercise",
+      description: "Energize your workout",
       image: exerciseCard
     },
     {
       title: "Boost",
+      description: "Elevate your mood",
       image: boostCard
     }
   ];
@@ -128,28 +134,27 @@ const Index = () => {
             </h2>
           </div>
 
-          {/* Unified Features Carousel */}
-          <div className="w-full overflow-hidden">
-            <div className="horizontal-scroll scrollbar-hide">
-              <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
-                {therapeuticCards.map((card, index) => (
-                  <div 
-                    key={index}
-                    className="relative overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl flex-shrink-0 group"
-                    style={{ width: '240px', minWidth: '240px', height: '320px' }}
-                  >
-                    <img 
-                      src={card.image} 
-                      alt={card.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-semibold font-headers text-white">{card.title}</h3>
-                    </div>
+          {/* Therapeutic Cards Grid - All visible */}
+          <div className="w-full">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {therapeuticCards.map((card, index) => (
+                <div 
+                  key={index}
+                  className="relative overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl group cursor-pointer"
+                  style={{ aspectRatio: '3/4' }}
+                >
+                  <img 
+                    src={card.image} 
+                    alt={card.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-xl font-semibold font-headers text-white mb-1">{card.title}</h3>
+                    <p className="text-xs font-body text-white/80">{card.description}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
