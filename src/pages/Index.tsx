@@ -9,15 +9,10 @@ import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
-import classicalSonatasImage from '../assets/classical-sonatas.png';
-import nocturnesImage from '../assets/nocturnes.png';
 import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
 import stanfordMedicineLogo from '../assets/stanford-medicine.png';
 import weillCornellLogo from '../assets/weill-cornell.png';
-import leafDropletImage from '../assets/leaf-droplet.png';
-import neurotunesLogo from '@/assets/neurotunes-logo.png';
-import liquidGlassGradient from '@/assets/liquid-glass-gradient.png';
 
 import { Button } from '../components/ui/button';
 
@@ -105,11 +100,11 @@ const Index = () => {
               </div>
               
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold font-headers text-white leading-tight">
-                AI-Personalized, Closed Loop Wellness
+                AI-Personalized Wellness
                 <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
               </h1>
-              <p className="text-base lg:text-lg font-body text-gray-300 leading-relaxed max-w-3xl mt-6">
-                Personalized, closed loop music designed to delight. Powered by novel, patented AI, utilizing the science of music therapy — a field with 50+ years of successful implementation in clinical settings.
+              <p className="text-base font-body text-gray-300 leading-relaxed max-w-2xl mt-6">
+                Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
               </p>
               
             </div>
@@ -123,8 +118,8 @@ const Index = () => {
       <section className="py-16 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
-              Sponsored Research Behind First-In-Class Tech
+            <h2 className="text-xl lg:text-2xl font-semibold font-headers bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent mb-6">
+              First-In-Class Technology
             </h2>
           </div>
 
@@ -154,8 +149,8 @@ const Index = () => {
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
                       <benefit.icon className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
-                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
+                    <p className="text-sm font-body text-gray-400 leading-relaxed">{benefit.description}</p>
                   </div>
                 ))}
               </div>
