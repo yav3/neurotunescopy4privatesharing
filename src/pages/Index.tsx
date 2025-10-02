@@ -84,13 +84,6 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded flex items-center justify-center overflow-hidden">
-                <img 
-                  src={neurotunesLogo} 
-                  alt="NeuroTunes Logo"
-                  className="w-6 h-6 object-contain"
-                />
-              </div>
               <div>
                 <h1 className="text-4xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
                 <p className="text-xs font-body text-gray-500">by NeuralPositive</p>
@@ -182,12 +175,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Comprehensive Insights Dashboard */}
-      <section className="py-16 bg-gradient-to-b from-black to-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ComprehensiveInsightsDashboard />
-        </div>
-      </section>
 
       {/* Therapeutic Benefits */}
       <section className="py-16 bg-black">
