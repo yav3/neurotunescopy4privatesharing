@@ -25,6 +25,9 @@ interface ExtendedUser extends User {
   role?: UserRole;
 }
 
+// Dev mode bypass - set to true to skip authentication
+const DEV_MODE_BYPASS = import.meta.env.DEV;
+
 export function useAuth() {
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -33,6 +36,34 @@ export function useAuth() {
   
   // Initialize session manager
   const sessionManager = useSessionManager(user);
+
+  // Create mock user for dev mode
+  const createMockUser = (): ExtendedUser => {
+    const mockUser: ExtendedUser = {
+      id: 'dev-user-id',
+      email: 'dev@neurotunes.app',
+      created_at: new Date().toISOString(),
+      app_metadata: {},
+      user_metadata: {
+        display_name: 'Dev User'
+      },
+      aud: 'authenticated',
+      role: 'super_admin',
+      profile: {
+        id: 'dev-profile-id',
+        user_id: 'dev-user-id',
+        display_name: 'Dev User',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        bio: 'Development mode user',
+        avatar_url: null,
+        default_session_duration: 30,
+        favorite_goals: [],
+        notification_preferences: {}
+      }
+    };
+    return mockUser;
+  };
 
   // Get user with profile and role
   const getUserWithProfile = async (authUser: User): Promise<ExtendedUser | null> => {
@@ -223,6 +254,23 @@ export function useAuth() {
 
   // Initialize auth state
   useEffect(() => {
+    // DEV MODE BYPASS
+    if (DEV_MODE_BYPASS) {
+      console.log('🔧 DEV MODE: Bypassing authentication');
+      const mockUser = createMockUser();
+      setUser(mockUser);
+      setSession({
+        access_token: 'dev-token',
+        refresh_token: 'dev-refresh-token',
+        expires_in: 3600,
+        token_type: 'bearer',
+        user: mockUser as User
+      } as Session);
+      setLoading(false);
+      console.log('✅ DEV MODE: Mock user created:', mockUser);
+      return () => {}; // Empty cleanup
+    }
+
     let mounted = true;
 
     // Set up auth state listener FIRST - but avoid calling Supabase functions inside
