@@ -13,6 +13,12 @@ import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
 import stanfordMedicineLogo from '../assets/stanford-medicine.png';
 import weillCornellLogo from '../assets/weill-cornell.png';
+import relaxationCard from '../assets/relaxation-card.png';
+import recoveryCard from '../assets/recovery-card.png';
+import focusCard from '../assets/focus-card.png';
+import restCard from '../assets/rest-card.png';
+import exerciseCard from '../assets/exercise-card.png';
+import boostCard from '../assets/boost-card.png';
 
 import { Button } from '../components/ui/button';
 
@@ -44,32 +50,31 @@ const Index = () => {
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
-  const therapeuticBenefits = [
+  const therapeuticCards = [
     {
-      icon: Brain,
-      title: "Cognitive Enhancement",
-      description: "Scientifically-backed music selections to improve focus, memory, and mental clarity",
-      color: "text-primary"
+      title: "Relaxation",
+      image: relaxationCard
     },
     {
-      icon: Heart,
-      title: "Emotional Regulation", 
-      description: "AI-curated playlists designed to balance mood and reduce stress responses",
-      color: "text-info"
+      title: "Recovery",
+      image: recoveryCard
     },
     {
-      icon: Activity,
-      title: "Physiological Benefits",
-      description: "Evidence-based frequencies that promote relaxation and cardiovascular health",
-      color: "text-success"
+      title: "Focus+",
+      image: focusCard
+    },
+    {
+      title: "Rest",
+      image: restCard
+    },
+    {
+      title: "Exercise",
+      image: exerciseCard
+    },
+    {
+      title: "Boost",
+      image: boostCard
     }
-  ];
-
-  const stats = [
-    { label: "Technology", value: "Patented", icon: Shield },
-    { label: "Research", value: "Evidence Based", icon: Award },
-    { label: "Music Library", value: "50+ Genres", icon: Music },
-    { label: "Analytics", value: "Clinical Insights", icon: Brain }
   ];
 
   return (
@@ -127,30 +132,21 @@ const Index = () => {
           <div className="w-full overflow-hidden">
             <div className="horizontal-scroll scrollbar-hide">
               <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
-                {/* Stats Cards */}
-                {stats.map((stat, index) => (
-                  <div key={`stat-${index}`} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm flex-shrink-0"
-                       style={{ width: '220px', minWidth: '220px' }}>
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mx-auto mb-4">
-                      <stat.icon className="h-6 w-6 text-white stroke-[1.5]" />
-                    </div>
-                    <div className="font-semibold font-headers text-white text-lg mb-2">{stat.value}</div>
-                    <div className="text-sm font-body text-gray-400 font-medium">{stat.label}</div>
-                  </div>
-                ))}
-                
-                {/* Therapeutic Benefits Cards */}
-                {therapeuticBenefits.map((benefit, index) => (
+                {therapeuticCards.map((card, index) => (
                   <div 
-                    key={`benefit-${index}`} 
-                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
-                    style={{ width: '280px', minWidth: '280px' }}
+                    key={index}
+                    className="relative overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl flex-shrink-0 group"
+                    style={{ width: '240px', minWidth: '240px', height: '320px' }}
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
-                      <benefit.icon className="h-6 w-6 text-white" />
+                    <img 
+                      src={card.image} 
+                      alt={card.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-2xl font-semibold font-headers text-white">{card.title}</h3>
                     </div>
-                    <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
-                    <p className="text-sm font-body text-gray-400 leading-relaxed">{benefit.description}</p>
                   </div>
                 ))}
               </div>
