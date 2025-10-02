@@ -104,7 +104,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-center">
+          <div className="max-w-5xl mx-auto">
             <div className="space-y-6">
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
@@ -131,42 +131,6 @@ const Index = () => {
                         <div className="text-sm font-body text-gray-400 font-medium">{stat.label}</div>
                       </div>
                     ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Active Therapy Session Card - Side by side */}
-            <div className="flex justify-center lg:justify-end">
-              <div className="relative max-w-sm w-full">
-                {/* Active Therapy Session Card */}
-                <div className="bg-gradient-to-br from-white/8 to-white/3 border border-white/20 rounded-2xl p-8 backdrop-blur-sm relative overflow-hidden">
-                  {/* Background leaf image */}
-                  <div className="absolute inset-0 opacity-60">
-                    <img 
-                      src="/src/assets/leaf-therapy.png"
-                      alt="" 
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40"></div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col items-center justify-center space-y-4">
-                    {/* Headphones Icon */}
-                    <div className="w-16 h-16 bg-white/20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-md shadow-lg">
-                      <Headphones className="h-8 w-8 text-white drop-shadow-sm" />
-                    </div>
-                    
-                    {/* Session Info */}
-                    <div className="text-center space-y-3">
-                      <h3 className="text-xl font-semibold font-headers text-white drop-shadow-lg">Active Therapy Session</h3>
-                      <p className="text-xs font-body text-gray-200 drop-shadow-md">Classical Sonatas for Stress Relief</p>
-                      <div className="flex items-center justify-center space-x-2 text-white/90">
-                        <Activity className="h-3 w-3 drop-shadow-sm" />
-                        <span className="text-xs font-medium font-body drop-shadow-sm">Real-time Monitoring</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
