@@ -12,6 +12,7 @@ import { useDarkMode } from '@/hooks/useDarkMode';
 import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
 import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
+import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 
 // Import beautiful nature images
 import peacefulLake from '@/assets/peaceful-lake-sunset.png';
@@ -69,6 +70,9 @@ const TherapeuticGoalsPage = () => {
   
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
+  
+  // Pinned favorites based on user behavior
+  const { pinnedItems, loading: pinnedLoading } = usePinnedFavorites();
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
@@ -87,47 +91,13 @@ const TherapeuticGoalsPage = () => {
     setSelectedGoalId('');
   };
 
-  const handleTrendingSelect = (categoryId: string) => {
-    console.log('🎵 Navigating to trending category:', categoryId);
-    
-    // Direct navigation for specific categories to avoid wrong genre selection
-    if (categoryId === 'chill-samba') {
-      console.log('🎵 Navigating directly to chill samba music');
-      navigate('/genre/mood-boost/samba');
-      return;
+  const handlePinnedItemSelect = (item: typeof pinnedItems[0]) => {
+    if (item.type === 'goal') {
+      handleGoalSelect(item.id);
+    } else {
+      // Navigate to track (could enhance this later)
+      console.log('🎵 Selected favorited track:', item.id);
     }
-    
-    
-    if (categoryId === 'chill-tropical-house') {
-      console.log('🎵 Navigating directly to chill tropical house music');
-      navigate('/genre/mood-boost/chill-tropical-house');
-      return;
-    }
-    
-    if (categoryId === 'americana-jam-band') {
-      console.log('🎵 Navigating directly to americana & jam band music');
-      navigate('/genre/mood-boost/americana-jam-band');
-      return;
-    }
-    
-    // Map trending categories to their corresponding therapeutic goals
-    const trendingToGoalMap: Record<string, string> = {
-      'chill-classical': 'pain-support',
-      'nocturnes': 'focus-enhancement', 
-      'chill-piano': 'focus-enhancement',
-      'non-sleep-deep-rest': 'depression-support',
-      'chill-tropical-house': 'depression-support',
-      'social-time': 'depression-support',
-      'chill-folk-bluegrass': 'depression-support',
-      'americana-jam-band': 'depression-support',
-    };
-    
-    const goalId = trendingToGoalMap[categoryId] || 'focus-enhancement';
-    console.log('🎵 Opening genre selection for:', categoryId, 'mapped to goal:', goalId);
-    
-    // Open genre selection modal for consistent user experience
-    setSelectedGoalId(goalId);
-    setIsModalOpen(true);
   };
 
   return (
@@ -159,48 +129,56 @@ const TherapeuticGoalsPage = () => {
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-32 sm:pb-24 pt-2 sm:pt-3 md:pt-4">
         <div className="max-w-7xl mx-auto space-y-10 sm:space-y-12 md:space-y-14 lg:space-y-16">
           
-
-          {/* Trending Section */}
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Trending</h2>
-            
-            {/* Horizontal scrolling container for trending */}
-            <div className="overflow-x-auto pb-2">
-              <div className="flex gap-3 min-w-max">
-                {trendingCategories.map((category) => (
-                  <div key={category.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
-                    <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
-                      onClick={() => handleTrendingSelect(category.id)}
-                    >
-                      <img 
-                        src={category.image}
-                        alt={`${category.name} music category`}
-                        loading="eager"
-                        decoding="sync"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        style={{ 
-                          imageRendering: 'auto',
-                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
-                      
-                      {/* Hover text overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                          Play
-                        </span>
-                      </div>
-                    </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
-                      {category.name}
-                    </h3>
-                  </div>
-                ))}
+          {/* Pinned Favorites Section - Only show if user has pinned items */}
+          {!pinnedLoading && pinnedItems.length > 0 && (
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Your Favorites</h2>
+              
+              {/* Horizontal scrolling container for pinned favorites */}
+              <div className="overflow-x-auto pb-2">
+                <div className="flex gap-3 min-w-max">
+                  {pinnedItems.map((item) => (
+                    <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
+                      <Card 
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
+                        onClick={() => handlePinnedItemSelect(item)}
+                      >
+                        <img 
+                          src={item.image}
+                          alt={`${item.name}`}
+                          loading="eager"
+                          decoding="sync"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          style={{ 
+                            imageRendering: 'auto',
+                            filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
+                        
+                        {/* Usage count badge for goals */}
+                        {item.type === 'goal' && item.usageCount && (
+                          <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-full px-2 py-1">
+                            <span className="text-white text-xs font-sf font-medium">{item.usageCount}x</span>
+                          </div>
+                        )}
+                        
+                        {/* Hover text overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                          <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
+                            Play
+                          </span>
+                        </div>
+                      </Card>
+                      <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
+                        {item.name}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Therapeutic Goals Section */}
           <div>
