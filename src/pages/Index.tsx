@@ -308,87 +308,58 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Research Institutions */}
-      <section className="py-24 bg-black relative overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-cyan-500/10"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold font-headers bg-gradient-to-r from-white via-gray-100 to-cyan-200 bg-clip-text text-transparent mb-8 tracking-tight">
-              Research Institutions
-            </h2>
-            <p className="text-lg lg:text-xl font-body text-gray-300 max-w-4xl mx-auto leading-relaxed font-medium">
-              Collaborating with leading institutions in neuroscience and technology
-            </p>
-          </div>
-          
-          {/* Enhanced institutional cards */}
-          <div className="w-full overflow-hidden">
-            <div className="horizontal-scroll scrollbar-hide">
-              <div className="flex gap-8 pb-6" style={{ width: 'max-content' }}>
-                {[
-                  { name: "Cornell Tech", logo: cornellLogo, field: "AI & Machine Learning Research" },
-                  { name: "Jacobs Technion", logo: jacobsTechnionLogo, field: "Neurotechnology Innovation" },
-                  { name: "Stanford Medicine", logo: stanfordMedicineLogo, field: "Clinical Neuroscience" },
-                  { name: "Weill Cornell", logo: weillCornellLogo, field: "Medical Research" }
-                ].map((institution, index) => (
-                  <div 
-                    key={index}
-                    className="group text-center bg-gradient-to-br from-white/8 via-white/4 to-white/2 backdrop-blur-sm border border-white/15 rounded-2xl p-10 hover:border-white/30 hover:bg-gradient-to-br hover:from-white/12 hover:via-white/8 hover:to-white/4 transition-all duration-500 scroll-snap-start shadow-2xl hover:shadow-teal-500/10 hover:shadow-3xl transform hover:-translate-y-2"
-                    style={{ width: '300px', minWidth: '300px' }}
-                  >
-                    <div className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden border border-white/20 group-hover:border-white/30 transition-all duration-500 shadow-xl">
-                      <img 
-                        src={institution.logo} 
-                        alt={`${institution.name} logo`}
-                        className="w-18 h-18 object-contain filter brightness-110 contrast-125 group-hover:scale-110 transition-all duration-500"
-                        style={{ 
-                          imageRendering: 'crisp-edges',
-                          filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
-                        }}
-                      />
-                    </div>
-                    <h3 className="text-xl lg:text-2xl font-bold font-headers text-white mb-4 tracking-tight group-hover:text-cyan-100 transition-colors duration-300">{institution.name}</h3>
-                    <p className="text-base font-body text-gray-300 font-medium leading-relaxed group-hover:text-gray-200 transition-colors duration-300">{institution.field}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Call to Action */}
-      <section className="py-20 relative overflow-hidden border-t border-white/10">
-        {/* Liquid glass gradient background */}
-        <div className="absolute inset-0">
-          <img 
-            src={liquidGlassGradient} 
-            alt=""
-            className="w-full h-full object-cover opacity-80"
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-semibold font-headers text-white mb-6">
-              Ready to Begin Your Musical Wellness Journey?
-            </h2>
-            <p className="text-lg font-body text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
-              Join thousands who have discovered the therapeutic power of AI-personalized music
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <span className="text-gray-300 font-medium font-body text-lg px-6 py-3 border border-gray-500 rounded-lg bg-gray-700/50 backdrop-blur-sm">
-                Authorized User Sign-In
-              </span>
+      {/* Footer - Research Institutions */}
+      <footer className="py-12 bg-black border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            <div className="w-32 h-32 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
+              <img 
+                src={cornellLogo} 
+                alt="Cornell University"
+                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                style={{ 
+                  imageRendering: 'crisp-edges',
+                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                }}
+              />
+            </div>
+            <div className="w-32 h-32 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
+              <img 
+                src={jacobsTechnionLogo} 
+                alt="Jacobs Technion"
+                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                style={{ 
+                  imageRendering: 'crisp-edges',
+                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                }}
+              />
+            </div>
+            <div className="w-32 h-32 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
+              <img 
+                src={stanfordMedicineLogo} 
+                alt="Stanford Medicine"
+                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                style={{ 
+                  imageRendering: 'crisp-edges',
+                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                }}
+              />
+            </div>
+            <div className="w-32 h-32 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
+              <img 
+                src={weillCornellLogo} 
+                alt="Weill Cornell"
+                className="w-20 h-20 object-contain filter brightness-110 contrast-125"
+                style={{ 
+                  imageRendering: 'crisp-edges',
+                  filter: 'brightness(1.1) contrast(1.25) saturate(1.1)'
+                }}
+              />
             </div>
           </div>
         </div>
-      </section>
+      </footer>
       
       {/* Post-Session Survey */}
       <PostSessionSurvey
