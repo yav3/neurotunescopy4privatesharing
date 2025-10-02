@@ -82,21 +82,13 @@ const Index = () => {
       {/* Navigation Header */}
       <nav className="bg-black/80 sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div>
-                <h1 className="text-4xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
-                <p className="text-xs font-body text-gray-500">by NeuralPositive</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={() => navigate('/auth')}
-                className="text-sm font-medium font-headers px-6 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-teal-500/25"
-              >
-                Authorized User Sign-In
-              </Button>
-            </div>
+          <div className="flex justify-end items-center">
+            <Button
+              onClick={() => navigate('/auth')}
+              className="text-sm font-medium font-headers px-6 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-teal-500/25"
+            >
+              Authorized User Sign-In
+            </Button>
           </div>
         </div>
       </nav>
@@ -106,6 +98,12 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="space-y-6">
+              {/* NeuroTunes Logo */}
+              <div className="mb-6">
+                <h1 className="text-5xl lg:text-6xl font-headers font-semibold bg-gradient-to-r from-white to-teal-300 bg-clip-text text-transparent">NeuroTunes</h1>
+                <p className="text-sm font-body text-gray-500 mt-1">by NeuralPositive</p>
+              </div>
+              
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold font-headers text-white leading-tight">
                 AI-Personalized, Closed Loop Wellness
                 <span className="block bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 bg-clip-text text-transparent mt-2">Meets Beautiful Music</span>
@@ -140,41 +138,6 @@ const Index = () => {
       </section>
 
 
-      {/* Therapeutic Benefits */}
-      <section className="py-16 bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-6">
-              Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
-            </h2>
-            <p className="text-base font-body text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Our AI analyzes thousands of musical parameters to create personalized therapy sessions 
-              that target specific mental health and cognitive goals.
-            </p>
-          </div>
-
-          {/* Horizontal Scrolling Container */}
-          <div className="w-full overflow-hidden">
-            <div className="horizontal-scroll scrollbar-hide">
-              <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
-                {[...therapeuticBenefits, ...therapeuticBenefits].map((benefit, index) => (
-                  <div 
-                    key={index} 
-                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
-                    style={{ width: '280px', minWidth: '280px' }}
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
-                      <benefit.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
-                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Featured Therapy Programs */}
       <section className="py-16 bg-black">
@@ -308,6 +271,41 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Therapeutic Benefits - Consolidated Features */}
+      <section className="py-16 bg-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl lg:text-3xl font-semibold font-headers bg-gradient-to-r from-white via-teal-200 to-teal-300 bg-clip-text text-transparent mb-6">
+              Evidence-based and derived from sponsored research and the principles of music therapy, the AI technology has been tested in hospitals and clinics
+            </h2>
+            <p className="text-base font-body text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              Our AI analyzes thousands of musical parameters to create personalized therapy sessions 
+              that target specific mental health and cognitive goals.
+            </p>
+          </div>
+
+          {/* Horizontal Scrolling Container */}
+          <div className="w-full overflow-hidden">
+            <div className="horizontal-scroll scrollbar-hide">
+              <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
+                {[...therapeuticBenefits, ...therapeuticBenefits].map((benefit, index) => (
+                  <div 
+                    key={index} 
+                    className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-sm scroll-snap-start"
+                    style={{ width: '280px', minWidth: '280px' }}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
+                      <benefit.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-lg font-medium font-headers text-white mb-3">{benefit.title}</h3>
+                    <p className="text-sm font-body text-gray-300 leading-relaxed">{benefit.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Footer - Research Institutions */}
       <footer className="py-12 bg-black border-t border-white/10">
