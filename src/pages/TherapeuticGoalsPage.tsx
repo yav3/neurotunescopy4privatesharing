@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon, Plus, Pin } from 'lucide-react';
+import { Sun, Moon, Plus, Pin, Guitar, Globe, Waves, Music2, Drum, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -242,38 +242,46 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-3 sm:gap-4 min-w-max">
                 {[
-                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral },
-                  { name: 'New Age World', image: genreGradientPeach },
-                  { name: 'Chill Tropical House', image: genreGradientCyan },
-                  { name: 'Americana Jam Band', image: genreGradientGold },
-                  { name: 'Chill Samba', image: genreGradientYellowOrange },
-                  { name: 'Tropical House Party', image: genreGradientRedOrange },
-                ].map((genre) => (
-                  <div key={genre.name} className="flex-shrink-0 w-52 sm:w-64">
-                    <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
-                    >
-                      <img 
-                        src={genre.image}
-                        alt={genre.name}
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        style={{ 
-                          imageRendering: 'auto',
-                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 group-hover:from-black/30 group-hover:to-black/70 transition-all duration-300" />
-                      
-                      {/* Genre name overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <h3 className="text-white font-didot font-medium text-sm sm:text-base leading-tight">
-                          {genre.name}
-                        </h3>
-                      </div>
-                    </Card>
-                  </div>
-                ))}
+                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Guitar },
+                  { name: 'New Age World', image: genreGradientPeach, icon: Globe },
+                  { name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
+                  { name: 'Americana Jam Band', image: genreGradientGold, icon: Music2 },
+                  { name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
+                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: Zap },
+                ].map((genre) => {
+                  const IconComponent = genre.icon;
+                  return (
+                    <div key={genre.name} className="flex-shrink-0 w-52 sm:w-64">
+                      <Card 
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
+                      >
+                        <img 
+                          src={genre.image}
+                          alt={genre.name}
+                          loading="lazy"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          style={{ 
+                            imageRendering: 'auto',
+                            filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                        
+                        {/* Centered icon sprite */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={40} />
+                        </div>
+                        
+                        {/* Genre name on hover only */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                          <h3 className="text-white font-didot font-medium text-base sm:text-lg">
+                            {genre.name}
+                          </h3>
+                        </div>
+                      </Card>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
