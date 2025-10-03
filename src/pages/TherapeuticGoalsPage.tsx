@@ -260,7 +260,7 @@ const TherapeuticGoalsPage = () => {
 
       {/* Debug button in development */}
       {import.meta.env.DEV && (
-        <div className="fixed bottom-32 sm:bottom-20 right-4 z-40 space-y-2 max-w-[200px]">
+        <div className="fixed top-20 right-4 z-40 space-y-2 max-w-[200px]">
           <Button 
             onClick={() => {
               import('@/utils/meditationDebugger').then(({ MeditationDebugger }) => {
