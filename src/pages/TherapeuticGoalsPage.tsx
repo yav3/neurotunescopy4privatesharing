@@ -303,60 +303,6 @@ const TherapeuticGoalsPage = () => {
         <Navigation />
       </div>
 
-      {/* Debug button in development */}
-      {import.meta.env.DEV && (
-        <div className="fixed top-20 right-4 z-40 space-y-2 max-w-[200px]">
-          <Button 
-            onClick={() => {
-              import('@/utils/meditationDebugger').then(({ MeditationDebugger }) => {
-                MeditationDebugger.debugMeditationMode();
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🧘 Debug Meditation Mode
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
-                ModePlaybackDebugger.testSpecificMode('meditation-support');
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🧘 Test Meditation Tracks
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
-                ModePlaybackDebugger.testAllModes();
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🔍 Test All Modes
-          </Button>
-          <Button 
-            onClick={() => {
-              import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
-                BucketDiagnostics.checkSpecificGenre('meditation-support', 'zen-new-age');
-              });
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-background/90 backdrop-blur-sm block w-full text-xs"
-          >
-            🎯 Check Meditation Buckets
-          </Button>
-        </div>
-      )}
-
       {/* Genre Selection Modal */}
       <GenreSelectionModal
         isOpen={isModalOpen}

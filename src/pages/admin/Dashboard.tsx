@@ -203,6 +203,69 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">Monitor user behavior and system health</p>
         </div>
 
+        {/* Debug Tools Section */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5" />
+              Debug Tools
+            </CardTitle>
+            <CardDescription>Development and debugging utilities</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              <Button 
+                onClick={() => {
+                  import('@/utils/meditationDebugger').then(({ MeditationDebugger }) => {
+                    MeditationDebugger.debugMeditationMode();
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                🧘 Debug Meditation Mode
+              </Button>
+              <Button 
+                onClick={() => {
+                  import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
+                    ModePlaybackDebugger.testSpecificMode('meditation-support');
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                🧘 Test Meditation Tracks
+              </Button>
+              <Button 
+                onClick={() => {
+                  import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
+                    ModePlaybackDebugger.testAllModes();
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                🔍 Test All Modes
+              </Button>
+              <Button 
+                onClick={() => {
+                  import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
+                    BucketDiagnostics.checkSpecificGenre('meditation-support', 'zen-new-age');
+                  });
+                }}
+                variant="outline"
+                size="sm"
+                className="w-full"
+              >
+                🎯 Check Meditation Buckets
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
