@@ -14,6 +14,7 @@ import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
 import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
+import { useAppStore } from '@/stores/appStore';
 
 // Import beautiful nature images
 import peacefulLake from '@/assets/peaceful-lake-sunset.png';
@@ -100,6 +101,10 @@ const TherapeuticGoalsPage = () => {
   
   // Pinned favorites based on user behavior
   const { pinnedItems, loading: pinnedLoading } = usePinnedFavorites();
+  
+  // Check if user is new (no session history)
+  const sessionHistory = useAppStore(state => state.sessionHistory);
+  const isNewUser = sessionHistory.length === 0;
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
@@ -199,6 +204,15 @@ const TherapeuticGoalsPage = () => {
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Onboarding message for new users */}
+          {isNewUser && (
+            <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                Click on a goal to select a genre. I'll learn your preferences and improve recommendations with every session, ultimately enabling a closed loop experience. Pin a mode to the top: you'll get recommendations based on your recent favorites. Select from a therapeutic goal to listen on discovery mode.
+              </p>
             </div>
           )}
 
