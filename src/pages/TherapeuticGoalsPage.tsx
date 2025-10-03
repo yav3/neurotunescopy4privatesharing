@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon, Plus } from 'lucide-react';
+import { Sun, Moon, Plus, Pin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -174,7 +174,7 @@ const TherapeuticGoalsPage = () => {
       )}
 
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-12 sm:pt-16">
+      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-8 sm:pt-12">
         <div className="max-w-5xl mx-auto space-y-4 sm:space-y-5">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
@@ -256,6 +256,13 @@ const TherapeuticGoalsPage = () => {
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                      
+                      {/* Pin icon in top right */}
+                      <div className="absolute top-3 right-3 z-10">
+                        <div className="bg-white/90 dark:bg-black/70 backdrop-blur-sm rounded-full p-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                          <Pin className="w-4 h-4 text-gray-700 dark:text-white" />
+                        </div>
+                      </div>
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
