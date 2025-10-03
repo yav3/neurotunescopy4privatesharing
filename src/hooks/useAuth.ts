@@ -39,8 +39,10 @@ export function useAuth() {
 
   // Create mock user for dev mode
   const createMockUser = (): ExtendedUser => {
+    // Use a consistent UUID for dev mode instead of a string
+    const devUserId = '00000000-0000-0000-0000-000000000001';
     const mockUser: ExtendedUser = {
-      id: 'dev-user-id',
+      id: devUserId,
       email: 'dev@neurotunes.app',
       created_at: new Date().toISOString(),
       app_metadata: {},
@@ -50,8 +52,8 @@ export function useAuth() {
       aud: 'authenticated',
       role: 'super_admin',
       profile: {
-        id: 'dev-profile-id',
-        user_id: 'dev-user-id',
+        id: '00000000-0000-0000-0000-000000000002',
+        user_id: devUserId,
         display_name: 'Dev User',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
