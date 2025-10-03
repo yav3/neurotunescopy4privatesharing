@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { GenreSelectionModal } from '@/components/GenreSelectionModal';
+import { getTherapeuticIcon } from '@/components/icons/TherapeuticIcons';
 
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
@@ -211,35 +212,43 @@ const TherapeuticGoalsPage = () => {
             
             {/* Grid container for all therapeutic goals */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-              {therapeuticGoals.map((goal) => (
-                <div key={goal.id} className="flex flex-col items-start">
-                  <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-3xl border-0"
-                    onClick={() => handleGoalSelect(goal.id)}
-                    title="Pick a genre"
-                  >
-                    <img 
-                      src={goal.image}
-                      alt={`${goal.name} therapy program`}
-                      loading="eager"
-                      decoding="sync"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      style={{ 
-                        imageRendering: 'auto',
-                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
-                    
-                    {/* Title at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                      <h3 className="text-gray-100 dark:text-white font-didot font-medium text-sm sm:text-base leading-snug">
-                        {goal.name}
-                      </h3>
-                    </div>
-                  </Card>
-                </div>
-              ))}
+              {therapeuticGoals.map((goal) => {
+                const IconComponent = getTherapeuticIcon(goal.goalId);
+                return (
+                  <div key={goal.id} className="flex flex-col items-start">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-3xl border-0"
+                      onClick={() => handleGoalSelect(goal.id)}
+                      title="Pick a genre"
+                    >
+                      <img 
+                        src={goal.image}
+                        alt={`${goal.name} therapy program`}
+                        loading="eager"
+                        decoding="sync"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ 
+                          imageRendering: 'auto',
+                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                      
+                      {/* Icon sprite at top */}
+                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                        <IconComponent className="text-white opacity-90" size={20} />
+                      </div>
+                      
+                      {/* Title at bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                        <h3 className="text-gray-100 dark:text-white font-didot font-medium text-sm sm:text-base leading-snug">
+                          {goal.name}
+                        </h3>
+                      </div>
+                    </Card>
+                  </div>
+                );
+              })}
             </div>
           </div>
           
