@@ -40,6 +40,10 @@ export class TitleFormatter {
       .replace(/[-_]+/g, ' ')
       // Handle camelCase by adding spaces before uppercase letters
       .replace(/([a-z])([A-Z])/g, '$1 $2')
+      // Add space before numbers (e.g., "variation1" -> "variation 1")
+      .replace(/([a-z])(\d)/g, '$1 $2')
+      // Add space after numbers before letters (e.g., "1variation" -> "1 variation")
+      .replace(/(\d)([a-z])/gi, '$1 $2')
       // Clean up multiple spaces
       .replace(/\s+/g, ' ')
       .trim();

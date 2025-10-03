@@ -332,7 +332,7 @@ const TherapeuticGoalsPage = () => {
             {/* Horizontal scrolling container for popular genres */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-2 sm:gap-3 min-w-max">
-                {[
+                 {[
                   { goalId: 'focus-enhancement', genreId: 'new-age', name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
                   { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
                   { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
@@ -340,8 +340,9 @@ const TherapeuticGoalsPage = () => {
                   { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreGradientGold, icon: Guitar },
                   { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Peace', image: genreGradientNeutral, icon: Guitar },
                 ].map((genre) => {
+                  const genreKey = `${genre.goalId}-${genre.genreId}`;
                   return (
-                    <div key={`${genre.goalId}-${genre.genreId}`} className="flex-shrink-0 w-40 sm:w-48">
+                    <div key={genreKey} className="flex-shrink-0 w-40 sm:w-48">
                       <Card 
                         className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
                         onClick={() => navigate(`/genre/${genre.goalId}/${genre.genreId}`)}
@@ -357,6 +358,25 @@ const TherapeuticGoalsPage = () => {
                           }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                        
+                        {/* Pin icon in top right */}
+                        <div 
+                          className="absolute top-3 right-3 z-10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            togglePinGoal(genreKey);
+                          }}
+                        >
+                          <div className={cn(
+                            "bg-white/90 dark:bg-black/70 backdrop-blur-sm rounded-full p-2 opacity-80 hover:opacity-100 transition-all cursor-pointer hover:scale-110",
+                            isGoalPinned(genreKey) && "bg-primary/90 dark:bg-primary/80"
+                          )}>
+                            <Pin className={cn(
+                              "w-4 h-4 transition-colors",
+                              isGoalPinned(genreKey) ? "text-white fill-white" : "text-gray-700 dark:text-white"
+                            )} />
+                          </div>
+                        </div>
                         
                         {/* Centered icon sprite */}
                         <div className="absolute inset-0 flex items-center justify-center">
