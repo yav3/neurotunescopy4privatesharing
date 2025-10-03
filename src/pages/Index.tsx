@@ -147,7 +147,7 @@ const Index = () => {
               {therapeuticCards.map((card, index) => (
                 <div 
                   key={index}
-                  className="relative overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl group cursor-pointer"
+                  className="relative overflow-hidden border border-white/20 hover:border-white/30 transition-all duration-300 rounded-3xl group cursor-pointer"
                   style={{ aspectRatio: '3/4' }}
                 >
                   <img 
