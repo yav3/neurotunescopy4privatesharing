@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon, Plus, Pin, Music, Waves, Music2, Drum, Palmtree } from 'lucide-react';
+import { Sun, Moon, Plus, Pin, Guitar, Waves, Drum, Palmtree } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -242,12 +242,12 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-2 sm:gap-3 min-w-max">
                 {[
-                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Music },
+                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Guitar },
                   { name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
                   { name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
-                  { name: 'Americana Jam Band', image: genreGradientGold, icon: 'multi-instruments' },
+                  { name: 'Americana Jam Band', image: genreGradientGold, icon: Guitar },
                   { name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
-                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: 'tropical' },
+                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
                 ].map((genre) => {
                   return (
                     <div key={genre.name} className="flex-shrink-0 w-40 sm:w-48">
@@ -268,24 +268,11 @@ const TherapeuticGoalsPage = () => {
                         
                         {/* Centered icon sprite */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                          {genre.icon === 'multi-instruments' ? (
-                            <div className="flex items-center gap-0.5">
-                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
-                              <Music2 className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
-                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
-                            </div>
-                          ) : genre.icon === 'tropical' ? (
-                            <div className="flex items-center gap-1">
-                              <Waves className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} strokeWidth={1.2} />
-                              <Palmtree className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} strokeWidth={1.2} />
-                            </div>
-                          ) : (
-                            React.createElement(genre.icon as any, {
-                              className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                              size: 28,
-                              strokeWidth: 1.2
-                            })
-                          )}
+                          {React.createElement(genre.icon as any, {
+                            className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
+                            size: 28,
+                            strokeWidth: 1.2
+                          })}
                         </div>
                         
                         {/* Genre name on hover only */}
