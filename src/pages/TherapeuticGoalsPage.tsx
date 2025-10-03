@@ -172,7 +172,7 @@ const TherapeuticGoalsPage = () => {
 
       {/* Welcome message for new users */}
       {showOnboarding && (
-        <div className="px-6 sm:px-8 md:px-12 pt-4 sm:pt-6">
+        <div className="px-6 sm:px-8 md:px-12 pt-2">
           <div className="max-w-3xl mx-auto">
             <WelcomeBox onDismiss={handleDismissWelcome} />
           </div>
@@ -180,19 +180,19 @@ const TherapeuticGoalsPage = () => {
       )}
 
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-8 sm:pt-12">
-        <div className="max-w-5xl mx-auto space-y-4 sm:space-y-5">
+      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-3 sm:pt-4">
+        <div className="max-w-5xl mx-auto space-y-2 sm:space-y-3">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
             <div>
-              <h2 className="text-base sm:text-lg font-sf font-medium text-gray-900 dark:text-white mb-2 leading-tight">Your Favorites</h2>
+              <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">Your Favorites</h2>
               
               {/* Horizontal scrolling container for pinned favorites */}
-              <div className="overflow-x-auto pb-2">
-                <div className="flex gap-3 min-w-max">
+              <div className="overflow-x-auto pb-1">
+                <div className="flex gap-2 min-w-max">
                   {pinnedItems.map((item) => (
-                    <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-24 sm:w-28 md:w-32">
+                    <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-20 sm:w-24">
                       <Card 
                         className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
                         onClick={() => handlePinnedItemSelect(item)}
@@ -224,7 +224,7 @@ const TherapeuticGoalsPage = () => {
                           </span>
                         </div>
                       </Card>
-                      <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
+                      <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-snug break-words w-full card-title">
                         {item.name}
                       </h3>
                     </div>
@@ -236,11 +236,11 @@ const TherapeuticGoalsPage = () => {
 
           {/* New in Our Popular Genres Section */}
           <div>
-            <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">New in Our Popular Genres</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">New in Our Popular Genres</h2>
             
             {/* Horizontal scrolling container for popular genres */}
-            <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
-              <div className="flex gap-3 sm:gap-4 min-w-max">
+            <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
+              <div className="flex gap-2 sm:gap-3 min-w-max">
                 {[
                   { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Music },
                   { name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
@@ -250,7 +250,7 @@ const TherapeuticGoalsPage = () => {
                   { name: 'Tropical House Party', image: genreGradientRedOrange, icon: 'tropical' },
                 ].map((genre) => {
                   return (
-                    <div key={genre.name} className="flex-shrink-0 w-52 sm:w-64">
+                    <div key={genre.name} className="flex-shrink-0 w-40 sm:w-48">
                       <Card 
                         className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
                       >
@@ -269,20 +269,20 @@ const TherapeuticGoalsPage = () => {
                         {/* Centered icon sprite */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           {genre.icon === 'multi-instruments' ? (
-                            <div className="flex items-center gap-1">
-                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} strokeWidth={1.2} />
-                              <Music2 className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} strokeWidth={1.2} />
-                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} strokeWidth={1.2} />
+                            <div className="flex items-center gap-0.5">
+                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
+                              <Music2 className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
+                              <Music className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={20} strokeWidth={1.2} />
                             </div>
                           ) : genre.icon === 'tropical' ? (
-                            <div className="flex items-center gap-2">
-                              <Waves className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} strokeWidth={1.2} />
-                              <Palmtree className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} strokeWidth={1.2} />
+                            <div className="flex items-center gap-1">
+                              <Waves className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} strokeWidth={1.2} />
+                              <Palmtree className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} strokeWidth={1.2} />
                             </div>
                           ) : (
                             React.createElement(genre.icon as any, {
                               className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                              size: 40,
+                              size: 28,
                               strokeWidth: 1.2
                             })
                           )}
@@ -290,7 +290,7 @@ const TherapeuticGoalsPage = () => {
                         
                         {/* Genre name on hover only */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                          <h3 className="text-white font-didot font-medium text-base sm:text-lg">
+                          <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
                             {genre.name}
                           </h3>
                         </div>
@@ -304,17 +304,17 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">Personalize Your Goal</h2>
             
             {/* Horizontal scrolling container for all therapeutic goals */}
-            <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
-              <div className="flex gap-3 sm:gap-4 min-w-max">
+            <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
+              <div className="flex gap-2 sm:gap-3 min-w-max">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
-                  <div key={goal.id} className="flex-shrink-0 w-52 sm:w-64">
+                  <div key={goal.id} className="flex-shrink-0 w-40 sm:w-48">
                     <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-xl sm:rounded-2xl border-0"
                       onClick={() => handleGoalSelect(goal.id)}
                       title="Pick a genre"
                     >
@@ -352,12 +352,12 @@ const TherapeuticGoalsPage = () => {
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={40} />
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} />
                       </div>
                       
                       {/* Title on hover only */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                        <h3 className="text-white font-didot font-medium text-base sm:text-lg">
+                        <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
                           {goal.name}
                         </h3>
                       </div>
