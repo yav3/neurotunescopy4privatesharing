@@ -222,6 +222,36 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         buckets: ['samba'],
         image: sambaTropicalHibiscus
       }
+    ],
+    'sleep-preparation': [
+      {
+        id: 'sleep-nocturnes',
+        name: 'Sleep Nocturnes',
+        description: 'Gentle nocturnes specifically designed for sleep preparation',
+        buckets: ['Nocturnes'],
+        image: sonatasMistyLake
+      },
+      {
+        id: 'sleep-new-age',
+        name: 'New Age Sleep Sounds',
+        description: 'Calming new age music to ease you into restful sleep',
+        buckets: ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'],
+        image: newAgeLeafDewdrop
+      },
+      {
+        id: 'sleep-classical',
+        name: 'Peaceful Classical',
+        description: 'Soothing classical pieces to prepare for deep rest',
+        buckets: ['Chopin', 'gentleclassicalforpain'],
+        image: chopinMountainPeaks
+      },
+      {
+        id: 'sleep-world',
+        name: 'World Sleep Music',
+        description: 'Relaxing world music for wind-down and deep rest',
+        buckets: ['painreducingworld'],
+        image: painWorldHealingGarden
+      }
     ]
   };
 
