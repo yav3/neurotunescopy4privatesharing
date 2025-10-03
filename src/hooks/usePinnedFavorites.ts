@@ -33,6 +33,13 @@ export function usePinnedFavorites() {
     try {
       setLoading(true);
 
+      // Get manually pinned goals
+      const { data: pinnedGoalsData } = await supabase
+        .from('pinned_goals')
+        .select('goal_id, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
       // Get frequently used goals from listening sessions
       const { data: sessionData } = await supabase
         .from('listening_sessions')
@@ -51,7 +58,23 @@ export function usePinnedFavorites() {
 
       const pinned: PinnedItem[] = [];
 
-      // Process session data to find most used goals
+      // Add manually pinned goals first
+      if (pinnedGoalsData && pinnedGoalsData.length > 0) {
+        pinnedGoalsData.forEach(pinnedGoal => {
+          const goal = THERAPEUTIC_GOALS.find(g => g.id === pinnedGoal.goal_id);
+          if (goal) {
+            pinned.push({
+              id: goal.id,
+              name: goal.name,
+              image: goal.artwork,
+              type: 'goal',
+              lastUsed: new Date(pinnedGoal.created_at)
+            });
+          }
+        });
+      }
+
+      // Process session data to find most used goals (only if we need more)
       if (sessionData && sessionData.length > 0) {
         const genreCount: Record<string, { count: number; lastUsed: Date }> = {};
         
@@ -75,13 +98,13 @@ export function usePinnedFavorites() {
           .sort((a, b) => b[1].count - a[1].count)
           .slice(0, 3); // Top 3 most used
 
-        // Map genres to therapeutic goals
+        // Map genres to therapeutic goals (skip if already manually pinned)
         sortedGenres.forEach(([genre, data]) => {
           const goal = THERAPEUTIC_GOALS.find(g => 
             g.musicBuckets.some(bucket => bucket.toLowerCase().includes(genre.toLowerCase()))
           );
 
-          if (goal) {
+          if (goal && !pinned.some(p => p.id === goal.id)) {
             pinned.push({
               id: goal.id,
               name: goal.name,
@@ -125,9 +148,51 @@ export function usePinnedFavorites() {
     }
   };
 
+  const togglePinGoal = async (goalId: string) => {
+    if (!user) return;
+
+    try {
+      // Check if goal is already pinned
+      const { data: existingPin } = await supabase
+        .from('pinned_goals')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('goal_id', goalId)
+        .single();
+
+      if (existingPin) {
+        // Unpin
+        await supabase
+          .from('pinned_goals')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('goal_id', goalId);
+      } else {
+        // Pin
+        await supabase
+          .from('pinned_goals')
+          .insert({
+            user_id: user.id,
+            goal_id: goalId
+          });
+      }
+
+      // Reload favorites
+      await loadPinnedFavorites();
+    } catch (error) {
+      console.error('Error toggling pin:', error);
+    }
+  };
+
+  const isGoalPinned = (goalId: string) => {
+    return pinnedItems.some(item => item.id === goalId && item.type === 'goal');
+  };
+
   return {
     pinnedItems,
     loading,
-    refresh: loadPinnedFavorites
+    refresh: loadPinnedFavorites,
+    togglePinGoal,
+    isGoalPinned
   };
 }
