@@ -4,29 +4,37 @@ import { storageRequestManager } from '@/services/storageRequestManager';
 import { albumArtPool } from '@/utils/albumArtPool';
 import { getAlbumArtworkUrl } from '@/utils/imageUtils';
 
-// Import local artwork assets
-import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
-import focusArtwork from "@/assets/focus-enhancement-artwork.jpg";
-import stressAnxietyArtwork from "@/assets/stress-anxiety-artwork.jpg";
-import sleepArtwork from "@/assets/sleep-artwork.jpg";
-import painSupportArtwork from "@/assets/pain-support-artwork.jpg";
-import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
-import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import energyBoostArtwork from "@/assets/energy-boost-artwork.jpg";
-
 // Centralized artwork service to prevent race conditions
 export class ArtworkService {
   private static cache = new Map<string, string>();
   private static loadingPromises = new Map<string, Promise<string>>();
   
-  // Therapeutic artwork mapping with local assets
+  // Therapeutic artwork mapping with files from Supabase albumart bucket
   private static therapeuticArtwork = {
-    delta: [sleepArtwork, stressAnxietyArtwork],
-    theta: [stressAnxietyArtwork, painSupportArtwork],
-    alpha: [focusArtwork, acousticArtwork],
-    beta: [energyBoostArtwork, moodBoostArtwork],
-    gamma: [energyBoostArtwork, crossoverClassicalArt],
-    default: [focusArtwork, acousticArtwork]
+    delta: [
+      'ChatGPT Image Oct 3, 2025 at 01_58_41 PM.png',
+      'ChatGPT Image Oct 3, 2025 at 01_58_43 PM.png'
+    ],
+    theta: [
+      'ChatGPT Image Oct 3, 2025 at 01_58_47 PM.png',
+      'ChatGPT Image Oct 3, 2025 at 02_32_26 PM.png'
+    ],
+    alpha: [
+      'ChatGPT Image Oct 3, 2025 at 02_32_28 PM.png',
+      'ChatGPT Image Oct 3, 2025 at 03_09_09 PM.png'
+    ],
+    beta: [
+      'ChatGPT Image Oct 3, 2025 at 03_09_12 PM.png',
+      'ChatGPT Image Oct 3, 2025 at 03_32_43 PM.png'
+    ],
+    gamma: [
+      'ChatGPT Image Oct 3, 2025 at 09_51_47 AM.png',
+      'ChatGPT Image Oct 2, 2025 at 02_52_22 PM.png'
+    ],
+    default: [
+      'ChatGPT Image Oct 3, 2025 at 02_32_28 PM.png',
+      'ChatGPT Image Oct 3, 2025 at 03_09_09 PM.png'
+    ]
   };
 
   // Get consistent artwork for a track (prevents race conditions)
@@ -111,9 +119,12 @@ export class ArtworkService {
     
     // Consistent selection based on track ID
     const hash = Math.abs(trackId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-    const url = artworks[hash % artworks.length];
+    const selectedFilename = artworks[hash % artworks.length];
 
-    console.log('🎯 Selected artwork:', url, 'for trackId:', trackId);
+    console.log('🎯 Selected filename:', selectedFilename, 'for trackId:', trackId);
+
+    const url = getAlbumArtworkUrl(selectedFilename);
+    console.log('🔗 Final artwork URL:', url);
 
     // Consistent gradient based on frequency band
     const gradients = {
