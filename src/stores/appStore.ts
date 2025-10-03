@@ -8,6 +8,7 @@ interface UserPreferences {
   autoplay: boolean
   sessionReminders: boolean
   analytics: boolean
+  hasSeenOnboarding: boolean
 }
 
 interface AppState {
@@ -45,7 +46,8 @@ const defaultPreferences: UserPreferences = {
   volume: 0.8,
   autoplay: true, // Enable continuous play by default for better user experience
   sessionReminders: true,
-  analytics: true
+  analytics: true,
+  hasSeenOnboarding: false
 }
 
 export const useAppStore = create<AppState>()(

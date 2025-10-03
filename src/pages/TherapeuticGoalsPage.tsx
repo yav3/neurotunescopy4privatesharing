@@ -102,9 +102,19 @@ const TherapeuticGoalsPage = () => {
   // Pinned favorites based on user behavior
   const { pinnedItems, loading: pinnedLoading } = usePinnedFavorites();
   
-  // Check if user is new (no session history)
+  // Check if user should see onboarding (only truly new users)
+  const hasSeenOnboarding = useAppStore(state => state.preferences.hasSeenOnboarding);
   const sessionHistory = useAppStore(state => state.sessionHistory);
-  const isNewUser = sessionHistory.length === 0;
+  const setPreference = useAppStore(state => state.setPreference);
+  
+  // Mark as seen when user has any session history
+  React.useEffect(() => {
+    if (!hasSeenOnboarding && sessionHistory.length > 0) {
+      setPreference('hasSeenOnboarding', true);
+    }
+  }, [hasSeenOnboarding, sessionHistory.length, setPreference]);
+  
+  const showOnboarding = !hasSeenOnboarding && sessionHistory.length === 0;
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
@@ -208,7 +218,7 @@ const TherapeuticGoalsPage = () => {
           )}
 
           {/* Onboarding message for new users */}
-          {isNewUser && (
+          {showOnboarding && (
             <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border">
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 Click on a goal to select a genre. I'll learn your preferences and improve recommendations with every session, ultimately enabling a closed loop experience. Pin a mode to the top: you'll get recommendations based on your recent favorites. Select from a therapeutic goal to listen on discovery mode.
