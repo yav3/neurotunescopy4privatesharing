@@ -9,31 +9,31 @@ export class ArtworkService {
   private static cache = new Map<string, string>();
   private static loadingPromises = new Map<string, Promise<string>>();
   
-  // Therapeutic artwork mapping with files from Supabase albumart bucket
+  // Therapeutic artwork mapping with GIF files from Supabase albumart bucket
   private static therapeuticArtwork = {
     delta: [
-      'ChatGPT Image Oct 3, 2025 at 01_58_41 PM.png',
-      'ChatGPT Image Oct 3, 2025 at 01_58_43 PM.png'
+      'Fluid_Abstract_Slowed.gif',
+      '20251003_1515_New Video_simple_compose_01k6nr07wvf6v9eby3vnw4vz8v.gif'
     ],
     theta: [
-      'ChatGPT Image Oct 3, 2025 at 01_58_47 PM.png',
-      'ChatGPT Image Oct 3, 2025 at 02_32_26 PM.png'
+      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q.gif',
+      '20251003_1454_New Video_simple_compose_01k6npt7wcez6v2xk7mgd6xj3c.gif'
     ],
     alpha: [
-      'ChatGPT Image Oct 3, 2025 at 02_32_28 PM.png',
-      'ChatGPT Image Oct 3, 2025 at 03_09_09 PM.png'
+      '20251002_1413_Remix Video_remix_01k6k21x3aedwscmtkkjp6h0mw.gif',
+      '20251002_1156_Loop Video_loop_01k6jt5sxnf6vrwpy4h61yawrk.gif'
     ],
     beta: [
-      'ChatGPT Image Oct 3, 2025 at 03_09_12 PM.png',
-      'ChatGPT Image Oct 3, 2025 at 03_32_43 PM.png'
+      '20251002_1414_New Video_simple_compose_01k6k23x45efrv5azcjsyxws71.gif',
+      '20251002_1408_New Video_simple_compose_01k6k1rk2hfkass71h90rb48n9.gif'
     ],
     gamma: [
-      'ChatGPT Image Oct 3, 2025 at 09_51_47 AM.png',
-      'ChatGPT Image Oct 2, 2025 at 02_52_22 PM.png'
+      '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif',
+      '20251003_1523_New Video_simple_compose_01k6nrf2qyey1r59ryp6bsz002.gif'
     ],
     default: [
-      'ChatGPT Image Oct 3, 2025 at 02_32_28 PM.png',
-      'ChatGPT Image Oct 3, 2025 at 03_09_09 PM.png'
+      'Fluid_Abstract_Slowed.gif',
+      '20251002_1413_Remix Video_remix_01k6k2110eee7bvrh2r0nz06pq.gif'
     ]
   };
 
