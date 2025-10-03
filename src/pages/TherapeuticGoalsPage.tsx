@@ -164,7 +164,7 @@ const TherapeuticGoalsPage = () => {
 
       {/* Onboarding message for new users - Prominent placement */}
       {showOnboarding && (
-        <div className="px-6 sm:px-8 md:px-12 pt-12 sm:pt-16">
+        <div className="px-6 sm:px-8 md:px-12 pt-4 sm:pt-6">
           <div className="max-w-3xl mx-auto p-6 sm:p-8 bg-muted/50 rounded-xl border border-border">
             <p className="text-lg sm:text-xl md:text-2xl text-foreground leading-relaxed font-medium">
               Click on a goal to select a genre. I'll learn your preferences and improve recommendations with every session, ultimately enabling a closed loop experience. Pin a mode to the top: you'll get recommendations based on your recent favorites. Select from a therapeutic goal to listen on discovery mode.
