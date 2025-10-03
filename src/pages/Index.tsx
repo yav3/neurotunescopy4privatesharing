@@ -147,21 +147,21 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="py-16 sm:py-20 lg:py-24">
+        <section className="py-24 sm:py-32 lg:py-40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto">
-              <div className="space-y-8">
-                {/* NeuroTunes Logo - Much Bigger */}
-                <div className="mb-8">
-                  <h1 className="text-7xl sm:text-8xl lg:text-9xl font-headers font-semibold text-white">NeuroTunes</h1>
-                  <p className="text-base sm:text-lg font-body text-white/70 mt-2">by NeuralPositive</p>
+            <div className="max-w-6xl mx-auto">
+              <div className="space-y-16">
+                {/* NeuroTunes Logo - 5x bigger */}
+                <div className="mb-16">
+                  <h1 className="text-[12rem] sm:text-[14rem] lg:text-[16rem] xl:text-[18rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+                  <p className="text-2xl sm:text-3xl font-didot font-normal text-white/70 mt-8 tracking-wide">by NeuralPositive</p>
                 </div>
                 
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-semibold font-headers text-white leading-tight">
+                <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-sf font-normal text-white leading-tight tracking-tight">
                   AI-Personalized Wellness
-                  <span className="block text-white/90 mt-4">Meets Beautiful Music</span>
-                </h1>
-                <p className="text-lg sm:text-xl font-body text-white/80 leading-relaxed max-w-2xl mt-8">
+                  <span className="block text-white/90 mt-8">Meets Beautiful Music</span>
+                </h2>
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot font-normal text-white/80 leading-relaxed max-w-4xl mt-16 tracking-wide">
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
               </div>
@@ -170,10 +170,10 @@ const Index = () => {
         </section>
 
         {/* Features Carousel - Restored */}
-        <section className="py-16">
+        <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-6">
+            <div className="text-center mb-16">
+              <h2 className="text-2xl lg:text-3xl font-semibold font-headers text-white mb-6">
                 First-In-Class Technology
               </h2>
             </div>
@@ -215,9 +215,9 @@ const Index = () => {
         </section>
 
         {/* Footer - Research Institutions */}
-        <footer className="py-12 border-t border-white/10 backdrop-blur-sm bg-black/10">
+        <footer className="py-24 border-t border-white/10 backdrop-blur-sm bg-black/10 mt-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
               <div className="w-32 h-32 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
                 <img 
                   src={cornellLogo} 
