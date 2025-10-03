@@ -16,12 +16,16 @@ export const GlobalSessionTracker: React.FC = () => {
     if (!user) return;
 
     const showSessionInfo = () => {
-      const session = getCurrentSession();
-      if (session && session.duration >= 15) { // Show after 15 minutes
-        toast({
-          title: "Session Tracking Active",
-          description: `You've been listening for ${session.duration} minutes with ${session.tracksPlayed} tracks played.`,
-        });
+      try {
+        const session = getCurrentSession();
+        if (session && session.duration >= 15) { // Show after 15 minutes
+          toast({
+            title: "Session Tracking Active",
+            description: `You've been listening for ${session.duration} minutes with ${session.tracksPlayed} tracks played.`,
+          });
+        }
+      } catch (error) {
+        console.error('Error getting session info:', error);
       }
     };
 

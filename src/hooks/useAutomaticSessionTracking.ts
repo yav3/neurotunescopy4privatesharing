@@ -82,7 +82,7 @@ export const useAutomaticSessionTracking = () => {
 
   return {
     trackSkip,
-    getCurrentSession: SessionTracker.getCurrentSessionInfo,
+    getCurrentSession: () => SessionTracker.getCurrentSessionInfo(),
     manualSave: () => user ? SessionTracker.forceSave(user.id) : Promise.resolve(false)
   };
 };
