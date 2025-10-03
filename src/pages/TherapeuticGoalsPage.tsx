@@ -52,6 +52,9 @@ import genreGradientCyan from '@/assets/genre-gradient-cyan.png';
 import genreGradientGold from '@/assets/genre-gradient-gold.png';
 import genreGradientYellowOrange from '@/assets/genre-gradient-yellow-orange.png';
 import genreGradientRedOrange from '@/assets/genre-gradient-red-orange.png';
+import favoritePurple from '@/assets/favorite-purple.png';
+import favoritePeach from '@/assets/favorite-peach.png';
+import favoriteCyan from '@/assets/favorite-cyan.png';
 
 // Create therapeutic goal cards with new names and images
 // Map visual cards to actual therapeutic goal IDs from config
@@ -191,44 +194,48 @@ const TherapeuticGoalsPage = () => {
               {/* Horizontal scrolling container for pinned favorites */}
               <div className="overflow-x-auto pb-1">
                 <div className="flex gap-2 min-w-max">
-                  {pinnedItems.map((item) => (
+                  {pinnedItems.map((item, index) => {
+                    const favoriteBackgrounds = [favoritePurple, favoritePeach, favoriteCyan];
+                    const backgroundImage = favoriteBackgrounds[index % favoriteBackgrounds.length];
+                    
+                    return (
                     <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-20 sm:w-24">
                       <Card 
-                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border-0 bg-card w-full aspect-[1/1] rounded-xl sm:rounded-2xl"
                         onClick={() => handlePinnedItemSelect(item)}
                       >
                         <img 
-                          src={item.image}
+                          src={backgroundImage}
                           alt={`${item.name}`}
                           loading="eager"
                           decoding="sync"
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="absolute inset-0 w-full h-full object-cover"
                           style={{ 
                             imageRendering: 'auto',
                             filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
                           }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
                         
-                        {/* Usage count badge for goals */}
-                        {item.type === 'goal' && item.usageCount && (
-                          <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-full px-2 py-1">
-                            <span className="text-white text-xs font-sf font-medium">{item.usageCount}x</span>
-                          </div>
-                        )}
+                        {/* Centered icon sprite */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          {item.type === 'goal' && getTherapeuticIcon(item.id) && 
+                            React.createElement(getTherapeuticIcon(item.id), {
+                              className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
+                              size: 20
+                            })
+                          }
+                        </div>
                         
-                        {/* Hover text overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                          <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                            Play
+                        {/* Name overlay on hover */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                          <span className="text-white font-didot font-medium text-xs px-2 text-center">
+                            {item.name}
                           </span>
                         </div>
                       </Card>
-                      <h3 className="text-gray-900 dark:text-white font-didot font-medium text-xs sm:text-sm mt-2 text-left leading-snug break-words w-full card-title">
-                        {item.name}
-                      </h3>
                     </div>
-                  ))}
+                  )})}
                 </div>
               </div>
             </div>
