@@ -55,6 +55,12 @@ import genreGradientRedOrange from '@/assets/genre-gradient-red-orange.png';
 import favoritePurple from '@/assets/favorite-purple.png';
 import favoritePeach from '@/assets/favorite-peach.png';
 import favoriteCyan from '@/assets/favorite-cyan.png';
+import favoriteGreen from '@/assets/favorite-green.png';
+import favoriteCyanLight from '@/assets/favorite-cyan-light.png';
+import favoriteCyanFlow from '@/assets/favorite-cyan-flow.png';
+import favoriteTealDark from '@/assets/favorite-teal-dark.png';
+import favoriteWhite from '@/assets/favorite-white.png';
+import favoriteGold from '@/assets/favorite-gold.png';
 
 // Create therapeutic goal cards with new names and images
 // Map visual cards to actual therapeutic goal IDs from config
@@ -195,7 +201,17 @@ const TherapeuticGoalsPage = () => {
               <div className="overflow-x-auto pb-1">
                 <div className="flex gap-2 min-w-max">
                   {pinnedItems.map((item, index) => {
-                    const favoriteBackgrounds = [favoritePurple, favoritePeach, favoriteCyan];
+                    const favoriteBackgrounds = [
+                      favoritePurple, 
+                      favoritePeach, 
+                      favoriteCyan, 
+                      favoriteGreen, 
+                      favoriteCyanLight, 
+                      favoriteCyanFlow, 
+                      favoriteTealDark, 
+                      favoriteWhite, 
+                      favoriteGold
+                    ];
                     const backgroundImage = favoriteBackgrounds[index % favoriteBackgrounds.length];
                     
                     return (
