@@ -38,7 +38,7 @@ import newAgeWorldLandscape from '@/assets/new-age-world-landscape.png';
 import nonSleepDeepRestLeaf from '@/assets/non-sleep-deep-rest-leaf.png';
 import americanaJamBandStones from '@/assets/americana-jam-band-stones.png';
 import chillSambaTropical from '@/assets/chill-samba-bg.png';
-import tropicalHousePartyBg from '@/assets/tropical-house-party-green.png';
+import tropicalHousePartyBg from '@/assets/new-age-teal-swirls.png';
 import neurotunesLogo from '@/assets/neurotunes-logo.png';
 import relaxationCard from '@/assets/relaxation-card.png';
 import relaxationCardDark from '@/assets/relaxation-blue-swirls.png';
