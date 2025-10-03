@@ -214,7 +214,7 @@ const TherapeuticGoalsPage = () => {
               {therapeuticGoals.map((goal) => (
                 <div key={goal.id} className="flex flex-col items-start">
                   <Card 
-                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[3/4] rounded-3xl"
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-3xl"
                     onClick={() => handleGoalSelect(goal.id)}
                     title="Pick a genre"
                   >
