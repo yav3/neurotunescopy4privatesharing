@@ -266,17 +266,18 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-2 sm:gap-3 min-w-max">
                 {[
-                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Guitar },
-                  { name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
-                  { name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
-                  { name: 'Americana Jam Band', image: genreGradientGold, icon: Guitar },
-                  { name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
-                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
+                  { goalId: 'focus-enhancement', genreId: 'new-age', name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
+                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
+                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
+                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
+                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreGradientGold, icon: Guitar },
+                  { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Peace', image: genreGradientNeutral, icon: Guitar },
                 ].map((genre) => {
                   return (
-                    <div key={genre.name} className="flex-shrink-0 w-40 sm:w-48">
+                    <div key={`${genre.goalId}-${genre.genreId}`} className="flex-shrink-0 w-40 sm:w-48">
                       <Card 
                         className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
+                        onClick={() => navigate(`/genre/${genre.goalId}/${genre.genreId}`)}
                       >
                         <img 
                           src={genre.image}
