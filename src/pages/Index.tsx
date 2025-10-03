@@ -51,6 +51,34 @@ const Index = () => {
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
+  const stats = [
+    { label: "Technology", value: "Patented", icon: Shield },
+    { label: "Research", value: "Evidence Based", icon: Award },
+    { label: "Music Library", value: "50+ Genres", icon: Music },
+    { label: "Analytics", value: "Clinical Insights", icon: Brain }
+  ];
+
+  const therapeuticBenefits = [
+    {
+      icon: Brain,
+      title: "Cognitive Enhancement",
+      description: "Scientifically-backed music selections to improve focus, memory, and mental clarity",
+      color: "text-primary"
+    },
+    {
+      icon: Heart,
+      title: "Emotional Regulation", 
+      description: "AI-curated playlists designed to balance mood and reduce stress responses",
+      color: "text-info"
+    },
+    {
+      icon: Activity,
+      title: "Physiological Benefits",
+      description: "Evidence-based frequencies that promote relaxation and cardiovascular health",
+      color: "text-success"
+    }
+  ];
+
   // Map display names to existing therapeutic goals (keeping music buckets intact)
   const therapeuticCards = [
     {
@@ -122,20 +150,65 @@ const Index = () => {
         <section className="py-16 sm:py-20 lg:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
-              <div className="space-y-6">
-                {/* NeuroTunes Logo */}
-                <div className="mb-6">
-                  <h1 className="text-5xl lg:text-6xl font-headers font-semibold text-white">NeuroTunes</h1>
-                  <p className="text-sm font-body text-white/70 mt-1">by NeuralPositive</p>
+              <div className="space-y-8">
+                {/* NeuroTunes Logo - Much Bigger */}
+                <div className="mb-8">
+                  <h1 className="text-7xl sm:text-8xl lg:text-9xl font-headers font-semibold text-white">NeuroTunes</h1>
+                  <p className="text-base sm:text-lg font-body text-white/70 mt-2">by NeuralPositive</p>
                 </div>
                 
-                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold font-headers text-white leading-tight">
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-semibold font-headers text-white leading-tight">
                   AI-Personalized Wellness
-                  <span className="block text-white/90 mt-2">Meets Beautiful Music</span>
+                  <span className="block text-white/90 mt-4">Meets Beautiful Music</span>
                 </h1>
-                <p className="text-base font-body text-white/80 leading-relaxed max-w-2xl mt-6">
+                <p className="text-lg sm:text-xl font-body text-white/80 leading-relaxed max-w-2xl mt-8">
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Carousel - Restored */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-xl lg:text-2xl font-semibold font-headers text-white mb-6">
+                First-In-Class Technology
+              </h2>
+            </div>
+
+            {/* Unified Features Carousel */}
+            <div className="w-full overflow-hidden">
+              <div className="horizontal-scroll scrollbar-hide">
+                <div className="flex gap-4 pb-4" style={{ width: 'max-content' }}>
+                  {/* Stats Cards */}
+                  {stats.map((stat, index) => (
+                    <div key={`stat-${index}`} className="text-center p-6 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-xl bg-white/5 backdrop-blur-sm flex-shrink-0"
+                         style={{ width: '220px', minWidth: '220px' }}>
+                      <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4">
+                        <stat.icon className="h-6 w-6 text-white stroke-[1.5]" />
+                      </div>
+                      <div className="font-semibold font-headers text-white text-lg mb-2">{stat.value}</div>
+                      <div className="text-sm font-body text-white/70 font-medium">{stat.label}</div>
+                    </div>
+                  ))}
+                  
+                  {/* Therapeutic Benefits Cards */}
+                  {therapeuticBenefits.map((benefit, index) => (
+                    <div 
+                      key={`benefit-${index}`} 
+                      className="border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all duration-500 group bg-white/5 backdrop-blur-sm scroll-snap-start"
+                      style={{ width: '280px', minWidth: '280px' }}
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center mb-4 group-hover:border-white/40 transition-all duration-300">
+                        <benefit.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-base font-medium font-headers text-white mb-2">{benefit.title}</h3>
+                      <p className="text-sm font-body text-white/70 leading-relaxed">{benefit.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
