@@ -4,37 +4,29 @@ import { storageRequestManager } from '@/services/storageRequestManager';
 import { albumArtPool } from '@/utils/albumArtPool';
 import { getAlbumArtworkUrl } from '@/utils/imageUtils';
 
+// Import local artwork assets
+import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
+import focusArtwork from "@/assets/focus-enhancement-artwork.jpg";
+import stressAnxietyArtwork from "@/assets/stress-anxiety-artwork.jpg";
+import sleepArtwork from "@/assets/sleep-artwork.jpg";
+import painSupportArtwork from "@/assets/pain-support-artwork.jpg";
+import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
+import acousticArtwork from "@/assets/acoustic-artwork.jpg";
+import energyBoostArtwork from "@/assets/energy-boost-artwork.jpg";
+
 // Centralized artwork service to prevent race conditions
 export class ArtworkService {
   private static cache = new Map<string, string>();
   private static loadingPromises = new Map<string, Promise<string>>();
   
-  // Therapeutic artwork mapping with consistent selection using actual albumart files
+  // Therapeutic artwork mapping with local assets
   private static therapeuticArtwork = {
-    delta: [
-      '0376232F-FE92-48B6-A567-7C41465B4FC9.jpeg',
-      '0567F220-7680-45A5-8A8F-2FBECEB7897A.png'
-    ],
-    theta: [
-      '060CF7F4-0364-413A-B67C-918425A65E00.png',
-      '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png'
-    ],
-    alpha: [
-      '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
-      '20250923_1807_Raindrops on Flowers_remix_01k5w9sreqfr09xb2z6weqharz.png'
-    ],
-    beta: [
-      '0567F220-7680-45A5-8A8F-2FBECEB7897A (1).png',
-      '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C (1).png'
-    ],
-    gamma: [
-      '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif',
-      '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png'
-    ],
-    default: [
-      '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
-      '060CF7F4-0364-413A-B67C-918425A65E00.png'
-    ]
+    delta: [sleepArtwork, stressAnxietyArtwork],
+    theta: [stressAnxietyArtwork, painSupportArtwork],
+    alpha: [focusArtwork, acousticArtwork],
+    beta: [energyBoostArtwork, moodBoostArtwork],
+    gamma: [energyBoostArtwork, crossoverClassicalArt],
+    default: [focusArtwork, acousticArtwork]
   };
 
   // Get consistent artwork for a track (prevents race conditions)
@@ -119,12 +111,9 @@ export class ArtworkService {
     
     // Consistent selection based on track ID
     const hash = Math.abs(trackId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-    const selectedFilename = artworks[hash % artworks.length];
+    const url = artworks[hash % artworks.length];
 
-    console.log('🎯 Selected filename:', selectedFilename, 'for trackId:', trackId);
-
-    const url = getAlbumArtworkUrl(selectedFilename);
-    console.log('🔗 Final artwork URL:', url);
+    console.log('🎯 Selected artwork:', url, 'for trackId:', trackId);
 
     // Consistent gradient based on frequency band
     const gradients = {
