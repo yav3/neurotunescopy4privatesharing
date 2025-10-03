@@ -243,9 +243,9 @@ const TherapeuticGoalsPage = () => {
                   { name: 'Chill Samba', image: chillSambaTropical },
                   { name: 'Tropical House Party', image: tropicalHousePartyBg },
                 ].map((genre) => (
-                  <div key={genre.name} className="flex-shrink-0 w-40 sm:w-48">
+                  <div key={genre.name} className="flex-shrink-0 w-52 sm:w-64">
                     <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-video rounded-xl sm:rounded-2xl border-0"
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
                     >
                       <img 
                         src={genre.image}
