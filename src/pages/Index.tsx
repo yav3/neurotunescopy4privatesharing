@@ -153,15 +153,18 @@ const Index = () => {
               <div className="space-y-16">
                 {/* NeuroTunes Logo - 5x bigger */}
                 <div className="mb-16">
-                  <h1 className="text-[12rem] sm:text-[14rem] lg:text-[16rem] xl:text-[18rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
-                  <p className="text-2xl sm:text-3xl font-didot font-normal text-white/70 mt-8 tracking-wide">by NeuralPositive</p>
+                  <div className="flex items-center gap-6">
+                    <Plus className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 text-white" strokeWidth={1.5} />
+                    <h1 className="text-8xl sm:text-9xl lg:text-[10rem] xl:text-[12rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+                  </div>
+                  <p className="text-xl sm:text-2xl font-didot italic text-white/70 mt-6 tracking-wide">by NeuralPositive</p>
                 </div>
                 
-                <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-sf font-normal text-white leading-tight tracking-tight">
+                <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-sf font-normal text-white leading-tight tracking-tight">
                   AI-Personalized Wellness
-                  <span className="block text-white/90 mt-8">Meets Beautiful Music</span>
+                  <span className="block text-white/90 mt-6">Meets Beautiful Music</span>
                 </h2>
-                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot font-normal text-white/80 leading-relaxed max-w-4xl mt-16 tracking-wide">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-didot font-normal text-white/80 leading-relaxed max-w-4xl mt-12 tracking-wide">
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
               </div>
