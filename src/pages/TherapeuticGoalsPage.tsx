@@ -37,26 +37,51 @@ import americanaJamBandStones from '@/assets/americana-jam-band-stones.png';
 import chillSambaTropical from '@/assets/chill-samba-bg.png';
 import tropicalHousePartyBg from '@/assets/tropical-house-party-bg.png';
 import neurotunesLogo from '@/assets/neurotunes-logo.png';
+import relaxationCard from '@/assets/relaxation-card.png';
+import recoveryCard from '@/assets/recovery-card.png';
+import focusCard from '@/assets/focus-card.png';
+import restCard from '@/assets/rest-card.png';
+import exerciseCard from '@/assets/exercise-card.png';
+import boostCard from '@/assets/boost-card.png';
 
-// Create therapeutic goal cards
+// Create therapeutic goal cards with new names and images
 const therapeuticGoals = [
-  ...THERAPEUTIC_GOALS.filter(goal => 
-    goal.id !== 'stress-anxiety-support'
-  ).map(goal => ({
-    id: goal.id,
-    name: goal.name,
-    letter: goal.name.charAt(0),
-    image: goal.artwork
-  }))
-];
-
-// Trending music categories with varied images
-const trendingCategories = [
-  { id: 'chill-classical', name: 'Classical Nocturnes', letter: 'C', image: peacefulLake },
-  { id: 'chill-samba', name: 'Serene Samba', letter: 'S', image: chillSambaTropical },
-  { id: 'chill-piano', name: 'New Age Flow State', letter: 'N', image: forestLakeMist },
-  { id: 'chill-folk-bluegrass', name: 'Chill Folk & Bluegrass', letter: 'C', image: chillFolkBluegrassLake },
-  { id: 'americana-jam-band', name: 'Mood Boosting Americana & Jam Band', letter: 'M', image: americanaJamBandStones },
+  {
+    id: "stress-anxiety-support",
+    name: "Relaxation",
+    image: relaxationCard,
+    goalId: "stress-anxiety-support"
+  },
+  {
+    id: "pain-support",
+    name: "Recovery",
+    image: recoveryCard,
+    goalId: "pain-support"
+  },
+  {
+    id: "focus-enhancement",
+    name: "Focus+",
+    image: focusCard,
+    goalId: "focus-enhancement"
+  },
+  {
+    id: "meditation-support",
+    name: "Rest",
+    image: restCard,
+    goalId: "meditation-support"
+  },
+  {
+    id: "energy-vitality",
+    name: "Exercise",
+    image: exerciseCard,
+    goalId: "energy-vitality"
+  },
+  {
+    id: "calm-mood-boost",
+    name: "Boost",
+    image: boostCard,
+    goalId: "calm-mood-boost"
+  }
 ];
 
 const TherapeuticGoalsPage = () => {
@@ -180,46 +205,41 @@ const TherapeuticGoalsPage = () => {
             </div>
           )}
 
-          {/* Therapeutic Goals Section */}
+          {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
             <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-6 md:mb-8 leading-tight">Personalize Your Goal</h2>
             
-            {/* Horizontal scrolling container for therapeutic goals */}
-            <div className="overflow-x-auto pb-2">
-              <div className="flex gap-4 min-w-max">
-                {therapeuticGoals.map((goal) => (
-                  <div key={goal.id} className="flex flex-col items-start flex-shrink-0 w-32 sm:w-36 md:w-40">
-                    <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[1/1]"
-                      onClick={() => handleGoalSelect(goal.id)}
-                      title="Pick a genre"
-                    >
-                      <img 
-                        src={goal.image}
-                        alt={`${goal.name} therapy program`}
-                        loading="eager"
-                        decoding="sync"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        style={{ 
-                          imageRendering: 'auto',
-                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/10 dark:from-black/30 dark:to-black/20" />
-                      
-                      {/* Hover text overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                        <span className="text-white font-sf font-medium text-xs px-2 py-1 bg-black/50 rounded backdrop-blur-sm">
-                          Pick a genre
-                        </span>
-                      </div>
-                    </Card>
-                    <h3 className="text-gray-900 dark:text-white font-didot font-medium text-sm sm:text-base mt-4 sm:mt-5 text-left leading-snug break-words w-full card-title">
-                      {goal.name}
-                    </h3>
-                  </div>
-                ))}
-              </div>
+            {/* Grid container for all therapeutic goals */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+              {therapeuticGoals.map((goal) => (
+                <div key={goal.id} className="flex flex-col items-start">
+                  <Card 
+                    className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border bg-card w-full aspect-[3/4] rounded-3xl"
+                    onClick={() => handleGoalSelect(goal.id)}
+                    title="Pick a genre"
+                  >
+                    <img 
+                      src={goal.image}
+                      alt={`${goal.name} therapy program`}
+                      loading="eager"
+                      decoding="sync"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={{ 
+                        imageRendering: 'auto',
+                        filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                    
+                    {/* Title at bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                      <h3 className="text-gray-100 dark:text-white font-didot font-medium text-sm sm:text-base leading-snug">
+                        {goal.name}
+                      </h3>
+                    </div>
+                  </Card>
+                </div>
+              ))}
             </div>
           </div>
           
