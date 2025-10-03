@@ -148,7 +148,7 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-8 sm:pt-12">
+      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-16 sm:pt-24">
         <div className="max-w-5xl mx-auto space-y-4 sm:space-y-5">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
