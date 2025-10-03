@@ -206,12 +206,13 @@ const TherapeuticGoalsPage = () => {
           <div>
             <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">Personalize Your Goal</h2>
             
-            {/* Grid container for all therapeutic goals */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            {/* Horizontal scrolling container for all therapeutic goals */}
+            <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
+              <div className="flex gap-3 sm:gap-4 min-w-max">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
-                  <div key={goal.id}>
+                  <div key={goal.id} className="flex-shrink-0 w-52 sm:w-64">
                     <Card 
                       className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
                       onClick={() => handleGoalSelect(goal.id)}
@@ -232,12 +233,12 @@ const TherapeuticGoalsPage = () => {
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} />
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={40} />
                       </div>
                       
                       {/* Title on hover only */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                        <h3 className="text-white font-didot font-medium text-sm sm:text-base">
+                        <h3 className="text-white font-didot font-medium text-base sm:text-lg">
                           {goal.name}
                         </h3>
                       </div>
@@ -246,6 +247,7 @@ const TherapeuticGoalsPage = () => {
                 );
               })}
             </div>
+          </div>
           </div>
           
         </div>
