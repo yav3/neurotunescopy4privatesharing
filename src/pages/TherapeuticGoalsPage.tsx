@@ -183,13 +183,13 @@ const TherapeuticGoalsPage = () => {
       )}
 
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-3 sm:pt-4">
-        <div className="max-w-5xl mx-auto space-y-2 sm:space-y-3">
+      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-4 sm:pt-6">
+        <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
             <div>
-              <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">Your Favorites</h2>
+              <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">Your Favorites</h2>
               
               {/* Horizontal scrolling container for pinned favorites */}
               <div className="overflow-x-auto pb-1">
@@ -243,7 +243,7 @@ const TherapeuticGoalsPage = () => {
 
           {/* New in Our Popular Genres Section */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">New in Our Popular Genres</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">New in Our Popular Genres</h2>
             
             {/* Horizontal scrolling container for popular genres */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
@@ -298,7 +298,7 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-1.5 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">Personalize Your Goal</h2>
             
             {/* Horizontal scrolling container for all therapeutic goals */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
