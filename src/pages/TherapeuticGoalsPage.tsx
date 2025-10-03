@@ -41,6 +41,7 @@ import chillSambaTropical from '@/assets/chill-samba-bg.png';
 import tropicalHousePartyBg from '@/assets/tropical-house-party-bg.png';
 import neurotunesLogo from '@/assets/neurotunes-logo.png';
 import relaxationCard from '@/assets/relaxation-card.png';
+import relaxationCardDark from '@/assets/relaxation-card-dark.png';
 import recoveryCard from '@/assets/recovery-card.png';
 import focusCard from '@/assets/focus-card.png';
 import restCard from '@/assets/rest-card.png';
@@ -68,7 +69,7 @@ const therapeuticGoals = [
   {
     id: "anxiety-support",
     name: "Relaxation",
-    image: favoritePurple,
+    image: relaxationCardDark,
     goalId: "anxiety-support"
   },
   {
