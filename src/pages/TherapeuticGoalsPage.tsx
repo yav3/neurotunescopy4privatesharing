@@ -228,6 +228,50 @@ const TherapeuticGoalsPage = () => {
             </div>
           )}
 
+          {/* New in Our Popular Genres Section */}
+          <div>
+            <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">New in Our Popular Genres</h2>
+            
+            {/* Horizontal scrolling container for popular genres */}
+            <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
+              <div className="flex gap-3 sm:gap-4 min-w-max">
+                {[
+                  { name: 'Chill Folk Bluegrass', image: chillFolkBluegrassLake },
+                  { name: 'New Age World', image: newAgeWorldLandscape },
+                  { name: 'Chill Tropical House', image: chillTropicalHouseStones },
+                  { name: 'Americana Jam Band', image: americanaJamBandStones },
+                  { name: 'Chill Samba', image: chillSambaTropical },
+                  { name: 'Tropical House Party', image: tropicalHousePartyBg },
+                ].map((genre) => (
+                  <div key={genre.name} className="flex-shrink-0 w-40 sm:w-48">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-video rounded-xl sm:rounded-2xl border-0"
+                    >
+                      <img 
+                        src={genre.image}
+                        alt={genre.name}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ 
+                          imageRendering: 'auto',
+                          filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 group-hover:from-black/30 group-hover:to-black/70 transition-all duration-300" />
+                      
+                      {/* Genre name overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3">
+                        <h3 className="text-white font-didot font-medium text-sm sm:text-base leading-tight">
+                          {genre.name}
+                        </h3>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
             <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">Personalize Your Goal</h2>
