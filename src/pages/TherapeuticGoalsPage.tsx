@@ -148,8 +148,8 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-3 sm:px-5 md:px-6 lg:px-8 pb-28 sm:pb-24 pt-2 sm:pt-3 md:pt-4">
-        <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12">
+      <div className="px-2 sm:px-4 md:px-5 pb-24 sm:pb-20 pt-1 sm:pt-2">
+        <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
@@ -204,10 +204,10 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-2xl sm:text-3xl font-sf font-medium text-gray-900 dark:text-white mb-4 md:mb-6 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-xl sm:text-2xl font-sf font-medium text-gray-900 dark:text-white mb-3 md:mb-4 leading-tight">Personalize Your Goal</h2>
             
             {/* Grid container for all therapeutic goals */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
