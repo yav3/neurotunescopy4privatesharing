@@ -148,8 +148,8 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-3 sm:px-4 md:px-5 pb-16 pt-2.5 sm:pt-3">
-        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-3.5">
+      <div className="px-3 sm:px-4 md:px-5 pb-16 pt-8 sm:pt-12">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-5">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
@@ -204,10 +204,10 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-base sm:text-lg font-sf font-medium text-gray-900 dark:text-white mb-2 sm:mb-2.5 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">Personalize Your Goal</h2>
             
             {/* Grid container for all therapeutic goals */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-2.5">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
@@ -232,12 +232,12 @@ const TherapeuticGoalsPage = () => {
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={36} />
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} />
                       </div>
                       
                       {/* Title on hover only */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                        <h3 className="text-white font-didot font-medium text-base sm:text-lg">
+                        <h3 className="text-white font-didot font-medium text-sm sm:text-base">
                           {goal.name}
                         </h3>
                       </div>
