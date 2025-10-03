@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Moon, Plus, Pin, Guitar, Globe, Waves, Music2, Drum, Zap } from 'lucide-react';
+import { Sun, Moon, Plus, Pin, Music, Flower2, Waves, Music2, Drum, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
@@ -242,12 +242,12 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-3 sm:gap-4 min-w-max">
                 {[
-                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Guitar },
-                  { name: 'New Age World', image: genreGradientPeach, icon: Globe },
+                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral, icon: Music },
+                  { name: 'New Age World', image: genreGradientPeach, icon: Flower2 },
                   { name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
                   { name: 'Americana Jam Band', image: genreGradientGold, icon: Music2 },
                   { name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
-                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: Zap },
+                  { name: 'Tropical House Party', image: genreGradientRedOrange, icon: Flame },
                 ].map((genre) => {
                   const IconComponent = genre.icon;
                   return (
