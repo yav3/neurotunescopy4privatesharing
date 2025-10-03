@@ -162,18 +162,20 @@ const TherapeuticGoalsPage = () => {
         </div>
       </div>
 
+      {/* Onboarding message for new users - Prominent placement */}
+      {showOnboarding && (
+        <div className="px-6 sm:px-8 md:px-12 pt-12 sm:pt-16">
+          <div className="max-w-3xl mx-auto p-6 sm:p-8 bg-muted/50 rounded-xl border border-border">
+            <p className="text-lg sm:text-xl md:text-2xl text-foreground leading-relaxed font-medium">
+              Click on a goal to select a genre. I'll learn your preferences and improve recommendations with every session, ultimately enabling a closed loop experience. Pin a mode to the top: you'll get recommendations based on your recent favorites. Select from a therapeutic goal to listen on discovery mode.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-64 sm:pt-80">
+      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-12 sm:pt-16">
         <div className="max-w-5xl mx-auto space-y-4 sm:space-y-5">
-          
-          {/* Onboarding message for new users */}
-          {showOnboarding && (
-            <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border">
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Click on a goal to select a genre. I'll learn your preferences and improve recommendations with every session, ultimately enabling a closed loop experience. Pin a mode to the top: you'll get recommendations based on your recent favorites. Select from a therapeutic goal to listen on discovery mode.
-              </p>
-            </div>
-          )}
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
