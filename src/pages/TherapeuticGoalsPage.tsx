@@ -215,7 +215,7 @@ const TherapeuticGoalsPage = () => {
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
-                  <div key={goal.id} className="flex flex-col items-start">
+                  <div key={goal.id}>
                     <Card 
                       className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-3xl border-0"
                       onClick={() => handleGoalSelect(goal.id)}
@@ -234,14 +234,14 @@ const TherapeuticGoalsPage = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
                       
-                      {/* Icon sprite at top */}
-                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                        <IconComponent className="text-white opacity-90" size={20} />
+                      {/* Centered icon sprite */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} />
                       </div>
                       
-                      {/* Title at bottom */}
-                      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                        <h3 className="text-gray-100 dark:text-white font-didot font-medium text-sm sm:text-base leading-snug">
+                      {/* Title on hover only */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                        <h3 className="text-white font-didot font-medium text-base sm:text-lg">
                           {goal.name}
                         </h3>
                       </div>
