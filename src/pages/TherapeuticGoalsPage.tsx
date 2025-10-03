@@ -258,62 +258,6 @@ const TherapeuticGoalsPage = () => {
             </div>
           )}
 
-          {/* New in Our Popular Genres Section */}
-          <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">New in Our Popular Genres</h2>
-            
-            {/* Horizontal scrolling container for popular genres */}
-            <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
-              <div className="flex gap-2 sm:gap-3 min-w-max">
-                {[
-                  { goalId: 'focus-enhancement', genreId: 'new-age', name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
-                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
-                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
-                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
-                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreGradientGold, icon: Guitar },
-                  { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Peace', image: genreGradientNeutral, icon: Guitar },
-                ].map((genre) => {
-                  return (
-                    <div key={`${genre.goalId}-${genre.genreId}`} className="flex-shrink-0 w-40 sm:w-48">
-                      <Card 
-                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
-                        onClick={() => navigate(`/genre/${genre.goalId}/${genre.genreId}`)}
-                      >
-                        <img 
-                          src={genre.image}
-                          alt={genre.name}
-                          loading="lazy"
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          style={{ 
-                            imageRendering: 'auto',
-                            filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
-                        
-                        {/* Centered icon sprite */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {React.createElement(genre.icon as any, {
-                            className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                            size: 28,
-                            strokeWidth: 1.2
-                          })}
-                        </div>
-                        
-                        {/* Genre name on hover only */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                          <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
-                            {genre.name}
-                          </h3>
-                        </div>
-                      </Card>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
             <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">Personalize Your Goal</h2>
@@ -379,6 +323,62 @@ const TherapeuticGoalsPage = () => {
               })}
             </div>
           </div>
+          </div>
+
+          {/* New in Our Popular Genres Section */}
+          <div>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">New in Our Popular Genres</h2>
+            
+            {/* Horizontal scrolling container for popular genres */}
+            <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
+              <div className="flex gap-2 sm:gap-3 min-w-max">
+                {[
+                  { goalId: 'focus-enhancement', genreId: 'new-age', name: 'New Age World', image: genreGradientPeach, icon: LotusIcon },
+                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
+                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
+                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
+                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreGradientGold, icon: Guitar },
+                  { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Peace', image: genreGradientNeutral, icon: Guitar },
+                ].map((genre) => {
+                  return (
+                    <div key={`${genre.goalId}-${genre.genreId}`} className="flex-shrink-0 w-40 sm:w-48">
+                      <Card 
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
+                        onClick={() => navigate(`/genre/${genre.goalId}/${genre.genreId}`)}
+                      >
+                        <img 
+                          src={genre.image}
+                          alt={genre.name}
+                          loading="lazy"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          style={{ 
+                            imageRendering: 'auto',
+                            filter: 'contrast(1.1) saturate(1.15) brightness(1.05)'
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
+                        
+                        {/* Centered icon sprite */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          {React.createElement(genre.icon as any, {
+                            className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
+                            size: 28,
+                            strokeWidth: 1.2
+                          })}
+                        </div>
+                        
+                        {/* Genre name on hover only */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
+                          <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
+                            {genre.name}
+                          </h3>
+                        </div>
+                      </Card>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
           
         </div>
