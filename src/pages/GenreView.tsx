@@ -19,6 +19,7 @@ export default function GenreView() {
   const [tracks, setTracks] = useState<SimpleTrack[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasAutoPlayed = React.useRef(false); // Track if we've already auto-played for this genre
 
   // Get the specific genre from the configuration
   const genres = goalId ? getGenreOptions(goalId) : [];
@@ -35,6 +36,7 @@ export default function GenreView() {
     setIsTracksLoading(true);
     setTracks([]);
     setError(null);
+    hasAutoPlayed.current = false; // Reset autoplay flag when genre changes
   }, [goalId, genreId]); // Only depend on route params, not derived objects
 
   // Import and run sonatas diagnostic on sonatas page
@@ -182,6 +184,17 @@ export default function GenreView() {
       audio_status: 'working' as const
     };
   };
+
+  // AUTOPLAY: Automatically start playback when tracks are loaded
+  useEffect(() => {
+    if (tracks.length > 0 && !isTracksLoading && !error && !hasAutoPlayed.current) {
+      console.log('🎵 Auto-starting playback for loaded tracks...');
+      hasAutoPlayed.current = true; // Mark as auto-played
+      const audioTracks = tracks.map(convertToAudioTrack);
+      setQueue(audioTracks, 0).then(() => play());
+    }
+  }, [tracks, isTracksLoading, error]);
+
 
   // Authentication check for sonatas
   if (genreId === 'sonatas' && !user) {
