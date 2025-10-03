@@ -107,17 +107,14 @@ const TherapeuticGoalsPage = () => {
   const sessionHistory = useAppStore(state => state.sessionHistory);
   const setPreference = useAppStore(state => state.setPreference);
   
-  // Mark as seen when user has any session history
-  React.useEffect(() => {
-    if (!hasSeenOnboarding && sessionHistory.length > 0) {
-      setPreference('hasSeenOnboarding', true);
-    }
-  }, [hasSeenOnboarding, sessionHistory.length, setPreference]);
-  
-  const showOnboarding = !hasSeenOnboarding && sessionHistory.length === 0;
+  const showOnboarding = !hasSeenOnboarding;
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
+    // Mark onboarding as seen after first interaction
+    if (!hasSeenOnboarding) {
+      setPreference('hasSeenOnboarding', true);
+    }
     // goalId now matches the actual therapeutic goal IDs
     setSelectedGoalId(goalId);
     setIsModalOpen(true);
