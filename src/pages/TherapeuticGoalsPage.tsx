@@ -125,14 +125,14 @@ const TherapeuticGoalsPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="px-6 py-2 border-b border-border bg-background">
+      <div className="px-4 py-1.5 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <div className="flex items-center gap-3">
-              <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900 dark:text-white" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Plus className="w-5 h-5 text-gray-900 dark:text-white" />
               <div>
-                <div className="text-4xl sm:text-5xl md:text-6xl font-sf font-medium text-gray-900 dark:text-white leading-tight">NeuroTunes</div>
+                <div className="text-3xl sm:text-4xl font-sf font-medium text-gray-900 dark:text-white leading-tight">NeuroTunes</div>
               </div>
             </div>
             <Button 
@@ -148,13 +148,13 @@ const TherapeuticGoalsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-2 sm:px-4 md:px-5 pb-20 sm:pb-20 pt-2 sm:pt-3">
-        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-5">
+      <div className="px-2 sm:px-4 md:px-5 pb-16 pt-2 sm:pt-2.5">
+        <div className="max-w-7xl mx-auto space-y-3 sm:space-y-4">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
             <div>
-              <h2 className="text-xl sm:text-2xl font-sf font-medium text-gray-900 dark:text-white mb-3 md:mb-4 leading-tight">Your Favorites</h2>
+              <h2 className="text-base sm:text-lg font-sf font-medium text-gray-900 dark:text-white mb-2 leading-tight">Your Favorites</h2>
               
               {/* Horizontal scrolling container for pinned favorites */}
               <div className="overflow-x-auto pb-2">
@@ -204,16 +204,16 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-lg sm:text-xl font-sf font-medium text-gray-900 dark:text-white mb-2 md:mb-3 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-base sm:text-lg font-sf font-medium text-gray-900 dark:text-white mb-1.5 sm:mb-2 leading-tight">Personalize Your Goal</h2>
             
             {/* Grid container for all therapeutic goals */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5">
+            <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-1.5 sm:gap-2">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
                   <div key={goal.id}>
                     <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-3xl border-0"
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
                       onClick={() => handleGoalSelect(goal.id)}
                       title="Pick a genre"
                     >
@@ -232,12 +232,12 @@ const TherapeuticGoalsPage = () => {
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={32} />
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} />
                       </div>
                       
                       {/* Title on hover only */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                        <h3 className="text-white font-didot font-medium text-base sm:text-lg">
+                        <h3 className="text-white font-didot font-medium text-sm sm:text-base">
                           {goal.name}
                         </h3>
                       </div>
