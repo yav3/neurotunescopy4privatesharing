@@ -46,12 +46,13 @@ import exerciseCard from '@/assets/exercise-card.png';
 import boostCard from '@/assets/boost-card.png';
 
 // Create therapeutic goal cards with new names and images
+// Map visual cards to actual therapeutic goal IDs from config
 const therapeuticGoals = [
   {
-    id: "stress-anxiety-support",
+    id: "anxiety-support",
     name: "Relaxation",
     image: relaxationCard,
-    goalId: "stress-anxiety-support"
+    goalId: "anxiety-support"
   },
   {
     id: "pain-support",
@@ -66,22 +67,22 @@ const therapeuticGoals = [
     goalId: "focus-enhancement"
   },
   {
-    id: "meditation-support",
+    id: "sleep-preparation",
     name: "Rest",
     image: restCard,
-    goalId: "meditation-support"
+    goalId: "sleep-preparation"
   },
   {
-    id: "energy-vitality",
+    id: "energy-boost",
     name: "Exercise",
     image: exerciseCard,
-    goalId: "energy-vitality"
+    goalId: "energy-boost"
   },
   {
-    id: "calm-mood-boost",
+    id: "depression-support",
     name: "Boost",
     image: boostCard,
-    goalId: "calm-mood-boost"
+    goalId: "depression-support"
   }
 ];
 
@@ -102,13 +103,8 @@ const TherapeuticGoalsPage = () => {
 
   const handleGoalSelect = (goalId: string) => {
     console.log('🎯 Opening genre selection modal for goal:', goalId);
-    // Map split cards back to original goal
-    const mappedGoalId = goalId === 'calm-mood-boost' 
-      ? 'calm-mood-boost'
-      : goalId === 'anxiety-support'
-      ? 'anxiety-support'
-      : goalId;
-    setSelectedGoalId(mappedGoalId);
+    // goalId now matches the actual therapeutic goal IDs
+    setSelectedGoalId(goalId);
     setIsModalOpen(true);
   };
 
