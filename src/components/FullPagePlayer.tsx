@@ -127,8 +127,10 @@ export const FullPagePlayer = () => {
     
     console.log('🎨 FullPagePlayer: Getting artwork for track:', track.id);
     const frequencyBand = getFrequencyBand(track);
+    console.log('🎵 Frequency band:', frequencyBand);
     const result = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
     console.log('🖼️ FullPagePlayer: Artwork result:', result);
+    console.log('🔗 Artwork URL:', result.url);
     return result;
   }, [track?.id]);
 
@@ -283,6 +285,10 @@ export const FullPagePlayer = () => {
             className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
+            onError={(e) => {
+              console.error('❌ Image failed to load:', artwork.url);
+              console.error('❌ Error event:', e);
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         </div>
