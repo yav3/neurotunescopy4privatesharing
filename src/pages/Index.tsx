@@ -141,9 +141,9 @@ const Index = () => {
             </h2>
           </div>
 
-          {/* Therapeutic Cards Grid - All visible */}
-          <div className="w-full">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {/* Therapeutic Cards Grid - All 6 cards fit on page */}
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
               {therapeuticCards.map((card, index) => (
                 <div 
                   key={index}
@@ -156,8 +156,8 @@ const Index = () => {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/50 group-hover:from-black/20 group-hover:to-black/60 transition-all duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-xl font-semibold font-headers text-white mb-1">{card.title}</h3>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                    <h3 className="text-base sm:text-lg font-semibold font-headers text-white mb-0.5">{card.title}</h3>
                     <p className="text-xs font-body text-white/80">{card.description}</p>
                   </div>
                 </div>
