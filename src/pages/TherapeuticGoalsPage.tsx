@@ -46,6 +46,12 @@ import focusCard from '@/assets/focus-card.png';
 import restCard from '@/assets/rest-card.png';
 import exerciseCard from '@/assets/exercise-card.png';
 import boostCard from '@/assets/boost-card.png';
+import genreGradientNeutral from '@/assets/genre-gradient-neutral.png';
+import genreGradientPeach from '@/assets/genre-gradient-peach.png';
+import genreGradientCyan from '@/assets/genre-gradient-cyan.png';
+import genreGradientGold from '@/assets/genre-gradient-gold.png';
+import genreGradientYellowOrange from '@/assets/genre-gradient-yellow-orange.png';
+import genreGradientRedOrange from '@/assets/genre-gradient-red-orange.png';
 
 // Create therapeutic goal cards with new names and images
 // Map visual cards to actual therapeutic goal IDs from config
@@ -236,12 +242,12 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-2 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-3 sm:gap-4 min-w-max">
                 {[
-                  { name: 'Chill Folk Bluegrass', image: chillFolkBluegrassLake },
-                  { name: 'New Age World', image: newAgeWorldLandscape },
-                  { name: 'Chill Tropical House', image: chillTropicalHouseStones },
-                  { name: 'Americana Jam Band', image: americanaJamBandStones },
-                  { name: 'Chill Samba', image: chillSambaTropical },
-                  { name: 'Tropical House Party', image: tropicalHousePartyBg },
+                  { name: 'Chill Folk Bluegrass', image: genreGradientNeutral },
+                  { name: 'New Age World', image: genreGradientPeach },
+                  { name: 'Chill Tropical House', image: genreGradientCyan },
+                  { name: 'Americana Jam Band', image: genreGradientGold },
+                  { name: 'Chill Samba', image: genreGradientYellowOrange },
+                  { name: 'Tropical House Party', image: genreGradientRedOrange },
                 ].map((genre) => (
                   <div key={genre.name} className="flex-shrink-0 w-52 sm:w-64">
                     <Card 
