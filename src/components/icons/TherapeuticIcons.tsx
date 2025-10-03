@@ -51,12 +51,12 @@ export const ArrowUpIcon: React.FC<IconProps> = ({ className = '', size = 24 }) 
 
 // Map therapeutic goal IDs to their corresponding icons
 export const therapeuticIcons = {
-  'stress-anxiety-support': LotusIcon,
-  'pain-support': WaveIcon,
-  'focus-enhancement': CircleDotIcon,
-  'meditation-support': MoonIcon,
-  'energy-vitality': HeartIcon,
-  'calm-mood-boost': SunIcon,
+  'anxiety-support': LotusIcon,           // Relaxation
+  'pain-support': WaveIcon,               // Recovery
+  'focus-enhancement': CircleDotIcon,     // Focus+
+  'sleep-preparation': MoonIcon,          // Rest
+  'energy-boost': HeartIcon,              // Exercise
+  'depression-support': SunIcon,          // Boost
 };
 
 export const getTherapeuticIcon = (goalId: string) => {
