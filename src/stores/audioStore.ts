@@ -1025,7 +1025,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       // Configure audio element for faster playback
-      audio.crossOrigin = null;         // Remove CORS restriction for public storage
+      audio.crossOrigin = 'anonymous';  // Enable CORS for Supabase public storage
       audio.preload = "auto";           // Preload full audio for faster start
       (audio as any).playsInline = true;
       
