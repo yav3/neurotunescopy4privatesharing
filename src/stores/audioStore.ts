@@ -1515,7 +1515,18 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       const audio = initAudio();
-      console.log('🎵 Audio element state - src:', audio.src, 'readyState:', audio.readyState, 'paused:', audio.paused);
+      
+      // CRITICAL: Ensure audio is not muted and has proper volume
+      if (audio.muted) {
+        console.log('🔧 Audio was muted, unmuting...');
+        audio.muted = false;
+      }
+      if (audio.volume === 0) {
+        console.log('🔧 Audio volume was 0, setting to 0.8...');
+        audio.volume = 0.8;
+      }
+      
+      console.log('🎵 Audio element state - src:', audio.src, 'readyState:', audio.readyState, 'paused:', audio.paused, 'volume:', audio.volume, 'muted:', audio.muted);
       
       if (!audio.src && currentTrack) {
         console.log('🎵 No audio source, loading current track:', currentTrack.title);
@@ -1577,6 +1588,16 @@ export const useAudioStore = create<AudioState>((set, get) => {
       }
       
       try {
+        // CRITICAL: Resume audio context if suspended (browser autoplay policy)
+        if (typeof window !== 'undefined' && window.AudioContext) {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          if (audioContext.state === 'suspended') {
+            console.log('🔧 Audio context is suspended, resuming...');
+            await audioContext.resume();
+            console.log('✅ Audio context resumed, state:', audioContext.state);
+          }
+        }
+        
         console.log('🎵 Attempting audio.play()...');
         
         // Optimistically set playing state to ensure UI responsiveness
@@ -1621,6 +1642,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         }
         
         console.log('✅ Audio.play() successful - track should be playing');
+        console.log('🔊 Final audio state: volume =', audio.volume, 'muted =', audio.muted, 'paused =', audio.paused, 'currentTime =', audio.currentTime);
         
         // Request wake lock to prevent screen sleep during playback
         await ScreenWakeLock.request();
