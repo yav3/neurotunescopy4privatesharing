@@ -62,7 +62,7 @@ const therapeuticGoals = [
   {
     id: "anxiety-support",
     name: "Relaxation",
-    image: relaxationCard,
+    image: favoritePurple,
     goalId: "anxiety-support"
   },
   {
