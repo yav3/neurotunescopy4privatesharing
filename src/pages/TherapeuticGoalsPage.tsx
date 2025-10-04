@@ -47,12 +47,11 @@ import focusCard from '@/assets/focus-card.png';
 import restCard from '@/assets/rest-card.png';
 import exerciseCard from '@/assets/exercise-card.png';
 import boostCard from '@/assets/boost-card.png';
-import genreGradientNeutral from '@/assets/genre-gradient-neutral.png';
-import genreGradientPeach from '@/assets/new-age-teal-swirls.png';
-import genreGradientCyan from '@/assets/genre-gradient-cyan.png';
-import genreGradientGold from '@/assets/genre-gradient-gold.png';
-import genreGradientYellowOrange from '@/assets/samba-teal-swirls.png';
-import genreGradientRedOrange from '@/assets/genre-gradient-red-orange.png';
+import genreChillTropicalHouse from '@/assets/genre-chill-tropical-house.png';
+import genreHiitEnergy from '@/assets/genre-hiit-energy.png';
+import genreClassicalCalm from '@/assets/genre-classical-calm.png';
+import genreChillSamba from '@/assets/genre-chill-samba.png';
+import genreRelaxation from '@/assets/genre-relaxation.png';
 import favoritePurple from '@/assets/favorite-purple.png';
 import favoritePeach from '@/assets/favorite-peach.png';
 import favoriteCyan from '@/assets/favorite-cyan.png';
@@ -333,11 +332,11 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-2 sm:gap-3 min-w-max">
                  {[
-                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreGradientCyan, icon: Waves },
-                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreGradientYellowOrange, icon: Drum },
-                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreGradientRedOrange, icon: Palmtree },
-                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreGradientGold, icon: Guitar },
-                  { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Peace', image: genreGradientNeutral, icon: Guitar },
+                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreChillTropicalHouse, icon: Waves },
+                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: Drum },
+                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreRelaxation, icon: Palmtree },
+                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreHiitEnergy, icon: Guitar },
+                  { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Calm', image: genreClassicalCalm, icon: Guitar },
                 ].map((genre) => {
                   const genreKey = `${genre.goalId}-${genre.genreId}`;
                   return (
