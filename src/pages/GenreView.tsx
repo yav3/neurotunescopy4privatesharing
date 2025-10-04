@@ -272,11 +272,12 @@ export default function GenreView() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Button onClick={handleBack} variant="ghost" className="mb-4">
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Categories
-      </Button>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <Button onClick={handleBack} variant="ghost" className="mb-4">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Categories
+        </Button>
 
       <div className="mb-8">
         {/* Genre Banner */}
@@ -364,6 +365,7 @@ export default function GenreView() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }
