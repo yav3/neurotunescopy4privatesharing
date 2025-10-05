@@ -207,24 +207,36 @@ const TherapeuticGoalsPage = () => {
               <div className="overflow-x-auto pb-1">
                 <div className="flex gap-2 min-w-max">
                   {pinnedItems.map((item, index) => {
-                    const favoriteBackgrounds = [
-                      favoritePurple, 
-                      favoritePeach, 
-                      favoriteCyan, 
-                      favoriteGreen, 
-                      favoriteCyanLight, 
-                      favoriteCyanFlow, 
-                      favoriteTealDark, 
-                      favoriteWhite, 
-                      favoriteGold,
-                      favoriteTealCells,
+                    // Lighter backgrounds for energetic/boosting goals
+                    const energeticBackgrounds = [
                       favoriteTealGreenWaves,
                       favoriteBlueWaves,
-                      favoriteDarkGreen,
                       favoriteTealGreenGradient,
-                      favoriteDarkNavy
+                      favoriteCyanLight,
+                      favoriteCyan,
+                      favoriteWhite
                     ];
-                    const backgroundImage = favoriteBackgrounds[index % favoriteBackgrounds.length];
+                    
+                    // Darker backgrounds for peaceful/relaxing goals
+                    const peacefulBackgrounds = [
+                      favoriteDarkNavy,
+                      favoriteDarkGreen,
+                      favoriteTealDark,
+                      favoritePurple,
+                      favoritePeach,
+                      favoriteTealCells
+                    ];
+                    
+                    // Determine if this is an energetic or peaceful goal
+                    const energeticGoals = ['energy-boost', 'depression-support', 'focus-enhancement'];
+                    const energeticGenres = ['hiit-training', 'tropical-house-focus', 'house-music', 'samba', 'reggaeton', 'pop'];
+                    
+                    const isEnergetic = item.type === 'goal' 
+                      ? energeticGoals.includes(item.id)
+                      : item.id.split('-').some(part => energeticGenres.includes(part));
+                    
+                    const backgrounds = isEnergetic ? energeticBackgrounds : peacefulBackgrounds;
+                    const backgroundImage = backgrounds[index % backgrounds.length];
                     
                     return (
                     <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-20 sm:w-24">
