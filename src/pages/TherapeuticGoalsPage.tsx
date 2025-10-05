@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { Navigation } from '@/components/Navigation';
 import { GenreSelectionModal } from '@/components/GenreSelectionModal';
-import { getTherapeuticIcon, LotusIcon } from '@/components/icons/TherapeuticIcons';
+import { getTherapeuticIcon, LotusIcon, WaveIcon } from '@/components/icons/TherapeuticIcons';
 import { WelcomeBox } from '@/components/WelcomeBox';
 
 import { cn } from '@/lib/utils';
@@ -333,7 +333,7 @@ const TherapeuticGoalsPage = () => {
               <div className="flex gap-2 sm:gap-3 min-w-max">
                  {[
                   { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Chill Tropical House', image: genreChillTropicalHouse, icon: Waves },
-                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: Drum },
+                  { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: WaveIcon },
                   { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreRelaxation, icon: Palmtree },
                   { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreHiitEnergy, icon: Guitar },
                   { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Calm', image: genreClassicalCalm, icon: Guitar },
