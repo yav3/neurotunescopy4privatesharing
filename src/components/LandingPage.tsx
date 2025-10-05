@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { Plus, ArrowRight, Play, CheckCircle, Brain, Heart, Activity, Zap, Sparkles } from 'lucide-react';
+import { DynamicCodeReveal } from '@/components/DynamicCodeReveal';
 
 // Hero background image
 import heroBackground from '@/assets/hero-background-teal.png';
@@ -346,6 +347,57 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               Explore Programs
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Technology Section with Dynamic Code Reveal */}
+      <section className="relative py-32" style={{ background: 'linear-gradient(135deg, hsl(var(--liquid-aquatic-deep)), hsl(var(--liquid-glass-shadow)))' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-thin text-white mb-8">
+              AI-Powered <span className="font-light bg-gradient-to-r from-[hsl(var(--liquid-cyan-core))] to-[hsl(var(--liquid-pearl-highlight))] bg-clip-text text-transparent">Neural Architecture</span>
+            </h2>
+            <p className="text-2xl text-white/80 max-w-4xl mx-auto font-light leading-relaxed">
+              Advanced machine learning algorithms analyze your responses in real-time
+            </p>
+          </div>
+          
+          <DynamicCodeReveal 
+            codeBlocks={[
+              `// Real-time therapeutic recommendation engine
+const analyzeUserState = async (biometrics) => {
+  const neuralPattern = await model.predict({
+    heartRate: biometrics.hr,
+    stressLevel: biometrics.cortisol,
+    timeOfDay: getCurrentPhase()
+  });
+  
+  return selectOptimalIntervention(neuralPattern);
+};`,
+              `// Adaptive music therapy protocol
+const generateTherapeuticPlaylist = (userProfile) => {
+  const therapeuticGoal = userProfile.currentGoal;
+  const preferences = userProfile.musicPreferences;
+  
+  return ai.curate({
+    frequency: therapeuticGoal.targetFrequency,
+    tempo: calculateOptimalBPM(userProfile),
+    genre: preferences.filter(matchesTherapeuticCriteria)
+  });
+};`,
+              `// Personalized intervention tracking
+const trackTherapeuticOutcome = async (session) => {
+  const response = await measureUserResponse({
+    preSessionState: session.baseline,
+    postSessionState: session.current,
+    intervention: session.protocol
+  });
+  
+  await updateLearningModel(response);
+  return generateNextRecommendation(response);
+};`
+            ]} 
+          />
         </div>
       </section>
 
