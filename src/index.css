@@ -142,6 +142,15 @@ All colors MUST be HSL.
 
   /* Common variables for both themes */
   :root {
+    /* Liquid Glass Palette - Pearl Grey & Green-Blue Gradients */
+    --liquid-pearl-base: 210 11% 87%;        /* Base Pearl Grey #DADCE0 */
+    --liquid-pearl-highlight: 195 20% 93%;   /* Iridescent Highlight #E8EEF0 */
+    --liquid-cyan-core: 180 45% 60%;         /* Translucent Blue-Green Core #6EC5C5 */
+    --liquid-aquatic-deep: 189 100% 18%;     /* Deep Aquatic Gradient #004D5B */
+    --liquid-emerald-edge: 173 64% 33%;      /* Emerald Reflection Edge #1E8A7E */
+    --liquid-glass-shadow: 194 66% 13%;      /* Glass Shadow Overlay #0B2B35 */
+    --liquid-glow-highlight: 180 11% 97%;    /* Highlight Glow #F7F9F9 */
+    
     /* Brand Gradient System - Locked Teal Spectrum */
     --gradient-primary: linear-gradient(135deg, hsl(var(--brand-900)), hsl(var(--brand-500)));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-500)), hsl(var(--brand-200)));
@@ -234,19 +243,24 @@ All colors MUST be HSL.
     --glass-dark-border: 180 60% 20% / 0.7;
     --glass-dark-shadow: 0 24px 80px 0 hsl(182 55% 6% / 0.9), 0 8px 32px 0 hsl(180 50% 12% / 0.6);
     
+    /* Liquid Glass Gradients - Pearl–Teal Reflection */
+    --gradient-liquid-pearl: linear-gradient(145deg, hsl(var(--liquid-pearl-highlight)) 0%, hsl(var(--liquid-cyan-core)) 40%, hsl(var(--liquid-aquatic-deep)) 100%);
+    --gradient-liquid-abyssal: radial-gradient(circle at 70% 40%, hsl(var(--liquid-cyan-core)) 0%, hsl(var(--liquid-aquatic-deep)) 70%, hsl(var(--liquid-glass-shadow)) 100%);
+    --gradient-liquid-glass: linear-gradient(110deg, hsl(var(--liquid-pearl-base) / 0.9) 0%, hsl(var(--liquid-emerald-edge) / 0.3) 50%, hsl(var(--liquid-aquatic-deep) / 0.8) 100%);
+    
     /* Dramatically enhanced gradient variations with pearlized depth */
     --gradient-primary: linear-gradient(135deg, hsl(173 100% 5%), hsl(176 98% 8%), hsl(179 95% 3%), hsl(182 92% 10%));
     --gradient-secondary: linear-gradient(135deg, hsl(173 90% 82%), hsl(176 85% 85%), hsl(179 80% 88%), hsl(182 75% 90%));
     --gradient-accent: linear-gradient(135deg, hsl(173 100% 15%), hsl(176 95% 18%), hsl(179 90% 12%), hsl(182 88% 20%));
     --gradient-pearlized: radial-gradient(circle at 30% 30%, hsl(174 100% 8% / 0.9)), radial-gradient(circle at 70% 70%, hsl(180 95% 12% / 0.8)), linear-gradient(135deg, hsl(173 100% 5%), hsl(182 90% 15%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
-    --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 96%), hsl(0 0% 98%));
+    --gradient-card: linear-gradient(135deg, hsl(var(--liquid-pearl-base)) 0%, hsl(0 0% 100%) 50%, hsl(var(--liquid-pearl-highlight)) 100%);
+    --gradient-card-blue: linear-gradient(135deg, hsl(var(--liquid-pearl-highlight)) 0%, hsl(var(--liquid-pearl-base)) 50%, hsl(0 0% 98%) 100%);
     --gradient-card-medium: linear-gradient(135deg, hsl(0 0% 96%), hsl(0 0% 94%), hsl(0 0% 96%));
     --gradient-card-dark: linear-gradient(135deg, hsl(0 0% 94%), hsl(0 0% 92%), hsl(0 0% 94%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%), hsl(0 0% 100%));
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.08), 0 4px 16px hsl(0 0% 0% / 0.04);
-    --shadow-player: 0 16px 48px hsl(0 0% 0% / 0.12), 0 8px 24px hsl(0 0% 0% / 0.06);
+    --gradient-hero: linear-gradient(180deg, hsl(var(--liquid-pearl-highlight)) 0%, hsl(0 0% 100%) 100%);
+    --gradient-dark-bg: linear-gradient(135deg, hsl(var(--liquid-pearl-base)) 0%, hsl(0 0% 98%) 50%, hsl(var(--liquid-pearl-highlight)) 100%);
+    --shadow-card: 0 8px 32px hsl(var(--liquid-aquatic-deep) / 0.12), 0 4px 16px hsl(var(--liquid-glass-shadow) / 0.08);
+    --shadow-player: 0 16px 48px hsl(var(--liquid-aquatic-deep) / 0.15), 0 8px 24px hsl(var(--liquid-glass-shadow) / 0.1);
     
   /* San Francisco font system */
   --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;

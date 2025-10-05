@@ -61,20 +61,20 @@ const AnimatedFluidBackground = () => {
     const animate = () => {
       const { width, height } = canvas.getBoundingClientRect();
       
-      // Clear canvas with gradient background (pale, glassmorphic colors)
+      // Clear canvas with Liquid Glass gradient (pearl grey & blue-green)
       const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.03)');
-      gradient.addColorStop(0.5, 'rgba(240, 253, 244, 0.05)');
-      gradient.addColorStop(1, 'rgba(236, 254, 255, 0.04)');
+      gradient.addColorStop(0, 'rgba(232, 238, 240, 0.05)');    // Iridescent Highlight
+      gradient.addColorStop(0.4, 'rgba(110, 197, 197, 0.08)');  // Cyan Core
+      gradient.addColorStop(1, 'rgba(0, 77, 91, 0.06)');        // Deep Aquatic
       
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
       
-      // Draw flowing waves (very pale and glassmorphic)
+      // Draw flowing waves (Liquid Glass style - pearl and teal)
       waves.forEach((wave, index) => {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 - index * 0.02})`;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = `rgba(110, 197, 197, ${0.15 - index * 0.04})`; // Cyan-green waves
+        ctx.lineWidth = 1.5;
         
         for (let x = 0; x <= width; x += 2) {
           const y = height / 2 + 
@@ -130,9 +130,9 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40 text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif' }}>
+    <div className="min-h-screen bg-[var(--gradient-liquid-glass)] text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif', background: 'var(--gradient-liquid-pearl)' }}>
       {/* Navigation */}
-      <nav className="relative z-50 bg-white/95 backdrop-blur-xl border-b border-teal-200/20 px-6 py-6">
+      <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-[hsl(var(--liquid-cyan-core)/0.2)] px-6 py-6" style={{ backdropFilter: 'blur(40px) saturate(120%)' }}>
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
@@ -245,7 +245,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Therapy Programs Section */}
-      <section className="relative py-24 bg-gradient-to-b from-teal-50/40 to-white">
+      <section className="relative py-24" style={{ background: 'linear-gradient(180deg, hsl(var(--liquid-pearl-highlight)), hsl(0, 0%, 100%))' }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-thin text-gray-900 mb-6">
@@ -350,7 +350,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* Research Section */}
-      <section className="relative py-32 bg-gradient-to-b from-white to-cyan-50/30">
+      <section className="relative py-32" style={{ background: 'var(--gradient-liquid-glass)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-thin text-gray-900 mb-8">
@@ -396,7 +396,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-teal-500 to-cyan-500">
+      <section className="relative py-32" style={{ background: 'linear-gradient(135deg, hsl(var(--liquid-emerald-edge)), hsl(var(--liquid-cyan-core)), hsl(var(--liquid-aquatic-deep)))' }}>
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-7xl font-thin text-white mb-10">
             Transform Your <span className="font-light text-white">Wellness</span>
