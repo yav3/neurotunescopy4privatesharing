@@ -19,6 +19,7 @@ export default function GenreView() {
   const [tracks, setTracks] = useState<SimpleTrack[]>([]);
   const [isTracksLoading, setIsTracksLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasMusicPlayed, setHasMusicPlayed] = useState(false);
   const hasAutoPlayed = React.useRef(false); // Track if we've already auto-played for this genre
 
   // Get the specific genre from the configuration
@@ -224,6 +225,7 @@ export default function GenreView() {
     
     // Use atomic playTrack operation to prevent race conditions
     await playTrack(audioTrack);
+    setHasMusicPlayed(true);
   };
 
   const handlePlayAll = async () => {
@@ -235,6 +237,7 @@ export default function GenreView() {
     // Atomic operation: set queue and play first track
     await setQueue(audioTracks, 0);
     await play();
+    setHasMusicPlayed(true);
   };
 
   const handleBack = () => {
@@ -291,7 +294,9 @@ export default function GenreView() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6">
               <h2 className="text-3xl font-bold text-white drop-shadow-lg mb-2">{genre.name}</h2>
-              <p className="text-white drop-shadow-md">{genre.description}</p>
+              {!hasMusicPlayed && (
+                <p className="text-white drop-shadow-md transition-opacity duration-500">{genre.description}</p>
+              )}
             </div>
           </div>
         </div>
