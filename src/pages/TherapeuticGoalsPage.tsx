@@ -61,6 +61,12 @@ import favoriteCyanFlow from '@/assets/favorite-cyan-flow.png';
 import favoriteTealDark from '@/assets/favorite-teal-dark.png';
 import favoriteWhite from '@/assets/favorite-white.png';
 import favoriteGold from '@/assets/favorite-gold.png';
+import favoriteTealCells from '@/assets/favorite-teal-cells.png';
+import favoriteTealGreenWaves from '@/assets/favorite-teal-green-waves.png';
+import favoriteBlueWaves from '@/assets/favorite-blue-waves.png';
+import favoriteDarkGreen from '@/assets/favorite-dark-green.png';
+import favoriteTealGreenGradient from '@/assets/favorite-teal-green-gradient.png';
+import favoriteDarkNavy from '@/assets/favorite-dark-navy.png';
 
 // Create therapeutic goal cards with new names and images
 // Map visual cards to actual therapeutic goal IDs from config
@@ -210,7 +216,13 @@ const TherapeuticGoalsPage = () => {
                       favoriteCyanFlow, 
                       favoriteTealDark, 
                       favoriteWhite, 
-                      favoriteGold
+                      favoriteGold,
+                      favoriteTealCells,
+                      favoriteTealGreenWaves,
+                      favoriteBlueWaves,
+                      favoriteDarkGreen,
+                      favoriteTealGreenGradient,
+                      favoriteDarkNavy
                     ];
                     const backgroundImage = favoriteBackgrounds[index % favoriteBackgrounds.length];
                     
