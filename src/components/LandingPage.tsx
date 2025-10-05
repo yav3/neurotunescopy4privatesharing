@@ -131,7 +131,13 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--gradient-liquid-glass)] text-gray-900 overflow-x-hidden" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif', background: 'var(--gradient-liquid-pearl)' }}>
+    <div className="min-h-screen bg-[var(--gradient-liquid-glass)] text-gray-900 overflow-x-hidden relative" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif', background: 'var(--gradient-liquid-pearl)' }}>
+      {/* Ripple Wave Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0 animate-ripple-wave" style={{
+        background: 'radial-gradient(circle at 50% 50%, hsl(var(--liquid-cyan-core) / 0.08) 0%, transparent 70%)',
+        mixBlendMode: 'overlay'
+      }} />
+      
       {/* Navigation */}
       <nav className="relative z-50 bg-white/80 backdrop-blur-xl border-b border-[hsl(var(--liquid-cyan-core)/0.2)] px-6 py-6" style={{ backdropFilter: 'blur(40px) saturate(120%)' }}>
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -179,8 +185,8 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           <AnimatedFluidBackground />
         </div>
         
-        {/* Floating Glass Morphism Elements */}
-        <div className="absolute top-20 left-10 opacity-60">
+        {/* Floating Glass Morphism Elements with Gentle Float Animation */}
+        <div className="absolute top-20 left-10 opacity-60 animate-gentle-float" style={{ animationDelay: '0s' }}>
           <img 
             src={nature1} 
             alt="" 
@@ -188,7 +194,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           />
         </div>
         
-        <div className="absolute top-40 right-16 opacity-50">
+        <div className="absolute top-40 right-16 opacity-50 animate-gentle-float" style={{ animationDelay: '2s' }}>
           <img 
             src={nature2} 
             alt="" 
@@ -196,7 +202,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           />
         </div>
         
-        <div className="absolute bottom-32 left-20 opacity-70">
+        <div className="absolute bottom-32 left-20 opacity-70 animate-gentle-float" style={{ animationDelay: '4s' }}>
           <img 
             src={nature3} 
             alt="" 
@@ -204,7 +210,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           />
         </div>
         
-        <div className="absolute bottom-20 right-32 opacity-55">
+        <div className="absolute bottom-20 right-32 opacity-55 animate-gentle-float" style={{ animationDelay: '6s' }}>
           <img 
             src={nature4} 
             alt="" 
