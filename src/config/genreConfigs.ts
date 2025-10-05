@@ -27,6 +27,11 @@ import painSonatasYellowFlowers from '@/assets/pain-sonatas-yellow-flowers.jpg';
 import painPeacefulPianoMountainLake from '@/assets/pain-peaceful-piano-mountain-lake.jpg';
 import edmCrossoverCactus from '@/assets/edm-crossover-cactus.jpg';
 
+// Import new genre backgrounds
+import genreChillTropicalHouseNew from '@/assets/genre-chill-tropical-house-new.png';
+import genreChillSambaNew from '@/assets/genre-chill-samba-new.png';
+import genreHiitEnergyNew from '@/assets/genre-hiit-energy-new.png';
+
 // Import new Stress & Anxiety Support images
 import sambaTropicalHibiscus from '@/assets/samba-tropical-hibiscus.png';
 import sonatasMistyLake from '@/assets/sonatas-misty-lake.png';
@@ -63,7 +68,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Tropical House for Focus',
         description: 'Uplifting tropical house rhythms for enhanced focus and concentration',
         buckets: ['WorldHouseFocus'],
-        image: oceanWaveClear
+        image: genreChillTropicalHouseNew
       }
     ],
     'anxiety-support': [
@@ -130,7 +135,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Chill Samba',
         description: 'Relaxing Brazilian samba rhythms for mood enhancement',
         buckets: ['samba'],
-        image: sambaTropicalHibiscus,
+        image: genreChillSambaNew,
       },
       {
         id: 'americana-jam-band',
@@ -176,7 +181,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'High Intensity EDM',
         description: 'High-intensity interval training music for peak performance',
         buckets: ['ENERGYBOOST'],
-        image: hiitForestPath
+        image: genreHiitEnergyNew
       },
       {
         id: 'energetic-house',
@@ -220,7 +225,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         name: 'Mood Boosting Samba',
         description: 'Uplifting Brazilian samba rhythms for emotional support and mood elevation',
         buckets: ['samba'],
-        image: sambaTropicalHibiscus
+        image: genreChillSambaNew
       }
     ],
     'sleep-preparation': [
