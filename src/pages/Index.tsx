@@ -157,37 +157,19 @@ const Index = () => {
               {/* NeuroTunes Logo */}
               <div className="mb-32">
                 <div className="flex items-center gap-12 mb-6">
-                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72" style={{ color: 'hsl(var(--text-primary))' }} strokeWidth={1.5} />
-                  <h1 className="font-sf font-normal leading-none tracking-tight" style={{ 
-                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
-                    color: 'hsl(var(--text-primary))',
-                    textShadow: '0 0 8px rgba(180,255,250,0.25)',
-                    letterSpacing: '0.02em'
-                  }}>NeuroTunes</h1>
+                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72" style={{ color: 'hsl(var(--text-opalescent))' }} strokeWidth={1.5} />
+                  <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal leading-none tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>NeuroTunes</h1>
                 </div>
-                <p className="font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-tight leading-none" style={{ 
-                  fontSize: 'clamp(2.5rem, 4vw, 4rem)',
-                  color: 'hsl(var(--text-primary))',
-                  textShadow: '0 0 8px rgba(180,255,250,0.25)',
-                  letterSpacing: '0.02em'
-                }}>by NeuralPositive</p>
+                <p className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-tight leading-none" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>by NeuralPositive</p>
               </div>
               
               <div className="space-y-8 max-w-5xl">
-                <h2 className="font-sf font-normal leading-[1.3]" style={{ 
-                  color: 'hsl(var(--text-secondary))',
-                  fontSize: '1.25rem',
-                  marginTop: '1rem'
-                }}>
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sf font-normal leading-[1.3] tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>
                   AI-Personalized Wellness
-                  <span className="block">Meets Beautiful Music</span>
+                  <span className="block" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>Meets Beautiful Music</span>
                 </h2>
                 
-                <p className="font-didot font-normal leading-[1.5]" style={{ 
-                  color: 'hsl(var(--text-secondary))',
-                  fontSize: '1.25rem',
-                  marginTop: '1rem'
-                }}>
+                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal leading-[1.5]" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
               </div>
