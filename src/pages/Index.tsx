@@ -64,10 +64,14 @@ const Index = () => {
   }, []);
 
   const stats = [
-    { label: "Technology", value: "Patented", icon: Shield },
-    { label: "Research", value: "Evidence Based", icon: Award },
-    { label: "Music Library", value: "50+ Genres", icon: Music },
-    { label: "Analytics", value: "Clinical Insights", icon: Brain }
+    { label: "Clinically Tested", value: "Evidence-Based", icon: Shield },
+    { label: "Original Music", value: "8K Songs", icon: Music },
+    { label: "Award Winning", value: "Expert Team", icon: Award },
+    { label: "KOL Informed", value: "Physician-Neuroscientist", icon: Brain },
+    { label: "Research Backed", value: "15K Studies", icon: TrendingUp },
+    { label: "Genre Variety", value: "50+ Genres", icon: Sparkles },
+    { label: "Spatial Audio", value: "Proprietary", icon: Headphones },
+    { label: "Immersive Sound", value: "Premium Quality", icon: Zap }
   ];
 
   const therapeuticBenefits = [
