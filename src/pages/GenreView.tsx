@@ -10,6 +10,7 @@ import { SimpleStorageService } from '@/services/simpleStorageService';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 import { useAuthContext } from '@/components/auth/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { ArtworkService } from '@/services/artworkService';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -337,37 +338,39 @@ export default function GenreView() {
 
       {tracks.length > 0 && (
         <div className="space-y-4">
-          {tracks.map((track) => (
-            <div 
-              key={track.id} 
-              className="bg-card rounded-lg p-4 flex items-center justify-between hover:bg-accent transition-colors cursor-pointer"
-              onClick={() => handleTrackPlay(track)}
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                  {track.artwork_url ? (
+          {tracks.map((track) => {
+            // Generate frequency band from track ID for consistent artwork
+            const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+            const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const frequencyBand = bands[hash % bands.length];
+            const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+            
+            return (
+              <div 
+                key={track.id} 
+                className="bg-card rounded-lg p-4 flex items-center justify-between hover:bg-accent transition-colors cursor-pointer"
+                onClick={() => handleTrackPlay(track)}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                     <img 
-                      src={track.artwork_url} 
+                      src={artwork.url} 
                       alt={track.title}
                       className="w-full h-full object-cover"
                     />
-                  ) : (
-                    <div className="w-full h-full bg-primary/10 flex items-center justify-center">
-                      <div className="w-6 h-6 bg-primary/20 rounded"></div>
-                    </div>
-                  )}
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground">{track.title}</h3>
+                    {track.artist && <p className="text-sm text-foreground/70">{track.artist}</p>}
+                    {track.bpm && <p className="text-xs text-foreground/50">{track.bpm} BPM</p>}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium text-foreground">{track.title}</h3>
-                  {track.artist && <p className="text-sm text-foreground/70">{track.artist}</p>}
-                  {track.bpm && <p className="text-xs text-foreground/50">{track.bpm} BPM</p>}
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors">
+                  <Play className="h-4 w-4 text-primary" />
                 </div>
               </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors">
-                <Play className="h-4 w-4 text-primary" />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
       </div>
