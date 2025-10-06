@@ -1,10 +1,11 @@
 /* Professional Music Therapy AI Platform Landing Page */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
+import { motion } from 'framer-motion';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -45,12 +46,21 @@ import {
 const Index = () => {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
+  const [scrollY, setScrollY] = useState(0);
   
   // Welcome returning users
   useWelcomeMessage();
   
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const stats = [
     { label: "Technology", value: "Patented", icon: Shield },
@@ -122,13 +132,45 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Full background image */}
+      {/* Full background image with parallax */}
       <div className="fixed inset-0 z-0">
-        <img 
+        <motion.img 
           src={neurotunesHeroBg} 
           alt="Background"
           className="w-full h-full object-cover"
+          style={{
+            scale: 1 + scrollY * 0.0005,
+            y: scrollY * 0.5
+          }}
         />
+      </div>
+
+      {/* Floating ambient elements */}
+      <div className="fixed inset-0 z-[5] pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-cyan-400/10 backdrop-blur-sm"
+            style={{
+              width: `${100 + i * 50}px`,
+              height: `${100 + i * 50}px`,
+              left: `${15 * i}%`,
+              top: `${10 + i * 15}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              x: [0, 20, 0],
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 5 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5,
+            }}
+          />
+        ))}
       </div>
 
       {/* Content overlay */}
@@ -149,25 +191,69 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center text-center h-screen">
+        <section className="flex flex-col items-center justify-center text-center h-screen relative">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="space-y-12">
               {/* NeuroTunes Large Title */}
-              <div>
-                <h1 className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white mb-8" style={{ 
-                  textShadow: '0 0 20px rgba(0, 217, 255, 0.3)'
-                }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              >
+                <motion.h1 
+                  className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white mb-8" 
+                  style={{ 
+                    textShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
+                    transformStyle: 'preserve-3d',
+                  }}
+                  animate={{
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateX: 5,
+                    rotateY: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                >
                   NeuroTunes
-                </h1>
+                </motion.h1>
                 
-                <p className="text-2xl sm:text-3xl lg:text-4xl font-body font-light text-white/90 leading-relaxed" style={{ 
-                  textShadow: '0 0 10px rgba(255, 255, 255, 0.2)'
-                }}>
+                <motion.p 
+                  className="text-2xl sm:text-3xl lg:text-4xl font-body font-light text-white/90 leading-relaxed" 
+                  style={{ 
+                    textShadow: '0 0 10px rgba(255, 255, 255, 0.2)'
+                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.3 }}
+                >
                   AI-driven music therapy backed by patented technology and 50+ years of research
-                </p>
-              </div>
+                </motion.p>
+              </motion.div>
             </div>
           </div>
+
+          {/* Pulsing glow effect */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            animate={{
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              background: 'radial-gradient(circle at center, rgba(0, 217, 255, 0.2) 0%, transparent 70%)',
+            }}
+          />
         </section>
 
         {/* Horizontal Scrolling Features */}
@@ -176,26 +262,88 @@ const Index = () => {
             {/* Stats Cards */}
             {stats.map((stat, index) => (
               <div key={`stat-${index}`} className="h-screen flex flex-col items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
-                <div className="text-center p-12 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-2xl bg-white/5 backdrop-blur-sm">
-                  <div className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8">
+                <motion.div 
+                  className="text-center p-12 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-2xl bg-white/5 backdrop-blur-sm"
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 5,
+                    rotateX: -5,
+                    transition: { duration: 0.3 }
+                  }}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
+                  <motion.div 
+                    className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
+                    animate={{
+                      rotateZ: [0, 360],
+                    }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
                     <stat.icon className="h-12 w-12 text-white stroke-[1.5]" />
-                  </div>
-                  <div className="font-semibold font-headers text-white text-6xl mb-4">{stat.value}</div>
+                  </motion.div>
+                  <motion.div 
+                    className="font-semibold font-headers text-white text-6xl mb-4"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    {stat.value}
+                  </motion.div>
                   <div className="text-3xl font-body text-white/70 font-medium">{stat.label}</div>
-                </div>
+                </motion.div>
               </div>
             ))}
             
             {/* Therapeutic Benefits Cards */}
             {therapeuticBenefits.map((benefit, index) => (
               <div key={`benefit-${index}`} className="h-screen flex flex-col items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
-                <div className="border border-white/10 rounded-2xl p-12 hover:border-white/20 transition-all duration-500 group bg-white/5 backdrop-blur-sm max-w-2xl">
-                  <div className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-8 group-hover:border-white/40 transition-all duration-300">
+                <motion.div 
+                  className="border border-white/10 rounded-2xl p-12 hover:border-white/20 transition-all duration-500 group bg-white/5 backdrop-blur-sm max-w-2xl"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  whileHover={{
+                    scale: 1.08,
+                    rotateZ: 2,
+                    y: -10,
+                    transition: { duration: 0.4 }
+                  }}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
+                  <motion.div 
+                    className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-8 group-hover:border-white/40 transition-all duration-300"
+                    animate={{
+                      y: [0, -10, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
                     <benefit.icon className="h-12 w-12 text-white" />
-                  </div>
+                  </motion.div>
                   <h3 className="text-4xl font-medium font-headers text-white mb-6">{benefit.title}</h3>
                   <p className="text-2xl font-body text-white/70 leading-relaxed">{benefit.description}</p>
-                </div>
+                </motion.div>
               </div>
             ))}
           </div>
@@ -204,52 +352,60 @@ const Index = () => {
         {/* Footer - Research Institutions (Horizontal Scroll) */}
         <section className="h-screen flex items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="text-4xl font-headers text-white text-center mb-16">Research Partners</h3>
+            <motion.h3 
+              className="text-4xl font-headers text-white text-center mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Research Partners
+            </motion.h3>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
-              <div className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
-                <img 
-                  src={cornellLogo} 
-                  alt="Cornell University"
-                  className="w-32 h-32 object-contain"
-                  style={{ 
-                    imageRendering: 'crisp-edges',
-                    filter: 'grayscale(100%) invert(1) brightness(1.8)'
+              {[
+                { logo: cornellLogo, alt: "Cornell University" },
+                { logo: jacobsTechnionLogo, alt: "Jacobs Technion" },
+                { logo: stanfordMedicineLogo, alt: "Stanford Medicine" },
+                { logo: weillCornellLogo, alt: "Weill Cornell" }
+              ].map((partner, index) => (
+                <motion.div 
+                  key={index}
+                  className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  whileHover={{
+                    scale: 1.15,
+                    rotateZ: [0, -5, 5, 0],
+                    y: -10,
+                    transition: { duration: 0.4 }
                   }}
-                />
-              </div>
-              <div className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
-                <img 
-                  src={jacobsTechnionLogo} 
-                  alt="Jacobs Technion"
-                  className="w-32 h-32 object-contain"
-                  style={{ 
-                    imageRendering: 'crisp-edges',
-                    filter: 'grayscale(100%) invert(1) brightness(1.8)'
+                  animate={{
+                    y: [0, -8, 0],
                   }}
-                />
-              </div>
-              <div className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
-                <img 
-                  src={stanfordMedicineLogo} 
-                  alt="Stanford Medicine"
-                  className="w-32 h-32 object-contain"
-                  style={{ 
-                    imageRendering: 'crisp-edges',
-                    filter: 'grayscale(100%) invert(1) brightness(1.8)'
+                  transition={{
+                    opacity: { duration: 0.5, delay: index * 0.1 },
+                    scale: { duration: 0.5, delay: index * 0.1 },
+                    y: {
+                      duration: 3 + index * 0.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }
                   }}
-                />
-              </div>
-              <div className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
-                <img 
-                  src={weillCornellLogo} 
-                  alt="Weill Cornell"
-                  className="w-32 h-32 object-contain"
-                  style={{ 
-                    imageRendering: 'crisp-edges',
-                    filter: 'grayscale(100%) invert(1) brightness(1.8)'
+                  style={{
+                    animationDelay: `${index * 0.2}s`,
                   }}
-                />
-              </div>
+                >
+                  <img 
+                    src={partner.logo} 
+                    alt={partner.alt}
+                    className="w-32 h-32 object-contain"
+                    style={{ 
+                      imageRendering: 'crisp-edges',
+                      filter: 'grayscale(100%) invert(1) brightness(1.8)'
+                    }}
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
