@@ -11,6 +11,7 @@ import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 import { useAuthContext } from '@/components/auth/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { ArtworkService } from '@/services/artworkService';
+import { TitleFormatter } from '@/utils/titleFormatter';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -345,6 +346,9 @@ export default function GenreView() {
             const frequencyBand = bands[hash % bands.length];
             const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
             
+            // Format the title properly
+            const formattedTitle = TitleFormatter.formatTitle(track.title);
+            
             return (
               <div 
                 key={track.id} 
@@ -355,12 +359,12 @@ export default function GenreView() {
                   <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                     <img 
                       src={artwork.url} 
-                      alt={track.title}
+                      alt={formattedTitle}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground">{track.title}</h3>
+                    <h3 className="font-medium text-foreground">{formattedTitle}</h3>
                     {track.artist && <p className="text-sm text-foreground/70">{track.artist}</p>}
                     {track.bpm && <p className="text-xs text-foreground/50">{track.bpm} BPM</p>}
                   </div>
