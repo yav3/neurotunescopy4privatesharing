@@ -201,49 +201,40 @@ const Index = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}
               >
-                <div className="flex items-center justify-center gap-8 mb-8">
-                  <motion.div
-                    animate={{
-                      rotate: [0, 180, 360],
+                <motion.div 
+                  className="flex items-center justify-center gap-8 mb-8"
+                  animate={{
+                    scale: [1, 1.02, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateX: 5,
+                    rotateY: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  <Plus 
+                    className="text-cyan-400 w-[8rem] h-[8rem] sm:w-[10rem] sm:h-[10rem] lg:w-[12rem] lg:h-[12rem]" 
+                    strokeWidth={1.5}
+                    style={{
+                      filter: 'drop-shadow(0 0 20px rgba(0, 217, 255, 0.6))'
                     }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  >
-                    <Plus 
-                      className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-cyan-400" 
-                      strokeWidth={1.5}
-                      style={{
-                        filter: 'drop-shadow(0 0 20px rgba(0, 217, 255, 0.6))'
-                      }}
-                    />
-                  </motion.div>
-                  <motion.h1 
+                  />
+                  <h1 
                     className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white" 
                     style={{ 
                       textShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
-                      transformStyle: 'preserve-3d',
-                    }}
-                    animate={{
-                      scale: [1, 1.02, 1],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    whileHover={{
-                      scale: 1.05,
-                      rotateX: 5,
-                      rotateY: 5,
-                      transition: { duration: 0.3 }
                     }}
                   >
                     NeuroTunes
-                  </motion.h1>
-                </div>
+                  </h1>
+                </motion.div>
                 
                 <motion.p 
                   className="text-2xl sm:text-3xl lg:text-4xl font-body font-light text-white/90 leading-relaxed" 
