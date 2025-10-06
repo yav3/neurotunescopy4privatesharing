@@ -153,15 +153,15 @@ const Index = () => {
               {/* NeuroTunes Logo */}
               <div className="mb-32">
                 <div className="flex items-center gap-8 mb-8">
-                  <Plus className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-white" strokeWidth={1.5} />
-                  <h1 className="text-[8rem] sm:text-[12rem] lg:text-[16rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+                  <Plus className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 text-white" strokeWidth={1.5} />
+                  <h1 className="text-[10rem] sm:text-[14rem] lg:text-[20rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
                 </div>
-                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot italic text-white/70 ml-40 sm:ml-48 lg:ml-56 tracking-wide">by NeuralPositive</p>
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot italic text-white/70 ml-48 sm:ml-56 lg:ml-64 tracking-wide">by NeuralPositive</p>
               </div>
               
-              <h2 className="text-7xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-sf font-normal text-white leading-[1.15] tracking-tight mb-24">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sf font-normal text-white leading-[1.6] tracking-tight mb-16">
                 AI-Personalized Wellness
-                <span className="block text-white/90 mt-8">Meets Beautiful Music</span>
+                <span className="block text-white/90 mt-2">Meets Beautiful Music</span>
               </h2>
               
               <p className="text-3xl sm:text-4xl lg:text-5xl font-didot font-normal text-white/80 leading-[1.6] max-w-6xl">
