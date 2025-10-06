@@ -398,7 +398,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              Research Partners
+              With Generous Support from
             </motion.h3>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
               {[
