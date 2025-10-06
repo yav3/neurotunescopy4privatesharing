@@ -134,11 +134,11 @@ const Index = () => {
       <div className="relative z-10">
         {/* Navigation Header */}
         <nav className="bg-black/20 sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6">
             <div className="flex justify-end items-center">
               <Button
                 onClick={() => navigate('/auth')}
-                className="text-sm font-medium font-headers px-6 py-2 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
+                className="text-base font-medium font-headers px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
               >
                 Authorized User Sign-In
               </Button>
@@ -147,24 +147,25 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="py-24 sm:py-32 lg:py-40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-16 sm:py-24 lg:py-32">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="max-w-6xl mx-auto">
-              <div className="space-y-12">
-                {/* NeuroTunes Logo - 5x bigger */}
-                <div className="mb-8">
-                  <div className="flex items-center gap-6">
-                    <Plus className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 text-white" strokeWidth={1.5} />
-                    <h1 className="text-8xl sm:text-9xl lg:text-[10rem] xl:text-[12rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+              <div className="space-y-16">
+                {/* NeuroTunes Logo */}
+                <div>
+                  <div className="flex items-center gap-8 mb-6">
+                    <Plus className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 text-white" strokeWidth={1.5} />
+                    <h1 className="text-[5rem] sm:text-[7rem] lg:text-[10rem] xl:text-[14rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
                   </div>
-                  <p className="text-xl sm:text-2xl font-didot italic text-white/70 mt-3 tracking-wide">by NeuralPositive</p>
+                  <p className="text-2xl sm:text-3xl lg:text-4xl font-didot italic text-white/70 ml-32 sm:ml-40 lg:ml-48 tracking-wide">by NeuralPositive</p>
                 </div>
                 
-                <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-sf font-normal text-white leading-tight tracking-tight">
+                <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-sf font-normal text-white leading-[1.1] tracking-tight mt-20">
                   AI-Personalized Wellness
-                  <span className="block text-white/90 mt-3">Meets Beautiful Music</span>
+                  <span className="block text-white/90 mt-6">Meets Beautiful Music</span>
                 </h2>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-didot font-normal text-white/80 leading-relaxed max-w-4xl tracking-wide">
+                
+                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal text-white/80 leading-relaxed max-w-5xl mt-12">
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
               </div>
