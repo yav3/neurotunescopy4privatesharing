@@ -8,45 +8,41 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* CSS variables synchronized with Tailwind brand colors */
-    --brand-900: #0A2C2D;
-    --brand-800: #0E3D40;
-    --brand-700: #135455;
-    --brand-600: #176C6F;
-    --brand-500: #1C8587;
-    --brand-400: #26A5A6;
-    --brand-300: #3BC2C1;
-    --brand-200: #79E2DF;
-    --brand-100: #C2F5F3;
-    --brand-50: #E6FCFB;
+    /* Teal/Pearl Color Palette */
+    --pearl-100: 180 25% 92%; /* Lightest pearl-teal */
+    --pearl-200: 180 25% 88%; /* Pale pearl-teal */
+    --pearl-300: 178 30% 82%; /* Soft pearl-teal */
+    --teal-dark-100: 182 45% 15%; /* Deep teal */
+    --teal-dark-200: 182 50% 12%; /* Deeper teal */
+    --teal-dark-300: 182 55% 8%; /* Deepest teal */
 
-    /* Dark Mode by Default - Ultra Deep Black Variants */
-    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
-    --foreground: 180 25% 88%; /* Opalescent pale turquoise-grey */
+    /* Dark Mode - Teal/Pearl Theme */
+    --background: 182 55% 5%; /* Deep teal-black */
+    --foreground: 180 25% 88%; /* Opalescent pale pearl-teal */
 
-    --card: 240 100% 2.5%; /* Darker card background */
+    --card: 182 50% 8%; /* Deep teal card */
     --card-foreground: 180 25% 88%; /* Opalescent text */
 
-    --popover: 240 100% 1.5%; /* Almost pure black blue */
+    --popover: 182 55% 7%; /* Deep teal popover */
     --popover-foreground: 180 25% 88%; /* Opalescent text */
 
-    --primary: 180 25% 88%; /* Opalescent primary */
-    --primary-foreground: 0 0% 0%; /* Black primary text */
+    --primary: 180 25% 88%; /* Opalescent pearl-teal */
+    --primary-foreground: 182 55% 8%; /* Deep teal text */
 
-    --secondary: 240 56% 4%; /* Much darker charcoal blue */
+    --secondary: 182 45% 12%; /* Deep teal secondary */
     --secondary-foreground: 180 25% 88%; /* Opalescent text */
 
-    --muted: 240 100% 1.5%; /* Almost pure black blue */
-    --muted-foreground: 180 20% 78%; /* Muted opalescent */
+    --muted: 182 50% 10%; /* Muted deep teal */
+    --muted-foreground: 180 20% 78%; /* Muted pearl-teal */
 
-    --accent: 240 56% 4%; /* Much darker charcoal blue */
+    --accent: 178 40% 15%; /* Accent deep teal */
     --accent-foreground: 180 25% 88%; /* Opalescent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 180 25% 88%;
 
-    --border: 240 100% 2.5%; /* Darker borders */
-    --input: 240 100% 1.5%; /* Almost pure black blue input background */
+    --border: 182 45% 15%; /* Deep teal borders */
+    --input: 182 50% 10%; /* Deep teal input */
     --ring: 180 25% 88%;
   }
 
@@ -69,66 +65,66 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Force Dark Mode - Ultra Deep Black Variants */
-    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
-    --foreground: 180 25% 88%; /* Opalescent pale turquoise-grey */
+    /* Force Dark Mode - Teal/Pearl Theme */
+    --background: 182 55% 5%; /* Deep teal-black */
+    --foreground: 180 25% 88%; /* Opalescent pale pearl-teal */
 
-    --card: 240 100% 2.5%; /* Darker card background */
+    --card: 182 50% 8%; /* Deep teal card */
     --card-foreground: 180 25% 88%; /* Opalescent text */
 
-    --popover: 240 100% 1.5%; /* Almost pure black blue */
+    --popover: 182 55% 7%; /* Deep teal popover */
     --popover-foreground: 180 25% 88%; /* Opalescent text */
 
-    --primary: 180 25% 88%; /* Opalescent primary */
-    --primary-foreground: 0 0% 0%; /* Black primary text */
+    --primary: 180 25% 88%; /* Opalescent pearl-teal */
+    --primary-foreground: 182 55% 8%; /* Deep teal text */
 
-    --secondary: 240 56% 4%; /* Much darker charcoal blue */
+    --secondary: 182 45% 12%; /* Deep teal secondary */
     --secondary-foreground: 180 25% 88%; /* Opalescent text */
 
-    --muted: 240 100% 1.5%; /* Almost pure black blue */
-    --muted-foreground: 180 20% 78%; /* Muted opalescent */
+    --muted: 182 50% 10%; /* Muted deep teal */
+    --muted-foreground: 180 20% 78%; /* Muted pearl-teal */
 
-    --accent: 240 56% 4%; /* Much darker charcoal blue */
+    --accent: 178 40% 15%; /* Accent deep teal */
     --accent-foreground: 180 25% 88%; /* Opalescent text */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 180 25% 88%;
 
-    --border: 240 100% 2.5%; /* Darker borders */
-    --input: 240 100% 1.5%; /* Almost pure black blue input background */
+    --border: 182 45% 15%; /* Deep teal borders */
+    --input: 182 50% 10%; /* Deep teal input */
     --ring: 180 25% 88%;
 
-    /* Dark mode gradients using ultra deep colors */
-    --gradient-hero: linear-gradient(135deg, hsl(240 100% 1%), hsl(240 100% 1.5%), hsl(240 56% 4%));
-    --gradient-card: linear-gradient(135deg, hsl(240 100% 1.5%), hsl(240 100% 2.5%), hsl(240 100% 1%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(240 100% 1%), hsl(220 83% 53% / 0.05), hsl(240 100% 1%));
+    /* Dark mode gradients - Teal/Pearl Theme */
+    --gradient-hero: linear-gradient(135deg, hsl(182 55% 5%), hsl(182 50% 8%), hsl(182 45% 12%));
+    --gradient-card: linear-gradient(135deg, hsl(182 50% 8%), hsl(182 50% 10%), hsl(182 55% 7%));
+    --gradient-dark-bg: linear-gradient(135deg, hsl(182 55% 5%), hsl(180 50% 8% / 0.5), hsl(182 55% 5%));
     
-    /* Dark mode sidebar colors using ultra deep palette */
-    --sidebar-background: 240 100% 1.5%; /* Almost pure black blue */
+    /* Dark mode sidebar - Teal/Pearl */
+    --sidebar-background: 182 55% 7%;
     --sidebar-foreground: 180 25% 88%;
     --sidebar-primary: 180 25% 88%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 240 56% 4%; /* Much darker charcoal blue */
+    --sidebar-primary-foreground: 182 55% 8%;
+    --sidebar-accent: 182 45% 12%;
     --sidebar-accent-foreground: 180 25% 88%;
-    --sidebar-border: 240 100% 2.5%; /* Darker border */
+    --sidebar-border: 182 45% 15%;
     --sidebar-ring: 180 25% 88%;
 
-    /* Dark mode card color variations - ultra deep */
-    --card-light: 240 100% 2.5%; /* Darker than before */
-    --card-medium: 240 100% 1.5%; /* Almost black blue */
-    --card-darker: 240 56% 4%; /* Much darker charcoal blue */
-    --card-darkest: 240 100% 1%; /* Ultra deep */
+    /* Dark mode card variations - Teal/Pearl */
+    --card-light: 182 50% 10%;
+    --card-medium: 182 50% 8%;
+    --card-darker: 182 45% 12%;
+    --card-darkest: 182 55% 5%;
 
-    /* Dark mode glass morphism effects - darker - using HSL */
-    --glass-bg: 240 100% 1% / 0.4; /* Darker glass HSL */
-    --glass-border: 240 100% 1% / 0.6; /* Darker border HSL */
-    --glass-shadow: 0 8px 32px 0 hsl(240 100% 1% / 0.9); /* Much darker shadow HSL */
+    /* Dark mode glass morphism - Teal/Pearl */
+    --glass-bg: 182 50% 8% / 0.4;
+    --glass-border: 182 45% 15% / 0.6;
+    --glass-shadow: 0 8px 32px 0 hsl(182 55% 5% / 0.9);
 
-    /* Dark mode music categories - ultra deep */
-    --music-focus: 240 100% 1.5%; /* Ultra deep for focus cards */
-    --music-mood: 240 100% 1.5%; /* Ultra deep for mood boost cards */
-    --music-sleep: 240 100% 1.5%; /* Ultra deep for sleep cards */
-    --music-energy: 240 100% 1.5%; /* Ultra deep for energy cards */
+    /* Dark mode music categories - Teal/Pearl */
+    --music-focus: 182 50% 8%;
+    --music-mood: 182 50% 8%;
+    --music-sleep: 182 50% 8%;
+    --music-energy: 182 50% 8%;
   }
 
   /* Safe area support for mobile devices */
@@ -180,28 +176,28 @@ All colors MUST be HSL.
     --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-500)), hsl(var(--brand-200)));
     --gradient-surface: linear-gradient(180deg, hsl(var(--brand-50)), #ffffff);
     
-    /* Hero gradients - deep premium teal */
+    /* Hero gradients - Teal/Pearl dark theme */
     --gradient-hero: linear-gradient(135deg, 
-      hsl(182, 57%, 11%) 0%,    /* brand-900 */
-      hsl(182, 64%, 15%) 25%,   /* brand-800 */
-      hsl(182, 63%, 20%) 50%,   /* brand-700 */
-      hsl(182, 63%, 32%) 100%   /* brand-500 */
+      hsl(182, 55%, 5%) 0%,
+      hsl(182, 50%, 8%) 25%,
+      hsl(182, 45%, 12%) 50%,
+      hsl(178, 40%, 15%) 100%
     );
     
-    /* Card gradients - light and airy */
+    /* Card gradients - Teal/Pearl dark theme */
     --gradient-card: linear-gradient(135deg, 
-      hsl(173, 75%, 95%) 0%,    /* brand-50 */
-      #ffffff 50%,
-      hsl(176, 75%, 86%) 100%   /* brand-100 */
+      hsl(182, 50%, 8%) 0%,
+      hsl(182, 50%, 10%) 50%,
+      hsl(182, 50%, 8%) 100%
     );
     
-    /* Glass effects - subtle brand tints */
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    /* Glass effects - Teal/Pearl theme */
+    --glass-bg: 182 50% 8% / 0.4;
+    --glass-border: 182 45% 15% / 0.6;
+    --glass-shadow: 0 12px 32px hsl(182 55% 5% / 0.8);
     --gradient-glass: linear-gradient(135deg, 
-      hsl(182, 63%, 32% / 0.1) 0%,  /* brand-500 with opacity */
-      hsl(176, 75%, 86% / 0.05) 100% /* brand-100 with opacity */
+      hsl(182 50% 8% / 0.5) 0%,
+      hsl(180 45% 12% / 0.3) 100%
     );
     
     /* Text gradients */
