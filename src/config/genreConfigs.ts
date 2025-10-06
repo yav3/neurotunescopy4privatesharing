@@ -170,7 +170,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     'pain-support': [
       {
         id: 'gentle-classical',
-        name: 'Relaxing Clasical',
+        name: 'Relaxing Classical',
         description: 'Soft classical music for comfort',
         buckets: ['gentleclassicalforpain'],
         image: genreCardDark1,
