@@ -184,7 +184,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       },
       {
         id: 'comorbid-pain-anxiety',
-        name: 'Comorbid Pain & Anxiety',
+        name: 'Pain & Anxiety',
         description: 'Specialized nocturnes for complex pain and anxiety conditions',
         buckets: ['Nocturnes'],
         image: genreCardDark3,
