@@ -133,21 +133,24 @@ const Index = () => {
       {/* Content overlay */}
       <div className="relative z-10">
         {/* Navigation Header */}
-        <nav className="bg-black/20 sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6">
-            <div className="flex justify-end items-center">
-              <Button
-                onClick={() => navigate('/auth')}
-                className="text-base font-medium font-headers px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
-              >
-                Authorized User Sign-In
-              </Button>
-            </div>
-          </div>
+        <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 border-b border-white/[0.08]" style={{
+          background: 'rgba(10, 40, 55, 0.35)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)'
+        }}>
+          <div className="flex-1"></div>
+          <Button
+            onClick={() => navigate('/auth')}
+            className="text-base font-medium font-headers px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
+          >
+            Authorized User Sign-In
+          </Button>
         </nav>
 
         {/* Hero Section */}
-        <section className="min-h-screen flex flex-col justify-center items-center pt-24 pb-16" style={{
+        <section className="flex flex-col items-center justify-center text-center pb-16" style={{
+          minHeight: '90vh',
+          paddingTop: '8rem',
           background: 'linear-gradient(135deg, #021C26 0%, #0C3440 50%, #0A4753 100%)',
           backdropFilter: 'blur(40px) saturate(180%)',
           WebkitBackdropFilter: 'blur(40px) saturate(180%)'
@@ -156,11 +159,26 @@ const Index = () => {
             <div className="max-w-7xl">
               {/* NeuroTunes Logo */}
               <div className="mb-32">
-                <div className="flex items-center gap-12 mb-6">
-                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72" style={{ color: 'hsl(var(--text-opalescent))' }} strokeWidth={1.5} />
-                  <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal leading-none tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>NeuroTunes</h1>
+                <div className="flex items-center justify-center gap-4 mb-2">
+                  <Plus 
+                    className="w-12 h-12 object-contain" 
+                    style={{ 
+                      color: 'hsl(var(--text-opalescent))',
+                      filter: 'drop-shadow(0 0 8px rgba(180,255,250,0.35)) drop-shadow(0 0 20px rgba(120,200,210,0.15))'
+                    }} 
+                    strokeWidth={1.5} 
+                  />
+                  <h1 className="text-4xl font-semibold tracking-tight" style={{ 
+                    color: 'hsl(var(--text-opalescent))',
+                    textShadow: '0 0 8px rgba(180,255,250,0.25)',
+                    letterSpacing: '0.02em'
+                  }}>
+                    NeuroTunes
+                  </h1>
                 </div>
-                <p className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-tight leading-none" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>by NeuralPositive</p>
+                <p className="text-lg mt-2" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>
+                  Professional Music Therapy AI Platform
+                </p>
               </div>
               
               <div className="space-y-8 max-w-5xl">
