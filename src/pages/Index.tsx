@@ -6,6 +6,7 @@ import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { motion } from 'framer-motion';
+import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -48,6 +49,7 @@ const Index = () => {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
   
   // Welcome returning users
   useWelcomeMessage();
@@ -61,6 +63,12 @@ const Index = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Mark as animated after initial load
+    const timer = setTimeout(() => setHasAnimated(true), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   const stats = [
@@ -207,19 +215,13 @@ const Index = () => {
               >
                 <motion.div 
                   className="flex items-center justify-center gap-8 mb-8"
-                  animate={{
+                  animate={!hasAnimated ? {
                     scale: [1, 1.02, 1],
-                  }}
+                  } : {}}
                   transition={{
                     duration: 4,
-                    repeat: Infinity,
+                    repeat: !hasAnimated ? Infinity : 0,
                     ease: "easeInOut"
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    rotateX: 5,
-                    rotateY: 5,
-                    transition: { duration: 0.3 }
                   }}
                   style={{ transformStyle: 'preserve-3d' }}
                 >
@@ -246,7 +248,8 @@ const Index = () => {
                     textShadow: '0 0 10px rgba(255, 255, 255, 0.2)'
                   }}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 1, delay: 0.3 }}
                 >
                   AI-driven music therapy backed by patented technology and 50+ years of research
@@ -255,15 +258,15 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Pulsing glow effect */}
+          {/* Pulsing glow effect - only on initial load */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
-            animate={{
+            animate={!hasAnimated ? {
               opacity: [0.1, 0.3, 0.1],
-            }}
+            } : { opacity: 0.1 }}
             transition={{
               duration: 3,
-              repeat: Infinity,
+              repeat: !hasAnimated ? Infinity : 0,
               ease: "easeInOut"
             }}
             style={{
@@ -296,31 +299,31 @@ const Index = () => {
                 >
                   <motion.div 
                     className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
-                    animate={{
-                      rotateZ: [0, 360],
-                    }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                   >
                     <stat.icon className="h-12 w-12 text-white stroke-[1.5]" />
                   </motion.div>
                   <motion.div 
                     className="font-semibold font-headers text-white text-6xl mb-4"
-                    animate={{
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     {stat.value}
                   </motion.div>
-                  <div className="text-3xl font-body text-white/70 font-medium">{stat.label}</div>
+                  <motion.div 
+                    className="text-3xl font-body text-white/70 font-medium"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    {stat.label}
+                  </motion.div>
                 </motion.div>
               </div>
             ))}
@@ -346,24 +349,39 @@ const Index = () => {
                 >
                   <motion.div 
                     className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-8 group-hover:border-white/40 transition-all duration-300"
-                    animate={{
-                      y: [0, -10, 0],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                   >
                     <benefit.icon className="h-12 w-12 text-white" />
                   </motion.div>
-                  <h3 className="text-4xl font-medium font-headers text-white mb-6">{benefit.title}</h3>
-                  <p className="text-2xl font-body text-white/70 leading-relaxed">{benefit.description}</p>
+                  <motion.h3 
+                    className="text-4xl font-medium font-headers text-white mb-6"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    {benefit.title}
+                  </motion.h3>
+                  <motion.p 
+                    className="text-2xl font-body text-white/70 leading-relaxed"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    {benefit.description}
+                  </motion.p>
                 </motion.div>
               </div>
             ))}
           </div>
         </section>
+
+        {/* Featured Goals Carousel */}
+        <FeaturedGoalsCarousel />
 
         {/* Footer - Research Institutions (Horizontal Scroll) */}
         <section className="h-screen flex items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
@@ -395,17 +413,9 @@ const Index = () => {
                     y: -10,
                     transition: { duration: 0.4 }
                   }}
-                  animate={{
-                    y: [0, -8, 0],
-                  }}
                   transition={{
                     opacity: { duration: 0.5, delay: index * 0.1 },
-                    scale: { duration: 0.5, delay: index * 0.1 },
-                    y: {
-                      duration: 3 + index * 0.5,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }
+                    scale: { duration: 0.5, delay: index * 0.1 }
                   }}
                   style={{
                     animationDelay: `${index * 0.2}s`,
