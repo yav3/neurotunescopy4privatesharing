@@ -20,7 +20,56 @@ All colors MUST be HSL.
     --brand-100: #C2F5F3;
     --brand-50: #E6FCFB;
 
-    /* Light Mode using brand colors */
+    /* Dark Mode by Default - Ultra Deep Black Variants */
+    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
+    --foreground: 180 25% 88%; /* Opalescent pale turquoise-grey */
+
+    --card: 240 100% 2.5%; /* Darker card background */
+    --card-foreground: 180 25% 88%; /* Opalescent text */
+
+    --popover: 240 100% 1.5%; /* Almost pure black blue */
+    --popover-foreground: 180 25% 88%; /* Opalescent text */
+
+    --primary: 180 25% 88%; /* Opalescent primary */
+    --primary-foreground: 0 0% 0%; /* Black primary text */
+
+    --secondary: 240 56% 4%; /* Much darker charcoal blue */
+    --secondary-foreground: 180 25% 88%; /* Opalescent text */
+
+    --muted: 240 100% 1.5%; /* Almost pure black blue */
+    --muted-foreground: 180 20% 78%; /* Muted opalescent */
+
+    --accent: 240 56% 4%; /* Much darker charcoal blue */
+    --accent-foreground: 180 25% 88%; /* Opalescent text */
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 180 25% 88%;
+
+    --border: 240 100% 2.5%; /* Darker borders */
+    --input: 240 100% 1.5%; /* Almost pure black blue input background */
+    --ring: 180 25% 88%;
+  }
+
+  /* Card title styling - override global h3 styles for better mobile text */
+  .card-title {
+    hyphens: none !important;
+    word-break: normal !important;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+  }
+
+    /* Brand teal variations using hex values */
+    --teal-50: 173 75% 95%;
+    --teal-100: 176 75% 86%;
+    --teal-500: 182 63% 32%;
+    --teal-600: 182 61% 26%;
+    --teal-700: 182 63% 20%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Light Mode (now for .dark class) using brand colors */
     --background: 0 0% 100%; /* Pure white background */
     --foreground: 182 57% 11%; /* Brand-900 foreground */
 
@@ -48,55 +97,6 @@ All colors MUST be HSL.
     --border: 0 0% 90%; /* Light gray borders */
     --input: 0 0% 100%; /* White input background */
     --ring: 182 63% 32%; /* Brand-500 ring */
-  }
-
-  /* Card title styling - override global h3 styles for better mobile text */
-  .card-title {
-    hyphens: none !important;
-    word-break: normal !important;
-    overflow-wrap: break-word;
-    line-height: 1.4;
-  }
-
-    /* Brand teal variations using hex values */
-    --teal-50: 173 75% 95%;
-    --teal-100: 176 75% 86%;
-    --teal-500: 182 63% 32%;
-    --teal-600: 182 61% 26%;
-    --teal-700: 182 63% 20%;
-
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    /* Dark Mode - Ultra Deep Black Variants */
-    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
-    --foreground: 0 0% 98%; /* Light text */
-
-    --card: 240 100% 2.5%; /* Darker card background */
-    --card-foreground: 0 0% 98%; /* Light card text */
-
-    --popover: 240 100% 1.5%; /* Almost pure black blue */
-    --popover-foreground: 0 0% 98%; /* Light popover text */
-
-    --primary: 0 0% 100%; /* White primary for controls */
-    --primary-foreground: 0 0% 0%; /* Black primary text */
-
-    --secondary: 240 56% 4%; /* Much darker charcoal blue */
-    --secondary-foreground: 0 0% 98%; /* Light secondary text */
-
-    --muted: 240 100% 1.5%; /* Almost pure black blue */
-    --muted-foreground: 0 0% 95%; /* Much brighter text for better readability in dark mode */
-
-    --accent: 240 56% 4%; /* Much darker charcoal blue */
-    --accent-foreground: 0 0% 98%; /* Light accent text */
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 100% 2.5%; /* Darker borders */
-    --input: 240 100% 1.5%; /* Almost pure black blue input background */
-    --ring: 0 0% 100%;
 
     /* Dark mode gradients using ultra deep colors */
     --gradient-hero: linear-gradient(135deg, hsl(240 100% 1%), hsl(240 100% 1.5%), hsl(240 56% 4%));
@@ -105,13 +105,13 @@ All colors MUST be HSL.
     
     /* Dark mode sidebar colors using ultra deep palette */
     --sidebar-background: 240 100% 1.5%; /* Almost pure black blue */
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 0 0% 100%;
+    --sidebar-foreground: 180 25% 88%;
+    --sidebar-primary: 180 25% 88%;
     --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 240 56% 4%; /* Much darker charcoal blue */
-    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-accent-foreground: 180 25% 88%;
     --sidebar-border: 240 100% 2.5%; /* Darker border */
-    --sidebar-ring: 0 0% 100%;
+    --sidebar-ring: 180 25% 88%;
 
     /* Dark mode card color variations - ultra deep */
     --card-light: 240 100% 2.5%; /* Darker than before */
