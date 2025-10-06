@@ -147,28 +147,26 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="py-16 sm:py-24 lg:py-32">
+        <section className="pt-32 pb-40 sm:pt-40 sm:pb-48 lg:pt-48 lg:pb-56">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="max-w-6xl mx-auto">
-              <div className="space-y-16">
-                {/* NeuroTunes Logo */}
-                <div>
-                  <div className="flex items-center gap-8 mb-6">
-                    <Plus className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 text-white" strokeWidth={1.5} />
-                    <h1 className="text-[5rem] sm:text-[7rem] lg:text-[10rem] xl:text-[14rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
-                  </div>
-                  <p className="text-2xl sm:text-3xl lg:text-4xl font-didot italic text-white/70 ml-32 sm:ml-40 lg:ml-48 tracking-wide">by NeuralPositive</p>
+            <div className="max-w-7xl">
+              {/* NeuroTunes Logo */}
+              <div className="mb-32">
+                <div className="flex items-center gap-8 mb-8">
+                  <Plus className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-white" strokeWidth={1.5} />
+                  <h1 className="text-[8rem] sm:text-[12rem] lg:text-[16rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
                 </div>
-                
-                <h2 className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-sf font-normal text-white leading-[1.1] tracking-tight mt-20">
-                  AI-Personalized Wellness
-                  <span className="block text-white/90 mt-6">Meets Beautiful Music</span>
-                </h2>
-                
-                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal text-white/80 leading-relaxed max-w-5xl mt-12">
-                  Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
-                </p>
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot italic text-white/70 ml-40 sm:ml-48 lg:ml-56 tracking-wide">by NeuralPositive</p>
               </div>
+              
+              <h2 className="text-7xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-sf font-normal text-white leading-[1.15] tracking-tight mb-24">
+                AI-Personalized Wellness
+                <span className="block text-white/90 mt-8">Meets Beautiful Music</span>
+              </h2>
+              
+              <p className="text-3xl sm:text-4xl lg:text-5xl font-didot font-normal text-white/80 leading-[1.6] max-w-6xl">
+                Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
+              </p>
             </div>
           </div>
         </section>
