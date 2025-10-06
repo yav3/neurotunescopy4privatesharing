@@ -147,7 +147,11 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="pt-24 pb-32 sm:pt-32 sm:pb-40 lg:pt-40 lg:pb-48">
+        <section className="min-h-screen flex flex-col justify-center items-center pt-24 pb-16" style={{
+          background: 'linear-gradient(135deg, #021C26 0%, #0C3440 50%, #0A4753 100%)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)'
+        }}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="max-w-7xl">
               {/* NeuroTunes Logo */}
