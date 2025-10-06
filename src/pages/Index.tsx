@@ -22,6 +22,7 @@ import exerciseCard from '../assets/exercise-card.png';
 import boostCard from '../assets/boost-card.png';
 import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
+import premiumDarkBg from '../assets/premium-dark-bg.png';
 
 import { Button } from '../components/ui/button';
 
@@ -135,7 +136,7 @@ const Index = () => {
       {/* Full background image with parallax */}
       <div className="fixed inset-0 z-0">
         <motion.img 
-          src={neurotunesHeroBg} 
+          src={premiumDarkBg} 
           alt="Background"
           className="w-full h-full object-cover"
           style={{
@@ -200,29 +201,49 @@ const Index = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}
               >
-                <motion.h1 
-                  className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white mb-8" 
-                  style={{ 
-                    textShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
-                    transformStyle: 'preserve-3d',
-                  }}
-                  animate={{
-                    scale: [1, 1.02, 1],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    rotateX: 5,
-                    rotateY: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  NeuroTunes
-                </motion.h1>
+                <div className="flex items-center justify-center gap-8 mb-8">
+                  <motion.div
+                    animate={{
+                      rotate: [0, 180, 360],
+                    }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
+                    <Plus 
+                      className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-cyan-400" 
+                      strokeWidth={1.5}
+                      style={{
+                        filter: 'drop-shadow(0 0 20px rgba(0, 217, 255, 0.6))'
+                      }}
+                    />
+                  </motion.div>
+                  <motion.h1 
+                    className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white" 
+                    style={{ 
+                      textShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
+                      transformStyle: 'preserve-3d',
+                    }}
+                    animate={{
+                      scale: [1, 1.02, 1],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      rotateX: 5,
+                      rotateY: 5,
+                      transition: { duration: 0.3 }
+                    }}
+                  >
+                    NeuroTunes
+                  </motion.h1>
+                </div>
                 
                 <motion.p 
                   className="text-2xl sm:text-3xl lg:text-4xl font-body font-light text-white/90 leading-relaxed" 

@@ -53,6 +53,10 @@ const App = () => {
   const { currentTrack, playerMode } = useAudioStore();
 
   useEffect(() => {
+    // Force dark mode permanently
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+    
     initializeDebugging();
     
     // Only cleanup old audio elements if they're not playing

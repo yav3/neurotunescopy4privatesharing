@@ -69,34 +69,34 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Light Mode (now for .dark class) using brand colors */
-    --background: 0 0% 100%; /* Pure white background */
-    --foreground: 182 57% 11%; /* Brand-900 foreground */
+    /* Force Dark Mode - Ultra Deep Black Variants */
+    --background: 240 100% 1%; /* Even deeper black with slight blue tint */
+    --foreground: 180 25% 88%; /* Opalescent pale turquoise-grey */
 
-    --card: 0 0% 100%; /* Pure white card background */
-    --card-foreground: 182 57% 11%; /* Brand-900 card text */
+    --card: 240 100% 2.5%; /* Darker card background */
+    --card-foreground: 180 25% 88%; /* Opalescent text */
 
-    --popover: 0 0% 100%; /* White popover */
-    --popover-foreground: 182 57% 11%; /* Brand-900 popover text */
+    --popover: 240 100% 1.5%; /* Almost pure black blue */
+    --popover-foreground: 180 25% 88%; /* Opalescent text */
 
-    --primary: 182 63% 32%; /* Brand-500 primary */
-    --primary-foreground: 0 0% 100%; /* White primary text */
+    --primary: 180 25% 88%; /* Opalescent primary */
+    --primary-foreground: 0 0% 0%; /* Black primary text */
 
-    --secondary: 173 75% 95%; /* Brand-50 secondary */
-    --secondary-foreground: 182 57% 11%; /* Brand-900 secondary text */
+    --secondary: 240 56% 4%; /* Much darker charcoal blue */
+    --secondary-foreground: 180 25% 88%; /* Opalescent text */
 
-    --muted: 0 0% 96%; /* Very light gray muted */
-    --muted-foreground: 0 0% 25%; /* Much darker gray for better contrast */
+    --muted: 240 100% 1.5%; /* Almost pure black blue */
+    --muted-foreground: 180 20% 78%; /* Muted opalescent */
 
-    --accent: 176 75% 86%; /* Brand-100 accent */
-    --accent-foreground: 182 57% 11%; /* Brand-900 for maximum contrast */
+    --accent: 240 56% 4%; /* Much darker charcoal blue */
+    --accent-foreground: 180 25% 88%; /* Opalescent text */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 180 25% 88%;
 
-    --border: 0 0% 90%; /* Light gray borders */
-    --input: 0 0% 100%; /* White input background */
-    --ring: 182 63% 32%; /* Brand-500 ring */
+    --border: 240 100% 2.5%; /* Darker borders */
+    --input: 240 100% 1.5%; /* Almost pure black blue input background */
+    --ring: 180 25% 88%;
 
     /* Dark mode gradients using ultra deep colors */
     --gradient-hero: linear-gradient(135deg, hsl(240 100% 1%), hsl(240 100% 1.5%), hsl(240 56% 4%));
