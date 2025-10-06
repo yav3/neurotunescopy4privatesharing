@@ -332,6 +332,10 @@ All colors MUST be HSL.
     --text-gray-700: 0 0% 15%;
     --text-gray-800: 0 0% 10%;
     --text-gray-900: 0 0% 5%;
+    
+    /* Opalescent pale turquoise/grey for landing page */
+    --text-opalescent: 180 25% 88%; /* Pale turquoise-grey with soft luminosity */
+    --text-opalescent-muted: 180 20% 78%; /* Slightly more muted version */
 
     /* Card color variations - clean white and light grays */
     --card-light: 0 0% 100%; /* Pure white */

@@ -153,19 +153,19 @@ const Index = () => {
               {/* NeuroTunes Logo */}
               <div className="mb-32">
                 <div className="flex items-center gap-12 mb-6">
-                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 text-white" strokeWidth={1.5} />
-                  <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72" style={{ color: 'hsl(var(--text-opalescent))' }} strokeWidth={1.5} />
+                  <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal leading-none tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>NeuroTunes</h1>
                 </div>
-                <p className="text-5xl sm:text-6xl lg:text-7xl font-didot italic text-white/70 ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-wide">by NeuralPositive</p>
+                <p className="text-5xl sm:text-6xl lg:text-7xl font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-wide" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>by NeuralPositive</p>
               </div>
               
               <div className="space-y-8 max-w-5xl">
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sf font-normal text-white leading-[1.3] tracking-tight">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sf font-normal leading-[1.3] tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>
                   AI-Personalized Wellness
-                  <span className="block text-white/90">Meets Beautiful Music</span>
+                  <span className="block" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>Meets Beautiful Music</span>
                 </h2>
                 
-                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal text-white/80 leading-[1.5]">
+                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal leading-[1.5]" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>
                   Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
                 </p>
               </div>
