@@ -228,30 +228,6 @@ export default function AdminDashboard() {
               </Button>
               <Button 
                 onClick={() => {
-                  import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
-                    ModePlaybackDebugger.testSpecificMode('meditation-support');
-                  });
-                }}
-                variant="outline"
-                size="sm"
-                className="w-full"
-              >
-                🧘 Test Meditation Tracks
-              </Button>
-              <Button 
-                onClick={() => {
-                  import('@/utils/modePlaybackDebugger').then(({ ModePlaybackDebugger }) => {
-                    ModePlaybackDebugger.testAllModes();
-                  });
-                }}
-                variant="outline"
-                size="sm"
-                className="w-full"
-              >
-                🔍 Test All Modes
-              </Button>
-              <Button 
-                onClick={() => {
                   import('@/utils/bucketDiagnostics').then(({ BucketDiagnostics }) => {
                     BucketDiagnostics.checkSpecificGenre('meditation-support', 'zen-new-age');
                   });

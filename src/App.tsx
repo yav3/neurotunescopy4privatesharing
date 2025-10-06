@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
-import { DebugTrackSelection } from "@/components/DebugTrackSelection";
 import { FullPagePlayer } from "@/components/FullPagePlayer";
 import { MinimizedPlayer } from "@/components/MinimizedPlayer";
 import { TherapeuticDebugPanel } from "@/components/TherapeuticDebugPanel";
@@ -25,7 +24,6 @@ import { useComprehensiveTracking } from "@/hooks/useComprehensiveTracking";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
-import "@/utils/audioStoreTest";
 import Index from "./pages/Index";
 import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
@@ -160,7 +158,6 @@ const AppContent = () => {
       {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
       
       <DevDebugPanel />
-      <DebugTrackSelection />
     </div>
   );
 };

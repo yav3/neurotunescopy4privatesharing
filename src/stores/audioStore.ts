@@ -327,12 +327,6 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ isPlaying: true });
       }
     }
-    
-    // Start continuous state monitoring to prevent future freezing
-    import('@/utils/playerStateValidator').then(({ PlayerStateValidator }) => {
-      PlayerStateValidator.validateAndFix();
-      PlayerStateValidator.startContinuousMonitoring();
-    });
   }, 100);
   
   // Immediate auto-skip function for seamless playback
@@ -2088,9 +2082,6 @@ export const playTrackNow = async (track: Track) => {
   await useAudioStore.getState().playTrack(track);
 };
 
-// Export debug utilities for development
-export { debugPlayerState, fixPlayerState } from '@/utils/playerStateDebug';
-export { PlayerStateValidator } from '@/utils/playerStateValidator';
 
 // Export forward button fix for immediate debugging
 export const forceResetPlayerFlags = () => {
