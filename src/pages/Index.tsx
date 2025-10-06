@@ -156,7 +156,7 @@ const Index = () => {
                   <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72" style={{ color: 'hsl(var(--text-opalescent))' }} strokeWidth={1.5} />
                   <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal leading-none tracking-tight" style={{ color: 'hsl(var(--text-opalescent))' }}>NeuroTunes</h1>
                 </div>
-                <p className="text-5xl sm:text-6xl lg:text-7xl font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-wide" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>by NeuralPositive</p>
+                <p className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-didot italic ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-tight leading-none" style={{ color: 'hsl(var(--text-opalescent-muted))' }}>by NeuralPositive</p>
               </div>
               
               <div className="space-y-8 max-w-5xl">
