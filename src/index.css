@@ -151,6 +151,30 @@ All colors MUST be HSL.
     --liquid-glass-shadow: 194 66% 13%;      /* Glass Shadow Overlay #0B2B35 */
     --liquid-glow-highlight: 180 11% 97%;    /* Highlight Glow #F7F9F9 */
     
+    /* === Marine Opalescent Text & Icon Palette === */
+    --text-primary: 175 58% 80%;            /* Luminous seafoam #A9E6E1 */
+    --text-primary-glow: 175 58% 80%;       /* Same hue for glow effect */
+    --text-secondary: 195 20% 68%;          /* Muted pearl gray-blue #9DB9C0 */
+    --text-accent: 177 59% 64%;             /* Aqua-teal light #6FD7D3 */
+    --text-accent-hover: 178 78% 76%;       /* Aqua-teal hover #8EF3F0 */
+    --text-muted-opacity: 0.38;             /* Muted/disabled opacity */
+    
+    /* Icon Colors */
+    --icon-default: 180 67% 86%;            /* Pearl-teal default rgba(200, 240, 240, 0.7) */
+    --icon-default-opacity: 0.7;
+    --icon-hover: 177 57% 74%;              /* Hover state #9AE4E0 */
+    --icon-active: 176 91% 87%;             /* Active state #BFFCF8 */
+    --icon-disabled-opacity: 0.3;
+    
+    /* Glass Surface Layers */
+    --surface-deep: 202 73% 6%;             /* Deep navy base rgba(4, 18, 26, 0.85) */
+    --surface-deep-opacity: 0.85;
+    --surface-glass: 200 69% 13%;           /* Transparent morphism rgba(10, 40, 55, 0.45) */
+    --surface-glass-opacity: 0.45;
+    --surface-glow: 176 100% 85%;           /* Subtle reflective halo rgba(180, 255, 250, 0.12) */
+    --surface-glow-opacity: 0.12;
+    --surface-hover-opacity: 0.08;          /* Floating card hover rgba(255, 255, 255, 0.08) */
+    
     /* Brand Gradient System - Locked Teal Spectrum */
     --gradient-primary: linear-gradient(135deg, hsl(var(--brand-900)), hsl(var(--brand-500)));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-500)), hsl(var(--brand-200)));
@@ -1278,5 +1302,91 @@ All colors MUST be HSL.
 
   .animate-scroll-infinite:hover {
     animation-play-state: paused;
+  }
+
+  /* === Marine Opalescent Glass Utilities === */
+  
+  /* Text Colors */
+  .text-marine-primary {
+    color: hsl(var(--text-primary));
+    text-shadow: 0 0 6px hsl(var(--text-primary-glow) / 0.35);
+  }
+  
+  .text-marine-secondary {
+    color: hsl(var(--text-secondary));
+    opacity: 0.9;
+  }
+  
+  .text-marine-accent {
+    color: hsl(var(--text-accent));
+    transition: color 0.3s ease;
+  }
+  
+  .text-marine-accent:hover {
+    color: hsl(var(--text-accent-hover));
+  }
+  
+  .text-marine-muted {
+    color: hsl(0 0% 100% / var(--text-muted-opacity));
+  }
+  
+  /* Icon Styles */
+  .icon-marine {
+    color: hsl(var(--icon-default) / var(--icon-default-opacity));
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .icon-marine:hover {
+    color: hsl(var(--icon-hover));
+    transform: scale(1.05);
+  }
+  
+  .icon-marine:active {
+    color: hsl(var(--icon-active));
+    transform: scale(0.97);
+  }
+  
+  .icon-marine-disabled {
+    color: hsl(var(--icon-default) / var(--icon-disabled-opacity));
+  }
+  
+  /* Glass Surface Layers */
+  .surface-deep {
+    background: hsl(var(--surface-deep) / var(--surface-deep-opacity));
+  }
+  
+  .surface-glass {
+    background: hsl(var(--surface-glass) / var(--surface-glass-opacity));
+    backdrop-filter: blur(20px) saturate(140%);
+  }
+  
+  .surface-glow {
+    box-shadow: 0 0 40px hsl(var(--surface-glow) / var(--surface-glow-opacity));
+  }
+  
+  .surface-hover {
+    background: hsl(0 0% 100% / var(--surface-hover-opacity));
+  }
+  
+  /* Pearly Highlight Shader */
+  .pearly-glow {
+    filter: drop-shadow(0 0 8px hsl(176 100% 85% / 0.25))
+            drop-shadow(0 0 20px hsl(180 50% 70% / 0.15));
+  }
+  
+  /* Opalescent Button */
+  .btn-opalescent {
+    background: hsl(var(--surface-glass) / var(--surface-glass-opacity));
+    backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    color: hsl(var(--text-primary));
+    text-shadow: 0 0 6px hsl(var(--text-primary-glow) / 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-opalescent:hover {
+    background: hsl(0 0% 100% / var(--surface-hover-opacity));
+    box-shadow: 0 12px 40px hsl(var(--liquid-aquatic-deep) / 0.5);
+    transform: translateY(-2px);
   }
 }
