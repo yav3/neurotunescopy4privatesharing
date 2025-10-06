@@ -151,12 +151,12 @@ const Index = () => {
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="max-w-7xl">
               {/* NeuroTunes Logo */}
-              <div className="mb-24">
-                <div className="flex items-center gap-6 mb-4">
-                  <Plus className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-white" strokeWidth={1.5} />
-                  <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+              <div className="mb-32">
+                <div className="flex items-center gap-12 mb-6">
+                  <Plus className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 text-white" strokeWidth={1.5} />
+                  <h1 className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
                 </div>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-didot italic text-white/70 ml-[5.5rem] sm:ml-[6.5rem] lg:ml-[7.5rem] tracking-wide">by NeuralPositive</p>
+                <p className="text-5xl sm:text-6xl lg:text-7xl font-didot italic text-white/70 ml-[13rem] sm:ml-[16rem] lg:ml-[19rem] tracking-wide">by NeuralPositive</p>
               </div>
               
               <div className="space-y-8 max-w-5xl">
