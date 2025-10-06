@@ -226,16 +226,22 @@ const Index = () => {
                   style={{ transformStyle: 'preserve-3d' }}
                 >
                   <Plus 
-                    className="text-cyan-400 w-[8rem] h-[8rem] sm:w-[10rem] sm:h-[10rem] lg:w-[12rem] lg:h-[12rem]" 
+                    className="w-[8rem] h-[8rem] sm:w-[10rem] sm:h-[10rem] lg:w-[12rem] lg:h-[12rem]" 
                     strokeWidth={1.5}
                     style={{
-                      filter: 'drop-shadow(0 0 20px rgba(0, 217, 255, 0.6))'
+                      color: '#b2dfdb',
+                      filter: 'drop-shadow(0 0 30px rgba(224, 242, 241, 0.5)) drop-shadow(0 0 15px rgba(178, 223, 219, 0.4))'
                     }}
                   />
                   <h1 
-                    className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight text-white" 
+                    className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight" 
                     style={{ 
-                      textShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
+                      background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      textShadow: 'none',
+                      filter: 'drop-shadow(0 0 30px rgba(224, 242, 241, 0.4)) drop-shadow(0 0 15px rgba(178, 223, 219, 0.3))',
                     }}
                   >
                     NeuroTunes
