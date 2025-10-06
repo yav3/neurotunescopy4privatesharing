@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 
-export const FeaturedGoalsCarousel = () => {
+interface FeaturedGoalsCarouselProps {
+  showNatureCards?: boolean;
+}
+
+export const FeaturedGoalsCarousel = ({ showNatureCards = true }: FeaturedGoalsCarouselProps) => {
   // Select featured goals
   const featuredGoals = THERAPEUTIC_GOALS.slice(0, 6);
 
@@ -36,29 +40,57 @@ export const FeaturedGoalsCarousel = () => {
           >
             {/* Duplicate the array to create seamless loop */}
             {[...featuredGoals, ...featuredGoals, ...featuredGoals].map((goal, index) => (
-              <motion.div
-                key={`${goal.id}-${index}`}
-                className="flex-shrink-0 w-80 h-96 rounded-2xl p-8 border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-300"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (index % featuredGoals.length) * 0.1 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-              >
-                <div className="h-full flex flex-col">
-                  <div className="w-16 h-16 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center mb-6">
-                    <goal.icon className="h-8 w-8 text-white" />
+              showNatureCards ? (
+                // Nature Card Mode - Image with text below
+                <motion.div
+                  key={`${goal.id}-${index}`}
+                  className="flex-shrink-0 w-80 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-300"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (index % featuredGoals.length) * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  <div className="aspect-square relative">
+                    <img 
+                      src={goal.artwork} 
+                      alt={goal.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <h3 className="text-2xl font-headers text-white mb-4">{goal.name}</h3>
-                  <p className="text-lg font-body text-white/70 leading-relaxed flex-grow">{goal.description}</p>
-                  <div className="mt-6 flex items-center gap-2">
-                    <div className="h-1 bg-white/20 rounded-full flex-grow">
-                      <div className="h-full bg-cyan-400 rounded-full" style={{ width: '70%' }} />
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-headers text-white mb-2">{goal.name}</h3>
+                    <p className="text-sm font-body text-white/60">
+                      {goal.musicBuckets.slice(0, 3).join(' • ')}
+                    </p>
+                  </div>
+                </motion.div>
+              ) : (
+                // Abstract Card Mode - Current style
+                <motion.div
+                  key={`${goal.id}-${index}`}
+                  className="flex-shrink-0 w-80 h-96 rounded-2xl p-8 border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-300"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (index % featuredGoals.length) * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  <div className="h-full flex flex-col">
+                    <div className="w-16 h-16 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center mb-6">
+                      <goal.icon className="h-8 w-8 text-white" />
                     </div>
-                    <span className="text-sm text-white/60">{goal.bpmRange.optimal} BPM</span>
+                    <h3 className="text-2xl font-headers text-white mb-4">{goal.name}</h3>
+                    <p className="text-lg font-body text-white/70 leading-relaxed flex-grow">{goal.description}</p>
+                    <div className="mt-6 flex items-center gap-2">
+                      <div className="h-1 bg-white/20 rounded-full flex-grow">
+                        <div className="h-full bg-cyan-400 rounded-full" style={{ width: '70%' }} />
+                      </div>
+                      <span className="text-sm text-white/60">{goal.bpmRange.optimal} BPM</span>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              )
             ))}
           </motion.div>
         </div>

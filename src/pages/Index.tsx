@@ -50,6 +50,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [showNatureCards, setShowNatureCards] = useState(true);
   
   // Welcome returning users
   useWelcomeMessage();
@@ -194,6 +195,12 @@ const Index = () => {
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)'
         }}>
+          <Button
+            onClick={() => setShowNatureCards(!showNatureCards)}
+            className="text-sm font-medium font-headers px-6 py-2 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-sm border border-white/20"
+          >
+            {showNatureCards ? 'Abstract View' : 'Nature View'}
+          </Button>
           <div className="flex-1"></div>
           <Button
             onClick={() => navigate('/auth')}
@@ -387,7 +394,7 @@ const Index = () => {
         </section>
 
         {/* Featured Goals Carousel */}
-        <FeaturedGoalsCarousel />
+        <FeaturedGoalsCarousel showNatureCards={showNatureCards} />
 
         {/* Footer - Research Institutions (Horizontal Scroll) */}
         <section className="h-screen flex items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
