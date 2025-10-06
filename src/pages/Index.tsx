@@ -147,26 +147,28 @@ const Index = () => {
         </nav>
 
         {/* Hero Section */}
-        <section className="pt-32 pb-40 sm:pt-40 sm:pb-48 lg:pt-48 lg:pb-56">
+        <section className="pt-24 pb-32 sm:pt-32 sm:pb-40 lg:pt-40 lg:pb-48">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             <div className="max-w-7xl">
               {/* NeuroTunes Logo */}
-              <div className="mb-32">
-                <div className="flex items-center gap-8 mb-8">
-                  <Plus className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 text-white" strokeWidth={1.5} />
-                  <h1 className="text-[10rem] sm:text-[14rem] lg:text-[20rem] font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
+              <div className="mb-24">
+                <div className="flex items-center gap-6 mb-4">
+                  <Plus className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-white" strokeWidth={1.5} />
+                  <h1 className="text-6xl sm:text-7xl lg:text-8xl font-sf font-normal text-white leading-none tracking-tight">NeuroTunes</h1>
                 </div>
-                <p className="text-3xl sm:text-4xl lg:text-5xl font-didot italic text-white/70 ml-48 sm:ml-56 lg:ml-64 tracking-wide">by NeuralPositive</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-didot italic text-white/70 ml-[5.5rem] sm:ml-[6.5rem] lg:ml-[7.5rem] tracking-wide">by NeuralPositive</p>
               </div>
               
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-sf font-normal text-white leading-[1.6] tracking-tight mb-16">
-                AI-Personalized Wellness
-                <span className="block text-white/90 mt-2">Meets Beautiful Music</span>
-              </h2>
-              
-              <p className="text-3xl sm:text-4xl lg:text-5xl font-didot font-normal text-white/80 leading-[1.6] max-w-6xl">
-                Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
-              </p>
+              <div className="space-y-8 max-w-5xl">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sf font-normal text-white leading-[1.3] tracking-tight">
+                  AI-Personalized Wellness
+                  <span className="block text-white/90">Meets Beautiful Music</span>
+                </h2>
+                
+                <p className="text-2xl sm:text-3xl lg:text-4xl font-didot font-normal text-white/80 leading-[1.5]">
+                  Closed loop music designed to delight. Powered by patented AI and 50+ years of music therapy science.
+                </p>
+              </div>
             </div>
           </div>
         </section>
