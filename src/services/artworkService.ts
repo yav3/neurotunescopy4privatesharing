@@ -13,27 +13,27 @@ export class ArtworkService {
   private static therapeuticArtwork = {
     delta: [
       'Fluid_Abstract_Slowed.gif',
-      '20251003_1515_New Video_simple_compose_01k6nr07wvf6v9eby3vnw4vz8v.gif'
+      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q.gif'
     ],
     theta: [
-      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q.gif',
-      '20251003_1454_New Video_simple_compose_01k6npt7wcez6v2xk7mgd6xj3c.gif'
+      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q (2).gif',
+      '20251002_1414_New Video_simple_compose_01k6k239sbf0nsqdrhaq80hm8s.gif'
     ],
     alpha: [
-      '20251002_1413_Remix Video_remix_01k6k21x3aedwscmtkkjp6h0mw.gif',
-      '20251002_1156_Loop Video_loop_01k6jt5sxnf6vrwpy4h61yawrk.gif'
+      '20251002_1413_Remix Video_remix_01k6k21x3aedwscmtkkjp6h0mw (1).gif',
+      '20251002_1413_Remix Video_remix_01k6k21rn8f0vsngkhek65sawk (1).gif'
     ],
     beta: [
       '20251002_1414_New Video_simple_compose_01k6k23x45efrv5azcjsyxws71.gif',
-      '20251002_1408_New Video_simple_compose_01k6k1rk2hfkass71h90rb48n9.gif'
+      '20251002_1408_New Video_simple_compose_01k6k1rk2hfkass71h90rb48n9 (1).gif'
     ],
     gamma: [
-      '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif',
-      '20251003_1523_New Video_simple_compose_01k6nrf2qyey1r59ryp6bsz002.gif'
+      '20250914_1227_Serene Coastal Beauty_simple_compose_01k54gv56revhs6btr2h7abneb.gif',
+      '20251003_1533_New Video_simple_compose_01k6ns06m4eh0apvaqarecnjn9.gif'
     ],
     default: [
       'Fluid_Abstract_Slowed.gif',
-      '20251002_1413_Remix Video_remix_01k6k2110eee7bvrh2r0nz06pq.gif'
+      '20251002_1413_Remix Video_remix_01k6k2110eee7bvrh2r0nz06pq (1).gif'
     ]
   };
 

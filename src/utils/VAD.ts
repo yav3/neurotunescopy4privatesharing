@@ -3,7 +3,7 @@ export class VAD {
   private audioContext: AudioContext | null = null;
   private analyser: AnalyserNode | null = null;
   private microphone: MediaStreamAudioSourceNode | null = null;
-  private dataArray: Uint8Array | null = null;
+  private dataArray: Uint8Array<ArrayBuffer> | null = null;
   private stream: MediaStream | null = null;
   private isActive = false;
   private threshold = 50; // Voice activity threshold

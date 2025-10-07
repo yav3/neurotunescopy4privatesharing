@@ -19,48 +19,6 @@ interface TrackRowCardProps {
   className?: string;
 }
 
-// Enhanced artwork selection with better distribution for each track
-const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Album art collection using actual image files from albumart bucket
-  const albumArtwork = [
-    '0376232F-FE92-48B6-A567-7C41465B4FC9.jpeg',
-    '0567F220-7680-45A5-8A8F-2FBECEB7897A.png',
-    '0567F220-7680-45A5-8A8F-2FBECEB7897A (1).png',
-    '060CF7F4-0364-413A-B67C-918425A65E00.png',
-    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png',
-    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C (1).png',
-    '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
-    '20250923_1807_Raindrops on Flowers_remix_01k5w9sreqfr09xb2z6weqharz.png',
-    '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif'
-  ];
-  
-  // Simple but effective unique selection based on track ID
-  let hash = 0;
-  for (let i = 0; i < trackId.length; i++) {
-    hash = ((hash << 5) - hash + trackId.charCodeAt(i)) & 0xffffffff;
-  }
-  hash = Math.abs(hash);
-  
-  const artworkIndex = hash % albumArtwork.length;
-  
-  // Gradient based on frequency band for therapeutic visual cues
-  const gradients = {
-    delta: 'from-indigo-500/20 via-purple-500/20 to-blue-500/20',
-    theta: 'from-purple-500/20 via-pink-500/20 to-violet-500/20', 
-    alpha: 'from-emerald-500/20 via-teal-500/20 to-cyan-500/20',
-    beta: 'from-orange-500/20 via-amber-500/20 to-yellow-500/20',
-    gamma: 'from-red-500/20 via-rose-500/20 to-pink-500/20',
-    default: 'from-slate-500/20 via-gray-500/20 to-zinc-500/20'
-  };
-  
-  const gradient = gradients[frequencyBand as keyof typeof gradients] || gradients.default;
-  
-  return {
-    url: getAlbumArtworkUrl(albumArtwork[artworkIndex]),
-    position: 'center',
-    gradient
-  };
-};
 
 export const TrackRowCard: React.FC<TrackRowCardProps> = ({ 
   track, 
