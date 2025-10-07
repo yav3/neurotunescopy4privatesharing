@@ -74,37 +74,43 @@ const therapeuticGoals = [
   {
     id: "anxiety-support",
     name: "Relaxation",
-    image: relaxationCardDark,
+    abstractImage: relaxationCardDark,
+    natureImage: anxietyLake,
     goalId: "anxiety-support"
   },
   {
     id: "pain-support",
     name: "Recovery",
-    image: recoveryCard,
+    abstractImage: recoveryCard,
+    natureImage: dewdropLeaf,
     goalId: "pain-support"
   },
   {
     id: "focus-enhancement",
     name: "Focus+",
-    image: focusCard,
+    abstractImage: focusCard,
+    natureImage: peacefulLake,
     goalId: "focus-enhancement"
   },
   {
     id: "sleep-preparation",
     name: "Rest",
-    image: restCard,
+    abstractImage: restCard,
+    natureImage: nonSleepDeepRestLeaf,
     goalId: "sleep-preparation"
   },
   {
     id: "energy-boost",
     name: "Exercise",
-    image: exerciseCard,
+    abstractImage: exerciseCard,
+    natureImage: waterfallGreen,
     goalId: "energy-boost"
   },
   {
     id: "depression-support",
     name: "Boost",
-    image: boostCard,
+    abstractImage: boostCard,
+    natureImage: tropicalFlowers,
     goalId: "depression-support"
   }
 ];
@@ -269,16 +275,6 @@ const TherapeuticGoalsPage = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
                         
-                        {/* Centered icon sprite */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {item.type === 'goal' && getTherapeuticIcon(item.id) && 
-                            React.createElement(getTherapeuticIcon(item.id), {
-                              className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                              size: 16
-                            })
-                          }
-                        </div>
-                        
                         {/* Name in bottom left corner */}
                         <div className="absolute bottom-1.5 left-1.5">
                           <span className="text-white font-didot font-medium text-[10px] sm:text-xs drop-shadow-lg">
@@ -310,7 +306,7 @@ const TherapeuticGoalsPage = () => {
                       title="Pick a genre"
                     >
                       <img 
-                        src={goal.image}
+                        src={showNatureCards ? goal.natureImage : goal.abstractImage}
                         alt={`${goal.name} therapy program`}
                         loading="eager"
                         decoding="sync"
@@ -339,11 +335,6 @@ const TherapeuticGoalsPage = () => {
                             isGoalPinned(goal.id) ? "text-white fill-white" : "text-gray-700 dark:text-white"
                           )} />
                         </div>
-                      </div>
-                      
-                      {/* Centered icon sprite */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} />
                       </div>
                       
                       {/* Title in bottom left corner */}
@@ -410,15 +401,6 @@ const TherapeuticGoalsPage = () => {
                               isGoalPinned(genreKey) ? "text-white fill-white" : "text-gray-700 dark:text-white"
                             )} />
                           </div>
-                        </div>
-                        
-                        {/* Centered icon sprite */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {React.createElement(genre.icon as any, {
-                            className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                            size: 24,
-                            strokeWidth: 1.2
-                          })}
                         </div>
                         
                         {/* Genre name in bottom left corner */}

@@ -121,24 +121,6 @@ export const EnhancedGenreCard: React.FC<EnhancedGenreCardProps> = ({
         </Button>
       </div>
 
-      {/* Animated Light Particles */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className={cn(
-              "absolute w-1 h-1 bg-white/60 rounded-full",
-              "animate-pulse"
-            )}
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + (i % 3) * 20}%`,
-              animationDelay: `${i * 200}ms`,
-              animationDuration: '2s',
-            }}
-          />
-        ))}
-      </div>
     </Card>
   );
 };

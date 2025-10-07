@@ -105,11 +105,6 @@ export const GenreCard: React.FC<GenreCardProps> = ({
           </div>
         </div>
 
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1200 pointer-events-none" />
-        
-        {/* Glow animation */}
-        <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 animate-glow-pulse" />
       </Card>
     </div>
   );
