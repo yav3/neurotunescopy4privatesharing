@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Plus, Radio, ChevronDown } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Heart, Volume2, ThumbsDown, Pin, Radio, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from '@/utils/titleFormatter';
@@ -10,7 +10,9 @@ import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { Analytics } from '@/utils/analytics';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Import artwork for different therapeutic goals
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
@@ -53,10 +55,10 @@ export const FullPagePlayer = () => {
   }, [track?.id, isPlaying]);
 
   // Local state for enhanced features
-  const [lightningMode, setLightningMode] = useState(false);
   const [albumArtUrl, setAlbumArtUrl] = useState<string | null>(null);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
+  const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
   // Local fallback art (user-provided examples)
   const localArtPool = [
@@ -206,11 +208,15 @@ export const FullPagePlayer = () => {
     }
   };
 
-  const handleLightningMode = () => {
-    setLightningMode(!lightningMode);
+  const handlePinPlaylist = async () => {
+    if (!lastGoal) return;
+    
+    const isPinned = isGoalPinned(lastGoal);
+    await togglePinGoal(lastGoal);
+    
     toast({
-      title: lightningMode ? "Lightning mode disabled" : "Lightning mode enabled",
-      description: "Therapeutic boost " + (lightningMode ? "deactivated" : "activated"),
+      title: isPinned ? "Removed from favorites" : "Added to favorites",
+      description: isPinned ? "Removed from your top menu" : "Added to your top menu listening board",
     });
   };
 
@@ -400,20 +406,29 @@ export const FullPagePlayer = () => {
               <ThumbsDown className="w-5 h-5" />
             </Button>
 
-            {/* Lightning Mode */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLightningMode}
-              className={cn(
-                "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
-                lightningMode
-                  ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20"
-                  : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
-              )}
-            >
-              <Plus className="w-5 h-5" strokeWidth={1} />
-            </Button>
+            {/* Pin Playlist */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handlePinPlaylist}
+                    className={cn(
+                      "w-10 h-10 rounded-full transition-all duration-200 backdrop-blur-sm border border-border/50 bg-card/30 shadow-lg hover:scale-105",
+                      lastGoal && isGoalPinned(lastGoal)
+                        ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20"
+                        : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
+                    )}
+                  >
+                    <Pin className="w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Pin to your top menu listening board</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             {/* Spatial Audio */}
             <Button

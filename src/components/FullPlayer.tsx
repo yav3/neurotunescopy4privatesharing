@@ -1,14 +1,16 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
-import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Plus, Heart, ThumbsDown } from "lucide-react";
+import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Pin, Heart, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
 import { cn } from "@/lib/utils";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { Analytics } from '@/utils/analytics';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Therapeutic artwork selection (same as TrackCard)
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
@@ -88,10 +90,10 @@ export default function FullPlayer() {
   }, [track]);
 
   // Local state for enhanced features
-  const [lightningMode, setLightningMode] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
+  const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
   const handleSpatialAudio = () => {
     const willBeEnabled = !spatialAudioEnabled;
@@ -102,11 +104,15 @@ export default function FullPlayer() {
     });
   };
 
-  const handleLightningMode = () => {
-    setLightningMode(!lightningMode);
+  const handlePinPlaylist = async () => {
+    if (!lastGoal) return;
+    
+    const isPinned = isGoalPinned(lastGoal);
+    await togglePinGoal(lastGoal);
+    
     toast({
-      title: lightningMode ? "Lightning mode disabled" : "Lightning mode enabled",
-      description: "Therapeutic boost activated",
+      title: isPinned ? "Removed from favorites" : "Added to favorites",
+      description: isPinned ? "Removed from your top menu" : "Added to your top menu listening board",
     });
   };
 
@@ -307,21 +313,30 @@ export default function FullPlayer() {
             <ThumbsDown size={24} />
           </Button>
 
-          {/* Lightning Mode */}
-          <Button 
-            variant="ghost" 
-            size="lg"
-            onClick={handleLightningMode}
-            className={cn(
-              "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
-              "hover:scale-105 hover:shadow-xl",
-              lightningMode 
-                ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20" 
-                : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
-            )}
-          >
-            <Plus size={24} strokeWidth={1} />
-          </Button>
+          {/* Pin Playlist */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="lg"
+                  onClick={handlePinPlaylist}
+                  className={cn(
+                    "transition-all duration-200 p-3 rounded-full backdrop-blur-md bg-card/40 border border-white/20 shadow-lg",
+                    "hover:scale-105 hover:shadow-xl",
+                    lastGoal && isGoalPinned(lastGoal)
+                      ? "text-yellow-400 bg-yellow-500/30 border-yellow-400/50 shadow-yellow-500/20" 
+                      : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
+                  )}
+                >
+                  <Pin size={24} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Pin to your top menu listening board</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           {/* Spatial Audio */}
           <Button 
