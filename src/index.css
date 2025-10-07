@@ -18,25 +18,25 @@ All colors MUST be HSL.
 
     /* Dark Mode - Teal/Pearl Theme */
     --background: 182 55% 5%; /* Deep teal-black */
-    --foreground: 180 25% 88%; /* Opalescent pale pearl-teal */
+    --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --card: 182 50% 8%; /* Deep teal card */
-    --card-foreground: 180 25% 88%; /* Opalescent text */
+    --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --popover: 182 55% 7%; /* Deep teal popover */
-    --popover-foreground: 180 25% 88%; /* Opalescent text */
+    --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --primary: 180 25% 88%; /* Opalescent pearl-teal */
+    --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
     --primary-foreground: 182 55% 8%; /* Deep teal text */
 
     --secondary: 182 45% 12%; /* Deep teal secondary */
-    --secondary-foreground: 180 25% 88%; /* Opalescent text */
+    --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --muted: 182 50% 10%; /* Muted deep teal */
-    --muted-foreground: 180 20% 78%; /* Muted pearl-teal */
+    --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
 
     --accent: 178 40% 15%; /* Accent deep teal */
-    --accent-foreground: 180 25% 88%; /* Opalescent text */
+    --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 180 25% 88%;
@@ -67,25 +67,25 @@ All colors MUST be HSL.
   .dark {
     /* Force Dark Mode - Teal/Pearl Theme */
     --background: 182 55% 5%; /* Deep teal-black */
-    --foreground: 180 25% 88%; /* Opalescent pale pearl-teal */
+    --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --card: 182 50% 8%; /* Deep teal card */
-    --card-foreground: 180 25% 88%; /* Opalescent text */
+    --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --popover: 182 55% 7%; /* Deep teal popover */
-    --popover-foreground: 180 25% 88%; /* Opalescent text */
+    --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --primary: 180 25% 88%; /* Opalescent pearl-teal */
+    --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
     --primary-foreground: 182 55% 8%; /* Deep teal text */
 
     --secondary: 182 45% 12%; /* Deep teal secondary */
-    --secondary-foreground: 180 25% 88%; /* Opalescent text */
+    --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --muted: 182 50% 10%; /* Muted deep teal */
-    --muted-foreground: 180 20% 78%; /* Muted pearl-teal */
+    --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
 
     --accent: 178 40% 15%; /* Accent deep teal */
-    --accent-foreground: 180 25% 88%; /* Opalescent text */
+    --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 180 25% 88%;
@@ -101,13 +101,13 @@ All colors MUST be HSL.
     
     /* Dark mode sidebar - Teal/Pearl */
     --sidebar-background: 182 55% 7%;
-    --sidebar-foreground: 180 25% 88%;
-    --sidebar-primary: 180 25% 88%;
+    --sidebar-foreground: 180 8% 92%;
+    --sidebar-primary: 180 8% 92%;
     --sidebar-primary-foreground: 182 55% 8%;
     --sidebar-accent: 182 45% 12%;
-    --sidebar-accent-foreground: 180 25% 88%;
+    --sidebar-accent-foreground: 180 8% 92%;
     --sidebar-border: 182 45% 15%;
-    --sidebar-ring: 180 25% 88%;
+    --sidebar-ring: 180 8% 92%;
 
     /* Dark mode card variations - Teal/Pearl */
     --card-light: 182 50% 10%;
