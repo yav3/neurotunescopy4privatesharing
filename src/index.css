@@ -16,34 +16,34 @@ All colors MUST be HSL.
     --teal-dark-200: 182 50% 12%; /* Deeper teal */
     --teal-dark-300: 182 55% 8%; /* Deepest teal */
 
-    /* Dark Mode - Teal/Pearl Theme */
-    --background: 182 55% 5%; /* Deep teal-black */
+    /* Dark Mode - Rich Velvet Liquid Glass Theme */
+    --background: 188 70% 3%; /* Rich deep green-blue-black with velvet depth */
     --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --card: 182 50% 8%; /* Deep teal card */
+    --card: 186 65% 6%; /* Deep translucent liquid glass card */
     --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --popover: 182 55% 7%; /* Deep teal popover */
+    --popover: 188 68% 4%; /* Deep liquid glass popover */
     --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
-    --primary-foreground: 182 55% 8%; /* Deep teal text */
+    --primary-foreground: 188 70% 3%; /* Rich deep velvet background */
 
-    --secondary: 182 45% 12%; /* Deep teal secondary */
+    --secondary: 186 60% 8%; /* Deep liquid glass secondary */
     --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --muted: 182 50% 10%; /* Muted deep teal */
+    --muted: 188 65% 5%; /* Muted deep velvet */
     --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
 
-    --accent: 178 40% 15%; /* Accent deep teal */
+    --accent: 184 55% 10%; /* Accent deep liquid glass */
     --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 180 25% 88%;
+    --destructive-foreground: 180 8% 92%;
 
-    --border: 182 45% 15%; /* Deep teal borders */
-    --input: 182 50% 10%; /* Deep teal input */
-    --ring: 180 25% 88%;
+    --border: 186 60% 10%; /* Deep liquid glass borders */
+    --input: 188 65% 6%; /* Deep velvet input */
+    --ring: 180 8% 92%;
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
@@ -65,66 +65,66 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Force Dark Mode - Teal/Pearl Theme */
-    --background: 182 55% 5%; /* Deep teal-black */
+    /* Force Dark Mode - Rich Velvet Liquid Glass Theme */
+    --background: 188 70% 3%; /* Rich deep green-blue-black with velvet depth */
     --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --card: 182 50% 8%; /* Deep teal card */
+    --card: 186 65% 6%; /* Deep translucent liquid glass card */
     --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --popover: 182 55% 7%; /* Deep teal popover */
+    --popover: 188 68% 4%; /* Deep liquid glass popover */
     --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
-    --primary-foreground: 182 55% 8%; /* Deep teal text */
+    --primary-foreground: 188 70% 3%; /* Rich deep velvet background */
 
-    --secondary: 182 45% 12%; /* Deep teal secondary */
+    --secondary: 186 60% 8%; /* Deep liquid glass secondary */
     --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
-    --muted: 182 50% 10%; /* Muted deep teal */
+    --muted: 188 65% 5%; /* Muted deep velvet */
     --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
 
-    --accent: 178 40% 15%; /* Accent deep teal */
+    --accent: 184 55% 10%; /* Accent deep liquid glass */
     --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 180 25% 88%;
+    --destructive-foreground: 180 8% 92%;
 
-    --border: 182 45% 15%; /* Deep teal borders */
-    --input: 182 50% 10%; /* Deep teal input */
-    --ring: 180 25% 88%;
+    --border: 186 60% 10%; /* Deep liquid glass borders */
+    --input: 188 65% 6%; /* Deep velvet input */
+    --ring: 180 8% 92%;
 
-    /* Dark mode gradients - Teal/Pearl Theme */
-    --gradient-hero: linear-gradient(135deg, hsl(182 55% 5%), hsl(182 50% 8%), hsl(182 45% 12%));
-    --gradient-card: linear-gradient(135deg, hsl(182 50% 8%), hsl(182 50% 10%), hsl(182 55% 7%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(182 55% 5%), hsl(180 50% 8% / 0.5), hsl(182 55% 5%));
+    /* Dark mode gradients - Rich Velvet Liquid Glass */
+    --gradient-hero: linear-gradient(135deg, hsl(188 70% 3%), hsl(186 65% 6%), hsl(186 60% 8%));
+    --gradient-card: linear-gradient(135deg, hsl(186 65% 6%), hsl(188 65% 5%), hsl(188 68% 4%));
+    --gradient-dark-bg: linear-gradient(135deg, hsl(188 70% 3%), hsl(186 60% 5% / 0.5), hsl(188 70% 3%));
     
-    /* Dark mode sidebar - Teal/Pearl */
-    --sidebar-background: 182 55% 7%;
+    /* Dark mode sidebar - Rich Velvet Liquid Glass */
+    --sidebar-background: 188 68% 4%;
     --sidebar-foreground: 180 8% 92%;
     --sidebar-primary: 180 8% 92%;
-    --sidebar-primary-foreground: 182 55% 8%;
-    --sidebar-accent: 182 45% 12%;
+    --sidebar-primary-foreground: 188 70% 3%;
+    --sidebar-accent: 186 60% 8%;
     --sidebar-accent-foreground: 180 8% 92%;
-    --sidebar-border: 182 45% 15%;
+    --sidebar-border: 186 60% 10%;
     --sidebar-ring: 180 8% 92%;
 
-    /* Dark mode card variations - Teal/Pearl */
-    --card-light: 182 50% 10%;
-    --card-medium: 182 50% 8%;
-    --card-darker: 182 45% 12%;
-    --card-darkest: 182 55% 5%;
+    /* Dark mode card variations - Rich Velvet Liquid Glass */
+    --card-light: 188 65% 5%;
+    --card-medium: 186 65% 6%;
+    --card-darker: 186 60% 8%;
+    --card-darkest: 188 70% 3%;
 
-    /* Dark mode glass morphism - Teal/Pearl */
-    --glass-bg: 182 50% 8% / 0.4;
-    --glass-border: 182 45% 15% / 0.6;
-    --glass-shadow: 0 8px 32px 0 hsl(182 55% 5% / 0.9);
+    /* Dark mode glass morphism - Rich Velvet Liquid Glass */
+    --glass-bg: 186 65% 6% / 0.4;
+    --glass-border: 186 60% 10% / 0.6;
+    --glass-shadow: 0 8px 32px 0 hsl(188 70% 3% / 0.9);
 
-    /* Dark mode music categories - Teal/Pearl */
-    --music-focus: 182 50% 8%;
-    --music-mood: 182 50% 8%;
-    --music-sleep: 182 50% 8%;
-    --music-energy: 182 50% 8%;
+    /* Dark mode music categories - Rich Velvet Liquid Glass */
+    --music-focus: 186 65% 6%;
+    --music-mood: 186 65% 6%;
+    --music-sleep: 186 65% 6%;
+    --music-energy: 186 65% 6%;
   }
 
   /* Safe area support for mobile devices */

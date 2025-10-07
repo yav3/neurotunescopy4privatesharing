@@ -163,10 +163,10 @@ const TherapeuticGoalsPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="px-4 py-1.5 border-b border-border bg-background">
+      <div className="px-4 py-2 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto">
           {/* Branding */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Plus className="w-5 h-5 text-foreground" />
               <div>
@@ -195,8 +195,8 @@ const TherapeuticGoalsPage = () => {
       )}
 
       {/* Main Content */}
-      <div className="px-6 sm:px-8 md:px-12 pb-16 pt-4 sm:pt-6">
-        <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
+      <div className="px-6 sm:px-8 md:px-12 pb-20 pt-6 sm:pt-8">
+        <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
