@@ -196,16 +196,16 @@ const TherapeuticGoalsPage = () => {
 
       {/* Main Content */}
       <div className="px-6 sm:px-8 md:px-12 pb-16 pt-4 sm:pt-6">
-        <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+        <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
           
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
             <div>
-              <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">Your Favorites</h2>
+              <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-4 leading-tight">Your Favorites</h2>
               
               {/* Horizontal scrolling container for pinned favorites */}
               <div className="overflow-x-auto pb-1">
-                <div className="flex gap-2 min-w-max">
+                <div className="flex gap-3 min-w-max">
                   {pinnedItems.map((item, index) => {
                     // Lighter backgrounds for energetic/boosting goals
                     const energeticBackgrounds = [
@@ -239,9 +239,9 @@ const TherapeuticGoalsPage = () => {
                     const backgroundImage = backgrounds[index % backgrounds.length];
                     
                     return (
-                    <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-20 sm:w-24">
+                   <div key={item.id} className="flex flex-col items-start flex-shrink-0 w-[72px] sm:w-20">
                       <Card 
-                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border-0 bg-card w-full aspect-[1/1] rounded-xl sm:rounded-2xl"
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 border-0 bg-card w-full aspect-[1/1] rounded-lg sm:rounded-xl"
                         onClick={() => handlePinnedItemSelect(item)}
                       >
                         <img 
@@ -262,14 +262,14 @@ const TherapeuticGoalsPage = () => {
                           {item.type === 'goal' && getTherapeuticIcon(item.id) && 
                             React.createElement(getTherapeuticIcon(item.id), {
                               className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                              size: 20
+                              size: 16
                             })
                           }
                         </div>
                         
-                        {/* Name overlay on hover */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                          <span className="text-white font-didot font-medium text-xs px-2 text-center">
+                        {/* Name in bottom left corner */}
+                        <div className="absolute bottom-1.5 left-1.5">
+                          <span className="text-white font-didot font-medium text-[10px] sm:text-xs drop-shadow-lg">
                             {item.name}
                           </span>
                         </div>
@@ -283,17 +283,17 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-4 leading-tight">Personalize Your Goal</h2>
             
             {/* Horizontal scrolling container for all therapeutic goals */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
-              <div className="flex gap-2 sm:gap-3 min-w-max">
+              <div className="flex gap-3 sm:gap-4 min-w-max">
               {therapeuticGoals.map((goal) => {
                 const IconComponent = getTherapeuticIcon(goal.goalId);
                 return (
-                  <div key={goal.id} className="flex-shrink-0 w-40 sm:w-48">
+                  <div key={goal.id} className="flex-shrink-0 w-32 sm:w-40">
                     <Card 
-                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-xl sm:rounded-2xl border-0"
+                      className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-lg sm:rounded-xl border-0"
                       onClick={() => handleGoalSelect(goal.id)}
                       title="Pick a genre"
                     >
@@ -331,12 +331,12 @@ const TherapeuticGoalsPage = () => {
                       
                       {/* Centered icon sprite */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={28} />
+                        <IconComponent className="text-white opacity-90 group-hover:opacity-100 transition-opacity" size={24} />
                       </div>
                       
-                      {/* Title on hover only */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                        <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
+                      {/* Title in bottom left corner */}
+                      <div className="absolute bottom-2 left-2">
+                        <h3 className="text-white font-didot font-medium text-xs sm:text-sm drop-shadow-lg">
                           {goal.name}
                         </h3>
                       </div>
@@ -350,11 +350,11 @@ const TherapeuticGoalsPage = () => {
 
           {/* New in Our Popular Genres Section */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">New in Our Popular Genres</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-4 leading-tight">New in Our Popular Genres</h2>
             
             {/* Horizontal scrolling container for popular genres */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
-              <div className="flex gap-2 sm:gap-3 min-w-max">
+              <div className="flex gap-3 sm:gap-4 min-w-max">
                  {[
                   { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Tropical House', image: genreChillTropicalHouse, icon: Waves },
                   { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: WaveIcon },
@@ -364,9 +364,9 @@ const TherapeuticGoalsPage = () => {
                 ].map((genre) => {
                   const genreKey = `${genre.goalId}-${genre.genreId}`;
                   return (
-                    <div key={genreKey} className="flex-shrink-0 w-40 sm:w-48">
+                    <div key={genreKey} className="flex-shrink-0 w-32 sm:w-40">
                       <Card 
-                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-2xl sm:rounded-3xl border-0"
+                        className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 bg-card w-full aspect-square rounded-lg sm:rounded-xl border-0"
                         onClick={() => navigate(`/genre/${genre.goalId}/${genre.genreId}`)}
                       >
                         <img 
@@ -404,14 +404,14 @@ const TherapeuticGoalsPage = () => {
                         <div className="absolute inset-0 flex items-center justify-center">
                           {React.createElement(genre.icon as any, {
                             className: "text-white opacity-90 group-hover:opacity-100 transition-opacity",
-                            size: 28,
+                            size: 24,
                             strokeWidth: 1.2
                           })}
                         </div>
                         
-                        {/* Genre name on hover only */}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm">
-                          <h3 className="text-white font-didot font-medium text-xs sm:text-sm px-2 text-center">
+                        {/* Genre name in bottom left corner */}
+                        <div className="absolute bottom-2 left-2">
+                          <h3 className="text-white font-didot font-medium text-xs sm:text-sm drop-shadow-lg">
                             {genre.name}
                           </h3>
                         </div>
