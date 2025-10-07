@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
-import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Plus, Heart, ThumbsDown } from "lucide-react";
+import { ArrowLeft, Pause, Play, SkipBack, SkipForward, Radio, Pin, Heart, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
@@ -320,7 +320,7 @@ export default function FullPlayer() {
                 : "text-foreground hover:text-yellow-400 hover:bg-yellow-500/20 hover:border-yellow-400/30"
             )}
           >
-            <Plus size={24} strokeWidth={1} />
+            <Pin size={24} />
           </Button>
 
           {/* Spatial Audio */}
