@@ -91,18 +91,18 @@ const therapeuticGoals = [
     goalId: "pain-support"
   },
   {
-    id: "focus-enhancement",
-    name: "Focus+",
-    abstractImage: focusCardCream,
-    natureImage: peacefulLake,
-    goalId: "focus-enhancement"
-  },
-  {
     id: "sleep-preparation",
     name: "Rest",
     abstractImage: restCard,
     natureImage: nonSleepDeepRestLeaf,
     goalId: "sleep-preparation"
+  },
+  {
+    id: "focus-enhancement",
+    name: "Focus+",
+    abstractImage: focusCardCream,
+    natureImage: peacefulLake,
+    goalId: "focus-enhancement"
   },
   {
     id: "energy-boost",
