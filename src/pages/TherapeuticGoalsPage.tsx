@@ -125,7 +125,7 @@ const TherapeuticGoalsPage = () => {
   const { isDark, toggle } = useDarkMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState<string>('');
-  const [showNatureCards, setShowNatureCards] = useState(true);
+  const [showNatureCards, setShowNatureCards] = useState(false);
   
   
   // Welcome returning users
