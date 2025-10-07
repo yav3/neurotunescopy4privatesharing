@@ -114,6 +114,8 @@ const TherapeuticGoalsPage = () => {
   const { isDark, toggle } = useDarkMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState<string>('');
+  const [showNatureCards, setShowNatureCards] = useState(true);
+  
   
   // Welcome returning users
   useWelcomeMessage();
@@ -173,14 +175,24 @@ const TherapeuticGoalsPage = () => {
                 <div className="text-3xl sm:text-4xl font-sf font-medium text-foreground leading-tight">NeuroTunes</div>
               </div>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={toggle} 
-              className="text-muted-foreground hover:text-foreground hover:bg-accent"
-            >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowNatureCards(!showNatureCards)} 
+                className="text-muted-foreground hover:text-foreground hover:bg-accent text-xs"
+              >
+                {showNatureCards ? 'Abstract' : 'Nature'}
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={toggle} 
+                className="text-muted-foreground hover:text-foreground hover:bg-accent"
+              >
+                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

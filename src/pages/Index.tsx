@@ -190,18 +190,11 @@ const Index = () => {
       {/* Content overlay */}
       <div className="relative z-10">
         {/* Navigation Header */}
-        <nav className="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 border-b border-white/[0.08]" style={{
+        <nav className="fixed top-0 w-full z-50 flex justify-end items-center px-8 py-4 border-b border-white/[0.08]" style={{
           background: 'rgba(10, 40, 55, 0.35)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)'
         }}>
-          <Button
-            onClick={() => setShowNatureCards(!showNatureCards)}
-            className="text-sm font-medium font-headers px-6 py-2 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-sm border border-white/20"
-          >
-            {showNatureCards ? 'Abstract View' : 'Nature View'}
-          </Button>
-          <div className="flex-1"></div>
           <Button
             onClick={() => navigate('/auth')}
             className="text-base font-medium font-headers px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
