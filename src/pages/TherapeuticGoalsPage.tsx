@@ -53,7 +53,7 @@ import genreClassicalCalm from '@/assets/genre-classical-calm.png';
 import genreChillSamba from '@/assets/genre-chill-samba-new.png';
 import genreRelaxation from '@/assets/genre-relaxation.png';
 import tropicalHouseFocusCream from '@/assets/tropical-house-focus-cream.png';
-import tropicalHousePartyGreen from '@/assets/tropical-house-party-green.png';
+import tropicalHousePartyTeal from '@/assets/tropical-house-party-teal.png';
 import boostCardYellow from '@/assets/boost-card-yellow.png';
 import focusCardCream from '@/assets/focus-card-cream.png';
 import favoritePurple from '@/assets/favorite-purple.png';
@@ -366,7 +366,7 @@ const TherapeuticGoalsPage = () => {
                  {[
                   { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Tropical House Focus', image: tropicalHouseFocusCream, icon: Waves },
                   { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: WaveIcon },
-                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: tropicalHousePartyGreen, icon: Palmtree },
+                  { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: tropicalHousePartyTeal, icon: Palmtree },
                   { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreHiitEnergy, icon: Drum },
                   { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Calm', image: genreClassicalCalm, icon: Guitar },
                 ].map((genre) => {
