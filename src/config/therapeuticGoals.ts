@@ -92,38 +92,6 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['anxiety', 'anxiety_relief', 'anxiety-down', 'classical']
   },
   {
-    id: 'depression-support',
-    slug: 'depression-support',
-    backendKey: 'depression-support',
-    name: 'Boost',
-    shortName: 'Boost',
-    description: 'Comprehensive mood support combining calming, uplifting, and restorative music for emotional wellbeing',
-    icon: Shield,
-    artwork: meditationCard,
-    color: 'indigo',
-    gradient: 'from-indigo-500 to-purple-500',
-    bpmRange: { min: 30, max: 80, optimal: 50 },
-    vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus'],
-    synonyms: ['depression', 'mood', 'emotional-support', 'wellbeing', 'uplifting', 'healing', 'stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost', 'nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
-  },
-  {
-    id: 'pain-support',
-    slug: 'pain-support',
-    backendKey: 'pain-support',
-    name: 'Recovery',
-    shortName: 'Recovery',
-    description: 'Provide comfort and pain relief support',
-    icon: Flower,
-    artwork: painSupportCard,
-    color: 'gray',
-    gradient: 'from-gray-500 to-blue-500',
-    bpmRange: { min: 50, max: 70, optimal: 60 },
-    vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
-    musicBuckets: ['gentleclassicalforpain', 'Chopin'],
-    synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
-  },
-  {
     id: 'sleep-preparation',
     slug: 'sleep-preparation',
     backendKey: 'sleep-preparation',
@@ -140,6 +108,22 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     synonyms: ['sleep', 'rest', 'bedtime', 'wind-down', 'nsdr', 'non-sleep-deep-rest', 'deep-rest', 'relaxation']
   },
   {
+    id: 'depression-support',
+    slug: 'depression-support',
+    backendKey: 'depression-support',
+    name: 'Boost',
+    shortName: 'Boost',
+    description: 'Comprehensive mood support combining calming, uplifting, and restorative music for emotional wellbeing',
+    icon: Shield,
+    artwork: meditationCard,
+    color: 'indigo',
+    gradient: 'from-indigo-500 to-purple-500',
+    bpmRange: { min: 30, max: 80, optimal: 50 },
+    vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.4 },
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus'],
+    synonyms: ['depression', 'mood', 'emotional-support', 'wellbeing', 'uplifting', 'healing', 'stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost', 'nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
+  },
+  {
     id: 'energy-boost',
     slug: 'energy-boost',
     backendKey: 'energy-boost',
@@ -154,6 +138,22 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     vadProfile: { valence: 0.8, arousal: 0.9, dominance: 0.7 },
     musicBuckets: ['ENERGYBOOST', 'pop', 'HIIT', 'reggaeton'],
     synonyms: ['energy', 'workout', 'exercise', 'cardio', 'motivation', 'pump']
+  },
+  {
+    id: 'pain-support',
+    slug: 'pain-support',
+    backendKey: 'pain-support',
+    name: 'Recovery',
+    shortName: 'Recovery',
+    description: 'Provide comfort and pain relief support',
+    icon: Flower,
+    artwork: painSupportCard,
+    color: 'gray',
+    gradient: 'from-gray-500 to-blue-500',
+    bpmRange: { min: 50, max: 70, optimal: 60 },
+    vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
+    musicBuckets: ['gentleclassicalforpain', 'Chopin'],
+    synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
   }
 ];
 
