@@ -359,7 +359,7 @@ const TherapeuticGoalsPage = () => {
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
               <div className="flex gap-3 sm:gap-4 min-w-max">
                  {[
-                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Tropical House', image: genreChillTropicalHouse, icon: Waves },
+                  { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Tropical House Focus', image: genreChillTropicalHouse, icon: Waves },
                   { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: WaveIcon },
                   { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: genreRelaxation, icon: Palmtree },
                   { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreHiitEnergy, icon: Drum },
