@@ -152,9 +152,9 @@ export const MinimizedPlayer = () => {
                   e.stopPropagation();
                   e.preventDefault();
                   if (audio.paused) {
-                    audio.play();
+                    play();
                   } else {
-                    audio.pause();
+                    pause();
                   }
                 }}
               >
