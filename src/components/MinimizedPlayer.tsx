@@ -151,10 +151,10 @@ export const MinimizedPlayer = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  if (audio.paused) {
-                    audio.play();
+                  if (isPlaying) {
+                    pause();
                   } else {
-                    audio.pause();
+                    play();
                   }
                 }}
               >
