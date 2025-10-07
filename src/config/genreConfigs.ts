@@ -259,13 +259,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         image: genreCardDark1
       },
       {
-        id: 'sleep-new-age',
-        name: 'New Age Sleep Sounds',
-        description: 'Calming new age music to ease you into restful sleep',
-        buckets: ['newageworldstressanxietyreduction', 'NewAgeandWorldFocus'],
-        image: genreCardDark2
-      },
-      {
         id: 'sleep-classical',
         name: 'Peaceful Classical',
         description: 'Soothing classical pieces to prepare for deep rest',
