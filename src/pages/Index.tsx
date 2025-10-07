@@ -50,7 +50,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [showNatureCards, setShowNatureCards] = useState(true);
+  const [showNatureCards, setShowNatureCards] = useState(false);
   
   // Welcome returning users
   useWelcomeMessage();
