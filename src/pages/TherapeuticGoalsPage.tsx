@@ -67,6 +67,7 @@ import favoriteBlueWaves from '@/assets/favorite-blue-waves.png';
 import favoriteDarkGreen from '@/assets/favorite-dark-green.png';
 import favoriteTealGreenGradient from '@/assets/favorite-teal-green-gradient.png';
 import favoriteDarkNavy from '@/assets/favorite-dark-navy.png';
+import relaxationCardTealGlass from '@/assets/relaxation-card-teal-glass.png';
 
 // Create therapeutic goal cards with new names and images
 // Map visual cards to actual therapeutic goal IDs from config
@@ -74,7 +75,7 @@ const therapeuticGoals = [
   {
     id: "anxiety-support",
     name: "Relaxation",
-    abstractImage: relaxationCardDark,
+    abstractImage: relaxationCardTealGlass,
     natureImage: anxietyLake,
     goalId: "anxiety-support"
   },
