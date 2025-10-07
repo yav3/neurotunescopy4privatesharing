@@ -90,15 +90,13 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
       onClick={onPlay}
     >
       {/* Background image with gradient overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
-        style={{
-          backgroundImage: `url(${artwork.url})`,
-          backgroundPosition: 'center'
-        }}
+      <img 
+        src={artwork.url}
+        alt={formattedTitle}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         onError={(e) => {
           console.warn('❌ Failed to load track card artwork:', artwork.url);
-          handleImageError(e as any);
+          handleImageError(e);
         }}
       />
       
