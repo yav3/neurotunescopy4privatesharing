@@ -193,8 +193,8 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
     'energy-boost': [
       {
         id: 'pop-energy',
-        name: 'Pop for Cardio',
-        description: 'High-energy pop tracks for motivation',
+        name: 'Happy Pop',
+        description: 'Uplifting pop music to boost your mood and energy',
         buckets: ['pop'],
         image: genreCardLight2
       },
