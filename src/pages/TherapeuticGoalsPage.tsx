@@ -351,9 +351,9 @@ const TherapeuticGoalsPage = () => {
           </div>
           </div>
 
-          {/* New in Our Popular Genres Section */}
+          {/* New Genres Section */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-4 leading-tight">New in Our Popular Genres</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-4 leading-tight">New Genres</h2>
             
             {/* Horizontal scrolling container for popular genres */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
