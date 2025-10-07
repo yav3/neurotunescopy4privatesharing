@@ -30,7 +30,6 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Navigation } from '@/components/Navigation';
 import { NowPlaying } from '@/components/NowPlaying';
-import AudioDebugTool from '@/components/AudioDebugTool';
 import TracksIdMappingInspector from '@/components/TracksIdMappingInspector';
 import DatabaseStorageRepairer from '@/components/DatabaseStorageRepairer';
 import AudioResolverTester from '@/components/AudioResolverTester';
@@ -567,7 +566,6 @@ export function UnifiedDashboard() {
           <TabsContent value="debug" className="space-y-8">
             <AudioUrlTester />
             <DirectURLTester />
-            <AudioDebugTool />
             <AudioResolverTester />
             <TracksIdMappingInspector />
             <DatabaseStorageRepairer />
