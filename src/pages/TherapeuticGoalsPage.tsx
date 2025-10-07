@@ -168,16 +168,16 @@ const TherapeuticGoalsPage = () => {
           {/* Branding */}
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Plus className="w-5 h-5 text-gray-900 dark:text-white" />
+              <Plus className="w-5 h-5 text-foreground" />
               <div>
-                <div className="text-3xl sm:text-4xl font-sf font-medium text-gray-900 dark:text-white leading-tight">NeuroTunes</div>
+                <div className="text-3xl sm:text-4xl font-sf font-medium text-foreground leading-tight">NeuroTunes</div>
               </div>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggle} 
-              className="text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="text-muted-foreground hover:text-foreground hover:bg-accent"
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
@@ -201,7 +201,7 @@ const TherapeuticGoalsPage = () => {
           {/* Pinned Favorites Section - Only show if user has pinned items */}
           {!pinnedLoading && pinnedItems.length > 0 && (
             <div>
-              <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">Your Favorites</h2>
+              <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">Your Favorites</h2>
               
               {/* Horizontal scrolling container for pinned favorites */}
               <div className="overflow-x-auto pb-1">
@@ -283,7 +283,7 @@ const TherapeuticGoalsPage = () => {
 
           {/* Therapeutic Goals Section - All 6 cards in grid */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">Personalize Your Goal</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">Personalize Your Goal</h2>
             
             {/* Horizontal scrolling container for all therapeutic goals */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
@@ -350,7 +350,7 @@ const TherapeuticGoalsPage = () => {
 
           {/* New in Our Popular Genres Section */}
           <div>
-            <h2 className="text-sm sm:text-base font-sf font-medium text-gray-900 dark:text-white mb-3 leading-tight">New in Our Popular Genres</h2>
+            <h2 className="text-sm sm:text-base font-sf font-medium text-foreground mb-3 leading-tight">New in Our Popular Genres</h2>
             
             {/* Horizontal scrolling container for popular genres */}
             <div className="overflow-x-auto pb-1 -mx-6 px-6 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12">
