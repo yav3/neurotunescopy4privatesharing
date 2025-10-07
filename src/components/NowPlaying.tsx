@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Plus, Radio, X } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Heart, ThumbsDown, Pin, Radio, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
@@ -11,6 +11,7 @@ import { blockTrack } from '@/services/blockedTracks';
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
+import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 
 // Enhanced artwork selection with better distribution for each track
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
@@ -121,9 +122,9 @@ export const NowPlaying: React.FC = () => {
   } = useAudioStore();
 
   // Local state for enhanced features
-  const [lightningMode, setLightningMode] = useState(false);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
+  const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -194,11 +195,19 @@ export const NowPlaying: React.FC = () => {
     });
   };
 
-  const handleLightningMode = () => {
-    setLightningMode(!lightningMode);
+  const handlePinPlaylist = async () => {
+    if (!lastGoal) return;
+    
+    const isPinned = isGoalPinned(lastGoal);
+    await togglePinGoal(lastGoal);
+    
+    const goalName = THERAPEUTIC_GOALS.find(g => 
+      g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal
+    )?.name || 'Playlist';
+    
     toast({
-      title: lightningMode ? "Lightning mode disabled" : "Lightning mode enabled",
-      description: "Therapeutic boost activated",
+      title: isPinned ? "Unpinned playlist" : "Pinned playlist",
+      description: isPinned ? `Removed ${goalName} from favorites` : `Added ${goalName} to favorites`,
     });
   };
 
@@ -315,7 +324,7 @@ export const NowPlaying: React.FC = () => {
             <div className="space-y-4 px-4">
               {/* Debug info */}
               <div className="text-center text-xs text-muted-foreground bg-red-100 p-2 rounded">
-                DEBUG: Controls should be visible - spatialAudio: {spatialAudioEnabled ? 'ON' : 'OFF'}, lightning: {lightningMode ? 'ON' : 'OFF'}
+                DEBUG: Controls should be visible - spatialAudio: {spatialAudioEnabled ? 'ON' : 'OFF'}, pinned: {lastGoal && isGoalPinned(lastGoal) ? 'ON' : 'OFF'}
               </div>
               
               {/* Main control buttons row */}
@@ -349,13 +358,14 @@ export const NowPlaying: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  onClick={handleLightningMode}
+                  onClick={handlePinPlaylist}
+                  disabled={!lastGoal}
                   className={cn(
-                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-yellow-500 hover:bg-accent/50 hover:scale-105",
-                    lightningMode ? "text-yellow-500 hover:text-yellow-400 bg-yellow-50/10 border-yellow-500/30" : "text-muted-foreground hover:text-foreground"
+                    "transition-all duration-200 h-12 w-12 rounded-full border-2 border-yellow-500 hover:bg-accent/50 hover:scale-105 disabled:opacity-30",
+                    lastGoal && isGoalPinned(lastGoal) ? "text-yellow-500 hover:text-yellow-400 bg-yellow-50/10 border-yellow-500/30" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  <Plus size={22} strokeWidth={1} />
+                  <Pin size={22} />
                 </Button>
 
                 <Button 
@@ -400,12 +410,12 @@ export const NowPlaying: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className={cn(
               "w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br flex items-center justify-center transition-all duration-300 relative",
-              lightningMode 
+              lastGoal && isGoalPinned(lastGoal)
                 ? "from-yellow-400/80 to-orange-500/80 animate-pulse" 
                 : "from-primary/60 to-secondary/60"
             )}>
-              {lightningMode ? (
-                <div className="text-xl">+</div>
+              {lastGoal && isGoalPinned(lastGoal) ? (
+                <Pin className="w-6 h-6" />
               ) : (
                 <>
                    <img 
@@ -469,17 +479,18 @@ export const NowPlaying: React.FC = () => {
             <ThumbsDown size={18} />
           </Button>
 
-          {/* Lightning Mode */}
+          {/* Pin Playlist */}
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={handleLightningMode}
+            onClick={handlePinPlaylist}
+            disabled={!lastGoal}
             className={cn(
-              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50",
-              lightningMode ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
+              "transition-colors duration-200 h-9 w-9 hover:bg-accent/50 disabled:opacity-30",
+              lastGoal && isGoalPinned(lastGoal) ? "text-yellow-500 hover:text-yellow-400" : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <Plus size={18} strokeWidth={1} />
+            <Pin size={18} />
           </Button>
 
           {/* Spatial Audio */}
