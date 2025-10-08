@@ -7,6 +7,7 @@ import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { motion } from 'framer-motion';
 import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
+import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -280,6 +281,9 @@ const Index = () => {
             }}
           />
         </section>
+
+        {/* Credentials Section */}
+        <CredentialsBadges />
 
         {/* Horizontal Scrolling Features */}
         <section className="h-screen flex items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide">
