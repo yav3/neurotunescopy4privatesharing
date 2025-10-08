@@ -122,7 +122,7 @@ const createWelcomeMessage = (data: WelcomeData): { title: string; description: 
   const favoriteGenreText = data.favoriteGenre ? ` ${data.favoriteGenre} seems to be your go-to.` : '';
   
   return {
-    title: "Welcome back, wellness champion! 🏆",
+    title: "Welcome back, Wellness Aficionado! 🏆",
     description: `${data.totalSessions} sessions completed${hoursText}.${favoriteGenreText} Your commitment to mental wellness is inspiring!`
   };
 };
