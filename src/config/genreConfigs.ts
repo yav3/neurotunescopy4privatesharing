@@ -264,13 +264,6 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         description: 'Soothing classical pieces to prepare for deep rest',
         buckets: ['Chopin', 'gentleclassicalforpain'],
         image: genreCardDark3
-      },
-      {
-        id: 'sleep-world',
-        name: 'World Sleep Music',
-        description: 'Relaxing world music for wind-down and deep rest',
-        buckets: ['painreducingworld'],
-        image: genreCardDark4
       }
     ]
   };
