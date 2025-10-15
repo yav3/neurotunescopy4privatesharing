@@ -187,6 +187,9 @@ let autoSkipTimeout: NodeJS.Timeout | null = null;
 // Proactive queue loading timeout
 let loadMoreTracksTimeout: NodeJS.Timeout | null = null;
 
+// Queue refetch coordination
+let isRefetchingQueue = false;
+
 // Helper functions for UUID handling
 const isValidUuid = (str: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -431,20 +434,32 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
   
-  // Validate track URL before attempting playback
+  // Validate track URL with retry and longer timeout for reliability
   const canPlay = async (url: string): Promise<boolean> => {
     console.log('🎵 Testing stream URL:', url);
     
-    try {
-      const response = await fetch(url, { 
-        method: 'HEAD',
-        signal: AbortSignal.timeout(3000) // 3 second timeout
-      });
-      return response.ok;
-    } catch (error) {
-      console.log('🎵 URL validation failed:', url, error);
-      return false;
+    // Try twice with longer timeout for slower networks
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const response = await fetch(url, { 
+          method: 'HEAD',
+          signal: AbortSignal.timeout(8000) // 8 second timeout for network reliability
+        });
+        if (response.ok) {
+          return true;
+        }
+        console.log(`🎵 URL validation attempt ${attempt} got status: ${response.status}`);
+      } catch (error) {
+        console.log(`🎵 URL validation attempt ${attempt} failed:`, error);
+        if (attempt === 2) {
+          return false;
+        }
+        // Wait 1 second before retry
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
+    
+    return false;
   };
   
   // Helper: Announce skips with smart UX (don't spam) - SILENT for therapeutic experience
@@ -1973,40 +1988,56 @@ export const useAudioStore = create<AudioState>((set, get) => {
             queue = removeAt(queue, i);
             i--; // Adjust index since we removed an item
             set({ queue });
-        }
-        
-        // Check if queue is getting low and try to fetch more tracks (more proactive threshold)
-        const { lastGoal } = get(); // Get lastGoal for queue extension
-        const remainingTracks = queue.length - index - 1;
-        if (remainingTracks <= 5 && lastGoal) {
-          console.log('🎵 Queue running low, fetching more tracks for goal:', lastGoal);
-          try {
-            const excludeIds = queue.map(t => t.id.toString());
-            const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 30, 0, excludeIds);
-            
-            if (newTracks && newTracks.length > 0) {
-              console.log('🎵 Added', newTracks.length, 'new tracks to queue');
-              const convertedTracks: Track[] = newTracks.map((track: any) => ({
-                id: track.id,
-                title: track.title,
-                artist: track.artist || 'Neural Positive Music',
-                duration: track.duration || 0,
-                storage_bucket: track.storage_bucket || 'audio',
-                storage_key: track.storage_key,
-                stream_url: track.stream_url,
-                audio_status: track.audio_status || 'working',
-              }));
-              
-              // Add new tracks to the end of the queue
-              const newQueue = [...queue, ...convertedTracks];
-              set({ queue: newQueue });
-              queue = newQueue;
-              console.log('🎵 Queue extended with', convertedTracks.length, 'tracks, new total:', newQueue.length);
-            }
-          } catch (error) {
-            console.error('🎵 Failed to fetch more tracks:', error);
           }
-        }
+        
+          // PROACTIVE: Check if queue is getting low and fetch more tracks EARLY (10 track threshold)
+          const { lastGoal } = get(); // Get lastGoal for queue extension
+          const remainingTracks = queue.length - i - 1;
+          if (remainingTracks <= 10 && lastGoal && !isRefetchingQueue) {
+            isRefetchingQueue = true; // Prevent multiple simultaneous refetches
+            console.log('🎵 Queue running low (', remainingTracks, 'remaining), proactively fetching more tracks...');
+            
+            // Fetch in background without blocking current skip
+            (async () => {
+              try {
+                const excludeIds = queue.map(t => t.id.toString());
+                const { tracks: newTracks } = await API.playlist(lastGoal as GoalSlug, 40, 0, excludeIds);
+                
+                if (newTracks && newTracks.length > 0) {
+                  console.log('✨ Background refetch successful:', newTracks.length, 'new tracks added to queue');
+                  const convertedTracks: Track[] = newTracks.map((track: any) => ({
+                    id: track.id,
+                    title: track.title,
+                    artist: track.artist || 'Neural Positive Music',
+                    duration: track.duration || 0,
+                    storage_bucket: track.storage_bucket || 'audio',
+                    storage_key: track.storage_key,
+                    stream_url: track.stream_url,
+                    audio_status: track.audio_status || 'working',
+                  }));
+                  
+                  // Validate new tracks before adding to prevent broken tracks
+                  const { working } = await validateTracks(convertedTracks);
+                  
+                  if (working.length > 0) {
+                    // Add validated tracks to the end of the queue
+                    const { queue: currentQueue } = get();
+                    const extendedQueue = [...currentQueue, ...working];
+                    set({ queue: extendedQueue });
+                    console.log('🎵 Queue extended! Now has', extendedQueue.length, 'tracks total');
+                  } else {
+                    console.log('⚠️ No working tracks in refetch, will try again later');
+                  }
+                } else {
+                  console.log('⚠️ Refetch returned no tracks');
+                }
+              } catch (error) {
+                console.error('❌ Background refetch failed:', error);
+              } finally {
+                isRefetchingQueue = false;
+              }
+            })();
+          }
         }
         
         console.log('🎵 No more working tracks available');
