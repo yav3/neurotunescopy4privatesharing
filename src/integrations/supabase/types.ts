@@ -3011,6 +3011,7 @@ export type Database = {
           genre: string | null
           harmonic_complexity: number | null
           harmonic_features: Json | null
+          has_lyrics: boolean | null
           id: string
           inharmonicity: number | null
           investigation_notes: string | null
@@ -3021,10 +3022,14 @@ export type Database = {
           last_title_normalized_at: string | null
           last_verified_at: string | null
           loudness_lufs: number | null
+          lyrics: string | null
+          lyrics_language: string | null
           mode: string | null
           mood_scores: Json | null
+          musicxml_url: string | null
           neural_entrainment_potential: number | null
           normalization_notes: Json | null
+          notation_data: Json | null
           onset_rate: number | null
           original_filename: string | null
           pitch_mean: number | null
@@ -3083,6 +3088,7 @@ export type Database = {
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
+          has_lyrics?: boolean | null
           id?: string
           inharmonicity?: number | null
           investigation_notes?: string | null
@@ -3093,10 +3099,14 @@ export type Database = {
           last_title_normalized_at?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
+          lyrics?: string | null
+          lyrics_language?: string | null
           mode?: string | null
           mood_scores?: Json | null
+          musicxml_url?: string | null
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
+          notation_data?: Json | null
           onset_rate?: number | null
           original_filename?: string | null
           pitch_mean?: number | null
@@ -3155,6 +3165,7 @@ export type Database = {
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
+          has_lyrics?: boolean | null
           id?: string
           inharmonicity?: number | null
           investigation_notes?: string | null
@@ -3165,10 +3176,14 @@ export type Database = {
           last_title_normalized_at?: string | null
           last_verified_at?: string | null
           loudness_lufs?: number | null
+          lyrics?: string | null
+          lyrics_language?: string | null
           mode?: string | null
           mood_scores?: Json | null
+          musicxml_url?: string | null
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
+          notation_data?: Json | null
           onset_rate?: number | null
           original_filename?: string | null
           pitch_mean?: number | null
@@ -4046,6 +4061,37 @@ export type Database = {
           total_tracks: number
           unknown_tracks: number
           working_tracks: number
+        }[]
+      }
+      get_unplayable_tracks_diagnostic: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          audio_status: string
+          created_at: string
+          days_broken: number
+          issue_category: string
+          issue_description: string
+          last_error: string
+          last_verified_at: string
+          storage_bucket: string
+          storage_key: string
+          suggested_fix: string
+          title: string
+          track_id: string
+        }[]
+      }
+      get_unplayable_tracks_summary: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          by_bucket: Json
+          file_corrupted: number
+          file_not_found: number
+          missing_bucket: number
+          missing_metadata: number
+          needs_reverification: number
+          never_verified: number
+          oldest_issue_days: number
+          total_unplayable: number
         }[]
       }
       get_user_role: {
