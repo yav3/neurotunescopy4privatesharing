@@ -801,9 +801,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
                   formattedTracks = await filterBlockedTracks(formattedTracks);
                   console.log(`🚫 After blocking filter: ${formattedTracks.length} additional tracks`);
                   
-                  // Add new tracks to the end of the current queue
-                  const { queue: currentQueue } = get();
-                  set({ queue: [...currentQueue, ...formattedTracks] });
+                  // CRITICAL: Validate tracks before adding to prevent skipping
+                  console.log(`🔍 Validating ${formattedTracks.length} new tracks before adding to queue...`);
+                  const { working, broken } = await validateTracks(formattedTracks);
+                  
+                  if (broken.length > 0) {
+                    console.warn(`⚠️ Filtered out ${broken.length} broken tracks:`, broken.map(t => t.title));
+                  }
+                  
+                  if (working.length > 0) {
+                    console.log(`✅ Adding ${working.length} validated tracks to queue`);
+                    const { queue: currentQueue } = get();
+                    set({ queue: [...currentQueue, ...working] });
+                  } else {
+                    console.warn(`⚠️ No working tracks found in batch for ${lastGoal}`);
+                  }
                 } else {
                   console.log('⚠️ No additional tracks available for', lastGoal);
                 }
