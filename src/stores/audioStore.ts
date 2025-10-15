@@ -431,13 +431,20 @@ export const useAudioStore = create<AudioState>((set, get) => {
   // Helper: Remove item from array at index
   const removeAt = (arr: Track[], i: number) => arr.slice(0, i).concat(arr.slice(i + 1));
   
-  // Simplified: Just try to play the track directly, no pre-validation
+  // Validate track URL before attempting playback
   const canPlay = async (url: string): Promise<boolean> => {
     console.log('🎵 Testing stream URL:', url);
     
-    // TEMPORARY: Always return true to prevent tracks from being marked as broken
-    // Let the audio element handle validation during actual playback
-    return true;
+    try {
+      const response = await fetch(url, { 
+        method: 'HEAD',
+        signal: AbortSignal.timeout(3000) // 3 second timeout
+      });
+      return response.ok;
+    } catch (error) {
+      console.log('🎵 URL validation failed:', url, error);
+      return false;
+    }
   };
   
   // Helper: Announce skips with smart UX (don't spam) - SILENT for therapeutic experience
@@ -580,11 +587,11 @@ export const useAudioStore = create<AudioState>((set, get) => {
           adminLog('🎵 Audio error - skipping to next track');
         }
         
-        // CRITICAL: If too many consecutive failures, wait much longer
-        const errorDelay = consecutiveFailures > 5 ? 45000 : (consecutiveFailures > 2 ? 30000 : 20000);
+        // Reasonable delays to skip broken tracks quickly without overwhelming the system
+        const errorDelay = consecutiveFailures > 5 ? 5000 : (consecutiveFailures > 2 ? 3000 : 2000);
         console.log(`🎵 Error cascade detection: ${consecutiveFailures} failures, using ${errorDelay}ms delay`);
         
-        // Use much longer auto-skip delay for audio errors to allow proper URL resolution
+        // Skip to next track after brief delay to allow URL resolution
         scheduleAutoSkip('audio error', errorDelay);
       });
       
