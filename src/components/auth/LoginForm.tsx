@@ -65,34 +65,34 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mb-4">
-          <LogIn className="w-8 h-8 text-white" />
+        <div className="mx-auto w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mb-4 shadow-glass">
+          <LogIn className="w-8 h-8 text-foreground" />
         </div>
-        <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
-        <p className="text-gray-400">Sign in to your account</p>
+        <h2 className="text-3xl font-bold text-foreground">Welcome Back</h2>
+        <p className="text-muted-foreground">Sign in to your account</p>
       </div>
 
       {error && (
-        <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
+        <div className="bg-destructive/20 border border-destructive/40 rounded-lg p-4 backdrop-blur-sm">
           <div className="flex items-center">
-            <AlertTriangle className="w-5 h-5 text-red-400 mr-2" />
-            <p className="text-red-200 text-sm">{error}</p>
+            <AlertTriangle className="w-5 h-5 text-destructive-foreground mr-2" />
+            <p className="text-destructive-foreground text-sm">{error}</p>
           </div>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/20 border-2 border-white/40 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
               placeholder="Enter your email"
               required
             />
@@ -100,23 +100,23 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-12 py-3 bg-white/20 border-2 border-white/40 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary/60 transition-all"
+              className="w-full pl-10 pr-12 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
               placeholder="Enter your password"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -126,7 +126,7 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         <button
           type="submit"
           disabled={loading || !email || !password}
-          className="w-full bg-gradient-primary text-white py-3 px-4 rounded-lg font-medium hover:from-primary hover:to-accent focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          className="w-full bg-gradient-primary text-primary-foreground py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-glass"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
@@ -136,15 +136,15 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         <button
           type="button"
           onClick={handleForgotPassword}
-          className="text-blue-400 hover:text-blue-300 text-sm font-medium block w-full"
+          className="text-accent-foreground hover:text-foreground text-sm font-medium block w-full transition-colors"
         >
           Forgot your password?
         </button>
-        <p className="text-gray-400 text-sm">
+        <p className="text-muted-foreground text-sm">
           Don't have an account?{' '}
           <button
             onClick={onToggleMode}
-            className="text-blue-400 hover:text-blue-300 font-medium"
+            className="text-accent-foreground hover:text-foreground font-medium transition-colors"
           >
             Sign up
           </button>
