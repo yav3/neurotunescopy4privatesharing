@@ -151,6 +151,26 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
             </div>
           </div>
           <div className="flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+              <button
+                onClick={() => navigate('/neuralpositive/about')}
+                className="text-gray-700 hover:text-teal-600 transition-colors"
+              >
+                About
+              </button>
+              <button
+                onClick={() => navigate('/neuralpositive/story')}
+                className="text-gray-700 hover:text-teal-600 transition-colors"
+              >
+                Our Story
+              </button>
+              <button
+                onClick={() => navigate('/neuralpositive/research')}
+                className="text-gray-700 hover:text-teal-600 transition-colors"
+              >
+                Research
+              </button>
+            </nav>
             <div className="flex items-center gap-2 text-gray-600">
               <span className="text-lg">🌐</span>
               <span className="text-lg">🇺🇸</span>
@@ -485,16 +505,102 @@ const trackTherapeuticOutcome = async (session) => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white py-8 border-t border-teal-200/20">
-        <div className="max-w-6xl mx-auto px-6 flex justify-center items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
-              <Plus className="w-4 h-4 text-white" />
+      <footer className="bg-white py-12 border-t border-teal-200/20">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+                  <Plus className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-gray-900 font-semibold">NeuroTunes</div>
+                  <div className="text-gray-600 text-xs">by NeuralPositive</div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">
+                Evidence-based AI music therapy for mental wellness.
+              </p>
             </div>
+
+            {/* Company */}
             <div>
-              <div className="text-gray-900 font-medium">NeuroTunes</div>
-              <div className="text-gray-600 text-sm">© 2025 NeuroTunes. All rights reserved.</div>
+              <h3 className="font-semibold text-gray-900 mb-3">Company</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button
+                    onClick={() => navigate('/neuralpositive/about')}
+                    className="text-gray-600 hover:text-teal-600 transition-colors"
+                  >
+                    About NeuralPositive
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate('/neuralpositive/story')}
+                    className="text-gray-600 hover:text-teal-600 transition-colors"
+                  >
+                    Our Story
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigate('/neuralpositive/research')}
+                    className="text-gray-600 hover:text-teal-600 transition-colors"
+                  >
+                    Research
+                  </button>
+                </li>
+              </ul>
             </div>
+
+            {/* Product */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Product</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button
+                    onClick={handleStartTherapy}
+                    className="text-gray-600 hover:text-teal-600 transition-colors"
+                  >
+                    Start Therapy
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogin}
+                    className="text-gray-600 hover:text-teal-600 transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-teal-600 transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-gray-600 hover:text-teal-600 transition-colors">
+                    Terms of Service
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-6 border-t border-teal-200/20 text-center">
+            <p className="text-sm text-gray-600">
+              © 2025 NeuralPositive. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
