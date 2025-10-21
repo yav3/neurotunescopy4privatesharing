@@ -248,19 +248,6 @@ const Index = () => {
                     NeuralPositive presents NeuroTunes
                   </h1>
                 </motion.div>
-                
-                <motion.p 
-                  className="text-2xl sm:text-3xl lg:text-4xl font-body font-light text-white/90 leading-relaxed" 
-                  style={{ 
-                    textShadow: '0 0 10px rgba(255, 255, 255, 0.2)'
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: 0.3 }}
-                >
-                  AI-driven music therapy backed by patented technology and 50+ years of research
-                </motion.p>
               </motion.div>
             </div>
           </div>
