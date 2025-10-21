@@ -235,7 +235,7 @@ const Index = () => {
                     }}
                   />
                   <h1 
-                    className="text-[8rem] sm:text-[10rem] lg:text-[12rem] font-sf font-normal leading-none tracking-tight" 
+                    className="text-[4rem] sm:text-[5rem] lg:text-[6rem] font-sf font-normal leading-none tracking-tight" 
                     style={{ 
                       background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
                       WebkitBackgroundClip: 'text',

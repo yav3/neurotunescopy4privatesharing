@@ -183,7 +183,7 @@ const TherapeuticGoalsPage = () => {
             <div className="flex items-center gap-2">
               <Plus className="w-5 h-5 text-foreground" />
               <div>
-                <div className="text-3xl sm:text-4xl font-sf font-medium text-foreground leading-tight">NeuralPositive presents +NeuroTunes</div>
+                <div className="text-lg sm:text-xl font-sf font-medium text-foreground leading-tight">NeuralPositive presents +NeuroTunes</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
