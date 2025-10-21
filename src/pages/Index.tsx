@@ -245,7 +245,7 @@ const Index = () => {
                       filter: 'drop-shadow(0 0 30px rgba(224, 242, 241, 0.4)) drop-shadow(0 0 15px rgba(178, 223, 219, 0.3))',
                     }}
                   >
-                    NeuralPositive presents +NeuroTunes
+                    NeuralPositive presents NeuroTunes
                   </h1>
                 </motion.div>
                 

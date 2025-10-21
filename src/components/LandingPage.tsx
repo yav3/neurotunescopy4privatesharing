@@ -146,7 +146,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <Plus className="w-5 h-5 text-white font-medium" strokeWidth={2.5} />
             </div>
             <div>
-              <div className="text-sm font-semibold text-gray-900">NeuralPositive presents +NeuroTunes</div>
+              <div className="text-sm font-semibold text-gray-900">NeuralPositive presents NeuroTunes</div>
               <div className="text-sm text-teal-600 font-medium">Therapeutic Music Platform</div>
             </div>
           </div>
@@ -515,7 +515,7 @@ const trackTherapeuticOutcome = async (session) => {
                   <Plus className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm text-gray-900 font-semibold">NeuralPositive presents +NeuroTunes</div>
+                  <div className="text-sm text-gray-900 font-semibold">NeuralPositive presents NeuroTunes</div>
                   <div className="text-gray-600 text-xs">by NeuralPositive</div>
                 </div>
               </div>
