@@ -35,6 +35,7 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import AdminAnalytics from "./pages/admin/Analytics";
 import SystemSettings from "./pages/admin/SystemSettings";
 import DataMonitoring from "./pages/admin/DataMonitoring";
+import UserEngagement from "./pages/admin/UserEngagement";
 import Storage from "./pages/Storage";
 import Monitoring from "./pages/Monitoring";
 import Settings from "./pages/Settings";
@@ -150,6 +151,7 @@ const AppContent = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="content" element={<ContentManagement />} />
+          <Route path="engagement" element={<UserEngagement />} />
           <Route path="magic-links" element={<MagicLinksPage />} />
           <Route path="magic-auth" element={<MagicAuth />} />
           <Route path="analytics" element={<AdminAnalytics />} />

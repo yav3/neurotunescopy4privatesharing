@@ -20,13 +20,15 @@ import {
   Settings, 
   Database,
   Link,
-  Home
+  Home,
+  Heart
 } from 'lucide-react';
 
 const adminItems = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
   { title: 'User Management', url: '/admin/users', icon: Users },
   { title: 'Content Management', url: '/admin/content', icon: Music },
+  { title: 'User Engagement', url: '/admin/engagement', icon: Heart },
   { title: 'Magic Links', url: '/admin/magic-links', icon: Link },
   { title: 'Analytics', url: '/admin/analytics', icon: BarChart3 },
   { title: 'System Settings', url: '/admin/settings', icon: Settings },
