@@ -21,7 +21,7 @@ import recoveryCard from '../assets/recovery-card.png';
 import focusCard from '../assets/focus-card.png';
 import restCard from '../assets/rest-card.png';
 import exerciseCard from '../assets/exercise-card.png';
-import boostCard from '../assets/boost-card.png';
+import boostCard from '../assets/boost-button-bg.png';
 import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
 import premiumDarkBg from '../assets/premium-dark-bg.png';
