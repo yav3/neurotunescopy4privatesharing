@@ -2,3 +2,6 @@ project_id = "pbtgvcjniayedqlajjzz"
 
 [functions.normalize-storage-files]
 verify_jwt = false
+
+[functions.storage-access]
+verify_jwt = false
