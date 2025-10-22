@@ -70,6 +70,36 @@ export type Database = {
           },
         ]
       }
+      albums: {
+        Row: {
+          artist: string
+          bucket_name: string
+          cover_url: string | null
+          created_at: string | null
+          id: string
+          title: string
+          track_count: number | null
+        }
+        Insert: {
+          artist: string
+          bucket_name: string
+          cover_url?: string | null
+          created_at?: string | null
+          id?: string
+          title: string
+          track_count?: number | null
+        }
+        Update: {
+          artist?: string
+          bucket_name?: string
+          cover_url?: string | null
+          created_at?: string | null
+          id?: string
+          title?: string
+          track_count?: number | null
+        }
+        Relationships: []
+      }
       api_data_sources: {
         Row: {
           api_endpoint: string | null
@@ -829,6 +859,39 @@ export type Database = {
           },
         ]
       }
+      faqs: {
+        Row: {
+          answer: string
+          category: string
+          created_at: string | null
+          id: string
+          order_index: number | null
+          question: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          answer: string
+          category?: string
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          question: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          answer?: string
+          category?: string
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          question?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string
@@ -894,6 +957,47 @@ export type Database = {
           unemployment_rate?: number | null
         }
         Relationships: []
+      }
+      generation_outcomes: {
+        Row: {
+          audio_features: Json | null
+          created_at: string | null
+          enhanced_prompt: string
+          generated_track_url: string | null
+          id: string
+          original_prompt: string
+          prompt_pattern_id: string | null
+          user_rating: number | null
+        }
+        Insert: {
+          audio_features?: Json | null
+          created_at?: string | null
+          enhanced_prompt: string
+          generated_track_url?: string | null
+          id?: string
+          original_prompt: string
+          prompt_pattern_id?: string | null
+          user_rating?: number | null
+        }
+        Update: {
+          audio_features?: Json | null
+          created_at?: string | null
+          enhanced_prompt?: string
+          generated_track_url?: string | null
+          id?: string
+          original_prompt?: string
+          prompt_pattern_id?: string | null
+          user_rating?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generation_outcomes_prompt_pattern_id_fkey"
+            columns: ["prompt_pattern_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_patterns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       genre_market_trends: {
         Row: {
@@ -1015,6 +1119,33 @@ export type Database = {
           success_metric_type?: string
           threshold_value?: number | null
           weight_factor?: number
+        }
+        Relationships: []
+      }
+      genres: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1595,6 +1726,66 @@ export type Database = {
           },
         ]
       }
+      music_tracks: {
+        Row: {
+          artist: string
+          artwork_semantic_label: string | null
+          artwork_url: string | null
+          bucket_name: string
+          created_at: string | null
+          duration_display: string
+          duration_seconds: number
+          file_path: string
+          genre: Database["public"]["Enums"]["music_genre"]
+          has_spatial_audio: boolean | null
+          id: string
+          is_new: boolean | null
+          spatial_audio_profiles:
+            | Database["public"]["Enums"]["spatial_audio_profile"][]
+            | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          artist: string
+          artwork_semantic_label?: string | null
+          artwork_url?: string | null
+          bucket_name: string
+          created_at?: string | null
+          duration_display: string
+          duration_seconds: number
+          file_path: string
+          genre: Database["public"]["Enums"]["music_genre"]
+          has_spatial_audio?: boolean | null
+          id?: string
+          is_new?: boolean | null
+          spatial_audio_profiles?:
+            | Database["public"]["Enums"]["spatial_audio_profile"][]
+            | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          artist?: string
+          artwork_semantic_label?: string | null
+          artwork_url?: string | null
+          bucket_name?: string
+          created_at?: string | null
+          duration_display?: string
+          duration_seconds?: number
+          file_path?: string
+          genre?: Database["public"]["Enums"]["music_genre"]
+          has_spatial_audio?: boolean | null
+          id?: string
+          is_new?: boolean | null
+          spatial_audio_profiles?:
+            | Database["public"]["Enums"]["spatial_audio_profile"][]
+            | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       optimization_scenarios: {
         Row: {
           build_acquire_schedule: Json | null
@@ -1799,25 +1990,25 @@ export type Database = {
       }
       playlist_tracks: {
         Row: {
-          added_date: string | null
-          id: number
-          playlist_id: number | null
+          created_at: string | null
+          id: string
+          playlist_id: string
           position: number
-          track_id: number | null
+          track_id: string
         }
         Insert: {
-          added_date?: string | null
-          id?: number
-          playlist_id?: number | null
+          created_at?: string | null
+          id?: string
+          playlist_id: string
           position: number
-          track_id?: number | null
+          track_id: string
         }
         Update: {
-          added_date?: string | null
-          id?: number
-          playlist_id?: number | null
+          created_at?: string | null
+          id?: string
+          playlist_id?: string
           position?: number
-          track_id?: number | null
+          track_id?: string
         }
         Relationships: [
           {
@@ -1827,29 +2018,69 @@ export type Database = {
             referencedRelation: "playlists"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "playlist_tracks_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
         ]
       }
       playlists: {
         Row: {
-          created_date: string | null
+          artwork_semantic_label: string | null
+          artwork_url: string | null
+          bucket_name: string
+          category: Database["public"]["Enums"]["playlist_category"]
+          created_at: string | null
           description: string | null
-          id: number
-          name: string
+          id: string
+          is_pre_configured: boolean | null
+          research_info: Json | null
+          therapeutic_benefits: string[] | null
+          therapeutic_tags: string[] | null
+          title: string
+          total_duration_minutes: number | null
           track_count: number | null
+          updated_at: string | null
+          usage_recommendations: string[] | null
         }
         Insert: {
-          created_date?: string | null
+          artwork_semantic_label?: string | null
+          artwork_url?: string | null
+          bucket_name: string
+          category: Database["public"]["Enums"]["playlist_category"]
+          created_at?: string | null
           description?: string | null
-          id?: number
-          name: string
+          id?: string
+          is_pre_configured?: boolean | null
+          research_info?: Json | null
+          therapeutic_benefits?: string[] | null
+          therapeutic_tags?: string[] | null
+          title: string
+          total_duration_minutes?: number | null
           track_count?: number | null
+          updated_at?: string | null
+          usage_recommendations?: string[] | null
         }
         Update: {
-          created_date?: string | null
+          artwork_semantic_label?: string | null
+          artwork_url?: string | null
+          bucket_name?: string
+          category?: Database["public"]["Enums"]["playlist_category"]
+          created_at?: string | null
           description?: string | null
-          id?: number
-          name?: string
+          id?: string
+          is_pre_configured?: boolean | null
+          research_info?: Json | null
+          therapeutic_benefits?: string[] | null
+          therapeutic_tags?: string[] | null
+          title?: string
+          total_duration_minutes?: number | null
           track_count?: number | null
+          updated_at?: string | null
+          usage_recommendations?: string[] | null
         }
         Relationships: []
       }
@@ -1946,6 +2177,51 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_patterns: {
+        Row: {
+          avg_quality_score: number | null
+          base_prompt: string
+          created_at: string | null
+          enhanced_prompt: string
+          genre: string | null
+          id: string
+          mood: string | null
+          pattern_references: string[] | null
+          success_rate: number | null
+          updated_at: string | null
+          usage_count: number | null
+          vad_references: string[] | null
+        }
+        Insert: {
+          avg_quality_score?: number | null
+          base_prompt: string
+          created_at?: string | null
+          enhanced_prompt: string
+          genre?: string | null
+          id?: string
+          mood?: string | null
+          pattern_references?: string[] | null
+          success_rate?: number | null
+          updated_at?: string | null
+          usage_count?: number | null
+          vad_references?: string[] | null
+        }
+        Update: {
+          avg_quality_score?: number | null
+          base_prompt?: string
+          created_at?: string | null
+          enhanced_prompt?: string
+          genre?: string | null
+          id?: string
+          mood?: string | null
+          pattern_references?: string[] | null
+          success_rate?: number | null
+          updated_at?: string | null
+          usage_count?: number | null
+          vad_references?: string[] | null
+        }
+        Relationships: []
+      }
       repair_map: {
         Row: {
           created_at: string | null
@@ -1998,7 +2274,7 @@ export type Database = {
           incident_type: string
           investigated_at: string | null
           investigated_by: string | null
-          ip_address: unknown | null
+          ip_address: unknown
           isp: string | null
           latitude: number | null
           longitude: number | null
@@ -2046,7 +2322,7 @@ export type Database = {
           incident_type?: string
           investigated_at?: string | null
           investigated_by?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           isp?: string | null
           latitude?: number | null
           longitude?: number | null
@@ -2094,7 +2370,7 @@ export type Database = {
           incident_type?: string
           investigated_at?: string | null
           investigated_by?: string | null
-          ip_address?: unknown | null
+          ip_address?: unknown
           isp?: string | null
           latitude?: number | null
           longitude?: number | null
@@ -2984,30 +3260,73 @@ export type Database = {
           },
         ]
       }
+      track_patterns: {
+        Row: {
+          created_at: string | null
+          frequency_score: number | null
+          id: string
+          pattern_data: Json
+          pattern_type: string
+          success_metrics: Json | null
+          track_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          frequency_score?: number | null
+          id?: string
+          pattern_data: Json
+          pattern_type: string
+          success_metrics?: Json | null
+          track_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          frequency_score?: number | null
+          id?: string
+          pattern_data?: Json
+          pattern_type?: string
+          success_metrics?: Json | null
+          track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_patterns_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tracks: {
         Row: {
           ai_score: number | null
+          album_id: string | null
           analysis_status: string | null
           analysis_timestamp: string | null
           analysis_version: string | null
           arousal: number | null
+          artist: string | null
           audio_status: string | null
           bpm: number | null
           camelot: string | null
           canonical_title: string | null
           cognitive_load: number | null
           comprehensive_analysis: Json | null
+          created_at: string | null
           created_date: string | null
           crest_factor: number | null
           danceability_score: number | null
           display_title: string | null
           dominance: number | null
+          duration: number | null
           dynamic_complexity: number | null
           dynamic_features: Json | null
           dynamic_range: number | null
           emotion_tags: string[] | null
           emotional_stability: number | null
           extracted_year: number | null
+          file_path: string | null
           genre: string | null
           harmonic_complexity: number | null
           harmonic_features: Json | null
@@ -3056,6 +3375,7 @@ export type Database = {
           title: string
           title_health_score: number | null
           tonal_features: Json | null
+          track_number: number | null
           track_uuid: string
           tuning_frequency: number | null
           valence: number | null
@@ -3064,27 +3384,32 @@ export type Database = {
         }
         Insert: {
           ai_score?: number | null
+          album_id?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
           arousal?: number | null
+          artist?: string | null
           audio_status?: string | null
           bpm?: number | null
           camelot?: string | null
           canonical_title?: string | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
+          created_at?: string | null
           created_date?: string | null
           crest_factor?: number | null
           danceability_score?: number | null
           display_title?: string | null
           dominance?: number | null
+          duration?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
           extracted_year?: number | null
+          file_path?: string | null
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
@@ -3133,6 +3458,7 @@ export type Database = {
           title: string
           title_health_score?: number | null
           tonal_features?: Json | null
+          track_number?: number | null
           track_uuid: string
           tuning_frequency?: number | null
           valence?: number | null
@@ -3141,27 +3467,32 @@ export type Database = {
         }
         Update: {
           ai_score?: number | null
+          album_id?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
           analysis_version?: string | null
           arousal?: number | null
+          artist?: string | null
           audio_status?: string | null
           bpm?: number | null
           camelot?: string | null
           canonical_title?: string | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
+          created_at?: string | null
           created_date?: string | null
           crest_factor?: number | null
           danceability_score?: number | null
           display_title?: string | null
           dominance?: number | null
+          duration?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
           extracted_year?: number | null
+          file_path?: string | null
           genre?: string | null
           harmonic_complexity?: number | null
           harmonic_features?: Json | null
@@ -3210,13 +3541,22 @@ export type Database = {
           title?: string
           title_health_score?: number | null
           tonal_features?: Json | null
+          track_number?: number | null
           track_uuid?: string
           tuning_frequency?: number | null
           valence?: number | null
           version_label?: string | null
           zero_crossing_rate?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tracks_album_id_fkey"
+            columns: ["album_id"]
+            isOneToOne: false
+            referencedRelation: "albums"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tracks_backup: {
         Row: {
@@ -3614,24 +3954,181 @@ export type Database = {
         }
         Relationships: []
       }
-      user_favorites: {
+      user_downloads: {
         Row: {
-          created_at: string
+          downloaded_at: string | null
+          file_size_mb: number | null
           id: string
-          track_id: number
+          track_id: string
           user_id: string
         }
         Insert: {
-          created_at?: string
+          downloaded_at?: string | null
+          file_size_mb?: number | null
           id?: string
-          track_id: number
+          track_id: string
           user_id: string
         }
         Update: {
-          created_at?: string
+          downloaded_at?: string | null
+          file_size_mb?: number | null
           id?: string
-          track_id?: number
+          track_id?: string
           user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_downloads_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_downloads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_favorites: {
+        Row: {
+          created_at: string | null
+          id: string
+          track_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          track_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          track_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_listening_history: {
+        Row: {
+          completed: boolean | null
+          duration_listened_seconds: number | null
+          id: string
+          listened_at: string | null
+          playlist_id: string | null
+          track_id: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          duration_listened_seconds?: number | null
+          id?: string
+          listened_at?: string | null
+          playlist_id?: string | null
+          track_id: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          duration_listened_seconds?: number | null
+          id?: string
+          listened_at?: string | null
+          playlist_id?: string | null
+          track_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_listening_history_playlist_id_fkey"
+            columns: ["playlist_id"]
+            isOneToOne: false
+            referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_listening_history_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_listening_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_music_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["music_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["music_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["music_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string
+          id: string
+          subscription_tier: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name: string
+          id: string
+          subscription_tier?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          subscription_tier?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -3665,7 +4162,7 @@ export type Database = {
           device_info: Json | null
           expires_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           is_active: boolean
           last_accessed: string
           user_agent: string | null
@@ -3676,7 +4173,7 @@ export type Database = {
           device_info?: Json | null
           expires_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean
           last_accessed?: string
           user_agent?: string | null
@@ -3687,11 +4184,68 @@ export type Database = {
           device_info?: Json | null
           expires_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean
           last_accessed?: string
           user_agent?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      vad_poetry: {
+        Row: {
+          author: string | null
+          created_at: string | null
+          full_text: string | null
+          id: string
+          language: string
+          line_count: number | null
+          per_line_vad: Json | null
+          poem_id: string
+          title: string | null
+          url: string | null
+          vad_arousal_mean: number | null
+          vad_arousal_median: number | null
+          vad_dominance_mean: number | null
+          vad_dominance_median: number | null
+          vad_valence_mean: number | null
+          vad_valence_median: number | null
+        }
+        Insert: {
+          author?: string | null
+          created_at?: string | null
+          full_text?: string | null
+          id?: string
+          language: string
+          line_count?: number | null
+          per_line_vad?: Json | null
+          poem_id: string
+          title?: string | null
+          url?: string | null
+          vad_arousal_mean?: number | null
+          vad_arousal_median?: number | null
+          vad_dominance_mean?: number | null
+          vad_dominance_median?: number | null
+          vad_valence_mean?: number | null
+          vad_valence_median?: number | null
+        }
+        Update: {
+          author?: string | null
+          created_at?: string | null
+          full_text?: string | null
+          id?: string
+          language?: string
+          line_count?: number | null
+          per_line_vad?: Json | null
+          poem_id?: string
+          title?: string | null
+          url?: string | null
+          vad_arousal_mean?: number | null
+          vad_arousal_median?: number | null
+          vad_dominance_mean?: number | null
+          vad_dominance_median?: number | null
+          vad_valence_mean?: number | null
+          vad_valence_median?: number | null
         }
         Relationships: []
       }
@@ -3817,14 +4371,14 @@ export type Database = {
           bucket_done: boolean | null
           bucket_start_time: string | null
           calls: number | null
-          client_ip: unknown | null
+          client_ip: unknown
           cmd_type: number | null
           cmd_type_text: string | null
           comments: string | null
           cpu_sys_time: number | null
           cpu_user_time: number | null
           datname: string | null
-          dbid: unknown | null
+          dbid: unknown
           elevel: number | null
           jit_deform_count: number | null
           jit_deform_time: number | null
@@ -3878,7 +4432,7 @@ export type Database = {
           toplevel: boolean | null
           total_exec_time: number | null
           total_plan_time: number | null
-          userid: unknown | null
+          userid: unknown
           username: string | null
           wal_bytes: number | null
           wal_fpi: number | null
@@ -3893,7 +4447,7 @@ export type Database = {
         Returns: boolean
       }
       analyze_session_coverage: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           analysis_type: string
           count_value: number
@@ -3902,7 +4456,7 @@ export type Database = {
         }[]
       }
       analyze_storage_columns: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           column_name: string
           data_type: string
@@ -3944,14 +4498,8 @@ export type Database = {
         Args: { storage_key: string }
         Returns: string
       }
-      cleanup_expired_playlists: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      cleanup_expired_sessions: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      cleanup_expired_playlists: { Args: never; Returns: number }
+      cleanup_expired_sessions: { Args: never; Returns: number }
       create_magic_link_for_vip: {
         Args: {
           expires_in_hours?: number
@@ -3964,12 +4512,9 @@ export type Database = {
           token: string
         }[]
       }
-      decode_error_level: {
-        Args: { elevel: number }
-        Returns: string
-      }
+      decode_error_level: { Args: { elevel: number }; Returns: string }
       find_broken_tracks: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           id: string
           issue: string
@@ -3979,7 +4524,7 @@ export type Database = {
         }[]
       }
       find_cross_bucket_candidates: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           current_bucket: string
           storage_key: string
@@ -3989,7 +4534,7 @@ export type Database = {
         }[]
       }
       find_users_without_sessions: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           days_since_signup: number
@@ -3999,12 +4544,14 @@ export type Database = {
           user_id: string
         }[]
       }
-      generate_magic_link_token: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      fix_invalid_uuids: { Args: never; Returns: undefined }
+      generate_magic_link_token: { Args: never; Returns: string }
       generate_unique_filename: {
         Args: { base_name: string; bucket_name: string; exclude_id?: string }
+        Returns: string
+      }
+      get_album_cover_url: {
+        Args: { bucket_name_param: string }
         Returns: string
       }
       get_bucket_repair_status: {
@@ -4020,18 +4567,12 @@ export type Database = {
         Args: { input_camelot: string }
         Returns: string[]
       }
-      get_cmd_type: {
-        Args: { cmd_type: number }
-        Returns: string
-      }
+      get_cmd_type: { Args: { cmd_type: number }; Returns: string }
       get_genre_appropriate_recommendations: {
         Args: { _genre: string; _track_id: string }
         Returns: Json
       }
-      get_histogram_timings: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_histogram_timings: { Args: never; Returns: string }
       get_hit_potential_tracks: {
         Args: { limit_count?: number; min_score?: number }
         Returns: {
@@ -4055,7 +4596,7 @@ export type Database = {
         }[]
       }
       get_track_stats: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           missing_tracks: number
           total_tracks: number
@@ -4064,7 +4605,7 @@ export type Database = {
         }[]
       }
       get_unplayable_tracks_diagnostic: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           audio_status: string
           created_at: string
@@ -4081,7 +4622,7 @@ export type Database = {
         }[]
       }
       get_unplayable_tracks_summary: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           by_bucket: Json
           file_corrupted: number
@@ -4093,6 +4634,10 @@ export type Database = {
           oldest_issue_days: number
           total_unplayable: number
         }[]
+      }
+      get_user_music_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["music_role"]
       }
       get_user_role: {
         Args: { _user_id: string }
@@ -4109,8 +4654,12 @@ export type Database = {
           track_id: string
         }[]
       }
-      has_medical_access: {
-        Args: Record<PropertyKey, never>
+      has_medical_access: { Args: never; Returns: boolean }
+      has_music_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["music_role"]
+          _user_id: string
+        }
         Returns: boolean
       }
       has_role: {
@@ -4124,14 +4673,9 @@ export type Database = {
         Args: { _bucket: number; _quryid: number }
         Returns: Record<string, unknown>[]
       }
-      is_vip_member: {
-        Args: { _user_id?: string }
-        Returns: boolean
-      }
-      mark_likely_missing_tracks: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      increment_play_count: { Args: { track_id: string }; Returns: undefined }
+      is_vip_member: { Args: { _user_id?: string }; Returns: boolean }
+      mark_likely_missing_tracks: { Args: never; Returns: number }
       mark_track_as_missing: {
         Args: { error_message?: string; track_uuid: string }
         Returns: undefined
@@ -4140,38 +4684,14 @@ export type Database = {
         Args: { showtext: boolean }
         Returns: Record<string, unknown>[]
       }
-      pg_stat_monitor_reset: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      pg_stat_monitor_version: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      pgsm_create_11_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      pgsm_create_13_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      pgsm_create_14_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      pgsm_create_15_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      pgsm_create_17_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      pgsm_create_view: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      pg_stat_monitor_reset: { Args: never; Returns: undefined }
+      pg_stat_monitor_version: { Args: never; Returns: string }
+      pgsm_create_11_view: { Args: never; Returns: number }
+      pgsm_create_13_view: { Args: never; Returns: number }
+      pgsm_create_14_view: { Args: never; Returns: number }
+      pgsm_create_15_view: { Args: never; Returns: number }
+      pgsm_create_17_view: { Args: never; Returns: number }
+      pgsm_create_view: { Args: never; Returns: number }
       populate_bucket_repair_map: {
         Args: { _bucket_name: string }
         Returns: {
@@ -4180,22 +4700,17 @@ export type Database = {
         }[]
       }
       populate_repair_map: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           buckets_affected: string[]
           total_unsafe_keys: number
         }[]
       }
-      range: {
-        Args: Record<PropertyKey, never>
-        Returns: string[]
-      }
-      safe_key: {
-        Args: { raw: string }
-        Returns: string
-      }
+      range: { Args: never; Returns: string[] }
+      safe_key: { Args: { raw: string }; Returns: string }
+      safe_uuid_cast: { Args: { input_text: string }; Returns: string }
       session_data_quality_check: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           check_type: string
           description: string
@@ -4225,7 +4740,7 @@ export type Database = {
         }[]
       }
       validate_repairs: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           check_name: string
           count: number
@@ -4234,7 +4749,7 @@ export type Database = {
         }[]
       }
       verify_all_tracks: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           bucket_corrections: number
           now_working: number
@@ -4245,6 +4760,33 @@ export type Database = {
     }
     Enums: {
       app_role: "super_admin" | "admin" | "moderator" | "premium_user" | "user"
+      music_genre:
+        | "classical"
+        | "crossover_classical"
+        | "sonatas"
+        | "new_age"
+        | "world"
+        | "electronica"
+        | "house"
+        | "reggaeton"
+        | "edm"
+        | "pop"
+        | "tropical_house"
+      music_role: "producer" | "engineer" | "singer_songwriter"
+      playlist_category:
+        | "focus"
+        | "relaxation"
+        | "rest"
+        | "meditation"
+        | "mood_boost"
+        | "energy"
+      spatial_audio_profile:
+        | "cathedral"
+        | "live_concert"
+        | "studio"
+        | "forest"
+        | "ocean_depths"
+        | "space_station"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -4373,6 +4915,36 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["super_admin", "admin", "moderator", "premium_user", "user"],
+      music_genre: [
+        "classical",
+        "crossover_classical",
+        "sonatas",
+        "new_age",
+        "world",
+        "electronica",
+        "house",
+        "reggaeton",
+        "edm",
+        "pop",
+        "tropical_house",
+      ],
+      music_role: ["producer", "engineer", "singer_songwriter"],
+      playlist_category: [
+        "focus",
+        "relaxation",
+        "rest",
+        "meditation",
+        "mood_boost",
+        "energy",
+      ],
+      spatial_audio_profile: [
+        "cathedral",
+        "live_concert",
+        "studio",
+        "forest",
+        "ocean_depths",
+        "space_station",
+      ],
     },
   },
 } as const
