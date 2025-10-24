@@ -3,19 +3,30 @@ import { logger } from './logger'
 import type { Track, MusicTrack, FrequencyBand } from '@/types'
 
 export interface Playlist {
-  id: number
-  name: string
-  description?: string
-  created_date: string
-  track_count: number
+  id: string
+  title: string
+  description?: string | null
+  created_at: string | null
+  track_count: number | null
+  category?: string
+  artwork_url?: string | null
+  artwork_semantic_label?: string | null
+  bucket_name?: string
+  is_pre_configured?: boolean | null
+  therapeutic_tags?: string[] | null
+  therapeutic_benefits?: string[] | null
+  usage_recommendations?: string[] | null
+  research_info?: any
+  total_duration_minutes?: number | null
+  updated_at?: string | null
 }
 
 export interface PlaylistTrack {
-  id: number
-  playlist_id: number
-  track_id: number
+  id: string
+  playlist_id: string
+  track_id: string
   position: number
-  added_date: string
+  created_at: string | null
   track?: MusicTrack
 }
 
@@ -29,24 +40,26 @@ export class PlaylistService {
   /**
    * Create a new playlist
    */
-  static async createPlaylist(name: string, description?: string): Promise<Playlist> {
+  static async createPlaylist(title: string, description?: string, category: string = 'relaxation', bucket_name: string = 'playlists'): Promise<Playlist> {
     try {
       const { data, error } = await supabase
         .from('playlists')
-        .insert({
-          name,
+        .insert([{
+          title,
           description,
-          track_count: 0
-        })
+          track_count: 0,
+          category: category as any,
+          bucket_name
+        }])
         .select()
         .single()
 
       if (error) throw error
 
-      logger.info('Playlist created successfully', { playlistId: data.id, name })
+      logger.info('Playlist created successfully', { playlistId: data.id, title })
       return data
     } catch (error) {
-      logger.error('Failed to create playlist', { name, error })
+      logger.error('Failed to create playlist', { title, error })
       throw error
     }
   }
@@ -59,7 +72,7 @@ export class PlaylistService {
       const { data, error } = await supabase
         .from('playlists')
         .select('*')
-        .order('created_date', { ascending: false })
+        .order('created_at', { ascending: false })
 
       if (error) throw error
 
@@ -74,7 +87,7 @@ export class PlaylistService {
   /**
    * Get playlist with tracks
    */
-  static async getPlaylistWithTracks(playlistId: number): Promise<{
+  static async getPlaylistWithTracks(playlistId: string): Promise<{
     playlist: Playlist
     tracks: any[]
   }> {
@@ -123,7 +136,7 @@ export class PlaylistService {
   /**
    * Add track to playlist
    */
-  static async addTrackToPlaylist(playlistId: number, trackId: number): Promise<void> {
+  static async addTrackToPlaylist(playlistId: string, trackId: string): Promise<void> {
     try {
       // Get current max position
       const { data: maxPosition } = await supabase
@@ -166,7 +179,7 @@ export class PlaylistService {
   /**
    * Remove track from playlist
    */
-  static async removeTrackFromPlaylist(playlistId: number, trackId: number): Promise<void> {
+  static async removeTrackFromPlaylist(playlistId: string, trackId: string): Promise<void> {
     try {
       const { error: deleteError } = await supabase
         .from('playlist_tracks')
@@ -203,7 +216,7 @@ export class PlaylistService {
    * Create therapeutic playlist based on conditions
    */
   static async createTherapeuticPlaylist(
-    name: string,
+    title: string,
     frequencyBand: FrequencyBand,
     targetCondition: string,
     evidenceThreshold: number = 0.7
@@ -211,8 +224,9 @@ export class PlaylistService {
     try {
       // Create the playlist
       const playlist = await this.createPlaylist(
-        name, 
-        `Therapeutic playlist for ${targetCondition} using ${frequencyBand} frequency`
+        title, 
+        `Therapeutic playlist for ${targetCondition} using ${frequencyBand} frequency`,
+        'meditation'
       )
 
       // Get tracks that match criteria
@@ -233,7 +247,7 @@ export class PlaylistService {
             .from('playlist_tracks')
             .insert({
               playlist_id: playlist.id,
-              track_id: parseInt(track.id) || 0,
+              track_id: track.id,
               position: index + 1
             })
         )
@@ -274,7 +288,7 @@ export class PlaylistService {
   /**
    * Delete playlist
    */
-  static async deletePlaylist(playlistId: number): Promise<void> {
+  static async deletePlaylist(playlistId: string): Promise<void> {
     try {
       // Delete playlist tracks first (cascade should handle this, but being explicit)
       await supabase
@@ -301,8 +315,8 @@ export class PlaylistService {
    * Reorder tracks in playlist
    */
   static async reorderPlaylistTracks(
-    playlistId: number, 
-    trackId: number, 
+    playlistId: string, 
+    trackId: string, 
     newPosition: number
   ): Promise<void> {
     try {

@@ -84,7 +84,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
   }
 
   const handleDeletePlaylist = (playlist: Playlist) => {
-    if (window.confirm(`Are you sure you want to delete "${playlist.name}"? This cannot be undone.`)) {
+    if (window.confirm(`Are you sure you want to delete "${playlist.title}"? This cannot be undone.`)) {
       deletePlaylistMutation.mutate(playlist.id)
     }
   }
@@ -199,7 +199,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
             >
               <div className="flex-1">
                 <h3 className="font-medium text-card-foreground group-hover:text-primary transition-colors">
-                  {playlist.name}
+                  {playlist.title}
                 </h3>
                 {playlist.description && (
                   <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
@@ -213,7 +213,7 @@ export const PlaylistManager: React.FC<PlaylistManagerProps> = ({ onSelectPlayli
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock size={12} />
-                    {new Date(playlist.created_date).toLocaleDateString()}
+                    {playlist.created_at ? new Date(playlist.created_at).toLocaleDateString() : 'Unknown'}
                   </span>
                 </div>
               </div>

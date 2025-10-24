@@ -25,11 +25,12 @@ interface Track {
 }
 
 interface Playlist {
-  id: number;
-  name: string;
-  description: string;
-  track_count: number;
-  created_date: string;
+  id: string;
+  title: string;
+  description: string | null;
+  track_count: number | null;
+  created_at: string | null;
+  category?: string;
 }
 
 export default function ContentManagement() {
@@ -61,7 +62,7 @@ export default function ContentManagement() {
       const { data: playlistsData, error: playlistsError } = await supabase
         .from('playlists')
         .select('*')
-        .order('created_date', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (playlistsError) throw playlistsError;
 
@@ -332,10 +333,10 @@ export default function ContentManagement() {
                 <TableBody>
                   {playlists.map((playlist) => (
                     <TableRow key={playlist.id}>
-                      <TableCell className="font-medium">{playlist.name}</TableCell>
-                      <TableCell>{playlist.description}</TableCell>
-                      <TableCell>{playlist.track_count}</TableCell>
-                      <TableCell>{new Date(playlist.created_date).toLocaleDateString()}</TableCell>
+                      <TableCell className="font-medium">{playlist.title}</TableCell>
+                      <TableCell>{playlist.description || '-'}</TableCell>
+                      <TableCell>{playlist.track_count || 0}</TableCell>
+                      <TableCell>{playlist.created_at ? new Date(playlist.created_at).toLocaleDateString() : '-'}</TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
                           <Button variant="outline" size="sm">
