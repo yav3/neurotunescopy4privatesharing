@@ -83,16 +83,16 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-pearl-200 mb-2">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pearl-300/70 w-5 h-5" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-pearl-100 placeholder:text-pearl-300/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
               placeholder="Enter your email"
               required
             />
@@ -100,23 +100,23 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-pearl-200 mb-2">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-pearl-300/70 w-5 h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-12 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-12 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-pearl-100 placeholder:text-pearl-300/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
               placeholder="Enter your password"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-pearl-300/70 hover:text-pearl-100 transition-colors"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
