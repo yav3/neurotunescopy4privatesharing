@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
 import { FullPagePlayer } from "@/components/FullPagePlayer";
@@ -101,6 +101,7 @@ const App = () => {
 const AppContent = () => {
   const { user, loading } = useAuthContext();
   const { currentTrack, playerMode } = useAudioStore();
+  const navigate = useNavigate();
   
   // Initialize comprehensive user behavior tracking
   useComprehensiveTracking();
@@ -116,29 +117,19 @@ const AppContent = () => {
     );
   }
 
-  // ENFORCE AUTHENTICATION: No anonymous usage allowed
-  // But don't redirect if we're still loading auth state
-  if (!user && !loading) {
-    // Handle unauthenticated password reset routes
-    const currentPath = window.location.pathname;
-    if (currentPath === '/reset-password' || currentPath === '/verify') {
-      return <ResetPasswordForm />;
-    }
-    
-    // Force authentication - no access to app without login
-    return <AuthPage />;
-  }
-
   return (
     <div className="relative min-h-screen">
       <Routes>
-        <Route path="/" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
+        {/* Public landing page for unauthenticated users */}
+        <Route path="/" element={user ? <AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard> : <LandingPage onLogin={() => navigate('/auth')} onSignup={() => navigate('/auth')} />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
         <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
         <Route path="/landing" element={<AdvancedAuthGuard><Index /></AdvancedAuthGuard>} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordForm />} />
+        <Route path="/verify" element={<ResetPasswordForm />} />
         <Route path="/storage" element={<AdvancedAuthGuard><Storage /></AdvancedAuthGuard>} />
         <Route path="/monitoring" element={<AdvancedAuthGuard><Monitoring /></AdvancedAuthGuard>} />
         <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
