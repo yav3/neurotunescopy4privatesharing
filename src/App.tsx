@@ -120,8 +120,8 @@ const AppContent = () => {
   return (
     <div className="relative min-h-screen">
       <Routes>
-        {/* Public landing page for unauthenticated users */}
-        <Route path="/" element={user ? <AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard> : <LandingPage onLogin={() => navigate('/auth')} onSignup={() => navigate('/auth')} />} />
+        {/* Root path - show Index page for authenticated, auth page for unauthenticated */}
+        <Route path="/" element={user ? <AdvancedAuthGuard><Index /></AdvancedAuthGuard> : <AuthPage />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
