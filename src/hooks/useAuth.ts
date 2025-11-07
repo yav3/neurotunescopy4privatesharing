@@ -26,7 +26,7 @@ interface ExtendedUser extends User {
 }
 
 // Dev mode bypass - set to true to skip authentication
-const DEV_MODE_BYPASS = import.meta.env.DEV;
+const DEV_MODE_BYPASS = false;
 
 export function useAuth() {
   const [user, setUser] = useState<ExtendedUser | null>(null);
