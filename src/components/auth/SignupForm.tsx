@@ -18,11 +18,11 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Redirect to main app when user is authenticated
+  // Redirect to music player page when user is authenticated
   useEffect(() => {
     if (user) {
-      console.log('✅ User authenticated, redirecting to main app');
-      navigate('/');
+      console.log('✅ User authenticated, redirecting to music player');
+      navigate('/goals');
     }
   }, [user, navigate]);
 
