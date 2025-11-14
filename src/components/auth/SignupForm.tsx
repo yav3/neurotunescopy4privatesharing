@@ -52,10 +52,10 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mb-4 shadow-glass">
-          <UserPlus className="w-8 h-8 text-foreground" />
+          <UserPlus className="w-8 h-8 text-white" />
         </div>
-        <h2 className="text-3xl font-bold text-foreground">Create Account</h2>
-        <p className="text-muted-foreground">Join our platform</p>
+        <h2 className="text-3xl font-bold text-white">Create Account</h2>
+        <p className="text-white/80">Join our platform</p>
       </div>
 
       {error && (
@@ -69,36 +69,36 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-white mb-2">
             Invitation Code
           </label>
           <div className="relative">
-            <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
             <input
               type="text"
               value={formData.invitationCode}
               onChange={handleChange('invitationCode')}
-              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Enter your invitation code"
               required
             />
           </div>
-          <p className="text-muted-foreground text-xs mt-1">
+          <p className="text-white/70 text-xs mt-1">
             Don't have a code? Contact support to request access.
           </p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-white mb-2">
             Display Name
           </label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
             <input
               type="text"
               value={formData.displayName}
               onChange={handleChange('displayName')}
-              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Enter your display name"
               required
             />
@@ -106,16 +106,16 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-white mb-2">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
             <input
               type="email"
               value={formData.email}
               onChange={handleChange('email')}
-              className="w-full pl-10 pr-4 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Enter your email"
               required
             />
@@ -123,23 +123,23 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label className="block text-sm font-medium text-white mb-2">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={handleChange('password')}
-              className="w-full pl-10 pr-12 py-3 bg-input/50 backdrop-blur-sm border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-ring/60 transition-all"
+              className="w-full pl-10 pr-12 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Create a strong password"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white/90 transition-colors"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -149,18 +149,18 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
         <button
           type="submit"
           disabled={loading || !formData.email || !formData.password || !formData.displayName || !formData.invitationCode}
-          className="w-full bg-gradient-primary text-primary-foreground py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-glass"
+          className="w-full bg-gradient-primary text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-glass"
         >
           {loading ? 'Creating Account...' : 'Create Account'}
         </button>
       </form>
 
       <div className="text-center">
-        <p className="text-muted-foreground text-sm">
+        <p className="text-white/80 text-sm">
           Already have an account?{' '}
           <button
             onClick={onToggleMode}
-            className="text-accent-foreground hover:text-foreground font-medium transition-colors"
+            className="text-white hover:text-white font-medium underline transition-colors"
           >
             Sign in
           </button>

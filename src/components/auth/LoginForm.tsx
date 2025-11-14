@@ -126,7 +126,7 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         <button
           type="submit"
           disabled={loading || !email || !password}
-          className="w-full bg-gradient-primary text-primary-foreground py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-glass"
+          className="w-full bg-gradient-primary text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-glass"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
