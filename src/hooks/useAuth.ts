@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Analytics } from '@/utils/analytics';
 import { useSessionManager } from './useSessionManager';
 
-type UserRole = 'super_admin' | 'admin' | 'moderator' | 'premium_user' | 'user';
+type UserRole = 'super_admin' | 'admin' | 'moderator' | 'premium_user' | 'clinical_user' | 'user';
 type UserStatus = 'active' | 'suspended' | 'pending' | 'banned';
 
 interface UserProfile {
