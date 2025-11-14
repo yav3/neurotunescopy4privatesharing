@@ -120,8 +120,8 @@ const AppContent = () => {
   return (
     <div className="relative min-h-screen">
       <Routes>
-        {/* Root path - show Index page for authenticated, auth page for unauthenticated */}
-        <Route path="/" element={user ? <AdvancedAuthGuard><Index /></AdvancedAuthGuard> : <AuthPage />} />
+        {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
+        <Route path="/" element={<Index />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />

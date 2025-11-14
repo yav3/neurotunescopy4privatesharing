@@ -999,6 +999,45 @@ export type Database = {
           },
         ]
       }
+      genre_classifications: {
+        Row: {
+          benefits: string[]
+          bucket_name: string
+          color_hex: string | null
+          created_at: string | null
+          description: string
+          display_name: string
+          id: string
+          intensity: Database["public"]["Enums"]["music_intensity"]
+          recommended_duration_minutes: number | null
+          therapeutic_category: Database["public"]["Enums"]["therapeutic_category"]
+        }
+        Insert: {
+          benefits?: string[]
+          bucket_name: string
+          color_hex?: string | null
+          created_at?: string | null
+          description: string
+          display_name: string
+          id?: string
+          intensity: Database["public"]["Enums"]["music_intensity"]
+          recommended_duration_minutes?: number | null
+          therapeutic_category: Database["public"]["Enums"]["therapeutic_category"]
+        }
+        Update: {
+          benefits?: string[]
+          bucket_name?: string
+          color_hex?: string | null
+          created_at?: string | null
+          description?: string
+          display_name?: string
+          id?: string
+          intensity?: Database["public"]["Enums"]["music_intensity"]
+          recommended_duration_minutes?: number | null
+          therapeutic_category?: Database["public"]["Enums"]["therapeutic_category"]
+        }
+        Relationships: []
+      }
       genre_market_trends: {
         Row: {
           audio_feature_trends: Json | null
@@ -1044,6 +1083,54 @@ export type Database = {
           successful_track_characteristics?: Json | null
           trend_date?: string
           trend_window_days?: number
+        }
+        Relationships: []
+      }
+      genre_metadata: {
+        Row: {
+          art_file: string | null
+          benefit: string | null
+          bucket: string
+          category: string
+          color_hex: string | null
+          created_at: string | null
+          description: string | null
+          display_group: string | null
+          id: string
+          intensity: string | null
+          recommended_duration: number | null
+          therapeutic_category: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          art_file?: string | null
+          benefit?: string | null
+          bucket: string
+          category: string
+          color_hex?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_group?: string | null
+          id?: string
+          intensity?: string | null
+          recommended_duration?: number | null
+          therapeutic_category?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          art_file?: string | null
+          benefit?: string | null
+          bucket?: string
+          category?: string
+          color_hex?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_group?: string | null
+          id?: string
+          intensity?: string | null
+          recommended_duration?: number | null
+          therapeutic_category?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -3260,6 +3347,39 @@ export type Database = {
           },
         ]
       }
+      track_metadata: {
+        Row: {
+          bpm: number | null
+          bucket_name: string
+          created_at: string | null
+          duration_seconds: number | null
+          id: string
+          key_signature: string | null
+          therapeutic_tags: string[] | null
+          track_name: string
+        }
+        Insert: {
+          bpm?: number | null
+          bucket_name: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          key_signature?: string | null
+          therapeutic_tags?: string[] | null
+          track_name: string
+        }
+        Update: {
+          bpm?: number | null
+          bucket_name?: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          id?: string
+          key_signature?: string | null
+          therapeutic_tags?: string[] | null
+          track_name?: string
+        }
+        Relationships: []
+      }
       track_patterns: {
         Row: {
           created_at: string | null
@@ -3954,6 +4074,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_blocks: {
+        Row: {
+          created_at: string | null
+          id: string
+          reason: string | null
+          track_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          track_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          track_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_downloads: {
         Row: {
           downloaded_at: string | null
@@ -3998,18 +4142,21 @@ export type Database = {
           created_at: string | null
           id: string
           track_id: string
+          track_name: string
           user_id: string
         }
         Insert: {
           created_at?: string | null
           id?: string
           track_id: string
+          track_name?: string
           user_id: string
         }
         Update: {
           created_at?: string | null
           id?: string
           track_id?: string
+          track_name?: string
           user_id?: string
         }
         Relationships: [
@@ -4028,6 +4175,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_genre_preferences: {
+        Row: {
+          created_at: string | null
+          id: string
+          preference_score: number | null
+          therapeutic_category: Database["public"]["Enums"]["therapeutic_category"]
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          preference_score?: number | null
+          therapeutic_category: Database["public"]["Enums"]["therapeutic_category"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          preference_score?: number | null
+          therapeutic_category?: Database["public"]["Enums"]["therapeutic_category"]
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       user_listening_history: {
         Row: {
@@ -4500,6 +4674,10 @@ export type Database = {
       }
       cleanup_expired_playlists: { Args: never; Returns: number }
       cleanup_expired_sessions: { Args: never; Returns: number }
+      clear_relaxing_sambas_artwork_conflicts: {
+        Args: never
+        Returns: undefined
+      }
       create_magic_link_for_vip: {
         Args: {
           expires_in_hours?: number
@@ -4554,6 +4732,14 @@ export type Database = {
         Args: { bucket_name_param: string }
         Returns: string
       }
+      get_all_display_groups: {
+        Args: never
+        Returns: {
+          avg_duration: number
+          display_group: string
+          genre_count: number
+        }[]
+      }
       get_bucket_repair_status: {
         Args: { _bucket_name: string }
         Returns: {
@@ -4571,6 +4757,38 @@ export type Database = {
       get_genre_appropriate_recommendations: {
         Args: { _genre: string; _track_id: string }
         Returns: Json
+      }
+      get_genres_by_display_group: {
+        Args: { group_name: string }
+        Returns: {
+          art_file: string
+          benefit: string
+          bucket: string
+          category: string
+          color_hex: string
+          description: string
+          display_group: string
+          id: string
+          intensity: string
+          recommended_duration: number
+          therapeutic_category: string
+        }[]
+      }
+      get_genres_by_therapeutic_category: {
+        Args: { category_name: string }
+        Returns: {
+          art_file: string
+          benefit: string
+          bucket: string
+          category: string
+          color_hex: string
+          description: string
+          display_group: string
+          id: string
+          intensity: string
+          recommended_duration: number
+          therapeutic_category: string
+        }[]
       }
       get_histogram_timings: { Args: never; Returns: string }
       get_hit_potential_tracks: {
@@ -4633,6 +4851,17 @@ export type Database = {
           never_verified: number
           oldest_issue_days: number
           total_unplayable: number
+        }[]
+      }
+      get_user_genre_recommendations: {
+        Args: { target_user_id?: string }
+        Returns: {
+          benefits: string[]
+          bucket_name: string
+          description: string
+          display_name: string
+          recommendation_score: number
+          therapeutic_category: string
         }[]
       }
       get_user_music_role: {
@@ -4707,6 +4936,10 @@ export type Database = {
         }[]
       }
       range: { Args: never; Returns: string[] }
+      safe_cast_to_music_genre: {
+        Args: { text_value: string }
+        Returns: Database["public"]["Enums"]["music_genre"]
+      }
       safe_key: { Args: { raw: string }; Returns: string }
       safe_uuid_cast: { Args: { input_text: string }; Returns: string }
       session_data_quality_check: {
@@ -4719,6 +4952,7 @@ export type Database = {
           total_sessions: number
         }[]
       }
+      sync_hiit_storage: { Args: never; Returns: string }
       update_session_activity: {
         Args: { session_id: string }
         Returns: undefined
@@ -4726,6 +4960,13 @@ export type Database = {
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
         Returns: boolean
+      }
+      update_user_genre_preference: {
+        Args: {
+          score: number
+          target_category: Database["public"]["Enums"]["therapeutic_category"]
+        }
+        Returns: undefined
       }
       update_working_edge_play_stats: {
         Args: { _track_id: string }
@@ -4759,7 +5000,13 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "super_admin" | "admin" | "moderator" | "premium_user" | "user"
+      app_role:
+        | "super_admin"
+        | "admin"
+        | "moderator"
+        | "premium_user"
+        | "user"
+        | "clinical_user"
       music_genre:
         | "classical"
         | "crossover_classical"
@@ -4772,6 +5019,10 @@ export type Database = {
         | "edm"
         | "pop"
         | "tropical_house"
+        | "House EDM"
+        | "EDM"
+        | "Electronic"
+      music_intensity: "low" | "medium" | "high"
       music_role: "producer" | "engineer" | "singer_songwriter"
       playlist_category:
         | "focus"
@@ -4787,6 +5038,15 @@ export type Database = {
         | "forest"
         | "ocean_depths"
         | "space_station"
+      therapeutic_category:
+        | "cognitive_enhancement"
+        | "stress_relief"
+        | "pain_management"
+        | "energy_boost"
+        | "sleep_improvement"
+        | "mood_regulation"
+        | "focus_concentration"
+        | "relaxation_meditation"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -4914,7 +5174,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["super_admin", "admin", "moderator", "premium_user", "user"],
+      app_role: [
+        "super_admin",
+        "admin",
+        "moderator",
+        "premium_user",
+        "user",
+        "clinical_user",
+      ],
       music_genre: [
         "classical",
         "crossover_classical",
@@ -4927,7 +5194,11 @@ export const Constants = {
         "edm",
         "pop",
         "tropical_house",
+        "House EDM",
+        "EDM",
+        "Electronic",
       ],
+      music_intensity: ["low", "medium", "high"],
       music_role: ["producer", "engineer", "singer_songwriter"],
       playlist_category: [
         "focus",
@@ -4944,6 +5215,16 @@ export const Constants = {
         "forest",
         "ocean_depths",
         "space_station",
+      ],
+      therapeutic_category: [
+        "cognitive_enhancement",
+        "stress_relief",
+        "pain_management",
+        "energy_boost",
+        "sleep_improvement",
+        "mood_regulation",
+        "focus_concentration",
+        "relaxation_meditation",
       ],
     },
   },
