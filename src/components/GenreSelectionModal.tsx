@@ -46,66 +46,37 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
       
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent 
-          className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8 overflow-hidden z-50"
+          className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.08] shadow-[0_0_60px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(255,255,255,0.04)] p-8 overflow-hidden z-50"
           style={{
-            background: 'rgba(10, 10, 20, 0.75)',
+            background: 'rgba(10, 10, 20, 0.15)',
           }}
         >
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[24px] backdrop-saturate-[180%]" />
+          <div className="absolute inset-0 backdrop-blur-[24px] backdrop-saturate-[200%]" />
         
         <div className="relative z-10">
-          <DialogHeader className="flex flex-row items-center justify-between pb-6">
-            <DialogTitle className="text-xl font-semibold text-white">
+          <DialogHeader className="pb-6">
+            <DialogTitle className="text-xl font-semibold text-white text-shadow-[0_3px_12px_rgba(0,0,0,0.6)]">
               Click On A Genre to Start Your Session
             </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-8 w-8 p-0 text-white/70 hover:text-white"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </DialogHeader>
           
-          <div className="space-y-5">
+          <div className="space-y-6">
             {genres.map((genre) => (
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[72px] px-8 text-lg font-semibold rounded-full relative overflow-hidden group transition-all duration-200 hover:translate-y-[-3px] active:translate-y-[0px] active:scale-[0.98]"
+                className="pill w-full h-[72px] px-8 text-lg font-semibold rounded-[50px] relative overflow-hidden group border-none transition-all duration-150"
                 style={{
-                  background: 'linear-gradient(175deg, #3d4d59 0%, #2f3f4b 25%, #1f2f3b 50%, #151f2b 75%, #0a141e 100%)',
+                  background: 'linear-gradient(180deg, rgba(90,100,110,0.95) 0%, rgba(60,70,80,0.95) 40%, rgba(40,50,60,0.95) 60%, rgba(20,30,40,0.98) 100%)',
                   boxShadow: `
-                    0 1px 1px rgba(255, 255, 255, 0.4) inset,
-                    0 -2px 1px rgba(0, 0, 0, 0.6) inset,
-                    0 12px 32px rgba(0, 0, 0, 0.8),
-                    0 4px 12px rgba(0, 0, 0, 0.5),
-                    0 0 0 1px rgba(0, 0, 0, 0.3)
+                    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+                    0 -1px 0 rgba(0, 0, 0, 0.5) inset,
+                    0 8px 24px rgba(0, 0, 0, 0.7),
+                    0 2px 8px rgba(0, 0, 0, 0.4)
                   `,
-                  border: '1.5px solid',
-                  borderColor: 'rgba(90, 110, 130, 0.3)',
-                  borderTopColor: 'rgba(130, 150, 170, 0.5)',
-                  borderBottomColor: 'rgba(10, 20, 30, 0.8)',
                 }}
               >
-                {/* Shine overlay on hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(175deg, #4d5d69 0%, #3f4f5b 25%, #2f3f4b 50%, #1f2f3b 75%, #151f2b 100%)',
-                  }}
-                />
-                
-                {/* Subtle top highlight */}
-                <div 
-                  className="absolute top-0 left-[10%] right-[10%] h-[30%] opacity-30 rounded-full pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%)',
-                  }}
-                />
-                
-                <span className="relative z-10 text-[#d8dce0] tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                <span className="relative z-10 text-white font-semibold text-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
                   {genre.name}
                 </span>
               </button>
