@@ -61,20 +61,27 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full relative overflow-hidden group transition-all duration-300 hover:translate-y-[-2px] active:translate-y-[0px]"
+                className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full relative overflow-hidden group transition-all duration-300 hover:translate-y-[-2px] active:translate-y-[0px] active:scale-[0.98]"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(140, 140, 140, 0.9) 0%, rgba(90, 90, 90, 0.85) 50%, rgba(60, 60, 60, 0.9) 100%)',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.25), inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.4)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'linear-gradient(180deg, #3a4a56 0%, #2a3a46 45%, #1a2a36 55%, #0f1f2f 100%)',
+                  boxShadow: `
+                    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+                    0 -1px 0 rgba(0, 0, 0, 0.5) inset,
+                    0 8px 24px rgba(0, 0, 0, 0.7),
+                    0 2px 8px rgba(0, 0, 0, 0.4)
+                  `,
+                  border: '1.5px solid rgba(80, 100, 120, 0.4)',
+                  borderTop: '1.5px solid rgba(120, 140, 160, 0.6)',
+                  borderBottom: '1.5px solid rgba(20, 30, 40, 0.8)',
                 }}
               >
                 <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(180, 180, 180, 0.95) 0%, rgba(120, 120, 120, 0.9) 50%, rgba(80, 80, 80, 0.95) 100%)',
+                    background: 'linear-gradient(180deg, #4a5a66 0%, #3a4a56 45%, #2a3a46 55%, #1a2a36 100%)',
                   }}
                 />
-                <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                <span className="relative z-10 text-slate-200 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                   {genre.name}
                 </span>
               </button>
