@@ -479,8 +479,12 @@ All colors MUST be HSL.
   /* Form elements */
   input, textarea, select {
     font-family: var(--font-sf) !important;
-    color: hsl(var(--text-gray-900)) !important;
     border: 1px solid hsl(var(--border));
+  }
+  
+  /* Ensure inputs in main app have proper text color */
+  .card input, .card textarea, .card select {
+    color: hsl(var(--text-gray-900)) !important;
   }
 
   input::placeholder,
