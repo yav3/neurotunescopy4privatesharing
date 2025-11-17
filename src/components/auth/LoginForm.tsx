@@ -92,7 +92,7 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Enter your email"
               required
             />
@@ -109,7 +109,7 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-12 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
+              className="w-full pl-10 pr-12 py-3 bg-black/50 backdrop-blur-sm border border-white/30 rounded-lg text-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/60 transition-all"
               placeholder="Enter your password"
               required
             />
