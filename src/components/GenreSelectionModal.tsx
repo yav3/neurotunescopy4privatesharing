@@ -6,6 +6,7 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
+import pillPlatinum from '@/assets/pills/pill-platinum-1.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -31,27 +32,31 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
   return (
     <>
-      {/* Full-page background GIF */}
+      {/* Full-page background GIF with darkening overlay */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 z-40"
-          style={{
-            backgroundImage: `url(${goalSelectionBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
+        <>
+          <div 
+            className="fixed inset-0 z-40"
+            style={{
+              backgroundImage: `url(${goalSelectionBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+          <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
+        </>
       )}
       
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent 
-          className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.08] shadow-[0_0_60px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(255,255,255,0.04)] p-8 overflow-hidden z-50"
+          className="max-w-[540px] mx-auto rounded-[28px] border border-white/[0.08] p-12 overflow-hidden z-50"
           style={{
-            background: 'rgba(10, 10, 20, 0.15)',
+            background: 'rgba(10, 10, 20, 0.25)',
+            boxShadow: '0 0 60px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.03)',
           }}
         >
-          <div className="absolute inset-0 backdrop-blur-[24px] backdrop-saturate-[200%]" />
+          <div className="absolute inset-0 backdrop-blur-[32px] backdrop-saturate-[200%]" />
         
         <div className="relative z-10">
           <DialogHeader className="pb-6">
@@ -60,23 +65,20 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-6">
+          <div className="space-y-5">
             {genres.map((genre) => (
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="pill w-full h-[72px] px-8 text-lg font-semibold rounded-[50px] relative overflow-hidden group border-none transition-all duration-150"
+                className="pill w-full h-[78px] rounded-[50px] relative overflow-hidden border-none transition-all duration-150 flex items-center justify-center hover:translate-y-[-3px] hover:brightness-110 active:scale-[0.96] active:brightness-90"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(90,100,110,0.95) 0%, rgba(60,70,80,0.95) 40%, rgba(40,50,60,0.95) 60%, rgba(20,30,40,0.98) 100%)',
-                  boxShadow: `
-                    0 1px 0 rgba(255, 255, 255, 0.3) inset,
-                    0 -1px 0 rgba(0, 0, 0, 0.5) inset,
-                    0 8px 24px rgba(0, 0, 0, 0.7),
-                    0 2px 8px rgba(0, 0, 0, 0.4)
-                  `,
+                  backgroundImage: `url(${pillPlatinum})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
                 }}
               >
-                <span className="relative z-10 text-white font-semibold text-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+                <span className="relative z-10 text-white font-semibold text-lg tracking-wide" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}>
                   {genre.name}
                 </span>
               </button>
