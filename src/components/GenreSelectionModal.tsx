@@ -30,22 +30,22 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md mx-auto bg-background border border-border rounded-xl shadow-xl">
-        <DialogHeader className="flex flex-row items-center justify-between p-6 pb-4">
-          <DialogTitle className="text-xl font-semibold text-foreground">
+      <DialogContent className="max-w-[480px] mx-auto bg-[rgba(4,18,26,0.55)] backdrop-blur-[24px] backdrop-saturate-[180%] rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8">
+        <DialogHeader className="flex flex-row items-center justify-between pb-6">
+          <DialogTitle className="text-xl font-semibold text-white">
             Click On A Genre to Start Your Session
           </DialogTitle>
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 p-0 text-white/70 hover:text-white"
           >
             <X className="h-4 w-4" />
           </Button>
         </DialogHeader>
         
-        <div className="px-6 pb-6 space-y-4">
+        <div className="space-y-4">
           {genres.map((genre) => (
             <Button
               key={genre.id}
