@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
+import liquidMetalBg from '@/assets/liquid-metal-bg.gif';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -30,31 +31,55 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[480px] mx-auto bg-[rgba(4,18,26,0.55)] backdrop-blur-[24px] backdrop-saturate-[180%] rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8">
-        <DialogHeader className="flex flex-row items-center justify-between pb-6">
-          <DialogTitle className="text-xl font-semibold text-white">
-            Click On A Genre to Start Your Session
-          </DialogTitle>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="h-8 w-8 p-0 text-white/70 hover:text-white"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </DialogHeader>
+      <DialogContent 
+        className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8 overflow-hidden"
+        style={{
+          backgroundImage: `url(${liquidMetalBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[24px] backdrop-saturate-[180%]" />
         
-        <div className="space-y-4">
-          {genres.map((genre) => (
+        <div className="relative z-10">
+          <DialogHeader className="flex flex-row items-center justify-between pb-6">
+            <DialogTitle className="text-xl font-semibold text-white">
+              Click On A Genre to Start Your Session
+            </DialogTitle>
             <Button
-              key={genre.id}
-              onClick={() => handleGenreSelect(genre.id)}
-              className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full bg-gradient-to-b from-[#2a3f4f] to-[#1a2830] hover:from-[#344856] hover:to-[#1f2f38] text-[#d4d8dd] border border-[#3d5461]/50 transition-all duration-300 shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_2px_4px_rgba(255,255,255,0.05),inset_0_-2px_4px_rgba(0,0,0,0.3)] hover:shadow-[0_10px_24px_rgba(0,0,0,0.7),inset_0_2px_4px_rgba(255,255,255,0.08)] hover:translate-y-[-1px]"
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="h-8 w-8 p-0 text-white/70 hover:text-white"
             >
-              {genre.name}
+              <X className="h-4 w-4" />
             </Button>
-          ))}
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {genres.map((genre) => (
+              <button
+                key={genre.id}
+                onClick={() => handleGenreSelect(genre.id)}
+                className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full relative overflow-hidden group transition-all duration-300 hover:translate-y-[-2px] active:translate-y-[0px]"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(140, 140, 140, 0.9) 0%, rgba(90, 90, 90, 0.85) 50%, rgba(60, 60, 60, 0.9) 100%)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.25), inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                }}
+              >
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(180, 180, 180, 0.95) 0%, rgba(120, 120, 120, 0.9) 50%, rgba(80, 80, 80, 0.95) 100%)',
+                  }}
+                />
+                <span className="relative z-10 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                  {genre.name}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
