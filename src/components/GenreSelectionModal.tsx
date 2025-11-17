@@ -56,32 +56,44 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             </Button>
           </DialogHeader>
           
-          <div className="space-y-4">
+          <div className="space-y-5">
             {genres.map((genre) => (
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full relative overflow-hidden group transition-all duration-300 hover:translate-y-[-2px] active:translate-y-[0px] active:scale-[0.98]"
+                className="w-full h-[72px] px-8 text-lg font-semibold rounded-full relative overflow-hidden group transition-all duration-200 hover:translate-y-[-3px] active:translate-y-[0px] active:scale-[0.98]"
                 style={{
-                  background: 'linear-gradient(180deg, #3a4a56 0%, #2a3a46 45%, #1a2a36 55%, #0f1f2f 100%)',
+                  background: 'linear-gradient(175deg, #3d4d59 0%, #2f3f4b 25%, #1f2f3b 50%, #151f2b 75%, #0a141e 100%)',
                   boxShadow: `
-                    0 1px 0 rgba(255, 255, 255, 0.3) inset,
-                    0 -1px 0 rgba(0, 0, 0, 0.5) inset,
-                    0 8px 24px rgba(0, 0, 0, 0.7),
-                    0 2px 8px rgba(0, 0, 0, 0.4)
+                    0 1px 1px rgba(255, 255, 255, 0.4) inset,
+                    0 -2px 1px rgba(0, 0, 0, 0.6) inset,
+                    0 12px 32px rgba(0, 0, 0, 0.8),
+                    0 4px 12px rgba(0, 0, 0, 0.5),
+                    0 0 0 1px rgba(0, 0, 0, 0.3)
                   `,
-                  border: '1.5px solid rgba(80, 100, 120, 0.4)',
-                  borderTop: '1.5px solid rgba(120, 140, 160, 0.6)',
-                  borderBottom: '1.5px solid rgba(20, 30, 40, 0.8)',
+                  border: '1.5px solid',
+                  borderColor: 'rgba(90, 110, 130, 0.3)',
+                  borderTopColor: 'rgba(130, 150, 170, 0.5)',
+                  borderBottomColor: 'rgba(10, 20, 30, 0.8)',
                 }}
               >
+                {/* Shine overlay on hover */}
                 <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full pointer-events-none"
                   style={{
-                    background: 'linear-gradient(180deg, #4a5a66 0%, #3a4a56 45%, #2a3a46 55%, #1a2a36 100%)',
+                    background: 'linear-gradient(175deg, #4d5d69 0%, #3f4f5b 25%, #2f3f4b 50%, #1f2f3b 75%, #151f2b 100%)',
                   }}
                 />
-                <span className="relative z-10 text-slate-200 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+                
+                {/* Subtle top highlight */}
+                <div 
+                  className="absolute top-0 left-[10%] right-[10%] h-[30%] opacity-30 rounded-full pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%)',
+                  }}
+                />
+                
+                <span className="relative z-10 text-[#d8dce0] tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
                   {genre.name}
                 </span>
               </button>
