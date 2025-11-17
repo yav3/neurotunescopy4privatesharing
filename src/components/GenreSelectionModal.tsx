@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
-import liquidMetalBg from '@/assets/liquid-metal-bg.gif';
+import goalSelectionBg from '@/assets/goal-selection-bg.gif';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -30,16 +30,28 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   if (!goal) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8 overflow-hidden"
-        style={{
-          backgroundImage: `url(${liquidMetalBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[24px] backdrop-saturate-[180%]" />
+    <>
+      {/* Full-page background GIF */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40"
+          style={{
+            backgroundImage: `url(${goalSelectionBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+      )}
+      
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent 
+          className="max-w-[480px] mx-auto rounded-[28px] border border-white/[0.12] shadow-[0_0_40px_rgba(0,0,0,0.4),inset_0_0_80px_rgba(180,255,250,0.08)] p-8 overflow-hidden z-50"
+          style={{
+            background: 'rgba(10, 10, 20, 0.75)',
+          }}
+        >
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[24px] backdrop-saturate-[180%]" />
         
         <div className="relative z-10">
           <DialogHeader className="flex flex-row items-center justify-between pb-6">
@@ -102,5 +114,6 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };
