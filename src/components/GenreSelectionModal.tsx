@@ -50,7 +50,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             <Button
               key={genre.id}
               onClick={() => handleGenreSelect(genre.id)}
-              className="w-full h-auto py-6 px-6 text-lg font-medium rounded-full bg-slate-400/90 hover:bg-slate-300 text-slate-900 border-2 border-slate-500 hover:border-slate-400 transition-all duration-300 shadow-[0_8px_16px_rgba(0,0,0,0.6)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.8)] hover:translate-y-[-2px]"
+              className="w-full h-auto py-6 px-8 text-lg font-medium rounded-full bg-gradient-to-b from-slate-700/40 to-slate-800/60 hover:from-slate-600/50 hover:to-slate-700/70 text-slate-200 border border-slate-500/30 hover:border-slate-400/40 transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_-1px_0_rgba(0,0,0,0.2)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.15)] hover:translate-y-[-1px] backdrop-blur-sm"
             >
               {genre.name}
             </Button>
