@@ -45,13 +45,12 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           </Button>
         </DialogHeader>
         
-        <div className="px-6 pb-6 space-y-3">
+        <div className="px-6 pb-6 space-y-4">
           {genres.map((genre) => (
             <Button
               key={genre.id}
               onClick={() => handleGenreSelect(genre.id)}
-              variant="outline"
-              className="w-full justify-start h-auto py-4 px-4 text-base font-medium"
+              className="w-full h-auto py-6 px-6 text-lg font-medium rounded-full backdrop-blur-md bg-white/10 border-2 border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               {genre.name}
             </Button>
