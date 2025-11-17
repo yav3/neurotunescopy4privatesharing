@@ -4723,6 +4723,7 @@ export type Database = {
         }[]
       }
       fix_invalid_uuids: { Args: never; Returns: undefined }
+      fix_track_id_inconsistencies: { Args: never; Returns: undefined }
       generate_magic_link_token: { Args: never; Returns: string }
       generate_unique_filename: {
         Args: { base_name: string; bucket_name: string; exclude_id?: string }
@@ -4754,6 +4755,17 @@ export type Database = {
         Returns: string[]
       }
       get_cmd_type: { Args: { cmd_type: number }; Returns: string }
+      get_curated_tracks_safe: {
+        Args: { track_ids?: string[] }
+        Returns: {
+          artist: string
+          curated_storage_key: string
+          duration_seconds: number
+          id: string
+          original_filename: string
+          title: string
+        }[]
+      }
       get_genre_appropriate_recommendations: {
         Args: { _genre: string; _track_id: string }
         Returns: Json
@@ -4804,6 +4816,18 @@ export type Database = {
       get_or_create_patient_for_user: {
         Args: { user_id: string }
         Returns: string
+      }
+      get_playlist_tracks_enhanced: {
+        Args: { p_bucket_name: string }
+        Returns: {
+          artist: string
+          artwork_url: string
+          duration_seconds: number
+          storage_path: string
+          therapeutic_tags: string[]
+          title: string
+          track_id: string
+        }[]
       }
       get_therapeutic_recommendations: {
         Args: { min_evidence_score?: number; target_condition: string }
@@ -4940,6 +4964,7 @@ export type Database = {
         Args: { text_value: string }
         Returns: Database["public"]["Enums"]["music_genre"]
       }
+      safe_cast_to_uuid: { Args: { input_value: string }; Returns: string }
       safe_key: { Args: { raw: string }; Returns: string }
       safe_uuid_cast: { Args: { input_text: string }; Returns: string }
       session_data_quality_check: {

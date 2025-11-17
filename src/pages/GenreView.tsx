@@ -243,7 +243,7 @@ export default function GenreView() {
   };
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/goals');
   };
 
   const handleRetry = () => {

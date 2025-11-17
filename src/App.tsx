@@ -48,6 +48,7 @@ import FAQ from "./pages/FAQ";
 import { AboutNeuralPositive } from "./pages/AboutNeuralPositive";
 import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
+import Showcase from "./pages/Showcase";
 
 const queryClient = new QueryClient();
 
@@ -122,6 +123,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/showcase" element={<Showcase />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
