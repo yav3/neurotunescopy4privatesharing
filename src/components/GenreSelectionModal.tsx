@@ -7,16 +7,7 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import buttonTexture1 from '@/assets/textures/button-texture-1.png';
-import buttonTexture2 from '@/assets/textures/button-texture-2.png';
-import buttonTexture3 from '@/assets/textures/button-texture-3.png';
-import buttonTexture4 from '@/assets/textures/button-texture-4.png';
-import buttonTexture5 from '@/assets/textures/button-texture-5.png';
-import buttonTexture6 from '@/assets/textures/button-texture-6.png';
-import buttonTexture7 from '@/assets/textures/button-texture-7.png';
-import buttonTexture8 from '@/assets/textures/button-texture-8.png';
-import buttonTexture9 from '@/assets/textures/button-texture-9.png';
-import buttonTexture10 from '@/assets/textures/button-texture-10.png';
+import modalBgDark from '@/assets/modal-bg-dark.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -34,18 +25,10 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
   
-  const buttonTextures = [
-    { image: buttonTexture1, isDark: true },  // Black/very dark
-    { image: buttonTexture2, isDark: false }, // Gold/tan light
-    { image: buttonTexture3, isDark: false }, // Grey light
-    { image: buttonTexture4, isDark: false }, // White/light
-    { image: buttonTexture5, isDark: true },  // Dark grey/blue
-    { image: buttonTexture6, isDark: true },  // Dark
-    { image: buttonTexture7, isDark: false }, // Light grey
-    { image: buttonTexture8, isDark: false }, // Light grey/white
-    { image: buttonTexture9, isDark: false }, // Light grey
-    { image: buttonTexture10, isDark: false }, // Pale grey
-  ];
+  const getButtonStyle = (index: number) => {
+    const isDark = index % 2 === 0;
+    return { isDark };
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -86,11 +69,13 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[540px] mx-auto rounded-[28px] border border-white/[0.08] p-12 overflow-hidden z-50"
           style={{
-            background: 'rgba(10, 10, 20, 0.15)',
+            backgroundImage: `url(${modalBgDark})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             boxShadow: '0 0 60px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.02)',
           }}
         >
-          <div className="absolute inset-0 backdrop-blur-[20px] backdrop-saturate-[180%]" />
+          <div className="absolute inset-0 backdrop-blur-[40px] backdrop-saturate-[180%]" style={{ background: 'rgba(10, 10, 20, 0.5)' }} />
         
         <div className="relative z-10">
           <DialogHeader className="pb-6">
@@ -111,68 +96,59 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           
           <div className={`grid gap-6 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {genres.map((genre, index) => {
-              const texture = buttonTextures[index % buttonTextures.length];
+              const { isDark } = getButtonStyle(index);
               return (
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98] group"
                 style={{
-                  backgroundImage: `url(${texture.image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  border: '1.5px solid rgba(255, 255, 255, 0.3)',
-                  boxShadow: `
-                    inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                    inset 0 -6px 12px rgba(0, 0, 0, 0.4),
-                    0 20px 50px rgba(0, 0, 0, 0.9),
-                    0 10px 25px rgba(0, 0, 0, 0.7),
-                    0 0 0 1px rgba(255, 255, 255, 0.1)
-                  `,
+                  background: isDark 
+                    ? 'rgba(60, 60, 70, 0.5)' 
+                    : 'rgba(240, 240, 245, 0.4)',
+                  backdropFilter: 'blur(20px)',
+                  border: isDark
+                    ? '1.5px solid rgba(255, 255, 255, 0.15)'
+                    : '1.5px solid rgba(255, 255, 255, 0.4)',
+                  boxShadow: isDark
+                    ? `inset 0 1px 2px rgba(255, 255, 255, 0.1),
+                       inset 0 -1px 3px rgba(0, 0, 0, 0.3),
+                       0 10px 30px rgba(0, 0, 0, 0.5),
+                       0 5px 15px rgba(0, 0, 0, 0.3)`
+                    : `inset 0 1px 2px rgba(255, 255, 255, 0.5),
+                       inset 0 -1px 3px rgba(0, 0, 0, 0.1),
+                       0 10px 30px rgba(0, 0, 0, 0.3),
+                       0 5px 15px rgba(0, 0, 0, 0.2)`,
                 }}
               >
-                {/* Overlay to mask embedded text and improve readability */}
-                <div 
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    background: texture.isDark 
-                      ? 'rgba(0, 0, 0, 0.6)' 
-                      : 'rgba(255, 255, 255, 0.5)',
-                    backdropFilter: 'blur(8px)',
-                  }}
-                />
-                
                 {/* Content */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 z-10">
-                  <div 
-                    className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
-                    style={{
-                      filter: texture.isDark
-                        ? 'drop-shadow(0 2px 4px rgba(255,255,255,0.4)) drop-shadow(0 -1px 2px rgba(255,255,255,0.3)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))'
-                        : 'drop-shadow(0 2px 4px rgba(0,0,0,0.4)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))',
-                    }}
-                  >
+                <div className="absolute inset-0 flex items-center justify-center gap-4">
+                  <div className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110">
                     <Play 
-                      size={40} 
-                      fill={texture.isDark ? "white" : "black"}
-                      strokeWidth={0.8}
-                      className={texture.isDark ? "text-white/80" : "text-black/80"}
+                      size={36} 
+                      fill={isDark ? "white" : "black"}
+                      strokeWidth={0.5}
+                      className={isDark ? "text-white/90" : "text-black/90"}
+                      style={{
+                        filter: isDark 
+                          ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))'
+                          : 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
+                      }}
                     />
                   </div>
                   <span 
-                    className="text-2xl tracking-wide relative z-10 font-medium" 
+                    className="text-2xl tracking-wide font-normal" 
                     style={{ 
-                      textShadow: texture.isDark 
-                        ? '0 2px 4px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.3)'
-                        : '0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.8)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      ...(texture.isDark ? {
+                      ...(isDark ? {
                         background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
+                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
                       } : {
-                        color: '#000000',
+                        color: '#1a1a1a',
+                        textShadow: '0 1px 2px rgba(255,255,255,0.5)',
                       }),
                     }}
                   >
