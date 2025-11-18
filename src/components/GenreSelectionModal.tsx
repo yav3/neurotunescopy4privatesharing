@@ -133,20 +133,28 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                 
                 {/* Content */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4">
-                  <Play 
-                    size={40} 
-                    fill="white" 
-                    className="text-white transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110" 
+                  <div 
+                    className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
                     style={{
                       filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
                     }}
-                  />
+                  >
+                    <Play 
+                      size={40} 
+                      fill="black" 
+                      strokeWidth={2.5}
+                      className="text-white/60"
+                    />
+                  </div>
                   <span 
-                    className="text-white font-bold text-2xl tracking-wide relative z-10" 
+                    className="text-[#C0C5CE] font-bold text-2xl tracking-wide relative z-10" 
                     style={{ 
-                      textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6)',
+                      textShadow: '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      filter: 'drop-shadow(0 1px 2px rgba(255,255,255,0.1))'
+                      background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
                     }}
                   >
                     {genre.name}
