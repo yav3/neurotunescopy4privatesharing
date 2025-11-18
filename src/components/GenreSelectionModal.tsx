@@ -92,43 +92,51 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-[32px] relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-12px] hover:scale-[1.02] active:scale-[0.98] border-[3px]"
+                className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98]"
                 style={{
-                  backgroundImage: `url(${textureImages[index % textureImages.length]})`,
+                  background: `
+                    linear-gradient(180deg, 
+                      rgba(80, 90, 100, 0.4) 0%,
+                      rgba(40, 50, 60, 0.6) 45%,
+                      rgba(20, 25, 30, 0.8) 100%
+                    ),
+                    url(${textureImages[index % textureImages.length]})
+                  `,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  borderColor: 'rgba(255, 255, 255, 0.25)',
+                  backgroundBlendMode: 'overlay, normal',
+                  border: '1.5px solid rgba(255, 255, 255, 0.3)',
                   boxShadow: `
-                    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
-                    0 20px 60px rgba(0, 0, 0, 0.95),
-                    0 10px 30px rgba(0, 0, 0, 0.8),
-                    0 5px 15px rgba(0, 0, 0, 0.7),
-                    0 0 100px rgba(0, 0, 0, 0.5)
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    inset 0 -6px 12px rgba(0, 0, 0, 0.6),
+                    0 20px 50px rgba(0, 0, 0, 0.9),
+                    0 10px 25px rgba(0, 0, 0, 0.7),
+                    0 0 0 1px rgba(255, 255, 255, 0.1)
                   `,
                 }}
               >
-                {/* Dark overlay */}
+                {/* Top glossy highlight */}
                 <div 
-                  className="absolute inset-0"
+                  className="absolute inset-x-0 top-0 h-[45%] rounded-full"
                   style={{
-                    background: 'linear-gradient(165deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%)',
-                    backdropFilter: 'blur(12px) saturate(120%)',
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0) 100%)',
                   }}
                 />
                 
-                {/* Strong top highlight for 3D effect */}
+                {/* Edge rim light - top */}
                 <div 
-                  className="absolute inset-x-0 top-0 h-[35%]"
+                  className="absolute inset-x-0 top-0 h-[3px] rounded-full"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%)',
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%)',
+                    filter: 'blur(1px)',
                   }}
                 />
                 
-                {/* Bottom shadow for depth */}
+                {/* Bottom depth shadow */}
                 <div 
-                  className="absolute inset-x-0 bottom-0 h-[25%]"
+                  className="absolute inset-x-0 bottom-0 h-[30%] rounded-full"
                   style={{
-                    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
+                    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%)',
                   }}
                 />
                 
@@ -137,8 +145,9 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   <span 
                     className="text-white font-bold text-2xl tracking-wide px-12 relative z-10" 
                     style={{ 
-                      textShadow: '0 4px 20px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.5)',
-                      fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif'
+                      textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6)',
+                      fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
+                      filter: 'drop-shadow(0 1px 2px rgba(255,255,255,0.1))'
                     }}
                   >
                     {genre.name}
