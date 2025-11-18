@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Card } from '@/components/ui/card';
 import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
+import metallicGlass1 from '@/assets/textures/metallic-glass-1.png';
+import metallicGlass2 from '@/assets/textures/metallic-glass-2.png';
+import metallicGlass3 from '@/assets/textures/metallic-glass-3.png';
+import metallicGlass4 from '@/assets/textures/metallic-glass-4.png';
+import metallicGlass5 from '@/assets/textures/metallic-glass-5.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -22,6 +28,8 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const goal = GOALS_BY_ID[goalId as keyof typeof GOALS_BY_ID];
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
+  
+  const textureImages = [metallicGlass1, metallicGlass2, metallicGlass3, metallicGlass4, metallicGlass5];
 
   useEffect(() => {
     if (isOpen) {
@@ -72,35 +80,49 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           <DialogHeader className="pb-6">
             {showTitle && (
               <DialogTitle className="text-xl font-semibold text-white overflow-hidden whitespace-nowrap" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-                <span className="inline-block animate-[slide-in-right_1s_ease-out]">
-                  Click On A Genre to Start Your Session
+                <span className="inline-block animate-[zoom-in_1s_ease-out]">
+                  Select A Genre to Start Your Session
                 </span>
               </DialogTitle>
             )}
           </DialogHeader>
           
-          <div className="space-y-7">
-            {genres.map((genre) => (
-              <button
+          <div className="space-y-5">
+            {genres.map((genre, index) => (
+              <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-full relative transition-all duration-300 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.2] active:scale-[0.98] active:translate-y-[-2px]"
+                className="w-full h-[140px] rounded-[32px] relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-6px] hover:scale-[1.02] active:scale-[0.98] border-none"
                 style={{
-                  background: 'linear-gradient(165deg, rgba(25, 28, 35, 0.95) 0%, rgba(10, 12, 18, 0.98) 50%, rgba(5, 6, 10, 1) 100%)',
-                  backdropFilter: 'blur(20px) saturate(180%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  backgroundImage: `url(${textureImages[index % textureImages.length]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                   boxShadow: `
-                    inset 0 1px 1px rgba(255, 255, 255, 0.12),
-                    inset 0 -1px 1px rgba(0, 0, 0, 0.5),
-                    0 8px 32px rgba(0, 0, 0, 0.7),
-                    0 2px 8px rgba(0, 0, 0, 0.4)
+                    0 0 0 1px rgba(255, 255, 255, 0.1),
+                    0 10px 40px rgba(0, 0, 0, 0.8),
+                    0 4px 12px rgba(0, 0, 0, 0.6),
+                    inset 0 1px 2px rgba(255, 255, 255, 0.1)
                   `,
                 }}
               >
-                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1)' }}>
-                  {genre.name}
-                </span>
-              </button>
+                <div 
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(165deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%)',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                >
+                  <span 
+                    className="text-white font-bold text-2xl tracking-wide px-12 relative z-10" 
+                    style={{ 
+                      textShadow: '0 4px 16px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,1)',
+                      fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif'
+                    }}
+                  >
+                    {genre.name}
+                  </span>
+                </div>
+              </Card>
             ))}
           </div>
         </div>
