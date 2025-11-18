@@ -131,30 +131,40 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   `,
                 }}
               >
+                {/* Overlay to mask embedded text and improve readability */}
+                <div 
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: texture.isDark 
+                      ? 'rgba(0, 0, 0, 0.6)' 
+                      : 'rgba(255, 255, 255, 0.5)',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                />
+                
                 {/* Content */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4">
+                <div className="absolute inset-0 flex items-center justify-center gap-4 z-10">
                   <div 
                     className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
                     style={{
-                      filter: 'drop-shadow(0 2px 4px rgba(255,255,255,0.4)) drop-shadow(0 -1px 2px rgba(255,255,255,0.3)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))',
+                      filter: texture.isDark
+                        ? 'drop-shadow(0 2px 4px rgba(255,255,255,0.4)) drop-shadow(0 -1px 2px rgba(255,255,255,0.3)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))'
+                        : 'drop-shadow(0 2px 4px rgba(0,0,0,0.4)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))',
                     }}
                   >
                     <Play 
                       size={40} 
-                      fill="black" 
+                      fill={texture.isDark ? "white" : "black"}
                       strokeWidth={0.8}
-                      className="text-white/70"
-                      style={{
-                        filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.5))',
-                      }}
+                      className={texture.isDark ? "text-white/80" : "text-black/80"}
                     />
                   </div>
                   <span 
-                    className="text-2xl tracking-wide relative z-10" 
+                    className="text-2xl tracking-wide relative z-10 font-medium" 
                     style={{ 
                       textShadow: texture.isDark 
-                        ? '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)'
-                        : '0 1px 2px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.4)',
+                        ? '0 2px 4px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.3)'
+                        : '0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.8)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
                       ...(texture.isDark ? {
                         background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
