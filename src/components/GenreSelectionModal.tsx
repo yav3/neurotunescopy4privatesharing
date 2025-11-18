@@ -101,13 +101,16 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   background: 'linear-gradient(180deg, rgba(35, 35, 38, 1) 0%, rgba(15, 15, 17, 1) 50%, rgba(8, 8, 10, 1) 100%)',
                   border: 'none',
                   boxShadow: `
-                    inset 0 2px 4px rgba(255, 255, 255, 0.6),
-                    inset 0 1px 2px rgba(255, 255, 255, 0.8),
-                    inset 0 -2px 6px rgba(0, 0, 0, 0.9),
-                    0 1px 0 rgba(100, 100, 105, 0.5),
+                    inset 0 3px 6px rgba(255, 255, 255, 0.8),
+                    inset 0 2px 3px rgba(255, 255, 255, 0.9),
+                    inset 0 1px 1px rgba(255, 255, 255, 1),
+                    inset 0 -3px 8px rgba(0, 0, 0, 0.95),
+                    inset 0 -1px 2px rgba(0, 0, 0, 1),
+                    0 1px 0 rgba(120, 120, 125, 0.8),
+                    0 2px 0 rgba(100, 100, 105, 0.6),
                     0 20px 50px rgba(0, 0, 0, 0.9),
                     0 8px 20px rgba(0, 0, 0, 0.8),
-                    0 0 0 1px rgba(60, 60, 65, 0.6)
+                    0 0 0 1.5px rgba(80, 80, 85, 0.7)
                   `,
                 }}
               >
@@ -123,10 +126,11 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                         className="text-black"
                         style={{
                           filter: `
-                            drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5))
-                            drop-shadow(0 2px 1px rgba(255, 255, 255, 0.3))
-                            drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.8))
-                            drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6))
+                            drop-shadow(0 2px 0 rgba(255, 255, 255, 0.7))
+                            drop-shadow(0 3px 1px rgba(255, 255, 255, 0.5))
+                            drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9))
+                            drop-shadow(0 -2px 0 rgba(0, 0, 0, 0.9))
+                            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
                           `,
                         }}
                       />
