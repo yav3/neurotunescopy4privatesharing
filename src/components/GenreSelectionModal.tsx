@@ -6,7 +6,6 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import pillSilver from '@/assets/pills/pill-silver-metallic.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -85,19 +84,15 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-full relative border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] hover:drop-shadow-[0_8px_32px_rgba(255,255,255,0.2)] active:scale-[0.97] active:brightness-[0.95] active:translate-y-[-2px]"
+                className="w-full h-[140px] rounded-full relative transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] active:scale-[0.97] active:translate-y-[-2px]"
                 style={{
-                  background: 'none',
-                  backgroundImage: `url('${pillSilver}')`,
-                  backgroundSize: '100% 100%',
-                  backgroundPosition: 'center center',
-                  backgroundRepeat: 'no-repeat',
-                  padding: 0,
-                  border: 'none',
-                  outline: 'none',
+                  background: 'linear-gradient(145deg, rgba(60, 70, 85, 0.4), rgba(20, 25, 35, 0.6))',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.5)',
                 }}
               >
-                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 4px 20px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)' }}>
+                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
                   {genre.name}
                 </span>
               </button>
