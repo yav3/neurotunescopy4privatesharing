@@ -96,15 +96,16 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[120px] rounded-full relative overflow-visible cursor-pointer transition-all duration-300 hover:translate-y-[-6px] active:scale-[0.98] group border-0"
+                className="w-full h-[120px] rounded-full relative overflow-visible cursor-pointer transition-all duration-300 hover:translate-y-[-6px] active:scale-[0.98] group"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%)',
-                  backdropFilter: 'blur(20px) saturate(180%)',
+                  background: 'linear-gradient(135deg, rgba(20, 20, 22, 0.95) 0%, rgba(10, 10, 12, 0.98) 100%)',
+                  border: '1.5px solid rgba(192, 192, 192, 0.4)',
                   boxShadow: `
-                    0 8px 32px rgba(0, 0, 0, 0.6),
-                    0 2px 8px rgba(0, 0, 0, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.25)
+                    0 12px 40px rgba(0, 0, 0, 0.9),
+                    0 4px 12px rgba(0, 0, 0, 0.6),
+                    inset 0 1px 1px rgba(192, 192, 192, 0.5),
+                    inset 0 -1px 1px rgba(0, 0, 0, 0.8),
+                    0 0 0 1px rgba(160, 160, 160, 0.2)
                   `,
                 }}
               >
@@ -135,11 +136,11 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                     className="text-[20px] tracking-wide font-medium" 
                     style={{ 
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      background: 'linear-gradient(180deg, #FFFFFF 0%, #E8EAED 40%, #D0D3D8 100%)',
+                      background: 'linear-gradient(180deg, #E8EAED 0%, #C0C0C0 50%, #A8A8A8 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
-                      filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))',
+                      filter: 'drop-shadow(0 1px 2px rgba(255,255,255,0.3))',
                     }}
                   >
                     {genre.name}
