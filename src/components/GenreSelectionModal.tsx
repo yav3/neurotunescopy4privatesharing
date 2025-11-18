@@ -156,7 +156,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                     />
                   </div>
                   <span 
-                    className="text-[#C0C5CE] font-bold text-2xl tracking-wide relative z-10" 
+                    className="text-[#C0C5CE] text-2xl tracking-wide relative z-10" 
                     style={{ 
                       textShadow: '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
