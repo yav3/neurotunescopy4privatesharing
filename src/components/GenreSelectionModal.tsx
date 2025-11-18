@@ -79,7 +79,13 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <div className="relative z-10">
           <DialogHeader className="pb-6">
             {showTitle && (
-              <DialogTitle className="text-xl font-semibold text-white overflow-hidden whitespace-nowrap" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+              <DialogTitle className="text-xl font-semibold overflow-hidden whitespace-nowrap" style={{ 
+                fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
+                background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
                 <span className="inline-block animate-[zoom-in_1s_ease-out]">
                   Select A Genre to Start Your Session
                 </span>
@@ -136,14 +142,17 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   <div 
                     className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
                     style={{
-                      filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
+                      filter: 'drop-shadow(0 2px 4px rgba(255,255,255,0.4)) drop-shadow(0 -1px 2px rgba(255,255,255,0.3)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))',
                     }}
                   >
                     <Play 
                       size={40} 
                       fill="black" 
-                      strokeWidth={2.5}
-                      className="text-white/60"
+                      strokeWidth={0.8}
+                      className="text-white/70"
+                      style={{
+                        filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.5))',
+                      }}
                     />
                   </div>
                   <span 
