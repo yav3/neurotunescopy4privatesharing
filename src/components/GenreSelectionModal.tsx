@@ -36,15 +36,15 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   
   const buttonTextures = [
     { image: buttonTexture1, isDark: true },  // Black/very dark
-    { image: buttonTexture2, isDark: true },  // Gold/tan dark
-    { image: buttonTexture3, isDark: true },  // Grey dark
+    { image: buttonTexture2, isDark: false }, // Gold/tan light
+    { image: buttonTexture3, isDark: false }, // Grey light
     { image: buttonTexture4, isDark: false }, // White/light
     { image: buttonTexture5, isDark: true },  // Dark grey/blue
     { image: buttonTexture6, isDark: true },  // Dark
-    { image: buttonTexture7, isDark: true },  // Dark grey
+    { image: buttonTexture7, isDark: false }, // Light grey
     { image: buttonTexture8, isDark: false }, // Light grey/white
-    { image: buttonTexture9, isDark: true },  // Dark grey
-    { image: buttonTexture10, isDark: true }, // Dark green/grey
+    { image: buttonTexture9, isDark: false }, // Light grey
+    { image: buttonTexture10, isDark: false }, // Pale grey
   ];
 
   useEffect(() => {
@@ -131,31 +131,6 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   `,
                 }}
               >
-                {/* Top glossy highlight */}
-                <div 
-                  className="absolute inset-x-0 top-0 h-[45%] rounded-full"
-                  style={{
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%)',
-                  }}
-                />
-                
-                {/* Edge rim light - top */}
-                <div 
-                  className="absolute inset-x-0 top-0 h-[3px] rounded-full"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%)',
-                    filter: 'blur(1px)',
-                  }}
-                />
-                
-                {/* Bottom depth shadow */}
-                <div 
-                  className="absolute inset-x-0 bottom-0 h-[30%] rounded-full"
-                  style={{
-                    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%)',
-                  }}
-                />
-                
                 {/* Content */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4">
                   <div 
