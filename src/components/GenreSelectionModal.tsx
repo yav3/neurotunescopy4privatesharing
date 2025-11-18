@@ -6,7 +6,7 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import pillPlatinum from '@/assets/pills/pill-platinum-1.png';
+import pillSilver from '@/assets/pills/pill-silver-metallic.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -70,15 +70,15 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="pill w-full h-[78px] rounded-[50px] relative overflow-hidden border-none transition-all duration-150 flex items-center justify-center hover:translate-y-[-3px] hover:brightness-110 active:scale-[0.96] active:brightness-90"
+                className="w-full h-[78px] rounded-[50px] relative overflow-hidden border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-115 hover:shadow-[0_8px_32px_rgba(255,255,255,0.15)] active:scale-[0.97] active:brightness-95 active:translate-y-[-2px]"
                 style={{
-                  backgroundImage: `url(${pillPlatinum})`,
-                  backgroundSize: 'cover',
+                  backgroundImage: `url(${pillSilver})`,
+                  backgroundSize: '100% 100%',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-                <span className="relative z-10 text-white font-semibold text-lg tracking-wide" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}>
+                <span className="relative z-10 text-white font-semibold text-lg tracking-wide px-8" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.6)' }}>
                   {genre.name}
                 </span>
               </button>
