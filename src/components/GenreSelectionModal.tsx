@@ -55,7 +55,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               backgroundRepeat: 'no-repeat',
             }}
           />
-          <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
+          <div className="fixed inset-0 z-40 bg-black/90 backdrop-blur-md" />
         </>
       )}
       
@@ -63,12 +63,13 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[540px] mx-auto rounded-[32px] border-0 p-12 overflow-hidden z-50"
           style={{
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-            backdropFilter: 'blur(40px) saturate(180%)',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%)',
+            backdropFilter: 'blur(60px) saturate(200%)',
             boxShadow: `
-              0 8px 32px rgba(0, 0, 0, 0.8),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2),
-              inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+              0 20px 60px rgba(0, 0, 0, 0.9),
+              0 0 100px rgba(0, 0, 0, 0.8),
+              inset 0 1px 0 rgba(255, 255, 255, 0.3),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.4)
             `,
           }}
         >
@@ -91,43 +92,54 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           </DialogHeader>
           
           <div className={`grid gap-5 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-            {genres.map((genre, index) => (
+            {genres.map((genre) => (
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[130px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-8px] hover:shadow-2xl active:scale-[0.98] group border-0"
+                className="w-full h-[120px] rounded-full relative overflow-visible cursor-pointer transition-all duration-300 hover:translate-y-[-6px] active:scale-[0.98] group border-0"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  backdropFilter: 'blur(10px)',
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%)',
+                  backdropFilter: 'blur(20px) saturate(180%)',
                   boxShadow: `
-                    inset 0 1px 1px rgba(255, 255, 255, 0.15),
-                    inset 0 -1px 1px rgba(0, 0, 0, 0.2),
-                    0 4px 20px rgba(0, 0, 0, 0.4)
+                    0 8px 32px rgba(0, 0, 0, 0.6),
+                    0 2px 8px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.25)
                   `,
                 }}
               >
-                {/* Content */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4">
-                  <div className="transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105">
-                    <Play 
-                      size={32} 
-                      fill="white"
-                      strokeWidth={0.5}
-                      className="text-white/90"
-                      style={{
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
-                      }}
-                    />
+                <div className="absolute inset-0 flex items-center justify-center gap-4 px-6">
+                  <div 
+                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
+                    style={{
+                      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))',
+                    }}
+                  >
+                    <div className="relative">
+                      <Play 
+                        size={28} 
+                        fill="rgba(0, 0, 0, 0.9)"
+                        strokeWidth={0}
+                        className="text-black"
+                        style={{
+                          filter: `
+                            drop-shadow(0 1px 1px rgba(255,255,255,0.3))
+                            drop-shadow(0 -1px 1px rgba(0,0,0,0.5))
+                            drop-shadow(0 2px 4px rgba(0,0,0,0.6))
+                          `,
+                        }}
+                      />
+                    </div>
                   </div>
                   <span 
-                    className="text-[22px] tracking-wide" 
+                    className="text-[20px] tracking-wide font-medium" 
                     style={{ 
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      background: 'linear-gradient(180deg, #FFFFFF 0%, #E8E9ED 50%, #C8CCD4 100%)',
+                      background: 'linear-gradient(180deg, #FFFFFF 0%, #E8EAED 40%, #D0D3D8 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                      filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.4))',
                     }}
                   >
                     {genre.name}
