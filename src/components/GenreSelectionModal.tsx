@@ -7,7 +7,6 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import modalBgDark from '@/assets/modal-bg-dark.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -24,11 +23,6 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const goal = GOALS_BY_ID[goalId as keyof typeof GOALS_BY_ID];
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
-  
-  const getButtonStyle = (index: number) => {
-    const isDark = index % 2 === 0;
-    return { isDark };
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -67,15 +61,17 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
       
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent 
-          className="max-w-[540px] mx-auto rounded-[28px] border border-white/[0.08] p-12 overflow-hidden z-50"
+          className="max-w-[540px] mx-auto rounded-[32px] border-0 p-12 overflow-hidden z-50"
           style={{
-            backgroundImage: `url(${modalBgDark})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            boxShadow: '0 0 60px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.02)',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            boxShadow: `
+              0 8px 32px rgba(0, 0, 0, 0.8),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.3)
+            `,
           }}
         >
-          <div className="absolute inset-0 backdrop-blur-[40px] backdrop-saturate-[180%]" style={{ background: 'rgba(10, 10, 20, 0.5)' }} />
         
         <div className="relative z-10">
           <DialogHeader className="pb-6">
@@ -94,70 +90,51 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             )}
           </DialogHeader>
           
-          <div className={`grid gap-6 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-            {genres.map((genre, index) => {
-              const { isDark } = getButtonStyle(index);
-              return (
+          <div className={`grid gap-5 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {genres.map((genre, index) => (
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98] group"
+                className="w-full h-[130px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-8px] hover:shadow-2xl active:scale-[0.98] group border-0"
                 style={{
-                  background: isDark 
-                    ? 'rgba(60, 60, 70, 0.5)' 
-                    : 'rgba(240, 240, 245, 0.4)',
-                  backdropFilter: 'blur(20px)',
-                  border: isDark
-                    ? '1.5px solid rgba(255, 255, 255, 0.15)'
-                    : '1.5px solid rgba(255, 255, 255, 0.4)',
-                  boxShadow: isDark
-                    ? `inset 0 1px 2px rgba(255, 255, 255, 0.1),
-                       inset 0 -1px 3px rgba(0, 0, 0, 0.3),
-                       0 10px 30px rgba(0, 0, 0, 0.5),
-                       0 5px 15px rgba(0, 0, 0, 0.3)`
-                    : `inset 0 1px 2px rgba(255, 255, 255, 0.5),
-                       inset 0 -1px 3px rgba(0, 0, 0, 0.1),
-                       0 10px 30px rgba(0, 0, 0, 0.3),
-                       0 5px 15px rgba(0, 0, 0, 0.2)`,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  backdropFilter: 'blur(10px)',
+                  boxShadow: `
+                    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+                    inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+                    0 4px 20px rgba(0, 0, 0, 0.4)
+                  `,
                 }}
               >
                 {/* Content */}
                 <div className="absolute inset-0 flex items-center justify-center gap-4">
-                  <div className="transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110">
+                  <div className="transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105">
                     <Play 
-                      size={36} 
-                      fill={isDark ? "white" : "black"}
+                      size={32} 
+                      fill="white"
                       strokeWidth={0.5}
-                      className={isDark ? "text-white/90" : "text-black/90"}
+                      className="text-white/90"
                       style={{
-                        filter: isDark 
-                          ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))'
-                          : 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
+                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
                       }}
                     />
                   </div>
                   <span 
-                    className="text-2xl tracking-wide font-normal" 
+                    className="text-[22px] tracking-wide" 
                     style={{ 
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      ...(isDark ? {
-                        background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
-                      } : {
-                        color: '#1a1a1a',
-                        textShadow: '0 1px 2px rgba(255,255,255,0.5)',
-                      }),
+                      background: 'linear-gradient(180deg, #FFFFFF 0%, #E8E9ED 50%, #C8CCD4 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                     }}
                   >
                     {genre.name}
                   </span>
                 </div>
               </Card>
-            );
-            })}
+            ))}
           </div>
         </div>
       </DialogContent>
