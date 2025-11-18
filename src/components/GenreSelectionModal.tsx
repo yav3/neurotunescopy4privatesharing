@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
@@ -92,7 +92,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98]"
+                className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98] group"
                 style={{
                   background: `
                     linear-gradient(180deg, 
@@ -141,9 +141,17 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                 />
                 
                 {/* Content */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center gap-4">
+                  <Play 
+                    size={40} 
+                    fill="white" 
+                    className="text-white transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110" 
+                    style={{
+                      filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))',
+                    }}
+                  />
                   <span 
-                    className="text-white font-bold text-2xl tracking-wide px-12 relative z-10" 
+                    className="text-white font-bold text-2xl tracking-wide relative z-10" 
                     style={{ 
                       textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
