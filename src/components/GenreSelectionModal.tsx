@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -22,6 +22,18 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const navigate = useNavigate();
   const goal = GOALS_BY_ID[goalId as keyof typeof GOALS_BY_ID];
   const genres = getGenreOptions(goalId);
+  const [showTitle, setShowTitle] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      const hasSeenTitle = localStorage.getItem('hasSeenGenreTitle');
+      if (!hasSeenTitle) {
+        setShowTitle(true);
+        localStorage.setItem('hasSeenGenreTitle', 'true');
+        setTimeout(() => setShowTitle(false), 5000);
+      }
+    }
+  }, [isOpen]);
 
   const handleGenreSelect = (genreId: string) => {
     navigate(`/genre/${goalId}/${genreId}`);
@@ -60,9 +72,13 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         
         <div className="relative z-10">
           <DialogHeader className="pb-6">
-            <DialogTitle className="text-xl font-semibold text-white text-shadow-[0_3px_12px_rgba(0,0,0,0.6)]">
-              Click On A Genre to Start Your Session
-            </DialogTitle>
+            {showTitle && (
+              <DialogTitle className="text-xl font-semibold text-white overflow-hidden whitespace-nowrap" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                <span className="inline-block animate-[slide-in-right_1s_ease-out]">
+                  Click On A Genre to Start Your Session
+                </span>
+              </DialogTitle>
+            )}
           </DialogHeader>
           
           <div className="space-y-7">
@@ -70,7 +86,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-[70px] relative border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] hover:drop-shadow-[0_8px_32px_rgba(255,255,255,0.2)] active:scale-[0.97] active:brightness-[0.95] active:translate-y-[-2px]"
+                className="w-full h-[140px] rounded-full relative border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] hover:drop-shadow-[0_8px_32px_rgba(255,255,255,0.2)] active:scale-[0.97] active:brightness-[0.95] active:translate-y-[-2px]"
                 style={{
                   background: 'none',
                   backgroundImage: `url('${pillSilver}')`,
@@ -82,7 +98,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   outline: 'none',
                 }}
               >
-                <span className="text-white font-bold text-2xl tracking-wide px-8" style={{ textShadow: '0 4px 20px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)' }}>
+                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 4px 20px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)' }}>
                   {genre.name}
                 </span>
               </button>
