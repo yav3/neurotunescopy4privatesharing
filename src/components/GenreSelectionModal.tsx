@@ -84,15 +84,20 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-full relative transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] active:scale-[0.97] active:translate-y-[-2px]"
+                className="w-full h-[140px] rounded-full relative transition-all duration-300 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.2] active:scale-[0.98] active:translate-y-[-2px]"
                 style={{
-                  background: 'linear-gradient(145deg, rgba(60, 70, 85, 0.4), rgba(20, 25, 35, 0.6))',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.5)',
+                  background: 'linear-gradient(165deg, rgba(25, 28, 35, 0.95) 0%, rgba(10, 12, 18, 0.98) 50%, rgba(5, 6, 10, 1) 100%)',
+                  backdropFilter: 'blur(20px) saturate(180%)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: `
+                    inset 0 1px 1px rgba(255, 255, 255, 0.12),
+                    inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+                    0 8px 32px rgba(0, 0, 0, 0.7),
+                    0 2px 8px rgba(0, 0, 0, 0.4)
+                  `,
                 }}
               >
-                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                <span className="text-white font-bold text-xl tracking-wide px-12" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,1)' }}>
                   {genre.name}
                 </span>
               </button>
