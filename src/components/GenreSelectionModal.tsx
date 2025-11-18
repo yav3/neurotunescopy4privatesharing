@@ -65,12 +65,12 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-6">
+          <div className="space-y-7">
             {genres.map((genre) => (
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[110px] rounded-[55px] relative border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] hover:drop-shadow-[0_8px_32px_rgba(255,255,255,0.2)] active:scale-[0.97] active:brightness-[0.95] active:translate-y-[-2px]"
+                className="w-full h-[140px] rounded-[70px] relative border-none transition-all duration-200 flex items-center justify-center hover:translate-y-[-4px] hover:brightness-[1.15] hover:drop-shadow-[0_8px_32px_rgba(255,255,255,0.2)] active:scale-[0.97] active:brightness-[0.95] active:translate-y-[-2px]"
                 style={{
                   background: 'none',
                   backgroundImage: `url('${pillSilver}')`,
@@ -82,7 +82,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   outline: 'none',
                 }}
               >
-                <span className="text-white font-bold text-xl tracking-wide px-8" style={{ textShadow: '0 3px 15px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8)' }}>
+                <span className="text-white font-bold text-2xl tracking-wide px-8" style={{ textShadow: '0 4px 20px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.95), 0 2px 6px rgba(0,0,0,0.9)' }}>
                   {genre.name}
                 </span>
               </button>
