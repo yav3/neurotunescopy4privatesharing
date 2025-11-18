@@ -26,12 +26,11 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      const hasSeenTitle = localStorage.getItem('hasSeenGenreTitle');
-      if (!hasSeenTitle) {
-        setShowTitle(true);
-        localStorage.setItem('hasSeenGenreTitle', 'true');
-        setTimeout(() => setShowTitle(false), 5000);
-      }
+      setShowTitle(true);
+      const timer = setTimeout(() => setShowTitle(false), 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowTitle(false);
     }
   }, [isOpen]);
 
