@@ -30,14 +30,6 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const [showTitle, setShowTitle] = useState(false);
   
   const textureImages = [metallicGlass1, metallicGlass2, metallicGlass3, metallicGlass4, metallicGlass5];
-  
-  const cardOverlays = [
-    'linear-gradient(165deg, rgba(20, 30, 48, 0.75) 0%, rgba(8, 12, 20, 0.85) 100%)',
-    'linear-gradient(165deg, rgba(28, 20, 48, 0.75) 0%, rgba(12, 8, 20, 0.85) 100%)',
-    'linear-gradient(165deg, rgba(20, 40, 48, 0.75) 0%, rgba(8, 16, 20, 0.85) 100%)',
-    'linear-gradient(165deg, rgba(35, 25, 45, 0.75) 0%, rgba(15, 10, 18, 0.85) 100%)',
-    'linear-gradient(165deg, rgba(22, 28, 45, 0.75) 0%, rgba(10, 12, 18, 0.85) 100%)',
-  ];
 
   useEffect(() => {
     if (isOpen) {
@@ -100,34 +92,43 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
-                className="w-full h-[140px] rounded-[32px] relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-8px] hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] border-2"
+                className="w-full h-[140px] rounded-[32px] relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-12px] hover:scale-[1.02] active:scale-[0.98] border-[3px]"
                 style={{
                   backgroundImage: `url(${textureImages[index % textureImages.length]})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  borderColor: 'rgba(255, 255, 255, 0.15)',
+                  borderColor: 'rgba(255, 255, 255, 0.25)',
                   boxShadow: `
-                    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-                    0 12px 48px rgba(0, 0, 0, 0.9),
-                    0 6px 16px rgba(0, 0, 0, 0.7),
-                    0 0 80px rgba(255, 255, 255, 0.03)
+                    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+                    0 20px 60px rgba(0, 0, 0, 0.95),
+                    0 10px 30px rgba(0, 0, 0, 0.8),
+                    0 5px 15px rgba(0, 0, 0, 0.7),
+                    0 0 100px rgba(0, 0, 0, 0.5)
                   `,
                 }}
               >
-                {/* Gradient overlay with unique color tint */}
+                {/* Dark overlay */}
                 <div 
                   className="absolute inset-0"
                   style={{
-                    background: cardOverlays[index % cardOverlays.length],
+                    background: 'linear-gradient(165deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%)',
                     backdropFilter: 'blur(12px) saturate(120%)',
                   }}
                 />
                 
-                {/* Glossy top highlight */}
+                {/* Strong top highlight for 3D effect */}
                 <div 
-                  className="absolute inset-x-0 top-0 h-[40%]"
+                  className="absolute inset-x-0 top-0 h-[35%]"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%)',
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%)',
+                  }}
+                />
+                
+                {/* Bottom shadow for depth */}
+                <div 
+                  className="absolute inset-x-0 bottom-0 h-[25%]"
+                  style={{
+                    background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
                   }}
                 />
                 
