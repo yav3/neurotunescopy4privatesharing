@@ -70,11 +70,11 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[540px] mx-auto rounded-[28px] border border-white/[0.08] p-12 overflow-hidden z-50"
           style={{
-            background: 'rgba(10, 10, 20, 0.25)',
-            boxShadow: '0 0 60px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.03)',
+            background: 'rgba(10, 10, 20, 0.15)',
+            boxShadow: '0 0 60px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.02)',
           }}
         >
-          <div className="absolute inset-0 backdrop-blur-[32px] backdrop-saturate-[200%]" />
+          <div className="absolute inset-0 backdrop-blur-[20px] backdrop-saturate-[180%]" />
         
         <div className="relative z-10">
           <DialogHeader className="pb-6">
@@ -94,21 +94,12 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98] group"
                 style={{
-                  background: `
-                    linear-gradient(180deg, 
-                      rgba(80, 90, 100, 0.4) 0%,
-                      rgba(40, 50, 60, 0.6) 45%,
-                      rgba(20, 25, 30, 0.8) 100%
-                    ),
-                    url(${textureImages[index % textureImages.length]})
-                  `,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundBlendMode: 'overlay, normal',
+                  background: 'rgba(0, 0, 0, 0.5)',
+                  backdropFilter: 'blur(10px)',
                   border: '1.5px solid rgba(255, 255, 255, 0.3)',
                   boxShadow: `
-                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
-                    inset 0 -6px 12px rgba(0, 0, 0, 0.6),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                    inset 0 -6px 12px rgba(0, 0, 0, 0.4),
                     0 20px 50px rgba(0, 0, 0, 0.9),
                     0 10px 25px rgba(0, 0, 0, 0.7),
                     0 0 0 1px rgba(255, 255, 255, 0.1)
@@ -119,7 +110,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                 <div 
                   className="absolute inset-x-0 top-0 h-[45%] rounded-full"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0) 100%)',
+                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%)',
                   }}
                 />
                 
