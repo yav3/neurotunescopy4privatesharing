@@ -7,11 +7,16 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import metallicGlass1 from '@/assets/textures/metallic-glass-1.png';
-import metallicGlass2 from '@/assets/textures/metallic-glass-2.png';
-import metallicGlass3 from '@/assets/textures/metallic-glass-3.png';
-import metallicGlass4 from '@/assets/textures/metallic-glass-4.png';
-import metallicGlass5 from '@/assets/textures/metallic-glass-5.png';
+import buttonTexture1 from '@/assets/textures/button-texture-1.png';
+import buttonTexture2 from '@/assets/textures/button-texture-2.png';
+import buttonTexture3 from '@/assets/textures/button-texture-3.png';
+import buttonTexture4 from '@/assets/textures/button-texture-4.png';
+import buttonTexture5 from '@/assets/textures/button-texture-5.png';
+import buttonTexture6 from '@/assets/textures/button-texture-6.png';
+import buttonTexture7 from '@/assets/textures/button-texture-7.png';
+import buttonTexture8 from '@/assets/textures/button-texture-8.png';
+import buttonTexture9 from '@/assets/textures/button-texture-9.png';
+import buttonTexture10 from '@/assets/textures/button-texture-10.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -29,7 +34,18 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
   
-  const textureImages = [metallicGlass1, metallicGlass2, metallicGlass3, metallicGlass4, metallicGlass5];
+  const buttonTextures = [
+    { image: buttonTexture1, isDark: true },
+    { image: buttonTexture2, isDark: true },
+    { image: buttonTexture3, isDark: false },
+    { image: buttonTexture4, isDark: true },
+    { image: buttonTexture5, isDark: false },
+    { image: buttonTexture6, isDark: true },
+    { image: buttonTexture7, isDark: true },
+    { image: buttonTexture8, isDark: false },
+    { image: buttonTexture9, isDark: true },
+    { image: buttonTexture10, isDark: false },
+  ];
 
   useEffect(() => {
     if (isOpen) {
@@ -93,15 +109,18 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
             )}
           </DialogHeader>
           
-          <div className="space-y-6">
-            {genres.map((genre, index) => (
+          <div className={`grid gap-6 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {genres.map((genre, index) => {
+              const texture = buttonTextures[index % buttonTextures.length];
+              return (
               <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[140px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-10px] hover:brightness-110 active:scale-[0.98] group"
                 style={{
-                  background: 'rgba(0, 0, 0, 0.5)',
-                  backdropFilter: 'blur(10px)',
+                  backgroundImage: `url(${texture.image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                   border: '1.5px solid rgba(255, 255, 255, 0.3)',
                   boxShadow: `
                     inset 0 2px 4px rgba(255, 255, 255, 0.3),
@@ -156,21 +175,21 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                     />
                   </div>
                   <span 
-                    className="text-[#C0C5CE] text-2xl tracking-wide relative z-10" 
+                    className="text-2xl tracking-wide relative z-10" 
                     style={{ 
-                      textShadow: '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)',
+                      textShadow: texture.isDark 
+                        ? '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)'
+                        : '0 1px 2px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.4)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
+                      color: texture.isDark ? '#C0C5CE' : '#000000',
                     }}
                   >
                     {genre.name}
                   </span>
                 </div>
               </Card>
-            ))}
+            );
+            })}
           </div>
         </div>
       </DialogContent>
