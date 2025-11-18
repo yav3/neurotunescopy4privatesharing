@@ -35,16 +35,16 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const [showTitle, setShowTitle] = useState(false);
   
   const buttonTextures = [
-    { image: buttonTexture1, isDark: true },
-    { image: buttonTexture2, isDark: true },
-    { image: buttonTexture3, isDark: false },
-    { image: buttonTexture4, isDark: true },
-    { image: buttonTexture5, isDark: false },
-    { image: buttonTexture6, isDark: true },
-    { image: buttonTexture7, isDark: true },
-    { image: buttonTexture8, isDark: false },
-    { image: buttonTexture9, isDark: true },
-    { image: buttonTexture10, isDark: false },
+    { image: buttonTexture1, isDark: true },  // Black/very dark
+    { image: buttonTexture2, isDark: true },  // Gold/tan dark
+    { image: buttonTexture3, isDark: true },  // Grey dark
+    { image: buttonTexture4, isDark: false }, // White/light
+    { image: buttonTexture5, isDark: true },  // Dark grey/blue
+    { image: buttonTexture6, isDark: true },  // Dark
+    { image: buttonTexture7, isDark: true },  // Dark grey
+    { image: buttonTexture8, isDark: false }, // Light grey/white
+    { image: buttonTexture9, isDark: true },  // Dark grey
+    { image: buttonTexture10, isDark: true }, // Dark green/grey
   ];
 
   useEffect(() => {
@@ -181,7 +181,14 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                         ? '0 1px 2px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.6)'
                         : '0 1px 2px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.4)',
                       fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: texture.isDark ? '#C0C5CE' : '#000000',
+                      ...(texture.isDark ? {
+                        background: 'linear-gradient(180deg, #E8E9ED 0%, #B8BCC5 50%, #9CA0A8 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      } : {
+                        color: '#000000',
+                      }),
                     }}
                   >
                     {genre.name}
