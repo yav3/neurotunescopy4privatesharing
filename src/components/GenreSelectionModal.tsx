@@ -7,6 +7,10 @@ import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
 import goalSelectionBg from '@/assets/goal-selection-bg.gif';
+import genreBg1 from '@/assets/genre-bg-1.png';
+import genreBg2 from '@/assets/genre-bg-2.png';
+import genreBg3 from '@/assets/genre-bg-3.png';
+import genreBg4 from '@/assets/genre-bg-4.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -23,6 +27,8 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const goal = GOALS_BY_ID[goalId as keyof typeof GOALS_BY_ID];
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
+  
+  const genreBackgrounds = [genreBg1, genreBg2, genreBg3, genreBg4];
 
   useEffect(() => {
     if (isOpen) {
@@ -89,13 +95,15 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           </DialogHeader>
           
           <div className="flex flex-col gap-4">
-            {genres.map((genre) => (
+            {genres.map((genre, index) => (
               <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[56px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-1px] active:scale-[0.98] group border-0"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(70, 75, 80, 0.35) 0%, rgba(55, 60, 65, 0.4) 100%)',
+                  backgroundImage: `url(${genreBackgrounds[index % genreBackgrounds.length]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                   backdropFilter: 'blur(60px) saturate(160%)',
                   boxShadow: `
                     0 0 0 0.5px rgba(255, 255, 255, 0.12),
