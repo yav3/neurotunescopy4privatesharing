@@ -51,21 +51,7 @@ export function SignupForm({ onToggleMode }: SignupFormProps) {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <div 
-          className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4"
-          style={{
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(20px)',
-            boxShadow: `
-              0 0 0 1px rgba(255, 255, 255, 0.3),
-              inset 0 2px 8px rgba(255, 255, 255, 0.1),
-              inset 0 -2px 8px rgba(0, 0, 0, 0.5)
-            `,
-          }}
-        >
-          <UserPlus className="w-8 h-8" style={{ color: '#C0C0C8' }} />
-        </div>
-        <h2 className="text-3xl font-bold" style={{ color: '#C0C0C8' }}>Create Account</h2>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: '#C0C0C8' }}>Create Account</h2>
         <p style={{ color: '#C0C0C8' }}>Join our platform</p>
       </div>
 

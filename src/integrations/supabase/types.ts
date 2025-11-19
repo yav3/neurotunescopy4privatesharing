@@ -1815,11 +1815,13 @@ export type Database = {
       }
       music_tracks: {
         Row: {
+          album: string | null
           artist: string
           artwork_semantic_label: string | null
           artwork_url: string | null
           bucket_name: string
           created_at: string | null
+          duration: number | null
           duration_display: string
           duration_seconds: number
           file_path: string
@@ -1827,18 +1829,23 @@ export type Database = {
           has_spatial_audio: boolean | null
           id: string
           is_new: boolean | null
+          playlist_id: string | null
           spatial_audio_profiles:
             | Database["public"]["Enums"]["spatial_audio_profile"][]
             | null
+          storage_bucket: string | null
+          storage_path: string | null
           title: string
           updated_at: string | null
         }
         Insert: {
+          album?: string | null
           artist: string
           artwork_semantic_label?: string | null
           artwork_url?: string | null
           bucket_name: string
           created_at?: string | null
+          duration?: number | null
           duration_display: string
           duration_seconds: number
           file_path: string
@@ -1846,18 +1853,23 @@ export type Database = {
           has_spatial_audio?: boolean | null
           id?: string
           is_new?: boolean | null
+          playlist_id?: string | null
           spatial_audio_profiles?:
             | Database["public"]["Enums"]["spatial_audio_profile"][]
             | null
+          storage_bucket?: string | null
+          storage_path?: string | null
           title: string
           updated_at?: string | null
         }
         Update: {
+          album?: string | null
           artist?: string
           artwork_semantic_label?: string | null
           artwork_url?: string | null
           bucket_name?: string
           created_at?: string | null
+          duration?: number | null
           duration_display?: string
           duration_seconds?: number
           file_path?: string
@@ -1865,9 +1877,12 @@ export type Database = {
           has_spatial_audio?: boolean | null
           id?: string
           is_new?: boolean | null
+          playlist_id?: string | null
           spatial_audio_profiles?:
             | Database["public"]["Enums"]["spatial_audio_profile"][]
             | null
+          storage_bucket?: string | null
+          storage_path?: string | null
           title?: string
           updated_at?: string | null
         }
@@ -3421,6 +3436,7 @@ export type Database = {
       tracks: {
         Row: {
           ai_score: number | null
+          album: string | null
           album_id: string | null
           analysis_status: string | null
           analysis_timestamp: string | null
@@ -3440,6 +3456,7 @@ export type Database = {
           display_title: string | null
           dominance: number | null
           duration: number | null
+          duration_seconds: number | null
           dynamic_complexity: number | null
           dynamic_features: Json | null
           dynamic_range: number | null
@@ -3473,6 +3490,7 @@ export type Database = {
           original_filename: string | null
           pitch_mean: number | null
           play_count: number | null
+          playlist_id: string | null
           psychoacoustic_features: Json | null
           rhythmic_complexity: number | null
           rhythmic_features: Json | null
@@ -3487,9 +3505,11 @@ export type Database = {
           spectral_rolloff: number | null
           storage_bucket: string | null
           storage_key: string | null
+          storage_path: string | null
           structural_features: Json | null
           subtitle: string | null
           tempo_stability: number | null
+          therapeutic_category: string | null
           therapeutic_effectiveness: number | null
           therapeutic_use: string[] | null
           title: string
@@ -3504,6 +3524,7 @@ export type Database = {
         }
         Insert: {
           ai_score?: number | null
+          album?: string | null
           album_id?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
@@ -3523,6 +3544,7 @@ export type Database = {
           display_title?: string | null
           dominance?: number | null
           duration?: number | null
+          duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
@@ -3556,6 +3578,7 @@ export type Database = {
           original_filename?: string | null
           pitch_mean?: number | null
           play_count?: number | null
+          playlist_id?: string | null
           psychoacoustic_features?: Json | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
@@ -3570,9 +3593,11 @@ export type Database = {
           spectral_rolloff?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
+          storage_path?: string | null
           structural_features?: Json | null
           subtitle?: string | null
           tempo_stability?: number | null
+          therapeutic_category?: string | null
           therapeutic_effectiveness?: number | null
           therapeutic_use?: string[] | null
           title: string
@@ -3587,6 +3612,7 @@ export type Database = {
         }
         Update: {
           ai_score?: number | null
+          album?: string | null
           album_id?: string | null
           analysis_status?: string | null
           analysis_timestamp?: string | null
@@ -3606,6 +3632,7 @@ export type Database = {
           display_title?: string | null
           dominance?: number | null
           duration?: number | null
+          duration_seconds?: number | null
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
@@ -3639,6 +3666,7 @@ export type Database = {
           original_filename?: string | null
           pitch_mean?: number | null
           play_count?: number | null
+          playlist_id?: string | null
           psychoacoustic_features?: Json | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
@@ -3653,9 +3681,11 @@ export type Database = {
           spectral_rolloff?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
+          storage_path?: string | null
           structural_features?: Json | null
           subtitle?: string | null
           tempo_stability?: number | null
+          therapeutic_category?: string | null
           therapeutic_effectiveness?: number | null
           therapeutic_use?: string[] | null
           title?: string
@@ -4139,24 +4169,45 @@ export type Database = {
       }
       user_favorites: {
         Row: {
+          added_at: string | null
+          artist: string | null
           created_at: string | null
           id: string
-          track_id: string
+          last_played_at: string | null
+          play_count: number | null
+          storage_bucket: string | null
+          storage_path: string | null
+          track_id: string | null
           track_name: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
+          added_at?: string | null
+          artist?: string | null
           created_at?: string | null
           id?: string
-          track_id: string
+          last_played_at?: string | null
+          play_count?: number | null
+          storage_bucket?: string | null
+          storage_path?: string | null
+          track_id?: string | null
           track_name?: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
+          added_at?: string | null
+          artist?: string | null
           created_at?: string | null
           id?: string
-          track_id?: string
+          last_played_at?: string | null
+          play_count?: number | null
+          storage_bucket?: string | null
+          storage_path?: string | null
+          track_id?: string | null
           track_name?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -4538,6 +4589,46 @@ export type Database = {
       }
     }
     Views: {
+      enhanced_user_favorites: {
+        Row: {
+          added_at: string | null
+          album: string | null
+          artist: string | null
+          artwork_url: string | null
+          created_at: string | null
+          duration: number | null
+          duration_seconds: number | null
+          genre: string | null
+          id: string | null
+          last_played_at: string | null
+          play_count: number | null
+          playlist_id: string | null
+          storage_bucket: string | null
+          storage_path: string | null
+          title: string | null
+          track_artist: string | null
+          track_id: string | null
+          track_name: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
@@ -4619,6 +4710,10 @@ export type Database = {
       add_to_working_collection: {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
+      }
+      add_user_favorite_unified: {
+        Args: { p_track_identifier: string; p_user_id: string }
+        Returns: string
       }
       analyze_session_coverage: {
         Args: never
@@ -4927,6 +5022,11 @@ export type Database = {
         Returns: Record<string, unknown>[]
       }
       increment_play_count: { Args: { track_id: string }; Returns: undefined }
+      is_track_favorited_unified: {
+        Args: { p_track_identifier: string; p_user_id: string }
+        Returns: boolean
+      }
+      is_valid_uuid: { Args: { input_text: string }; Returns: boolean }
       is_vip_member: { Args: { _user_id?: string }; Returns: boolean }
       mark_likely_missing_tracks: { Args: never; Returns: number }
       mark_track_as_missing: {
@@ -4960,6 +5060,23 @@ export type Database = {
         }[]
       }
       range: { Args: never; Returns: string[] }
+      remove_user_favorite_unified: {
+        Args: { p_track_identifier: string; p_user_id: string }
+        Returns: boolean
+      }
+      resolve_track_info_unified: {
+        Args: { p_track_identifier: string }
+        Returns: {
+          album: string
+          artist: string
+          duration_seconds: number
+          genre: string
+          storage_bucket: string
+          storage_path: string
+          track_id: string
+          track_title: string
+        }[]
+      }
       safe_cast_to_music_genre: {
         Args: { text_value: string }
         Returns: Database["public"]["Enums"]["music_genre"]
