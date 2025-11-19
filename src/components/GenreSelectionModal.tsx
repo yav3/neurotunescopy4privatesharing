@@ -94,10 +94,10 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   <Play 
                     size={32} 
                     fill="#050f0f"
-                    strokeWidth={2}
+                    strokeWidth={1}
                     className="text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
                     style={{
-                      filter: 'drop-shadow(0 2px 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8))',
+                      filter: 'drop-shadow(0 1px 2px rgba(255, 255, 255, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6))',
                     }}
                   />
                   <span 
