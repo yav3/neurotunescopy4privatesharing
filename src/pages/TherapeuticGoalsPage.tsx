@@ -298,72 +298,44 @@ const TherapeuticGoalsPage = () => {
           <div>
             <h2 className="text-sm sm:text-base font-medium text-foreground mb-6 leading-tight" style={{ fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif' }}>Personalize Your Goal</h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {therapeuticGoals.map((goal) => {
+                const isPinned = isGoalPinned(goal.id);
                 return (
-                  <button
-                    key={goal.id}
-                    onClick={() => handleGoalSelect(goal.id)}
-                    className="relative h-[72px] sm:h-20 rounded-full cursor-pointer group transition-all duration-300 hover:translate-y-[-2px] active:scale-[0.98] overflow-visible"
-                    style={{
-                      background: 'rgba(0, 0, 0, 0.7)',
-                      backdropFilter: 'blur(20px)',
-                      boxShadow: `
-                        0 0 0 1px rgba(255, 255, 255, 0.25),
-                        inset 0 1px 4px rgba(255, 255, 255, 0.1),
-                        inset 0 -1px 4px rgba(0, 0, 0, 0.5),
-                        0 4px 16px rgba(0, 0, 0, 0.6)
-                      `,
-                    }}
-                  >
-                    <div className="absolute inset-0 flex items-center justify-between px-5 sm:px-6">
-                      <span 
-                        className="text-[15px] sm:text-[16px] font-medium tracking-wide text-left flex-1" 
-                        style={{ 
-                          fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                          color: '#C0C0C8',
-                          textShadow: '0 1px 2px rgba(0,0,0,0.8)',
-                        }}
-                      >
-                        {goal.name}
-                      </span>
+                  <div key={goal.id} className="relative">
+                    <Card 
+                      className="relative overflow-hidden cursor-pointer group transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] bg-card border-0 aspect-[4/3]"
+                      onClick={() => handleGoalSelect(goal.id)}
+                    >
+                      <img 
+                        src={showNatureCards ? goal.natureImage : goal.abstractImage}
+                        alt={goal.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                       
-                      <div 
-                        className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <h3 className="text-white font-medium text-sm leading-tight drop-shadow-lg">
+                          {goal.name}
+                        </h3>
+                      </div>
+                      
+                      <button
                         onClick={(e) => {
                           e.stopPropagation();
                           togglePinGoal(goal.id);
                         }}
+                        className={cn(
+                          "absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity",
+                          isPinned ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                        )}
                       >
-                        <div 
-                          className={cn(
-                            "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-300",
-                            isGoalPinned(goal.id) ? "opacity-100" : "opacity-60 hover:opacity-100"
-                          )}
-                          style={{
-                            background: 'rgba(0, 0, 0, 0.6)',
-                            backdropFilter: 'blur(10px)',
-                            boxShadow: `
-                              0 0 0 1px rgba(255, 255, 255, 0.2),
-                              inset 0 1px 2px rgba(255, 255, 255, 0.1),
-                              0 2px 8px rgba(0, 0, 0, 0.4)
-                            `,
-                          }}
-                        >
-                          <Pin 
-                            className={cn(
-                              "w-4 h-4 transition-all",
-                              isGoalPinned(goal.id) && "fill-[#C0C0C8]"
-                            )}
-                            style={{ 
-                              color: '#C0C0C8',
-                              filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.8))'
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </button>
+                        <Pin 
+                          className={cn("w-3.5 h-3.5 text-white", isPinned && "fill-white")}
+                        />
+                      </button>
+                    </Card>
+                  </div>
                 );
               })}
             </div>
