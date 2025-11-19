@@ -52,7 +52,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[540px] mx-auto rounded-[32px] border-0 p-12 overflow-hidden z-50"
           style={{
-            background: 'rgba(5, 20, 15, 0.85)',
+            background: 'rgba(0, 0, 0, 0.95)',
             backdropFilter: 'blur(40px)',
             boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.1)',
           }}
@@ -77,62 +77,53 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           
           <div className={`grid gap-5 ${genres.length > 3 ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {genres.map((genre) => (
-              <button
+              <Card
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[120px] rounded-full relative overflow-visible cursor-pointer transition-all duration-300 hover:translate-y-[-4px] active:scale-[0.98] group"
                 style={{
-                  background: 'rgba(5, 20, 15, 0.7)',
+                  background: 'rgba(0, 0, 0, 0.8)',
                   backdropFilter: 'blur(20px)',
                   border: 'none',
                   boxShadow: `
-                    0 0 0 1px rgba(255, 255, 255, 0.15),
-                    inset 0 2px 6px rgba(255, 255, 255, 0.08),
-                    inset 0 -2px 6px rgba(0, 0, 0, 0.6),
-                    0 8px 24px rgba(0, 0, 0, 0.5)
+                    0 0 0 1px rgba(255, 255, 255, 0.3),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.1),
+                    inset 0 -2px 8px rgba(0, 0, 0, 0.5),
+                    0 8px 32px rgba(0, 0, 0, 0.6)
                   `,
                 }}
               >
-                <div className="absolute inset-0 flex items-center justify-between px-8">
-                  <span 
-                    className="text-lg font-medium tracking-wide text-left flex-1"
-                    style={{
-                      fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: '#C0C0C8',
-                      textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-                    }}
-                  >
-                    {genre.name}
-                  </span>
-                  
+                <div className="absolute inset-0 flex items-center justify-center gap-4 px-6">
                   <div 
-                    className="flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
+                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
                   >
-                    <div 
-                      className="w-12 h-12 rounded-full flex items-center justify-center"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.5)',
-                        backdropFilter: 'blur(10px)',
-                        boxShadow: `
-                          0 0 0 1px rgba(255, 255, 255, 0.15),
-                          inset 0 1px 2px rgba(255, 255, 255, 0.1),
-                          0 2px 8px rgba(0, 0, 0, 0.4)
-                        `,
-                      }}
-                    >
+                    <div className="relative">
                       <Play 
-                        size={20} 
-                        fill="#C0C0C8"
+                        size={32} 
+                        fill="rgba(192, 192, 200, 1)"
                         strokeWidth={0}
-                        className="text-[#C0C0C8] translate-x-[1px]"
+                        className="text-[#C0C0C8]"
                         style={{
-                          filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'
+                          filter: `
+                            drop-shadow(0 1px 2px rgba(255, 255, 255, 0.3))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))
+                          `,
                         }}
                       />
                     </div>
                   </div>
+                  <span 
+                    className="text-[20px] tracking-wide font-medium" 
+                    style={{ 
+                      fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
+                      color: '#C0C0C8',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.8)',
+                    }}
+                  >
+                    {genre.name}
+                  </span>
                 </div>
-              </button>
+              </Card>
             ))}
           </div>
         </div>
