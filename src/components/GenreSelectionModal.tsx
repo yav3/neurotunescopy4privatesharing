@@ -86,9 +86,9 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   backdropFilter: 'blur(30px)',
                   border: 'none',
                   boxShadow: `
-                    0 0 0 0.5px rgba(255, 255, 255, 0.25),
-                    inset 0 1px 12px rgba(255, 255, 255, 0.06),
-                    inset 0 -1px 8px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.5),
+                    inset 0 2px 16px rgba(255, 255, 255, 0.12),
+                    inset 0 -2px 12px rgba(0, 0, 0, 0.5),
                     0 12px 40px rgba(0, 0, 0, 0.7)
                   `,
                 }}
@@ -102,9 +102,9 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                       borderRadius: '8px',
                       padding: '8px 10px',
                       boxShadow: `
-                        0 0 0 0.5px rgba(255, 255, 255, 0.25),
-                        inset 0 1px 6px rgba(255, 255, 255, 0.08),
-                        inset 0 -1px 4px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.4),
+                        inset 0 1px 8px rgba(255, 255, 255, 0.15),
+                        inset 0 -1px 6px rgba(0, 0, 0, 0.4),
                         0 6px 16px rgba(0, 0, 0, 0.5)
                       `,
                     }}
