@@ -64,11 +64,11 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[520px] mx-auto rounded-[40px] border-0 p-10 overflow-hidden z-50"
           style={{
-            background: 'linear-gradient(135deg, rgba(20, 24, 28, 0.45) 0%, rgba(14, 18, 22, 0.55) 100%)',
+            background: 'linear-gradient(135deg, rgba(20, 24, 28, 0.25) 0%, rgba(14, 18, 22, 0.35) 100%)',
             backdropFilter: 'blur(100px) saturate(180%)',
             boxShadow: `
-              0 0 0 1px rgba(255, 255, 255, 0.06),
-              inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+              0 0 0 1px rgba(255, 255, 255, 0.04),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
               0 30px 80px -15px rgba(0, 0, 0, 0.85),
               0 0 60px -15px rgba(50, 60, 70, 0.08)
             `,
@@ -106,8 +106,8 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                   backgroundPosition: 'center',
                   backdropFilter: 'blur(60px) saturate(160%)',
                   boxShadow: `
-                    0 0 0 0.5px rgba(255, 255, 255, 0.12),
-                    inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+                    0 0 0 0.5px rgba(255, 255, 255, 0.18),
+                    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
                     inset 0 -1px 0 0 rgba(0, 0, 0, 0.25),
                     0 6px 20px -4px rgba(0, 0, 0, 0.6)
                   `,
