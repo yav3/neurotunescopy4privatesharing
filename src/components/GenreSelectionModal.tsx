@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Card } from '@/components/ui/card';
+
 import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
@@ -90,7 +90,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
           
           <div className="flex flex-col gap-4">
             {genres.map((genre) => (
-              <Card
+              <button
                 key={genre.id}
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[56px] rounded-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:translate-y-[-1px] active:scale-[0.98] group border-0"
@@ -140,7 +140,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                     {genre.name}
                   </span>
                 </div>
-              </Card>
+              </button>
             ))}
           </div>
         </div>
