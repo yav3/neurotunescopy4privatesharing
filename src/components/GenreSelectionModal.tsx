@@ -52,7 +52,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
         <DialogContent 
           className="max-w-[540px] mx-auto rounded-[32px] border-0 p-12 overflow-hidden z-50"
           style={{
-            background: 'rgba(5, 15, 15, 0.85)',
+            background: 'rgba(5, 15, 15, 0.5)',
             backdropFilter: 'blur(60px)',
             boxShadow: '0 0 0 0.5px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.8)',
           }}
@@ -82,45 +82,24 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
                 onClick={() => handleGenreSelect(genre.id)}
                 className="w-full h-[120px] rounded-full relative overflow-visible cursor-pointer transition-all duration-300 hover:translate-y-[-4px] active:scale-[0.98] group"
                 style={{
-                  background: 'rgba(5, 15, 15, 0.4)',
-                  backdropFilter: 'blur(30px)',
+                  background: '#050f0f',
                   border: 'none',
                   boxShadow: `
                     0 0 0 1px rgba(255, 255, 255, 0.5),
-                    inset 0 2px 16px rgba(255, 255, 255, 0.12),
-                    inset 0 -2px 12px rgba(0, 0, 0, 0.5),
                     0 12px 40px rgba(0, 0, 0, 0.7)
                   `,
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center gap-4 px-6">
-                  <div 
-                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
+                  <Play 
+                    size={32} 
+                    fill="#ffffff"
+                    strokeWidth={0}
+                    className="text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105"
                     style={{
-                      background: 'rgba(5, 15, 15, 0.6)',
-                      backdropFilter: 'blur(20px)',
-                      borderRadius: '8px',
-                      padding: '8px 10px',
-                      boxShadow: `
-                        0 0 0 1px rgba(255, 255, 255, 0.4),
-                        inset 0 1px 8px rgba(255, 255, 255, 0.15),
-                        inset 0 -1px 6px rgba(0, 0, 0, 0.4),
-                        0 6px 16px rgba(0, 0, 0, 0.5)
-                      `,
+                      filter: 'drop-shadow(0 1px 3px rgba(255, 255, 255, 0.4))',
                     }}
-                  >
-                    <div className="relative">
-                      <Play 
-                        size={28} 
-                        fill="#050f0f"
-                        strokeWidth={0}
-                        className="text-[#050f0f]"
-                        style={{
-                          filter: 'drop-shadow(0 1px 3px rgba(255, 255, 255, 0.4))',
-                        }}
-                      />
-                    </div>
-                  </div>
+                  />
                   <span 
                     className="text-[20px] tracking-wide font-medium" 
                     style={{ 
