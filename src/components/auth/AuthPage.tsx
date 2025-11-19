@@ -34,12 +34,8 @@ function AuthPageContent({ onBack }: AuthPageProps) {
 
   return (
       <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Animated gradient background */}
+        {/* Pure black background */}
         <div className="absolute inset-0 bg-black" />
-        
-        {/* Ambient light effect */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-gentle-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-gentle-float" style={{ animationDelay: '2s' }} />
         
         {onBack && (
           <Button
@@ -53,9 +49,19 @@ function AuthPageContent({ onBack }: AuthPageProps) {
         )}
         
         {/* Glass morphism auth card */}
-        <div className="relative z-40 bg-black/60 backdrop-blur-xl rounded-3xl p-8 w-full max-w-md border border-white/20 shadow-glass-enhanced">
-          {/* Subtle inner glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 rounded-3xl pointer-events-none" />
+        <div 
+          className="relative z-40 rounded-3xl p-8 w-full max-w-md"
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(20px)',
+            boxShadow: `
+              0 0 0 1px rgba(255, 255, 255, 0.3),
+              inset 0 2px 8px rgba(255, 255, 255, 0.1),
+              inset 0 -2px 8px rgba(0, 0, 0, 0.5),
+              0 8px 32px rgba(0, 0, 0, 0.6)
+            `,
+          }}
+        >
           
           <div className="relative">
             {isLoginMode ? (
