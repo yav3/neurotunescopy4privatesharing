@@ -52,6 +52,7 @@ import Showcase from "./pages/Showcase";
 import Support from "./pages/Support";
 import HowItWorks from "./pages/HowItWorks";
 import Demo from "./pages/Demo";
+import { BusinessType } from "./pages/BusinessType";
 
 const queryClient = new QueryClient();
 
@@ -126,6 +127,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/demo" element={<Demo />} />
