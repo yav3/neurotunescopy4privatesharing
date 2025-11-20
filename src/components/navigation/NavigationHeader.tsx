@@ -62,9 +62,9 @@ export const NavigationHeader = () => {
       {/* Desktop Navigation */}
       <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 relative">
         <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center invisible">
+          <Link to="/" className="flex items-center">
             <Plus 
-              className="w-10 h-10" 
+              className="w-10 h-10 text-primary" 
               strokeWidth={1.5}
             />
           </Link>
@@ -155,23 +155,6 @@ export const NavigationHeader = () => {
             Pricing
           </Link>
         </div>
-
-        {/* Centered Company Name */}
-        <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-          <Plus 
-            className="w-10 h-10" 
-            strokeWidth={1.5}
-            style={{
-              background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
-            }}
-          />
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-            NeuroTunes
-          </span>
-        </Link>
 
         <div className="flex items-center gap-4">
           <Link to="/auth" className="text-base hover:text-primary transition-colors">
