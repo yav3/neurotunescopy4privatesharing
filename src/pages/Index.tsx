@@ -402,11 +402,12 @@ const Index = () => {
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
-                <div className="relative rounded-[3rem] overflow-hidden border border-white/10 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 p-2 backdrop-blur-sm">
+                <div className="relative rounded-[3rem] overflow-hidden border border-white/10 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 p-2 backdrop-blur-sm aspect-[3/4]">
                   <img 
                     src={ladyHeadphones} 
                     alt="Woman listening to therapeutic music with headphones"
-                    className="w-full h-auto rounded-[2.5rem] object-cover"
+                    className="w-full h-full object-cover object-left"
+                    style={{ objectPosition: 'left center' }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-[2.5rem]" />
                 </div>
