@@ -133,27 +133,120 @@ const isGoalCard = (card: CarouselCard): card is TherapeuticGoal => {
 
 export const BenefitsCarousel = () => {
   const featuredGoals = THERAPEUTIC_GOALS.slice(0, 6);
-  
-  // Combine info cards and therapeutic goals
-  const allCards: CarouselCard[] = [...infoCards, ...featuredGoals];
 
   return (
-    <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
-      
-      <div className="w-full max-w-7xl mx-auto relative z-10">
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-6">
-            {allCards.map((card, index) => {
-              const isGoal = isGoalCard(card);
-              
-              return (
+    <>
+      {/* Built on Science & Excellence Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center py-24 px-6 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
+        
+        <div className="w-full max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 
+              className="text-5xl lg:text-6xl font-headers font-semibold mb-6"
+              style={{ 
+                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Built on Science & Excellence
+            </h2>
+            <p className="text-xl lg:text-2xl font-body text-white/70">
+              Our platform combines cutting-edge AI with decades of music therapy research
+            </p>
+          </div>
+
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-6">
+              {infoCards.map((card, index) => (
+                <CarouselItem key={index} className="pl-6 md:basis-1/2 lg:basis-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="h-full"
+                  >
+                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm h-full flex flex-col p-6">
+                      <div 
+                        className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4"
+                      >
+                        <card.icon className="h-8 w-8 text-white" />
+                      </div>
+
+                      {card.subtitle && (
+                        <p className="text-sm font-body text-white/60 text-center mb-2">
+                          {card.subtitle}
+                        </p>
+                      )}
+
+                      <h3 
+                        className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                        style={{ 
+                          background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}
+                      >
+                        {card.title}
+                      </h3>
+
+                      {card.description && (
+                        <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
+                          {card.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4" />
+            <CarouselNext className="right-4" />
+          </Carousel>
+        </div>
+      </section>
+
+      {/* Featured Sessions Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center py-24 px-6 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
+        
+        <div className="w-full max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 
+              className="text-5xl lg:text-6xl font-headers font-semibold mb-6"
+              style={{ 
+                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Featured Sessions
+            </h2>
+            <p className="text-xl lg:text-2xl font-body text-white/70">
+              Discover our therapeutic music programs
+            </p>
+          </div>
+
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-6">
+              {featuredGoals.map((goal, index) => (
                 <CarouselItem key={index} className="pl-6 md:basis-1/2 lg:basis-1/3">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -163,77 +256,39 @@ export const BenefitsCarousel = () => {
                     className="h-full"
                   >
                     <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm h-full flex flex-col">
-                      {isGoal ? (
-                        // Therapeutic Goal Card
-                        <>
-                          <div className="aspect-square relative">
-                            <img 
-                              src={card.artwork} 
-                              alt={card.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="p-6 flex-1 flex flex-col justify-center">
-                            <h3 
-                              className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
-                              style={{ 
-                                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text',
-                              }}
-                            >
-                              {card.name}
-                            </h3>
-                            <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
-                              {card.description}
-                            </p>
-                          </div>
-                        </>
-                      ) : (
-                        // Info Card
-                        <div className="p-6 flex-1 flex flex-col justify-center">
-                          <div 
-                            className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4"
-                          >
-                            <card.icon className="h-8 w-8 text-white" />
-                          </div>
-
-                          {card.subtitle && (
-                            <p className="text-sm font-body text-white/60 text-center mb-2">
-                              {card.subtitle}
-                            </p>
-                          )}
-
-                          <h3 
-                            className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
-                            style={{ 
-                              background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                              WebkitBackgroundClip: 'text',
-                              WebkitTextFillColor: 'transparent',
-                              backgroundClip: 'text',
-                            }}
-                          >
-                            {card.title}
-                          </h3>
-
-                          {card.description && (
-                            <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
-                              {card.description}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                      <div className="aspect-square relative">
+                        <img 
+                          src={goal.artwork} 
+                          alt={goal.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-6 flex-1 flex flex-col justify-center">
+                        <h3 
+                          className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                          style={{ 
+                            background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          {goal.name}
+                        </h3>
+                        <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
+                          {goal.description}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
-        </Carousel>
-      </div>
-    </section>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4" />
+            <CarouselNext className="right-4" />
+          </Carousel>
+        </div>
+      </section>
+    </>
   );
 };
