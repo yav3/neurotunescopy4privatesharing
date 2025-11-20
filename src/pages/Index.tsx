@@ -27,7 +27,7 @@ import boostCard from '../assets/boost-button-bg.png';
 import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
 import premiumDarkBg from '../assets/premium-dark-bg.png';
-import staticBg from '../assets/static-bg-new.png';
+import staticBg from '../assets/static-bg.png';
 import ladyHeadphones from '../assets/lady-headphones.png';
 import landingBg from '../assets/landing-bg.gif';
 
