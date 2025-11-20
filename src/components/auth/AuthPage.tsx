@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { LoginForm } from './LoginForm';
 import { SignupForm } from './SignupForm';
 import { AuthProvider, useAuthContext } from './AuthProvider';
+import { RegistrationChatbot } from './RegistrationChatbot';
 
 interface AuthPageProps {
   onBack?: () => void;
@@ -71,6 +72,7 @@ function AuthPageContent({ onBack }: AuthPageProps) {
             )}
           </div>
         </div>
+        <RegistrationChatbot />
       </div>
   );
 }
