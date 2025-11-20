@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const { error } = await resend.emails.send({
-      from: 'NeuroTunes <onboarding@resend.dev>',
+      from: 'NeuroTunes <updates@updates.neurotunes.app>',
       to: [to],
       subject,
       html,
