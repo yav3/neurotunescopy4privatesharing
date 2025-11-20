@@ -110,14 +110,19 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <Link to="/auth">
-                <Button size="lg" className="px-8 py-6 text-lg bg-primary hover:bg-primary/90 rounded-xl">
-                  Get Started
-                </Button>
-              </Link>
-              <Link to="/how-it-works">
+              <Button
+                size="lg"
+                onClick={() => {
+                  const goalsSection = document.getElementById('featured-goals');
+                  goalsSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-8 py-6 text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white rounded-xl"
+              >
+                Listen Now
+              </Button>
+              <Link to="/demo">
                 <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl">
-                  How it works
+                  Experience Demo
                 </Button>
               </Link>
             </motion.div>
@@ -160,7 +165,7 @@ const Index = () => {
         </section>
 
         {/* Featured Therapeutic Sessions - 160px spacing */}
-        <section className="py-40 px-6">
+        <section id="featured-goals" className="py-40 px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div 
               className="text-center mb-16"
