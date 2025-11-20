@@ -43,11 +43,24 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
     }
     
     try {
+      const resetUrl = `${window.location.origin}/reset-password`;
+      
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `https://neurotunes.app/reset-password`,
+        redirectTo: resetUrl,
       });
       
       if (error) throw error;
+
+      // Send password reset email
+      await supabase.functions.invoke('send-auth-email', {
+        body: {
+          type: 'password-reset',
+          to: email,
+          data: {
+            resetLink: resetUrl,
+          }
+        }
+      });
       
       toast({
         title: "Password Reset Email Sent",

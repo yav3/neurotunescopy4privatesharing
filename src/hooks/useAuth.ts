@@ -144,6 +144,18 @@ export function useAuth() {
       
       if (data.user) {
         Analytics.trackAuthSuccess('signup', data.user.id);
+        
+        // Send welcome email
+        supabase.functions.invoke('send-auth-email', {
+          body: {
+            type: 'welcome',
+            to: email,
+            data: {
+              displayName,
+              email,
+            }
+          }
+        }).catch(err => console.error('Failed to send welcome email:', err));
       }
 
       return { success: true, user: data.user };
