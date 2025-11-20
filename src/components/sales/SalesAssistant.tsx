@@ -45,16 +45,16 @@ export const SalesAssistant = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 z-50"
+          className="fixed bottom-6 left-6 px-6 py-3 rounded-full flex items-center gap-3 transition-all hover:scale-105 z-50 group"
           style={{
             background: 'rgba(0, 0, 0, 0.8)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
-            color: '#C0C0C8',
           }}
         >
-          <Plus className="w-6 h-6" />
+          <Plus className="w-5 h-5 text-white" />
+          <span className="text-sm font-medium text-white">Chat with NeuroTunes AI Assistant</span>
         </button>
       )}
 

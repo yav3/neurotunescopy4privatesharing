@@ -6,7 +6,7 @@ import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import animatedBg from '../assets/animated-bg.gif';
+import staticBg from '../assets/static-bg.png';
 
 const Index = () => {
   const { user, loading } = useAuthContext();
@@ -25,10 +25,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Animated GIF background */}
+      {/* Static background */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={animatedBg}
+          src={staticBg}
           alt="Background"
           className="w-full h-full object-cover"
         />
