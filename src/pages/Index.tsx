@@ -234,7 +234,7 @@ const Index = () => {
                 transition={{ duration: 1, ease: "easeOut" }}
               >
                 <motion.div 
-                  className="flex items-center justify-center gap-8 mb-8"
+                  className="flex items-center justify-center gap-8 mb-4"
                   animate={!hasAnimated ? {
                     scale: [1, 1.02, 1],
                   } : {}}
@@ -267,6 +267,19 @@ const Index = () => {
                     NeuroTunes
                   </h1>
                 </motion.div>
+                
+                {/* Subtitle */}
+                <motion.p
+                  className="text-[2.4rem] sm:text-[3rem] lg:text-[3.6rem] font-sf font-light text-white/80 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                  style={{
+                    filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.3))',
+                  }}
+                >
+                  Built on Science and Excellence
+                </motion.p>
               </motion.div>
             </div>
           </div>
