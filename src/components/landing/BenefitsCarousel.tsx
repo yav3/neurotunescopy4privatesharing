@@ -175,21 +175,21 @@ export const BenefitsCarousel = () => {
                     viewport={{ once: true }}
                     className="h-full"
                   >
-                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm h-full flex flex-col p-6">
+                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm flex flex-col p-6 h-[400px]">
                       <div 
-                        className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4"
+                        className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4 flex-shrink-0"
                       >
                         <card.icon className="h-8 w-8 text-white" />
                       </div>
 
                       {card.subtitle && (
-                        <p className="text-sm font-body text-white/60 text-center mb-2">
+                        <p className="text-sm font-body text-white/60 text-center mb-2 flex-shrink-0">
                           {card.subtitle}
                         </p>
                       )}
 
                       <h3 
-                        className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                        className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3 flex-shrink-0"
                         style={{ 
                           background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
                           WebkitBackgroundClip: 'text',
@@ -201,9 +201,11 @@ export const BenefitsCarousel = () => {
                       </h3>
 
                       {card.description && (
-                        <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
-                          {card.description}
-                        </p>
+                        <div className="flex-1 overflow-x-auto overflow-y-hidden scrollbar-hide">
+                          <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed whitespace-nowrap">
+                            {card.description}
+                          </p>
+                        </div>
                       )}
                     </div>
                   </motion.div>
@@ -255,17 +257,17 @@ export const BenefitsCarousel = () => {
                     viewport={{ once: true }}
                     className="h-full"
                   >
-                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm h-full flex flex-col">
-                      <div className="aspect-square relative">
+                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm flex flex-col h-[400px]">
+                      <div className="h-48 relative flex-shrink-0">
                         <img 
                           src={goal.artwork} 
                           alt={goal.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="p-6 flex-1 flex flex-col justify-center">
+                      <div className="p-6 flex-1 flex flex-col justify-center overflow-hidden">
                         <h3 
-                          className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                          className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3 flex-shrink-0"
                           style={{ 
                             background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
                             WebkitBackgroundClip: 'text',
@@ -275,9 +277,11 @@ export const BenefitsCarousel = () => {
                         >
                           {goal.name}
                         </h3>
-                        <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
-                          {goal.description}
-                        </p>
+                        <div className="overflow-x-auto overflow-y-hidden scrollbar-hide">
+                          <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed whitespace-nowrap">
+                            {goal.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>

@@ -9,7 +9,8 @@ import { motion } from 'framer-motion';
 import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
 import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
 import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
-import { FitnessCardWithAudio } from '@/components/landing/FitnessCardWithAudio';
+import { PartnersSection } from '@/components/landing/PartnersSection';
+import { Footer } from '@/components/Footer';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -280,60 +281,12 @@ const Index = () => {
         {/* Unified Benefits & Goals Carousel */}
         <BenefitsCarousel />
 
-
-        {/* Footer - Research Institutions (Horizontal Scroll) */}
-        <section className="h-screen flex items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.h3 
-              className="text-4xl font-headers text-white text-center mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              With Generous Support from
-            </motion.h3>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
-              {[
-                { logo: cornellLogo, alt: "Cornell University" },
-                { logo: jacobsTechnionLogo, alt: "Jacobs Technion" },
-                { logo: stanfordMedicineLogo, alt: "Stanford Medicine" },
-                { logo: weillCornellLogo, alt: "Weill Cornell" }
-              ].map((partner, index) => (
-                <motion.div 
-                  key={index}
-                  className="w-48 h-48 flex items-center justify-center rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  whileHover={{
-                    scale: 1.15,
-                    rotateZ: [0, -5, 5, 0],
-                    y: -10,
-                    transition: { duration: 0.4 }
-                  }}
-                  transition={{
-                    opacity: { duration: 0.5, delay: index * 0.1 },
-                    scale: { duration: 0.5, delay: index * 0.1 }
-                  }}
-                  style={{
-                    animationDelay: `${index * 0.2}s`,
-                  }}
-                >
-                  <img 
-                    src={partner.logo} 
-                    alt={partner.alt}
-                    className="w-32 h-32 object-contain"
-                    style={{ 
-                      imageRendering: 'crisp-edges',
-                      filter: 'grayscale(100%) invert(1) brightness(1.8)'
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Partners Section */}
+        <PartnersSection />
       </div>
+      
+      {/* Footer */}
+      <Footer />
       
       {/* Post-Session Survey */}
       <PostSessionSurvey
