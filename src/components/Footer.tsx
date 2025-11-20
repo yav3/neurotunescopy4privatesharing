@@ -2,8 +2,49 @@ import { Link } from "react-router-dom";
 import { Linkedin, Youtube, Facebook, Instagram } from "lucide-react";
 
 export const Footer = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <footer className="bg-muted/30 backdrop-blur-sm border-t border-border/50 py-12 px-6">
+    <>
+      {/* Bottom Navigation Tabs */}
+      <nav className="bg-background/95 backdrop-blur-sm border-t border-b border-border/50 sticky bottom-0 z-40">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-4 gap-1">
+            <button
+              onClick={() => scrollToSection('science')}
+              className="px-6 py-4 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            >
+              Science & Excellence
+            </button>
+            <button
+              onClick={() => scrollToSection('sessions')}
+              className="px-6 py-4 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            >
+              Featured Sessions
+            </button>
+            <button
+              onClick={() => scrollToSection('benefits')}
+              className="px-6 py-4 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            >
+              Benefits
+            </button>
+            <button
+              onClick={() => scrollToSection('partners')}
+              className="px-6 py-4 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+            >
+              Partners
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Footer Content */}
+      <footer className="bg-muted/30 backdrop-blur-sm border-t border-border/50 py-12 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Column 1 - Product */}
@@ -199,5 +240,6 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
+    </>
   );
 };
