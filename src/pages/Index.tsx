@@ -13,6 +13,7 @@ import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { RegistrationChatbot } from '@/components/auth/RegistrationChatbot';
+import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { QADashboard } from '@/components/QADashboard';
 import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
 import cornellLogo from '../assets/cornell-university.png';
@@ -368,8 +369,8 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Registration Chatbot */}
-        <RegistrationChatbot />
+        {/* Sales Assistant */}
+        <SalesAssistant />
       </div>
       
       {/* Footer */}
