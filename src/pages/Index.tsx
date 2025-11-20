@@ -285,32 +285,6 @@ const Index = () => {
               <CredentialsBadges />
             </motion.div>
             
-            {/* Wellness Images Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessHeadphones1} alt="Person experiencing music therapy with headphones" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessSpa1} alt="Relaxing spa treatment environment" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessWaiting1} alt="Peaceful waiting room with music therapy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessTreatment1} alt="Therapeutic treatment with music" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-            </motion.div>
-            
             <motion.div 
               id="sessions"
               initial={{ opacity: 0, y: 50 }}
@@ -330,6 +304,7 @@ const Index = () => {
             >
               <BenefitsCarousel />
             </motion.div>
+            
 
             {/* Additional Wellness Gallery */}
             <motion.div
