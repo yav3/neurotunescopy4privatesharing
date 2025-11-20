@@ -1,22 +1,26 @@
 import { motion } from "framer-motion";
+import cornellLogo from '@/assets/cornell-university.png';
+import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
+import stanfordLogo from '@/assets/stanford-medicine.png';
+import weillCornellLogo from '@/assets/weill-cornell.png';
 
 export const PartnersSection = () => {
   const partners = [
     {
       name: "Cornell University",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/47/Cornell_University_seal.svg",
+      logo: cornellLogo,
     },
     {
       name: "Jacobs Technion-Cornell Institute",
-      logo: "https://tech.cornell.edu/wp-content/uploads/2021/01/jacobs-institute-logo-white.png",
+      logo: jacobsTechnionLogo,
     },
     {
       name: "Stanford Medicine",
-      logo: "https://med.stanford.edu/content/dam/sm/communications/identity-guide/logos/Stanford_Medicine_logo_stacked_white.png",
+      logo: stanfordLogo,
     },
     {
       name: "Weill Cornell Medicine",
-      logo: "https://weillcornell.org/sites/default/files/wcm_logo_white.png",
+      logo: weillCornellLogo,
     },
   ];
 
