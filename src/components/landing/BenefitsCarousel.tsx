@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { THERAPEUTIC_GOALS, TherapeuticGoal } from '@/config/therapeuticGoals';
 import { 
   Brain, 
   Heart, 
@@ -11,10 +11,22 @@ import {
   TrendingUp,
   Sparkles,
   Headphones,
-  Zap
+  Zap,
+  Microscope,
+  LucideIcon
 } from 'lucide-react';
 
-const cards = [
+interface InfoCard {
+  type: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  subtitle?: string;
+}
+
+type CarouselCard = InfoCard | TherapeuticGoal;
+
+const infoCards: InfoCard[] = [
   {
     type: 'mission',
     title: "Personalized streaming of medical-grade music, powered by AI closed-loop tech.",
@@ -44,6 +56,13 @@ const cards = [
     title: "Research Foundation",
     description: "We began at Cornell Tech's Jacobs Technion–Cornell Institute and have built on more than eight years of sponsored research.",
     icon: TrendingUp
+  },
+  {
+    type: 'patent',
+    title: "Patented Methods",
+    subtitle: "Backed by Science",
+    description: "Proprietary therapeutic protocols",
+    icon: Microscope
   },
   {
     type: 'stat',
@@ -101,161 +120,145 @@ const cards = [
   }
 ];
 
+// Type guard to check if card is a TherapeuticGoal
+const isGoalCard = (card: CarouselCard): card is TherapeuticGoal => {
+  return 'artwork' in card && 'name' in card;
+};
+
 export const BenefitsCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const featuredGoals = THERAPEUTIC_GOALS.slice(0, 6);
+  
+  // Combine info cards and therapeutic goals
+  const allCards: CarouselCard[] = [...infoCards, ...featuredGoals];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % cards.length);
+      setCurrentIndex((prev) => (prev + 1) % allCards.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [allCards.length]);
 
-  const currentCard = cards[currentIndex];
-  const CardIcon = currentCard.icon;
+  const currentCard = allCards[currentIndex];
+  const isGoal = isGoalCard(currentCard);
 
   return (
-    <>
-      {/* Benefits Cards Carousel */}
-      <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
-        
-        <div className="max-w-4xl mx-auto relative z-10">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: -20 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="border border-white/20 rounded-2xl p-12 bg-white/5 backdrop-blur-sm"
-          >
-            <motion.div 
-              className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <CardIcon className="h-12 w-12 text-white" />
-            </motion.div>
+    <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
+      
+      <div className="max-w-4xl mx-auto relative z-10">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: -20 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm"
+        >
+          {isGoal ? (
+            // Therapeutic Goal Card
+            <>
+              <div className="aspect-square relative">
+                <img 
+                  src={currentCard.artwork} 
+                  alt={currentCard.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-12">
+                <motion.h3 
+                  className="text-4xl lg:text-5xl font-headers font-semibold text-center mb-4"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  {currentCard.name}
+                </motion.h3>
+                <motion.p 
+                  className="text-xl lg:text-2xl font-body text-white/70 text-center leading-relaxed"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  {currentCard.description}
+                </motion.p>
+              </div>
+            </>
+          ) : (
+            // Info Card
+            <div className="p-12">
+              <motion.div 
+                className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <currentCard.icon className="h-12 w-12 text-white" />
+              </motion.div>
 
-            <motion.h3 
-              className="text-4xl lg:text-5xl font-headers font-semibold text-center mb-6"
-              style={{ 
-                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              {currentCard.title}
-            </motion.h3>
+              {currentCard.subtitle && (
+                <motion.p
+                  className="text-xl font-body text-white/60 text-center mb-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.25 }}
+                >
+                  {currentCard.subtitle}
+                </motion.p>
+              )}
 
-            {currentCard.description && (
-              <motion.p 
-                className="text-xl lg:text-2xl font-body text-white/70 text-center leading-relaxed"
+              <motion.h3 
+                className="text-4xl lg:text-5xl font-headers font-semibold text-center mb-6"
+                style={{ 
+                  background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
               >
-                {currentCard.description}
-              </motion.p>
-            )}
+                {currentCard.title}
+              </motion.h3>
 
-            <div className="flex justify-center gap-2 mt-8">
-              {cards.map((_, index) => (
-                <motion.div
-                  key={index}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentIndex 
-                      ? 'bg-white/80 w-8' 
-                      : 'bg-white/20 w-1.5'
-                  }`}
-                  onClick={() => setCurrentIndex(index)}
-                  style={{ cursor: 'pointer' }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Goals Carousel */}
-      <section className="min-h-screen flex items-center justify-center overflow-hidden py-24">
-        <div className="w-full">
-          <motion.div
-            className="text-center mb-20 px-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 
-              className="text-6xl lg:text-7xl font-headers font-semibold mb-6"
-              style={{ 
-                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Featured Sessions
-            </h2>
-            <p className="text-2xl text-white/70 font-body max-w-3xl mx-auto">
-              Purpose-composed music sessions designed for your specific therapeutic needs
-            </p>
-          </motion.div>
-          
-          <div className="relative">
-            <motion.div 
-              className="flex gap-8 px-8"
-              animate={{
-                x: [0, -1920],
-              }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 40,
-                  ease: "linear",
-                },
-              }}
-            >
-              {[...featuredGoals, ...featuredGoals, ...featuredGoals].map((goal, index) => (
-                <motion.div
-                  key={`${goal.id}-${index}`}
-                  className="flex-shrink-0 w-96 rounded-3xl overflow-hidden border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:border-white/30 transition-all duration-300 hover:scale-105"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: (index % featuredGoals.length) * 0.1 }}
+              {currentCard.description && (
+                <motion.p 
+                  className="text-xl lg:text-2xl font-body text-white/70 text-center leading-relaxed"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                  <div className="aspect-square relative">
-                    <img 
-                      src={goal.artwork} 
-                      alt={goal.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-8 text-center bg-gradient-to-t from-black/40 to-transparent">
-                    <h3 className="text-2xl font-headers font-semibold text-white mb-3">{goal.name}</h3>
-                    <p className="text-base font-body text-white/70 mb-4">
-                      {goal.description}
-                    </p>
-                    <div className="flex items-center justify-center gap-2 text-sm text-white/50">
-                      <span>{goal.musicBuckets.slice(0, 2).join(' • ')}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+                  {currentCard.description}
+                </motion.p>
+              )}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Progress indicators */}
+        <div className="flex justify-center gap-2 mt-8">
+          {allCards.map((_, index) => (
+            <motion.div
+              key={index}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'bg-white/80 w-8' 
+                  : 'bg-white/20 w-1.5'
+              }`}
+              onClick={() => setCurrentIndex(index)}
+              style={{ cursor: 'pointer' }}
+            />
+          ))}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
