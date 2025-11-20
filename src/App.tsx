@@ -138,6 +138,7 @@ const AppContent = () => {
         <Route path="/settings" element={<AdvancedAuthGuard><Settings /></AdvancedAuthGuard>} />
         <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
         <Route path="/faq" element={<AdvancedAuthGuard><FAQ /></AdvancedAuthGuard>} />
+        <Route path="/support" element={<AdvancedAuthGuard><Support /></AdvancedAuthGuard>} />
         <Route path="/neuralpositive/about" element={<AboutNeuralPositive />} />
         <Route path="/neuralpositive/story" element={<CompanyStory />} />
         <Route path="/neuralpositive/research" element={<ResearchPage />} />
