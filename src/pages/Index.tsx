@@ -304,10 +304,19 @@ const Index = () => {
         </section>
 
         {/* Company Mission Section */}
-        <section className="min-h-screen flex items-center justify-center py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
+        <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
+          {/* Dark overlay for text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
+          
+          <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.h2
-              className="text-5xl lg:text-6xl font-headers font-semibold text-white mb-8 leading-tight"
+              className="text-5xl lg:text-6xl font-headers font-semibold mb-8 leading-tight"
+              style={{ 
+                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -316,8 +325,32 @@ const Index = () => {
               Medical-grade music, personalized by AI
             </motion.h2>
             
+            {/* Scrolling tagline */}
+            <div className="overflow-hidden mb-12 py-4">
+              <motion.p
+                className="text-2xl font-body whitespace-nowrap"
+                style={{ 
+                  background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+                initial={{ x: '100%' }}
+                whileInView={{ x: '-100%' }}
+                viewport={{ once: false }}
+                transition={{ 
+                  duration: 15, 
+                  repeat: Infinity, 
+                  ease: "linear" 
+                }}
+              >
+                Our patented, closed loop personalization adapts playlists to each user's needs and preferences
+              </motion.p>
+            </div>
+            
             <motion.div
-              className="space-y-6 text-xl lg:text-2xl font-body text-white/80 leading-relaxed"
+              className="space-y-6 text-xl lg:text-2xl font-body leading-relaxed"
+              style={{ color: '#e0f2f1' }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
