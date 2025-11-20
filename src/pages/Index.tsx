@@ -8,6 +8,8 @@ import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { motion } from 'framer-motion';
 import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
 import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
+import { TeamCarousel } from '@/components/landing/TeamCarousel';
+import { RealWorldDeployment } from '@/components/landing/RealWorldDeployment';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -482,6 +484,11 @@ const Index = () => {
         {/* Featured Goals Carousel */}
         <FeaturedGoalsCarousel showNatureCards={showNatureCards} />
 
+        {/* Team Carousel */}
+        <TeamCarousel />
+
+        {/* Real-World Deployment */}
+        <RealWorldDeployment />
 
         {/* Footer - Research Institutions (Horizontal Scroll) */}
         <section className="h-screen flex items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
