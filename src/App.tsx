@@ -49,6 +49,7 @@ import { AboutNeuralPositive } from "./pages/AboutNeuralPositive";
 import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
 import Showcase from "./pages/Showcase";
+import { SupportChatbot } from "./components/SupportChatbot";
 
 const queryClient = new QueryClient();
 
@@ -157,6 +158,9 @@ const AppContent = () => {
       
       {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
       {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
+      
+      {/* Support Chatbot - Available throughout the app */}
+      {user && <SupportChatbot />}
       
       <DevDebugPanel />
     </div>

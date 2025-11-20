@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.storage-access]
 verify_jwt = false
+
+[functions.registration-chat]
+verify_jwt = false
+
+[functions.support-chat]
+verify_jwt = false
