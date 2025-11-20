@@ -6,11 +6,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { getGenreOptions } from '@/config/genreConfigs';
 import { GOALS_BY_ID } from '@/config/therapeuticGoals';
 import { useNavigate } from 'react-router-dom';
-import goalSelectionBg from '@/assets/goal-selection-bg.gif';
-import genreBg1 from '@/assets/genre-bg-1.png';
-import genreBg2 from '@/assets/genre-bg-2.png';
-import genreBg3 from '@/assets/genre-bg-3.png';
-import genreBg4 from '@/assets/genre-bg-4.png';
+import genreModalBg from '@/assets/genre-modal-bg.gif';
+import genreButton1 from '@/assets/genre-button-1.png';
+import genreButton2 from '@/assets/genre-button-2.png';
+import genreButton3 from '@/assets/genre-button-3.png';
+import genreButton4 from '@/assets/genre-button-4.png';
 
 interface GenreSelectionModalProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
   const genres = getGenreOptions(goalId);
   const [showTitle, setShowTitle] = useState(false);
   
-  const genreBackgrounds = [genreBg1, genreBg2, genreBg3, genreBg4];
+  const genreBackgrounds = [genreButton1, genreButton2, genreButton3, genreButton4];
 
   useEffect(() => {
     if (isOpen) {
@@ -49,13 +49,15 @@ export const GenreSelectionModal: React.FC<GenreSelectionModalProps> = ({
 
   return (
     <>
-      {/* Dark gradient background matching reference */}
+      {/* Background with GIF */}
       {isOpen && (
         <div 
           className="fixed inset-0 z-40" 
           style={{ 
-            background: 'linear-gradient(135deg, rgba(8, 12, 16, 0.98) 0%, rgba(16, 20, 24, 0.96) 50%, rgba(32, 40, 48, 0.94) 100%)',
-            backdropFilter: 'blur(80px)',
+            backgroundImage: `url(${genreModalBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           }} 
         />
       )}
