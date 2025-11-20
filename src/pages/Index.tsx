@@ -324,7 +324,7 @@ const Index = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              Medical-grade music, personalized by AI
+              Medical-grade music, personalized by AI through closed-loop streaming
             </motion.h2>
             
             <motion.div
