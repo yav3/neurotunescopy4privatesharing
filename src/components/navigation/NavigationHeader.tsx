@@ -81,23 +81,25 @@ export const NavigationHeader = () => {
                   Business types
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[800px] p-6">
-                    <div className="grid grid-cols-4 gap-8">
+                  <div className="w-[900px] p-8 bg-gradient-to-br from-background via-background to-muted/20">
+                    <div className="grid grid-cols-4 gap-6">
                       {businessTypes.map((category) => (
-                        <div key={category.category}>
-                          <h3 className="font-semibold mb-4 text-foreground">
+                        <div key={category.category} className="space-y-4">
+                          <h3 className="font-semibold text-sm uppercase tracking-wider text-primary/90 border-b border-primary/20 pb-2">
                             {category.category}
                           </h3>
-                          <ul className="space-y-3">
+                          <ul className="space-y-2.5">
                             {category.items.map((item) => (
                               <li key={item.name}>
                                 <Link
                                   to={item.path}
-                                  className="text-sm text-muted-foreground hover:text-foreground transition-colors flex flex-col gap-1"
+                                  className="group flex flex-col gap-1 p-2 rounded-md hover:bg-muted/50 transition-all"
                                 >
-                                  {item.name}
+                                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                                    {item.name}
+                                  </span>
                                   {item.badge && (
-                                    <Badge variant="secondary" className="text-xs w-fit">
+                                    <Badge variant="secondary" className="text-xs w-fit bg-primary/10 text-primary border-primary/20">
                                       {item.badge}
                                     </Badge>
                                   )}
@@ -109,19 +111,19 @@ export const NavigationHeader = () => {
                       ))}
                     </div>
                     
-                    <div className="mt-8 pt-6 border-t border-border">
-                      <div className="bg-muted/50 p-6 rounded-lg">
-                        <h4 className="font-semibold mb-2">Special Discounts Available</h4>
+                    <div className="mt-8 pt-6 border-t border-border/50">
+                      <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 p-6 rounded-xl border border-primary/20">
+                        <h4 className="font-semibold text-lg mb-2 text-foreground">Special Discounts Available</h4>
                         <p className="text-sm text-muted-foreground mb-4">
                           Talk to the experts and find out how NeuroTunes can work for your business.
                         </p>
                         <div className="flex gap-2 flex-wrap mb-4">
-                          <Badge variant="outline">Veterans Discount</Badge>
-                          <Badge variant="outline">First Responders</Badge>
-                          <Badge variant="outline">Academic Institutions</Badge>
+                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">Veterans Discount</Badge>
+                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">First Responders</Badge>
+                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">Academic Institutions</Badge>
                         </div>
                         <Link to="/contact">
-                          <Button size="sm" variant="default">
+                          <Button size="sm" className="bg-primary hover:bg-primary/90">
                             Contact sales
                           </Button>
                         </Link>
