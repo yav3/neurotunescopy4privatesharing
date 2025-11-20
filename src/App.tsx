@@ -25,6 +25,7 @@ import { useComprehensiveTracking } from "@/hooks/useComprehensiveTracking";
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
 import Index from "./pages/Index";
+import Sessions from "./pages/Sessions";
 import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
@@ -127,6 +128,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/sessions" element={<Sessions />} />
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
