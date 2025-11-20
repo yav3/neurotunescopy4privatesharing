@@ -86,6 +86,14 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Switch from GIF to static background after GIF duration (adjust timing as needed)
+  useEffect(() => {
+    const gifDuration = setTimeout(() => {
+      setGifFinished(true);
+    }, 5000); // 5 seconds - adjust based on your GIF's actual duration
+    return () => clearTimeout(gifDuration);
+  }, []);
+
   const stats = [
     { label: "Clinically Tested", value: "Evidence-Based", icon: Shield },
     { label: "Original Music", value: "8K Songs", icon: Music },
@@ -174,25 +182,16 @@ const Index = () => {
     <div className="min-h-screen relative">
       {/* Full background - GIF plays once then shows static image */}
       <div className="fixed inset-0 z-0">
-        {!gifFinished && (
-          <video 
-            autoPlay
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-            onEnded={() => setGifFinished(true)}
-            key="landing-gif"
-          >
-            <source src={landingBg} type="video/mp4" />
-          </video>
-        )}
-        {gifFinished && (
-          <img 
-            src={staticBg}
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-        )}
+        <img 
+          src={landingBg}
+          alt="Background animation"
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${gifFinished ? 'opacity-0' : 'opacity-100'}`}
+        />
+        <img 
+          src={staticBg}
+          alt="Background"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${gifFinished ? 'opacity-100' : 'opacity-0'}`}
+        />
       </div>
 
       {/* Floating ambient elements */}
