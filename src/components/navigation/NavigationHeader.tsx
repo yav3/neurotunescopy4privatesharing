@@ -1,0 +1,254 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { Badge } from "@/components/ui/badge";
+import { ChevronDown, X } from "lucide-react";
+
+export const NavigationHeader = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const businessTypes = [
+    {
+      category: "Health & Beauty",
+      items: [
+        { name: "Gyms", path: "/business/gyms" },
+        { name: "Medical", path: "/business/medical", badge: "First Responder Discount" },
+        { name: "Dental", path: "/business/dental" },
+        { name: "Salons", path: "/business/salons" },
+        { name: "Spas", path: "/business/spas" },
+        { name: "Senior Communities", path: "/business/senior-communities", badge: "Special Pricing" },
+      ]
+    },
+    {
+      category: "Retail",
+      items: [
+        { name: "Retail stores", path: "/business/retail" },
+        { name: "Grocery stores", path: "/business/grocery" },
+        { name: "Shopping malls", path: "/business/shopping-malls" },
+        { name: "Car dealerships", path: "/business/car-dealerships" },
+      ]
+    },
+    {
+      category: "Service Industry",
+      items: [
+        { name: "Restaurants", path: "/business/restaurants" },
+        { name: "Hotels", path: "/business/hotels" },
+        { name: "Cafés & coffee shops", path: "/business/cafes" },
+        { name: "Bars & pubs", path: "/business/bars" },
+      ]
+    },
+    {
+      category: "Community",
+      items: [
+        { name: "Churches", path: "/business/churches" },
+        { name: "Offices", path: "/business/offices" },
+        { name: "Schools", path: "/business/schools" },
+        { name: "Academic Hospitals", path: "/business/academic-hospitals", badge: "Academic Discount" },
+        { name: "Cultural spaces", path: "/business/cultural-spaces" },
+      ]
+    }
+  ];
+
+  return (
+    <>
+      {/* Desktop Navigation */}
+      <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-primary rounded-full" />
+              <span className="ml-2 text-xl font-bold">NeuroTunes</span>
+            </div>
+          </Link>
+
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="text-base">
+                  Business types
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="w-[800px] p-6">
+                    <div className="grid grid-cols-4 gap-8">
+                      {businessTypes.map((category) => (
+                        <div key={category.category}>
+                          <h3 className="font-semibold mb-4 text-foreground">
+                            {category.category}
+                          </h3>
+                          <ul className="space-y-3">
+                            {category.items.map((item) => (
+                              <li key={item.name}>
+                                <Link
+                                  to={item.path}
+                                  className="text-sm text-muted-foreground hover:text-foreground transition-colors flex flex-col gap-1"
+                                >
+                                  {item.name}
+                                  {item.badge && (
+                                    <Badge variant="secondary" className="text-xs w-fit">
+                                      {item.badge}
+                                    </Badge>
+                                  )}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-8 pt-6 border-t border-border">
+                      <div className="bg-muted/50 p-6 rounded-lg">
+                        <h4 className="font-semibold mb-2">Special Discounts Available</h4>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Talk to the experts and find out how NeuroTunes can work for your business.
+                        </p>
+                        <div className="flex gap-2 flex-wrap mb-4">
+                          <Badge variant="outline">Veterans Discount</Badge>
+                          <Badge variant="outline">First Responders</Badge>
+                          <Badge variant="outline">Academic Institutions</Badge>
+                        </div>
+                        <Link to="/contact">
+                          <Button size="sm" variant="default">
+                            Contact sales
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+
+          <Link to="/how-it-works" className="text-base hover:text-primary transition-colors">
+            How it works
+          </Link>
+          <Link to="/licensing" className="text-base hover:text-primary transition-colors">
+            Licensing
+          </Link>
+          <Link to="/pricing" className="text-base hover:text-primary transition-colors">
+            Pricing
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Link to="/auth" className="text-base hover:text-primary transition-colors">
+            Log in
+          </Link>
+          <Link to="/demo">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-6">
+              Try demo
+            </Button>
+          </Link>
+        </div>
+      </header>
+
+      {/* Mobile Navigation */}
+      <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/95 backdrop-blur sticky top-0 z-50">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-primary rounded-full" />
+          <span className="text-lg font-bold">NeuroTunes</span>
+        </Link>
+
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              <div className="w-6 h-0.5 bg-foreground" />
+              <div className="w-6 h-0.5 bg-foreground" />
+              <div className="w-6 h-0.5 bg-foreground" />
+            </div>
+          )}
+        </button>
+      </header>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 top-[57px] bg-background z-40 overflow-y-auto">
+          <div className="p-6 space-y-8">
+            {businessTypes.map((category) => (
+              <div key={category.category}>
+                <h3 className="font-semibold mb-3 text-foreground">
+                  {category.category}
+                </h3>
+                <ul className="space-y-2 ml-4">
+                  {category.items.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        to={item.path}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-muted-foreground hover:text-foreground transition-colors flex flex-col gap-1"
+                      >
+                        {item.name}
+                        {item.badge && (
+                          <Badge variant="secondary" className="text-xs w-fit">
+                            {item.badge}
+                          </Badge>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            <div className="pt-6 border-t border-border space-y-4">
+              <Link
+                to="/how-it-works"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-muted-foreground hover:text-foreground"
+              >
+                How it works
+              </Link>
+              <Link
+                to="/licensing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-muted-foreground hover:text-foreground"
+              >
+                Licensing
+              </Link>
+              <Link
+                to="/pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-muted-foreground hover:text-foreground"
+              >
+                Pricing
+              </Link>
+              <Link
+                to="/auth"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-muted-foreground hover:text-foreground"
+              >
+                Log in
+              </Link>
+            </div>
+
+            <div className="bg-muted/50 p-6 rounded-lg">
+              <h4 className="font-semibold mb-2">Special Discounts</h4>
+              <div className="flex gap-2 flex-wrap mb-4">
+                <Badge variant="outline">Veterans</Badge>
+                <Badge variant="outline">First Responders</Badge>
+                <Badge variant="outline">Academic</Badge>
+              </div>
+              <Link to="/demo" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full">Try demo</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};

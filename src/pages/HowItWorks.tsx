@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { Music, Brain, Headphones, Calendar, Sparkles, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Footer } from "@/components/Footer";
+import { Footer } from '@/components/Footer';
+import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 
 const HowItWorks = () => {
   return (
     <div className="min-h-screen bg-background">
+      <NavigationHeader />
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-20">
         <div className="max-w-6xl mx-auto">
