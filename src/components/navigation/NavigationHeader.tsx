@@ -60,18 +60,12 @@ export const NavigationHeader = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 relative">
         <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center invisible">
             <Plus 
               className="w-10 h-10" 
               strokeWidth={1.5}
-              style={{
-                background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
-              }}
             />
           </Link>
 
@@ -127,19 +121,21 @@ export const NavigationHeader = () => {
                       <div className="mt-8 pt-6 border-t border-primary/10">
                         <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-6 rounded-xl border border-primary/20 backdrop-blur-sm">
                           <h4 className="font-bold text-lg mb-2 text-foreground">Special Discounts Available</h4>
-                          <p className="text-sm text-muted-foreground/90 mb-4">
+                           <p className="text-sm text-muted-foreground/90 mb-4">
                             Talk to the experts and find out how NeuroTunes can work for your business.
                           </p>
-                          <div className="flex gap-2 flex-wrap mb-4">
-                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">Veterans Discount</Badge>
-                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">First Responders</Badge>
-                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">Academic Institutions</Badge>
+                          <div className="flex gap-3">
+                            <Link to="/contact" className="flex-1">
+                              <Button size="sm" className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+                                Chat to Sales Assistant
+                              </Button>
+                            </Link>
+                            <Link to="/deals" className="flex-1">
+                              <Button size="sm" variant="outline" className="w-full">
+                                Inquire About Deals
+                              </Button>
+                            </Link>
                           </div>
-                          <Link to="/contact">
-                            <Button size="sm" className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
-                              Contact sales
-                            </Button>
-                          </Link>
                         </div>
                       </div>
                     </div>
@@ -159,6 +155,23 @@ export const NavigationHeader = () => {
             Pricing
           </Link>
         </div>
+
+        {/* Centered Company Name */}
+        <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+          <Plus 
+            className="w-10 h-10" 
+            strokeWidth={1.5}
+            style={{
+              background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
+            }}
+          />
+          <span className="text-xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
+            NeuroTunes
+          </span>
+        </Link>
 
         <div className="flex items-center gap-4">
           <Link to="/auth" className="text-base hover:text-primary transition-colors">
@@ -265,15 +278,13 @@ export const NavigationHeader = () => {
               </Link>
             </div>
 
-            <div className="bg-muted/50 p-6 rounded-lg">
-              <h4 className="font-semibold mb-2">Special Discounts</h4>
-              <div className="flex gap-2 flex-wrap mb-4">
-                <Badge variant="outline">Veterans</Badge>
-                <Badge variant="outline">First Responders</Badge>
-                <Badge variant="outline">Academic</Badge>
-              </div>
-              <Link to="/demo" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full">See Samples</Button>
+            <div className="bg-muted/50 p-6 rounded-lg space-y-3">
+              <h4 className="font-semibold mb-2">Talk to Sales</h4>
+              <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full">Chat to Sales Assistant</Button>
+              </Link>
+              <Link to="/deals" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full">Inquire About Deals</Button>
               </Link>
             </div>
           </div>
