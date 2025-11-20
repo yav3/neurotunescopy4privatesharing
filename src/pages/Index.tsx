@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
+import { PartnersSection } from '@/components/landing/PartnersSection';
+import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import staticBg from '../assets/static-bg.png';
-import { Button } from '../components/ui/button';
+import animatedBg from '../assets/animated-bg.gif';
 
 const Index = () => {
   const { user, loading } = useAuthContext();
-  const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   
   // Welcome returning users
@@ -26,95 +25,41 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Static background */}
+      {/* Animated GIF background */}
       <div className="fixed inset-0 z-0">
         <img 
-          src={staticBg}
+          src={animatedBg}
           alt="Background"
           className="w-full h-full object-cover"
         />
       </div>
 
-      {/* Floating ambient elements */}
-      <div className="fixed inset-0 z-[5] pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-cyan-400/10 backdrop-blur-sm"
-            style={{
-              width: `${100 + i * 50}px`,
-              height: `${100 + i * 50}px`,
-              left: `${15 * i}%`,
-              top: `${10 + i * 15}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              x: [0, 20, 0],
-              scale: [1, 1.1, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 5 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </div>
-
       {/* Content overlay */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col min-h-screen">
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-          <div className="relative z-10 max-w-5xl mx-auto text-center">
-            
-            {/* Headline */}
-            <motion.h1 
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              Experience NeuroTunes
-            </motion.h1>
-            
-            {/* Subheadline */}
-            <motion.p 
-              className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Explore our therapeutic music sessions. Each track is scientifically designed to support specific cognitive and emotional states.
-            </motion.p>
-            
-            {/* CTAs */}
-            <motion.div 
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <Link to="/sessions">
-                <Button
-                  size="lg"
-                  className="px-8 py-6 text-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white rounded-xl"
-                >
-                  Listen Now
-                </Button>
-              </Link>
-              <Link to="/demo">
-                <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl">
-                  Experience Demo
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </section>
+        {/* Main centered content */}
+        <div className="flex-1 flex items-center justify-center px-6">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+          >
+            <h1 className="text-8xl sm:text-9xl lg:text-[12rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 leading-none">
+              NeuroTunes
+            </h1>
+          </motion.div>
+        </div>
+
+        {/* Supported by section */}
+        <div className="py-20 px-6">
+          <PartnersSection />
+        </div>
+
+        {/* Footer */}
+        <Footer />
         
         {/* Sales Assistant */}
         <SalesAssistant />
