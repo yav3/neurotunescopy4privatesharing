@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
 import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
 import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
+import { RealBenefitsCarousel } from '@/components/landing/RealBenefitsCarousel';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -275,6 +276,9 @@ const Index = () => {
         {/* Company Mission Section */}
         {/* Credentials Section */}
         <CredentialsBadges />
+
+        {/* Real Benefits Carousel */}
+        <RealBenefitsCarousel />
 
         {/* Unified Benefits & Goals Carousel */}
         <BenefitsCarousel />
