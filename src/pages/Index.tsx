@@ -283,23 +283,6 @@ const Index = () => {
                     NeuroTunes
                   </h1>
                 </motion.div>
-                
-                {/* Subtitle */}
-                <motion.p
-                  className="text-[0.9rem] sm:text-[1.1rem] lg:text-[1.3rem] font-ditto font-light text-white/90 text-center mx-auto"
-                  style={{
-                    maxWidth: '60%',
-                    filter: 'drop-shadow(0 0 10px rgba(224, 242, 241, 0.2))',
-                    letterSpacing: '0.03em',
-                    fontWeight: 300,
-                    opacity: Math.max(0, 1 - scrollY / 500)
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: Math.max(0, 1 - scrollY / 500), y: 0 }}
-                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-                >
-                  Beautiful music, backed by neuroscience and medicine, delivered through bleeding-edge streaming AI, enables closed-loop wellness.
-                </motion.p>
               </motion.div>
             </div>
           </div>
@@ -319,6 +302,41 @@ const Index = () => {
               background: 'radial-gradient(circle at center, rgba(0, 217, 255, 0.2) 0%, transparent 70%)',
             }}
           />
+        </section>
+
+        {/* Company Mission Section */}
+        <section className="min-h-screen flex items-center justify-center py-24 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h2
+              className="text-5xl lg:text-6xl font-headers font-semibold text-white mb-8 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              Medical-grade music, personalized by AI
+            </motion.h2>
+            
+            <motion.div
+              className="space-y-6 text-xl lg:text-2xl font-body text-white/80 leading-relaxed"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <p>
+                NeuralPositive develops software that turns music into treatment. Our patent portfolio covers how therapeutic music is created and personalized for clinical use.
+              </p>
+              
+              <p>
+                NeuroTunes, our flagship app, delivers purpose-composed sessions that adapt to each user. The team behind it includes neuroscientists, physician-scientists, developers, composers, and a 5x Grammy winning engineer.
+              </p>
+              
+              <p>
+                We began at Cornell Tech's Jacobs Technion–Cornell Institute and have built on more than eight years of sponsored research.
+              </p>
+            </motion.div>
+          </div>
         </section>
 
         {/* Credentials Section */}
