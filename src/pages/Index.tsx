@@ -270,7 +270,7 @@ const Index = () => {
                 
                 {/* Subtitle */}
                 <motion.p
-                  className="text-[1.2rem] sm:text-[1.5rem] lg:text-[1.8rem] font-ditto font-light text-white/90 text-center px-12"
+                  className="text-[1.2rem] sm:text-[1.5rem] lg:text-[1.8rem] font-ditto font-light text-white/90 text-center px-12 max-w-5xl mx-auto"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
@@ -279,7 +279,7 @@ const Index = () => {
                     letterSpacing: '0.05em'
                   }}
                 >
-                  Built on Science and Excellence
+                  Beautiful music, backed by neuroscience and medicine, delivered through bleeding-edge streaming AI, enables closed-loop wellness.
                 </motion.p>
               </motion.div>
             </div>
