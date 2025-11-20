@@ -51,6 +51,7 @@ import { ResearchPage } from "./pages/ResearchPage";
 import Showcase from "./pages/Showcase";
 import Support from "./pages/Support";
 import HowItWorks from "./pages/HowItWorks";
+import Demo from "./pages/Demo";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,7 @@ const AppContent = () => {
         <Route path="/" element={<Index />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/demo" element={<Demo />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
