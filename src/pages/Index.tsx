@@ -170,19 +170,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Full background GIF - plays once */}
+      {/* Full background GIF */}
       <div className="fixed inset-0 z-0">
-        <video 
-          autoPlay
-          muted
-          playsInline
+        <img 
+          src={landingBg}
+          alt="Background animation"
           className="w-full h-full object-cover"
-          onEnded={() => {
-            // GIF animation complete
-          }}
-        >
-          <source src={landingBg} type="video/mp4" />
-        </video>
+        />
       </div>
 
       {/* Floating ambient elements */}
@@ -298,7 +292,7 @@ const Index = () => {
         <CredentialsBadges />
 
         {/* Horizontal Scrolling Features */}
-        <section className="h-screen flex items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+        <section className="min-h-screen flex items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide py-24">
           <div className="flex gap-8 px-8" style={{ width: 'max-content' }}>
             {/* Stats Cards */}
             {stats.map((stat, index) => (
