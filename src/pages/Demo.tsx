@@ -3,14 +3,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Footer } from "@/components/Footer";
+import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Play, Pause, Brain, Heart, Moon, Zap, Wind, Smile } from "lucide-react";
 import { useAudioStore } from "@/stores";
-import focusImage from "@/assets/focus.png";
-import stressReliefImage from "@/assets/stress-relief.png";
-import sleepImage from "@/assets/sleep.png";
-import energyImage from "@/assets/energy.png";
-import meditationImage from "@/assets/meditation.png";
-import moodImage from "@/assets/mood.png";
+import relaxationCard from "@/assets/relaxation-card.png";
 
 interface TherapeuticSession {
   id: string;
@@ -34,7 +30,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Enhanced Focus",
     description: "Boost concentration and mental clarity",
     longDescription: "Our focus-enhancing compositions use specific frequencies and rhythmic patterns proven to increase attention span and cognitive performance. Perfect for work, study, or any task requiring sustained concentration.",
-    image: focusImage,
+    image: relaxationCard,
     icon: Brain,
     benefits: [
       "Improved concentration and attention span",
@@ -54,7 +50,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Stress Relief",
     description: "Release tension and find calm",
     longDescription: "Scientifically designed to lower cortisol levels and activate your parasympathetic nervous system. These compositions help you transition from stress to serenity through carefully crafted harmonics.",
-    image: stressReliefImage,
+    image: relaxationCard,
     icon: Heart,
     benefits: [
       "Reduced cortisol levels",
@@ -74,7 +70,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Deep Sleep",
     description: "Achieve restorative rest",
     longDescription: "Experience sleep-inducing delta wave frequencies combined with gentle melodies that guide your brain into deep, restorative sleep states. Improve both sleep quality and duration naturally.",
-    image: sleepImage,
+    image: relaxationCard,
     icon: Moon,
     benefits: [
       "Faster sleep onset",
@@ -94,7 +90,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Natural Energy",
     description: "Revitalize mind and body",
     longDescription: "Energizing compositions featuring uplifting rhythms and stimulating frequencies that naturally boost alertness and motivation without artificial stimulants.",
-    image: energyImage,
+    image: relaxationCard,
     icon: Zap,
     benefits: [
       "Increased alertness and vitality",
@@ -114,7 +110,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Meditation Support",
     description: "Deepen your practice",
     longDescription: "Theta wave compositions designed to facilitate deeper meditative states and enhance mindfulness practice. Perfect for both beginners and experienced meditators.",
-    image: meditationImage,
+    image: relaxationCard,
     icon: Wind,
     benefits: [
       "Easier access to meditative states",
@@ -134,7 +130,7 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Mood Elevation",
     description: "Uplift your emotional state",
     longDescription: "Carefully composed music that stimulates positive neurotransmitter release, helping to naturally elevate mood and emotional well-being throughout your day.",
-    image: moodImage,
+    image: relaxationCard,
     icon: Smile,
     benefits: [
       "Increased positive emotions",
@@ -188,6 +184,7 @@ const Demo = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <NavigationHeader />
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-20">
         <div className="max-w-4xl mx-auto text-center">

@@ -11,6 +11,7 @@ import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
 import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
 import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
+import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -196,18 +197,7 @@ const Index = () => {
       {/* Content overlay */}
       <div className="relative z-10">
         {/* Navigation Header */}
-        <nav className="fixed top-0 w-full z-50 flex justify-end items-center px-8 py-4 border-b border-white/[0.08]" style={{
-          background: 'rgba(10, 40, 55, 0.35)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)'
-        }}>
-          <Button
-            onClick={() => navigate('/auth')}
-            className="text-base font-medium font-headers px-8 py-3 bg-white/10 text-white hover:bg-white/20 transition-all duration-300 shadow-lg backdrop-blur-sm border border-white/20"
-          >
-            Authorized User Sign-In
-          </Button>
-        </nav>
+        <NavigationHeader />
 
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center text-center h-screen relative">
