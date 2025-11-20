@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, X, Plus } from "lucide-react";
+import dropdownBg from "@/assets/dropdown-bg.png";
 
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -81,52 +82,65 @@ export const NavigationHeader = () => {
                   Business types
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[900px] p-8 bg-gradient-to-br from-background via-background to-muted/20">
-                    <div className="grid grid-cols-4 gap-6">
-                      {businessTypes.map((category) => (
-                        <div key={category.category} className="space-y-4">
-                          <h3 className="font-semibold text-sm uppercase tracking-wider text-primary/90 border-b border-primary/20 pb-2">
-                            {category.category}
-                          </h3>
-                          <ul className="space-y-2.5">
-                            {category.items.map((item) => (
-                              <li key={item.name}>
-                                <Link
-                                  to={item.path}
-                                  className="group flex flex-col gap-1 p-2 rounded-md hover:bg-muted/50 transition-all"
-                                >
-                                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                                    {item.name}
-                                  </span>
-                                  {item.badge && (
-                                    <Badge variant="secondary" className="text-xs w-fit bg-primary/10 text-primary border-primary/20">
-                                      {item.badge}
-                                    </Badge>
-                                  )}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
+                  <div 
+                    className="w-[900px] p-8 relative overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${dropdownBg})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    {/* Glassmorphic overlay */}
+                    <div className="absolute inset-0 bg-background/80 backdrop-blur-xl" />
                     
-                    <div className="mt-8 pt-6 border-t border-border/50">
-                      <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 p-6 rounded-xl border border-primary/20">
-                        <h4 className="font-semibold text-lg mb-2 text-foreground">Special Discounts Available</h4>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Talk to the experts and find out how NeuroTunes can work for your business.
-                        </p>
-                        <div className="flex gap-2 flex-wrap mb-4">
-                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">Veterans Discount</Badge>
-                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">First Responders</Badge>
-                          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/30">Academic Institutions</Badge>
+                    {/* Content */}
+                    <div className="relative z-10">
+                      <div className="grid grid-cols-4 gap-6">
+                        {businessTypes.map((category) => (
+                          <div key={category.category} className="space-y-4">
+                            <h3 className="font-semibold text-xs uppercase tracking-widest text-primary/80">
+                              {category.category}
+                            </h3>
+                            <ul className="space-y-2">
+                              {category.items.map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    to={item.path}
+                                    className="group flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-primary/10 transition-all duration-200 border border-transparent hover:border-primary/20"
+                                  >
+                                    <span className="text-sm font-medium text-foreground/90 group-hover:text-primary transition-colors">
+                                      {item.name}
+                                    </span>
+                                    {item.badge && (
+                                      <Badge className="text-[10px] w-fit bg-primary/20 text-primary border-primary/30 hover:bg-primary/30 px-2 py-0.5">
+                                        {item.badge}
+                                      </Badge>
+                                    )}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-8 pt-6 border-t border-primary/10">
+                        <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-6 rounded-xl border border-primary/20 backdrop-blur-sm">
+                          <h4 className="font-bold text-lg mb-2 text-foreground">Special Discounts Available</h4>
+                          <p className="text-sm text-muted-foreground/90 mb-4">
+                            Talk to the experts and find out how NeuroTunes can work for your business.
+                          </p>
+                          <div className="flex gap-2 flex-wrap mb-4">
+                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">Veterans Discount</Badge>
+                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">First Responders</Badge>
+                            <Badge className="bg-primary/20 text-primary hover:bg-primary/30 border-primary/30 font-medium">Academic Institutions</Badge>
+                          </div>
+                          <Link to="/contact">
+                            <Button size="sm" className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+                              Contact sales
+                            </Button>
+                          </Link>
                         </div>
-                        <Link to="/contact">
-                          <Button size="sm" className="bg-primary hover:bg-primary/90">
-                            Contact sales
-                          </Button>
-                        </Link>
                       </div>
                     </div>
                   </div>
