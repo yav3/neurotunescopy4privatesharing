@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, HelpCircle, CreditCard, Lock, Wrench, Star } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Send, CreditCard, Lock, Wrench, Star, Sparkles } from 'lucide-react';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -136,66 +134,86 @@ export default function Support() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 pb-24">
-      <div className="max-w-4xl mx-auto">
-        <Card className="h-[calc(100vh-8rem)] flex flex-col">
-          <CardHeader className="border-b">
-            <CardTitle className="text-xl">Support Assistant</CardTitle>
-            <CardDescription className="text-base">
-              Ask about technical issues, features, or how to use the app
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="flex-1 flex flex-col overflow-hidden p-4">
-            <div className="flex-1 overflow-y-auto space-y-3 mb-4">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Liquid background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background/95" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      
+      <div className="relative z-10 p-6 max-w-4xl mx-auto">
+        {/* Premium Glass Container */}
+        <div className="glass-surface rounded-3xl shadow-2xl border border-white/10 overflow-hidden backdrop-blur-xl">
+          {/* Header with glassmorphic effect */}
+          <div className="relative px-8 py-6 border-b border-white/10 bg-gradient-to-r from-black/40 via-black/30 to-black/40 backdrop-blur-md">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+            <div className="relative flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center backdrop-blur-sm">
+                <Sparkles className="w-7 h-7 text-primary drop-shadow-[0_0_8px_rgba(20,184,166,0.5)]" />
+              </div>
+              <div className="flex-1">
+                <h1 className="text-2xl font-semibold text-white/95 tracking-tight">
+                  NeuroPositive Support Assistant
+                </h1>
+                <p className="text-sm text-white/60 mt-1 font-light">
+                  Clinical, technical, and account support
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Chat Area */}
+          <div className="p-8">
+            <div className="space-y-6 mb-8 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                    className={`max-w-[85%] rounded-[20px] p-5 ${
                       msg.role === 'user' 
-                        ? 'bg-primary/20 border border-primary/30 text-primary-foreground' 
-                        : 'bg-muted/50 border border-border/50 text-foreground'
+                        ? 'bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg shadow-primary/10 backdrop-blur-sm' 
+                        : 'bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md shadow-xl'
                     }`}
                   >
-                    <div className="text-base leading-relaxed whitespace-pre-wrap">
+                    <div className="text-[15px] leading-relaxed whitespace-pre-wrap font-light">
                       {msg.content}
                     </div>
+                    {msg.timestamp && (
+                      <div className="text-xs text-white/40 mt-3 font-light">
+                        {formatTime(msg.timestamp)}
+                      </div>
+                    )}
                   </div>
-                  {msg.timestamp && (
-                    <span className="text-xs text-muted-foreground mt-1 px-2">
-                      {formatTime(msg.timestamp)}
-                    </span>
-                  )}
                 </div>
               ))}
-              
+
               {showQuickActions && messages.length === 1 && (
-                <div className="flex flex-wrap gap-2 justify-start px-2">
+                <div className="grid grid-cols-2 gap-4 mt-8 animate-fadeIn">
                   {quickActions.map((action) => (
-                    <Button
+                    <button
                       key={action.id}
-                      variant="outline"
-                      size="sm"
                       onClick={() => handleQuickAction(action.id)}
-                      className="gap-2 text-sm"
+                      className="group relative flex items-center gap-4 p-5 rounded-2xl bg-white/[0.06] border border-white/[0.12] hover:bg-white/[0.10] hover:border-primary/40 transition-all duration-300 text-left overflow-hidden backdrop-blur-sm"
                     >
-                      <action.icon className="w-4 h-4" />
-                      {action.label}
-                    </Button>
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/10 group-hover:to-primary/5 transition-all duration-300" />
+                      <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 flex items-center justify-center group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-300">
+                        <action.icon className="w-5 h-5 text-primary drop-shadow-[0_0_6px_rgba(20,184,166,0.4)]" />
+                      </div>
+                      <span className="relative text-sm font-medium text-white/85 group-hover:text-white transition-colors">
+                        {action.label}
+                      </span>
+                    </button>
                   ))}
                 </div>
               )}
-              
+
               {isLoading && (
-                <div className="flex items-start">
-                  <div className="rounded-2xl px-4 py-3 bg-muted/50 border border-border/50 text-foreground">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 bg-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 bg-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="flex justify-start animate-fadeIn">
+                  <div className="bg-white/[0.07] border border-white/[0.15] rounded-[20px] p-5 backdrop-blur-md">
+                    <div className="flex gap-2">
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce shadow-lg shadow-primary/40" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce shadow-lg shadow-primary/40" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce shadow-lg shadow-primary/40" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -203,28 +221,60 @@ export default function Support() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="flex gap-2 p-3 bg-muted/20 rounded-xl border border-border/50">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
-                placeholder="Type your message..."
-                disabled={isLoading}
-                className="flex-1 px-4 py-3 text-base rounded-lg bg-background text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-              />
-              <Button
+            {/* Premium Input Area */}
+            <div className="relative flex gap-3 items-end pt-6 border-t border-white/10">
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
+                  placeholder="Type your message..."
+                  disabled={isLoading}
+                  className="w-full px-5 py-4 rounded-[18px] bg-white/[0.06] border border-white/[0.12] text-white/90 placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 focus:bg-white/[0.08] transition-all duration-200 disabled:opacity-50 backdrop-blur-sm font-light"
+                />
+              </div>
+              <button
                 onClick={() => handleSend()}
                 disabled={isLoading || !input.trim()}
-                size="icon"
-                className="h-12 w-12 rounded-lg"
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 border border-primary/30 flex items-center justify-center hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:hover:scale-100 disabled:hover:shadow-none group"
               >
-                <Send className="w-5 h-5" />
-              </Button>
+                <Send className="w-5 h-5 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(20, 184, 166, 0.3);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(20, 184, 166, 0.5);
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
