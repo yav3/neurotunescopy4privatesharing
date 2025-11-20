@@ -2324,6 +2324,36 @@ export type Database = {
         }
         Relationships: []
       }
+      quick_actions: {
+        Row: {
+          category: Database["public"]["Enums"]["support_ticket_category"]
+          created_at: string | null
+          display_order: number
+          icon: string
+          id: string
+          is_active: boolean | null
+          label: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["support_ticket_category"]
+          created_at?: string | null
+          display_order: number
+          icon: string
+          id?: string
+          is_active?: boolean | null
+          label: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["support_ticket_category"]
+          created_at?: string | null
+          display_order?: number
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          label?: string
+        }
+        Relationships: []
+      }
       repair_map: {
         Row: {
           created_at: string | null
@@ -2959,6 +2989,117 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      support_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message_type: Database["public"]["Enums"]["message_type"]
+          metadata: Json | null
+          sender_id: string | null
+          ticket_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_type: Database["public"]["Enums"]["message_type"]
+          metadata?: Json | null
+          sender_id?: string | null
+          ticket_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_type?: Database["public"]["Enums"]["message_type"]
+          metadata?: Json | null
+          sender_id?: string | null
+          ticket_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          assigned_to: string | null
+          category: Database["public"]["Enums"]["support_ticket_category"]
+          created_at: string | null
+          description: string | null
+          id: string
+          priority:
+            | Database["public"]["Enums"]["support_ticket_priority"]
+            | null
+          resolved_at: string | null
+          status: Database["public"]["Enums"]["support_ticket_status"] | null
+          subject: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          category: Database["public"]["Enums"]["support_ticket_category"]
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?:
+            | Database["public"]["Enums"]["support_ticket_priority"]
+            | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["support_ticket_status"] | null
+          subject: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: Database["public"]["Enums"]["support_ticket_category"]
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          priority?:
+            | Database["public"]["Enums"]["support_ticket_priority"]
+            | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["support_ticket_status"] | null
+          subject?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       therapeutic_applications: {
         Row: {
@@ -5029,6 +5170,10 @@ export type Database = {
       is_valid_uuid: { Args: { input_text: string }; Returns: boolean }
       is_vip_member: { Args: { _user_id?: string }; Returns: boolean }
       mark_likely_missing_tracks: { Args: never; Returns: number }
+      mark_messages_as_read: {
+        Args: { p_ticket_id: string }
+        Returns: undefined
+      }
       mark_track_as_missing: {
         Args: { error_message?: string; track_uuid: string }
         Returns: undefined
@@ -5149,6 +5294,7 @@ export type Database = {
         | "premium_user"
         | "user"
         | "clinical_user"
+      message_type: "user" | "bot" | "support_agent"
       music_genre:
         | "classical"
         | "crossover_classical"
@@ -5180,6 +5326,15 @@ export type Database = {
         | "forest"
         | "ocean_depths"
         | "space_station"
+      support_ticket_category:
+        | "bug_report"
+        | "feature_request"
+        | "payment_issue"
+        | "login_help"
+        | "technical"
+        | "other"
+      support_ticket_priority: "low" | "medium" | "high" | "critical"
+      support_ticket_status: "open" | "in_progress" | "resolved" | "closed"
       therapeutic_category:
         | "cognitive_enhancement"
         | "stress_relief"
@@ -5324,6 +5479,7 @@ export const Constants = {
         "user",
         "clinical_user",
       ],
+      message_type: ["user", "bot", "support_agent"],
       music_genre: [
         "classical",
         "crossover_classical",
@@ -5358,6 +5514,16 @@ export const Constants = {
         "ocean_depths",
         "space_station",
       ],
+      support_ticket_category: [
+        "bug_report",
+        "feature_request",
+        "payment_issue",
+        "login_help",
+        "technical",
+        "other",
+      ],
+      support_ticket_priority: ["low", "medium", "high", "critical"],
+      support_ticket_status: ["open", "in_progress", "resolved", "closed"],
       therapeutic_category: [
         "cognitive_enhancement",
         "stress_relief",
