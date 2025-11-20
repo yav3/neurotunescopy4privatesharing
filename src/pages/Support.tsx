@@ -2,6 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+// Helper to strip markdown formatting and convert to plain text
+const stripMarkdown = (text: string): string => {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold
+    .replace(/\*(.+?)\*/g, '$1')      // Remove italic
+    .replace(/#{1,6}\s?(.+)/g, '$1')  // Remove headers
+    .replace(/`(.+?)`/g, '$1')        // Remove code
+    .replace(/\[(.+?)\]\(.+?\)/g, '$1'); // Remove links
+};
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -72,9 +82,9 @@ export default function Support() {
                   const newMessages = [...prev];
                   const lastMsg = newMessages[newMessages.length - 1];
                   if (lastMsg?.role === 'assistant') {
-                    lastMsg.content = assistantContent;
+                    lastMsg.content = stripMarkdown(assistantContent);
                   } else {
-                    newMessages.push({ role: 'assistant', content: assistantContent });
+                    newMessages.push({ role: 'assistant', content: stripMarkdown(assistantContent) });
                   }
                   return newMessages;
                 });
@@ -143,7 +153,7 @@ export default function Support() {
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Describe your issue..."
                 disabled={isLoading}
-                className="flex-1 px-3 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-ring"
+                className="flex-1 px-3 py-2 rounded-lg bg-background text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring"
               />
               <button
                 onClick={handleSend}
