@@ -14,7 +14,6 @@ import { Footer } from '@/components/Footer';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 
 import { QADashboard } from '@/components/QADashboard';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
 import cornellLogo from '../assets/cornell-university.png';
 import jacobsTechnionLogo from '../assets/jacobs-technion.png';
@@ -264,33 +263,24 @@ const Index = () => {
           />
         </section>
 
-        {/* Tabbed Content Sections */}
+        {/* Content Sections */}
         <section className="py-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <Tabs defaultValue="science" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 mb-12 bg-white/5 backdrop-blur-sm border border-white/10">
-                <TabsTrigger value="science" className="text-base">Science & Excellence</TabsTrigger>
-                <TabsTrigger value="sessions" className="text-base">Featured Sessions</TabsTrigger>
-                <TabsTrigger value="benefits" className="text-base">Benefits</TabsTrigger>
-                <TabsTrigger value="partners" className="text-base">Partners</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="science" className="mt-0">
-                <CredentialsBadges />
-              </TabsContent>
-              
-              <TabsContent value="sessions" className="mt-0">
-                <FeaturedGoalsCarousel />
-              </TabsContent>
-              
-              <TabsContent value="benefits" className="mt-0">
-                <BenefitsCarousel />
-              </TabsContent>
-              
-              <TabsContent value="partners" className="mt-0">
-                <PartnersSection />
-              </TabsContent>
-            </Tabs>
+          <div className="max-w-7xl mx-auto space-y-20">
+            <div id="science">
+              <CredentialsBadges />
+            </div>
+            
+            <div id="sessions">
+              <FeaturedGoalsCarousel />
+            </div>
+            
+            <div id="benefits">
+              <BenefitsCarousel />
+            </div>
+            
+            <div id="partners">
+              <PartnersSection />
+            </div>
           </div>
         </section>
       </div>
