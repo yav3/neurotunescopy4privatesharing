@@ -26,6 +26,7 @@ import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
 import premiumDarkBg from '../assets/premium-dark-bg.png';
 import ladyHeadphones from '../assets/lady-headphones.png';
+import landingBg from '../assets/landing-bg.gif';
 
 import { Button } from '../components/ui/button';
 
@@ -115,58 +116,66 @@ const Index = () => {
     }
   ];
 
-  // Map display names to existing therapeutic goals (keeping music buckets intact)
+  // Map display names to existing therapeutic goals with specific imagery
   const therapeuticCards = [
     {
       title: "Relaxation",
-      description: "Calm your mind",
+      description: "Calm your mind with soothing soundscapes",
       image: relaxationCard,
-      goalId: "stress-anxiety-support" // Keeps existing music buckets
+      goalId: "stress-anxiety-support",
+      featured: "Ambient Nature Sounds",
+      gradient: "from-blue-500/20 to-cyan-500/20"
     },
     {
       title: "Recovery",
-      description: "Restore and heal",
+      description: "Restore and heal your body",
       image: recoveryCard,
-      goalId: "pain-support" // Keeps existing music buckets
+      goalId: "pain-support",
+      featured: "Gentle Healing Frequencies",
+      gradient: "from-emerald-500/20 to-teal-500/20"
     },
     {
       title: "Focus+",
-      description: "Enhance concentration",
+      description: "Enhance concentration and clarity",
       image: focusCard,
-      goalId: "focus-enhancement" // Keeps existing music buckets
+      goalId: "focus-enhancement",
+      featured: "Binaural Beats & Classical",
+      gradient: "from-purple-500/20 to-indigo-500/20"
     },
     {
       title: "Rest",
-      description: "Deep relaxation",
+      description: "Deep relaxation for better sleep",
       image: restCard,
-      goalId: "meditation-support" // Keeps existing music buckets
+      goalId: "meditation-support",
+      featured: "Meditative Soundscapes",
+      gradient: "from-violet-500/20 to-purple-500/20"
     },
     {
       title: "Exercise",
-      description: "Energize your workout",
+      description: "Energize your workout routine",
       image: exerciseCard,
-      goalId: "energy-vitality" // Keeps existing music buckets
+      goalId: "energy-vitality",
+      featured: "Upbeat Rhythmic Energy",
+      gradient: "from-orange-500/20 to-red-500/20"
     },
     {
       title: "Boost",
-      description: "Elevate your mood",
+      description: "Elevate your mood instantly",
       image: boostCard,
-      goalId: "calm-mood-boost" // Keeps existing music buckets
+      goalId: "calm-mood-boost",
+      featured: "Uplifting Melodies",
+      gradient: "from-yellow-500/20 to-amber-500/20"
     }
   ];
 
   return (
     <div className="min-h-screen relative">
-      {/* Full background image with parallax */}
+      {/* Full background GIF */}
       <div className="fixed inset-0 z-0">
-        <motion.img 
-          src={premiumDarkBg} 
+        <img 
+          src={landingBg} 
           alt="Background"
           className="w-full h-full object-cover"
-          style={{
-            scale: 1 + scrollY * 0.0005,
-            y: scrollY * 0.5
-          }}
         />
       </div>
 
