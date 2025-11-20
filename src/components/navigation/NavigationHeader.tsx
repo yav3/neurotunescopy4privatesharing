@@ -9,7 +9,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, Plus } from "lucide-react";
 
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -61,11 +61,17 @@ export const NavigationHeader = () => {
       {/* Desktop Navigation */}
       <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary rounded-full" />
-              <span className="ml-2 text-xl font-bold">NeuroTunes</span>
-            </div>
+          <Link to="/" className="flex items-center">
+            <Plus 
+              className="w-10 h-10" 
+              strokeWidth={1.5}
+              style={{
+                background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
+              }}
+            />
           </Link>
 
           <NavigationMenu>
@@ -144,7 +150,7 @@ export const NavigationHeader = () => {
           </Link>
           <Link to="/demo">
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-full px-6">
-              Try demo
+              See Samples
             </Button>
           </Link>
         </div>
@@ -152,9 +158,17 @@ export const NavigationHeader = () => {
 
       {/* Mobile Navigation */}
       <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/95 backdrop-blur sticky top-0 z-50">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-primary rounded-full" />
-          <span className="text-lg font-bold">NeuroTunes</span>
+        <Link to="/" className="flex items-center">
+          <Plus 
+            className="w-8 h-8" 
+            strokeWidth={1.5}
+            style={{
+              background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
+            }}
+          />
         </Link>
 
         <button
@@ -243,7 +257,7 @@ export const NavigationHeader = () => {
                 <Badge variant="outline">Academic</Badge>
               </div>
               <Link to="/demo" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full">Try demo</Button>
+                <Button className="w-full">See Samples</Button>
               </Link>
             </div>
           </div>
