@@ -10,6 +10,7 @@ import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarouse
 import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
 import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
 import { RealBenefitsCarousel } from '@/components/landing/RealBenefitsCarousel';
+import { FitnessCardWithAudio } from '@/components/landing/FitnessCardWithAudio';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -279,6 +280,9 @@ const Index = () => {
 
         {/* Real Benefits Carousel */}
         <RealBenefitsCarousel />
+
+        {/* Fitness Card with Audio */}
+        <FitnessCardWithAudio />
 
         {/* Unified Benefits & Goals Carousel */}
         <BenefitsCarousel />
