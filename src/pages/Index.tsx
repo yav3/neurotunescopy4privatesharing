@@ -1,4 +1,3 @@
-/* Professional Music Therapy AI Platform Landing Page */
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
@@ -12,76 +11,21 @@ import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
 import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
-import { RegistrationChatbot } from '@/components/auth/RegistrationChatbot';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import { QADashboard } from '@/components/QADashboard';
-import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
-import cornellLogo from '../assets/cornell-university.png';
-import jacobsTechnionLogo from '../assets/jacobs-technion.png';
-import stanfordMedicineLogo from '../assets/stanford-medicine.png';
-import weillCornellLogo from '../assets/weill-cornell.png';
-import relaxationCard from '../assets/relaxation-card.png';
-import recoveryCard from '../assets/recovery-card.png';
-import focusCard from '../assets/focus-card.png';
-import restCard from '../assets/rest-card.png';
-import exerciseCard from '../assets/exercise-card.png';
-import boostCard from '../assets/boost-button-bg.png';
-import landingBackground from '../assets/landing-background.png';
-import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
-import premiumDarkBg from '../assets/premium-dark-bg.png';
-import wellnessHeadphones1 from '../assets/wellness-headphones-1.png';
-import wellnessHeadphones2 from '../assets/wellness-headphones-2.png';
-import wellnessSpa1 from '../assets/wellness-spa-1.png';
-import wellnessSpa2 from '../assets/wellness-spa-2.png';
-import wellnessWaiting1 from '../assets/wellness-waiting-1.png';
-import wellnessWaiting2 from '../assets/wellness-waiting-2.png';
-import wellnessTreatment1 from '../assets/wellness-treatment-1.png';
-import wellnessTreatment2 from '../assets/wellness-treatment-2.png';
 import staticBg from '../assets/static-bg.png';
-import ladyHeadphones from '../assets/lady-headphones.png';
-import landingBg from '../assets/landing-bg.gif';
-
 import { Button } from '../components/ui/button';
-
-import { 
-  Brain, 
-  Heart, 
-  Activity, 
-  Music, 
-  Play, 
-  ArrowRight, 
-  Star, 
-  Users, 
-  Shield, 
-  Zap,
-  Headphones,
-  Sparkles,
-  TrendingUp,
-  Award,
-  Plus
-} from 'lucide-react';
+import { Brain, Heart, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [gifFinished, setGifFinished] = useState(false);
   
   // Welcome returning users
   useWelcomeMessage();
   
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
-
-  // Redirect authenticated users to the music player
-  // DISABLED FOR DEVELOPMENT - Re-enable when ready
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     console.log('✅ User already authenticated, redirecting to music player');
-  //     navigate('/goals');
-  //   }
-  // }, [user, loading, navigate]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,86 +35,14 @@ const Index = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Mark as animated after initial load
-    const timer = setTimeout(() => setHasAnimated(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Switch from GIF to static background after GIF duration (adjust timing as needed)
-  useEffect(() => {
-    const gifDuration = setTimeout(() => {
-      setGifFinished(true);
-    }, 5000); // 5 seconds - adjust based on your GIF's actual duration
-    return () => clearTimeout(gifDuration);
-  }, []);
-
-
-  // Map display names to existing therapeutic goals with specific imagery
-  const therapeuticCards = [
-    {
-      title: "Relaxation",
-      description: "Calm your mind with soothing soundscapes",
-      image: relaxationCard,
-      goalId: "stress-anxiety-support",
-      featured: "Ambient Nature Sounds",
-      gradient: "from-blue-500/20 to-cyan-500/20"
-    },
-    {
-      title: "Recovery",
-      description: "Restore and heal your body",
-      image: recoveryCard,
-      goalId: "pain-support",
-      featured: "Gentle Healing Frequencies",
-      gradient: "from-emerald-500/20 to-teal-500/20"
-    },
-    {
-      title: "Focus+",
-      description: "Enhance concentration and clarity",
-      image: focusCard,
-      goalId: "focus-enhancement",
-      featured: "Binaural Beats & Classical",
-      gradient: "from-purple-500/20 to-indigo-500/20"
-    },
-    {
-      title: "Rest",
-      description: "Deep relaxation for better sleep",
-      image: restCard,
-      goalId: "meditation-support",
-      featured: "Meditative Soundscapes",
-      gradient: "from-violet-500/20 to-purple-500/20"
-    },
-    {
-      title: "Exercise",
-      description: "Energize your workout routine",
-      image: exerciseCard,
-      goalId: "energy-vitality",
-      featured: "Upbeat Rhythmic Energy",
-      gradient: "from-orange-500/20 to-red-500/20"
-    },
-    {
-      title: "Boost",
-      description: "Elevate your mood instantly",
-      image: boostCard,
-      goalId: "calm-mood-boost",
-      featured: "Uplifting Melodies",
-      gradient: "from-yellow-500/20 to-amber-500/20"
-    }
-  ];
-
   return (
     <div className="min-h-screen relative">
-      {/* Full background - GIF plays once then shows static image */}
+      {/* Static background */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={landingBg}
-          alt="Background animation"
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${gifFinished ? 'opacity-0' : 'opacity-100'}`}
-        />
         <img 
           src={staticBg}
           alt="Background"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${gifFinished ? 'opacity-100' : 'opacity-0'}`}
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -207,82 +79,102 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center text-center h-screen relative">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-            <div className="space-y-12">
-              {/* NeuroTunes Large Title */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              >
-                <motion.div 
-                  className="flex items-center justify-center gap-8 mb-4"
-                  animate={!hasAnimated ? {
-                    scale: [1, 1.02, 1],
-                  } : {}}
-                  transition={{
-                    duration: 4,
-                    repeat: !hasAnimated ? Infinity : 0,
-                    ease: "easeInOut"
-                  }}
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  <Plus 
-                    className="w-[8rem] h-[8rem] sm:w-[10rem] sm:h-[10rem] lg:w-[12rem] lg:h-[12rem]" 
-                    strokeWidth={1.5}
-                    style={{
-                      color: '#b2dfdb',
-                      filter: 'drop-shadow(0 0 30px rgba(224, 242, 241, 0.5)) drop-shadow(0 0 15px rgba(178, 223, 219, 0.4))'
-                    }}
-                  />
-                  <h1 
-                    className="text-[4rem] sm:text-[5rem] lg:text-[6rem] font-sf font-normal leading-none tracking-tight" 
-                    style={{ 
-                      background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      textShadow: 'none',
-                      filter: 'drop-shadow(0 0 30px rgba(224, 242, 241, 0.4)) drop-shadow(0 0 15px rgba(178, 223, 219, 0.3))',
-                    }}
-                  >
-                    NeuroTunes
-                  </h1>
-                </motion.div>
-              </motion.div>
-            </div>
+        {/* Hero Section - Following comprehensive spacing guide */}
+        <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
+          <div className="relative z-10 max-w-5xl mx-auto text-center">
+            
+            {/* Headline */}
+            <motion.h1 
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              Experience NeuroTunes
+            </motion.h1>
+            
+            {/* Subheadline */}
+            <motion.p 
+              className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Explore our therapeutic music sessions. Each track is scientifically designed to support specific cognitive and emotional states.
+            </motion.p>
+            
+            {/* CTAs */}
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <Link to="/auth">
+                <Button size="lg" className="px-8 py-6 text-lg bg-primary hover:bg-primary/90 rounded-xl">
+                  Get Started
+                </Button>
+              </Link>
+              <Link to="/how-it-works">
+                <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl">
+                  How it works
+                </Button>
+              </Link>
+            </motion.div>
+            
+            {/* Three Key Features */}
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              {/* Science-Backed */}
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Brain className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Science-Backed</h3>
+                <p className="text-sm text-muted-foreground">Based on neuroscience research</p>
+              </div>
+              
+              {/* Fully Owned */}
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Fully Owned</h3>
+                <p className="text-sm text-muted-foreground">No licensing fees or restrictions</p>
+              </div>
+              
+              {/* Proven Results */}
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Proven Results</h3>
+                <p className="text-sm text-muted-foreground">Measurable therapeutic outcomes</p>
+              </div>
+            </motion.div>
           </div>
-
-          {/* Pulsing glow effect - only on initial load */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            animate={!hasAnimated ? {
-              opacity: [0.1, 0.3, 0.1],
-            } : { opacity: 0.1 }}
-            transition={{
-              duration: 3,
-              repeat: !hasAnimated ? Infinity : 0,
-              ease: "easeInOut"
-            }}
-            style={{
-              background: 'radial-gradient(circle at center, rgba(0, 217, 255, 0.2) 0%, transparent 70%)',
-            }}
-          />
         </section>
 
-        {/* Content Sections */}
-        <section className="py-20 px-6">
-          <div className="max-w-7xl mx-auto space-y-32">
+        {/* Featured Therapeutic Sessions - 160px spacing */}
+        <section className="py-40 px-6">
+          <div className="max-w-7xl mx-auto">
             <motion.div 
-              id="science"
-              initial={{ opacity: 0, y: 50 }}
+              className="text-center mb-16"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
             >
-              <CredentialsBadges />
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                Featured Therapeutic Sessions
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Scientifically designed audio experiences for every wellness goal
+              </p>
             </motion.div>
             
             <motion.div 
@@ -294,7 +186,27 @@ const Index = () => {
             >
               <FeaturedGoalsCarousel />
             </motion.div>
-            
+          </div>
+        </section>
+
+        {/* Credentials - 120px spacing */}
+        <section className="py-30 px-6">
+          <div className="max-w-7xl mx-auto">
+            <motion.div 
+              id="science"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <CredentialsBadges />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Benefits - 160px spacing */}
+        <section className="py-40 px-6">
+          <div className="max-w-7xl mx-auto">
             <motion.div 
               id="benefits"
               initial={{ opacity: 0, y: 50 }}
@@ -304,34 +216,12 @@ const Index = () => {
             >
               <BenefitsCarousel />
             </motion.div>
-            
+          </div>
+        </section>
 
-            {/* Additional Wellness Gallery */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessHeadphones2} alt="Happy person with headphones" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessSpa2} alt="Spa wellness environment" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessWaiting2} alt="Comfortable waiting area" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
-                <img src={wellnessTreatment2} alt="Treatment space with music therapy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-            </motion.div>
-            
+        {/* Partners - 120px spacing */}
+        <section className="py-30 px-6">
+          <div className="max-w-7xl mx-auto">
             <motion.div 
               id="partners"
               initial={{ opacity: 0, y: 50 }}
