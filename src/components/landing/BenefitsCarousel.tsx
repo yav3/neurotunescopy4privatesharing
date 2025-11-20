@@ -22,6 +22,12 @@ const cards = [
     icon: Brain
   },
   {
+    type: 'library',
+    title: "8.5K+ original world-class quality songs by award-winning pros encompassing 50 genres in 5 languages",
+    description: "",
+    icon: Music
+  },
+  {
     type: 'company',
     title: "Turning Music Into Treatment",
     description: "NeuralPositive develops software that turns music into treatment. Our patent portfolio covers how therapeutic music is created and personalized for clinical use.",
