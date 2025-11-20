@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, CreditCard, Lock, Wrench, Star, Sparkles } from 'lucide-react';
+import liquidGlassBg from '@/assets/liquid-glass-bg.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -135,9 +136,12 @@ export default function Support() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Liquid background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background/95" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      {/* Liquid glass background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${liquidGlassBg})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/40" />
       
       <div className="relative z-10 p-6 max-w-4xl mx-auto">
         {/* Premium Glass Container */}
