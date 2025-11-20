@@ -55,7 +55,6 @@ const Index = () => {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [showNatureCards, setShowNatureCards] = useState(false);
   const [gifFinished, setGifFinished] = useState(false);
   
   // Welcome returning users
@@ -277,11 +276,8 @@ const Index = () => {
         {/* Credentials Section */}
         <CredentialsBadges />
 
-        {/* Benefits Carousel */}
+        {/* Unified Benefits & Goals Carousel */}
         <BenefitsCarousel />
-
-        {/* Featured Goals Carousel */}
-        <FeaturedGoalsCarousel showNatureCards={showNatureCards} />
 
 
         {/* Footer - Research Institutions (Horizontal Scroll) */}
