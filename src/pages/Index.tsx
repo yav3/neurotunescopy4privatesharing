@@ -270,12 +270,13 @@ const Index = () => {
                 
                 {/* Subtitle */}
                 <motion.p
-                  className="text-[2.4rem] sm:text-[3rem] lg:text-[3.6rem] font-sf font-light text-white/80 text-center"
+                  className="text-[1.2rem] sm:text-[1.5rem] lg:text-[1.8rem] font-ditto font-light text-white/90 text-center px-12"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
                   style={{
-                    filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.3))',
+                    filter: 'drop-shadow(0 0 10px rgba(224, 242, 241, 0.2))',
+                    letterSpacing: '0.05em'
                   }}
                 >
                   Built on Science and Excellence
