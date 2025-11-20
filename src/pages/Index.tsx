@@ -264,15 +264,35 @@ const Index = () => {
           />
         </section>
 
-        {/* Company Mission Section */}
-        {/* Credentials Section */}
-        <CredentialsBadges />
-
-        {/* Unified Benefits & Goals Carousel */}
-        <BenefitsCarousel />
-
-        {/* Partners Section */}
-        <PartnersSection />
+        {/* Tabbed Content Sections */}
+        <section className="py-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <Tabs defaultValue="science" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 mb-12 bg-white/5 backdrop-blur-sm border border-white/10">
+                <TabsTrigger value="science" className="text-base">Science & Excellence</TabsTrigger>
+                <TabsTrigger value="sessions" className="text-base">Featured Sessions</TabsTrigger>
+                <TabsTrigger value="benefits" className="text-base">Benefits</TabsTrigger>
+                <TabsTrigger value="partners" className="text-base">Partners</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="science" className="mt-0">
+                <CredentialsBadges />
+              </TabsContent>
+              
+              <TabsContent value="sessions" className="mt-0">
+                <FeaturedGoalsCarousel />
+              </TabsContent>
+              
+              <TabsContent value="benefits" className="mt-0">
+                <BenefitsCarousel />
+              </TabsContent>
+              
+              <TabsContent value="partners" className="mt-0">
+                <PartnersSection />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </section>
       </div>
       
       {/* Footer */}
