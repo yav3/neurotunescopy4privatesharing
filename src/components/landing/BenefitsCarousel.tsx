@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { THERAPEUTIC_GOALS, TherapeuticGoal } from '@/config/therapeuticGoals';
 import { 
   Brain, 
@@ -15,6 +14,13 @@ import {
   Microscope,
   LucideIcon
 } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface InfoCard {
   type: string;
@@ -126,138 +132,107 @@ const isGoalCard = (card: CarouselCard): card is TherapeuticGoal => {
 };
 
 export const BenefitsCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const featuredGoals = THERAPEUTIC_GOALS.slice(0, 6);
   
   // Combine info cards and therapeutic goals
   const allCards: CarouselCard[] = [...infoCards, ...featuredGoals];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % allCards.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [allCards.length]);
-
-  const currentCard = allCards[currentIndex];
-  const isGoal = isGoalCard(currentCard);
-
   return (
     <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
       
-      <div className="max-w-4xl mx-auto relative z-10">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: -20 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm"
+      <div className="w-full max-w-7xl mx-auto relative z-10">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
         >
-          {isGoal ? (
-            // Therapeutic Goal Card
-            <>
-              <div className="aspect-square relative">
-                <img 
-                  src={currentCard.artwork} 
-                  alt={currentCard.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-12">
-                <motion.h3 
-                  className="text-4xl lg:text-5xl font-headers font-semibold text-center mb-4"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                  {currentCard.name}
-                </motion.h3>
-                <motion.p 
-                  className="text-xl lg:text-2xl font-body text-white/70 text-center leading-relaxed"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  {currentCard.description}
-                </motion.p>
-              </div>
-            </>
-          ) : (
-            // Info Card
-            <div className="p-12">
-              <motion.div 
-                className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <currentCard.icon className="h-12 w-12 text-white" />
-              </motion.div>
+          <CarouselContent className="-ml-6">
+            {allCards.map((card, index) => {
+              const isGoal = isGoalCard(card);
+              
+              return (
+                <CarouselItem key={index} className="pl-6 md:basis-1/2 lg:basis-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true }}
+                    className="h-full"
+                  >
+                    <div className="border border-white/20 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm h-full flex flex-col">
+                      {isGoal ? (
+                        // Therapeutic Goal Card
+                        <>
+                          <div className="aspect-square relative">
+                            <img 
+                              src={card.artwork} 
+                              alt={card.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-6 flex-1 flex flex-col justify-center">
+                            <h3 
+                              className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                              style={{ 
+                                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                              }}
+                            >
+                              {card.name}
+                            </h3>
+                            <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
+                              {card.description}
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        // Info Card
+                        <div className="p-6 flex-1 flex flex-col justify-center">
+                          <div 
+                            className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-4"
+                          >
+                            <card.icon className="h-8 w-8 text-white" />
+                          </div>
 
-              {currentCard.subtitle && (
-                <motion.p
-                  className="text-xl font-body text-white/60 text-center mb-2"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.25 }}
-                >
-                  {currentCard.subtitle}
-                </motion.p>
-              )}
+                          {card.subtitle && (
+                            <p className="text-sm font-body text-white/60 text-center mb-2">
+                              {card.subtitle}
+                            </p>
+                          )}
 
-              <motion.h3 
-                className="text-4xl lg:text-5xl font-headers font-semibold text-center mb-6"
-                style={{ 
-                  background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                {currentCard.title}
-              </motion.h3>
+                          <h3 
+                            className="text-2xl lg:text-3xl font-headers font-semibold text-center mb-3"
+                            style={{ 
+                              background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text',
+                            }}
+                          >
+                            {card.title}
+                          </h3>
 
-              {currentCard.description && (
-                <motion.p 
-                  className="text-xl lg:text-2xl font-body text-white/70 text-center leading-relaxed"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  {currentCard.description}
-                </motion.p>
-              )}
-            </div>
-          )}
-        </motion.div>
-
-        {/* Progress indicators */}
-        <div className="flex justify-center gap-2 mt-8">
-          {allCards.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'bg-white/80 w-8' 
-                  : 'bg-white/20 w-1.5'
-              }`}
-              onClick={() => setCurrentIndex(index)}
-              style={{ cursor: 'pointer' }}
-            />
-          ))}
-        </div>
+                          {card.description && (
+                            <p className="text-base lg:text-lg font-body text-white/70 text-center leading-relaxed">
+                              {card.description}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
       </div>
     </section>
   );
