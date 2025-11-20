@@ -164,9 +164,15 @@ export default function Support() {
             </div>
           </div>
 
-          {/* Chat Area */}
-          <div className="p-8">
-            <div className="space-y-6 mb-8 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+          {/* Chat Area with Gloss Panel */}
+          <div className="relative p-8 rounded-[28px] bg-gradient-to-br from-[#021014] to-[#00252c] shadow-[0_20px_60px_rgba(0,220,255,0.08)] overflow-hidden mb-8">
+            {/* gloss highlight */}
+            <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-white/20 blur-[60px] rounded-full opacity-10 pointer-events-none" />
+            
+            {/* subtle teal glow */}
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-400/10 blur-[80px] rounded-full pointer-events-none" />
+            
+            <div className="relative z-10 space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
@@ -224,8 +230,10 @@ export default function Support() {
               )}
               <div ref={messagesEndRef} />
             </div>
+          </div>
 
-            {/* Premium Input Area */}
+          {/* Premium Input Area */}
+          <div className="px-8 pb-8">
             <div className="relative flex gap-3 items-end pt-6 border-t border-white/10">
               <div className="flex-1 relative">
                 <input
