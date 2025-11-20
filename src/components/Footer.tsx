@@ -34,11 +34,6 @@ export const Footer = () => {
                   Apps & hardware
                 </Link>
               </li>
-              <li>
-                <Link to="/sonos" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Sonos
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -76,6 +71,11 @@ export const Footer = () => {
           {/* Column 3 - Company */}
           <div>
             <ul className="space-y-3">
+              <li>
+                <Link to="/our-story" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Our Story
+                </Link>
+              </li>
               <li>
                 <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
                   Contact
