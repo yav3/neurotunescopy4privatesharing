@@ -327,29 +327,6 @@ const Index = () => {
               Medical-grade music, personalized by AI
             </motion.h2>
             
-            {/* Scrolling tagline */}
-            <div className="overflow-hidden mb-12 py-4">
-              <motion.p
-                className="text-2xl font-body whitespace-nowrap"
-                style={{ 
-                  background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-                initial={{ x: '100%' }}
-                whileInView={{ x: '-100%' }}
-                viewport={{ once: false }}
-                transition={{ 
-                  duration: 15, 
-                  repeat: Infinity, 
-                  ease: "linear" 
-                }}
-              >
-                Our patented, closed loop personalization adapts playlists to each user's needs and preferences
-              </motion.p>
-            </div>
-            
             <motion.div
               className="space-y-6 text-xl lg:text-2xl font-body leading-relaxed"
               style={{ color: '#e0f2f1' }}
