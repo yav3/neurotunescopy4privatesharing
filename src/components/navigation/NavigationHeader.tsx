@@ -64,8 +64,8 @@ export const NavigationHeader = () => {
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center">
             <Plus 
-              className="w-10 h-10 text-primary" 
-              strokeWidth={1.5}
+              className="w-8 h-8 text-cyan-400/80" 
+              strokeWidth={2}
             />
           </Link>
 
@@ -172,14 +172,8 @@ export const NavigationHeader = () => {
       <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-border/50 bg-background/95 backdrop-blur sticky top-0 z-50">
         <Link to="/" className="flex items-center">
           <Plus 
-            className="w-8 h-8" 
-            strokeWidth={1.5}
-            style={{
-              background: 'linear-gradient(135deg, #80cbc4 0%, #b2dfdb 50%, #e0f2f1 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 20px rgba(224, 242, 241, 0.4))'
-            }}
+            className="w-7 h-7 text-cyan-400/80" 
+            strokeWidth={2}
           />
         </Link>
 
