@@ -50,6 +50,7 @@ import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
 import Showcase from "./pages/Showcase";
 import Support from "./pages/Support";
+import HowItWorks from "./pages/HowItWorks";
 
 const queryClient = new QueryClient();
 
@@ -125,6 +126,7 @@ const AppContent = () => {
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
         <Route path="/showcase" element={<Showcase />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
