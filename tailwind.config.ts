@@ -20,6 +20,7 @@ export default {
 				'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
 				'sans': ['Playfair Display', 'Times New Roman', 'serif'],
 				'didot': ['Playfair Display', 'Times New Roman', 'serif'],
+				'ditto': ['DM Sans', 'sans-serif'],
 				'headers': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
 				'body': ['Playfair Display', 'Times New Roman', 'serif'],
 			},
