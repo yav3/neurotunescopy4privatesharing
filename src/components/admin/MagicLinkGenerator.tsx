@@ -126,12 +126,33 @@ export const MagicLinkGenerator = () => {
     toast.success('Copied to clipboard!');
   };
 
-  const sendEmail = async (link: string, userEmail: string) => {
+  const sendEmail = async () => {
+    if (!generatedLink) return;
+
     try {
-      // You can implement email sending here using Resend or another service
-      toast.info('Email functionality not implemented yet. Please copy and send the link manually.');
-    } catch (error) {
-      toast.error('Failed to send email');
+      const selectedUserData = vipUsers.find(u => u.id === selectedUser);
+      if (!selectedUserData) {
+        toast.error('User not found');
+        return;
+      }
+
+      const { error } = await supabase.functions.invoke('send-auth-email', {
+        body: {
+          type: 'magic-link',
+          to: selectedUserData.email,
+          data: {
+            magicLink: generatedLink.magic_link_url,
+            recipientName: selectedUserData.display_name || selectedUserData.email,
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      toast.success(`Magic link sent to ${selectedUserData.email}`);
+    } catch (error: any) {
+      console.error('Error sending email:', error);
+      toast.error('Failed to send email: ' + error.message);
     }
   };
 
@@ -250,7 +271,7 @@ export const MagicLinkGenerator = () => {
                 </Button>
                 <Button 
                   variant="outline"
-                  onClick={() => sendEmail(generatedLink.magic_link_url, selectedUserData.email)}
+                  onClick={sendEmail}
                   className="flex-1"
                 >
                   <Mail className="h-4 w-4 mr-2" />
