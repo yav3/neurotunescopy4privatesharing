@@ -12,7 +12,7 @@ import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
 import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
-
+import { RegistrationChatbot } from '@/components/auth/RegistrationChatbot';
 import { QADashboard } from '@/components/QADashboard';
 import { ComprehensiveInsightsDashboard } from '@/components/insights/ComprehensiveInsightsDashboard';
 import cornellLogo from '../assets/cornell-university.png';
@@ -28,6 +28,14 @@ import boostCard from '../assets/boost-button-bg.png';
 import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
 import premiumDarkBg from '../assets/premium-dark-bg.png';
+import wellnessHeadphones1 from '../assets/wellness-headphones-1.png';
+import wellnessHeadphones2 from '../assets/wellness-headphones-2.png';
+import wellnessSpa1 from '../assets/wellness-spa-1.png';
+import wellnessSpa2 from '../assets/wellness-spa-2.png';
+import wellnessWaiting1 from '../assets/wellness-waiting-1.png';
+import wellnessWaiting2 from '../assets/wellness-waiting-2.png';
+import wellnessTreatment1 from '../assets/wellness-treatment-1.png';
+import wellnessTreatment2 from '../assets/wellness-treatment-2.png';
 import staticBg from '../assets/static-bg.png';
 import ladyHeadphones from '../assets/lady-headphones.png';
 import landingBg from '../assets/landing-bg.gif';
@@ -265,24 +273,103 @@ const Index = () => {
 
         {/* Content Sections */}
         <section className="py-20 px-6">
-          <div className="max-w-7xl mx-auto space-y-20">
-            <div id="science">
+          <div className="max-w-7xl mx-auto space-y-32">
+            <motion.div 
+              id="science"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <CredentialsBadges />
-            </div>
+            </motion.div>
             
-            <div id="sessions">
+            {/* Wellness Images Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessHeadphones1} alt="Person experiencing music therapy with headphones" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessSpa1} alt="Relaxing spa treatment environment" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessWaiting1} alt="Peaceful waiting room with music therapy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessTreatment1} alt="Therapeutic treatment with music" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              id="sessions"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <FeaturedGoalsCarousel />
-            </div>
+            </motion.div>
             
-            <div id="benefits">
+            <motion.div 
+              id="benefits"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <BenefitsCarousel />
-            </div>
+            </motion.div>
+
+            {/* Additional Wellness Gallery */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessHeadphones2} alt="Happy person with headphones" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessSpa2} alt="Spa wellness environment" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessWaiting2} alt="Comfortable waiting area" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl aspect-[3/4] group">
+                <img src={wellnessTreatment2} alt="Treatment space with music therapy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+            </motion.div>
             
-            <div id="partners">
+            <motion.div 
+              id="partners"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <PartnersSection />
-            </div>
+            </motion.div>
           </div>
         </section>
+        
+        {/* Registration Chatbot */}
+        <RegistrationChatbot />
       </div>
       
       {/* Footer */}
