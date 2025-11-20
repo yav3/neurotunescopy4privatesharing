@@ -2397,6 +2397,7 @@ export type Database = {
           is_active: boolean | null
           is_featured: boolean | null
           mood_tags: string[] | null
+          play_count: number | null
           storage_path: string
           therapeutic_category: string[] | null
           title: string
@@ -2415,6 +2416,7 @@ export type Database = {
           is_active?: boolean | null
           is_featured?: boolean | null
           mood_tags?: string[] | null
+          play_count?: number | null
           storage_path: string
           therapeutic_category?: string[] | null
           title: string
@@ -2433,6 +2435,7 @@ export type Database = {
           is_active?: boolean | null
           is_featured?: boolean | null
           mood_tags?: string[] | null
+          play_count?: number | null
           storage_path?: string
           therapeutic_category?: string[] | null
           title?: string
@@ -5122,6 +5125,10 @@ export type Database = {
           track_id: string
         }[]
       }
+      get_sambajazznocturnes_url: {
+        Args: { file_path: string }
+        Returns: string
+      }
       get_therapeutic_recommendations: {
         Args: { min_evidence_score?: number; target_condition: string }
         Returns: {
@@ -5142,6 +5149,62 @@ export type Database = {
           unknown_tracks: number
           working_tracks: number
         }[]
+      }
+      get_tracks_by_bpm_range: {
+        Args: { max_bpm: number; min_bpm: number }
+        Returns: {
+          album: string | null
+          artist: string | null
+          bpm: number | null
+          created_at: string | null
+          display_order: number | null
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          mood_tags: string[] | null
+          play_count: number | null
+          storage_path: string
+          therapeutic_category: string[] | null
+          title: string
+          track_number: number | null
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "sambajazznocturnes_tracks"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      get_tracks_by_category: {
+        Args: { category: string }
+        Returns: {
+          album: string | null
+          artist: string | null
+          bpm: number | null
+          created_at: string | null
+          display_order: number | null
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          mood_tags: string[] | null
+          play_count: number | null
+          storage_path: string
+          therapeutic_category: string[] | null
+          title: string
+          track_number: number | null
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "sambajazznocturnes_tracks"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       get_unplayable_tracks_diagnostic: {
         Args: never
@@ -5224,6 +5287,10 @@ export type Database = {
         Returns: Record<string, unknown>[]
       }
       increment_play_count: { Args: { track_id: string }; Returns: undefined }
+      increment_track_play_count: {
+        Args: { track_id: string }
+        Returns: undefined
+      }
       is_track_favorited_unified: {
         Args: { p_track_identifier: string; p_user_id: string }
         Returns: boolean
