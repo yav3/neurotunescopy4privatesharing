@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 import { Building2, Plane, Laptop } from 'lucide-react';
+import healthcareImg from '@/assets/deployment-healthcare.jpg';
+import enterpriseImg from '@/assets/deployment-enterprise.jpg';
+import technologyImg from '@/assets/deployment-technology.jpg';
 
 const deploymentCategories = [
   {
@@ -7,18 +10,21 @@ const deploymentCategories = [
     title: "Healthcare Systems",
     description: "Waiting rooms, common areas, pre- and post-procedure support, bedside use, remote at-home care, elder care settings, staff resilience.",
     subtext: "Non-pharmacologic, low effort for staff, safe and secure.",
+    image: healthcareImg,
   },
   {
     icon: Plane,
     title: "Enterprise & Performance",
     description: "Airlines, hotels, spas, peak performance programs, and employee benefit offerings.",
     subtext: "On-demand stress relief, focus support, and recovery as a premium service — no medication and no extra hardware.",
+    image: enterpriseImg,
   },
   {
     icon: Laptop,
     title: "Technology Partners",
     description: "Licensed or embedded into existing digital platforms.",
     subtext: "Our 8,500+ purpose-composed therapeutic tracks and closed-loop dosing engine plug directly into your product to enhance outcomes and retention.",
+    image: technologyImg,
   },
 ];
 
@@ -47,35 +53,40 @@ export const RealWorldDeployment = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="group"
               >
-                <div className="h-full bg-gradient-to-br from-cyan-900/20 to-blue-900/20 backdrop-blur-md border border-white/10 rounded-3xl p-8 hover:border-cyan-400/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20">
-                  {/* Icon */}
-                  <div className="mb-6 flex justify-center">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-10 h-10 text-cyan-400" />
-                    </div>
+                <div className="h-full bg-gradient-to-br from-cyan-900/20 to-blue-900/20 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-400/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20">
+                  {/* Image */}
+                  <div className="relative h-64 overflow-hidden">
+                    <img 
+                      src={category.image} 
+                      alt={category.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-2xl font-headers font-semibold text-center mb-6"
-                    style={{
-                      background: 'linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                  >
-                    {category.title}
-                  </h3>
+                  <div className="p-8">
+                    {/* Title */}
+                    <h3 className="text-2xl font-headers font-semibold text-center mb-6"
+                      style={{
+                        background: 'linear-gradient(135deg, #e0f2f1 0%, #80cbc4 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      {category.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p className="text-white/80 text-center mb-6 leading-relaxed">
-                    {category.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-white/80 text-center mb-6 leading-relaxed">
+                      {category.description}
+                    </p>
 
-                  {/* Subtext */}
-                  <p className="text-cyan-300/70 text-center text-sm italic leading-relaxed">
-                    {category.subtext}
-                  </p>
+                    {/* Subtext */}
+                    <p className="text-cyan-300/70 text-center text-sm italic leading-relaxed">
+                      {category.subtext}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             );
