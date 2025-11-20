@@ -1,4 +1,4 @@
-import { Home, User, BarChart3, HelpCircle } from "lucide-react";
+import { Home, User, BarChart3, HelpCircle, MessageCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/components/auth/AuthProvider";
@@ -16,6 +16,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const tabs = [
     { id: "home", icon: Home, path: "/" },
     { id: "faq", icon: HelpCircle, path: "/faq" },
+    { id: "support", icon: MessageCircle, path: "/support" },
     { id: "profile", icon: User, path: "/profile" },
   ];
 
