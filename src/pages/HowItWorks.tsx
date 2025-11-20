@@ -17,9 +17,9 @@ const HowItWorks = () => {
             See how easy it is to access therapeutic music — simple setup, science-backed playlists, and one subscription with no licensing fees.
           </p>
           <div className="flex gap-4">
-            <Link to="/auth">
+            <Link to="/demo">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Start your free trial
+                See Samples
               </Button>
             </Link>
             <Link to="/goals">
@@ -37,9 +37,9 @@ const HowItWorks = () => {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-muted/50 p-8 rounded-lg">
             <div className="text-4xl font-bold mb-4">1.</div>
-            <h3 className="text-2xl font-bold mb-4">Activate your free trial</h3>
+            <h3 className="text-2xl font-bold mb-4">Create your account</h3>
             <p className="text-muted-foreground">
-              Try NeuroTunes free for 14 days. Simply create an account and start exploring our therapeutic music library.
+              Sign up for NeuroTunes and get instant access to our complete therapeutic music library.
             </p>
           </div>
           <div className="bg-muted/50 p-8 rounded-lg">
@@ -227,10 +227,10 @@ const HowItWorks = () => {
 
               <AccordionItem value="trial" className="bg-background px-6 rounded-lg">
                 <AccordionTrigger className="text-lg font-semibold hover:no-underline">
-                  What happens when my free trial ends?
+                  How does the subscription work?
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">
-                  If you want to continue using NeuroTunes, you can choose a plan that works for you. If you don't want to continue, there's no obligation and no charges.
+                  Choose a subscription plan that works for you and get instant access to our complete therapeutic music library. You can upgrade, downgrade, or cancel anytime with no long-term commitment.
                 </AccordionContent>
               </AccordionItem>
 

@@ -195,7 +195,7 @@ const Demo = () => {
           <div className="flex gap-4 justify-center">
             <Link to="/auth">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Start free trial
+                Get Started
               </Button>
             </Link>
             <Link to="/how-it-works">
@@ -324,11 +324,11 @@ const Demo = () => {
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to transform your well-being?</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Start your free 14-day trial and experience the power of therapeutic music with no licensing fees or restrictions.
+            Get started with NeuroTunes and experience the power of therapeutic music with no licensing fees or restrictions.
           </p>
           <Link to="/auth">
             <Button size="lg" className="bg-primary hover:bg-primary/90">
-              Start your free trial
+              Get Started
             </Button>
           </Link>
         </div>
