@@ -170,13 +170,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Full background GIF */}
+      {/* Full background GIF - plays once */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={landingBg} 
-          alt="Background"
+        <video 
+          autoPlay
+          muted
+          playsInline
           className="w-full h-full object-cover"
-        />
+          onEnded={() => {
+            // GIF animation complete
+          }}
+        >
+          <source src={landingBg} type="video/mp4" />
+        </video>
       </div>
 
       {/* Floating ambient elements */}
