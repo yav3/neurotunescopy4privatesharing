@@ -54,6 +54,7 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [showNatureCards, setShowNatureCards] = useState(false);
+  const [gifFinished, setGifFinished] = useState(false);
   
   // Welcome returning users
   useWelcomeMessage();
@@ -170,13 +171,27 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Full background GIF */}
+      {/* Full background - GIF plays once then shows static image */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={landingBg}
-          alt="Background animation"
-          className="w-full h-full object-cover"
-        />
+        {!gifFinished && (
+          <video 
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            onEnded={() => setGifFinished(true)}
+            key="landing-gif"
+          >
+            <source src={landingBg} type="video/mp4" />
+          </video>
+        )}
+        {gifFinished && (
+          <img 
+            src={premiumDarkBg}
+            alt="Background"
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
 
       {/* Floating ambient elements */}
