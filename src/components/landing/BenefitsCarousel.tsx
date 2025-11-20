@@ -185,21 +185,34 @@ export const BenefitsCarousel = () => {
       </section>
 
       {/* Featured Goals Carousel */}
-      <section className="h-screen flex items-center justify-center overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center overflow-hidden py-24">
         <div className="w-full">
-          <motion.h2 
-            className="text-5xl font-headers text-white text-center mb-16 px-8"
+          <motion.div
+            className="text-center mb-20 px-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            Featured Sessions
-          </motion.h2>
+            <h2 
+              className="text-6xl lg:text-7xl font-headers font-semibold mb-6"
+              style={{ 
+                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Featured Sessions
+            </h2>
+            <p className="text-2xl text-white/70 font-body max-w-3xl mx-auto">
+              Purpose-composed music sessions designed for your specific therapeutic needs
+            </p>
+          </motion.div>
           
           <div className="relative">
             <motion.div 
-              className="flex gap-8"
+              className="flex gap-8 px-8"
               animate={{
                 x: [0, -1920],
               }}
@@ -215,12 +228,11 @@ export const BenefitsCarousel = () => {
               {[...featuredGoals, ...featuredGoals, ...featuredGoals].map((goal, index) => (
                 <motion.div
                   key={`${goal.id}-${index}`}
-                  className="flex-shrink-0 w-80 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-all duration-300"
+                  className="flex-shrink-0 w-96 rounded-3xl overflow-hidden border-2 border-white/20 bg-white/5 backdrop-blur-sm hover:border-white/30 transition-all duration-300 hover:scale-105"
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: (index % featuredGoals.length) * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
                 >
                   <div className="aspect-square relative">
                     <img 
@@ -229,11 +241,14 @@ export const BenefitsCarousel = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="p-6 text-center">
-                    <h3 className="text-xl font-headers text-white mb-2">{goal.name}</h3>
-                    <p className="text-sm font-body text-white/60">
-                      {goal.musicBuckets.slice(0, 3).join(' • ')}
+                  <div className="p-8 text-center bg-gradient-to-t from-black/40 to-transparent">
+                    <h3 className="text-2xl font-headers font-semibold text-white mb-3">{goal.name}</h3>
+                    <p className="text-base font-body text-white/70 mb-4">
+                      {goal.description}
                     </p>
+                    <div className="flex items-center justify-center gap-2 text-sm text-white/50">
+                      <span>{goal.musicBuckets.slice(0, 2).join(' • ')}</span>
+                    </div>
                   </div>
                 </motion.div>
               ))}
