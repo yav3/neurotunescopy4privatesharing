@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, CreditCard, Lock, Wrench, Star, Sparkles } from 'lucide-react';
+import { Send, CreditCard, Lock, Wrench, Star, Plus } from 'lucide-react';
 import liquidGlassBg from '@/assets/liquid-glass-bg.png';
 
 interface Message {
@@ -151,7 +151,7 @@ export default function Support() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
             <div className="relative flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center backdrop-blur-sm">
-                <Sparkles className="w-7 h-7 text-primary drop-shadow-[0_0_8px_rgba(20,184,166,0.5)]" />
+                <Plus className="w-7 h-7 text-gray-300 drop-shadow-[0_0_8px_rgba(209,213,219,0.3)]" />
               </div>
               <div className="flex-1">
                 <h1 className="text-2xl font-semibold text-white/95 tracking-tight">
