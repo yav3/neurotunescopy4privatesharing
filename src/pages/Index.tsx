@@ -25,6 +25,7 @@ import boostCard from '../assets/boost-button-bg.png';
 import landingBackground from '../assets/landing-background.png';
 import neurotunesHeroBg from '../assets/neurotunes-hero-bg.png';
 import premiumDarkBg from '../assets/premium-dark-bg.png';
+import staticBg from '../assets/static-bg.png';
 import ladyHeadphones from '../assets/lady-headphones.png';
 import landingBg from '../assets/landing-bg.gif';
 
@@ -187,7 +188,7 @@ const Index = () => {
         )}
         {gifFinished && (
           <img 
-            src={premiumDarkBg}
+            src={staticBg}
             alt="Background"
             className="w-full h-full object-cover"
           />
@@ -285,14 +286,17 @@ const Index = () => {
                 
                 {/* Subtitle */}
                 <motion.p
-                  className="text-[1.2rem] sm:text-[1.5rem] lg:text-[1.8rem] font-ditto font-light text-white/90 text-center px-12 max-w-5xl mx-auto"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                  className="text-[0.9rem] sm:text-[1.1rem] lg:text-[1.3rem] font-ditto font-light text-white/90 text-center mx-auto"
                   style={{
+                    maxWidth: '60%',
                     filter: 'drop-shadow(0 0 10px rgba(224, 242, 241, 0.2))',
-                    letterSpacing: '0.05em'
+                    letterSpacing: '0.03em',
+                    fontWeight: 300,
+                    opacity: Math.max(0, 1 - scrollY / 500)
                   }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: Math.max(0, 1 - scrollY / 500), y: 0 }}
+                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
                 >
                   Beautiful music, backed by neuroscience and medicine, delivered through bleeding-edge streaming AI, enables closed-loop wellness.
                 </motion.p>
