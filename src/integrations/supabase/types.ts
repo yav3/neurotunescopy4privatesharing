@@ -2384,6 +2384,63 @@ export type Database = {
         }
         Relationships: []
       }
+      sambajazznocturnes_tracks: {
+        Row: {
+          album: string | null
+          artist: string | null
+          bpm: number | null
+          created_at: string | null
+          display_order: number | null
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          mood_tags: string[] | null
+          storage_path: string
+          therapeutic_category: string[] | null
+          title: string
+          track_number: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          album?: string | null
+          artist?: string | null
+          bpm?: number | null
+          created_at?: string | null
+          display_order?: number | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          mood_tags?: string[] | null
+          storage_path: string
+          therapeutic_category?: string[] | null
+          title: string
+          track_number?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          album?: string | null
+          artist?: string | null
+          bpm?: number | null
+          created_at?: string | null
+          display_order?: number | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          mood_tags?: string[] | null
+          storage_path?: string
+          therapeutic_category?: string[] | null
+          title?: string
+          track_number?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       security_incidents: {
         Row: {
           asn: string | null
@@ -5073,6 +5130,10 @@ export type Database = {
           track_id: string
         }[]
       }
+      get_track_public_url: {
+        Args: { bucket_name: string; file_path: string }
+        Returns: string
+      }
       get_track_stats: {
         Args: never
         Returns: {
@@ -5229,6 +5290,7 @@ export type Database = {
       safe_cast_to_uuid: { Args: { input_value: string }; Returns: string }
       safe_key: { Args: { raw: string }; Returns: string }
       safe_uuid_cast: { Args: { input_text: string }; Returns: string }
+      seed_sambajazznocturnes_tracks: { Args: never; Returns: undefined }
       session_data_quality_check: {
         Args: never
         Returns: {

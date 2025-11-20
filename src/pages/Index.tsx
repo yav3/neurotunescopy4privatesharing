@@ -61,12 +61,13 @@ const Index = () => {
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
 
   // Redirect authenticated users to the music player
-  useEffect(() => {
-    if (!loading && user) {
-      console.log('✅ User already authenticated, redirecting to music player');
-      navigate('/goals');
-    }
-  }, [user, loading, navigate]);
+  // DISABLED FOR DEVELOPMENT - Re-enable when ready
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     console.log('✅ User already authenticated, redirecting to music player');
+  //     navigate('/goals');
+  //   }
+  // }, [user, loading, navigate]);
 
   useEffect(() => {
     const handleScroll = () => {
