@@ -8,6 +8,7 @@ import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { motion } from 'framer-motion';
 import { FeaturedGoalsCarousel } from '@/components/landing/FeaturedGoalsCarousel';
 import { CredentialsBadges } from '@/components/landing/CredentialsBadges';
+import { BenefitsCarousel } from '@/components/landing/BenefitsCarousel';
 
 import { QADashboard } from '@/components/QADashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -94,37 +95,6 @@ const Index = () => {
     return () => clearTimeout(gifDuration);
   }, []);
 
-  const stats = [
-    { label: "Clinically Tested", value: "Evidence-Based", icon: Shield },
-    { label: "Original Music", value: "8K Songs", icon: Music },
-    { label: "Award Winning", value: "Expert Team", icon: Award },
-    { label: "KOL Informed", value: "Physician-Neuroscientist", icon: Brain },
-    { label: "Research Backed", value: "15K Studies", icon: TrendingUp },
-    { label: "Genre Variety", value: "50+ Genres", icon: Sparkles },
-    { label: "Spatial Audio", value: "Proprietary", icon: Headphones },
-    { label: "Immersive Sound", value: "Premium Quality", icon: Zap }
-  ];
-
-  const therapeuticBenefits = [
-    {
-      icon: Brain,
-      title: "Cognitive Enhancement",
-      description: "Scientifically-backed music selections to improve focus, memory, and mental clarity",
-      color: "text-primary"
-    },
-    {
-      icon: Heart,
-      title: "Emotional Regulation", 
-      description: "AI-curated playlists designed to balance mood and reduce stress responses",
-      color: "text-info"
-    },
-    {
-      icon: Activity,
-      title: "Physiological Benefits",
-      description: "Evidence-based frequencies that promote relaxation and cardiovascular health",
-      color: "text-success"
-    }
-  ];
 
   // Map display names to existing therapeutic goals with specific imagery
   const therapeuticCards = [
@@ -304,157 +274,11 @@ const Index = () => {
         </section>
 
         {/* Company Mission Section */}
-        <section className="min-h-screen flex items-center justify-center py-24 px-6 relative">
-          {/* Dark overlay for text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 backdrop-blur-sm" />
-          
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <motion.h2
-              className="text-5xl lg:text-6xl font-headers font-semibold mb-8 leading-tight"
-              style={{ 
-                background: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 25%, #e0f2f1 50%, #80cbc4 75%, #e0f2f1 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              Personalized streaming of medical-grade music, powered by AI closed-loop tech.
-            </motion.h2>
-            
-            <motion.div
-              className="space-y-6 text-xl lg:text-2xl font-body leading-relaxed"
-              style={{ color: '#e0f2f1' }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <p>
-                NeuralPositive develops software that turns music into treatment. Our patent portfolio covers how therapeutic music is created and personalized for clinical use.
-              </p>
-              
-              <p>
-                NeuroTunes, our flagship app, delivers purpose-composed sessions that adapt to each user. The team behind it includes neuroscientists, physician-scientists, developers, composers, and a 5x Grammy winning engineer.
-              </p>
-              
-              <p>
-                We began at Cornell Tech's Jacobs Technion–Cornell Institute and have built on more than eight years of sponsored research.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
         {/* Credentials Section */}
         <CredentialsBadges />
 
-        {/* Horizontal Scrolling Features */}
-        <section className="min-h-screen flex items-center overflow-x-auto snap-x snap-mandatory scrollbar-hide py-24">
-          <div className="flex gap-8 px-8" style={{ width: 'max-content' }}>
-            {/* Stats Cards */}
-            {stats.map((stat, index) => (
-              <div key={`stat-${index}`} className="h-screen flex flex-col items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
-                <motion.div 
-                  className="text-center p-12 border border-white/20 hover:border-white/30 transition-all duration-300 rounded-2xl bg-white/5 backdrop-blur-sm"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{
-                    scale: 1.05,
-                    rotateY: 5,
-                    rotateX: -5,
-                    transition: { duration: 0.3 }
-                  }}
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
-                >
-                  <motion.div 
-                    className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mx-auto mb-8"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <stat.icon className="h-12 w-12 text-white stroke-[1.5]" />
-                  </motion.div>
-                  <motion.div 
-                    className="font-semibold font-headers text-white text-6xl mb-4"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <motion.div 
-                    className="text-3xl font-body text-white/70 font-medium"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
-                    {stat.label}
-                  </motion.div>
-                </motion.div>
-              </div>
-            ))}
-            
-            {/* Therapeutic Benefits Cards */}
-            {therapeuticBenefits.map((benefit, index) => (
-              <div key={`benefit-${index}`} className="h-screen flex flex-col items-center justify-center snap-center" style={{ minWidth: '100vw' }}>
-                <motion.div 
-                  className="border border-white/10 rounded-2xl p-12 hover:border-white/20 transition-all duration-500 group bg-white/5 backdrop-blur-sm max-w-2xl"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  whileHover={{
-                    scale: 1.08,
-                    rotateZ: 2,
-                    y: -10,
-                    transition: { duration: 0.4 }
-                  }}
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
-                >
-                  <motion.div 
-                    className="w-24 h-24 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-8 group-hover:border-white/40 transition-all duration-300"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <benefit.icon className="h-12 w-12 text-white" />
-                  </motion.div>
-                  <motion.h3 
-                    className="text-4xl font-medium font-headers text-white mb-6"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    {benefit.title}
-                  </motion.h3>
-                  <motion.p 
-                    className="text-2xl font-body text-white/70 leading-relaxed"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
-                    {benefit.description}
-                  </motion.p>
-                </motion.div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Benefits Carousel */}
+        <BenefitsCarousel />
 
         {/* Featured Goals Carousel */}
         <FeaturedGoalsCarousel showNatureCards={showNatureCards} />
