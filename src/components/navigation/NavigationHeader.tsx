@@ -164,9 +164,6 @@ export const NavigationHeader = () => {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <Link to="/how-it-works" className="text-base hover:text-primary transition-colors">
-            How it works
-          </Link>
           <Link to="/licensing" className="text-base hover:text-primary transition-colors">
             Licensing
           </Link>
@@ -290,13 +287,6 @@ export const NavigationHeader = () => {
             </div>
 
             <div className="pt-6 border-t border-border space-y-4">
-              <Link
-                to="/how-it-works"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-muted-foreground hover:text-foreground"
-              >
-                How it works
-              </Link>
               <Link
                 to="/licensing"
                 onClick={() => setMobileMenuOpen(false)}

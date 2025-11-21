@@ -27,11 +27,6 @@ export const Footer = () => {
           <div>
             <ul className="space-y-3">
               <li>
-                <Link to="/how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
-                  How it works
-                </Link>
-              </li>
-              <li>
                 <Link to="/demo" className="text-muted-foreground hover:text-foreground transition-colors">
                   Demo
                 </Link>
