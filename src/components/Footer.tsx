@@ -20,29 +20,29 @@ export const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           
           {/* Tagline Section */}
-          <div className="text-center mb-8 sm:mb-10 md:mb-12">
-            <p className="text-[11px] sm:text-xs md:text-sm text-white/50 tracking-wide leading-relaxed max-w-4xl mx-auto">
+          <div className="text-center mb-10 sm:mb-12 md:mb-14">
+            <p className="text-xs sm:text-sm md:text-base text-white/50 tracking-wide leading-relaxed sm:leading-loose max-w-4xl mx-auto px-4">
               by Neuralpositive • Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
             </p>
           </div>
 
           {/* Logos Section - Fixed mobile wrapping */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-12 sm:mb-14 md:mb-16 max-w-3xl mx-auto">
-            <span className="text-xs sm:text-sm text-white/30 uppercase tracking-widest w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0">Supported by</span>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 mb-14 sm:mb-16 md:mb-18 max-w-3xl mx-auto">
+            <span className="text-xs sm:text-sm text-white/30 uppercase tracking-widest w-full text-center mb-3 sm:mb-0 sm:w-auto">Supported by</span>
             <img 
               src={jacobsTechnionLogo} 
               alt="Jacobs Technion-Cornell" 
-              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              className="h-7 sm:h-8 md:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
             <img 
               src={stanfordLogo} 
               alt="Stanford Medicine" 
-              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              className="h-7 sm:h-8 md:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
             <img 
               src={weillCornellLogo} 
               alt="Weill Cornell Medicine" 
-              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              className="h-7 sm:h-8 md:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
           </div>
 
