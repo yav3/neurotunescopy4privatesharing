@@ -52,6 +52,10 @@ export const TherapeuticSessionsCarousel = ({
   const handleCardClick = (sessionId: string) => {
     if (sessionId === 'focus') {
       navigate('/genre/focus-enhancement/new-age');
+    } else if (sessionId === 'rest') {
+      navigate('/genre/sleep-induction/nocturnes');
+    } else if (sessionId === 'mood-boost') {
+      navigate('/genre/mood-enhancement/samba');
     }
   };
 

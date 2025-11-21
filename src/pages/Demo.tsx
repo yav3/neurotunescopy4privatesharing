@@ -63,8 +63,8 @@ const therapeuticSessions: TherapeuticSession[] = [
     }
   },
   {
-    id: "sleep",
-    title: "Deep Sleep",
+    id: "rest",
+    title: "Deep Rest",
     description: "Achieve restorative rest",
     longDescription: "Experience sleep-inducing delta wave frequencies combined with gentle melodies that guide your brain into deep, restorative sleep states. Improve both sleep quality and duration naturally.",
     icon: Moon,
@@ -82,8 +82,8 @@ const therapeuticSessions: TherapeuticSession[] = [
     }
   },
   {
-    id: "energy",
-    title: "Natural Energy",
+    id: "mood-boost",
+    title: "Mood Boost",
     description: "Revitalize mind and body",
     longDescription: "Energizing compositions featuring uplifting rhythms and stimulating frequencies that naturally boost alertness and motivation without artificial stimulants.",
     icon: Zap,
