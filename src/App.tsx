@@ -25,7 +25,6 @@ import { useComprehensiveTracking } from "@/hooks/useComprehensiveTracking";
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
 import Index from "./pages/Index";
-import Sessions from "./pages/Sessions";
 import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
@@ -49,7 +48,6 @@ import FAQ from "./pages/FAQ";
 import { AboutNeuralPositive } from "./pages/AboutNeuralPositive";
 import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
-import Showcase from "./pages/Showcase";
 import Support from "./pages/Support";
 import Demo from "./pages/Demo";
 import { BusinessType } from "./pages/BusinessType";
@@ -148,7 +146,6 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
-        <Route path="/sessions" element={<Sessions />} />
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<ProductsOverview />} />
@@ -158,7 +155,6 @@ const AppContent = () => {
         <Route path="/products/population-health" element={<ProductsOverview />} />
         <Route path="/products/hospitality" element={<ProductsOverview />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
-        <Route path="/showcase" element={<Showcase />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/experience" element={<Experience />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
