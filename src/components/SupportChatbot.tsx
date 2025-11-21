@@ -128,7 +128,7 @@ export function SupportChatbot() {
             style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
           >
             <h3 className="font-semibold" style={{ color: '#C0C0C8' }}>
-              Support Assistant
+              NeuroTunes Support Assistant
             </h3>
             <button
               onClick={() => setIsOpen(false)}
