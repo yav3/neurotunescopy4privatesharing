@@ -9,7 +9,7 @@ export const ConsumerPricing = () => {
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
-      description: "Bundle: Web app + iOS & Android subscriptions for organizations with up to 500 users",
+      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users • Up to 500 users",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Employee wellness dashboard",
