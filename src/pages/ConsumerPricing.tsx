@@ -5,39 +5,40 @@ import { Check } from "lucide-react";
 export const ConsumerPricing = () => {
   const plans = [
     {
-      name: "Individual",
-      priceMonthly: "$5.99",
-      priceYearly: "$25.99",
-      period: "per month / per year",
-      description: "Perfect for personal therapeutic audio access",
+      name: "SMB and Enterprise Apps",
+      priceMonthly: "$2.99",
+      priceYearly: null,
+      period: "per user per month",
+      description: "For organizations with up to 500 users",
       features: [
         "Full access to 8,500+ therapeutic tracks",
-        "Personalized recommendations",
-        "Offline playback",
-        "Progress tracking",
+        "Employee wellness dashboard",
+        "Usage analytics & reporting",
+        "Priority customer support",
         "Sync across all devices",
-        "Spatial audio support"
+        "Admin management tools"
       ],
-      cta: "Start Individual Plan",
-      badge: "Black Friday Sale"
+      cta: "Contact Sales",
+      badge: "Professional"
     },
     {
-      name: "Family",
+      name: "Enterprise 500+",
       priceMonthly: null,
-      priceYearly: "$59.99",
+      priceYearly: "$24.99",
       period: "per year",
-      description: "Up to 6 family member accounts",
+      description: "For organizations with over 500 users",
       features: [
-        "Everything in Individual plan",
-        "Up to 6 separate accounts",
-        "Individual progress tracking",
-        "Personalized recommendations per user",
-        "Family dashboard",
-        "Priority support"
+        "Everything in SMB plan",
+        "Dedicated account manager",
+        "Custom integration support",
+        "Advanced analytics",
+        "SLA guarantee",
+        "White-label options available"
       ],
-      cta: "Start Family Plan",
-      badge: "Best Value",
-      highlight: true
+      cta: "Contact Sales",
+      badge: "🎉 Black Friday Sale",
+      highlight: true,
+      specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
     },
     {
       name: "First Responder",
@@ -46,7 +47,7 @@ export const ConsumerPricing = () => {
       period: "per year",
       description: "Special pricing for first responders",
       features: [
-        "Everything in Individual plan",
+        "Full access to 8,500+ therapeutic tracks",
         "Specialized stress relief content",
         "PTSD support playlists",
         "Sleep restoration protocols",
@@ -122,15 +123,22 @@ export const ConsumerPricing = () => {
                     {plan.priceMonthly && (
                       <div className="text-4xl font-light text-white mb-1">
                         {plan.priceMonthly}
-                        <span className="text-lg text-neutral-400"> / month</span>
+                        <span className="text-lg text-neutral-400"> {plan.period}</span>
                       </div>
                     )}
-                    <div className={`${plan.priceMonthly ? 'text-3xl' : 'text-4xl'} font-light text-white`}>
-                      {plan.priceYearly}
-                      <span className="text-lg text-neutral-400"> / year</span>
-                    </div>
+                    {plan.priceYearly && (
+                      <div className={`${plan.priceMonthly ? 'text-3xl' : 'text-4xl'} font-light text-white`}>
+                        {plan.priceYearly}
+                        <span className="text-lg text-neutral-400"> / year</span>
+                      </div>
+                    )}
                   </div>
                   <p className="text-neutral-400 text-sm">{plan.description}</p>
+                  {plan.specialOffer && (
+                    <p className="text-cyan-400 text-xs mt-2 font-medium">
+                      {plan.specialOffer}
+                    </p>
+                  )}
                 </div>
 
                 {/* Features */}
