@@ -117,12 +117,12 @@ const Index = () => {
               NeuroTunes
             </h1>
             
-            {/* Subtitle: 30-34px pearl grey - two clean lines */}
+            {/* Subtitle: pearl grey - two clean lines */}
             <div className="space-y-2 mb-16">
               <p 
                 className="font-light tracking-wide"
                 style={{
-                  fontSize: 'clamp(24px, 3vw, 34px)',
+                  fontSize: 'clamp(16px, 2vw, 22px)',
                   color: 'rgba(228, 228, 228, 0.88)',
                   lineHeight: '1.4'
                 }}
@@ -132,7 +132,7 @@ const Index = () => {
               <p 
                 className="font-light tracking-wide"
                 style={{
-                  fontSize: 'clamp(24px, 3vw, 34px)',
+                  fontSize: 'clamp(18px, 2.2vw, 24px)',
                   color: 'rgba(228, 228, 228, 0.88)',
                   lineHeight: '1.4'
                 }}
