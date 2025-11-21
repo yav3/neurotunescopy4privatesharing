@@ -138,7 +138,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Family plan available (up to 6 accounts)"
     ],
     cta: "Download App",
-    path: "/consumer-pricing"
+    path: "/app-download"
   },
 
   partnerships: {
