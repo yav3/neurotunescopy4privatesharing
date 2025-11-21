@@ -94,8 +94,8 @@ const Index = () => {
           
           {/* Premium Glass Panel with chrome edge glow */}
           <motion.div
-            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 max-w-4xl px-6 py-8 md:px-14 md:py-16 rounded-[32px] md:rounded-[40px]"
-            style={{ 
+            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-[90%] sm:w-[85%] md:w-[75%] lg:max-w-4xl px-6 py-8 md:px-12 lg:px-14 md:py-12 lg:py-16 rounded-[32px] md:rounded-[40px]"
+            style={{
               background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
               backdropFilter: 'blur(40px)',
               WebkitBackdropFilter: 'blur(40px)',
@@ -107,9 +107,9 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center mb-6 md:mb-8">
+            <div className="flex flex-col items-center mb-6 md:mb-8 lg:mb-10">
               <h1 
-                className="font-light tracking-[-0.02em] text-3xl md:text-6xl"
+                className="font-light tracking-[-0.02em] text-3xl md:text-5xl lg:text-6xl"
                 style={{
                   lineHeight: '1.15',
                   color: 'rgba(228, 228, 228, 0.95)',
