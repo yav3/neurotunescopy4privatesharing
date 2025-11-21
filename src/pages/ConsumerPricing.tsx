@@ -41,6 +41,23 @@ export const ConsumerPricing = () => {
       highlight: true
     },
     {
+      name: "First Responder",
+      priceMonthly: null,
+      priceYearly: "$25.99",
+      period: "per year",
+      description: "Bundle: Web app + iOS & Android subscriptions with special pricing for first responders",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Specialized stress relief content",
+        "PTSD support playlists",
+        "Sleep restoration protocols",
+        "Priority customer support",
+        "Verification required"
+      ],
+      cta: "Verify & Subscribe",
+      badge: "Hero Discount"
+    },
+    {
       name: "Enterprise, 1,000+",
       priceMonthly: null,
       priceYearly: "Let's Talk!",
@@ -57,23 +74,6 @@ export const ConsumerPricing = () => {
       cta: "Contact Sales",
       badge: "🎉 Black Friday Sale",
       specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
-    },
-    {
-      name: "First Responder",
-      priceMonthly: null,
-      priceYearly: "$25.99",
-      period: "per year",
-      description: "Bundle: Web app + iOS & Android subscriptions with special pricing for first responders",
-      features: [
-        "Full access to 8,500+ therapeutic tracks",
-        "Specialized stress relief content",
-        "PTSD support playlists",
-        "Sleep restoration protocols",
-        "Priority customer support",
-        "Verification required"
-      ],
-      cta: "Verify & Subscribe",
-      badge: "Hero Discount"
     }
   ];
 
