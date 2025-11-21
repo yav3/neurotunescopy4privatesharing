@@ -5,6 +5,24 @@ import { Check } from "lucide-react";
 export const ConsumerPricing = () => {
   const plans = [
     {
+      name: "Lovable User Special",
+      priceMonthly: "$2.99",
+      priceYearly: null,
+      period: "per user per month",
+      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Employee wellness dashboard",
+        "Usage analytics & reporting",
+        "Priority customer support",
+        "Sync across all devices",
+        "Admin management tools"
+      ],
+      cta: "Contact Sales",
+      badge: "Lovable Users Only",
+      specialOffer: 'Limited time offer • Valid until December 10th only'
+    },
+    {
       name: "SMB and Enterprise Apps",
       priceMonthly: "$2.99",
       priceYearly: null,
@@ -39,24 +57,6 @@ export const ConsumerPricing = () => {
       cta: "Contact Sales",
       badge: "🎉 Black Friday Sale",
       specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
-    },
-    {
-      name: "Lovable User Special",
-      priceMonthly: "$2.99",
-      priceYearly: null,
-      period: "per user per month",
-      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users",
-      features: [
-        "Full access to 8,500+ therapeutic tracks",
-        "Employee wellness dashboard",
-        "Usage analytics & reporting",
-        "Priority customer support",
-        "Sync across all devices",
-        "Admin management tools"
-      ],
-      cta: "Contact Sales",
-      badge: "Lovable Users Only",
-      specialOffer: 'Limited time offer • Valid until December 10th only'
     },
     {
       name: "First Responder",
