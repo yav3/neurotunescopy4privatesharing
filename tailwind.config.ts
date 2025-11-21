@@ -113,7 +113,8 @@ export default {
 				'gradient-textured-teal': 'var(--gradient-textured-teal)',
 				'gradient-white-section': 'var(--gradient-white-section)',
 				'glass-gradient': 'var(--glass-bg)',
-				'glass-border': 'var(--glass-border)'
+				'glass-border': 'var(--glass-border)',
+				'gradient-radial': 'radial-gradient(circle, var(--tw-gradient-stops))'
 			},
 			boxShadow: {
 				'card': 'var(--shadow-card)',

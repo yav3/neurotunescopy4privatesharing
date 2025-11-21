@@ -53,33 +53,52 @@ const Index = () => {
             className="w-full h-full object-cover"
           />
         </div>
+        
+        {/* Dark overlay for contrast */}
+        <div className="absolute inset-0 bg-black/45" />
+        
+        {/* Vignette effect */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/60" />
       </div>
 
+      {/* Navbar gradient backdrop */}
+      <div className="fixed top-0 left-0 right-0 h-[140px] bg-gradient-to-b from-black via-black/80 to-transparent z-[5] pointer-events-none" />
+
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col min-h-screen">
+      <div className="relative z-10 flex flex-col">
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Main centered content - Full viewport */}
-        <div className="flex-1 flex items-center justify-center px-6">
+        {/* Hero Section - Full viewport */}
+        <div className="min-h-screen flex items-center justify-center px-6 pb-20">
           <motion.div
-            className="text-center flex flex-col items-center justify-center group"
+            className="text-center flex flex-col items-center justify-center max-w-[900px] mx-auto"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <h1 className="text-[9rem] sm:text-[11rem] lg:text-[13rem] font-extralight text-transparent bg-clip-text bg-gradient-to-br from-gray-100 via-cyan-400 to-teal-300 leading-none tracking-wide flex items-center gap-4">
-              <span className="text-cyan-400/80 font-light">+</span>
+            <h1 
+              className="text-[7rem] sm:text-[9rem] lg:text-[11rem] font-extralight text-white leading-none tracking-wide flex items-center gap-3 mb-10"
+              style={{
+                textShadow: '0 0 40px rgba(6, 182, 212, 0.08), 0 0 80px rgba(6, 182, 212, 0.04)'
+              }}
+            >
+              <span className="text-cyan-400 font-light">+</span>
               NeuroTunes
             </h1>
-            <p className="text-[1.8rem] sm:text-[2.2rem] lg:text-[2.6rem] font-light text-gray-300/90 mt-6 tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              Neuroscience backed | Clinically Validated | Patented | Medical Grade Music & AI Streaming
-            </p>
+            <div className="space-y-3">
+              <p className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-light text-white/80 tracking-wide">
+                Neuroscience-backed · Clinically Validated · Patented
+              </p>
+              <p className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-light text-white/80 tracking-wide">
+                Medical-grade Therapeutic Music & AI Streaming
+              </p>
+            </div>
           </motion.div>
         </div>
 
-        {/* Supported by section */}
-        <div className="py-12 px-6">
+        {/* Supported by section - Below hero */}
+        <div className="relative z-10 py-16 px-6">
           <PartnersSection />
         </div>
 
