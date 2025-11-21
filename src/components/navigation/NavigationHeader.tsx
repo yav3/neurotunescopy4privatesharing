@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { X, Plus } from "lucide-react";
 import { FooterContactHandler } from "../FooterContactHandler";
+import headerChromeTexture from '@/assets/header-chrome-texture.png';
 
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,20 +38,32 @@ export const NavigationHeader = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <header className="hidden md:flex items-center justify-between px-8 py-5 relative z-50">
+      <header 
+        className="hidden md:flex items-center justify-between px-8 py-6 relative z-50"
+        style={{
+          backgroundImage: `url(${headerChromeTexture})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: '#0A0A0C',
+        }}
+      >
+        {/* Solid obsidian overlay - fully opaque */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.85) 100%)',
-            backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(228, 228, 228, 0.12)',
-            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
+            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.98) 0%, rgba(10, 10, 12, 0.95) 100%)',
           }}
+        />
+        
+        {/* Chrome highlight at bottom edge */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: 'rgba(255, 255, 255, 0.10)' }}
         />
 
         {/* Left: Logo */}
         <Link to="/" className="flex items-center relative z-10">
-          <Plus className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
+          <Plus className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.92)' }} strokeWidth={1.5} />
         </Link>
 
         {/* Center: Menu Items */}
@@ -213,26 +226,33 @@ export const NavigationHeader = () => {
 
         {/* Right: Auth + CTA */}
         <div className="flex items-center gap-6 relative z-10">
-          <Link to="/auth" className="text-base font-light text-white/75 hover:text-white transition-colors">
-            Log in
+          <Link to="/auth" className="text-base font-light" style={{ color: 'rgba(255, 255, 255, 0.88)' }}>
+            <span 
+              className="transition-colors"
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 1)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.88)'}
+            >
+              Log in
+            </span>
           </Link>
           <Link to="/demo">
             <button 
-              className="px-6 py-2.5 rounded-full text-sm font-medium text-white transition-all"
+              className="px-7 py-3 rounded-full text-sm font-medium transition-all"
               style={{
-                background: 'rgba(10, 10, 12, 0.80)',
-                border: '1px solid rgba(228, 228, 228, 0.14)',
-                boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)',
+                background: 'rgba(10, 10, 12, 0.85)',
+                border: '1px solid rgba(228, 228, 228, 0.18)',
+                color: 'rgba(255, 255, 255, 0.92)',
+                boxShadow: '0 0 24px rgba(255, 255, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.60)';
-                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.28)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.background = 'rgba(19, 20, 22, 0.90)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.32)';
+                e.currentTarget.style.boxShadow = '0 0 40px rgba(255, 255, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.10)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.80)';
-                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.14)';
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.85)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
+                e.currentTarget.style.boxShadow = '0 0 24px rgba(255, 255, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.06)';
               }}
             >
               See Samples
@@ -242,18 +262,31 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation */}
-      <header className="md:hidden flex items-center justify-between px-4 py-3 relative z-50">
+      <header 
+        className="md:hidden flex items-center justify-between px-4 py-4 relative z-50"
+        style={{
+          backgroundImage: `url(${headerChromeTexture})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: '#0A0A0C',
+        }}
+      >
+        {/* Solid obsidian overlay - fully opaque */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.90) 100%)',
-            backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(228, 228, 228, 0.12)',
+            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.98) 0%, rgba(10, 10, 12, 0.95) 100%)',
           }}
         />
         
+        {/* Chrome highlight at bottom edge */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: 'rgba(255, 255, 255, 0.10)' }}
+        />
+        
         <Link to="/" className="flex items-center relative z-10">
-          <Plus className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
+          <Plus className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.92)' }} strokeWidth={1.5} />
         </Link>
 
         <button

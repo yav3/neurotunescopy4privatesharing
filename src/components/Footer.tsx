@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FooterContactHandler } from "./FooterContactHandler";
+import footerChromeMetal from '@/assets/footer-chrome-metal.png';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
@@ -14,130 +15,200 @@ export const Footer = () => {
 
   return (
     <>
-      {/* Savings Banner */}
-      <div className="bg-gradient-to-r from-primary/20 to-cyan-500/20 border-t border-b border-primary/30 py-3 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-foreground text-sm md:text-base font-medium">
-            Customers can, on average, save up to 60% by switching to us. We not only provide more premium, specialized experiences that respond to customers' unique needs, we also cut extraneous and surprise billing because we own 100% of our original professional music.
-          </p>
-        </div>
-      </div>
+      {/* Platinum separator line */}
+      <div className="w-full h-px" style={{ background: 'rgba(255, 255, 255, 0.10)' }} />
 
       {/* Footer Content */}
-      <footer className="bg-muted/30 backdrop-blur-sm border-t border-border/50 py-12 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {/* Column 1 - Product */}
-          <div>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/demo" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Demo
-                </Link>
-              </li>
-              <li>
-                <Link to="/payments" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Pricing
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 2 - Resources */}
-          <div>
-            <ul className="space-y-3">
-              <li>
-                <a 
-                  href="mailto:info@neurotunes.com?subject=Research Pack Request" 
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Research
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3 - Company */}
-          <div>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/our-story" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('contact')}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Contact
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('help')}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Help
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('partners')}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Partners
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => scrollToSection('api')}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Our API
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4 - Language */}
-          <div>
-            <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-              </svg>
-              English
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom section */}
-        <div className="border-t border-border/50 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-1">
-              <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="8" cy="12" r="3" />
-                <circle cx="16" cy="12" r="3" />
-              </svg>
-              <span className="text-xl font-bold">+NeuroTunes</span>
+      <footer 
+        className="relative py-24 px-6"
+        style={{
+          backgroundImage: `url(${footerChromeMetal})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundColor: '#0A0A0C',
+        }}
+      >
+        {/* Chrome divider line above footer */}
+        <div 
+          className="absolute top-0 left-0 right-0 h-px" 
+          style={{ background: 'rgba(255, 255, 255, 0.12)' }} 
+        />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* 4-column grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
+            {/* Column 1 - Product */}
+            <div>
+              <h4 className="font-medium mb-6" style={{ color: 'rgba(255, 255, 255, 0.90)', fontSize: '15px', letterSpacing: '0.02em' }}>
+                Product
+              </h4>
+              <ul className="space-y-4" style={{ lineHeight: '24px' }}>
+                <li>
+                  <Link 
+                    to="/demo" 
+                    className="transition-colors"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Demo
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/payments" 
+                    className="transition-colors"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Pricing
+                  </Link>
+                </li>
+              </ul>
             </div>
+
+            {/* Column 2 - Resources */}
+            <div>
+              <h4 className="font-medium mb-6" style={{ color: 'rgba(255, 255, 255, 0.90)', fontSize: '15px', letterSpacing: '0.02em' }}>
+                Resources
+              </h4>
+              <ul className="space-y-4" style={{ lineHeight: '24px' }}>
+                <li>
+                  <a 
+                    href="mailto:info@neurotunes.com?subject=Research Pack Request" 
+                    className="transition-colors"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Research
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3 - Company */}
+            <div>
+              <h4 className="font-medium mb-6" style={{ color: 'rgba(255, 255, 255, 0.90)', fontSize: '15px', letterSpacing: '0.02em' }}>
+                Company
+              </h4>
+              <ul className="space-y-4" style={{ lineHeight: '24px' }}>
+                <li>
+                  <Link 
+                    to="/our-story" 
+                    className="transition-colors"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Our Story
+                  </Link>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('contact')}
+                    className="transition-colors text-left"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Contact
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('help')}
+                    className="transition-colors text-left"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Help
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('partners')}
+                    className="transition-colors text-left"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Partners
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => scrollToSection('api')}
+                    className="transition-colors text-left"
+                    style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+                  >
+                    Our API
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4 - Language */}
+            <div>
+              <h4 className="font-medium mb-6" style={{ color: 'rgba(255, 255, 255, 0.90)', fontSize: '15px', letterSpacing: '0.02em' }}>
+                Language
+              </h4>
+              <button 
+                className="flex items-center gap-2 transition-colors"
+                style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '14px' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)'}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                English
+              </button>
+            </div>
+          </div>
+
+          {/* Lower footer bar with legal links */}
+          <div className="relative pt-8">
+            {/* Chrome divider above lower footer */}
+            <div 
+              className="absolute top-0 left-0 right-0 h-px" 
+              style={{ background: 'rgba(255, 255, 255, 0.08)' }} 
+            />
             
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+            <div className="flex flex-wrap justify-center gap-6 text-center" style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)' }}>
               <span>+NeuroTunes</span>
-              <Link to="/legal" className="hover:text-foreground transition-colors">
+              <Link 
+                to="/legal" 
+                className="transition-colors"
+                onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.90)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
+              >
                 Legal & cookies
               </Link>
-              <Link to="/privacy" className="hover:text-foreground transition-colors">
+              <Link 
+                to="/privacy" 
+                className="transition-colors"
+                onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.90)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
+              >
                 Our privacy policy
               </Link>
-              <Link to="/cookies" className="hover:text-foreground transition-colors">
+              <Link 
+                to="/cookies" 
+                className="transition-colors"
+                onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.90)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)'}
+              >
                 Cookie preferences
               </Link>
             </div>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     
     <FooterContactHandler 
       isOpen={contactOpen}

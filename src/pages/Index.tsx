@@ -68,11 +68,11 @@ const Index = () => {
 
         {/* Hero Section - Full viewport */}
         <div className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-          {/* Radial gradient overlay for text contrast */}
+          {/* Enhanced radial gradient overlay for perfect text contrast */}
           <div 
             className="absolute inset-0 pointer-events-none z-[1]"
             style={{
-              background: 'radial-gradient(circle at center, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 85%)'
+              background: 'radial-gradient(circle at center, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.20) 55%, rgba(0,0,0,0) 85%)'
             }}
           />
           
@@ -89,6 +89,7 @@ const Index = () => {
           
           <motion.div
             className="text-center flex flex-col items-center justify-center max-w-[900px] mx-auto relative z-10"
+            style={{ marginTop: '80px' }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
