@@ -13,6 +13,7 @@ import chromeHeroBg from '@/assets/chrome-hero-bg.mp4';
 export const ProductsOverview = () => {
   const cardBackgrounds = [chromeBg1, chromeBg2, chromeBg3, chromeBg1, chromeBg2];
   const [contactOpen, setContactOpen] = useState(false);
+  const [salesAssistantOpen, setSalesAssistantOpen] = useState(false);
   
   return (
     <div className="min-h-screen relative">
@@ -67,7 +68,8 @@ export const ProductsOverview = () => {
                 key={product.id} 
                 product={product} 
                 index={index}
-                backgroundImage={cardBackgrounds[index]} 
+                backgroundImage={cardBackgrounds[index]}
+                onOpenSalesChat={() => setSalesAssistantOpen(true)}
               />
             ))}
           </div>
@@ -78,7 +80,7 @@ export const ProductsOverview = () => {
               Not sure which solution fits your needs?
             </p>
             <button 
-              onClick={() => setContactOpen(true)}
+              onClick={() => setSalesAssistantOpen(true)}
               className="px-8 py-3 rounded-2xl text-sm font-medium transition-all backdrop-blur-xl"
               style={{
                 background: 'rgba(255, 255, 255, 0.10)',
@@ -102,7 +104,10 @@ export const ProductsOverview = () => {
       </section>
 
       <Footer />
-      <SalesAssistant />
+      <SalesAssistant 
+        externalOpen={salesAssistantOpen}
+        onExternalClose={() => setSalesAssistantOpen(false)}
+      />
       <FooterContactHandler
         isOpen={contactOpen}
         onClose={() => setContactOpen(false)}

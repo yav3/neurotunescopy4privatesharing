@@ -8,9 +8,10 @@ interface ProductCardProps {
   product: Product;
   index: number;
   backgroundImage?: string;
+  onOpenSalesChat?: () => void;
 }
 
-export const ProductCard = ({ product, index, backgroundImage }: ProductCardProps) => {
+export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }: ProductCardProps) => {
   const Icon = product.icon;
   const navigate = useNavigate();
   const [contactOpen, setContactOpen] = useState(false);
@@ -23,6 +24,11 @@ export const ProductCard = ({ product, index, backgroundImage }: ProductCardProp
     // Different actions based on product type
     if (product.id === 'consumer') {
       navigate('/app-download');
+    } else if (product.id === 'partnerships') {
+      // Open AI Sales Assistant for partnerships
+      if (onOpenSalesChat) {
+        onOpenSalesChat();
+      }
     } else if (product.id === 'environmental') {
       setInterestType('Environmental & Background Music');
       setContactOpen(true);
@@ -31,9 +37,6 @@ export const ProductCard = ({ product, index, backgroundImage }: ProductCardProp
       setContactOpen(true);
     } else if (product.id === 'enterprise-wellness') {
       setInterestType('Enterprise Wellness');
-      setContactOpen(true);
-    } else if (product.id === 'partnerships') {
-      setInterestType('Partnership');
       setContactOpen(true);
     }
   };
