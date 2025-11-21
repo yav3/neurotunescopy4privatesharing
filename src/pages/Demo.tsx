@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Brain, Heart, Moon, Zap, Wind, Smile } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { TherapeuticSessionsCarousel } from "@/components/demo/TherapeuticSessionsCarousel";
+import { useToast } from "@/hooks/use-toast";
+
+const MAX_FREE_PLAYS = 6; // One track per therapeutic category
 
 interface TherapeuticSession {
   id: string;
@@ -141,6 +144,23 @@ const therapeuticSessions: TherapeuticSession[] = [
 const Demo = () => {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const { playTrack, pause, currentTrack, isPlaying } = useAudioStore();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  // Track plays in localStorage
+  const getPlayCount = (): number => {
+    const stored = localStorage.getItem('demo_play_count');
+    return stored ? parseInt(stored, 10) : 0;
+  };
+
+  const incrementPlayCount = () => {
+    const current = getPlayCount();
+    localStorage.setItem('demo_play_count', String(current + 1));
+  };
+
+  const hasReachedLimit = (): boolean => {
+    return getPlayCount() >= MAX_FREE_PLAYS;
+  };
 
   // Convert MM:SS duration string to seconds
   const durationToSeconds = (duration: string): number => {
@@ -158,6 +178,17 @@ const Demo = () => {
       pause();
       setPlayingId(null);
     } else {
+      // Check if user has reached free play limit
+      if (hasReachedLimit()) {
+        toast({
+          title: "Free Preview Limit Reached",
+          description: "Sign up to access unlimited therapeutic music sessions",
+          variant: "default",
+        });
+        setTimeout(() => navigate('/auth'), 1500);
+        return;
+      }
+
       const track = {
         id: session.id,
         title: session.sampleTrack.title,
@@ -170,6 +201,16 @@ const Demo = () => {
       };
       await playTrack(track);
       setPlayingId(session.id);
+      incrementPlayCount();
+      
+      // Show reminder after 3 plays
+      const playCount = getPlayCount();
+      if (playCount === 3) {
+        toast({
+          title: `${MAX_FREE_PLAYS - playCount} More Previews`,
+          description: "Sign up for unlimited access to all therapeutic sessions",
+        });
+      }
     }
   };
 
