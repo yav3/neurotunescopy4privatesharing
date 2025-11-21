@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Footer } from "@/components/Footer";
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
-import { Play, Pause, Brain, Heart, Moon, Zap, Wind, Smile } from "lucide-react";
+import { Brain, Heart, Moon, Zap, Wind, Smile } from "lucide-react";
 import { useAudioStore } from "@/stores";
 import { TherapeuticSessionsCarousel } from "@/components/demo/TherapeuticSessionsCarousel";
 
@@ -176,20 +174,54 @@ const Demo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="fixed inset-0 z-0">
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: 'radial-gradient(circle at 20% 30%, rgba(228, 228, 228, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(228, 228, 228, 0.06) 0%, transparent 50%)',
+          }}
+        />
+      </div>
+
       <NavigationHeader />
+      
       {/* Hero Section */}
-      <section className="container mx-auto px-6 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6">Experience NeuroTunes</h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Explore our therapeutic music sessions. Each track is scientifically designed to support specific cognitive and emotional states.
-          </p>
-          <div className="flex gap-4 justify-center">
+      <section className="relative z-10 container mx-auto px-6 pt-32 pb-40">
+        <div 
+          className="max-w-5xl mx-auto backdrop-blur-3xl rounded-[40px] p-16 border"
+          style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderColor: 'rgba(255, 255, 255, 0.10)',
+            boxShadow: '0 0 60px rgba(255, 255, 255, 0.06)',
+          }}
+        >
+          <div className="text-center">
+            <h1 
+              className="text-[64px] md:text-[80px] font-light leading-[1.1] mb-10"
+              style={{ color: 'rgba(228, 228, 228, 0.95)' }}
+            >
+              Experience NeuroTunes
+            </h1>
+            <p 
+              className="text-[22px] md:text-[26px] font-extralight max-w-3xl mx-auto leading-relaxed mb-12"
+              style={{ color: 'rgba(228, 228, 228, 0.70)' }}
+            >
+              Explore our therapeutic music sessions. Each track is scientifically designed to support specific cognitive and emotional states.
+            </p>
             <Link to="/auth">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <button
+                className="px-10 py-4 rounded-2xl text-base font-medium transition-all hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.10)',
+                  border: '1px solid rgba(255, 255, 255, 0.20)',
+                  color: 'rgba(228, 228, 228, 0.90)',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                }}
+              >
                 Get Started
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
@@ -197,8 +229,21 @@ const Demo = () => {
 
 
       {/* Featured Sessions */}
-      <section className="container mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-12 text-center">Featured Therapeutic Sessions</h2>
+      <section className="relative z-10 container mx-auto px-6 py-32">
+        <div 
+          className="backdrop-blur-2xl rounded-[40px] py-24 px-10 max-w-6xl mx-auto mb-20 border"
+          style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderColor: 'rgba(255, 255, 255, 0.10)',
+          }}
+        >
+          <h2 
+            className="text-[56px] md:text-[64px] font-light leading-[1.1] text-center"
+            style={{ color: 'rgba(228, 228, 228, 0.95)' }}
+          >
+            Featured Therapeutic Sessions
+          </h2>
+        </div>
         <TherapeuticSessionsCarousel 
           sessions={therapeuticSessions}
           playingId={playingId}
@@ -208,17 +253,42 @@ const Demo = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary/5 py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to transform your well-being?</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Get started with NeuroTunes and experience the power of therapeutic music with no licensing fees or restrictions.
-          </p>
-          <Link to="/auth">
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
-              Get Started
-            </Button>
-          </Link>
+      <section className="relative z-10 py-40">
+        <div className="container mx-auto px-6">
+          <div 
+            className="max-w-5xl mx-auto backdrop-blur-3xl rounded-[40px] p-20 text-center border"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%)',
+              borderColor: 'rgba(255, 255, 255, 0.10)',
+              boxShadow: '0 0 80px rgba(255, 255, 255, 0.08)',
+            }}
+          >
+            <h2 
+              className="text-[56px] md:text-[64px] font-light leading-[1.1] mb-10"
+              style={{ color: 'rgba(228, 228, 228, 0.95)' }}
+            >
+              Ready to transform your well-being?
+            </h2>
+            <p 
+              className="text-[20px] md:text-[24px] font-extralight max-w-3xl mx-auto leading-relaxed mb-14"
+              style={{ color: 'rgba(228, 228, 228, 0.70)' }}
+            >
+              Get started with NeuroTunes and experience the power of therapeutic music with no licensing fees or restrictions.
+            </p>
+            <Link to="/auth">
+              <button
+                className="px-10 py-4 rounded-2xl text-base font-medium transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.10)',
+                  border: '1px solid rgba(255, 255, 255, 0.20)',
+                  color: 'rgba(228, 228, 228, 0.90)',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                Get Started
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 
