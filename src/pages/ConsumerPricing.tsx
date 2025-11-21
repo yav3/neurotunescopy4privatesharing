@@ -188,34 +188,6 @@ export const ConsumerPricing = () => {
               </div>
             ))}
           </div>
-
-          {/* Mobile App Notice */}
-          <div
-            className="rounded-3xl p-12 text-center"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
-            }}
-          >
-            <h3 className="text-3xl font-light text-white mb-4">
-              iOS & Android Apps
-            </h3>
-            <p className="text-neutral-300 text-lg mb-6 max-w-2xl mx-auto">
-              Download our native mobile apps from the App Store or Google Play Store
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-light text-white">$5.99/month</div>
-                <div className="text-neutral-400 text-sm">or</div>
-                <div className="text-2xl font-light text-white">$59/year</div>
-              </div>
-            </div>
-            <p className="text-neutral-400 text-sm">
-              Available in USD only on US App Stores • Subscription managed through your app store account
-            </p>
-          </div>
         </div>
       </main>
 
