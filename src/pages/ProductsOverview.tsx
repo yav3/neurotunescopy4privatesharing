@@ -6,7 +6,7 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import chromeBg1 from '@/assets/chrome-bg-1.png';
 import chromeBg2 from '@/assets/chrome-bg-2.png';
 import chromeBg3 from '@/assets/chrome-bg-3.png';
-import chromeHeroBg from '@/assets/chrome-hero-bg-slow.gif';
+import chromeHeroBg from '@/assets/chrome-hero-bg.mp4';
 
 export const ProductsOverview = () => {
   const cardBackgrounds = [chromeBg1, chromeBg2, chromeBg3, chromeBg1, chromeBg2];
@@ -17,16 +17,16 @@ export const ProductsOverview = () => {
       
       {/* Premium Chrome Background */}
       <div className="fixed inset-0 z-0">
-        {/* Base chrome liquid */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${chromeHeroBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            animation: 'slowChrome 100s linear infinite',
-          }}
-        />
+        {/* Base chrome liquid video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={chromeHeroBg} type="video/mp4" />
+        </video>
         
         {/* Dark overlay for readability */}
         <div 
