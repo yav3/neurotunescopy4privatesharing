@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { HelpCircle, X, Send, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import obsidianGlassBg from '@/assets/obsidian-glass-bg.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -103,11 +104,11 @@ export function SupportChatbot() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 left-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 z-50"
         style={{
-          background: 'rgba(0, 0, 0, 0.8)',
+          background: 'rgba(10, 10, 12, 0.85)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(20, 184, 166, 0.3)',
-          boxShadow: '0 8px 32px rgba(0, 220, 255, 0.3)',
-          color: '#ffffff',
+          border: '1px solid rgba(255, 255, 255, 0.10)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 255, 255, 0.04)',
+          color: 'rgba(228, 228, 228, 0.92)',
         }}
       >
         <Plus className="w-6 h-6" />
@@ -115,62 +116,79 @@ export function SupportChatbot() {
 
       {isOpen && (
         <div
-          className="fixed bottom-24 left-6 w-96 h-[500px] rounded-2xl flex flex-col overflow-hidden z-50"
+          className="fixed bottom-24 left-6 w-96 h-[500px] rounded-3xl flex flex-col overflow-hidden z-50"
           style={{
-            background: 'linear-gradient(135deg, rgba(2, 16, 20, 0.95) 0%, rgba(0, 37, 44, 0.95) 100%)',
+            background: '#000000',
             backdropFilter: 'blur(40px)',
-            border: '1px solid rgba(20, 184, 166, 0.2)',
-            boxShadow: '0 20px 60px rgba(0, 220, 255, 0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.10)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 255, 255, 0.03)',
           }}
         >
-          {/* Background Plus Logo Watermark */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-            <Plus className="w-96 h-96 text-cyan-400" />
+          {/* Obsidian glass background */}
+          <div className="absolute inset-0 opacity-[0.15] pointer-events-none">
+            <img src={obsidianGlassBg} alt="" className="w-full h-full object-cover" />
           </div>
           
-          {/* Glow effects */}
-          <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-cyan-400/10 blur-[80px] rounded-full pointer-events-none" />
+          {/* Glossy highlight */}
+          <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
 
           <div
-            className="relative flex items-center justify-between p-4 border-b"
-            style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="relative flex items-center justify-between p-5 border-b backdrop-blur-sm"
+            style={{ borderColor: 'rgba(255, 255, 255, 0.10)' }}
           >
             <div className="flex items-center gap-3">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                className="w-11 h-11 rounded-2xl flex items-center justify-center"
                 style={{
-                  background: 'rgba(20, 184, 166, 0.2)',
-                  border: '1px solid rgba(20, 184, 166, 0.3)',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
                 }}
               >
-                <Plus className="w-5 h-5 text-cyan-400" />
+                <Plus className="w-6 h-6" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-white">NeuroTunes Support Assistant</h3>
-                <p className="text-xs text-white/60">Technical support</p>
+                <h3 className="text-sm font-semibold" style={{ color: 'rgba(255, 255, 255, 0.92)' }}>
+                  NeuroPositive Support
+                </h3>
+                <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.60)' }}>
+                  Technical support
+                </p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="hover:opacity-70 transition-opacity"
-              style={{ color: '#ffffff' }}
+              className="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-colors"
+              style={{ color: 'rgba(255, 255, 255, 0.70)' }}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="relative flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="relative flex-1 overflow-y-auto p-5 space-y-4">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                  className={`max-w-[80%] rounded-[20px] px-5 py-3.5 text-[14px] leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg'
-                      : 'bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md'
+                      ? 'shadow-lg'
+                      : 'backdrop-blur-md'
                   }`}
+                  style={
+                    msg.role === 'user'
+                      ? {
+                          background: 'rgba(19, 20, 22, 0.90)',
+                          border: '1px solid rgba(255, 255, 255, 0.20)',
+                          color: 'rgba(255, 255, 255, 0.92)',
+                        }
+                      : {
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          color: 'rgba(255, 255, 255, 0.88)',
+                        }
+                  }
                 >
                   {msg.content}
                 </div>
@@ -178,11 +196,17 @@ export function SupportChatbot() {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" />
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '300ms' }} />
+                <div 
+                  className="rounded-[20px] px-5 py-3.5 backdrop-blur-md"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                  }}
+                >
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '300ms' }} />
                   </div>
                 </div>
               </div>
@@ -191,8 +215,8 @@ export function SupportChatbot() {
           </div>
 
           <div
-            className="relative p-4 border-t"
-            style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="relative p-5 border-t backdrop-blur-sm"
+            style={{ borderColor: 'rgba(255, 255, 255, 0.10)' }}
           >
             <div className="flex gap-2">
               <input
@@ -200,16 +224,25 @@ export function SupportChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Describe your issue..."
+                placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1 px-3 py-2 rounded-xl placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 text-white bg-white/[0.06] border border-white/[0.12]"
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 transition-all"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  color: 'rgba(255, 255, 255, 0.92)',
+                }}
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30 disabled:opacity-50 transition-all"
+                className="w-11 h-11 rounded-xl flex items-center justify-center disabled:opacity-50 transition-all"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                }}
               >
-                <Send className="w-4 h-4 text-white" />
+                <Send className="w-4 h-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }} />
               </button>
             </div>
           </div>
