@@ -151,8 +151,13 @@ const AppContent = () => {
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
+        <Route path="/products/environmental" element={<ProductsOverview />} />
+        <Route path="/products/senior-living" element={<ProductsOverview />} />
+        <Route path="/products/healthcare" element={<ProductsOverview />} />
+        <Route path="/products/enterprise-wellness" element={<ProductsOverview />} />
+        <Route path="/products/population-health" element={<ProductsOverview />} />
+        <Route path="/products/hospitality" element={<ProductsOverview />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
-        <Route path="/products/environmental" element={<EnvironmentalBackground />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/experience" element={<Experience />} />
