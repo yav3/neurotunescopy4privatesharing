@@ -39,9 +39,28 @@ export const Download = () => {
                 <Monitor className="w-8 h-8 text-cyan-400" />
               </div>
               <h3 className="text-2xl font-light text-white mb-3">Web App</h3>
-              <p className="text-neutral-400 mb-6">
+              <p className="text-neutral-400 mb-4">
                 Access from any browser, no installation required
               </p>
+              
+              {/* Black Friday Pricing */}
+              <div className="mb-6">
+                <div className="inline-block px-3 py-1 rounded-full mb-3"
+                  style={{
+                    background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                    boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
+                  }}
+                >
+                  <span className="text-white text-xs font-semibold">🎉 BLACK FRIDAY DEAL</span>
+                </div>
+                <p className="text-white text-lg font-light mb-1">
+                  $25.99/year or $6.99 for 3 months
+                </p>
+                <p className="text-cyan-400 text-xs font-medium">
+                  Use code "Lovable"
+                </p>
+              </div>
+              
               <button 
                 className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all"
                 style={{
@@ -50,7 +69,7 @@ export const Download = () => {
                   boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)'
                 }}
               >
-                Launch Web App
+                Get Web App
               </button>
             </div>
 
