@@ -16,8 +16,6 @@ export const NavigationHeader = () => {
     { title: "Senior Living & Long-Term Care", href: "/products/senior-living" },
     { title: "Healthcare & Clinical Deployment", href: "/products/healthcare" },
     { title: "Enterprise Well-Being", href: "/products/enterprise-wellness" },
-    { title: "Population Health Programs", href: "/products/population-health" },
-    { title: "Hospitality & Travel Wellness", href: "/products/hospitality" },
   ];
 
   const products = [
