@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { HelpCircle, X, Send } from 'lucide-react';
+import { HelpCircle, X, Send, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
@@ -105,54 +105,72 @@ export function SupportChatbot() {
         style={{
           background: 'rgba(0, 0, 0, 0.8)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
-          color: '#C0C0C8',
+          border: '1px solid rgba(20, 184, 166, 0.3)',
+          boxShadow: '0 8px 32px rgba(0, 220, 255, 0.3)',
+          color: '#ffffff',
         }}
       >
-        <HelpCircle className="w-6 h-6" />
+        <Plus className="w-6 h-6" />
       </button>
 
       {isOpen && (
         <div
-          className="fixed bottom-24 left-6 w-96 h-[500px] rounded-lg flex flex-col overflow-hidden z-50"
+          className="fixed bottom-24 left-6 w-96 h-[500px] rounded-2xl flex flex-col overflow-hidden z-50"
           style={{
-            background: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+            background: 'linear-gradient(135deg, rgba(2, 16, 20, 0.95) 0%, rgba(0, 37, 44, 0.95) 100%)',
+            backdropFilter: 'blur(40px)',
+            border: '1px solid rgba(20, 184, 166, 0.2)',
+            boxShadow: '0 20px 60px rgba(0, 220, 255, 0.15)',
           }}
         >
+          {/* Background Plus Logo Watermark */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+            <Plus className="w-96 h-96 text-cyan-400" />
+          </div>
+          
+          {/* Glow effects */}
+          <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-cyan-400/10 blur-[80px] rounded-full pointer-events-none" />
+
           <div
-            className="flex items-center justify-between p-4 border-b"
+            className="relative flex items-center justify-between p-4 border-b"
             style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
           >
-            <h3 className="font-semibold" style={{ color: '#C0C0C8' }}>
-              NeuroTunes Support Assistant
-            </h3>
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                style={{
+                  background: 'rgba(20, 184, 166, 0.2)',
+                  border: '1px solid rgba(20, 184, 166, 0.3)',
+                }}
+              >
+                <Plus className="w-5 h-5 text-cyan-400" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-white">NeuroTunes Support Assistant</h3>
+                <p className="text-xs text-white/60">Technical support</p>
+              </div>
+            </div>
             <button
               onClick={() => setIsOpen(false)}
               className="hover:opacity-70 transition-opacity"
-              style={{ color: '#C0C0C8' }}
+              style={{ color: '#ffffff' }}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="relative flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className="max-w-[80%] rounded-lg p-3"
-                  style={{
-                    background: msg.role === 'user' 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(255, 255, 255, 0.05)',
-                    color: '#C0C0C8',
-                  }}
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                    msg.role === 'user'
+                      ? 'bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg'
+                      : 'bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md'
+                  }`}
                 >
                   {msg.content}
                 </div>
@@ -160,14 +178,12 @@ export function SupportChatbot() {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div
-                  className="rounded-lg p-3"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    color: '#C0C0C8',
-                  }}
-                >
-                  Typing...
+                <div className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" />
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '300ms' }} />
+                  </div>
                 </div>
               </div>
             )}
@@ -175,7 +191,7 @@ export function SupportChatbot() {
           </div>
 
           <div
-            className="p-4 border-t"
+            className="relative p-4 border-t"
             style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
           >
             <div className="flex gap-2">
@@ -186,24 +202,14 @@ export function SupportChatbot() {
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Describe your issue..."
                 disabled={isLoading}
-                className="flex-1 px-3 py-2 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30"
-                style={{
-                  background: 'rgba(0, 0, 0, 0.6)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: '#C0C0C8',
-                }}
+                className="flex-1 px-3 py-2 rounded-xl placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 text-white bg-white/[0.06] border border-white/[0.12]"
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="px-4 py-2 rounded-lg disabled:opacity-50 transition-opacity"
-                style={{
-                  background: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  color: '#C0C0C8',
-                }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30 disabled:opacity-50 transition-all"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>
