@@ -1,6 +1,7 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const ConsumerPricing = () => {
   const plans = [
@@ -18,7 +19,8 @@ export const ConsumerPricing = () => {
         "Sync across all devices",
         "Admin management tools"
       ],
-      cta: "Contact Sales",
+      cta: "Get Started",
+      ctaLink: "/checkout?plan=lovable",
       badge: "Lovable Users Only",
       specialOffer: 'Limited time offer • Valid until December 10th only'
     },
@@ -36,7 +38,8 @@ export const ConsumerPricing = () => {
         "Sync across all devices",
         "Admin management tools"
       ],
-      cta: "Contact Sales",
+      cta: "Get Started",
+      ctaLink: "/checkout?plan=smallbusiness",
       badge: "Professional",
       highlight: true
     },
@@ -180,21 +183,26 @@ export const ConsumerPricing = () => {
                 </ul>
 
                 {/* CTA Button - Fixed position */}
-                <button
-                  className="w-full py-3 rounded-full font-semibold transition-all mt-auto"
-                  style={{
-                    background: plan.highlight
-                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(229, 229, 229, 0.9))'
-                      : 'rgba(255, 255, 255, 0.05)',
-                    border: plan.highlight ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
-                    color: plan.highlight ? '#000000' : 'white',
-                    boxShadow: plan.highlight 
-                      ? '0 0 30px rgba(192, 192, 192, 0.5)'
-                      : 'none'
-                  }}
+                <Link
+                  to={plan.ctaLink || '#'}
+                  className="block w-full"
                 >
-                  {plan.cta}
-                </button>
+                  <button
+                    className="w-full py-3 rounded-full font-semibold transition-all mt-auto"
+                    style={{
+                      background: plan.highlight
+                        ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(229, 229, 229, 0.9))'
+                        : 'rgba(255, 255, 255, 0.05)',
+                      border: plan.highlight ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
+                      color: plan.highlight ? '#000000' : 'white',
+                      boxShadow: plan.highlight 
+                        ? '0 0 30px rgba(192, 192, 192, 0.5)'
+                        : 'none'
+                    }}
+                  >
+                    {plan.cta}
+                  </button>
+                </Link>
               </div>
             ))}
           </div>

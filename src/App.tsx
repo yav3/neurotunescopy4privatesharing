@@ -70,6 +70,7 @@ import Download from "./pages/Download";
 import Pricing from "./pages/Pricing";
 import Help from "./pages/Help";
 import ConsumerPricing from "./pages/ConsumerPricing";
+import Checkout from "./pages/Checkout";
 import AppDownload from "./pages/AppDownload";
 import HIPAA from "./pages/HIPAA";
 
@@ -193,6 +194,7 @@ const AppContent = () => {
         <Route path="/help/technical" element={<Help />} />
         <Route path="/help/faq" element={<FAQ />} />
         <Route path="/consumer-pricing" element={<ConsumerPricing />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/app-download" element={<AppDownload />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
