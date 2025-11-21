@@ -107,51 +107,17 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-col items-center mb-8">
               <h1 
-                className="font-light tracking-[-0.02em] flex items-baseline text-4xl md:text-6xl"
+                className="font-light tracking-[-0.02em] text-4xl md:text-6xl"
                 style={{
                   lineHeight: '1.15',
                   color: 'rgba(228, 228, 228, 0.95)',
                   textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <span className="font-light" style={{ fontSize: '0.81em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
-                NeuroTunes
+                +NeuroTunes
               </h1>
-              <p 
-                className="font-light tracking-wide mt-3"
-                style={{
-                  fontSize: 'clamp(14px, 1.5vw, 18px)',
-                  color: 'rgba(228, 228, 228, 0.65)',
-                }}
-              >
-                by Neuralpositive
-              </p>
-            </div>
-            
-            {/* Subtitle: refined spacing and weight balance */}
-            <div className="space-y-4 mb-8">
-              <p 
-                className="font-light tracking-wide"
-                style={{
-                  fontSize: 'clamp(14px, 1.5vw, 18px)',
-                  color: 'rgba(228, 228, 228, 0.88)',
-                  lineHeight: '1.5'
-                }}
-              >
-                Neuroscience-backed · Clinically Validated · Patented
-              </p>
-              <p 
-                className="font-normal tracking-wide"
-                style={{
-                  fontSize: 'clamp(16px, 2vw, 21px)',
-                  color: 'rgba(228, 228, 228, 0.92)',
-                  lineHeight: '1.5'
-                }}
-              >
-                Medical-grade Therapeutic Music & AI Streaming
-              </p>
             </div>
 
             {/* Premium Glassmorphic CTAs */}

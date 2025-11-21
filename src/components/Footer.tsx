@@ -22,6 +22,19 @@ export const Footer = () => {
       }}>
         <div className="max-w-7xl mx-auto px-6 py-16">
           
+          {/* Tagline Section */}
+          <div className="text-center mb-12">
+            <p className="text-xs text-white/40 tracking-wide mb-2">
+              by Neuralpositive
+            </p>
+            <p className="text-xs text-white/50 mb-2">
+              Neuroscience-backed · Clinically Validated · Patented
+            </p>
+            <p className="text-sm text-white/60">
+              Medical-grade Therapeutic Music & AI Streaming
+            </p>
+          </div>
+
           {/* Logos Section */}
           <div className="flex items-center justify-center gap-4 mb-16">
             <span className="text-sm text-white/30 uppercase tracking-widest">Supported by</span>
