@@ -9,7 +9,7 @@ export const ConsumerPricing = () => {
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
-      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users",
+      description: "Web app access + mobile apps bundle • Annual contracts • Minimum 40 users",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Employee wellness dashboard",
@@ -27,7 +27,7 @@ export const ConsumerPricing = () => {
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
-      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users • Up to 500 users",
+      description: "Web app access + mobile apps bundle • Annual contracts • Minimum 40 users • Up to 500 users",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Employee wellness dashboard",
@@ -45,7 +45,7 @@ export const ConsumerPricing = () => {
       priceMonthly: null,
       priceYearly: "$25.99",
       period: "per year",
-      description: "Bundle: Web app + iOS & Android subscriptions with special pricing for first responders",
+      description: "Web app access + mobile apps with special pricing for first responders",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Specialized stress relief content",
@@ -61,8 +61,8 @@ export const ConsumerPricing = () => {
       name: "Enterprise, 1,000+",
       priceMonthly: null,
       priceYearly: "Let's Talk!",
-      period: "",
-      description: "Bundle: Web app + iOS & Android subscriptions for organizations with 1,000+ users",
+      period: "/ year",
+      description: "Web app access + mobile apps for organizations with 1,000+ users",
       features: [
         "Everything in SMB plan",
         "Dedicated account manager",
@@ -96,10 +96,13 @@ export const ConsumerPricing = () => {
               <span className="text-white font-semibold tracking-wide">🎉 BLACK FRIDAY SPECIAL</span>
             </div>
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
-              Get NeuroTunes Today
+              NeuroTunes Web App
             </h1>
             <p className="text-2xl font-light text-neutral-300 max-w-3xl mx-auto">
-              Access therapeutic audio on web, iOS, and Android
+              Professional web-based therapeutic audio platform for teams and organizations
+            </p>
+            <p className="text-lg font-light text-neutral-400 max-w-2xl mx-auto mt-3">
+              Access from any browser • Perfect for workplace wellness • Includes admin dashboard
             </p>
           </div>
 
