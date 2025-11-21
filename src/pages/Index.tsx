@@ -64,7 +64,7 @@ const Index = () => {
         <div 
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(6, 182, 212, 0.08) 70%, rgba(0, 0, 0, 0.5) 100%)'
+            background: 'radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(55, 213, 196, 0.08) 70%, rgba(2, 11, 15, 0.5) 100%)'
           }}
         />
       </div>
@@ -95,11 +95,11 @@ const Index = () => {
               className="font-extralight text-white leading-none tracking-wide flex items-center mb-10"
               style={{
                 fontSize: 'clamp(110px, 12vw, 130px)',
-                textShadow: '0 0 60px rgba(6, 182, 212, 0.08), 0 0 100px rgba(6, 182, 212, 0.08)',
+                textShadow: '0 0 60px rgba(55, 213, 196, 0.08), 0 0 100px rgba(55, 213, 196, 0.08)',
                 gap: '0.75rem'
               }}
             >
-              <span className="text-cyan-400 font-light" style={{ fontSize: '0.9em' }}>+</span>
+              <span className="font-light" style={{ fontSize: '0.9em', color: 'hsl(174, 62%, 58%)' }}>+</span>
               NeuroTunes
             </h1>
             
@@ -133,17 +133,17 @@ const Index = () => {
                 <button 
                   className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
                   style={{
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    background: 'rgba(2, 11, 15, 0.5)',
                     backdropFilter: 'blur(10px)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    e.currentTarget.style.background = 'rgba(2, 11, 15, 0.5)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                   }}
                 >
                   Explore Solutions
@@ -154,19 +154,19 @@ const Index = () => {
                 <button 
                   className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.3) 100%)',
-                    border: '1px solid rgba(6, 182, 212, 0.5)',
-                    boxShadow: '0 0 30px rgba(6, 182, 212, 0.2)',
+                    background: 'rgba(55, 213, 196, 0.08)',
+                    border: '1px solid rgba(55, 213, 196, 0.3)',
+                    boxShadow: '0 0 30px rgba(55, 213, 196, 0.15)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(6, 182, 212, 0.4) 100%)';
-                    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.7)';
-                    e.currentTarget.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.3)';
+                    e.currentTarget.style.background = 'rgba(55, 213, 196, 0.15)';
+                    e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.5)';
+                    e.currentTarget.style.boxShadow = '0 0 40px rgba(55, 213, 196, 0.25)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.3) 100%)';
-                    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.5)';
-                    e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+                    e.currentTarget.style.background = 'rgba(55, 213, 196, 0.08)';
+                    e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.3)';
+                    e.currentTarget.style.boxShadow = '0 0 30px rgba(55, 213, 196, 0.15)';
                   }}
                 >
                   See Samples
@@ -182,10 +182,10 @@ const Index = () => {
             <div 
               className="max-w-6xl mx-auto rounded-2xl p-12"
               style={{
-                background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)',
+                background: 'linear-gradient(135deg, rgba(3, 26, 31, 0.9) 0%, rgba(1, 48, 57, 0.95) 100%)',
                 backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(6, 182, 212, 0.2)',
-                boxShadow: '0 0 40px rgba(6, 182, 212, 0.1), 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                border: '1px solid rgba(55, 213, 196, 0.12)',
+                boxShadow: '0 0 40px rgba(55, 213, 196, 0.08), 0 20px 60px rgba(2, 11, 15, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.03)'
               }}
             >
               <motion.h3 

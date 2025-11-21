@@ -8,42 +8,48 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Teal/Pearl Color Palette */
-    --pearl-100: 180 25% 92%; /* Lightest pearl-teal */
-    --pearl-200: 180 25% 88%; /* Pale pearl-teal */
-    --pearl-300: 178 30% 82%; /* Soft pearl-teal */
-    --teal-dark-100: 182 45% 15%; /* Deep teal */
-    --teal-dark-200: 182 50% 12%; /* Deeper teal */
-    --teal-dark-300: 182 55% 8%; /* Deepest teal */
+    /* OBSIDIAN-TEAL STRICT COLOR PALETTE */
+    /* Primary: Deep Obsidian Black */
+    --obsidian-base: 195 100% 3%; /* #020B0F - Deep obsidian black */
+    --obsidian-secondary: 188 85% 5%; /* #031A1F - Dark teal-black */
+    --obsidian-tertiary: 186 90% 7%; /* #013039 - Deeper teal-black */
+    
+    /* Accent: Soft Luminance Teal */
+    --teal-accent: 174 62% 58%; /* #37D5C4 at 18% opacity */
+    --teal-highlight: 174 68% 56%; /* #2CCEC4 at 10% opacity - faint glows only */
+    --teal-glow: 174 70% 60%; /* Glow variant */
+    
+    /* Glass borders: Teal-white hybrid */
+    --glass-border: 180 100% 73%; /* rgba(120,255,255,0.12) */
 
-    /* Dark Mode - Rich Velvet Liquid Glass Theme */
-    --background: 188 70% 3%; /* Rich deep green-blue-black with velvet depth */
-    --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    /* SEMANTIC TOKENS - Obsidian-Teal Theme */
+    --background: 195 100% 3%; /* Deep obsidian black #020B0F */
+    --foreground: 0 0% 92%; /* White at 92% opacity */
 
-    --card: 186 65% 6%; /* Deep translucent liquid glass card */
-    --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --card: 188 85% 5%; /* Dark teal-black gradient base */
+    --card-foreground: 0 0% 92%; /* White at 92% */
 
-    --popover: 188 68% 4%; /* Deep liquid glass popover */
-    --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --popover: 195 100% 3%; /* Obsidian black */
+    --popover-foreground: 0 0% 92%; /* White at 92% */
 
-    --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
-    --primary-foreground: 188 70% 3%; /* Rich deep velvet background */
+    --primary: 0 0% 92%; /* White at 92% */
+    --primary-foreground: 195 100% 3%; /* Obsidian black */
 
-    --secondary: 186 60% 8%; /* Deep liquid glass secondary */
-    --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --secondary: 188 85% 5%; /* Dark teal-black */
+    --secondary-foreground: 0 0% 92%; /* White at 92% */
 
-    --muted: 188 65% 5%; /* Muted deep velvet */
-    --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
+    --muted: 186 90% 7%; /* Deeper teal-black */
+    --muted-foreground: 0 0% 75%; /* White at 75% opacity */
 
-    --accent: 184 55% 10%; /* Accent deep liquid glass */
-    --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --accent: 188 85% 5%; /* Dark teal-black */
+    --accent-foreground: 0 0% 92%; /* White at 92% */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 180 8% 92%;
+    --destructive-foreground: 0 0% 92%;
 
-    --border: 186 60% 10%; /* Deep liquid glass borders */
-    --input: 188 65% 6%; /* Deep velvet input */
-    --ring: 180 8% 92%;
+    --border: 174 62% 58% / 0.12; /* Teal at 12% opacity */
+    --input: 195 100% 3%; /* Obsidian black */
+    --ring: 174 62% 58% / 0.3; /* Teal glow */
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
@@ -65,66 +71,66 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Force Dark Mode - Rich Velvet Liquid Glass Theme */
-    --background: 188 70% 3%; /* Rich deep green-blue-black with velvet depth */
-    --foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    /* Obsidian-Teal Dark Mode - High-Gloss Liquid Glass */
+    --background: 195 100% 3%; /* Deep obsidian black */
+    --foreground: 0 0% 92%; /* White at 92% */
 
-    --card: 186 65% 6%; /* Deep translucent liquid glass card */
-    --card-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --card: 188 85% 5%; /* Dark teal-black gradient */
+    --card-foreground: 0 0% 92%; /* White at 92% */
 
-    --popover: 188 68% 4%; /* Deep liquid glass popover */
-    --popover-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --popover: 195 100% 3%; /* Obsidian black */
+    --popover-foreground: 0 0% 92%; /* White at 92% */
 
-    --primary: 180 8% 92%; /* Very pale pearly grey with teal hint */
-    --primary-foreground: 188 70% 3%; /* Rich deep velvet background */
+    --primary: 0 0% 92%; /* White at 92% */
+    --primary-foreground: 195 100% 3%; /* Obsidian black */
 
-    --secondary: 186 60% 8%; /* Deep liquid glass secondary */
-    --secondary-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --secondary: 188 85% 5%; /* Dark teal-black */
+    --secondary-foreground: 0 0% 92%; /* White at 92% */
 
-    --muted: 188 65% 5%; /* Muted deep velvet */
-    --muted-foreground: 180 6% 80%; /* Softer muted pearl-grey */
+    --muted: 186 90% 7%; /* Deeper teal-black */
+    --muted-foreground: 0 0% 75%; /* White at 75% */
 
-    --accent: 184 55% 10%; /* Accent deep liquid glass */
-    --accent-foreground: 180 8% 92%; /* Very pale pearly grey with teal hint */
+    --accent: 188 85% 5%; /* Dark teal-black */
+    --accent-foreground: 0 0% 92%; /* White at 92% */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 180 8% 92%;
+    --destructive-foreground: 0 0% 92%;
 
-    --border: 186 60% 10%; /* Deep liquid glass borders */
-    --input: 188 65% 6%; /* Deep velvet input */
-    --ring: 180 8% 92%;
+    --border: 174 62% 58% / 0.12; /* Teal at 12% */
+    --input: 195 100% 3%; /* Obsidian black */
+    --ring: 174 62% 58% / 0.3; /* Teal glow */
 
-    /* Dark mode gradients - Rich Velvet Liquid Glass */
-    --gradient-hero: linear-gradient(135deg, hsl(188 70% 3%), hsl(186 65% 6%), hsl(186 60% 8%));
-    --gradient-card: linear-gradient(135deg, hsl(186 65% 6%), hsl(188 65% 5%), hsl(188 68% 4%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(188 70% 3%), hsl(186 60% 5% / 0.5), hsl(188 70% 3%));
+    /* Obsidian-Teal Gradients - High-Gloss Liquid Glass */
+    --gradient-hero: linear-gradient(135deg, hsl(195 100% 3%), hsl(188 85% 5%), hsl(186 90% 7%));
+    --gradient-card: linear-gradient(135deg, hsl(188 85% 5%), hsl(186 90% 7%), hsl(195 100% 3%));
+    --gradient-dark-bg: linear-gradient(135deg, hsl(195 100% 3%), hsl(188 85% 5% / 0.8), hsl(195 100% 3%));
     
-    /* Dark mode sidebar - Rich Velvet Liquid Glass */
-    --sidebar-background: 188 68% 4%;
-    --sidebar-foreground: 180 8% 92%;
-    --sidebar-primary: 180 8% 92%;
-    --sidebar-primary-foreground: 188 70% 3%;
-    --sidebar-accent: 186 60% 8%;
-    --sidebar-accent-foreground: 180 8% 92%;
-    --sidebar-border: 186 60% 10%;
-    --sidebar-ring: 180 8% 92%;
+    /* Sidebar - Obsidian-Teal */
+    --sidebar-background: 195 100% 3%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 0 0% 92%;
+    --sidebar-primary-foreground: 195 100% 3%;
+    --sidebar-accent: 188 85% 5%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 174 62% 58% / 0.12;
+    --sidebar-ring: 174 62% 58% / 0.3;
 
-    /* Dark mode card variations - Rich Velvet Liquid Glass */
-    --card-light: 188 65% 5%;
-    --card-medium: 186 65% 6%;
-    --card-darker: 186 60% 8%;
-    --card-darkest: 188 70% 3%;
+    /* Card variations - Obsidian-Teal Gloss */
+    --card-light: 188 85% 5%;
+    --card-medium: 186 90% 7%;
+    --card-darker: 195 100% 3%;
+    --card-darkest: 195 100% 2%;
 
-    /* Dark mode glass morphism - Rich Velvet Liquid Glass */
-    --glass-bg: 186 65% 6% / 0.4;
-    --glass-border: 186 60% 10% / 0.6;
-    --glass-shadow: 0 8px 32px 0 hsl(188 70% 3% / 0.9);
+    /* Glass morphism - Teal Luminescence */
+    --glass-bg: 188 85% 5% / 0.4;
+    --glass-border: 174 62% 58% / 0.12;
+    --glass-shadow: 0 10px 30px -10px hsl(174 62% 58% / 0.3), 0 0 40px hsl(174 68% 56% / 0.1);
 
-    /* Dark mode music categories - Rich Velvet Liquid Glass */
-    --music-focus: 186 65% 6%;
-    --music-mood: 186 65% 6%;
-    --music-sleep: 186 65% 6%;
-    --music-energy: 186 65% 6%;
+    /* Music categories - Obsidian Base */
+    --music-focus: 188 85% 5%;
+    --music-mood: 188 85% 5%;
+    --music-sleep: 188 85% 5%;
+    --music-energy: 188 85% 5%;
   }
 
   /* Safe area support for mobile devices */
@@ -136,74 +142,71 @@ All colors MUST be HSL.
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Common variables for both themes */
+  /* OBSIDIAN-TEAL STRICT PALETTE - Global Variables */
   :root {
-    /* Liquid Glass Palette - Pearl Grey & Green-Blue Gradients */
-    --liquid-pearl-base: 210 11% 87%;        /* Base Pearl Grey #DADCE0 */
-    --liquid-pearl-highlight: 195 20% 93%;   /* Iridescent Highlight #E8EEF0 */
-    --liquid-cyan-core: 180 45% 60%;         /* Translucent Blue-Green Core #6EC5C5 */
-    --liquid-aquatic-deep: 189 100% 18%;     /* Deep Aquatic Gradient #004D5B */
-    --liquid-emerald-edge: 173 64% 33%;      /* Emerald Reflection Edge #1E8A7E */
-    --liquid-glass-shadow: 194 66% 13%;      /* Glass Shadow Overlay #0B2B35 */
-    --liquid-glow-highlight: 180 11% 97%;    /* Highlight Glow #F7F9F9 */
+    /* Core Obsidian-Teal Colors */
+    --obsidian-primary: 195 100% 3%;        /* #020B0F Deep obsidian black */
+    --obsidian-secondary: 188 85% 5%;       /* #031A1F Dark teal-black */
+    --obsidian-tertiary: 186 90% 7%;        /* #013039 Deeper teal-black */
+    --teal-luminance: 174 62% 58%;          /* #37D5C4 Soft teal accent */
+    --teal-glow: 174 68% 56%;               /* #2CCEC4 Faint teal glow */
+    --teal-bright: 174 70% 60%;             /* Brightest teal (for glows only) */
     
-    /* === Marine Opalescent Text & Icon Palette === */
-    --text-primary: 175 58% 80%;            /* Luminous seafoam #A9E6E1 */
-    --text-primary-glow: 175 58% 80%;       /* Same hue for glow effect */
-    --text-secondary: 195 20% 68%;          /* Muted pearl gray-blue #9DB9C0 */
-    --text-accent: 177 59% 64%;             /* Aqua-teal light #6FD7D3 */
-    --text-accent-hover: 178 78% 76%;       /* Aqua-teal hover #8EF3F0 */
-    --text-muted-opacity: 0.38;             /* Muted/disabled opacity */
+    /* Typography - White Opacity System */
+    --text-primary: 0 0% 100%;              /* Pure white */
+    --text-primary-opacity: 0.92;           /* 92% white for primary text */
+    --text-secondary-opacity: 0.75;         /* 75% white for supporting text */
+    --text-muted-opacity: 0.60;             /* 60% white for muted text */
     
-    /* Icon Colors */
-    --icon-default: 180 67% 86%;            /* Pearl-teal default rgba(200, 240, 240, 0.7) */
-    --icon-default-opacity: 0.7;
-    --icon-hover: 177 57% 74%;              /* Hover state #9AE4E0 */
-    --icon-active: 176 91% 87%;             /* Active state #BFFCF8 */
+    /* Icons - Teal Luminescence */
+    --icon-default: 174 62% 58%;            /* Teal accent */
+    --icon-default-opacity: 0.6;
+    --icon-hover: 174 68% 56%;              /* Teal glow on hover */
+    --icon-active: 174 70% 60%;             /* Bright teal when active */
     --icon-disabled-opacity: 0.3;
     
-    /* Glass Surface Layers */
-    --surface-deep: 202 73% 6%;             /* Deep navy base rgba(4, 18, 26, 0.85) */
-    --surface-deep-opacity: 0.85;
-    --surface-glass: 200 69% 13%;           /* Transparent morphism rgba(10, 40, 55, 0.45) */
-    --surface-glass-opacity: 0.45;
-    --surface-glow: 176 100% 85%;           /* Subtle reflective halo rgba(180, 255, 250, 0.12) */
-    --surface-glow-opacity: 0.12;
-    --surface-hover-opacity: 0.08;          /* Floating card hover rgba(255, 255, 255, 0.08) */
+    /* Glass Surface Layers - High-Gloss Obsidian */
+    --surface-deep: 195 100% 3%;            /* Deep obsidian base */
+    --surface-deep-opacity: 0.90;
+    --surface-glass: 188 85% 5%;            /* Dark teal-black glass */
+    --surface-glass-opacity: 0.40;
+    --surface-glow: 174 62% 58%;            /* Teal glow halo */
+    --surface-glow-opacity: 0.08;           /* 8% teal glow */
+    --surface-hover-opacity: 0.10;          /* Subtle hover lift */
     
-    /* Brand Gradient System - Locked Teal Spectrum */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-900)), hsl(var(--brand-500)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-500)), hsl(var(--brand-200)));
-    --gradient-surface: linear-gradient(180deg, hsl(var(--brand-50)), #ffffff);
+    /* OBSIDIAN-TEAL GRADIENTS - High-Gloss Liquid Glass */
+    --gradient-primary: linear-gradient(135deg, hsl(195 100% 3%), hsl(188 85% 5%), hsl(186 90% 7%));
+    --gradient-secondary: linear-gradient(135deg, hsl(188 85% 5%), hsl(186 90% 7%), hsl(188 85% 5%));
+    --gradient-surface: linear-gradient(180deg, hsl(195 100% 3%), hsl(188 85% 5%));
     
-    /* Hero gradients - Teal/Pearl dark theme */
+    /* Hero gradients - Obsidian-Teal with subtle luminescence */
     --gradient-hero: linear-gradient(135deg, 
-      hsl(182, 55%, 5%) 0%,
-      hsl(182, 50%, 8%) 25%,
-      hsl(182, 45%, 12%) 50%,
-      hsl(178, 40%, 15%) 100%
+      hsl(195 100% 3%) 0%,
+      hsl(188 85% 5%) 25%,
+      hsl(186 90% 7%) 50%,
+      hsl(188 85% 5%) 100%
     );
     
-    /* Card gradients - Teal/Pearl dark theme */
+    /* Card gradients - Dark teal-black glossy panels */
     --gradient-card: linear-gradient(135deg, 
-      hsl(182, 50%, 8%) 0%,
-      hsl(182, 50%, 10%) 50%,
-      hsl(182, 50%, 8%) 100%
+      hsl(188 85% 5%) 0%,
+      hsl(186 90% 7%) 50%,
+      hsl(188 85% 5%) 100%
     );
     
-    /* Glass effects - Teal/Pearl theme */
-    --glass-bg: 182 50% 8% / 0.4;
-    --glass-border: 182 45% 15% / 0.6;
-    --glass-shadow: 0 12px 32px hsl(182 55% 5% / 0.8);
+    /* Glass effects - Teal luminescence with deep contrast */
+    --glass-bg: 188 85% 5% / 0.4;
+    --glass-border: 174 62% 58% / 0.12;
+    --glass-shadow: 0 10px 30px -10px hsl(174 62% 58% / 0.3), 0 0 40px hsl(174 68% 56% / 0.1);
     --gradient-glass: linear-gradient(135deg, 
-      hsl(182 50% 8% / 0.5) 0%,
-      hsl(180 45% 12% / 0.3) 100%
+      hsl(188 85% 5% / 0.5) 0%,
+      hsl(186 90% 7% / 0.3) 100%
     );
     
-    /* Text gradients */
+    /* Text gradients - Subtle white-to-teal */
     --gradient-text: linear-gradient(135deg, 
-      hsl(182, 63%, 32%) 0%,    /* brand-500 */
-      hsl(179, 58%, 50%) 100%   /* brand-300 */
+      hsl(0 0% 92%) 0%,
+      hsl(174 62% 58% / 0.8) 100%
     );
     
     --gradient-white-section: linear-gradient(135deg,
