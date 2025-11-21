@@ -73,13 +73,6 @@ const Index = () => {
 
         {/* Hero Section - Full viewport */}
         <div className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-          {/* Enhanced radial gradient overlay for perfect text contrast */}
-          <div 
-            className="absolute inset-0 pointer-events-none z-[1]"
-            style={{
-              background: 'radial-gradient(circle at center, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.20) 55%, rgba(0,0,0,0) 85%)'
-            }}
-          />
           
           {/* Chrome curves accent */}
           <div 
@@ -92,9 +85,20 @@ const Index = () => {
             }}
           />
           
+          {/* Floating Obsidian Glass Panel behind hero text */}
           <motion.div
-            className="text-center flex flex-col items-center justify-center max-w-[900px] mx-auto relative z-10"
-            style={{ marginTop: '80px' }}
+            className="text-center flex flex-col items-center justify-center mx-auto relative z-10"
+            style={{ 
+              marginTop: '80px',
+              maxWidth: '960px',
+              background: 'rgba(0, 0, 0, 0.45)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              borderRadius: '40px',
+              padding: '64px 80px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+            }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -104,8 +108,8 @@ const Index = () => {
               className="font-extralight leading-none tracking-wide flex items-center mb-10"
               style={{
                 fontSize: 'clamp(110px, 12vw, 140px)',
-                color: 'rgba(228, 228, 228, 0.92)',
-                textShadow: '0 0 60px rgba(228, 228, 228, 0.12), 0 0 100px rgba(228, 228, 228, 0.08)',
+                color: 'rgba(228, 228, 228, 0.95)',
+                textShadow: '0 0 20px rgba(255, 255, 255, 0.02)',
                 gap: '0.75rem'
               }}
             >
@@ -119,7 +123,7 @@ const Index = () => {
                 className="font-light tracking-wide"
                 style={{
                   fontSize: 'clamp(24px, 3vw, 34px)',
-                  color: 'rgba(228, 228, 228, 0.85)',
+                  color: 'rgba(228, 228, 228, 0.88)',
                   lineHeight: '1.4'
                 }}
               >
@@ -129,7 +133,7 @@ const Index = () => {
                 className="font-light tracking-wide"
                 style={{
                   fontSize: 'clamp(24px, 3vw, 34px)',
-                  color: 'rgba(228, 228, 228, 0.85)',
+                  color: 'rgba(228, 228, 228, 0.88)',
                   lineHeight: '1.4'
                 }}
               >
@@ -188,81 +192,6 @@ const Index = () => {
               </Link>
             </div>
           </motion.div>
-        </div>
-
-        {/* Supported by section - Floating obsidian glass panel */}
-        <div className="relative z-10 py-24 px-6">
-          {/* Dimmed chrome background - 50% opacity for clarity */}
-          <div 
-            className="absolute inset-0 opacity-50 pointer-events-none"
-            style={{
-              backgroundImage: `url(${chromeHeroBg})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
-          
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div 
-              className="relative"
-              style={{
-                background: '#0A0A0C',
-                borderRadius: '36px',
-                border: '1px solid rgba(255, 255, 255, 0.14)',
-                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.04), 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 60px rgba(255, 255, 255, 0.035)',
-                padding: '80px 60px',
-              }}
-            >
-              <motion.h3 
-                className="text-lg font-light text-center mb-16 tracking-wide"
-                style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                Supported by
-              </motion.h3>
-
-              <div className="flex items-center justify-center gap-20">
-                {[
-                  { name: "Jacobs Technion-Cornell Institute", logo: jacobsTechnionLogo },
-                  { name: "Stanford Medicine", logo: stanfordLogo },
-                  { name: "Weill Cornell Medicine", logo: weillCornellLogo }
-                ].map((partner, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center justify-center"
-                    style={{ flex: '1 1 0', maxWidth: '280px' }}
-                  >
-                    <img 
-                      src={partner.logo} 
-                      alt={partner.name}
-                      className="object-contain transition-all duration-300"
-                      style={{
-                        height: '64px',
-                        width: '100%',
-                        filter: 'brightness(0) invert(1)',
-                        opacity: '0.90',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.opacity = '1';
-                        e.currentTarget.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.2))';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.opacity = '0.90';
-                        e.currentTarget.style.filter = 'brightness(0) invert(1)';
-                      }}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
