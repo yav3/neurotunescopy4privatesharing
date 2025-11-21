@@ -61,6 +61,17 @@ import Cookies from "./pages/Cookies";
 import Payments from "./pages/Payments";
 import Experience from "./pages/Experience";
 import EnvironmentalBackground from "./pages/products/EnvironmentalBackground";
+import Story from "./pages/Story";
+import Team from "./pages/Team";
+import WhitePapers from "./pages/WhitePapers";
+import Evidence from "./pages/Evidence";
+import Press from "./pages/Press";
+import Careers from "./pages/Careers";
+import Library from "./pages/Library";
+import Download from "./pages/Download";
+import Pricing from "./pages/Pricing";
+import Help from "./pages/Help";
+import HIPAA from "./pages/HIPAA";
 
 const queryClient = new QueryClient();
 
@@ -163,7 +174,21 @@ const AppContent = () => {
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/cookies" element={<Cookies />} />
+        <Route path="/hipaa" element={<HIPAA />} />
         <Route path="/payments" element={<Payments />} />
+        <Route path="/story" element={<Story />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/whitepapers" element={<WhitePapers />} />
+        <Route path="/evidence" element={<Evidence />} />
+        <Route path="/press" element={<Press />} />
+        <Route path="/careers" element={<Careers />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/download" element={<Download />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/help/clinical" element={<Help />} />
+        <Route path="/help/technical" element={<Help />} />
+        <Route path="/help/faq" element={<FAQ />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
