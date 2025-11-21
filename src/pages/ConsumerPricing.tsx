@@ -23,7 +23,7 @@ export const ConsumerPricing = () => {
       specialOffer: 'Limited time offer • Valid until December 10th only'
     },
     {
-      name: "SMB and Enterprise Apps",
+      name: "Small Business and Enterprise Apps",
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
@@ -64,7 +64,7 @@ export const ConsumerPricing = () => {
       period: "/ year",
       description: "Web app access + mobile apps for organizations with 1,000+ users",
       features: [
-        "Everything in SMB plan",
+        "Everything in Small Business plan",
         "Dedicated account manager",
         "Custom integration support",
         "Advanced analytics",
@@ -111,7 +111,7 @@ export const ConsumerPricing = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col"
+                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col h-full"
                 style={{
                   background: plan.highlight 
                     ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
@@ -125,9 +125,9 @@ export const ConsumerPricing = () => {
                     : '0 0 40px rgba(0, 0, 0, 0.8)'
                 }}
               >
-                {/* Badge */}
+                {/* Badge - Fixed height */}
                 <div 
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold"
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
                   style={{
                     background: plan.highlight 
                       ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(229, 229, 229, 0.8))'
@@ -138,11 +138,12 @@ export const ConsumerPricing = () => {
                   {plan.badge}
                 </div>
 
-                <div className="text-center mb-8 mt-4">
-                  <h3 className="text-2xl font-light text-white mb-3">{plan.name}</h3>
-                  <div className="mb-2">
+                {/* Header Section - Fixed height */}
+                <div className="text-center mb-8 mt-4" style={{ minHeight: '220px' }}>
+                  <h3 className="text-2xl font-light text-white mb-3 h-16 flex items-center justify-center">{plan.name}</h3>
+                  <div className="mb-2 h-16 flex flex-col items-center justify-center">
                     {plan.priceMonthly && (
-                      <div className="text-4xl font-light text-white mb-1">
+                      <div className="text-4xl font-light text-white">
                         {plan.priceMonthly}
                         <span className="text-lg text-neutral-400"> {plan.period}</span>
                       </div>
@@ -150,31 +151,34 @@ export const ConsumerPricing = () => {
                     {plan.priceYearly && (
                       <div className={`${plan.priceMonthly ? 'text-3xl' : 'text-4xl'} font-light text-white`}>
                         {plan.priceYearly}
-                        <span className="text-lg text-neutral-400"> / year</span>
+                        <span className="text-lg text-neutral-400"> {plan.period}</span>
                       </div>
                     )}
                   </div>
-                  <p className="text-neutral-400 text-sm">{plan.description}</p>
+                  <p className="text-neutral-400 text-sm min-h-[64px]">{plan.description}</p>
                   {plan.specialOffer && (
-                    <p className="text-cyan-400 text-xs mt-2 font-medium">
+                    <p className="text-cyan-400 text-xs mt-2 font-medium min-h-[32px]">
                       {plan.specialOffer}
                     </p>
                   )}
+                  {!plan.specialOffer && (
+                    <div className="min-h-[32px]"></div>
+                  )}
                 </div>
 
-                {/* Features */}
+                {/* Features - Fixed item height */}
                 <ul className="space-y-4 mb-8 flex-grow">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
+                    <li key={featureIndex} className="flex items-start gap-3 min-h-[28px]">
                       <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-neutral-300 text-sm">{feature}</span>
+                      <span className="text-neutral-300 text-sm leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA Button */}
+                {/* CTA Button - Fixed position */}
                 <button
-                  className="w-full py-3 rounded-full font-semibold transition-all"
+                  className="w-full py-3 rounded-full font-semibold transition-all mt-auto"
                   style={{
                     background: plan.highlight
                       ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(229, 229, 229, 0.9))'
