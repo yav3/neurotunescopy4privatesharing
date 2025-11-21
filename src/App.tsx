@@ -51,7 +51,6 @@ import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
 import Showcase from "./pages/Showcase";
 import Support from "./pages/Support";
-import HowItWorks from "./pages/HowItWorks";
 import Demo from "./pages/Demo";
 import { BusinessType } from "./pages/BusinessType";
 import { ProductsOverview } from "./pages/ProductsOverview";
@@ -135,7 +134,6 @@ const AppContent = () => {
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/showcase" element={<Showcase />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />

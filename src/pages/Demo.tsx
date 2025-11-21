@@ -191,11 +191,6 @@ const Demo = () => {
                 Get Started
               </Button>
             </Link>
-            <Link to="/how-it-works">
-              <Button size="lg" variant="outline">
-                How it works
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
