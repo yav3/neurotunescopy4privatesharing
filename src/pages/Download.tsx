@@ -1,6 +1,7 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { Smartphone, Monitor, Download as DownloadIcon } from "lucide-react";
+import heroAnimation from "@/assets/hero-animation.gif";
 
 export const Download = () => {
   return (
@@ -10,8 +11,17 @@ export const Download = () => {
       <main className="pt-32 pb-28">
         <div className="max-w-5xl mx-auto px-6">
           
-          {/* Hero */}
-          <div className="text-center mb-20">
+          {/* Hero with Animation */}
+          <div className="text-center mb-20 relative">
+            {/* Animated Background */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-30 -z-10">
+              <img 
+                src={heroAnimation} 
+                alt="" 
+                className="w-full max-w-3xl h-auto"
+              />
+            </div>
+            
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
               Download NeuroTunes
             </h1>
@@ -25,12 +35,12 @@ export const Download = () => {
             
             {/* Web App */}
             <div 
-              className="rounded-3xl p-8 text-center"
+              className="rounded-3xl p-8 text-center transform transition-all hover:scale-[1.02]"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255, 255, 255, 0.10)',
-                boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(32px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
               }}
             >
               <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
@@ -75,12 +85,12 @@ export const Download = () => {
 
             {/* Android */}
             <div 
-              className="rounded-3xl p-8 text-center"
+              className="rounded-3xl p-8 text-center transform transition-all hover:scale-[1.02]"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255, 255, 255, 0.10)',
-                boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(32px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
               }}
             >
               <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
@@ -110,12 +120,12 @@ export const Download = () => {
 
             {/* iOS */}
             <div 
-              className="rounded-3xl p-8 text-center"
+              className="rounded-3xl p-8 text-center transform transition-all hover:scale-[1.02]"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255, 255, 255, 0.10)',
-                boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(32px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(139, 92, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
               }}
             >
               <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
@@ -148,10 +158,10 @@ export const Download = () => {
           <div 
             className="rounded-3xl p-12"
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(32px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
             }}
           >
             <h3 className="text-2xl font-light text-white mb-8 text-center">
