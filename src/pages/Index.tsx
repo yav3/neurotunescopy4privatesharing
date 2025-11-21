@@ -107,7 +107,7 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center mb-8">
+            <div className="flex flex-col items-center mb-6">
               <h1 
                 className="font-light tracking-[-0.02em] flex items-baseline text-4xl md:text-6xl"
                 style={{
@@ -131,7 +131,7 @@ const Index = () => {
             </div>
             
             {/* Subtitle: refined spacing and weight balance */}
-            <div className="space-y-3 mb-10">
+            <div className="space-y-4 mb-8">
               <p 
                 className="font-light tracking-wide"
                 style={{
