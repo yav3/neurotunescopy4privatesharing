@@ -107,7 +107,7 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center mb-6 md:mb-8 lg:mb-10">
+            <div className="flex flex-col items-center">
               <h1 
                 className="font-light tracking-[-0.02em] text-3xl md:text-5xl lg:text-6xl"
                 style={{
@@ -118,57 +118,6 @@ const Index = () => {
               >
                 +NeuroTunes
               </h1>
-            </div>
-
-            {/* Premium Glassmorphic CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 w-full sm:w-auto">
-              <Link to="/products">
-                <button 
-                  className="px-8 py-3 rounded-2xl text-sm md:text-base font-medium transition-all backdrop-blur-xl"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.10)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    color: 'rgba(255, 255, 255, 0.90)',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.20)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.5)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.10)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
-                  }}
-                >
-                  Explore Solutions
-                </button>
-              </Link>
-              
-              <Link to="/demo">
-                <button 
-                  className="px-8 py-3 rounded-2xl text-sm md:text-base font-medium transition-all backdrop-blur-xl"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.10)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    color: 'rgba(255, 255, 255, 0.90)',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.20)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.5)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.10)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
-                  }}
-                >
-                  See Samples
-                </button>
-              </Link>
             </div>
           </motion.div>
         </div>
