@@ -3,22 +3,24 @@ import { ProductCard } from '@/components/products/ProductCard';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import liquidGlassBg from '@/assets/liquid-glass-bg.png';
-import bgAbstract1 from '@/assets/bg-abstract-1.png';
-import bgAbstract2 from '@/assets/bg-abstract-2.png';
+import productBg1 from '@/assets/product-bg-1.png';
+import productBg2 from '@/assets/product-bg-2.png';
+import productBg3 from '@/assets/product-bg-3.png';
 
 export const ProductsOverview = () => {
+  const cardBackgrounds = [productBg1, productBg2, productBg3, productBg1, productBg2];
+  
   return (
     <div className="min-h-screen bg-background relative">
       <NavigationHeader />
       
-      {/* Background with teal liquid glass */}
+      {/* Background with layered teal waves */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-background" />
-        <div className="absolute inset-0 opacity-30">
-          <img src={liquidGlassBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <img src={bgAbstract1} alt="" className="absolute top-0 left-0 w-1/2 h-1/2 object-cover mix-blend-screen" />
-          <img src={bgAbstract2} alt="" className="absolute bottom-0 right-0 w-1/2 h-1/2 object-cover mix-blend-screen" />
+        <div className="absolute inset-0 opacity-40">
+          <img src={productBg1} alt="" className="absolute top-0 left-0 w-full h-1/3 object-cover mix-blend-screen" />
+          <img src={productBg2} alt="" className="absolute top-1/3 left-0 w-full h-1/3 object-cover mix-blend-screen" />
+          <img src={productBg3} alt="" className="absolute top-2/3 left-0 w-full h-1/3 object-cover mix-blend-screen" />
         </div>
         <div className="absolute inset-0 backdrop-blur-3xl bg-gradient-to-br from-cyan-950/30 via-background/50 to-teal-950/30" />
       </div>
@@ -43,7 +45,12 @@ export const ProductsOverview = () => {
           {/* Product Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.values(NEUROTUNES_PRODUCTS).map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                index={index}
+                backgroundImage={cardBackgrounds[index]} 
+              />
             ))}
           </div>
 
