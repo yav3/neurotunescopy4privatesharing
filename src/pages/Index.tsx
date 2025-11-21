@@ -7,6 +7,9 @@ import { PartnersSection } from '@/components/landing/PartnersSection';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import animatedBg from '../assets/landing-bg.gif';
+import bgAbstract1 from '../assets/bg-abstract-1.png';
+import bgAbstract2 from '../assets/bg-abstract-2.png';
+import bgAbstract3 from '../assets/bg-abstract-3.png';
 
 const Index = () => {
   const { user, loading } = useAuthContext();
@@ -38,14 +41,18 @@ const Index = () => {
           />
         </div>
         
-        {/* Glassmorphism static background */}
+        {/* Glassmorphism static background with abstract images */}
         <div 
           className="absolute inset-0 transition-opacity duration-[3000ms]"
           style={{ opacity: scrollY > 100 ? 1 : 0 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900" />
-          <div className="absolute inset-0 backdrop-blur-3xl bg-gradient-to-br from-cyan-950/20 via-transparent to-teal-950/20" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-black" />
+          <div className="absolute inset-0 opacity-40">
+            <img src={bgAbstract1} alt="" className="absolute top-0 left-0 w-1/2 h-1/2 object-cover" />
+            <img src={bgAbstract2} alt="" className="absolute bottom-0 right-0 w-1/2 h-1/2 object-cover" />
+            <img src={bgAbstract3} alt="" className="absolute top-1/3 left-1/3 w-1/2 h-1/2 object-cover mix-blend-screen" />
+          </div>
+          <div className="absolute inset-0 backdrop-blur-3xl bg-gradient-to-br from-cyan-950/30 via-slate-900/50 to-teal-950/30" />
         </div>
       </div>
 
