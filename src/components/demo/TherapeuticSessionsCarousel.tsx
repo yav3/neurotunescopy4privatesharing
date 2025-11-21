@@ -1,14 +1,12 @@
 import { motion } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import bgCard1 from '@/assets/bg-card-1.png';
-import bgCard2 from '@/assets/bg-card-2.png';
-import bgCard3 from '@/assets/bg-card-3.png';
-import bgCard4 from '@/assets/bg-card-4.png';
-import bgCard5 from '@/assets/bg-card-5.png';
-import bgCard6 from '@/assets/bg-card-6.png';
-import bgCard7 from '@/assets/bg-card-7.png';
-import bgCard8 from '@/assets/bg-card-8.png';
+import chromeFocus from '@/assets/chrome-focus.gif';
+import chromeStress from '@/assets/chrome-stress.gif';
+import chromeSleep from '@/assets/chrome-sleep.gif';
+import chromeEnergy from '@/assets/chrome-energy.gif';
+import chromeCalm from '@/assets/chrome-calm.gif';
+import chromeCreative from '@/assets/chrome-creative.gif';
 
 interface TherapeuticSession {
   id: string;
@@ -32,14 +30,12 @@ interface TherapeuticSessionsCarouselProps {
 }
 
 const backgroundImages = [
-  bgCard1,
-  bgCard2,
-  bgCard3,
-  bgCard4,
-  bgCard5,
-  bgCard6,
-  bgCard7,
-  bgCard8,
+  chromeFocus,
+  chromeStress,
+  chromeSleep,
+  chromeEnergy,
+  chromeCalm,
+  chromeCreative,
 ];
 
 export const TherapeuticSessionsCarousel = ({ 
@@ -78,39 +74,55 @@ export const TherapeuticSessionsCarousel = ({
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: (index % sessions.length) * 0.1 }}
-              className="relative flex-shrink-0 w-72 h-96 rounded-2xl overflow-hidden glass-card border border-border/50 group"
+              whileHover={{ scale: 1.02, y: -4 }}
+              className="relative flex-shrink-0 w-80 h-[28rem] rounded-3xl overflow-hidden border border-white/10 group backdrop-blur-sm"
+              style={{
+                background: 'rgba(0, 0, 0, 0.75)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+              }}
             >
-              {/* Background image */}
+              {/* Chrome GIF Background */}
               <div className="absolute inset-0">
                 <img
                   src={backgroundImages[index % backgroundImages.length]}
                   alt=""
-                  className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+                  className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-all duration-500"
+                  style={{
+                    mixBlendMode: 'lighten',
+                    filter: 'contrast(1.1) brightness(0.9)',
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
               </div>
 
               {/* Content */}
-              <div className="relative z-10 h-full flex flex-col justify-between p-6">
+              <div className="relative z-10 h-full flex flex-col justify-between p-7">
                 <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center border border-primary/30">
-                      <Icon className="w-5 h-5 text-primary" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div 
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center border"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                      }}
+                    >
+                      <Icon className="w-6 h-6" style={{ color: 'rgba(220, 220, 220, 0.95)' }} />
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: 'rgba(228, 228, 228, 0.95)' }}>
                     {session.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                  <p className="text-sm mb-5 line-clamp-3 leading-relaxed" style={{ color: 'rgba(200, 200, 200, 0.8)' }}>
                     {session.longDescription}
                   </p>
                   
                   <div className="mb-4">
-                    <h4 className="text-xs font-semibold mb-2 text-foreground">Key Benefits:</h4>
-                    <ul className="space-y-1">
+                    <h4 className="text-xs font-semibold mb-3" style={{ color: 'rgba(220, 220, 220, 0.9)' }}>Key Benefits:</h4>
+                    <ul className="space-y-2">
                       {session.benefits.slice(0, 3).map((benefit, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <span className="text-primary mt-0.5">✓</span>
+                        <li key={idx} className="flex items-start gap-2 text-xs" style={{ color: 'rgba(200, 200, 200, 0.75)' }}>
+                          <span className="mt-0.5" style={{ color: 'rgba(180, 180, 180, 0.85)' }}>✓</span>
                           <span className="line-clamp-1">{benefit}</span>
                         </li>
                       ))}
@@ -119,22 +131,37 @@ export const TherapeuticSessionsCarousel = ({
                 </div>
 
                 {/* Sample Track Player */}
-                <div className="bg-background/60 backdrop-blur-sm rounded-lg p-3 border border-border/30">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex-1 min-w-0 mr-2">
-                      <p className="font-semibold text-xs truncate text-foreground">{session.sampleTrack.title}</p>
-                      <p className="text-xs text-muted-foreground">{session.sampleTrack.artist} • {session.sampleTrack.duration}</p>
+                <div 
+                  className="rounded-xl p-4 border backdrop-blur-md"
+                  style={{
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0 mr-3">
+                      <p className="font-semibold text-sm truncate" style={{ color: 'rgba(228, 228, 228, 0.95)' }}>
+                        {session.sampleTrack.title}
+                      </p>
+                      <p className="text-xs" style={{ color: 'rgba(190, 190, 190, 0.7)' }}>
+                        {session.sampleTrack.artist} • {session.sampleTrack.duration}
+                      </p>
                     </div>
                     <Button
                       size="sm"
-                      variant={isCurrentlyPlaying ? "default" : "outline"}
                       onClick={() => onPlayPause(session)}
-                      className="flex-shrink-0 h-8 w-8 p-0"
+                      className="flex-shrink-0 h-9 w-9 p-0 rounded-lg border transition-all"
+                      style={{
+                        background: isCurrentlyPlaying ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
+                        color: 'rgba(228, 228, 228, 0.95)',
+                      }}
                     >
                       {isCurrentlyPlaying ? (
-                        <Pause className="w-3 h-3" />
+                        <Pause className="w-4 h-4" />
                       ) : (
-                        <Play className="w-3 h-3" />
+                        <Play className="w-4 h-4" />
                       )}
                     </Button>
                   </div>
