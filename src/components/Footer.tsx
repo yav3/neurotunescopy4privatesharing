@@ -16,35 +16,38 @@ export const Footer = () => {
 
   return (
     <>
-      {/* Ultra-Compact Footer - Maximum 20vh */}
+      {/* Properly Spaced Footer - 21vh */}
       <footer className="relative text-white border-t border-white/5" style={{ backgroundColor: '#0A0A0C' }}>
-        <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="max-w-7xl mx-auto px-6 py-12">
           
-          {/* Row 1: Logos (Centered) */}
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="text-xs text-white/30 uppercase tracking-wider">Supported by</span>
+          {/* Row 1: Logos (Better visibility) */}
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <span className="text-sm text-white/40 uppercase tracking-wider">Supported by</span>
             <img 
               src={jacobsTechnionLogo} 
               alt="Jacobs Technion-Cornell" 
-              className="h-4 opacity-50 hover:opacity-100 transition"
+              className="h-7 opacity-60 hover:opacity-100 transition"
               style={{ filter: 'brightness(0) invert(1)' }}
             />
             <img 
               src={stanfordLogo} 
               alt="Stanford Medicine" 
-              className="h-4 opacity-50 hover:opacity-100 transition"
+              className="h-7 opacity-60 hover:opacity-100 transition"
               style={{ filter: 'brightness(0) invert(1)' }}
             />
             <img 
               src={weillCornellLogo} 
               alt="Weill Cornell Medicine" 
-              className="h-4 opacity-50 hover:opacity-100 transition"
+              className="h-7 opacity-60 hover:opacity-100 transition"
               style={{ filter: 'brightness(0) invert(1)' }}
             />
           </div>
 
-          {/* Row 2: Links (Horizontal) */}
-          <nav className="flex items-center justify-center flex-wrap gap-x-4 gap-y-2 mb-4 text-sm">
+          {/* Divider */}
+          <div className="h-px bg-white/5 my-8 max-w-4xl mx-auto" />
+
+          {/* Row 2: Links (Horizontal with better spacing) */}
+          <nav className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mb-8 text-base">
             <Link to="/demo" className="text-white/50 hover:text-teal-400 transition">Demo</Link>
             <span className="text-white/20">·</span>
             <Link to="/pricing" className="text-white/50 hover:text-teal-400 transition">Pricing</Link>
@@ -60,8 +63,11 @@ export const Footer = () => {
             <Link to="/partners" className="text-white/50 hover:text-teal-400 transition">Partners</Link>
           </nav>
 
-          {/* Row 3: Copyright + Legal (Small) */}
-          <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-2 text-xs text-white/30">
+          {/* Divider */}
+          <div className="h-px bg-white/5 my-8 max-w-4xl mx-auto" />
+
+          {/* Row 3: Copyright + Legal (Better readability) */}
+          <div className="flex items-center justify-center flex-wrap gap-x-4 gap-y-2 text-sm text-white/40">
             <span>© NeuroPositive Tech 2025</span>
             <span>·</span>
             <Link to="/privacy" className="hover:text-white/50 transition">Privacy</Link>
@@ -70,7 +76,7 @@ export const Footer = () => {
             <span>·</span>
             <Link to="/cookies" className="hover:text-white/50 transition">Cookies</Link>
             <span>·</span>
-            <select className="bg-transparent border-none cursor-pointer hover:text-white/50 transition text-xs text-white/30">
+            <select className="bg-transparent border-none cursor-pointer hover:text-white/60 transition text-sm text-white/40">
               <option>English</option>
             </select>
           </div>

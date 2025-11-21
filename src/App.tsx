@@ -60,6 +60,7 @@ import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Payments from "./pages/Payments";
 import Experience from "./pages/Experience";
+import EnvironmentalBackground from "./pages/products/EnvironmentalBackground";
 
 const queryClient = new QueryClient();
 
@@ -138,6 +139,7 @@ const AppContent = () => {
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/products/environmental" element={<EnvironmentalBackground />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/experience" element={<Experience />} />
