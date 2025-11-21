@@ -8,48 +8,47 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* OBSIDIAN-TEAL STRICT COLOR PALETTE */
+    /* OBSIDIAN-CHROME STRICT COLOR PALETTE */
     /* Primary: Deep Obsidian Black */
-    --obsidian-base: 195 100% 3%; /* #020B0F - Deep obsidian black */
-    --obsidian-secondary: 188 85% 5%; /* #031A1F - Dark teal-black */
-    --obsidian-tertiary: 186 90% 7%; /* #013039 - Deeper teal-black */
+    --obsidian-base: 240 8% 4%; /* #0A0A0C - Deep obsidian black */
+    --obsidian-graphite: 240 7% 10%; /* #1A1A1D - Graphite */
+    --obsidian-carbon: 240 8% 7%; /* #131416 - Carbon grey */
     
-    /* Accent: Soft Luminance Teal */
-    --teal-accent: 174 62% 58%; /* #37D5C4 at 18% opacity */
-    --teal-highlight: 174 68% 56%; /* #2CCEC4 at 10% opacity - faint glows only */
-    --teal-glow: 174 70% 60%; /* Glow variant */
+    /* Accent: Platinum Silver Glow */
+    --platinum-glow: 0 0% 89%; /* #E4E4E4 - Platinum silver */
+    --chrome-highlight: 0 0% 100%; /* White for chrome effects */
     
-    /* Glass borders: Teal-white hybrid */
-    --glass-border: 180 100% 73%; /* rgba(120,255,255,0.12) */
+    /* Glass borders: Platinum */
+    --glass-border: 0 0% 89%; /* Platinum at 12% opacity */
 
-    /* SEMANTIC TOKENS - Obsidian-Teal Theme */
-    --background: 195 100% 3%; /* Deep obsidian black #020B0F */
+    /* SEMANTIC TOKENS - Obsidian-Chrome Theme */
+    --background: 240 8% 4%; /* Deep obsidian black #0A0A0C */
     --foreground: 0 0% 92%; /* White at 92% opacity */
 
-    --card: 188 85% 5%; /* Dark teal-black gradient base */
+    --card: 240 7% 10%; /* Graphite */
     --card-foreground: 0 0% 92%; /* White at 92% */
 
-    --popover: 195 100% 3%; /* Obsidian black */
+    --popover: 240 8% 4%; /* Obsidian black */
     --popover-foreground: 0 0% 92%; /* White at 92% */
 
-    --primary: 0 0% 92%; /* White at 92% */
-    --primary-foreground: 195 100% 3%; /* Obsidian black */
+    --primary: 0 0% 89%; /* Platinum glow */
+    --primary-foreground: 240 8% 4%; /* Obsidian black */
 
-    --secondary: 188 85% 5%; /* Dark teal-black */
+    --secondary: 240 7% 10%; /* Graphite */
     --secondary-foreground: 0 0% 92%; /* White at 92% */
 
-    --muted: 186 90% 7%; /* Deeper teal-black */
+    --muted: 240 8% 7%; /* Carbon grey */
     --muted-foreground: 0 0% 75%; /* White at 75% opacity */
 
-    --accent: 188 85% 5%; /* Dark teal-black */
+    --accent: 240 7% 10%; /* Graphite */
     --accent-foreground: 0 0% 92%; /* White at 92% */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 92%;
 
-    --border: 174 62% 58% / 0.12; /* Teal at 12% opacity */
-    --input: 195 100% 3%; /* Obsidian black */
-    --ring: 174 62% 58% / 0.3; /* Teal glow */
+    --border: 0 0% 89% / 0.12; /* Platinum at 12% opacity */
+    --input: 240 8% 4%; /* Obsidian black */
+    --ring: 0 0% 89% / 0.3; /* Platinum glow */
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
@@ -71,66 +70,66 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Obsidian-Teal Dark Mode - High-Gloss Liquid Glass */
-    --background: 195 100% 3%; /* Deep obsidian black */
+    /* Obsidian-Chrome Dark Mode - High-Gloss Liquid Glass */
+    --background: 240 8% 4%; /* Deep obsidian black */
     --foreground: 0 0% 92%; /* White at 92% */
 
-    --card: 188 85% 5%; /* Dark teal-black gradient */
+    --card: 240 7% 10%; /* Graphite */
     --card-foreground: 0 0% 92%; /* White at 92% */
 
-    --popover: 195 100% 3%; /* Obsidian black */
+    --popover: 240 8% 4%; /* Obsidian black */
     --popover-foreground: 0 0% 92%; /* White at 92% */
 
-    --primary: 0 0% 92%; /* White at 92% */
-    --primary-foreground: 195 100% 3%; /* Obsidian black */
+    --primary: 0 0% 89%; /* Platinum glow */
+    --primary-foreground: 240 8% 4%; /* Obsidian black */
 
-    --secondary: 188 85% 5%; /* Dark teal-black */
+    --secondary: 240 7% 10%; /* Graphite */
     --secondary-foreground: 0 0% 92%; /* White at 92% */
 
-    --muted: 186 90% 7%; /* Deeper teal-black */
+    --muted: 240 8% 7%; /* Carbon grey */
     --muted-foreground: 0 0% 75%; /* White at 75% */
 
-    --accent: 188 85% 5%; /* Dark teal-black */
+    --accent: 240 7% 10%; /* Graphite */
     --accent-foreground: 0 0% 92%; /* White at 92% */
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 92%;
 
-    --border: 174 62% 58% / 0.12; /* Teal at 12% */
-    --input: 195 100% 3%; /* Obsidian black */
-    --ring: 174 62% 58% / 0.3; /* Teal glow */
+    --border: 0 0% 89% / 0.12; /* Platinum at 12% */
+    --input: 240 8% 4%; /* Obsidian black */
+    --ring: 0 0% 89% / 0.3; /* Platinum glow */
 
-    /* Obsidian-Teal Gradients - High-Gloss Liquid Glass */
-    --gradient-hero: linear-gradient(135deg, hsl(195 100% 3%), hsl(188 85% 5%), hsl(186 90% 7%));
-    --gradient-card: linear-gradient(135deg, hsl(188 85% 5%), hsl(186 90% 7%), hsl(195 100% 3%));
-    --gradient-dark-bg: linear-gradient(135deg, hsl(195 100% 3%), hsl(188 85% 5% / 0.8), hsl(195 100% 3%));
+    /* Obsidian-Chrome Gradients - High-Gloss Liquid Glass */
+    --gradient-hero: linear-gradient(135deg, hsl(240 8% 4%), hsl(240 7% 10%), hsl(240 8% 7%));
+    --gradient-card: linear-gradient(135deg, hsl(240 7% 10%), hsl(240 8% 7%), hsl(240 8% 4%));
+    --gradient-dark-bg: linear-gradient(135deg, hsl(240 8% 4%), hsl(240 7% 10% / 0.8), hsl(240 8% 4%));
     
-    /* Sidebar - Obsidian-Teal */
-    --sidebar-background: 195 100% 3%;
+    /* Sidebar - Obsidian-Chrome */
+    --sidebar-background: 240 8% 4%;
     --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 0 0% 92%;
-    --sidebar-primary-foreground: 195 100% 3%;
-    --sidebar-accent: 188 85% 5%;
+    --sidebar-primary: 0 0% 89%;
+    --sidebar-primary-foreground: 240 8% 4%;
+    --sidebar-accent: 240 7% 10%;
     --sidebar-accent-foreground: 0 0% 92%;
-    --sidebar-border: 174 62% 58% / 0.12;
-    --sidebar-ring: 174 62% 58% / 0.3;
+    --sidebar-border: 0 0% 89% / 0.12;
+    --sidebar-ring: 0 0% 89% / 0.3;
 
-    /* Card variations - Obsidian-Teal Gloss */
-    --card-light: 188 85% 5%;
-    --card-medium: 186 90% 7%;
-    --card-darker: 195 100% 3%;
-    --card-darkest: 195 100% 2%;
+    /* Card variations - Obsidian-Chrome Gloss */
+    --card-light: 240 7% 10%;
+    --card-medium: 240 8% 7%;
+    --card-darker: 240 8% 4%;
+    --card-darkest: 240 8% 2%;
 
-    /* Glass morphism - Teal Luminescence */
-    --glass-bg: 188 85% 5% / 0.4;
-    --glass-border: 174 62% 58% / 0.12;
-    --glass-shadow: 0 10px 30px -10px hsl(174 62% 58% / 0.3), 0 0 40px hsl(174 68% 56% / 0.1);
+    /* Glass morphism - Platinum Luminescence */
+    --glass-bg: 240 7% 10% / 0.4;
+    --glass-border: 0 0% 89% / 0.12;
+    --glass-shadow: 0 10px 30px -10px hsl(0 0% 89% / 0.08), 0 0 40px hsl(0 0% 100% / 0.06);
 
     /* Music categories - Obsidian Base */
-    --music-focus: 188 85% 5%;
-    --music-mood: 188 85% 5%;
-    --music-sleep: 188 85% 5%;
-    --music-energy: 188 85% 5%;
+    --music-focus: 240 7% 10%;
+    --music-mood: 240 7% 10%;
+    --music-sleep: 240 7% 10%;
+    --music-energy: 240 7% 10%;
   }
 
   /* Safe area support for mobile devices */

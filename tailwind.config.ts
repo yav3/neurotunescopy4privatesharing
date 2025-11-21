@@ -72,21 +72,17 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// OBSIDIAN-TEAL STRICT PALETTE (HSL format)
+				// OBSIDIAN-CHROME STRICT PALETTE (HSL format)
 				obsidian: {
-					DEFAULT: 'hsl(195, 100%, 3%)', // #020B0F Deep obsidian black
-					secondary: 'hsl(188, 85%, 5%)', // #031A1F Dark teal-black
-					tertiary: 'hsl(186, 90%, 7%)', // #013039 Deeper teal-black
+					DEFAULT: 'hsl(240, 8%, 4%)', // #0A0A0C Deep obsidian black
+					graphite: 'hsl(240, 7%, 10%)', // #1A1A1D Graphite
+					carbon: 'hsl(240, 8%, 7%)', // #131416 Carbon grey
 				},
-				teal: {
-					accent: 'hsl(174, 62%, 58%)', // #37D5C4 Soft luminance teal
-					glow: 'hsl(174, 68%, 56%)', // #2CCEC4 Faint glow teal
-					bright: 'hsl(174, 70%, 60%)', // Brightest teal (glows only)
-					50: 'hsl(174, 62%, 58%)',
-					100: 'hsl(174, 62%, 58%)',
-					500: 'hsl(174, 62%, 58%)',
-					600: 'hsl(174, 68%, 56%)',
-					700: 'hsl(174, 70%, 60%)'
+				platinum: {
+					glow: 'hsl(0, 0%, 89%)', // #E4E4E4 Platinum silver glow
+				},
+				chrome: {
+					highlight: 'hsl(0, 0%, 100%)', // White for chrome effects
 				},
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',

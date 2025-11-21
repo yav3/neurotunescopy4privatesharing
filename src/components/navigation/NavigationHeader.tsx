@@ -41,16 +41,16 @@ export const NavigationHeader = () => {
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(135deg, rgba(3, 26, 31, 0.75) 0%, rgba(2, 11, 15, 0.85) 100%)',
+            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.85) 100%)',
             backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(55, 213, 196, 0.12)',
-            boxShadow: '0 4px 30px rgba(2, 11, 15, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.03)'
+            borderBottom: '1px solid rgba(228, 228, 228, 0.12)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
           }}
         />
 
         {/* Left: Logo */}
         <Link to="/" className="flex items-center gap-2 relative z-10">
-          <Plus className="w-7 h-7" style={{ color: 'hsl(174, 62%, 58%)' }} strokeWidth={2} />
+          <Plus className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
           <span className="text-xl font-light text-white tracking-wide">NeuroTunes</span>
         </Link>
 
@@ -70,10 +70,10 @@ export const NavigationHeader = () => {
               <div 
                 className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[920px] rounded-2xl overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(3, 26, 31, 0.95) 0%, rgba(1, 48, 57, 0.98) 100%)',
+                  background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 0.98) 100%)',
                   backdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(55, 213, 196, 0.12)',
-                  boxShadow: '0 0 60px rgba(55, 213, 196, 0.08), 0 30px 80px rgba(2, 11, 15, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03)'
+                  border: '1px solid rgba(228, 228, 228, 0.12)',
+                  boxShadow: '0 0 60px rgba(255, 255, 255, 0.04), 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
                 }}
               >
                 <div className="p-10">
@@ -82,7 +82,7 @@ export const NavigationHeader = () => {
                     <div>
                       <h3 
                         className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(55, 213, 196, 0.8)' }}
+                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
                       >
                         Enterprise Solutions
                       </h3>
@@ -103,7 +103,7 @@ export const NavigationHeader = () => {
                     <div>
                       <h3 
                         className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(55, 213, 196, 0.8)' }}
+                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
                       >
                         Products
                       </h3>
@@ -124,7 +124,7 @@ export const NavigationHeader = () => {
                     <div>
                       <h3 
                         className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(55, 213, 196, 0.8)' }}
+                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
                       >
                         Integrations
                       </h3>
@@ -143,21 +143,23 @@ export const NavigationHeader = () => {
                   </div>
 
                   {/* Bottom CTA */}
-                  <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(55, 213, 196, 0.12)' }}>
+                  <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(228, 228, 228, 0.12)' }}>
                     <Link to="/products">
                       <button 
                         className="w-full py-3 rounded-lg text-sm font-medium text-white transition-all"
                         style={{
-                          border: '1px solid rgba(55, 213, 196, 0.2)',
+                          border: '1px solid rgba(228, 228, 228, 0.18)',
                           background: 'transparent',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(55, 213, 196, 0.08)';
-                          e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.4)';
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                          e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
+                          e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.10)';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.2)';
+                          e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
                         View All Solutions →
@@ -219,19 +221,19 @@ export const NavigationHeader = () => {
             <button 
               className="px-6 py-2.5 rounded-full text-sm font-medium text-white transition-all"
               style={{
-                background: 'rgba(55, 213, 196, 0.08)',
-                border: '1px solid rgba(55, 213, 196, 0.3)',
-                boxShadow: '0 0 20px rgba(55, 213, 196, 0.15)',
+                background: 'rgba(10, 10, 12, 0.80)',
+                border: '1px solid rgba(228, 228, 228, 0.14)',
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(55, 213, 196, 0.15)';
-                e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.5)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(55, 213, 196, 0.25)';
+                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.60)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.28)';
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.15)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(55, 213, 196, 0.08)';
-                e.currentTarget.style.borderColor = 'rgba(55, 213, 196, 0.3)';
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(55, 213, 196, 0.15)';
+                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.80)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.14)';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.08)';
               }}
             >
               See Samples
@@ -245,14 +247,14 @@ export const NavigationHeader = () => {
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(135deg, rgba(3, 26, 31, 0.9) 0%, rgba(2, 11, 15, 0.95) 100%)',
+            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.90) 100%)',
             backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(55, 213, 196, 0.12)',
+            borderBottom: '1px solid rgba(228, 228, 228, 0.12)',
           }}
         />
         
         <Link to="/" className="flex items-center gap-2 relative z-10">
-          <Plus className="w-6 h-6" style={{ color: 'hsl(174, 62%, 58%)' }} strokeWidth={2} />
+          <Plus className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
           <span className="text-lg font-light text-white">NeuroTunes</span>
         </Link>
 
@@ -278,12 +280,12 @@ export const NavigationHeader = () => {
         <div 
           className="md:hidden fixed inset-0 top-[57px] z-40 overflow-y-auto"
           style={{
-            background: 'linear-gradient(135deg, rgba(3, 26, 31, 0.98) 0%, rgba(2, 11, 15, 1) 100%)',
+            background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 1) 100%)',
           }}
         >
           <div className="p-6 space-y-8">
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'hsl(174, 62%, 58%)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
                 Enterprise Solutions
               </h3>
               <div className="space-y-3">
@@ -301,7 +303,7 @@ export const NavigationHeader = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'hsl(174, 62%, 58%)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
                 Products
               </h3>
               <div className="space-y-3">
@@ -319,7 +321,7 @@ export const NavigationHeader = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'hsl(174, 62%, 58%)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
                 Integrations
               </h3>
               <div className="space-y-3">
@@ -336,7 +338,7 @@ export const NavigationHeader = () => {
               </div>
             </div>
 
-            <div className="pt-6 space-y-4" style={{ borderTop: '1px solid rgba(55, 213, 196, 0.12)' }}>
+            <div className="pt-6 space-y-4" style={{ borderTop: '1px solid rgba(228, 228, 228, 0.12)' }}>
               <button
                 onClick={() => {
                   setInterestType("Enterprise");
@@ -390,9 +392,9 @@ export const NavigationHeader = () => {
               <button 
                 className="w-full px-6 py-3 rounded-full text-sm font-medium text-white"
                 style={{
-                  background: 'rgba(55, 213, 196, 0.08)',
-                  border: '1px solid rgba(55, 213, 196, 0.3)',
-                  boxShadow: '0 0 20px rgba(55, 213, 196, 0.15)',
+                  background: 'rgba(10, 10, 12, 0.80)',
+                  border: '1px solid rgba(228, 228, 228, 0.14)',
+                  boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)',
                 }}
               >
                 See Samples
