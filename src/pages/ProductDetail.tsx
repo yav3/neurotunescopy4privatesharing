@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { NEUROTUNES_PRODUCTS } from '@/data/products';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { ProductCarousel } from '@/components/products/ProductCarousel';
+import { RegistrationChatAssistant } from '@/components/registration/RegistrationChatAssistant';
 import { motion } from 'framer-motion';
 import liquidGlassBg from '@/assets/liquid-glass-bg.png';
 import bgAbstract1 from '@/assets/bg-abstract-1.png';
@@ -11,6 +13,7 @@ import bgAbstract1 from '@/assets/bg-abstract-1.png';
 export const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const product = productId ? Object.values(NEUROTUNES_PRODUCTS).find(p => p.id === productId) : null;
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 
   if (!product) {
     return <Navigate to="/products" replace />;
@@ -21,6 +24,7 @@ export const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <NavigationHeader />
+      <RegistrationChatAssistant isOpen={isRegistrationOpen} onClose={() => setIsRegistrationOpen(false)} />
 
       {/* Background with teal liquid glass */}
       <div className="fixed inset-0 z-0">
@@ -54,11 +58,11 @@ export const ProductDetail = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition">
+              <button 
+                onClick={() => setIsRegistrationOpen(true)}
+                className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition"
+              >
                 {product.cta}
-              </button>
-              <button className="px-8 py-4 border border-border text-foreground rounded-xl hover:bg-accent transition">
-                View Pricing Calculator
               </button>
             </div>
           </motion.div>
@@ -81,30 +85,16 @@ export const ProductDetail = () => {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="relative z-10 py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">Pricing</h2>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="p-8 rounded-2xl glass-card border border-border/50"
-          >
-            <p className="text-muted-foreground mb-2">{product.pricing.model}</p>
-            <p className="text-4xl font-bold text-foreground mb-2">{product.pricing.starting}</p>
-            <p className="text-sm text-muted-foreground">{product.pricing.minimum}</p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-foreground mb-6">
             Ready to transform your space with therapeutic music?
           </h2>
-          <button className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition">
+          <button 
+            onClick={() => setIsRegistrationOpen(true)}
+            className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition"
+          >
             {product.cta}
           </button>
         </div>
