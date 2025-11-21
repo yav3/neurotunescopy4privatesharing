@@ -40,19 +40,19 @@ export const Footer = () => {
         
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Supported by section - At top of footer */}
-          <div className="mb-20 pb-20" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <motion.h3 
-              className="text-sm font-light text-center mb-12 tracking-wide"
-              style={{ color: 'rgba(228, 228, 228, 0.75)' }}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              Supported by
-            </motion.h3>
+          <div className="mb-10 pb-6" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+            <div className="flex items-center justify-center gap-8 flex-wrap">
+              <motion.span 
+                className="text-xs font-light tracking-wide"
+                style={{ color: 'rgba(228, 228, 228, 0.65)' }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.4 }}
+                viewport={{ once: true }}
+              >
+                Supported by
+              </motion.span>
 
-            <div className="flex items-center justify-center gap-16 flex-wrap">
               {[
                 { name: "Jacobs Technion-Cornell Institute", logo: jacobsTechnionLogo },
                 { name: "Stanford Medicine", logo: stanfordLogo },
@@ -60,29 +60,28 @@ export const Footer = () => {
               ].map((partner, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
                   viewport={{ once: true }}
                   className="flex items-center justify-center"
-                  style={{ maxWidth: '240px' }}
                 >
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
                     className="object-contain transition-all duration-300"
                     style={{
-                      height: '56px',
-                      width: '100%',
+                      height: '28px',
+                      maxWidth: '140px',
                       filter: 'brightness(0) invert(1)',
-                      opacity: '0.85',
+                      opacity: '0.7',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                      e.currentTarget.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.2))';
+                      e.currentTarget.style.opacity = '0.95';
+                      e.currentTarget.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.15))';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '0.85';
+                      e.currentTarget.style.opacity = '0.7';
                       e.currentTarget.style.filter = 'brightness(0) invert(1)';
                     }}
                   />
