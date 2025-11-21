@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import chromeHeroBg from '../assets/chrome-hero-bg-slow.gif';
+import chromeHeroBg from '../assets/chrome-hero-bg.mp4';
 import chromeCurves from '../assets/chrome-curves.png';
 import chromeTexture from '../assets/chrome-texture-02.png';
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
@@ -30,18 +30,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Chrome liquid background - slowed 10X */}
+      {/* Chrome liquid background - video */}
       <div className="fixed inset-0 z-0">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: `url(${chromeHeroBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            animation: 'slowChrome 100s linear infinite',
-          }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src={chromeHeroBg} type="video/mp4" />
+        </video>
         
         {/* Dark obsidian overlay - rgba(0,0,0,0.45) */}
         <div 
