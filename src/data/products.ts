@@ -126,19 +126,19 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Anyone seeking therapeutic music"
     ],
     pricing: {
-      model: "Direct consumer subscription",
-      starting: "$69.99/year or $20/4 months",
-      minimum: "Individual download"
+      model: "🎉 Black Friday Special",
+      starting: "$25.99/year or $5.99/month",
+      minimum: "Web, iOS & Android"
     },
     keyBenefits: [
       "8,500+ therapeutic tracks",
       "Offline download",
       "Mood tracking",
       "Personalized recommendations",
-      "No commitment"
+      "Family plan available (up to 6 accounts)"
     ],
     cta: "Download App",
-    path: "/products/consumer"
+    path: "/consumer-pricing"
   },
 
   partnerships: {
