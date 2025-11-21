@@ -49,9 +49,8 @@ export const NavigationHeader = () => {
         />
 
         {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-2 relative z-10">
+        <Link to="/" className="flex items-center relative z-10">
           <Plus className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
-          <span className="text-xl font-light text-white tracking-wide">NeuroTunes</span>
         </Link>
 
         {/* Center: Menu Items */}
@@ -253,9 +252,8 @@ export const NavigationHeader = () => {
           }}
         />
         
-        <Link to="/" className="flex items-center gap-2 relative z-10">
+        <Link to="/" className="flex items-center relative z-10">
           <Plus className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.90)' }} strokeWidth={1.5} />
-          <span className="text-lg font-light text-white">NeuroTunes</span>
         </Link>
 
         <button
