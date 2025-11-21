@@ -22,8 +22,8 @@ export const NavigationHeader = () => {
 
   const products = [
     { title: "Get the Web App", href: "/consumer-pricing" },
-    { title: "Get the Android App", href: "/consumer-pricing" },
-    { title: "Get the iOS App", href: "/consumer-pricing" },
+    { title: "Get the Android App", href: "/app-download" },
+    { title: "Get the iOS App", href: "/app-download" },
   ];
 
   const integrations = [
