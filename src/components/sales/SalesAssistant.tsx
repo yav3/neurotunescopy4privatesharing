@@ -62,15 +62,24 @@ export const SalesAssistant = () => {
         <div 
           className="fixed bottom-6 left-6 w-96 h-[600px] rounded-2xl flex flex-col z-50 overflow-hidden"
           style={{
-            background: 'rgba(0, 0, 0, 0.85)',
+            background: 'linear-gradient(135deg, rgba(2, 16, 20, 0.95) 0%, rgba(0, 37, 44, 0.95) 100%)',
             backdropFilter: 'blur(40px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)',
+            border: '1px solid rgba(20, 184, 166, 0.2)',
+            boxShadow: '0 20px 60px rgba(0, 220, 255, 0.15)',
           }}
         >
+          {/* Background Plus Logo Watermark */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+            <Plus className="w-96 h-96 text-cyan-400" />
+          </div>
+          
+          {/* Glow effects */}
+          <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-cyan-400/10 blur-[80px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-400/10 blur-[80px] rounded-full pointer-events-none" />
+
           {/* Header */}
           <div 
-            className="flex items-center justify-between px-6 py-4"
+            className="relative flex items-center justify-between px-6 py-4"
             style={{
               borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             }}
@@ -79,27 +88,27 @@ export const SalesAssistant = () => {
               <div 
                 className="w-10 h-10 rounded-lg flex items-center justify-center"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(20, 184, 166, 0.2)',
+                  border: '1px solid rgba(20, 184, 166, 0.3)',
                 }}
               >
-                <Plus className="w-5 h-5 text-white" />
+                <Plus className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-white">NeuroTunes Sales Assistant</h3>
-                <p className="text-xs text-gray-400">Business solutions & partnerships</p>
+                <p className="text-xs text-white/60">Business solutions & partnerships</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
             >
-              <X className="w-5 h-5 text-gray-400" />
+              <X className="w-5 h-5 text-white/60" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="relative flex-1 overflow-y-auto p-6 space-y-4">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -108,12 +117,9 @@ export const SalesAssistant = () => {
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     message.role === 'user'
-                      ? 'bg-white/10 text-white'
-                      : 'bg-white/5 text-gray-200'
+                      ? 'bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg'
+                      : 'bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md'
                   }`}
-                  style={{
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                  }}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
@@ -122,15 +128,12 @@ export const SalesAssistant = () => {
             {isLoading && (
               <div className="flex justify-start">
                 <div
-                  className="bg-white/5 rounded-2xl px-4 py-3"
-                  style={{
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                  }}
+                  className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]"
                 >
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce shadow-lg shadow-cyan-400/40" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               </div>
@@ -140,7 +143,7 @@ export const SalesAssistant = () => {
 
           {/* Input */}
           <div 
-            className="p-6"
+            className="relative p-6"
             style={{
               borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             }}
@@ -152,12 +155,12 @@ export const SalesAssistant = () => {
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1 px-4 py-2 rounded-xl text-sm text-white placeholder-gray-500 bg-white/5 border border-white/10 focus:outline-none focus:border-white/20"
+                className="flex-1 px-4 py-2 rounded-xl text-sm text-white placeholder-white/40 bg-white/[0.06] border border-white/[0.12] focus:outline-none focus:border-cyan-400/40 focus:ring-2 focus:ring-cyan-400/20"
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Send className="w-4 h-4 text-white" />
               </button>
