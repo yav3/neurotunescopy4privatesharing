@@ -23,7 +23,7 @@ export const ConsumerPricing = () => {
       specialOffer: 'Limited time offer • Valid until December 10th only'
     },
     {
-      name: "Small Business and Enterprise Apps",
+      name: "Small Business",
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
@@ -43,7 +43,7 @@ export const ConsumerPricing = () => {
     {
       name: "First Responder",
       priceMonthly: null,
-      priceYearly: "$25.99",
+      priceYearly: "$49.99",
       period: "per year",
       description: "Web app access + mobile apps with special pricing for first responders",
       features: [
@@ -95,6 +95,9 @@ export const ConsumerPricing = () => {
             >
               <span className="text-white font-semibold tracking-wide">🎉 BLACK FRIDAY SPECIAL</span>
             </div>
+            <p className="text-lg font-medium text-cyan-400 mb-4">
+              Sale pricing ends December 10th, 2025
+            </p>
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
               NeuroTunes Web App
             </h1>
