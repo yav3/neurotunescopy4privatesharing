@@ -9,7 +9,7 @@ export const ConsumerPricing = () => {
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
-      description: "For organizations with up to 500 users",
+      description: "Bundle: Web app + iOS & Android subscriptions for organizations with up to 500 users",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Employee wellness dashboard",
@@ -27,7 +27,7 @@ export const ConsumerPricing = () => {
       priceMonthly: null,
       priceYearly: "$24.99",
       period: "per year",
-      description: "For organizations with over 500 users",
+      description: "Bundle: Web app + iOS & Android subscriptions for organizations with over 500 users",
       features: [
         "Everything in SMB plan",
         "Dedicated account manager",
@@ -45,7 +45,7 @@ export const ConsumerPricing = () => {
       priceMonthly: null,
       priceYearly: "$25.99",
       period: "per year",
-      description: "Special pricing for first responders",
+      description: "Bundle: Web app + iOS & Android subscriptions with special pricing for first responders",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Specialized stress relief content",
