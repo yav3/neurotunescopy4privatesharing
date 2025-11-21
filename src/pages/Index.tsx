@@ -104,18 +104,29 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: 110-140px ultra-light pearl grey */}
-            <h1 
-              className="font-extralight leading-none tracking-wide flex items-center mb-10"
-              style={{
-                fontSize: 'clamp(110px, 12vw, 140px)',
-                color: 'rgba(228, 228, 228, 0.95)',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.02)',
-                gap: '0.75rem'
-              }}
-            >
-              <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
-              NeuroTunes
-            </h1>
+            <div className="flex flex-col items-center mb-10">
+              <h1 
+                className="font-extralight leading-none tracking-wide flex items-center"
+                style={{
+                  fontSize: 'clamp(110px, 12vw, 140px)',
+                  color: 'rgba(228, 228, 228, 0.95)',
+                  textShadow: '0 0 20px rgba(255, 255, 255, 0.02)',
+                  gap: '0.75rem'
+                }}
+              >
+                <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
+                NeuroTunes
+              </h1>
+              <p 
+                className="font-light tracking-wide mt-2"
+                style={{
+                  fontSize: 'clamp(16px, 1.8vw, 20px)',
+                  color: 'rgba(228, 228, 228, 0.65)',
+                }}
+              >
+                by Neuralpositive
+              </p>
+            </div>
             
             {/* Subtitle: pearl grey - two clean lines */}
             <div className="space-y-2 mb-16">
