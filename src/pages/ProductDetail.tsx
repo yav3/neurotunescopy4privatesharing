@@ -3,6 +3,7 @@ import { NEUROTUNES_PRODUCTS } from '@/data/products';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
+import { ProductCarousel } from '@/components/products/ProductCarousel';
 import { motion } from 'framer-motion';
 import liquidGlassBg from '@/assets/liquid-glass-bg.png';
 import bgAbstract1 from '@/assets/bg-abstract-1.png';
@@ -64,49 +65,19 @@ export const ProductDetail = () => {
         </div>
       </section>
 
-      {/* Target Markets */}
+      {/* Target Markets Carousel */}
       <section className="relative z-10 py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-foreground mb-8">Perfect for:</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {product.targetMarkets.map((market, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-3 p-4 rounded-xl glass-card border border-border/50"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <span className="text-muted-foreground">{market}</span>
-              </motion.div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-12">Perfect for:</h2>
+          <ProductCarousel items={product.targetMarkets} />
         </div>
       </section>
 
-      {/* Key Benefits */}
+      {/* Key Benefits Carousel */}
       <section className="relative z-10 py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-foreground mb-8">Key Benefits:</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {product.keyBenefits.map((benefit, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-start gap-4 p-6 rounded-xl glass-card border border-border/50"
-              >
-                <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-primary text-sm">✓</span>
-                </div>
-                <span className="text-muted-foreground">{benefit}</span>
-              </motion.div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-12">Key Benefits:</h2>
+          <ProductCarousel items={product.keyBenefits} />
         </div>
       </section>
 

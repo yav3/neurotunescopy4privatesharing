@@ -282,8 +282,10 @@ All colors MUST be HSL.
     --shadow-card: 0 8px 32px hsl(var(--liquid-aquatic-deep) / 0.12), 0 4px 16px hsl(var(--liquid-glass-shadow) / 0.08);
     --shadow-player: 0 16px 48px hsl(var(--liquid-aquatic-deep) / 0.15), 0 8px 24px hsl(var(--liquid-glass-shadow) / 0.1);
     
-  /* San Francisco font system */
-  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  /* San Francisco and Ditto font system */
+  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  --font-ditto: 'Ditto', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --font-body: 'Ditto', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   
   /* Typography Scale - Premium Medical Interface */
   --text-xs: 0.75rem;     /* 12px */
@@ -310,6 +312,11 @@ All colors MUST be HSL.
   --tracking-normal: 0em;
   --tracking-wide: 0.025em;
   --tracking-wider: 0.05em;
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
     
     /* Glass morphism effects - using HSL */
     --glass-bg: 0 0% 100% / 0.1;
@@ -358,13 +365,13 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
-    font-family: var(--font-sf) !important;
+    font-family: var(--font-body) !important;
     box-sizing: border-box;
   }
 
   html, body {
     @apply bg-background text-foreground;
-    font-family: var(--font-sf) !important;
+    font-family: var(--font-body) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
@@ -453,17 +460,22 @@ All colors MUST be HSL.
     outline: none;
   }
 
-  /* Design System Fix - Additional color and font overrides */
+  /* Design System Fix - Additional font overrides */
   
-  /* Global font application */
-  * {
-    font-family: var(--font-sf) !important;
+  /* Body text uses Ditto */
+  body, p, span, div {
+    font-family: var(--font-body) !important;
   }
-
-  /* Remove aggressive global text color overrides that break component styling */
   
-  /* Global font application only */
-  * {
+  /* Buttons and interactive elements use SF Pro (non-bold) */
+  button, input, select, textarea, 
+  .button, [role="button"] {
+    font-family: var(--font-sf) !important;
+    font-weight: var(--font-weight-normal) !important;
+  }
+  
+  /* Headings can use SF Pro */
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sf) !important;
   }
 

@@ -17,6 +17,15 @@ export const NavigationHeader = () => {
 
   return (
     <>
+      {/* Savings Banner */}
+      <div className="bg-gradient-to-r from-primary/20 to-cyan-500/20 border-b border-primary/30 py-3 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-foreground text-sm md:text-base font-medium">
+            Customers can, on average, save up to 60% by switching to us. We not only provide more premium, specialized experiences that respond to customers' unique needs, we also cut extraneous and surprise billing because we own 100% of our original professional music.
+          </p>
+        </div>
+      </div>
+
       {/* Desktop Navigation */}
       <header className="hidden md:flex items-center justify-between px-6 py-4 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 relative">
         <div className="flex items-center gap-8">
