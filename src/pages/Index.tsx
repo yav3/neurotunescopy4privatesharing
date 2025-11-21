@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { motion } from 'framer-motion';
@@ -103,7 +104,7 @@ const Index = () => {
             </h1>
             
             {/* Subtitle: 30px white at 80% opacity - two clean lines */}
-            <div className="space-y-2">
+            <div className="space-y-2 mb-12">
               <p 
                 className="font-light tracking-wide"
                 style={{
@@ -124,6 +125,53 @@ const Index = () => {
               >
                 Medical-grade therapeutic music & AI streaming.
               </p>
+            </div>
+
+            {/* Hero CTAs */}
+            <div className="flex items-center justify-center gap-6">
+              <Link to="/products">
+                <button 
+                  className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(10px)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                  }}
+                >
+                  Explore Solutions
+                </button>
+              </Link>
+              
+              <Link to="/demo">
+                <button 
+                  className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.3) 100%)',
+                    border: '1px solid rgba(6, 182, 212, 0.5)',
+                    boxShadow: '0 0 30px rgba(6, 182, 212, 0.2)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(6, 182, 212, 0.4) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.7)';
+                    e.currentTarget.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.3) 100%)';
+                    e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.5)';
+                    e.currentTarget.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.2)';
+                  }}
+                >
+                  See Samples
+                </button>
+              </Link>
             </div>
           </motion.div>
         </div>
