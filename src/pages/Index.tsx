@@ -135,7 +135,7 @@ const Index = () => {
               <p 
                 className="font-light tracking-wide"
                 style={{
-                  fontSize: 'clamp(14px, 1.8vw, 19px)',
+                  fontSize: 'clamp(14px, 1.5vw, 18px)',
                   color: 'rgba(228, 228, 228, 0.88)',
                   lineHeight: '1.5'
                 }}
