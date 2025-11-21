@@ -71,8 +71,8 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Full viewport */}
-        <div className="relative min-h-screen flex items-center justify-center px-6 pt-32">
+        {/* Hero Section - Compact cinematic */}
+        <div className="relative max-h-[72vh] min-h-[600px] flex items-center justify-center px-4 md:px-6 pt-28">
 
           {/* Chrome curves accent */}
           <div 
@@ -84,43 +84,46 @@ const Index = () => {
               mixBlendMode: 'screen',
             }}
           />
+
+          {/* Radial darkening fade for readability */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(0, 0, 0, 0.6) 0%, transparent 60%)',
+            }}
+          />
           
-          {/* Floating Obsidian Glass Panel behind hero text */}
+          {/* Premium Glass Panel with chrome edge glow */}
           <motion.div
-            className="text-center flex flex-col items-center justify-center mx-auto relative z-10"
+            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 max-w-4xl px-8 py-10 md:px-14 md:py-16 rounded-[40px]"
             style={{ 
-              marginTop: '80px',
-              maxWidth: '960px',
-              background: 'rgba(0, 0, 0, 0.45)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.14)',
-              borderRadius: '40px',
-              padding: '64px 80px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) inset',
             }}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {/* Title: 110-140px ultra-light pearl grey */}
-            <div className="flex flex-col items-center mb-10">
+            {/* Title: Baseline-aligned with proper hierarchy */}
+            <div className="flex flex-col items-center mb-8">
               <h1 
-                className="font-extralight leading-none tracking-wide flex items-center"
+                className="font-light tracking-[-0.02em] flex items-baseline text-4xl md:text-6xl"
                 style={{
-                  fontSize: 'clamp(110px, 12vw, 140px)',
+                  lineHeight: '1.15',
                   color: 'rgba(228, 228, 228, 0.95)',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.02)',
-                  gap: '0.75rem'
+                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
+                <span className="font-light" style={{ fontSize: '0.81em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
                 NeuroTunes
               </h1>
               <p 
-                className="font-light tracking-wide mt-2"
+                className="font-light tracking-wide mt-3"
                 style={{
-                  fontSize: 'clamp(16px, 1.8vw, 20px)',
+                  fontSize: 'clamp(14px, 1.5vw, 18px)',
                   color: 'rgba(228, 228, 228, 0.65)',
                 }}
               >
@@ -128,50 +131,50 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Subtitle: pearl grey - two clean lines */}
-            <div className="space-y-2 mb-16">
+            {/* Subtitle: refined spacing and weight balance */}
+            <div className="space-y-3 mb-10">
               <p 
                 className="font-light tracking-wide"
                 style={{
-                  fontSize: 'clamp(16px, 2vw, 22px)',
+                  fontSize: 'clamp(14px, 1.8vw, 19px)',
                   color: 'rgba(228, 228, 228, 0.88)',
-                  lineHeight: '1.4'
+                  lineHeight: '1.5'
                 }}
               >
                 Neuroscience-backed · Clinically Validated · Patented
               </p>
               <p 
-                className="font-light tracking-wide"
+                className="font-normal tracking-wide"
                 style={{
-                  fontSize: 'clamp(18px, 2.2vw, 24px)',
-                  color: 'rgba(228, 228, 228, 0.88)',
-                  lineHeight: '1.4'
+                  fontSize: 'clamp(16px, 2vw, 21px)',
+                  color: 'rgba(228, 228, 228, 0.92)',
+                  lineHeight: '1.5'
                 }}
               >
                 Medical-grade Therapeutic Music & AI Streaming
               </p>
             </div>
 
-            {/* Hero CTAs - Premium Buttons */}
+            {/* Premium Glassmorphic CTAs */}
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <Link to="/products">
                 <button 
-                  className="px-8 py-4 rounded-lg text-base font-medium transition-all"
+                  className="px-8 py-3 rounded-2xl text-sm md:text-base font-medium transition-all backdrop-blur-xl"
                   style={{
-                    border: '1px solid rgba(228, 228, 228, 0.18)',
-                    background: 'transparent',
-                    backdropFilter: 'blur(10px)',
-                    color: 'rgba(228, 228, 228, 0.90)',
+                    background: 'rgba(255, 255, 255, 0.10)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: 'rgba(255, 255, 255, 0.90)',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
-                    e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(228, 228, 228, 0.12)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.20)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.5)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.10)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
                   }}
                 >
                   Explore Solutions
@@ -180,22 +183,22 @@ const Index = () => {
               
               <Link to="/demo">
                 <button 
-                  className="px-8 py-4 rounded-lg text-base font-medium transition-all"
+                  className="px-8 py-3 rounded-2xl text-sm md:text-base font-medium transition-all backdrop-blur-xl"
                   style={{
-                    background: 'rgba(10, 10, 12, 0.70)',
-                    border: '1px solid rgba(228, 228, 228, 0.18)',
-                    boxShadow: '0 0 30px rgba(228, 228, 228, 0.10)',
-                    color: 'rgba(228, 228, 228, 0.92)',
+                    background: 'rgba(255, 255, 255, 0.10)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: 'rgba(255, 255, 255, 0.90)',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(10, 10, 12, 0.50)';
-                    e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
-                    e.currentTarget.style.boxShadow = '0 0 40px rgba(228, 228, 228, 0.18)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.20)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.5)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(10, 10, 12, 0.70)';
-                    e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                    e.currentTarget.style.boxShadow = '0 0 30px rgba(228, 228, 228, 0.10)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.10)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.4)';
                   }}
                 >
                   See Samples
