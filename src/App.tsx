@@ -54,6 +54,8 @@ import Support from "./pages/Support";
 import HowItWorks from "./pages/HowItWorks";
 import Demo from "./pages/Demo";
 import { BusinessType } from "./pages/BusinessType";
+import { ProductsOverview } from "./pages/ProductsOverview";
+import { ProductDetail } from "./pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
@@ -130,6 +132,8 @@ const AppContent = () => {
         <Route path="/" element={<Index />} />
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/business/:type" element={<BusinessType />} />
+        <Route path="/products" element={<ProductsOverview />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/demo" element={<Demo />} />

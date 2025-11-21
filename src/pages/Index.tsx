@@ -69,7 +69,7 @@ const Index = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extralight text-transparent bg-clip-text bg-gradient-to-br from-gray-100 via-cyan-400 to-teal-300 leading-none tracking-wide flex items-center gap-2">
+            <h1 className="text-[9rem] sm:text-[11rem] lg:text-[13rem] font-extralight text-transparent bg-clip-text bg-gradient-to-br from-gray-100 via-cyan-400 to-teal-300 leading-none tracking-wide flex items-center gap-4">
               <span className="text-cyan-400/80 font-light">+</span>
               NeuroTunes
             </h1>

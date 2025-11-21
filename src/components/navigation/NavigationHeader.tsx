@@ -15,48 +15,6 @@ import dropdownBg from "@/assets/dropdown-bg.png";
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const enterpriseCorporate = [
-    {
-      category: "Health & Beauty",
-      items: [
-        { name: "Gyms", path: "/business/gyms" },
-        { name: "Medical", path: "/business/medical", badge: "First Responder Discount" },
-        { name: "Dental", path: "/business/dental" },
-        { name: "Salons", path: "/business/salons" },
-        { name: "Spas", path: "/business/spas" },
-        { name: "Senior Communities", path: "/business/senior-communities", badge: "Special Pricing" },
-      ]
-    },
-    {
-      category: "Retail",
-      items: [
-        { name: "Retail stores", path: "/business/retail" },
-        { name: "Grocery stores", path: "/business/grocery" },
-        { name: "Shopping malls", path: "/business/shopping-malls" },
-        { name: "Car dealerships", path: "/business/car-dealerships" },
-      ]
-    },
-    {
-      category: "Service Industry",
-      items: [
-        { name: "Restaurants", path: "/business/restaurants" },
-        { name: "Hotels", path: "/business/hotels" },
-        { name: "Cafés & coffee shops", path: "/business/cafes" },
-        { name: "Bars & pubs", path: "/business/bars" },
-      ]
-    },
-    {
-      category: "Community",
-      items: [
-        { name: "Churches", path: "/business/churches" },
-        { name: "Offices", path: "/business/offices" },
-        { name: "Schools", path: "/business/schools" },
-        { name: "Academic Hospitals", path: "/business/academic-hospitals", badge: "Academic Discount" },
-        { name: "Cultural spaces", path: "/business/cultural-spaces" },
-      ]
-    }
-  ];
-
   return (
     <>
       {/* Desktop Navigation */}
@@ -92,98 +50,99 @@ export const NavigationHeader = () => {
                       {/* Three Main Pathways */}
                       <div className="grid grid-cols-3 gap-8 mb-8">
                         {/* Enterprise & Corporate */}
-                        <div className="space-y-4 col-span-2">
+                        <div className="space-y-4">
                           <h2 className="font-bold text-lg mb-4 text-foreground border-b border-primary/20 pb-2">
                             Enterprise & Corporate
                           </h2>
-                          <div className="grid grid-cols-2 gap-6">
-                            {enterpriseCorporate.map((category) => (
-                              <div key={category.category} className="space-y-3">
-                                <h3 className="font-semibold text-xs uppercase tracking-widest text-primary/80">
-                                  {category.category}
-                                </h3>
-                                <ul className="space-y-1.5">
-                                  {category.items.map((item) => (
-                                    <li key={item.name}>
-                                      <Link
-                                        to={item.path}
-                                        className="group flex flex-col gap-1 p-2 rounded-lg hover:bg-primary/10 transition-all duration-200 border border-transparent hover:border-primary/20"
-                                      >
-                                        <span className="text-sm font-medium text-foreground/90 group-hover:text-primary transition-colors">
-                                          {item.name}
-                                        </span>
-                                        {item.badge && (
-                                          <Badge className="text-[10px] w-fit bg-primary/20 text-primary border-primary/30 hover:bg-primary/30 px-2 py-0.5">
-                                            {item.badge}
-                                          </Badge>
-                                        )}
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
+                          <div className="space-y-2">
+                            <Link
+                              to="/products/environmental"
+                              className="block p-3 rounded-lg hover:bg-primary/10 transition-all duration-200 border border-transparent hover:border-primary/20"
+                            >
+                              <span className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors block mb-1">
+                                Environmental & Background Music
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                PRO-free music for facilities & retail
+                              </span>
+                            </Link>
+                            <Link
+                              to="/products/population-health"
+                              className="block p-3 rounded-lg hover:bg-primary/10 transition-all duration-200 border border-transparent hover:border-primary/20"
+                            >
+                              <span className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors block mb-1">
+                                Population Health Programs
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                Clinical-grade music at scale
+                              </span>
+                            </Link>
+                            <Link
+                              to="/products/enterprise-wellness"
+                              className="block p-3 rounded-lg hover:bg-primary/10 transition-all duration-200 border border-transparent hover:border-primary/20"
+                            >
+                              <span className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors block mb-1">
+                                Corporate Wellness
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                Workplace mental health & productivity
+                              </span>
+                            </Link>
                           </div>
                         </div>
 
-                        {/* Wellness Apps & APIs */}
-                        <div className="space-y-6">
-                          {/* Wellness Apps */}
-                          <div className="space-y-3">
-                            <h2 className="font-bold text-lg text-foreground border-b border-primary/20 pb-2">
-                              Wellness Apps
-                            </h2>
-                            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl border border-primary/20">
-                              <p className="text-sm text-muted-foreground/90 mb-3">
-                                Access personalized wellness content
-                              </p>
-                              <Link to="/subscribe" className="block mb-2">
-                                <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
-                                  Subscribe to Web App
-                                </Button>
-                              </Link>
-                              <Link to="/app-store" className="block">
-                                <Button size="sm" variant="outline" className="w-full">
-                                  Get iOS/Android App
-                                </Button>
-                              </Link>
-                            </div>
+                        {/* Wellness Apps */}
+                        <div className="space-y-4">
+                          <h2 className="font-bold text-lg mb-4 text-foreground border-b border-primary/20 pb-2">
+                            Wellness Apps
+                          </h2>
+                          <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl border border-primary/20">
+                            <p className="text-sm text-muted-foreground/90 mb-3">
+                              Subscribe to the Web App or get the iOS/Android app
+                            </p>
+                            <Link to="/products/consumer" className="block mb-2">
+                              <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
+                                Personal Wellness App
+                              </Button>
+                            </Link>
                           </div>
+                        </div>
 
-                          {/* APIs & Partnerships */}
-                          <div className="space-y-3">
-                            <h2 className="font-bold text-lg text-foreground border-b border-primary/20 pb-2">
-                              APIs & Partnerships
-                            </h2>
-                            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl border border-primary/20">
-                              <p className="text-sm text-muted-foreground/90 mb-3">
-                                Integrate NeuroTunes into your platform
-                              </p>
-                              <Link to="/contact">
-                                <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
-                                  Chat with AI Assistant
-                                </Button>
-                              </Link>
-                            </div>
+                        {/* APIs & Partnerships */}
+                        <div className="space-y-4">
+                          <h2 className="font-bold text-lg mb-4 text-foreground border-b border-primary/20 pb-2">
+                            APIs & Partnerships
+                          </h2>
+                          <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl border border-primary/20">
+                            <p className="text-sm text-muted-foreground/90 mb-3">
+                              White-label, OEM, and platform integration
+                            </p>
+                            <Link to="/products/partnerships" className="block mb-2">
+                              <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
+                                Explore Partnerships
+                              </Button>
+                            </Link>
+                            <Link to="/contact">
+                              <Button size="sm" variant="outline" className="w-full">
+                                Chat with AI Assistant
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>
                       
                       <div className="pt-6 border-t border-primary/10">
                         <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 p-6 rounded-xl border border-primary/20 backdrop-blur-sm">
-                          <h4 className="font-bold text-lg mb-2 text-foreground">Special Discounts Available</h4>
-                          <p className="text-sm text-muted-foreground/90 mb-4">
-                            Talk to the experts and find out how NeuroTunes can work for your business.
-                          </p>
-                          <div className="flex gap-3">
-                            <Link to="/contact" className="flex-1">
-                              <Button size="sm" className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
-                                Chat to Sales Assistant
-                              </Button>
-                            </Link>
-                            <Link to="/deals" className="flex-1">
-                              <Button size="sm" variant="outline" className="w-full">
-                                Inquire About Deals
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-bold text-lg mb-2 text-foreground">View All Products & Solutions</h4>
+                              <p className="text-sm text-muted-foreground/90">
+                                Explore our complete product lineup
+                              </p>
+                            </div>
+                            <Link to="/products">
+                              <Button size="sm" className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+                                View All →
                               </Button>
                             </Link>
                           </div>
@@ -254,51 +213,70 @@ export const NavigationHeader = () => {
               <h2 className="font-bold text-lg mb-4 text-foreground border-b border-primary/20 pb-2">
                 Enterprise & Corporate
               </h2>
-              {enterpriseCorporate.map((category) => (
-                <div key={category.category} className="mb-6">
-                  <h3 className="font-semibold mb-3 text-sm text-primary/80 uppercase tracking-wide">
-                    {category.category}
-                  </h3>
-                  <ul className="space-y-2 ml-4">
-                    {category.items.map((item) => (
-                      <li key={item.name}>
-                        <Link
-                          to={item.path}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="text-muted-foreground hover:text-foreground transition-colors flex flex-col gap-1"
-                        >
-                          {item.name}
-                          {item.badge && (
-                            <Badge variant="secondary" className="text-xs w-fit">
-                              {item.badge}
-                            </Badge>
-                          )}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              <div className="space-y-2">
+                <Link
+                  to="/products/environmental"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block p-3 rounded-lg hover:bg-primary/10 transition-colors"
+                >
+                  <span className="text-sm font-medium text-foreground block mb-1">
+                    Environmental & Background Music
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    PRO-free music for facilities & retail
+                  </span>
+                </Link>
+                <Link
+                  to="/products/population-health"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block p-3 rounded-lg hover:bg-primary/10 transition-colors"
+                >
+                  <span className="text-sm font-medium text-foreground block mb-1">
+                    Population Health Programs
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Clinical-grade music at scale
+                  </span>
+                </Link>
+                <Link
+                  to="/products/enterprise-wellness"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block p-3 rounded-lg hover:bg-primary/10 transition-colors"
+                >
+                  <span className="text-sm font-medium text-foreground block mb-1">
+                    Corporate Wellness
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Workplace mental health & productivity
+                  </span>
+                </Link>
+              </div>
             </div>
 
             {/* Wellness Apps */}
             <div className="bg-muted/50 p-6 rounded-lg space-y-3">
               <h2 className="font-bold text-lg mb-2 text-foreground">Wellness Apps</h2>
-              <p className="text-sm text-muted-foreground mb-3">Access personalized wellness content</p>
-              <Link to="/subscribe" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full mb-2">Subscribe to Web App</Button>
-              </Link>
-              <Link to="/app-store" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full">Get iOS/Android App</Button>
+              <p className="text-sm text-muted-foreground mb-3">Subscribe to the Web App or get the iOS/Android app</p>
+              <Link to="/products/consumer" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full">Personal Wellness App</Button>
               </Link>
             </div>
 
             {/* APIs & Partnerships */}
             <div className="bg-muted/50 p-6 rounded-lg space-y-3">
               <h2 className="font-bold text-lg mb-2 text-foreground">APIs & Partnerships</h2>
-              <p className="text-sm text-muted-foreground mb-3">Integrate NeuroTunes into your platform</p>
+              <p className="text-sm text-muted-foreground mb-3">White-label, OEM, and platform integration</p>
+              <Link to="/products/partnerships" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full mb-2">Explore Partnerships</Button>
+              </Link>
               <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full">Chat with AI Assistant</Button>
+                <Button variant="outline" className="w-full">Chat with AI Assistant</Button>
+              </Link>
+            </div>
+
+            <div className="pt-6 border-t border-border">
+              <Link to="/products" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full mb-4">View All Products & Solutions →</Button>
               </Link>
             </div>
 
@@ -337,9 +315,6 @@ export const NavigationHeader = () => {
               <h4 className="font-semibold mb-2">Talk to Sales</h4>
               <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full">Chat to Sales Assistant</Button>
-              </Link>
-              <Link to="/deals" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full">Inquire About Deals</Button>
               </Link>
             </div>
           </div>
