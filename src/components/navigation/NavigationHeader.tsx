@@ -12,7 +12,7 @@ export const NavigationHeader = () => {
   const [showSolutionsMega, setShowSolutionsMega] = useState(false);
 
   const enterpriseSolutions = [
-    { title: "Environmental Therapeutic Audio", href: "/products/environmental" },
+    { title: "Environmental & Background Audio", href: "/products/environmental" },
     { title: "Senior Living & Long-Term Care", href: "/products/senior-living" },
     { title: "Healthcare & Clinical Deployment", href: "/products/healthcare" },
     { title: "Enterprise Well-Being", href: "/products/enterprise-wellness" },
