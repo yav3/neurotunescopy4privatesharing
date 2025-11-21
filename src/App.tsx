@@ -59,6 +59,7 @@ import Legal from "./pages/Legal";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import Payments from "./pages/Payments";
+import Experience from "./pages/Experience";
 
 const queryClient = new QueryClient();
 
@@ -139,6 +140,7 @@ const AppContent = () => {
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/showcase" element={<Showcase />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/experience" element={<Experience />} />
         <Route path="/goals" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />

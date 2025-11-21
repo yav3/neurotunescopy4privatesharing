@@ -26,6 +26,7 @@ export const NavigationHeader = () => {
     { title: "Web App", href: "/products/web-app" },
     { title: "iOS & Android Apps", href: "/products/mobile-apps" },
     { title: "Admin Dashboard", href: "/products/admin-dashboard" },
+    { title: "Experience Sessions", href: "/experience" },
   ];
 
   const integrations = [
