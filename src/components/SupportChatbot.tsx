@@ -102,7 +102,7 @@ export function SupportChatbot() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 z-50"
         style={{
           background: 'rgba(10, 10, 12, 0.85)',
           backdropFilter: 'blur(20px)',
@@ -116,7 +116,7 @@ export function SupportChatbot() {
 
       {isOpen && (
         <div
-          className="fixed bottom-24 left-6 w-96 h-[500px] rounded-3xl flex flex-col overflow-hidden z-50"
+          className="fixed bottom-24 right-6 w-96 h-[500px] rounded-3xl flex flex-col overflow-hidden z-50"
           style={{
             background: '#000000',
             backdropFilter: 'blur(40px)',

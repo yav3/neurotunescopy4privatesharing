@@ -162,7 +162,7 @@ export const SalesAssistant = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 px-6 py-3 rounded-full flex items-center gap-3 transition-all hover:scale-105 z-50 group"
+          className="fixed bottom-6 right-6 px-6 py-3 rounded-full flex items-center gap-3 transition-all hover:scale-105 z-50 group"
           style={{
             background: 'rgba(10, 10, 12, 0.85)',
             backdropFilter: 'blur(20px)',
@@ -179,7 +179,7 @@ export const SalesAssistant = () => {
 
       {isOpen && (
         <div 
-          className="fixed bottom-6 left-6 w-96 h-[600px] rounded-2xl flex flex-col z-50 overflow-hidden"
+          className="fixed bottom-6 right-6 w-96 h-[600px] rounded-2xl flex flex-col z-50 overflow-hidden"
           style={{
             background: '#0A0A0C',
             backdropFilter: 'blur(40px)',
