@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { FooterContactHandler } from "./FooterContactHandler";
 import footerChromeMetal from '@/assets/footer-chrome-metal.png';
+import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
+import stanfordLogo from '@/assets/stanford-medicine.png';
+import weillCornellLogo from '@/assets/weill-cornell.png';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
@@ -35,6 +39,57 @@ export const Footer = () => {
         />
         
         <div className="max-w-7xl mx-auto relative z-10">
+          {/* Supported by section - At top of footer */}
+          <div className="mb-20 pb-20" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+            <motion.h3 
+              className="text-sm font-light text-center mb-12 tracking-wide"
+              style={{ color: 'rgba(228, 228, 228, 0.75)' }}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              Supported by
+            </motion.h3>
+
+            <div className="flex items-center justify-center gap-16 flex-wrap">
+              {[
+                { name: "Jacobs Technion-Cornell Institute", logo: jacobsTechnionLogo },
+                { name: "Stanford Medicine", logo: stanfordLogo },
+                { name: "Weill Cornell Medicine", logo: weillCornellLogo }
+              ].map((partner, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="flex items-center justify-center"
+                  style={{ maxWidth: '240px' }}
+                >
+                  <img 
+                    src={partner.logo} 
+                    alt={partner.name}
+                    className="object-contain transition-all duration-300"
+                    style={{
+                      height: '56px',
+                      width: '100%',
+                      filter: 'brightness(0) invert(1)',
+                      opacity: '0.85',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '1';
+                      e.currentTarget.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.2))';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = '0.85';
+                      e.currentTarget.style.filter = 'brightness(0) invert(1)';
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
           {/* 4-column grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
             {/* Column 1 - Product */}
