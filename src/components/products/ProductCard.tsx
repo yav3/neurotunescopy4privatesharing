@@ -68,19 +68,9 @@ export const ProductCard = ({ product, index, backgroundImage }: ProductCardProp
           </p>
           
           {/* Description */}
-          <p className="text-sm font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)', lineHeight: '1.6' }}>
+          <p className="text-sm font-light mb-6" style={{ color: 'rgba(228, 228, 228, 0.65)', lineHeight: '1.6' }}>
             {product.description}
           </p>
-
-          {/* Pricing */}
-          <div className="mb-6">
-            <p className="text-xs font-light mb-1" style={{ color: 'rgba(228, 228, 228, 0.55)' }}>
-              {product.pricing.model}
-            </p>
-            <p className="font-medium text-sm" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
-              {product.pricing.starting}
-            </p>
-          </div>
 
           {/* CTA */}
           <div 
