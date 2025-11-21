@@ -59,9 +59,9 @@ export const HIPAA = () => {
                   }}
                 >
                   <div className="w-12 h-12 rounded-full mb-4 flex items-center justify-center"
-                    style={{ background: 'rgba(16, 185, 129, 0.15)' }}
+                    style={{ background: 'rgba(255, 255, 255, 0.10)' }}
                   >
-                    <Icon className="w-6 h-6 text-green-400" />
+                    <Icon className="w-6 h-6 text-neutral-400" />
                   </div>
                   <h3 className="text-xl font-light text-white mb-2">{item.title}</h3>
                   <p className="text-neutral-400 leading-relaxed">{item.description}</p>
@@ -86,27 +86,27 @@ export const HIPAA = () => {
               <h2 className="text-3xl font-light text-white mb-6">Security Measures</h2>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>End-to-end encryption for all data transmission</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>Regular security audits and penetration testing</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>Multi-factor authentication for all user accounts</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>Comprehensive activity logging and monitoring</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>Regular staff training on HIPAA compliance</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-400 mt-2 flex-shrink-0" />
                   <span>Incident response and breach notification procedures</span>
                 </li>
               </ul>
