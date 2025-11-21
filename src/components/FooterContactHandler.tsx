@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { X, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import chromeFrame1 from '@/assets/chrome-frame-1.png';
+import chromeFrame2 from '@/assets/chrome-frame-2.png';
+import chromeFrame3 from '@/assets/chrome-frame-3.png';
+import chromeFrame4 from '@/assets/chrome-frame-4.png';
 
 interface ContactData {
   email?: string;
@@ -31,6 +35,20 @@ export function FooterContactHandler({
   const [isLoading, setIsLoading] = useState(false);
   const [contactData, setContactData] = useState<ContactData>({ interest: interestType });
   const [currentStep, setCurrentStep] = useState<"email" | "name" | "company" | "done">("email");
+
+  // Determine background image based on interest type
+  const backgroundImage = useMemo(() => {
+    switch (interestType.toLowerCase()) {
+      case 'licensing':
+        return chromeFrame1;
+      case 'research':
+        return chromeFrame2;
+      case 'partners':
+        return chromeFrame3;
+      default:
+        return chromeFrame4;
+    }
+  }, [interestType]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -89,8 +107,6 @@ export function FooterContactHandler({
 
   const submitContact = async (data: ContactData) => {
     try {
-      // You can call an edge function or directly insert into a contacts table
-      // For now, just showing toast - implement your backend logic here
       console.log("Contact submission:", data);
       toast.success("Your inquiry has been submitted!");
     } catch (error) {
@@ -103,59 +119,101 @@ export function FooterContactHandler({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
       <div 
-        className="relative w-full max-w-lg h-[600px] rounded-2xl flex flex-col overflow-hidden"
+        className="relative w-full max-w-lg h-[600px] rounded-3xl flex flex-col overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, rgba(2, 16, 20, 0.95) 0%, rgba(0, 37, 44, 0.95) 100%)',
+          background: 'rgba(10, 10, 12, 0.90)',
           backdropFilter: 'blur(40px)',
-          border: '1px solid rgba(20, 184, 166, 0.2)',
-          boxShadow: '0 20px 60px rgba(0, 220, 255, 0.15)',
+          WebkitBackdropFilter: 'blur(40px)',
+          border: '1px solid rgba(228, 228, 228, 0.14)',
+          boxShadow: '0 20px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05)',
         }}
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-          <Plus className="w-96 h-96 text-cyan-400" />
-        </div>
-        
-        <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-cyan-400/10 blur-[80px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-400/10 blur-[80px] rounded-full pointer-events-none" />
-
+        {/* Chrome background image - absolute positioned */}
         <div 
-          className="relative flex items-center justify-between p-4"
-          style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
+          className="absolute inset-0 opacity-[0.12] pointer-events-none"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            mixBlendMode: 'screen',
+          }}
+        />
+
+        {/* Subtle gradient overlays */}
+        <div className="absolute top-[-30%] left-[10%] w-[80%] h-[50%] bg-white/[0.03] blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-white/[0.02] blur-[100px] rounded-full pointer-events-none" />
+
+        {/* Header */}
+        <div 
+          className="relative flex items-center justify-between p-6"
+          style={{ borderBottom: '1px solid rgba(228, 228, 228, 0.08)' }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div 
-              className="w-10 h-10 rounded-lg flex items-center justify-center"
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
               style={{
-                background: 'rgba(20, 184, 166, 0.2)',
-                border: '1px solid rgba(20, 184, 166, 0.3)',
+                background: 'rgba(228, 228, 228, 0.08)',
+                border: '1px solid rgba(228, 228, 228, 0.12)',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
               }}
             >
-              <Plus className="w-5 h-5 text-cyan-400" />
+              <Plus className="w-6 h-6" style={{ color: 'rgba(228, 228, 228, 0.90)' }} strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">{interestType}</h2>
-              <p className="text-xs text-white/60">Let's connect</p>
+              <h2 
+                className="text-xl font-light tracking-wide"
+                style={{ color: 'rgba(228, 228, 228, 0.95)' }}
+              >
+                {interestType}
+              </h2>
+              <p 
+                className="text-sm font-light mt-0.5"
+                style={{ color: 'rgba(228, 228, 228, 0.60)' }}
+              >
+                Let's connect
+              </p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-white/10">
-            <X className="w-5 h-5 text-white/60" />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onClose}
+            className="hover:bg-white/5 transition-colors rounded-lg"
+          >
+            <X className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.70)' }} />
           </Button>
         </div>
 
-        <div className="relative flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Messages */}
+        <div className="relative flex-1 overflow-y-auto p-6 space-y-4">
           {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                className={`max-w-[85%] rounded-2xl px-5 py-3.5 font-light text-[15px] leading-relaxed ${
                   message.role === "user"
-                    ? "bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg"
-                    : "bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md"
+                    ? ""
+                    : ""
                 }`}
+                style={
+                  message.role === "user"
+                    ? {
+                        background: 'rgba(228, 228, 228, 0.12)',
+                        border: '1px solid rgba(228, 228, 228, 0.18)',
+                        color: 'rgba(228, 228, 228, 0.95)',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+                      }
+                    : {
+                        background: 'rgba(228, 228, 228, 0.06)',
+                        border: '1px solid rgba(228, 228, 228, 0.10)',
+                        color: 'rgba(228, 228, 228, 0.88)',
+                        backdropFilter: 'blur(12px)',
+                      }
+                }
               >
                 {message.content}
               </div>
@@ -163,40 +221,85 @@ export function FooterContactHandler({
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]">
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" />
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40 delay-100" />
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40 delay-200" />
+              <div 
+                className="rounded-2xl px-5 py-3.5"
+                style={{
+                  background: 'rgba(228, 228, 228, 0.06)',
+                  border: '1px solid rgba(228, 228, 228, 0.10)',
+                }}
+              >
+                <div className="flex gap-1.5">
+                  <div 
+                    className="w-2 h-2 rounded-full animate-bounce" 
+                    style={{ 
+                      background: 'rgba(228, 228, 228, 0.70)',
+                      boxShadow: '0 0 8px rgba(228, 228, 228, 0.25)',
+                    }} 
+                  />
+                  <div 
+                    className="w-2 h-2 rounded-full animate-bounce delay-100" 
+                    style={{ 
+                      background: 'rgba(228, 228, 228, 0.70)',
+                      boxShadow: '0 0 8px rgba(228, 228, 228, 0.25)',
+                      animationDelay: '0.1s',
+                    }} 
+                  />
+                  <div 
+                    className="w-2 h-2 rounded-full animate-bounce delay-200" 
+                    style={{ 
+                      background: 'rgba(228, 228, 228, 0.70)',
+                      boxShadow: '0 0 8px rgba(228, 228, 228, 0.25)',
+                      animationDelay: '0.2s',
+                    }} 
+                  />
                 </div>
               </div>
             </div>
           )}
         </div>
 
+        {/* Input footer */}
         <div 
-          className="relative p-4"
-          style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
+          className="relative p-6"
+          style={{ borderTop: '1px solid rgba(228, 228, 228, 0.08)' }}
         >
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSend();
             }}
-            className="flex gap-2"
+            className="flex gap-3"
           >
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your answer..."
               disabled={isLoading || currentStep === "done"}
-              className="flex-1 bg-white/[0.06] border-white/[0.12] text-white placeholder-white/40 focus:border-cyan-400/40 focus:ring-cyan-400/20"
+              className="flex-1 h-12 bg-white/[0.06] border-white/[0.12] text-white placeholder-white/40 focus:border-white/[0.25] focus:ring-white/[0.15] rounded-xl font-light"
+              style={{
+                color: 'rgba(228, 228, 228, 0.90)',
+              }}
             />
             <Button 
               type="submit" 
               size="icon" 
               disabled={isLoading || currentStep === "done"}
-              className="bg-gradient-to-br from-cyan-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30"
+              className="w-12 h-12 rounded-xl transition-all"
+              style={{
+                background: 'rgba(228, 228, 228, 0.12)',
+                border: '1px solid rgba(228, 228, 228, 0.18)',
+                color: 'rgba(228, 228, 228, 0.90)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(228, 228, 228, 0.18)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.28)';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(228, 228, 228, 0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(228, 228, 228, 0.12)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
               <Send className="w-4 h-4" />
             </Button>
