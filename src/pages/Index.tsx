@@ -67,7 +67,15 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Full viewport */}
-        <div className="relative min-h-screen flex items-center justify-center px-6">
+        <div className="relative min-h-screen flex items-center justify-center px-6 pt-20">
+          {/* Radial gradient overlay for text contrast */}
+          <div 
+            className="absolute inset-0 pointer-events-none z-[1]"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 85%)'
+            }}
+          />
+          
           {/* Chrome curves accent */}
           <div 
             className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -87,14 +95,15 @@ const Index = () => {
           >
             {/* Title: 110-140px ultra-light white with chrome highlight */}
             <h1 
-              className="font-extralight text-white leading-none tracking-wide flex items-center mb-10"
+              className="font-extralight leading-none tracking-wide flex items-center mb-10"
               style={{
                 fontSize: 'clamp(110px, 12vw, 140px)',
-                textShadow: '0 0 60px rgba(255, 255, 255, 0.08), 0 0 100px rgba(228, 228, 228, 0.06)',
+                color: 'rgba(255, 255, 255, 0.95)',
+                textShadow: '0 0 60px rgba(255, 255, 255, 0.12), 0 0 100px rgba(228, 228, 228, 0.08), 0 0 20px rgba(255, 255, 255, 0.02)',
                 gap: '0.75rem'
               }}
             >
-              <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(255, 255, 255, 0.90)' }}>+</span>
+              <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(255, 255, 255, 0.92)' }}>+</span>
               NeuroTunes
             </h1>
             
@@ -173,33 +182,37 @@ const Index = () => {
           </motion.div>
         </div>
 
-        {/* Supported by section - Dark glossy panel with platinum luminescence */}
-        <div className="relative z-10" style={{ marginTop: '60px', marginBottom: '60px' }}>
-          {/* Chrome texture subtle background */}
+        {/* Supported by section - Premium obsidian capsule */}
+        <div className="relative z-10 py-20 px-6">
+          {/* Dimmed chrome background for depth */}
           <div 
-            className="absolute inset-0 opacity-[0.03] pointer-events-none"
+            className="absolute inset-0 opacity-[0.45] pointer-events-none"
             style={{
-              backgroundImage: `url(${chromeTexture})`,
+              backgroundImage: `url(${chromeHeroBg})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
           />
           
-          <div className="px-6 relative z-10">
+          <div className="max-w-6xl mx-auto relative z-10">
             <div 
-              className="max-w-6xl mx-auto rounded-2xl p-12 relative overflow-hidden"
+              className="rounded-[40px] py-16 px-12 relative overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.98) 100%)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(228, 228, 228, 0.12)',
-                boxShadow: '0 0 40px rgba(255, 255, 255, 0.06), 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+                background: 'rgba(10, 10, 12, 0.98)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: '0 0 60px rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.06)',
               }}
             >
-              {/* Subtle metallic gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+              {/* Inner chrome glow */}
+              <div 
+                className="absolute inset-0 rounded-[40px] pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 60%)',
+                }}
+              />
               
               <motion.h3 
-                className="text-lg font-light text-center mb-12 tracking-wide relative z-10"
+                className="text-lg font-light text-center mb-14 tracking-wide relative z-10"
                 style={{ color: 'rgba(255, 255, 255, 0.75)' }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -209,7 +222,7 @@ const Index = () => {
                 Supported by
               </motion.h3>
 
-              <div className="grid grid-cols-3 gap-12 items-center justify-items-center relative z-10">
+              <div className="grid grid-cols-3 gap-16 items-center justify-items-center relative z-10">
                 {[
                   { name: "Jacobs Technion-Cornell Institute", logo: jacobsTechnionLogo },
                   { name: "Stanford Medicine", logo: stanfordLogo },
@@ -226,9 +239,15 @@ const Index = () => {
                     <img 
                       src={partner.logo} 
                       alt={partner.name}
-                      className="w-full h-16 object-contain brightness-0 invert opacity-75 hover:opacity-95 transition-all duration-300"
+                      className="w-full h-16 object-contain transition-all duration-300"
                       style={{
-                        filter: 'brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.1))',
+                        filter: 'brightness(0) invert(1) opacity(0.90)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.filter = 'brightness(0) invert(1) opacity(1) drop-shadow(0 0 12px rgba(255,255,255,0.15))';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.filter = 'brightness(0) invert(1) opacity(0.90)';
                       }}
                     />
                   </motion.div>
