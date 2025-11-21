@@ -29,7 +29,7 @@ export const Story = () => {
                 solutions were created without rigorous scientific validation.
               </p>
               <p>
-                Founded by a team of neuroscientists, music therapists, and technologists, we set out to bridge the gap 
+                Founded by a team of neuroscientists, physicians, AI engineers, and professional music artists, we set out to bridge the gap 
                 between cutting-edge neuroscience and accessible therapeutic audio.
               </p>
             </section>
