@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, X, Send, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import obsidianGlassBg from '@/assets/obsidian-glass-bg.png';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -91,58 +92,88 @@ export function RegistrationChatbot() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 z-50"
         style={{
-          background: 'rgba(0, 0, 0, 0.8)',
+          background: 'rgba(10, 10, 12, 0.85)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
-          color: '#C0C0C8',
+          border: '1px solid rgba(255, 255, 255, 0.10)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 255, 255, 0.04)',
+          color: 'rgba(228, 228, 228, 0.92)',
         }}
       >
-        <MessageCircle className="w-6 h-6" />
+        <Plus className="w-6 h-6" />
       </button>
 
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 w-96 h-[500px] rounded-lg flex flex-col overflow-hidden"
+          className="fixed bottom-24 right-6 w-96 h-[500px] rounded-3xl flex flex-col overflow-hidden z-50"
           style={{
-            background: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+            background: '#000000',
+            backdropFilter: 'blur(40px)',
+            border: '1px solid rgba(255, 255, 255, 0.10)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 255, 255, 0.03)',
           }}
         >
+          {/* Obsidian glass background */}
+          <div className="absolute inset-0 opacity-[0.15] pointer-events-none">
+            <img src={obsidianGlassBg} alt="" className="w-full h-full object-cover" />
+          </div>
+          
+          {/* Glossy highlight */}
+          <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
           <div
-            className="flex items-center justify-between p-4 border-b"
-            style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="relative flex items-center justify-between p-5 border-b backdrop-blur-sm"
+            style={{ borderColor: 'rgba(255, 255, 255, 0.10)' }}
           >
-            <h3 className="font-semibold" style={{ color: '#C0C0C8' }}>
-              Registration Assistant
-            </h3>
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-11 h-11 rounded-2xl flex items-center justify-center"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                }}
+              >
+                <Plus className="w-6 h-6" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold" style={{ color: 'rgba(255, 255, 255, 0.92)' }}>
+                  Registration Assistant
+                </h3>
+                <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.60)' }}>
+                  Help with sign up
+                </p>
+              </div>
+            </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="hover:opacity-70 transition-opacity"
-              style={{ color: '#C0C0C8' }}
+              className="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-colors"
+              style={{ color: 'rgba(255, 255, 255, 0.70)' }}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="relative flex-1 overflow-y-auto p-5 space-y-4">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className="max-w-[80%] rounded-lg p-3"
-                  style={{
-                    background: msg.role === 'user' 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(255, 255, 255, 0.05)',
-                    color: '#C0C0C8',
-                  }}
+                  className="max-w-[80%] rounded-[20px] px-5 py-3.5 text-[14px] leading-relaxed backdrop-blur-sm"
+                  style={
+                    msg.role === 'user'
+                      ? {
+                          background: 'rgba(19, 20, 22, 0.90)',
+                          border: '1px solid rgba(255, 255, 255, 0.20)',
+                          color: 'rgba(255, 255, 255, 0.92)',
+                        }
+                      : {
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          color: 'rgba(255, 255, 255, 0.88)',
+                        }
+                  }
                 >
                   {msg.content}
                 </div>
@@ -152,8 +183,8 @@ export function RegistrationChatbot() {
           </div>
 
           <div
-            className="p-4 border-t"
-            style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="relative p-5 border-t backdrop-blur-sm"
+            style={{ borderColor: 'rgba(255, 255, 255, 0.10)' }}
           >
             <div className="flex gap-2">
               <input
@@ -161,26 +192,25 @@ export function RegistrationChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask a question..."
+                placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1 px-3 py-2 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30"
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 transition-all"
                 style={{
-                  background: 'rgba(0, 0, 0, 0.6)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: '#C0C0C8',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  color: 'rgba(255, 255, 255, 0.92)',
                 }}
               />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="px-4 py-2 rounded-lg disabled:opacity-50 transition-opacity"
+                className="w-11 h-11 rounded-xl flex items-center justify-center disabled:opacity-50 transition-all"
                 style={{
-                  background: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  color: '#C0C0C8',
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
                 }}
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }} />
               </button>
             </div>
           </div>
