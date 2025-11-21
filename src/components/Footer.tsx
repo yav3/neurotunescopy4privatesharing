@@ -41,16 +41,6 @@ export const Footer = () => {
                   Pricing
                 </Link>
               </li>
-              <li>
-                <Link to="/add-ons" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Add-ons
-                </Link>
-              </li>
-              <li>
-                <Link to="/apps-hardware" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Apps & hardware
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -58,29 +48,12 @@ export const Footer = () => {
           <div>
             <ul className="space-y-3">
               <li>
-                <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link to="/licensing" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Licensing
-                </Link>
-              </li>
-              <li>
-                <Link to="/business-types" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Business types
-                </Link>
-              </li>
-              <li>
-                <Link to="/research" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a 
+                  href="mailto:info@neurotunes.com?subject=Research Pack Request" 
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Research
-                </Link>
-              </li>
-              <li>
-                <Link to="/alternatives" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Alternatives
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -104,18 +77,8 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/press" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Press
-                </Link>
-              </li>
-              <li>
                 <Link to="/partners" className="text-muted-foreground hover:text-foreground transition-colors">
                   Partners
-                </Link>
-              </li>
-              <li>
-                <Link to="/careers" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Careers
                 </Link>
               </li>
               <li>
