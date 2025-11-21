@@ -62,16 +62,13 @@ export const NavigationHeader = () => {
         />
 
         {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-2 relative z-10">
-          <Plus className="w-7 h-7" style={{ color: 'rgba(228, 228, 228, 0.90)' }} strokeWidth={1.5} />
-          <div className="flex flex-col">
-            <span className="text-xl font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
-              NeuroTunes
-            </span>
-            <span className="text-[10px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-              by Neuralpositive
-            </span>
-          </div>
+        <Link to="/" className="flex flex-col relative z-10">
+          <span className="text-xl font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
+            +NeuroTunes
+          </span>
+          <span className="text-[10px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+            by Neuralpositive
+          </span>
         </Link>
 
         {/* Center: Menu Items */}
@@ -310,16 +307,13 @@ export const NavigationHeader = () => {
           style={{ background: 'rgba(255, 255, 255, 0.10)' }}
         />
         
-        <Link to="/" className="flex items-center gap-2 relative z-10">
-          <Plus className="w-6 h-6" style={{ color: 'rgba(228, 228, 228, 0.90)' }} strokeWidth={1.5} />
-          <div className="flex flex-col">
-            <span className="text-lg font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
-              NeuroTunes
-            </span>
-            <span className="text-[9px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-              by Neuralpositive
-            </span>
-          </div>
+        <Link to="/" className="flex flex-col relative z-10">
+          <span className="text-lg font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
+            +NeuroTunes
+          </span>
+          <span className="text-[9px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+            by Neuralpositive
+          </span>
         </Link>
 
         <button
