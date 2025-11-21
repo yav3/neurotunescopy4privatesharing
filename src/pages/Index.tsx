@@ -94,7 +94,7 @@ const Index = () => {
           
           {/* Premium Glass Panel with chrome edge glow */}
           <motion.div
-            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-[90%] sm:w-[85%] md:w-[75%] lg:max-w-4xl px-6 py-8 md:px-12 lg:px-14 md:py-12 lg:py-16 rounded-[32px] md:rounded-[40px]"
+            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-auto px-8 py-6 md:px-16 md:py-10 lg:px-20 lg:py-12 rounded-[32px] md:rounded-[40px]"
             style={{
               background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
               backdropFilter: 'blur(40px)',
