@@ -1,6 +1,6 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import { Check, Apple, Download } from "lucide-react";
+import { Check } from "lucide-react";
 
 export const AppDownload = () => {
   const plans = [
@@ -178,50 +178,6 @@ export const AppDownload = () => {
             </h3>
             <p className="text-neutral-300 text-lg mb-6 max-w-2xl mx-auto">
               Get our native mobile apps from the App Store or Google Play Store
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <div className="text-center">
-                <div className="text-2xl font-light text-white">$5.99/month</div>
-                <div className="text-neutral-400 text-sm">or</div>
-                <div className="text-2xl font-light text-white">$59/year</div>
-              </div>
-            </div>
-            
-            {/* App Store Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <button
-                className="flex items-center gap-3 px-8 py-4 rounded-full transition-all"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: 'white'
-                }}
-              >
-                <Apple className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-xs text-neutral-400">Download on the</div>
-                  <div className="text-lg font-semibold">App Store</div>
-                </div>
-              </button>
-              
-              <button
-                className="flex items-center gap-3 px-8 py-4 rounded-full transition-all"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: 'white'
-                }}
-              >
-                <Download className="w-6 h-6" />
-                <div className="text-left">
-                  <div className="text-xs text-neutral-400">Get it on</div>
-                  <div className="text-lg font-semibold">Google Play</div>
-                </div>
-              </button>
-            </div>
-            
-            <p className="text-neutral-400 text-sm mt-6">
-              Available in USD only on US App Stores • Subscription managed through your app store account
             </p>
           </div>
         </div>
