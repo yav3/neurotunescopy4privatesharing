@@ -23,11 +23,11 @@ export const ConsumerPricing = () => {
       highlight: true
     },
     {
-      name: "Enterprise 500+",
+      name: "Enterprise, 1,000+",
       priceMonthly: null,
-      priceYearly: "$24.99",
-      period: "per year",
-      description: "Bundle: Web app + iOS & Android subscriptions for organizations with over 500 users",
+      priceYearly: "Let's Talk!",
+      period: "",
+      description: "Bundle: Web app + iOS & Android subscriptions for organizations with 1,000+ users",
       features: [
         "Everything in SMB plan",
         "Dedicated account manager",
