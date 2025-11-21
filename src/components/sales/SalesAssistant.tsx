@@ -7,8 +7,17 @@ interface Message {
   content: string;
 }
 
-export const SalesAssistant = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface SalesAssistantProps {
+  externalOpen?: boolean;
+  onExternalClose?: () => void;
+}
+
+export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistantProps) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setIsOpen = externalOpen !== undefined ? (val: boolean) => {
+    if (!val && onExternalClose) onExternalClose();
+  } : setInternalOpen;
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
