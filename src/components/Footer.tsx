@@ -24,14 +24,8 @@ export const Footer = () => {
           
           {/* Tagline Section */}
           <div className="text-center mb-12">
-            <p className="text-xs text-white/40 tracking-wide mb-2">
-              by Neuralpositive
-            </p>
-            <p className="text-xs text-white/50 mb-2">
-              Neuroscience-backed · Clinically Validated · Patented
-            </p>
-            <p className="text-sm text-white/60">
-              Medical-grade Therapeutic Music & AI Streaming
+            <p className="text-sm text-white/50 tracking-wide">
+              by Neuralpositive • Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
             </p>
           </div>
 
