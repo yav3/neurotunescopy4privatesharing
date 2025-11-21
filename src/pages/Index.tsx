@@ -182,11 +182,11 @@ const Index = () => {
           </motion.div>
         </div>
 
-        {/* Supported by section - Premium obsidian capsule */}
-        <div className="relative z-10 py-20 px-6">
-          {/* Dimmed chrome background for depth */}
+        {/* Supported by section - Floating obsidian glass panel */}
+        <div className="relative z-10 py-24 px-6">
+          {/* Dimmed chrome background - 50% opacity for clarity */}
           <div 
-            className="absolute inset-0 opacity-[0.45] pointer-events-none"
+            className="absolute inset-0 opacity-50 pointer-events-none"
             style={{
               backgroundImage: `url(${chromeHeroBg})`,
               backgroundSize: 'cover',
@@ -196,24 +196,18 @@ const Index = () => {
           
           <div className="max-w-6xl mx-auto relative z-10">
             <div 
-              className="rounded-[40px] py-16 px-12 relative overflow-hidden"
+              className="relative"
               style={{
-                background: 'rgba(10, 10, 12, 0.98)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 0 60px rgba(255, 255, 255, 0.08), 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.06)',
+                background: '#0A0A0C',
+                borderRadius: '36px',
+                border: '1px solid rgba(255, 255, 255, 0.14)',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.04), 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 60px rgba(255, 255, 255, 0.035)',
+                padding: '80px 60px',
               }}
             >
-              {/* Inner chrome glow */}
-              <div 
-                className="absolute inset-0 rounded-[40px] pointer-events-none"
-                style={{
-                  background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 60%)',
-                }}
-              />
-              
               <motion.h3 
-                className="text-lg font-light text-center mb-14 tracking-wide relative z-10"
-                style={{ color: 'rgba(255, 255, 255, 0.75)' }}
+                className="text-lg font-light text-center mb-16 tracking-wide"
+                style={{ color: 'rgba(255, 255, 255, 0.90)' }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -222,7 +216,7 @@ const Index = () => {
                 Supported by
               </motion.h3>
 
-              <div className="grid grid-cols-3 gap-16 items-center justify-items-center relative z-10">
+              <div className="flex items-center justify-center gap-20">
                 {[
                   { name: "Jacobs Technion-Cornell Institute", logo: jacobsTechnionLogo },
                   { name: "Stanford Medicine", logo: stanfordLogo },
@@ -232,22 +226,28 @@ const Index = () => {
                     key={index}
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.08 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="flex items-center justify-center w-full"
+                    className="flex items-center justify-center"
+                    style={{ flex: '1 1 0', maxWidth: '280px' }}
                   >
                     <img 
                       src={partner.logo} 
                       alt={partner.name}
-                      className="w-full h-16 object-contain transition-all duration-300"
+                      className="object-contain transition-all duration-300"
                       style={{
-                        filter: 'brightness(0) invert(1) opacity(0.90)',
+                        height: '64px',
+                        width: '100%',
+                        filter: 'brightness(0) invert(1)',
+                        opacity: '0.90',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.filter = 'brightness(0) invert(1) opacity(1) drop-shadow(0 0 12px rgba(255,255,255,0.15))';
+                        e.currentTarget.style.opacity = '1';
+                        e.currentTarget.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.2))';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.filter = 'brightness(0) invert(1) opacity(0.90)';
+                        e.currentTarget.style.opacity = '0.90';
+                        e.currentTarget.style.filter = 'brightness(0) invert(1)';
                       }}
                     />
                   </motion.div>
