@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FooterContactHandler } from "./FooterContactHandler";
 
 export const Footer = () => {
+  const [contactOpen, setContactOpen] = useState(false);
+  const [interestType, setInterestType] = useState("");
+
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    // Open contact dialog with specific interest
+    setInterestType(sectionId.charAt(0).toUpperCase() + sectionId.slice(1));
+    setContactOpen(true);
   };
 
   return (
@@ -32,7 +36,7 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/payments" className="text-muted-foreground hover:text-foreground transition-colors">
                   Pricing
                 </Link>
               </li>
@@ -62,24 +66,36 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+                <button 
+                  onClick={() => scrollToSection('contact')}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Contact
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/help" className="text-muted-foreground hover:text-foreground transition-colors">
+                <button 
+                  onClick={() => scrollToSection('help')}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Help
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/partners" className="text-muted-foreground hover:text-foreground transition-colors">
+                <button 
+                  onClick={() => scrollToSection('partners')}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Partners
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/api" className="text-muted-foreground hover:text-foreground transition-colors">
+                <button 
+                  onClick={() => scrollToSection('api')}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Our API
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -98,12 +114,12 @@ export const Footer = () => {
         {/* Bottom section */}
         <div className="border-t border-border/50 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="8" cy="12" r="3" />
                 <circle cx="16" cy="12" r="3" />
               </svg>
-              <span className="text-xl font-bold">NeuroTunes</span>
+              <span className="text-xl font-bold">+NeuroTunes</span>
             </div>
             
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
@@ -114,14 +130,20 @@ export const Footer = () => {
               <Link to="/privacy" className="hover:text-foreground transition-colors">
                 Our privacy policy
               </Link>
-              <button className="hover:text-foreground transition-colors">
+              <Link to="/cookies" className="hover:text-foreground transition-colors">
                 Cookie preferences
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </footer>
+    
+    <FooterContactHandler 
+      isOpen={contactOpen}
+      onClose={() => setContactOpen(false)}
+      interestType={interestType}
+    />
     </>
   );
 };
