@@ -21,12 +21,9 @@ export const NavigationHeader = () => {
   ];
 
   const products = [
-    { title: "Therapeutic Sessions Library", href: "/products/library" },
-    { title: "Spatial Therapeutic Audio", href: "/products/spatial-audio" },
-    { title: "Web App", href: "/products/web-app" },
-    { title: "iOS & Android Apps", href: "/products/mobile-apps" },
-    { title: "Admin Dashboard", href: "/products/admin-dashboard" },
-    { title: "Experience Sessions", href: "/experience" },
+    { title: "Get the Web App", href: "/products/web-app" },
+    { title: "Get the Android App", href: "/products/mobile-apps" },
+    { title: "Get the iOS App", href: "/products/mobile-apps" },
   ];
 
   const integrations = [
