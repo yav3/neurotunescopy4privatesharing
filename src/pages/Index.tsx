@@ -71,7 +71,7 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Compact cinematic */}
-        <div className="relative max-h-[72vh] min-h-[600px] flex items-center justify-center px-4 md:px-6 pt-28">
+        <div className="relative max-h-[72vh] min-h-[400px] md:min-h-[600px] flex items-center justify-center px-4 md:px-6 pt-20 md:pt-28">
 
           {/* Chrome curves accent */}
           <div 
@@ -94,7 +94,7 @@ const Index = () => {
           
           {/* Premium Glass Panel with chrome edge glow */}
           <motion.div
-            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 max-w-4xl px-8 py-10 md:px-14 md:py-16 rounded-[40px]"
+            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 max-w-4xl px-6 py-8 md:px-14 md:py-16 rounded-[32px] md:rounded-[40px]"
             style={{ 
               background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
               backdropFilter: 'blur(40px)',
@@ -107,9 +107,9 @@ const Index = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center mb-8">
+            <div className="flex flex-col items-center mb-6 md:mb-8">
               <h1 
-                className="font-light tracking-[-0.02em] text-4xl md:text-6xl"
+                className="font-light tracking-[-0.02em] text-3xl md:text-6xl"
                 style={{
                   lineHeight: '1.15',
                   color: 'rgba(228, 228, 228, 0.95)',
@@ -121,7 +121,7 @@ const Index = () => {
             </div>
 
             {/* Premium Glassmorphic CTAs */}
-            <div className="flex items-center justify-center gap-6 flex-wrap">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 w-full sm:w-auto">
               <Link to="/products">
                 <button 
                   className="px-8 py-3 rounded-2xl text-sm md:text-base font-medium transition-all backdrop-blur-xl"
