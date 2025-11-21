@@ -10,6 +10,15 @@ export const Footer = () => {
 
   return (
     <>
+      {/* Savings Banner */}
+      <div className="bg-gradient-to-r from-primary/20 to-cyan-500/20 border-t border-b border-primary/30 py-3 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-foreground text-sm md:text-base font-medium">
+            Customers can, on average, save up to 60% by switching to us. We not only provide more premium, specialized experiences that respond to customers' unique needs, we also cut extraneous and surprise billing because we own 100% of our original professional music.
+          </p>
+        </div>
+      </div>
+
       {/* Bottom Navigation Tabs */}
       <nav className="bg-background/95 backdrop-blur-sm border-t border-b border-border/50 sticky bottom-0 z-40">
         <div className="max-w-7xl mx-auto px-6">
@@ -28,7 +37,7 @@ export const Footer = () => {
             </button>
             <button
               onClick={() => scrollToSection('benefits')}
-              className="px-6 py-4 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all"
+              className="px-6 py-4 text-base font-medium text-muted-foreground hover:bg-muted/50 transition-all"
             >
               Benefits
             </button>
