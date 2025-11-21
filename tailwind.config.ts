@@ -72,18 +72,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Brand colors - Premium Teal Spectrum (HSL format)
-				brand: {
-					900: 'hsl(182, 57%, 11%)', // Deep blue-green navy
-					800: 'hsl(182, 64%, 15%)',
-					700: 'hsl(182, 63%, 20%)',
-					600: 'hsl(182, 61%, 26%)',
-					500: 'hsl(182, 63%, 32%)', // Primary deep
-					400: 'hsl(179, 58%, 50%)',
-					300: 'hsl(179, 58%, 60%)',
-					200: 'hsl(178, 56%, 75%)',
-					100: 'hsl(176, 75%, 86%)', // Light aqua secondary
-					50: 'hsl(173, 75%, 95%)'
+				// OBSIDIAN-TEAL STRICT PALETTE (HSL format)
+				obsidian: {
+					DEFAULT: 'hsl(195, 100%, 3%)', // #020B0F Deep obsidian black
+					secondary: 'hsl(188, 85%, 5%)', // #031A1F Dark teal-black
+					tertiary: 'hsl(186, 90%, 7%)', // #013039 Deeper teal-black
+				},
+				teal: {
+					accent: 'hsl(174, 62%, 58%)', // #37D5C4 Soft luminance teal
+					glow: 'hsl(174, 68%, 56%)', // #2CCEC4 Faint glow teal
+					bright: 'hsl(174, 70%, 60%)', // Brightest teal (glows only)
+					50: 'hsl(174, 62%, 58%)',
+					100: 'hsl(174, 62%, 58%)',
+					500: 'hsl(174, 62%, 58%)',
+					600: 'hsl(174, 68%, 56%)',
+					700: 'hsl(174, 70%, 60%)'
 				},
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',
