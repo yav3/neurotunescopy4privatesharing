@@ -195,34 +195,6 @@ const Demo = () => {
         </div>
       </section>
 
-      {/* Key Benefits */}
-      <section className="bg-muted/30 py-12">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Science-Backed</h3>
-              <p className="text-sm text-muted-foreground">Based on neuroscience research</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Fully Owned</h3>
-              <p className="text-sm text-muted-foreground">No licensing fees or restrictions</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Smile className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Proven Results</h3>
-              <p className="text-sm text-muted-foreground">Measurable therapeutic outcomes</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Featured Sessions */}
       <section className="container mx-auto px-6 py-20">

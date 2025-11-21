@@ -55,6 +55,10 @@ import Demo from "./pages/Demo";
 import { BusinessType } from "./pages/BusinessType";
 import { ProductsOverview } from "./pages/ProductsOverview";
 import { ProductDetail } from "./pages/ProductDetail";
+import Legal from "./pages/Legal";
+import Privacy from "./pages/Privacy";
+import Cookies from "./pages/Cookies";
+import Payments from "./pages/Payments";
 
 const queryClient = new QueryClient();
 
@@ -152,6 +156,10 @@ const AppContent = () => {
         <Route path="/neuralpositive/about" element={<AboutNeuralPositive />} />
         <Route path="/neuralpositive/story" element={<CompanyStory />} />
         <Route path="/neuralpositive/research" element={<ResearchPage />} />
+        <Route path="/legal" element={<Legal />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/payments" element={<Payments />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />
