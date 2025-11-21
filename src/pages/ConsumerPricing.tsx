@@ -41,6 +41,24 @@ export const ConsumerPricing = () => {
       specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
     },
     {
+      name: "Lovable User Special",
+      priceMonthly: "$2.99",
+      priceYearly: null,
+      period: "per user per month",
+      description: "Bundle: Web app + iOS & Android subscriptions • Annual contracts • Minimum 40 users",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Employee wellness dashboard",
+        "Usage analytics & reporting",
+        "Priority customer support",
+        "Sync across all devices",
+        "Admin management tools"
+      ],
+      cta: "Contact Sales",
+      badge: "Lovable Users Only",
+      specialOffer: 'Limited time offer • Valid until December 10th only'
+    },
+    {
       name: "First Responder",
       priceMonthly: null,
       priceYearly: "$25.99",
@@ -86,7 +104,7 @@ export const ConsumerPricing = () => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
             {plans.map((plan, index) => (
               <div
                 key={index}
