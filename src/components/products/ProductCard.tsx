@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import type { Product } from '@/data/products';
+import { FooterContactHandler } from '@/components/FooterContactHandler';
 
 interface ProductCardProps {
   product: Product;
@@ -10,17 +12,42 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, index, backgroundImage }: ProductCardProps) => {
   const Icon = product.icon;
+  const navigate = useNavigate();
+  const [contactOpen, setContactOpen] = useState(false);
+  const [interestType, setInterestType] = useState("");
+
+  const handleCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Different actions based on product type
+    if (product.id === 'consumer') {
+      navigate('/app-download');
+    } else if (product.id === 'environmental') {
+      setInterestType('Environmental & Background Music');
+      setContactOpen(true);
+    } else if (product.id === 'population-health') {
+      setInterestType('Clinical Consultation');
+      setContactOpen(true);
+    } else if (product.id === 'enterprise-wellness') {
+      setInterestType('Enterprise Wellness');
+      setContactOpen(true);
+    } else if (product.id === 'partnerships') {
+      setInterestType('Partnership');
+      setContactOpen(true);
+    }
+  };
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-    >
-      <Link
-        to={product.path}
-        className="group relative block p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02]"
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: index * 0.1 }}
+      >
+        <div
+          className="group relative block p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02] cursor-pointer"
         style={{
           background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.95) 100%)',
           backdropFilter: 'blur(40px)',
@@ -73,15 +100,35 @@ export const ProductCard = ({ product, index, backgroundImage }: ProductCardProp
           </p>
 
           {/* CTA */}
-          <div 
-            className="flex items-center gap-2 font-medium text-sm group-hover:gap-3 transition-all"
-            style={{ color: 'rgba(228, 228, 228, 0.85)' }}
+          <button
+            onClick={handleCTAClick}
+            className="flex items-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
+            style={{ 
+              color: 'rgba(228, 228, 228, 0.90)',
+              background: 'rgba(228, 228, 228, 0.08)',
+              border: '1px solid rgba(228, 228, 228, 0.15)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(228, 228, 228, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.25)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
+              e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.15)';
+            }}
           >
             {product.cta}
             <span>→</span>
-          </div>
+          </button>
         </div>
-      </Link>
+      </div>
     </motion.div>
+
+    <FooterContactHandler
+      isOpen={contactOpen}
+      onClose={() => setContactOpen(false)}
+      interestType={interestType}
+    />
+  </>
   );
 };
