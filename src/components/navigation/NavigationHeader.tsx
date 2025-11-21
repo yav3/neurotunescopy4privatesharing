@@ -35,76 +35,54 @@ export const NavigationHeader = () => {
     <>
       {/* Desktop Navigation */}
       <header 
-        className="hidden md:flex items-center justify-between px-8 py-6 fixed top-0 left-0 right-0 z-50"
+        className="hidden md:flex items-center justify-between px-6 lg:px-8 py-5 lg:py-6 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center"
         style={{
           backgroundImage: `url(${headerChromeTexture})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundColor: '#0A0A0C',
         }}
       >
         {/* Solid obsidian overlay - fully opaque */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.98) 0%, rgba(10, 10, 12, 0.95) 100%)',
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-obsidian/98 to-obsidian/95" />
         
         {/* Chrome highlight at bottom edge */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-px"
-          style={{ background: 'rgba(255, 255, 255, 0.10)' }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
 
         {/* Left: Logo */}
         <Link to="/" className="flex flex-col relative z-10">
-          <span className="text-xl font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
+          <span className="text-lg lg:text-xl font-light tracking-tight text-platinum-glow/90">
             +NeuroTunes
           </span>
-          <span className="text-[10px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+          <span className="text-[9px] lg:text-[10px] font-light tracking-wide text-platinum-glow/65">
             by Neuralpositive
           </span>
         </Link>
 
         {/* Center: Menu Items */}
-        <nav className="flex items-center gap-8 relative z-10">
+        <nav className="flex items-center gap-6 lg:gap-8 relative z-10">
           <div
             className="relative"
             onMouseEnter={() => setShowSolutionsMega(true)}
             onMouseLeave={() => setShowSolutionsMega(false)}
           >
             <button 
-              className="text-base font-light transition-colors"
-              style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+              className="text-sm lg:text-base font-light transition-colors text-platinum-glow/88 hover:text-platinum-glow"
             >
               Solutions
             </button>
 
             {/* Mega Menu */}
             {showSolutionsMega && (
-              <div 
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[920px]"
-              >
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[920px]">
                 <div
-                  className="rounded-2xl overflow-hidden"
+                  className="rounded-2xl overflow-hidden backdrop-blur-2xl border border-platinum-glow/12 shadow-[0_0_60px_rgba(228,228,228,0.04),0_30px_80px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(228,228,228,0.08)]"
                   style={{
                     background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 0.98) 100%)',
-                    backdropFilter: 'blur(24px)',
-                    border: '1px solid rgba(228, 228, 228, 0.12)',
-                    boxShadow: '0 0 60px rgba(255, 255, 255, 0.04), 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
                   }}
-              >
+                >
                   <div className="p-10">
                   <div className="grid grid-cols-3 gap-10">
                     {/* Column 1: Enterprise Solutions */}
                     <div>
-                      <h3 
-                        className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
-                      >
+                      <h3 className="text-xs lg:text-sm font-semibold uppercase tracking-wider mb-4 lg:mb-5 text-platinum-glow/92">
                         Enterprise Solutions
                       </h3>
                       <div className="space-y-3">
@@ -122,10 +100,7 @@ export const NavigationHeader = () => {
 
                     {/* Column 2: Products */}
                     <div>
-                      <h3 
-                        className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
-                      >
+                      <h3 className="text-xs lg:text-sm font-semibold uppercase tracking-wider mb-4 lg:mb-5 text-platinum-glow/92">
                         Products
                       </h3>
                       <div className="space-y-3">
@@ -143,10 +118,7 @@ export const NavigationHeader = () => {
 
                     {/* Column 3: Integrations */}
                     <div>
-                      <h3 
-                        className="text-sm font-semibold uppercase tracking-wider mb-5"
-                        style={{ color: 'rgba(228, 228, 228, 0.92)' }}
-                      >
+                      <h3 className="text-xs lg:text-sm font-semibold uppercase tracking-wider mb-4 lg:mb-5 text-platinum-glow/92">
                         Integrations
                       </h3>
                       <div className="space-y-3">
@@ -164,25 +136,9 @@ export const NavigationHeader = () => {
                   </div>
 
                   {/* Bottom CTA */}
-                  <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(228, 228, 228, 0.12)' }}>
+                  <div className="mt-10 pt-8 border-t border-platinum-glow/12">
                     <Link to="/products">
-                      <button 
-                        className="w-full py-3 rounded-lg text-sm font-medium text-white transition-all"
-                        style={{
-                          border: '1px solid rgba(228, 228, 228, 0.18)',
-                          background: 'transparent',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                          e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
-                          e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.10)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent';
-                          e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                          e.currentTarget.style.boxShadow = 'none';
-                        }}
-                      >
+                      <button className="w-full py-3 rounded-lg text-sm font-medium text-white transition-all border border-platinum-glow/18 bg-transparent hover:bg-white/8 hover:border-platinum-glow/35 hover:shadow-[0_0_20px_rgba(255,255,255,0.10)]">
                         View All Solutions →
                       </button>
                     </Link>
@@ -198,10 +154,7 @@ export const NavigationHeader = () => {
               setInterestType("Enterprise");
               setContactOpen(true);
             }}
-            className="text-base font-light transition-colors"
-            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+            className="text-sm lg:text-base font-light transition-colors text-platinum-glow/88 hover:text-platinum-glow"
           >
             Enterprise
           </button>
@@ -211,10 +164,7 @@ export const NavigationHeader = () => {
               setInterestType("Licensing");
               setContactOpen(true);
             }}
-            className="text-base font-light transition-colors"
-            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+            className="text-sm lg:text-base font-light transition-colors text-platinum-glow/88 hover:text-platinum-glow"
           >
             Licensing
           </button>
@@ -224,10 +174,7 @@ export const NavigationHeader = () => {
               setInterestType("Research");
               setContactOpen(true);
             }}
-            className="text-base font-light transition-colors"
-            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+            className="text-sm lg:text-base font-light transition-colors text-platinum-glow/88 hover:text-platinum-glow"
           >
             Research
           </button>
@@ -237,46 +184,19 @@ export const NavigationHeader = () => {
               setInterestType("Partners");
               setContactOpen(true);
             }}
-            className="text-base font-light transition-colors"
-            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+            className="text-sm lg:text-base font-light transition-colors text-platinum-glow/88 hover:text-platinum-glow"
           >
             Partners
           </button>
         </nav>
 
         {/* Right: Auth + CTA */}
-        <div className="flex items-center gap-6 relative z-10">
-          <Link to="/auth" className="text-base font-light" style={{ color: 'rgba(228, 228, 228, 0.86)' }}>
-            <span 
-              className="transition-colors"
-              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.86)'}
-            >
-              Log in
-            </span>
+        <div className="flex items-center gap-4 lg:gap-6 relative z-10">
+          <Link to="/auth" className="text-sm lg:text-base font-light text-platinum-glow/86 hover:text-platinum-glow transition-colors">
+            Log in
           </Link>
           <Link to="/demo">
-            <button 
-              className="px-7 py-3 rounded-full text-sm font-medium transition-all"
-              style={{
-                background: 'rgba(10, 10, 12, 0.85)',
-                border: '1px solid rgba(228, 228, 228, 0.18)',
-                color: 'rgba(228, 228, 228, 0.90)',
-                boxShadow: '0 0 24px rgba(228, 228, 228, 0.10), inset 0 1px 0 rgba(228, 228, 228, 0.06)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(19, 20, 22, 0.90)';
-                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.32)';
-                e.currentTarget.style.boxShadow = '0 0 40px rgba(228, 228, 228, 0.18), inset 0 1px 0 rgba(228, 228, 228, 0.10)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(10, 10, 12, 0.85)';
-                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                e.currentTarget.style.boxShadow = '0 0 24px rgba(228, 228, 228, 0.10), inset 0 1px 0 rgba(228, 228, 228, 0.06)';
-              }}
-            >
+            <button className="px-5 lg:px-7 py-2.5 lg:py-3 rounded-full text-xs lg:text-sm font-medium transition-all bg-obsidian/85 border border-platinum-glow/18 text-platinum-glow/90 shadow-[0_0_24px_rgba(228,228,228,0.10),inset_0_1px_0_rgba(228,228,228,0.06)] hover:bg-obsidian-graphite/90 hover:border-platinum-glow/32 hover:shadow-[0_0_40px_rgba(228,228,228,0.18),inset_0_1px_0_rgba(228,228,228,0.10)]">
               See Samples
             </button>
           </Link>
@@ -285,33 +205,22 @@ export const NavigationHeader = () => {
 
       {/* Mobile Navigation */}
       <header 
-        className="md:hidden flex items-center justify-between px-4 py-4 fixed top-0 left-0 right-0 z-50"
+        className="md:hidden flex items-center justify-between px-4 py-4 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center"
         style={{
           backgroundImage: `url(${headerChromeTexture})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundColor: '#0A0A0C',
         }}
       >
         {/* Solid obsidian overlay - fully opaque */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.98) 0%, rgba(10, 10, 12, 0.95) 100%)',
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-obsidian/98 to-obsidian/95" />
         
         {/* Chrome highlight at bottom edge */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-px"
-          style={{ background: 'rgba(255, 255, 255, 0.10)' }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
         
         <Link to="/" className="flex flex-col relative z-10">
-          <span className="text-lg font-light tracking-tight" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
+          <span className="text-base sm:text-lg font-light tracking-tight text-platinum-glow/90">
             +NeuroTunes
           </span>
-          <span className="text-[9px] font-light tracking-wide" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+          <span className="text-[8px] sm:text-[9px] font-light tracking-wide text-platinum-glow/65">
             by Neuralpositive
           </span>
         </Link>
@@ -335,15 +244,10 @@ export const NavigationHeader = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div 
-          className="md:hidden fixed inset-0 top-[57px] z-40 overflow-y-auto"
-          style={{
-            background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 1) 100%)',
-          }}
-        >
+        <div className="md:hidden fixed inset-0 top-[57px] z-40 overflow-y-auto bg-gradient-to-br from-obsidian/98 to-obsidian-graphite">
           <div className="p-6 space-y-8">
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4 text-platinum-glow/92">
                 Enterprise Solutions
               </h3>
               <div className="space-y-3">
@@ -361,7 +265,7 @@ export const NavigationHeader = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4 text-platinum-glow/92">
                 Products
               </h3>
               <div className="space-y-3">
@@ -379,7 +283,7 @@ export const NavigationHeader = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
+              <h3 className="text-sm font-semibold uppercase tracking-wider mb-4 text-platinum-glow/92">
                 Integrations
               </h3>
               <div className="space-y-3">
@@ -396,7 +300,7 @@ export const NavigationHeader = () => {
               </div>
             </div>
 
-            <div className="pt-6 space-y-4" style={{ borderTop: '1px solid rgba(228, 228, 228, 0.12)' }}>
+            <div className="pt-6 space-y-4 border-t border-platinum-glow/12">
               <button
                 onClick={() => {
                   setInterestType("Enterprise");
@@ -447,14 +351,7 @@ export const NavigationHeader = () => {
             </div>
 
             <Link to="/demo" onClick={() => setMobileMenuOpen(false)}>
-              <button 
-                className="w-full px-6 py-3 rounded-full text-sm font-medium text-white"
-                style={{
-                  background: 'rgba(10, 10, 12, 0.80)',
-                  border: '1px solid rgba(228, 228, 228, 0.14)',
-                  boxShadow: '0 0 20px rgba(255, 255, 255, 0.08)',
-                }}
-              >
+              <button className="w-full px-6 py-3 rounded-full text-sm font-medium text-white bg-obsidian/80 border border-platinum-glow/14 shadow-[0_0_20px_rgba(255,255,255,0.08)]">
                 See Samples
               </button>
             </Link>

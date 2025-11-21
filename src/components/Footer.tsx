@@ -16,48 +16,42 @@ export const Footer = () => {
 
   return (
     <>
-      <footer className="relative text-white border-t" style={{ 
-        backgroundColor: '#050607',
-        borderColor: 'rgba(255, 255, 255, 0.08)'
-      }}>
-        <div className="max-w-7xl mx-auto px-6 py-16">
+      <footer className="relative text-foreground border-t border-white/8 bg-[#050607]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           
           {/* Tagline Section */}
-          <div className="text-center mb-12 px-4">
-            <p className="text-[10px] sm:text-xs md:text-sm text-white/50 tracking-wide leading-relaxed">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <p className="text-[11px] sm:text-xs md:text-sm text-white/50 tracking-wide leading-relaxed max-w-4xl mx-auto">
               by Neuralpositive • Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
             </p>
           </div>
 
-          {/* Logos Section */}
-          <div className="flex items-center justify-center gap-4 mb-16">
-            <span className="text-sm text-white/30 uppercase tracking-widest">Supported by</span>
+          {/* Logos Section - Fixed mobile wrapping */}
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-12 sm:mb-14 md:mb-16 max-w-3xl mx-auto">
+            <span className="text-xs sm:text-sm text-white/30 uppercase tracking-widest w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0">Supported by</span>
             <img 
               src={jacobsTechnionLogo} 
               alt="Jacobs Technion-Cornell" 
-              className="h-8 opacity-50 hover:opacity-100 transition-all duration-300"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
             <img 
               src={stanfordLogo} 
               alt="Stanford Medicine" 
-              className="h-8 opacity-50 hover:opacity-100 transition-all duration-300"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
             <img 
               src={weillCornellLogo} 
               alt="Weill Cornell Medicine" 
-              className="h-8 opacity-50 hover:opacity-100 transition-all duration-300"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="h-6 sm:h-7 md:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
           </div>
 
           {/* Main Links Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 mb-12 sm:mb-16">
             
             {/* PRODUCT */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Product
               </h3>
               <ul className="space-y-2.5">
@@ -69,7 +63,7 @@ export const Footer = () => {
 
             {/* RESOURCES */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Resources
               </h3>
               <ul className="space-y-2.5">
@@ -82,7 +76,7 @@ export const Footer = () => {
 
             {/* COMPANY */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Company
               </h3>
               <ul className="space-y-2.5">
@@ -95,7 +89,7 @@ export const Footer = () => {
 
             {/* LEGAL */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Legal
               </h3>
               <ul className="space-y-2.5">
@@ -108,7 +102,7 @@ export const Footer = () => {
 
             {/* SUPPORT */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Support
               </h3>
               <ul className="space-y-2.5">
@@ -121,7 +115,7 @@ export const Footer = () => {
 
             {/* LANGUAGE */}
             <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              <h3 className="text-xs font-semibold uppercase tracking-widest mb-3 sm:mb-4 text-white/90">
                 Language
               </h3>
               <ul className="space-y-2.5">
@@ -134,9 +128,9 @@ export const Footer = () => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t" style={{ borderColor: 'rgba(255, 255, 255, 0.08)' }}>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-white/30">
+          <div className="pt-6 sm:pt-8 border-t border-white/8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-xs sm:text-sm text-white/30">
                 © {new Date().getFullYear()} NeuroPositive Tech, Inc. All rights reserved.
               </p>
               <div className="flex items-center gap-6">

@@ -42,84 +42,48 @@ const Index = () => {
           <source src={chromeHeroBg} type="video/mp4" />
         </video>
         
-        {/* Dark obsidian overlay - rgba(0,0,0,0.45) */}
-        <div 
-          className="absolute inset-0" 
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.45)' }}
-        />
+        {/* Dark obsidian overlay */}
+        <div className="absolute inset-0 bg-black/45" />
         
         {/* Platinum vignette at edges */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(228, 228, 228, 0.04) 70%, rgba(10, 10, 12, 0.7) 100%)'
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-obsidian/70" />
       </div>
 
-      {/* Stable dark gradient behind navbar - top 160px */}
-      <div 
-        className="fixed top-0 left-0 right-0 h-[160px] z-[5] pointer-events-none"
-        style={{
-          background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.98) 0%, rgba(10, 10, 12, 0.85) 50%, transparent 100%)'
-        }}
-      />
+      {/* Stable dark gradient behind navbar */}
+      <div className="fixed top-0 left-0 right-0 h-32 md:h-40 z-[5] pointer-events-none bg-gradient-to-b from-obsidian/98 via-obsidian/85 to-transparent" />
 
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col">
+      <div className="relative z-10 flex flex-col min-h-screen">
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Compact cinematic */}
-        <div className="relative max-h-[72vh] min-h-[400px] md:min-h-[600px] flex items-center justify-center px-4 md:px-6 pt-20 md:pt-28">
+        {/* Hero Section - Constrained and centered */}
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+          <div className="relative w-full max-w-4xl mx-auto">
+            {/* Chrome curves accent */}
+            <div 
+              className="absolute inset-0 opacity-[0.04] pointer-events-none bg-cover bg-center mix-blend-screen"
+              style={{ backgroundImage: `url(${chromeCurves})` }}
+            />
 
-          {/* Chrome curves accent */}
-          <div 
-            className="absolute inset-0 opacity-[0.04] pointer-events-none"
-            style={{
-              backgroundImage: `url(${chromeCurves})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              mixBlendMode: 'screen',
-            }}
-          />
-
-          {/* Radial darkening fade for readability */}
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at center, rgba(0, 0, 0, 0.6) 0%, transparent 60%)',
-            }}
-          />
-          
-          {/* Premium Glass Panel with chrome edge glow */}
-          <motion.div
-            className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-auto px-8 py-6 md:px-16 md:py-10 lg:px-20 lg:py-12 rounded-[32px] md:rounded-[40px]"
-            style={{
-              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) inset',
-            }}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            {/* Title: Baseline-aligned with proper hierarchy */}
-            <div className="flex flex-col items-center">
-              <h1 
-                className="font-light tracking-[-0.02em] text-3xl md:text-5xl lg:text-6xl"
-                style={{
-                  lineHeight: '1.15',
-                  color: 'rgba(228, 228, 228, 0.95)',
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                }}
-              >
+            {/* Radial darkening fade for readability */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-radial from-black/60 via-transparent to-transparent" />
+            
+            {/* Premium Glass Panel with chrome edge glow */}
+            <motion.div
+              className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-fit px-8 py-6 sm:px-12 sm:py-8 md:px-16 md:py-10 lg:px-20 lg:py-12 rounded-3xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.08)_inset]"
+              style={{
+                background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 100%)',
+              }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              <h1 className="font-light tracking-[-0.02em] text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.15] text-platinum-glow/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
                 +NeuroTunes
               </h1>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
