@@ -19,6 +19,12 @@ serve(async (req) => {
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
 
+    // Transform messages to Anthropic format and extract system message
+    const anthropicMessages = messages.map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -50,7 +56,7 @@ Conversation Style:
 - Professional yet approachable
 - Use pearl grey tone matching the obsidian aesthetic
 - Always end with a helpful question or next step`,
-        messages: messages,
+        messages: anthropicMessages,
         stream: true,
       }),
     });
@@ -61,7 +67,59 @@ Conversation Style:
       throw new Error(`Claude API error: ${response.status}`);
     }
 
-    return new Response(response.body, {
+    // Transform Anthropic SSE to OpenAI format for frontend compatibility
+    const transformedStream = new ReadableStream({
+      async start(controller) {
+        const reader = response.body?.getReader();
+        if (!reader) return;
+
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') continue;
+
+                try {
+                  const parsed = JSON.parse(data);
+                  
+                  // Handle Anthropic's content_block_delta events
+                  if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                    const openAIFormat = {
+                      choices: [{
+                        delta: {
+                          content: parsed.delta.text
+                        }
+                      }]
+                    };
+                    controller.enqueue(encoder.encode(`data: ${JSON.stringify(openAIFormat)}\n\n`));
+                  }
+                } catch (e) {
+                  // Skip invalid JSON
+                }
+              }
+            }
+          }
+          
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.close();
+        } catch (error) {
+          console.error('Stream transform error:', error);
+          controller.error(error);
+        }
+      }
+    });
+
+    return new Response(transformedStream, {
       headers: {
         ...corsHeaders,
         'Content-Type': 'text/event-stream',
