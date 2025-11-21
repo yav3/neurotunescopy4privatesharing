@@ -57,7 +57,6 @@ export const Footer = () => {
                 <li><Link to="/demo" className="text-sm text-white/50 hover:text-white transition-colors">Demo</Link></li>
                 <li><Link to="/pricing" className="text-sm text-white/50 hover:text-white transition-colors">Pricing</Link></li>
                 <li><Link to="/download" className="text-sm text-white/50 hover:text-white transition-colors">App Download</Link></li>
-                <li><Link to="/library" className="text-sm text-white/50 hover:text-white transition-colors">Playlist Library</Link></li>
               </ul>
             </div>
 
@@ -83,7 +82,6 @@ export const Footer = () => {
                 <li><Link to="/story" className="text-sm text-white/50 hover:text-white transition-colors">Our Story</Link></li>
                 <li><Link to="/team" className="text-sm text-white/50 hover:text-white transition-colors">Leadership</Link></li>
                 <li><button onClick={() => openContact('General')} className="text-sm text-white/50 hover:text-white transition-colors text-left">Contact</button></li>
-                <li><Link to="/careers" className="text-sm text-white/50 hover:text-white transition-colors">Careers</Link></li>
                 <li><Link to="/partners" className="text-sm text-white/50 hover:text-white transition-colors">Partners</Link></li>
               </ul>
             </div>
