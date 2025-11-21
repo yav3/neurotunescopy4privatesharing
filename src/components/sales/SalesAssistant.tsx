@@ -188,7 +188,7 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
 
       {isOpen && (
         <div 
-          className="fixed bottom-6 right-6 w-96 h-[600px] rounded-2xl flex flex-col z-50 overflow-hidden"
+          className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:w-96 h-[100dvh] sm:h-[600px] sm:rounded-2xl flex flex-col z-50 overflow-hidden"
           style={{
             background: '#0A0A0C',
             backdropFilter: 'blur(40px)',
@@ -206,7 +206,7 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
 
           {/* Header */}
           <div 
-            className="relative flex items-center justify-between px-6 py-4"
+            className="relative flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4"
             style={{
               borderBottom: '1px solid rgba(228, 228, 228, 0.10)',
             }}
@@ -239,7 +239,7 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
           </div>
 
           {/* Messages */}
-          <div className="relative flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="relative flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -309,7 +309,7 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
 
           {/* Input */}
           <div 
-            className="relative p-6"
+            className="relative p-4 sm:p-6"
             style={{
               borderTop: '1px solid rgba(228, 228, 228, 0.10)',
             }}
