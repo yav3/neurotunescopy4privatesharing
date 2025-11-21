@@ -205,7 +205,7 @@ export const NavigationHeader = () => {
 
       {/* Mobile Navigation */}
       <header 
-        className="md:hidden flex items-center justify-between px-4 py-4 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center"
+        className="md:hidden flex items-center justify-between px-5 py-4 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center"
         style={{
           backgroundImage: `url(${headerChromeTexture})`,
         }}
@@ -217,26 +217,26 @@ export const NavigationHeader = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
         
         <Link to="/" className="flex flex-col relative z-10">
-          <span className="text-base sm:text-lg font-light tracking-tight text-platinum-glow/90">
+          <span className="text-lg font-light tracking-tight text-platinum-glow/90">
             +NeuroTunes
           </span>
-          <span className="text-[8px] sm:text-[9px] font-light tracking-wide text-platinum-glow/65">
+          <span className="text-[9px] font-light tracking-wide text-platinum-glow/65">
             by Neuralpositive
           </span>
         </Link>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 relative z-10"
+          className="p-2 relative z-10 flex-shrink-0"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
             <X className="w-6 h-6 text-white" />
           ) : (
-            <div className="flex flex-col gap-1.5">
-              <div className="w-6 h-0.5 bg-white" />
-              <div className="w-6 h-0.5 bg-white" />
-              <div className="w-6 h-0.5 bg-white" />
+            <div className="flex flex-col gap-1.5 w-6">
+              <div className="w-full h-0.5 bg-white" />
+              <div className="w-full h-0.5 bg-white" />
+              <div className="w-full h-0.5 bg-white" />
             </div>
           )}
         </button>
