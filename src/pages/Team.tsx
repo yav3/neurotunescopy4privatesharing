@@ -1,6 +1,6 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import teamLeadershipImage from '@/assets/team-leadership.png';
+import teamLeadershipImage from '@/assets/team-leadership-black.png';
 
 export const Team = () => {
   return (
