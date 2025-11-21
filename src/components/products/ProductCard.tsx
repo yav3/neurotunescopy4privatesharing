@@ -20,48 +20,76 @@ export const ProductCard = ({ product, index, backgroundImage }: ProductCardProp
     >
       <Link
         to={product.path}
-        className="group relative block p-8 rounded-2xl glass-card border border-border/50 hover:border-primary/30 transition-all hover:scale-105 overflow-hidden"
+        className="group relative block p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02]"
+        style={{
+          background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.95) 100%)',
+          backdropFilter: 'blur(40px)',
+          border: '1px solid rgba(228, 228, 228, 0.12)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        }}
       >
-        {/* Background Image */}
+        {/* Chrome Background Texture */}
         {backgroundImage && (
-          <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
-            <img src={backgroundImage} alt="" className="w-full h-full object-cover" />
-          </div>
+          <div 
+            className="absolute inset-0 opacity-[0.15] group-hover:opacity-[0.25] transition-opacity pointer-events-none"
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              mixBlendMode: 'screen',
+            }}
+          />
         )}
         
         {/* Content */}
         <div className="relative z-10">
-        {/* Icon */}
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 border border-primary/30 flex items-center justify-center mb-6 group-hover:scale-110 transition">
-          <Icon className="h-7 w-7 text-primary" />
-        </div>
+          {/* Icon */}
+          <div 
+            className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition"
+            style={{
+              background: 'rgba(228, 228, 228, 0.08)',
+              border: '1px solid rgba(228, 228, 228, 0.15)',
+            }}
+          >
+            <Icon className="h-7 w-7" style={{ color: 'rgba(228, 228, 228, 0.85)' }} />
+          </div>
 
-        {/* Title */}
-        <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition">
-          {product.title}
-        </h3>
-        
-        {/* Tagline */}
-        <p className="text-sm text-primary mb-3">
-          {product.tagline}
-        </p>
-        
-        {/* Description */}
-        <p className="text-muted-foreground text-sm mb-4">
-          {product.description}
-        </p>
+          {/* Title */}
+          <h3 
+            className="text-xl font-light mb-2 group-hover:opacity-100 transition"
+            style={{ color: 'rgba(228, 228, 228, 0.95)' }}
+          >
+            {product.title}
+          </h3>
+          
+          {/* Tagline */}
+          <p className="text-sm font-light mb-3" style={{ color: 'rgba(228, 228, 228, 0.75)' }}>
+            {product.tagline}
+          </p>
+          
+          {/* Description */}
+          <p className="text-sm font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)', lineHeight: '1.6' }}>
+            {product.description}
+          </p>
 
-        {/* Pricing */}
-        <div className="mb-6">
-          <p className="text-xs text-muted-foreground mb-1">{product.pricing.model}</p>
-          <p className="text-foreground font-semibold text-sm">{product.pricing.starting}</p>
-        </div>
+          {/* Pricing */}
+          <div className="mb-6">
+            <p className="text-xs font-light mb-1" style={{ color: 'rgba(228, 228, 228, 0.55)' }}>
+              {product.pricing.model}
+            </p>
+            <p className="font-medium text-sm" style={{ color: 'rgba(228, 228, 228, 0.90)' }}>
+              {product.pricing.starting}
+            </p>
+          </div>
 
-        {/* CTA */}
-        <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
-          {product.cta}
-          <span>→</span>
-        </div>
+          {/* CTA */}
+          <div 
+            className="flex items-center gap-2 font-medium text-sm group-hover:gap-3 transition-all"
+            style={{ color: 'rgba(228, 228, 228, 0.85)' }}
+          >
+            {product.cta}
+            <span>→</span>
+          </div>
         </div>
       </Link>
     </motion.div>

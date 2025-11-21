@@ -3,41 +3,56 @@ import { ProductCard } from '@/components/products/ProductCard';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import productBg1 from '@/assets/product-bg-1.png';
-import productBg2 from '@/assets/product-bg-2.png';
-import productBg3 from '@/assets/product-bg-3.png';
+import chromeBg1 from '@/assets/chrome-bg-1.png';
+import chromeBg2 from '@/assets/chrome-bg-2.png';
+import chromeBg3 from '@/assets/chrome-bg-3.png';
+import chromeHeroBg from '@/assets/chrome-hero-bg-slow.gif';
 
 export const ProductsOverview = () => {
-  const cardBackgrounds = [productBg1, productBg2, productBg3, productBg1, productBg2];
+  const cardBackgrounds = [chromeBg1, chromeBg2, chromeBg3, chromeBg1, chromeBg2];
   
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen relative">
       <NavigationHeader />
       
-      {/* Background with layered teal waves */}
+      {/* Premium Chrome Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-background" />
-        <div className="absolute inset-0 opacity-40">
-          <img src={productBg1} alt="" className="absolute top-0 left-0 w-full h-1/3 object-cover mix-blend-screen" />
-          <img src={productBg2} alt="" className="absolute top-1/3 left-0 w-full h-1/3 object-cover mix-blend-screen" />
-          <img src={productBg3} alt="" className="absolute top-2/3 left-0 w-full h-1/3 object-cover mix-blend-screen" />
+        {/* Base chrome liquid */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${chromeHeroBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            animation: 'slowChrome 100s linear infinite',
+          }}
+        />
+        
+        {/* Dark overlay for readability */}
+        <div 
+          className="absolute inset-0"
+          style={{ 
+            background: 'linear-gradient(180deg, rgba(10, 10, 12, 0.75) 0%, rgba(10, 10, 12, 0.85) 50%, rgba(10, 10, 12, 0.75) 100%)'
+          }}
+        />
+        
+        {/* Chrome texture overlay */}
+        <div className="absolute inset-0 opacity-[0.08]">
+          <img src={chromeBg2} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-screen" />
         </div>
-        <div className="absolute inset-0 backdrop-blur-3xl bg-gradient-to-br from-cyan-950/30 via-background/50 to-teal-950/30" />
       </div>
       
-      <section className="relative z-10 py-24 px-6">
+      <section className="relative z-10 py-32 px-6">
         <div className="max-w-7xl mx-auto">
           
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl md:text-5xl font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.95)' }}>
               Choose the right solution
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-400">
-                for your needs
-              </span>
+              for your needs
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl font-light max-w-2xl mx-auto" style={{ color: 'rgba(228, 228, 228, 0.75)' }}>
               Clinical-grade therapeutic music deployed across multiple platforms and scales
             </p>
           </div>
@@ -56,8 +71,26 @@ export const ProductsOverview = () => {
 
           {/* Not Sure? */}
           <div className="mt-16 text-center">
-            <p className="text-muted-foreground mb-4">Not sure which solution fits your needs?</p>
-            <button className="px-8 py-3 border border-border text-foreground rounded-xl hover:bg-accent transition">
+            <p className="font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.75)' }}>
+              Not sure which solution fits your needs?
+            </p>
+            <button 
+              className="px-8 py-3 rounded-2xl text-sm font-medium transition-all backdrop-blur-xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.10)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: 'rgba(255, 255, 255, 0.90)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.20)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.10)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+              }}
+            >
               Chat with Sales Assistant
             </button>
           </div>
