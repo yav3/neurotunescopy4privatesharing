@@ -64,12 +64,13 @@ const Index = () => {
         {/* Main centered content - Full viewport */}
         <div className="flex-1 flex items-center justify-center px-6 min-h-screen">
           <motion.div
-            className="text-center"
+            className="text-center flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <h1 className="text-7xl sm:text-8xl lg:text-[10rem] font-normal text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-cyan-300 to-teal-400 leading-none tracking-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extralight text-transparent bg-clip-text bg-gradient-to-br from-gray-100 via-cyan-400 to-teal-300 leading-none tracking-wide flex items-center gap-2">
+              <span className="text-cyan-400/80 font-light">+</span>
               NeuroTunes
             </h1>
           </motion.div>
