@@ -23,8 +23,8 @@ export const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 py-16">
           
           {/* Tagline Section */}
-          <div className="text-center mb-12">
-            <p className="text-sm text-white/50 tracking-wide">
+          <div className="text-center mb-12 px-4">
+            <p className="text-[10px] sm:text-xs md:text-sm text-white/50 tracking-wide leading-relaxed">
               by Neuralpositive • Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
             </p>
           </div>
