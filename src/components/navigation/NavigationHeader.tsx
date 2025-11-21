@@ -90,15 +90,18 @@ export const NavigationHeader = () => {
             {/* Mega Menu */}
             {showSolutionsMega && (
               <div 
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[920px] rounded-2xl overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 0.98) 100%)',
-                  backdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(228, 228, 228, 0.12)',
-                  boxShadow: '0 0 60px rgba(255, 255, 255, 0.04), 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-                }}
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[920px]"
               >
-                <div className="p-10">
+                <div
+                  className="rounded-2xl overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.98) 0%, rgba(19, 20, 22, 0.98) 100%)',
+                    backdropFilter: 'blur(24px)',
+                    border: '1px solid rgba(228, 228, 228, 0.12)',
+                    boxShadow: '0 0 60px rgba(255, 255, 255, 0.04), 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+                  }}
+              >
+                  <div className="p-10">
                   <div className="grid grid-cols-3 gap-10">
                     {/* Column 1: Enterprise Solutions */}
                     <div>
@@ -188,6 +191,7 @@ export const NavigationHeader = () => {
                       </button>
                     </Link>
                   </div>
+                </div>
                 </div>
               </div>
             )}
