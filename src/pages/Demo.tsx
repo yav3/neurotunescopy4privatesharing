@@ -6,14 +6,13 @@ import { Footer } from "@/components/Footer";
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Play, Pause, Brain, Heart, Moon, Zap, Wind, Smile } from "lucide-react";
 import { useAudioStore } from "@/stores";
-import relaxationCard from "@/assets/relaxation-card.png";
+import { TherapeuticSessionsCarousel } from "@/components/demo/TherapeuticSessionsCarousel";
 
 interface TherapeuticSession {
   id: string;
   title: string;
   description: string;
   longDescription: string;
-  image: string;
   icon: any;
   benefits: string[];
   sampleTrack: {
@@ -30,7 +29,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Enhanced Focus",
     description: "Boost concentration and mental clarity",
     longDescription: "Our focus-enhancing compositions use specific frequencies and rhythmic patterns proven to increase attention span and cognitive performance. Perfect for work, study, or any task requiring sustained concentration.",
-    image: relaxationCard,
     icon: Brain,
     benefits: [
       "Improved concentration and attention span",
@@ -50,7 +48,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Stress Relief",
     description: "Release tension and find calm",
     longDescription: "Scientifically designed to lower cortisol levels and activate your parasympathetic nervous system. These compositions help you transition from stress to serenity through carefully crafted harmonics.",
-    image: relaxationCard,
     icon: Heart,
     benefits: [
       "Reduced cortisol levels",
@@ -70,7 +67,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Deep Sleep",
     description: "Achieve restorative rest",
     longDescription: "Experience sleep-inducing delta wave frequencies combined with gentle melodies that guide your brain into deep, restorative sleep states. Improve both sleep quality and duration naturally.",
-    image: relaxationCard,
     icon: Moon,
     benefits: [
       "Faster sleep onset",
@@ -90,7 +86,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Natural Energy",
     description: "Revitalize mind and body",
     longDescription: "Energizing compositions featuring uplifting rhythms and stimulating frequencies that naturally boost alertness and motivation without artificial stimulants.",
-    image: relaxationCard,
     icon: Zap,
     benefits: [
       "Increased alertness and vitality",
@@ -110,7 +105,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Meditation Support",
     description: "Deepen your practice",
     longDescription: "Theta wave compositions designed to facilitate deeper meditative states and enhance mindfulness practice. Perfect for both beginners and experienced meditators.",
-    image: relaxationCard,
     icon: Wind,
     benefits: [
       "Easier access to meditative states",
@@ -130,7 +124,6 @@ const therapeuticSessions: TherapeuticSession[] = [
     title: "Mood Elevation",
     description: "Uplift your emotional state",
     longDescription: "Carefully composed music that stimulates positive neurotransmitter release, helping to naturally elevate mood and emotional well-being throughout your day.",
-    image: relaxationCard,
     icon: Smile,
     benefits: [
       "Increased positive emotions",
@@ -171,7 +164,7 @@ const Demo = () => {
         id: session.id,
         title: session.sampleTrack.title,
         artist: session.sampleTrack.artist,
-        album_art_url: session.image,
+        album_art_url: '',
         stream_url: session.sampleTrack.url,
         src: session.sampleTrack.url,
         duration: durationToSeconds(session.sampleTrack.duration),
@@ -239,84 +232,12 @@ const Demo = () => {
       {/* Featured Sessions */}
       <section className="container mx-auto px-6 py-20">
         <h2 className="text-4xl font-bold mb-12 text-center">Featured Therapeutic Sessions</h2>
-        <div className="space-y-12 max-w-6xl mx-auto">
-          {therapeuticSessions.map((session, index) => {
-            const Icon = session.icon;
-            const isCurrentlyPlaying = playingId === session.id && isPlaying;
-            
-            return (
-              <Card key={session.id} className="overflow-hidden">
-                <CardContent className="p-0">
-                  <div className={`grid md:grid-cols-2 gap-0 ${index % 2 === 1 ? 'md:grid-flow-dense' : ''}`}>
-                    {/* Image Section */}
-                    <div className={`relative ${index % 2 === 1 ? 'md:col-start-2' : ''}`}>
-                      <img 
-                        src={session.image} 
-                        alt={session.title}
-                        className="w-full h-full object-cover min-h-[400px]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-8 md:p-12 flex flex-col justify-center">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-primary" />
-                        </div>
-                        <h3 className="text-3xl font-bold">{session.title}</h3>
-                      </div>
-                      
-                      <p className="text-muted-foreground mb-6">
-                        {session.longDescription}
-                      </p>
-
-                      <div className="mb-6">
-                        <h4 className="font-semibold mb-3">Key Benefits:</h4>
-                        <ul className="space-y-2">
-                          {session.benefits.map((benefit, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                              <span className="text-primary mt-1">✓</span>
-                              {benefit}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Sample Track Player */}
-                      <div className="bg-muted/50 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div>
-                            <p className="font-semibold text-sm">{session.sampleTrack.title}</p>
-                            <p className="text-xs text-muted-foreground">{session.sampleTrack.artist} • {session.sampleTrack.duration}</p>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant={isCurrentlyPlaying ? "default" : "outline"}
-                            onClick={() => handlePlayPause(session)}
-                            className="gap-2"
-                          >
-                            {isCurrentlyPlaying ? (
-                              <>
-                                <Pause className="w-4 h-4" />
-                                Pause
-                              </>
-                            ) : (
-                              <>
-                                <Play className="w-4 h-4" />
-                                Play Sample
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <TherapeuticSessionsCarousel 
+          sessions={therapeuticSessions}
+          playingId={playingId}
+          isPlaying={isPlaying}
+          onPlayPause={handlePlayPause}
+        />
       </section>
 
       {/* CTA Section */}
