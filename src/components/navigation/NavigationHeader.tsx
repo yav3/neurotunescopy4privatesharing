@@ -39,7 +39,7 @@ export const NavigationHeader = () => {
     <>
       {/* Desktop Navigation */}
       <header 
-        className="hidden md:flex items-center justify-between px-8 py-6 relative z-50"
+        className="hidden md:flex items-center justify-between px-8 py-6 fixed top-0 left-0 right-0 z-50"
         style={{
           backgroundImage: `url(${headerChromeTexture})`,
           backgroundSize: 'cover',
@@ -280,7 +280,7 @@ export const NavigationHeader = () => {
 
       {/* Mobile Navigation */}
       <header 
-        className="md:hidden flex items-center justify-between px-4 py-4 relative z-50"
+        className="md:hidden flex items-center justify-between px-4 py-4 fixed top-0 left-0 right-0 z-50"
         style={{
           backgroundImage: `url(${headerChromeTexture})`,
           backgroundSize: 'cover',

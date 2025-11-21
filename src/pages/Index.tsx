@@ -72,8 +72,8 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Full viewport */}
-        <div className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-          
+        <div className="relative min-h-screen flex items-center justify-center px-6 pt-32">
+
           {/* Chrome curves accent */}
           <div 
             className="absolute inset-0 opacity-[0.04] pointer-events-none"
