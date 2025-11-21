@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import chromeFocus from '@/assets/chrome-focus.gif';
 import chromeStress from '@/assets/chrome-stress.gif';
 import chromeSleep from '@/assets/chrome-sleep.gif';
@@ -44,8 +45,15 @@ export const TherapeuticSessionsCarousel = ({
   isPlaying, 
   onPlayPause 
 }: TherapeuticSessionsCarouselProps) => {
+  const navigate = useNavigate();
   // Duplicate items for seamless infinite scroll
   const duplicatedSessions = [...sessions, ...sessions, ...sessions];
+  
+  const handleCardClick = (sessionId: string) => {
+    if (sessionId === 'focus') {
+      navigate('/genre/focus-enhancement/new-age');
+    }
+  };
 
   return (
     <div className="relative overflow-hidden">
@@ -75,7 +83,8 @@ export const TherapeuticSessionsCarousel = ({
               viewport={{ once: true }}
               transition={{ delay: (index % sessions.length) * 0.1 }}
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative flex-shrink-0 w-80 h-[28rem] rounded-3xl overflow-hidden border border-white/10 group backdrop-blur-sm"
+              onClick={() => handleCardClick(session.id)}
+              className="relative flex-shrink-0 w-80 h-[28rem] rounded-3xl overflow-hidden border border-white/10 group backdrop-blur-sm cursor-pointer"
               style={{
                 background: 'rgba(0, 0, 0, 0.75)',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05)',
