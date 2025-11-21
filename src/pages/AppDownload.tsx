@@ -24,7 +24,7 @@ export const AppDownload = () => {
     {
       name: "Family",
       priceMonthly: null,
-      priceYearly: "$59.99",
+      priceYearly: "$99.99",
       period: "per year",
       description: "Up to 6 family member accounts",
       features: [
@@ -35,7 +35,7 @@ export const AppDownload = () => {
         "Family dashboard",
         "Priority support"
       ],
-      cta: "Start Family Plan",
+      cta: "Pre-order Family Plan",
       badge: "Best Value",
       highlight: true
     },
