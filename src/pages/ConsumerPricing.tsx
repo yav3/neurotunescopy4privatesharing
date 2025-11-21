@@ -108,7 +108,7 @@ export const ConsumerPricing = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col"
                 style={{
                   background: plan.highlight 
                     ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
@@ -160,7 +160,7 @@ export const ConsumerPricing = () => {
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-4 mb-8 flex-grow">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
