@@ -19,7 +19,8 @@ export const ConsumerPricing = () => {
         "Admin management tools"
       ],
       cta: "Contact Sales",
-      badge: "Professional"
+      badge: "Professional",
+      highlight: true
     },
     {
       name: "Enterprise 500+",
@@ -37,7 +38,6 @@ export const ConsumerPricing = () => {
       ],
       cta: "Contact Sales",
       badge: "🎉 Black Friday Sale",
-      highlight: true,
       specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
     },
     {
@@ -93,14 +93,14 @@ export const ConsumerPricing = () => {
                 className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02]"
                 style={{
                   background: plan.highlight 
-                    ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(37, 99, 235, 0.15))'
+                    ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
                     : 'rgba(255, 255, 255, 0.05)',
                   backdropFilter: 'blur(24px)',
                   border: plan.highlight 
-                    ? '2px solid rgba(6, 182, 212, 0.4)' 
+                    ? '2px solid rgba(192, 192, 192, 0.6)' 
                     : '1px solid rgba(255, 255, 255, 0.10)',
                   boxShadow: plan.highlight
-                    ? '0 0 60px rgba(6, 182, 212, 0.3)'
+                    ? '0 0 60px rgba(192, 192, 192, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                     : '0 0 40px rgba(0, 0, 0, 0.8)'
                 }}
               >
@@ -109,9 +109,9 @@ export const ConsumerPricing = () => {
                   className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold"
                   style={{
                     background: plan.highlight 
-                      ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(229, 229, 229, 0.8))'
                       : 'rgba(255, 255, 255, 0.1)',
-                    color: 'white'
+                    color: plan.highlight ? '#000000' : 'white'
                   }}
                 >
                   {plan.badge}
@@ -156,12 +156,12 @@ export const ConsumerPricing = () => {
                   className="w-full py-3 rounded-full font-semibold transition-all"
                   style={{
                     background: plan.highlight
-                      ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(229, 229, 229, 0.9))'
                       : 'rgba(255, 255, 255, 0.05)',
                     border: plan.highlight ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
-                    color: 'white',
+                    color: plan.highlight ? '#000000' : 'white',
                     boxShadow: plan.highlight 
-                      ? '0 0 30px rgba(6, 182, 212, 0.3)'
+                      ? '0 0 30px rgba(192, 192, 192, 0.5)'
                       : 'none'
                   }}
                 >
