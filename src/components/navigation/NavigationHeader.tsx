@@ -11,9 +11,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, X, Plus } from "lucide-react";
 import dropdownBg from "@/assets/dropdown-bg.png";
+import { FooterContactHandler } from "../FooterContactHandler";
 
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [interestType, setInterestType] = useState("");
 
   return (
     <>
@@ -164,12 +167,15 @@ export const NavigationHeader = () => {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <Link to="/licensing" className="text-base hover:text-primary transition-colors">
+          <button 
+            onClick={() => {
+              setInterestType("Licensing");
+              setContactOpen(true);
+            }}
+            className="text-base hover:text-primary transition-colors"
+          >
             Licensing
-          </Link>
-          <Link to="/pricing" className="text-base hover:text-primary transition-colors">
-            Pricing
-          </Link>
+          </button>
         </div>
 
         <div className="flex items-center gap-4">
@@ -287,20 +293,16 @@ export const NavigationHeader = () => {
             </div>
 
             <div className="pt-6 border-t border-border space-y-4">
-              <Link
-                to="/licensing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-muted-foreground hover:text-foreground"
+              <button
+                onClick={() => {
+                  setInterestType("Licensing");
+                  setContactOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="block text-muted-foreground hover:text-foreground text-left"
               >
                 Licensing
-              </Link>
-              <Link
-                to="/pricing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-muted-foreground hover:text-foreground"
-              >
-                Pricing
-              </Link>
+              </button>
               <Link
                 to="/auth"
                 onClick={() => setMobileMenuOpen(false)}
@@ -319,6 +321,12 @@ export const NavigationHeader = () => {
           </div>
         </div>
       )}
+
+      <FooterContactHandler 
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+        interestType={interestType}
+      />
     </>
   );
 };
