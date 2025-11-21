@@ -63,7 +63,7 @@ export const NavigationHeader = () => {
 
         {/* Left: Logo */}
         <Link to="/" className="flex items-center relative z-10">
-          <Plus className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.92)' }} strokeWidth={1.5} />
+          <Plus className="w-7 h-7" style={{ color: 'rgba(228, 228, 228, 0.90)' }} strokeWidth={1.5} />
         </Link>
 
         {/* Center: Menu Items */}
@@ -73,7 +73,12 @@ export const NavigationHeader = () => {
             onMouseEnter={() => setShowSolutionsMega(true)}
             onMouseLeave={() => setShowSolutionsMega(false)}
           >
-            <button className="text-base font-light text-white/90 transition-colors hover:text-white">
+            <button 
+              className="text-base font-light transition-colors"
+              style={{ color: 'rgba(228, 228, 228, 0.88)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
+            >
               Solutions
             </button>
 
@@ -188,7 +193,10 @@ export const NavigationHeader = () => {
               setInterestType("Enterprise");
               setContactOpen(true);
             }}
-            className="text-base font-light text-white/90 hover:text-white transition-colors"
+            className="text-base font-light transition-colors"
+            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
           >
             Enterprise
           </button>
@@ -198,7 +206,10 @@ export const NavigationHeader = () => {
               setInterestType("Licensing");
               setContactOpen(true);
             }}
-            className="text-base font-light text-white/90 hover:text-white transition-colors"
+            className="text-base font-light transition-colors"
+            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
           >
             Licensing
           </button>
@@ -208,7 +219,10 @@ export const NavigationHeader = () => {
               setInterestType("Research");
               setContactOpen(true);
             }}
-            className="text-base font-light text-white/90 hover:text-white transition-colors"
+            className="text-base font-light transition-colors"
+            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
           >
             Research
           </button>
@@ -218,7 +232,10 @@ export const NavigationHeader = () => {
               setInterestType("Partners");
               setContactOpen(true);
             }}
-            className="text-base font-light text-white/90 hover:text-white transition-colors"
+            className="text-base font-light transition-colors"
+            style={{ color: 'rgba(228, 228, 228, 0.88)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.88)'}
           >
             Partners
           </button>
@@ -226,11 +243,11 @@ export const NavigationHeader = () => {
 
         {/* Right: Auth + CTA */}
         <div className="flex items-center gap-6 relative z-10">
-          <Link to="/auth" className="text-base font-light" style={{ color: 'rgba(255, 255, 255, 0.88)' }}>
+          <Link to="/auth" className="text-base font-light" style={{ color: 'rgba(228, 228, 228, 0.86)' }}>
             <span 
               className="transition-colors"
-              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 1)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.88)'}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 1)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.86)'}
             >
               Log in
             </span>
@@ -241,18 +258,18 @@ export const NavigationHeader = () => {
               style={{
                 background: 'rgba(10, 10, 12, 0.85)',
                 border: '1px solid rgba(228, 228, 228, 0.18)',
-                color: 'rgba(255, 255, 255, 0.92)',
-                boxShadow: '0 0 24px rgba(255, 255, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+                color: 'rgba(228, 228, 228, 0.90)',
+                boxShadow: '0 0 24px rgba(228, 228, 228, 0.10), inset 0 1px 0 rgba(228, 228, 228, 0.06)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'rgba(19, 20, 22, 0.90)';
                 e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.32)';
-                e.currentTarget.style.boxShadow = '0 0 40px rgba(255, 255, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.10)';
+                e.currentTarget.style.boxShadow = '0 0 40px rgba(228, 228, 228, 0.18), inset 0 1px 0 rgba(228, 228, 228, 0.10)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'rgba(10, 10, 12, 0.85)';
                 e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                e.currentTarget.style.boxShadow = '0 0 24px rgba(255, 255, 255, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.06)';
+                e.currentTarget.style.boxShadow = '0 0 24px rgba(228, 228, 228, 0.10), inset 0 1px 0 rgba(228, 228, 228, 0.06)';
               }}
             >
               See Samples
@@ -286,7 +303,7 @@ export const NavigationHeader = () => {
         />
         
         <Link to="/" className="flex items-center relative z-10">
-          <Plus className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.92)' }} strokeWidth={1.5} />
+          <Plus className="w-6 h-6" style={{ color: 'rgba(228, 228, 228, 0.90)' }} strokeWidth={1.5} />
         </Link>
 
         <button

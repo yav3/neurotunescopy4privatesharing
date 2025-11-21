@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import chromeHeroBg from '../assets/chrome-hero-bg.gif';
+import chromeHeroBg from '../assets/chrome-hero-bg-slow.gif';
 import chromeCurves from '../assets/chrome-curves.png';
 import chromeTexture from '../assets/chrome-texture-02.png';
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
@@ -30,12 +30,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative">
-      {/* Chrome liquid background */}
+      {/* Chrome liquid background - slowed 10X */}
       <div className="fixed inset-0 z-0">
-        <img 
-          src={chromeHeroBg}
-          alt="Chrome liquid background"
-          className="w-full h-full object-cover"
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `url(${chromeHeroBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            animation: 'slowChrome 100s linear infinite',
+          }}
         />
         
         {/* Dark obsidian overlay - rgba(0,0,0,0.45) */}
@@ -94,27 +99,27 @@ const Index = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            {/* Title: 110-140px ultra-light white with chrome highlight */}
+            {/* Title: 110-140px ultra-light pearl grey */}
             <h1 
               className="font-extralight leading-none tracking-wide flex items-center mb-10"
               style={{
                 fontSize: 'clamp(110px, 12vw, 140px)',
-                color: 'rgba(255, 255, 255, 0.95)',
-                textShadow: '0 0 60px rgba(255, 255, 255, 0.12), 0 0 100px rgba(228, 228, 228, 0.08), 0 0 20px rgba(255, 255, 255, 0.02)',
+                color: 'rgba(228, 228, 228, 0.92)',
+                textShadow: '0 0 60px rgba(228, 228, 228, 0.12), 0 0 100px rgba(228, 228, 228, 0.08)',
                 gap: '0.75rem'
               }}
             >
-              <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(255, 255, 255, 0.92)' }}>+</span>
+              <span className="font-light" style={{ fontSize: '0.9em', color: 'rgba(228, 228, 228, 0.88)' }}>+</span>
               NeuroTunes
             </h1>
             
-            {/* Subtitle: 30-34px white at 80% opacity - two clean lines */}
+            {/* Subtitle: 30-34px pearl grey - two clean lines */}
             <div className="space-y-2 mb-16">
               <p 
                 className="font-light tracking-wide"
                 style={{
                   fontSize: 'clamp(24px, 3vw, 34px)',
-                  color: 'rgba(255, 255, 255, 0.80)',
+                  color: 'rgba(228, 228, 228, 0.85)',
                   lineHeight: '1.4'
                 }}
               >
@@ -124,7 +129,7 @@ const Index = () => {
                 className="font-light tracking-wide"
                 style={{
                   fontSize: 'clamp(24px, 3vw, 34px)',
-                  color: 'rgba(255, 255, 255, 0.80)',
+                  color: 'rgba(228, 228, 228, 0.85)',
                   lineHeight: '1.4'
                 }}
               >
@@ -136,16 +141,17 @@ const Index = () => {
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <Link to="/products">
                 <button 
-                  className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
+                  className="px-8 py-4 rounded-lg text-base font-medium transition-all"
                   style={{
                     border: '1px solid rgba(228, 228, 228, 0.18)',
                     background: 'transparent',
                     backdropFilter: 'blur(10px)',
+                    color: 'rgba(228, 228, 228, 0.90)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                    e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
                     e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.12)';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(228, 228, 228, 0.12)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent';
@@ -159,21 +165,22 @@ const Index = () => {
               
               <Link to="/demo">
                 <button 
-                  className="px-8 py-4 rounded-lg text-base font-medium text-white transition-all"
+                  className="px-8 py-4 rounded-lg text-base font-medium transition-all"
                   style={{
                     background: 'rgba(10, 10, 12, 0.70)',
                     border: '1px solid rgba(228, 228, 228, 0.18)',
-                    boxShadow: '0 0 30px rgba(255, 255, 255, 0.10)',
+                    boxShadow: '0 0 30px rgba(228, 228, 228, 0.10)',
+                    color: 'rgba(228, 228, 228, 0.92)',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(10, 10, 12, 0.50)';
                     e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.35)';
-                    e.currentTarget.style.boxShadow = '0 0 40px rgba(255, 255, 255, 0.18)';
+                    e.currentTarget.style.boxShadow = '0 0 40px rgba(228, 228, 228, 0.18)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'rgba(10, 10, 12, 0.70)';
                     e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.18)';
-                    e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.10)';
+                    e.currentTarget.style.boxShadow = '0 0 30px rgba(228, 228, 228, 0.10)';
                   }}
                 >
                   See Samples
@@ -208,7 +215,7 @@ const Index = () => {
             >
               <motion.h3 
                 className="text-lg font-light text-center mb-16 tracking-wide"
-                style={{ color: 'rgba(255, 255, 255, 0.90)' }}
+                style={{ color: 'rgba(228, 228, 228, 0.88)' }}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
