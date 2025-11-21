@@ -64,7 +64,7 @@ const Index = () => {
         {/* Main centered content - Full viewport */}
         <div className="flex-1 flex items-center justify-center px-6 min-h-screen">
           <motion.div
-            className="text-center flex items-center justify-center"
+            className="text-center flex flex-col items-center justify-center"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -73,6 +73,9 @@ const Index = () => {
               <span className="text-cyan-400/80 font-light">+</span>
               NeuroTunes
             </h1>
+            <p className="text-[1.8rem] sm:text-[2.2rem] lg:text-[2.6rem] font-light text-gray-300/90 mt-6 tracking-wide">
+              Neuroscience backed | Clinically Validated | Patented | Medical Grade Music & AI Streaming
+            </p>
           </motion.div>
         </div>
 
