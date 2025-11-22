@@ -29,6 +29,18 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  // Listen for global event to open sales assistant
+  useEffect(() => {
+    const handleOpenSalesAssistant = () => {
+      if (externalOpen === undefined) {
+        setInternalOpen(true);
+      }
+    };
+
+    window.addEventListener('openSalesAssistant', handleOpenSalesAssistant);
+    return () => window.removeEventListener('openSalesAssistant', handleOpenSalesAssistant);
+  }, [externalOpen]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
