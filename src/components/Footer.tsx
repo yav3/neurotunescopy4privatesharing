@@ -25,13 +25,6 @@ export const Footer = () => {
       <footer className="relative text-foreground border-t border-white/8 bg-[#050607]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           
-          {/* Tagline Section - Better mobile line breaks */}
-          <div className="text-center mb-10 sm:mb-12 md:mb-14">
-            <p className="text-xs sm:text-sm md:text-base text-white/50 tracking-wide leading-[1.8] sm:leading-loose max-w-4xl mx-auto px-2">
-              by Neuralpositive • Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
-            </p>
-          </div>
-
           {/* Logos Section - Better mobile spacing */}
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-10 mb-14 sm:mb-16 md:mb-20 max-w-3xl mx-auto">
             <span className="text-[10px] sm:text-xs md:text-sm text-white/30 uppercase tracking-widest w-full text-center mb-2 sm:mb-0 sm:w-auto">Supported by</span>
