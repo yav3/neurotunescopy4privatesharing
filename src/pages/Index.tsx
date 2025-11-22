@@ -30,23 +30,26 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col">
-      {/* Chrome liquid background - video */}
+      {/* Chrome liquid background - video with proper mobile positioning */}
       <div className="fixed inset-0 z-0">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center md:object-center"
         >
           <source src={chromeHeroBg} type="video/mp4" />
         </video>
         
-        {/* Dark obsidian overlay with stronger mobile darkening */}
-        <div className="absolute inset-0 bg-black/60 sm:bg-black/50" />
+        {/* Dark obsidian overlay with stronger mobile darkening for readability */}
+        <div className="absolute inset-0 bg-black/65 sm:bg-black/55 md:bg-black/50" />
+        
+        {/* Edge lighting gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-transparent md:from-black/40 md:via-black/20" />
         
         {/* Platinum vignette at edges */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-obsidian/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-obsidian/60" />
       </div>
 
       {/* Stable dark gradient behind navbar */}
@@ -57,8 +60,8 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Full height centered with safe mobile padding */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-24 sm:pt-20 pb-12 sm:pb-16 min-h-screen">
+        {/* Hero Section - Mobile-first vertical stacking */}
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-32 sm:pt-28 md:pt-24 pb-16 sm:pb-20 md:pb-16 min-h-screen">
           <div className="relative w-full max-w-5xl mx-auto">
             {/* Chrome curves accent */}
             <div 
@@ -69,16 +72,36 @@ const Index = () => {
             {/* Radial darkening fade for readability */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] sm:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
             
-            {/* Premium Glass Panel with chrome edge glow - mobile optimized */}
+            {/* Premium Glass Panel - mobile optimized with proper hierarchy */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-full sm:w-fit px-8 py-10 sm:px-12 sm:py-12 md:px-16 md:py-14 lg:px-20 lg:py-16 rounded-2xl sm:rounded-3xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.08)_inset] bg-gradient-to-b from-white/20 via-white/5 to-white/5"
+              className="text-center flex flex-col items-center justify-center gap-6 sm:gap-8 mx-auto relative z-10 w-[92%] sm:w-fit px-6 py-12 sm:px-12 sm:py-12 md:px-16 md:py-14 lg:px-20 lg:py-16 rounded-xl sm:rounded-2xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_0_40px_rgba(0,0,0,0.3)] bg-gradient-to-b from-white/[0.15] via-white/[0.08] to-white/[0.05]"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              <h1 className="font-light tracking-[-0.02em] text-[2.5rem] leading-[1.1] sm:text-5xl sm:leading-[1.15] md:text-6xl lg:text-7xl text-platinum-glow/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+              {/* Logo/Title - Mobile optimized sizing */}
+              <h1 className="font-light tracking-[-0.02em] text-[2.75rem] leading-[1.1] sm:text-5xl sm:leading-[1.12] md:text-6xl lg:text-7xl text-platinum-glow/95 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
                 +NeuroTunes
               </h1>
+
+              {/* Subtitle - Better mobile readability */}
+              <p className="text-sm sm:text-base md:text-lg text-platinum-glow/70 max-w-md sm:max-w-lg leading-[1.6] px-2">
+                Neuroscience-backed • Clinically Validated • Therapeutic Music
+              </p>
+
+              {/* CTA Buttons - Glassmorphic mobile-first design */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto mt-2">
+                <Link to="/products" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-8 py-3.5 sm:py-3 rounded-xl text-base sm:text-sm font-medium transition-all bg-white/10 backdrop-blur-xl shadow-[0_0_25px_rgba(255,255,255,0.1)_inset,0_4px_20px_rgba(0,0,0,0.3)] border border-white/20 text-platinum-glow/95 hover:bg-white/[0.15] hover:border-white/30 hover:shadow-[0_0_35px_rgba(255,255,255,0.15)_inset,0_6px_25px_rgba(0,0,0,0.4)] hover:scale-[1.02]">
+                    Explore Solutions
+                  </button>
+                </Link>
+                <Link to="/demo" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-8 py-3.5 sm:py-3 rounded-xl text-base sm:text-sm font-medium transition-all bg-white/[0.05] backdrop-blur-xl border border-white/15 text-platinum-glow/85 hover:bg-white/10 hover:border-white/25 hover:text-platinum-glow/95 hover:scale-[1.02]">
+                    Hear Demo
+                  </button>
+                </Link>
+              </div>
             </motion.div>
           </div>
         </main>
