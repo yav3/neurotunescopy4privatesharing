@@ -6,9 +6,7 @@ import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import chromeHeroBg from '../assets/chrome-hero-bg.mp4';
-import chromeCurves from '../assets/chrome-curves.png';
-import chromeTexture from '../assets/chrome-texture-02.png';
+import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
@@ -30,24 +28,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col">
-      {/* Chrome liquid background - video with proper mobile positioning */}
-      <div className="fixed inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        >
-          <source src={chromeHeroBg} type="video/mp4" />
-        </video>
-        
-        {/* Layered gradient overlays for depth and readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/15 to-black/50" />
-        
-        {/* Premium vignette - Apple-style radial darkening */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
-      </div>
+      {/* Background Video Carousel */}
+      <BackgroundVideoCarousel />
 
       {/* Stable dark gradient behind navbar */}
       <div className="fixed top-0 left-0 right-0 h-24 sm:h-28 md:h-32 z-[5] pointer-events-none bg-gradient-to-b from-obsidian/98 via-obsidian/90 to-transparent" />
