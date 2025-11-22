@@ -50,8 +50,8 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Positioned higher and more compact */}
-        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-8 min-h-screen">
-          <div className="relative w-full max-w-4xl mx-auto">
+        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-0 min-h-screen">
+          <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center">
             {/* Premium Glass Container */}
             <motion.div
               className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden"
@@ -94,23 +94,24 @@ const Index = () => {
                 )}
               </AnimatePresence>
             </motion.div>
+
+            {/* Music Preview Row - Directly below hero with minimal gap */}
+            <motion.div
+              className="w-full mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ 
+                opacity: showSubtitle ? 0 : 1,
+                y: showSubtitle ? 20 : 0
+              }}
+              transition={{ 
+                duration: 0.6,
+                delay: showSubtitle ? 0 : 0.3
+              }}
+            >
+              <MusicPreviewRow />
+            </motion.div>
           </div>
         </main>
-
-        {/* Music Preview Row - Fades in after subtitle disappears */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: showSubtitle ? 0 : 1,
-            y: showSubtitle ? 20 : 0
-          }}
-          transition={{ 
-            duration: 0.6,
-            delay: showSubtitle ? 0 : 0.3
-          }}
-        >
-          <MusicPreviewRow />
-        </motion.div>
 
         {/* Footer */}
         <Footer />
