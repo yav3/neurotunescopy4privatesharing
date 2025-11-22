@@ -94,7 +94,7 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full h-screen overflow-hidden">
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center items-center">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -114,7 +114,7 @@ export const MusicPreviewRow: React.FC = () => {
                 opacity: isHighlighted ? 1 : 0.08,
                 scale: isHighlighted ? 1 : 0.75,
                 filter: isHighlighted ? 'blur(0px) brightness(1)' : 'blur(12px) brightness(0.4)',
-                x: positionOffset * 400,
+                x: positionOffset * 420,
                 y: 0,
                 zIndex: isHighlighted ? 20 : 10 - Math.abs(positionOffset)
               }}
@@ -123,22 +123,40 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
               className={`
+                relative
                 w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
-                rounded-[24px] border
-                backdrop-blur-[120px]
+                rounded-[24px] 
                 p-6 sm:p-7
                 transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
                 ${isHighlighted
-                  ? 'bg-black/[0.75] border-white/[0.25] shadow-[0_0_1px_rgba(255,255,255,0.4),0_20px_80px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.5)]' 
-                  : 'bg-black/[0.4] border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.8)]'
+                  ? 'shadow-[0_0_2px_rgba(255,255,255,0.6),0_24px_80px_rgba(0,0,0,0.95),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.6)]' 
+                  : 'shadow-[0_8px_32px_rgba(0,0,0,0.8)]'
                 }
               `}
               onClick={() => handleCardClick(preview)}
               style={{
+                background: isHighlighted 
+                  ? 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.92) 100%)'
+                  : 'rgba(0,0,0,0.5)',
+                border: isHighlighted 
+                  ? '1px solid rgba(255,255,255,0.25)' 
+                  : '1px solid rgba(255,255,255,0.06)',
+                backdropFilter: 'blur(1px) saturate(100%)',
                 animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite, shimmer 8s ease-in-out infinite' : 'none',
                 pointerEvents: isHighlighted ? 'auto' : 'none'
               }}
             >
+              {/* Edge frosting overlay - only at borders */}
+              <div className="absolute inset-0 rounded-[24px] pointer-events-none"
+                style={{
+                  background: isHighlighted 
+                    ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 25%, transparent 75%, rgba(255,255,255,0.08) 100%)'
+                    : 'none',
+                  boxShadow: isHighlighted 
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.5)'
+                    : 'none'
+                }}
+              />
 
               {/* Genre name */}
               <div className="mb-3 text-center">
