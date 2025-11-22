@@ -59,23 +59,31 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Positioned higher and more compact */}
-        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-8">
+        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[10vh] pb-8">
           <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center">
-            {/* Premium Glass Container */}
-            <motion.div
-              className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden"
-              initial={{ opacity: 0, scale: 0.96, y: 20 }}
-              animate={{ 
-                opacity: heroVisible ? 1 : 0, 
-                scale: heroVisible ? 1 : 0.95, 
-                y: heroVisible ? 0 : 20 
-              }}
-              transition={{ 
-                duration: heroVisible ? 0.8 : 1.5, 
-                delay: heroVisible ? 0.1 : 0,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
+            {/* Hero Container - Fixed height to prevent collapse */}
+            <div 
+              className={`
+                w-full flex items-center justify-center
+                transition-all duration-[1500ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]
+                ${heroVisible ? 'h-[55vh] opacity-100' : 'h-0 opacity-0'}
+              `}
             >
+              {/* Premium Glass Container */}
+              <motion.div
+                className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden"
+                initial={{ opacity: 0, scale: 0.96, y: 20 }}
+                animate={{ 
+                  opacity: heroVisible ? 1 : 0, 
+                  scale: heroVisible ? 1 : 0.95, 
+                  y: heroVisible ? 0 : -20 
+                }}
+                transition={{ 
+                  duration: heroVisible ? 0.8 : 1.5, 
+                  delay: heroVisible ? 0.1 : 0,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+              >
               {/* Logo/Title */}
               <h1 className="font-light tracking-[-0.03em] text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
                 +NeuroTunes
@@ -110,19 +118,20 @@ const Index = () => {
                   </motion.p>
                 )}
               </AnimatePresence>
-            </motion.div>
+              </motion.div>
+            </div>
 
-            {/* Music Preview Row - Directly below hero with minimal gap */}
+            {/* Music Preview Row - Slides up smoothly after hero fades */}
             <motion.div
-              className="w-full mt-10"
-              initial={{ opacity: 0, y: 20 }}
+              className="w-full"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ 
                 opacity: !heroVisible ? 1 : 0,
-                y: !heroVisible ? 0 : 20
+                y: !heroVisible ? -120 : 40
               }}
               transition={{ 
                 duration: 1.2,
-                delay: !heroVisible ? 0.8 : 0,
+                delay: !heroVisible ? 0.3 : 0,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
             >
