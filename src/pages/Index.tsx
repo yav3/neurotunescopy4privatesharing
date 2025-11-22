@@ -16,6 +16,7 @@ const Index = () => {
   const { user, loading } = useAuthContext();
   const [scrollY, setScrollY] = useState(0);
   const [showSubtitle, setShowSubtitle] = useState(true);
+  const [heroVisible, setHeroVisible] = useState(true);
   
   // Welcome returning users
   useWelcomeMessage();
@@ -32,8 +33,16 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSubtitle(false);
-    }, 2500); // Duration of zoom + hold time
+    }, 2500);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fade out hero after subtitle animation
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setHeroVisible(false);
+    }, 4000); // Hero fades 1.5s after subtitle disappears
+    return () => clearTimeout(fadeTimer);
   }, []);
 
   return (
@@ -52,12 +61,20 @@ const Index = () => {
         {/* Hero Section - Positioned higher and more compact */}
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 min-h-screen">
           <div className="relative w-full max-w-5xl mx-auto">
-            {/* Hero Container - Centered with cards below */}
+            {/* Hero Container - Fades out to reveal cards */}
             <motion.div
-              className="flex flex-col items-center justify-center gap-16 w-full"
+              className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
               initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+              animate={{ 
+                opacity: heroVisible ? 1 : 0, 
+                scale: heroVisible ? 1 : 0.92,
+                filter: heroVisible ? "blur(0px)" : "blur(8px)"
+              }}
+              transition={{ 
+                duration: heroVisible ? 0.8 : 1.8, 
+                delay: heroVisible ? 0.1 : 0,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
             >
               {/* Premium Glass Hero Card */}
               <div className="text-center flex flex-col items-center justify-center gap-4 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden relative"
@@ -97,16 +114,24 @@ const Index = () => {
                 )}
               </AnimatePresence>
               </div>
+            </motion.div>
 
-              {/* Music Preview Row - Below hero */}
-              <motion.div
-                className="w-full"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: !showSubtitle ? 1 : 0, y: !showSubtitle ? 0 : 20 }}
-                transition={{ duration: 0.8, delay: !showSubtitle ? 0.3 : 0, ease: [0.25, 0.1, 0.25, 1] }}
-              >
+            {/* Music Preview Row - Revealed after hero fades */}
+            <motion.div
+              className="w-full relative z-10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ 
+                opacity: !heroVisible ? 1 : 0,
+                scale: !heroVisible ? 1 : 0.95,
+                filter: !heroVisible ? "blur(0px)" : "blur(4px)"
+              }}
+              transition={{ 
+                duration: 1.4,
+                delay: !heroVisible ? 0.5 : 0,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+            >
               <MusicPreviewRow />
-              </motion.div>
             </motion.div>
           </div>
         </main>
