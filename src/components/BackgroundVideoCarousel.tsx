@@ -18,6 +18,10 @@ import bgVideo15 from '../assets/bg-video-15.mp4';
 import bgVideo16 from '../assets/bg-video-16.mp4';
 import bgVideo17 from '../assets/bg-video-17.mp4';
 import bgVideo18 from '../assets/bg-video-18.mp4';
+import bgVideo19 from '../assets/bg-video-19.mp4';
+import bgVideo20 from '../assets/bg-video-20.mp4';
+import bgVideo21 from '../assets/bg-video-21.mp4';
+import bgVideo22 from '../assets/bg-video-22.gif';
 
 const videoSources = [
   { src: bgVideo1, type: 'video/mp4', duration: 15000 },
@@ -38,6 +42,10 @@ const videoSources = [
   { src: bgVideo16, type: 'video/mp4', duration: 15000 },
   { src: bgVideo17, type: 'video/mp4', duration: 15000 },
   { src: bgVideo18, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo19, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo20, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo21, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo22, type: 'image/gif', duration: 12000 },
 ];
 
 export const BackgroundVideoCarousel = () => {
