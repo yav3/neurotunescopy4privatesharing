@@ -73,6 +73,7 @@ import ConsumerPricing from "./pages/ConsumerPricing";
 import Checkout from "./pages/Checkout";
 import AppDownload from "./pages/AppDownload";
 import EnterpriseWellnessPricing from "./pages/EnterpriseWellnessPricing";
+import ClinicalPricing from "./pages/ClinicalPricing";
 import HIPAA from "./pages/HIPAA";
 
 const queryClient = new QueryClient();
@@ -190,6 +191,7 @@ const AppContent = () => {
         <Route path="/library" element={<Library />} />
         <Route path="/download" element={<Download />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/clinical-pricing" element={<ClinicalPricing />} />
         <Route path="/help" element={<Help />} />
         <Route path="/help/clinical" element={<Help />} />
         <Route path="/help/technical" element={<Help />} />
