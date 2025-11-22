@@ -1,15 +1,16 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
+import { SalesAssistant } from "@/components/sales/SalesAssistant";
+import { SupportChat } from "@/components/SupportChat";
 import { Check } from "lucide-react";
 
 export const AppDownload = () => {
   const plans = [
     {
-      name: "Web App",
-      priceMonthly: null,
-      priceYearly: "$29.99",
-      period: "wellness access",
-      description: "Your purchase now automatically guarantees pre-order price lock for Gen3 app store download, available December 5th",
+      name: "Individual",
+      priceYearly: "$59.99",
+      period: "year",
+      description: "Perfect for personal wellness and focus",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Personalized recommendations",
@@ -18,7 +19,39 @@ export const AppDownload = () => {
         "Pre-order price lock for Gen3 apps"
       ],
       cta: "Purchase Now",
-      badge: "Black Friday Sale"
+      badge: "Most Popular"
+    },
+    {
+      name: "Student / Service",
+      priceYearly: "$49.99",
+      period: "year",
+      description: "For students, veterans, active military, government, teachers & first responders",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Personalized recommendations",
+        "Offline playback",
+        "Progress tracking",
+        "Pre-order price lock for Gen3 apps",
+        "Verification required"
+      ],
+      cta: "Purchase Now",
+      badge: "Special Discount"
+    },
+    {
+      name: "Family & Besties",
+      priceYearly: "$99.99",
+      period: "year",
+      description: "Share with up to 6 family members or friends",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Up to 6 individual accounts",
+        "Personalized recommendations for each",
+        "Offline playback",
+        "Progress tracking",
+        "Pre-order price lock for Gen3 apps"
+      ],
+      cta: "Purchase Now",
+      badge: "Best Value"
     }
   ];
 
@@ -47,16 +80,16 @@ export const AppDownload = () => {
               Individual therapeutic music for anxiety relief, focus, sleep, and wellness
             </p>
             <p className="text-sm text-cyan-400 font-medium">
-              Offer valid until December 10th
+              Prices valid until December 5th
             </p>
           </div>
 
-          {/* Pricing Card */}
-          <div className="flex justify-center mb-12">
+          {/* Pricing Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-6xl mx-auto">
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] max-w-md w-full"
+                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02]"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   backdropFilter: 'blur(24px)',
@@ -78,13 +111,7 @@ export const AppDownload = () => {
                 <div className="text-center mb-6 mt-4">
                   <h3 className="text-xl font-light text-white mb-2">{plan.name}</h3>
                   <div className="mb-2">
-                    {plan.priceMonthly && (
-                      <div className="text-3xl font-light text-white mb-1">
-                        {plan.priceMonthly}
-                        <span className="text-base text-neutral-400"> / month</span>
-                      </div>
-                    )}
-                    <div className={`${plan.priceMonthly ? 'text-2xl' : 'text-3xl'} font-light text-white`}>
+                    <div className="text-3xl font-light text-white">
                       {plan.priceYearly}
                       <span className="text-base text-neutral-400"> / {plan.period}</span>
                     </div>
@@ -104,7 +131,7 @@ export const AppDownload = () => {
 
                 {/* CTA Button */}
                 <button
-                  className="w-full py-3 rounded-full font-semibold transition-all"
+                  className="w-full py-3 rounded-full font-semibold transition-all hover:bg-white/10"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
@@ -121,6 +148,8 @@ export const AppDownload = () => {
       </main>
 
       <Footer />
+      <SalesAssistant />
+      <SupportChat />
     </div>
   );
 };
