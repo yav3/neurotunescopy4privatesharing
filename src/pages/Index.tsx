@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
+import { SupportChat } from '@/components/SupportChat';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { MusicPreviewRow } from '@/components/MusicPreviewRow';
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
@@ -140,6 +141,9 @@ const Index = () => {
         
         {/* Sales Assistant */}
         <SalesAssistant />
+        
+        {/* Support Chat */}
+        <SupportChat />
       </div>
     </div>
   );
