@@ -40,12 +40,12 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Positioned 22% from top */}
-        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[22vh] pb-16 min-h-screen">
+        {/* Hero Section - Positioned higher and more compact */}
+        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-8 min-h-screen">
           <div className="relative w-full max-w-4xl mx-auto">
             {/* Premium Glass Container */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-7 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-8 py-14 sm:px-12 sm:py-16 md:px-16 md:pt-16 md:pb-14 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
+              className="text-center flex flex-col items-center justify-center gap-5 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-8 py-10 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
               initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -56,7 +56,7 @@ const Index = () => {
               </h1>
 
               {/* Subtitle */}
-              <p className="text-[0.7rem] sm:text-sm md:text-base text-white/80 leading-relaxed font-light tracking-wide mt-7 whitespace-nowrap">
+              <p className="text-[0.65rem] sm:text-xs md:text-sm text-white/80 leading-relaxed font-light tracking-wide mt-4 whitespace-nowrap">
                 Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
               </p>
             </motion.div>
