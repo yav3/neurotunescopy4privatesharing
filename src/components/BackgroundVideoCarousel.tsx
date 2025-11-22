@@ -89,11 +89,11 @@ export const BackgroundVideoCarousel = () => {
   const activeVideoList = visualThemes[activeTheme];
   const currentVideo = activeVideoList[currentIndex];
 
-  // Listen for hero fade event to dim background
+  // Cinematic background dim - 2.4s delay
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDimBackground(true); // Dim at 8 seconds when hero fades
-    }, 8000);
+      setDimBackground(true);
+    }, 2400);
     return () => clearTimeout(timer);
   }, []);
 

@@ -37,11 +37,11 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fade out hero after 8 seconds (5 seconds slower for cinematic effect)
+  // Cinematic fade: 2.4s delay, then 2.4s fade-out
   useEffect(() => {
     const fadeTimer = setTimeout(() => {
       setHeroVisible(false);
-    }, 8000);
+    }, 2400);
     return () => clearTimeout(fadeTimer);
   }, []);
 
@@ -61,7 +61,7 @@ const Index = () => {
         {/* Hero Section - Cinematic fade reveal */}
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 min-h-screen">
           <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
-            {/* Hero Container - Absolutely positioned, fades out */}
+            {/* Hero Container - Cinematic 2.4s fade-out */}
             <motion.div
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
               initial={{ opacity: 0, scale: 0.96 }}
@@ -71,7 +71,7 @@ const Index = () => {
                 filter: heroVisible ? "blur(0px)" : "blur(4px)"
               }}
               transition={{ 
-                duration: heroVisible ? 0.8 : 1.6, 
+                duration: heroVisible ? 0.8 : 2.4, 
                 delay: heroVisible ? 0.1 : 0,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
@@ -116,7 +116,7 @@ const Index = () => {
               </div>
             </motion.div>
 
-            {/* Music Preview Row - Perfectly centered, revealed after hero */}
+            {/* Music Cards - Perfectly centered, cinematic reveal */}
             <motion.div
               className="w-full relative z-10 flex items-center justify-center"
               initial={{ opacity: 0, y: 15 }}
@@ -125,8 +125,8 @@ const Index = () => {
                 y: !heroVisible ? 0 : 15
               }}
               transition={{ 
-                duration: 1.5,
-                delay: !heroVisible ? 1.5 : 0,
+                duration: 1.4,
+                delay: !heroVisible ? 0.2 : 0,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
             >

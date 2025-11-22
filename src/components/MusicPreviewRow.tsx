@@ -65,8 +65,8 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-0">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="relative z-10 w-full max-w-6xl mx-auto px-8">
+      <div className="flex flex-row justify-center items-start gap-8 flex-wrap lg:flex-nowrap">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -79,14 +79,15 @@ export const MusicPreviewRow: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className={`
-                relative group cursor-pointer
-                rounded-3xl border-[0.5px]
-                bg-white/[0.08] backdrop-blur-xl
-                p-6 
-                transition-all duration-300
+                w-[270px] sm:w-[92%] sm:max-w-[360px] lg:w-[270px] relative group cursor-pointer
+                rounded-[24px] border
+                bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
+                p-[26px]
+                shadow-[0_12px_35px_rgba(0,0,0,0.75),inset_0_0_18px_rgba(255,255,255,0.055)]
+                transition-all duration-[350ms] ease-out
                 ${isActive 
-                  ? 'border-white/20 bg-white/[0.14] shadow-[0_0_60px_rgba(255,255,255,0.12)] scale-[1.02]' 
-                  : 'border-white/15 shadow-[0_0_40px_rgba(255,255,255,0.06)] hover:bg-white/[0.12] hover:border-white/20 hover:scale-[1.015] hover:shadow-[0_0_60px_rgba(255,255,255,0.10)]'
+                  ? 'border-white/[0.22] bg-white/[0.08] -translate-y-2 scale-[1.03]' 
+                  : 'border-white/[0.14] hover:bg-white/[0.08] hover:border-white/[0.22] hover:-translate-y-2 hover:scale-[1.03]'
                 }
               `}
               onClick={() => handlePlay(preview)}
