@@ -63,16 +63,27 @@ export const BackgroundVideoCarousel = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Listen for category changes from MusicPreviewRow
+  // Listen for category changes from preview cards
   useEffect(() => {
-    const handleCategoryChange = (e: CustomEvent<{ category: TherapeuticCategory }>) => {
-      setActiveTheme(e.detail.category);
-      setCurrentIndex(0); // Start from first video in new theme
+    const handleCategoryChange = (event: CustomEvent<{ category: TherapeuticCategory }>) => {
+      console.log('🎭 Category changed to:', event.detail.category);
+      setActiveTheme(event.detail.category);
+      setCurrentIndex(0);
+      setIsTransitioning(true);
+    };
+
+    const handleCarouselChange = (event: CustomEvent<{ category: TherapeuticCategory }>) => {
+      console.log('🎠 Carousel changed to:', event.detail.category);
+      setActiveTheme(event.detail.category);
+      setCurrentIndex(0);
+      setIsTransitioning(true);
     };
 
     window.addEventListener('categoryChange', handleCategoryChange as EventListener);
+    window.addEventListener('carouselChange', handleCarouselChange as EventListener);
     return () => {
       window.removeEventListener('categoryChange', handleCategoryChange as EventListener);
+      window.removeEventListener('carouselChange', handleCarouselChange as EventListener);
     };
   }, []);
 

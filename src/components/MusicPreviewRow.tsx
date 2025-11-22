@@ -42,7 +42,14 @@ export const MusicPreviewRow: React.FC = () => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
     const interval = setInterval(() => {
-      setAutoPlayIndex((prev) => (prev + 1) % PREVIEW_CATEGORIES.length);
+      setAutoPlayIndex((prev) => {
+        const nextIndex = (prev + 1) % PREVIEW_CATEGORIES.length;
+        // Dispatch event to sync background video
+        window.dispatchEvent(new CustomEvent('carouselChange', { 
+          detail: { category: PREVIEW_CATEGORIES[nextIndex].category } 
+        }));
+        return nextIndex;
+      });
     }, 8000); // 8 seconds per card - slower breathing
     
     return () => clearInterval(interval);
@@ -54,7 +61,12 @@ export const MusicPreviewRow: React.FC = () => {
       handlePlay(preview);
     } else {
       // Otherwise, just advance to this card
-      setAutoPlayIndex(PREVIEW_CATEGORIES.findIndex(p => p.category === preview.category));
+      const newIndex = PREVIEW_CATEGORIES.findIndex(p => p.category === preview.category);
+      setAutoPlayIndex(newIndex);
+      // Sync background video
+      window.dispatchEvent(new CustomEvent('carouselChange', { 
+        detail: { category: preview.category } 
+      }));
     }
   };
 
@@ -112,13 +124,13 @@ export const MusicPreviewRow: React.FC = () => {
               className={`
                 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                 w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
-                rounded-[20px] border
-                backdrop-blur-[40px] saturate-[200%]
+                rounded-[24px] border
+                backdrop-blur-[120px]
                 p-6 sm:p-7
                 transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
                 ${isHighlighted
-                  ? 'bg-gradient-to-br from-white/[0.15] via-white/[0.08] to-white/[0.12] border-white/[0.35] shadow-[0_20px_60px_rgba(0,0,0,0.9),inset_0_0_30px_rgba(255,255,255,0.08),0_0_80px_rgba(255,255,255,0.15)]' 
-                  : 'bg-gradient-to-br from-white/[0.03] via-white/[0.02] to-black/[0.05] border-white/[0.08] shadow-[0_8px_20px_rgba(0,0,0,0.6)]'
+                  ? 'bg-black/[0.75] border-white/[0.25] shadow-[0_0_1px_rgba(255,255,255,0.4),0_20px_80px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.5)]' 
+                  : 'bg-black/[0.4] border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.8)]'
                 }
               `}
               onClick={() => handleCardClick(preview)}
@@ -130,9 +142,10 @@ export const MusicPreviewRow: React.FC = () => {
 
               {/* Genre name */}
               <div className="mb-3 text-center">
-                <h3 className="text-white text-base sm:text-lg font-light leading-tight tracking-wide" style={{ 
+                <h3 className="text-white text-base sm:text-lg font-normal leading-tight tracking-wide" style={{ 
                   fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
-                  textShadow: isHighlighted ? '0 2px 20px rgba(255,255,255,0.3)' : 'none'
+                  textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.15)' : 'none',
+                  letterSpacing: '0.02em'
                 }}>
                   {preview.name}
                 </h3>
@@ -156,7 +169,7 @@ export const MusicPreviewRow: React.FC = () => {
                     w-14 h-14 rounded-full 
                     flex items-center justify-center
                     transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
-                    ${isHighlighted ? 'bg-white/25 backdrop-blur-xl' : 'bg-white/10'}
+                    ${isHighlighted ? 'bg-white/20 backdrop-blur-xl border border-white/30' : 'bg-white/8 border border-white/10'}
                   `}
                 >
                   {isLoading ? (
@@ -171,9 +184,10 @@ export const MusicPreviewRow: React.FC = () => {
 
               {/* Description */}
               <div className="text-center">
-                <p className="text-white/70 text-xs sm:text-sm leading-snug font-light" style={{ 
+                <p className="text-white/85 text-xs sm:text-sm leading-snug font-normal" style={{ 
                   fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
-                  textShadow: isHighlighted ? '0 1px 10px rgba(255,255,255,0.2)' : 'none'
+                  textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.6), 0 0 15px rgba(255,255,255,0.1)' : 'none',
+                  letterSpacing: '0.01em'
                 }}>
                   {preview.description}
                 </p>
