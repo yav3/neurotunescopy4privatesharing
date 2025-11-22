@@ -102,7 +102,7 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full flex items-center justify-center" style={{ height: 'calc(100vh - 200px)' }}>
+    <div className="relative z-10 w-full flex items-center justify-center" style={{ minHeight: '400px' }}>
       {/* Welcome message - fades out after 4 seconds */}
       <motion.div
         initial={{ opacity: 1 }}
