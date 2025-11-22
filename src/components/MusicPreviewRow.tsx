@@ -47,7 +47,43 @@ export const MusicPreviewRow: React.FC = () => {
     boost: null,
     energize: null
   });
+  const [autoPlayStarted, setAutoPlayStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Auto-start first preview track after 2 seconds
+  useEffect(() => {
+    const startAutoPlay = async () => {
+      if (autoPlayStarted) return;
+      
+      const firstPreview = PREVIEW_CATEGORIES[0];
+      setLoading(firstPreview.category);
+      
+      // Change background to match first category
+      window.dispatchEvent(new CustomEvent('categoryChange', { 
+        detail: { category: firstPreview.category } 
+      }));
+
+      // Get track URL
+      const trackUrl = await getPreviewTrackForBucket(firstPreview.bucket);
+      if (trackUrl && audioRef.current) {
+        setTrackUrls(prev => ({ ...prev, [firstPreview.category]: trackUrl }));
+        audioRef.current.src = trackUrl;
+        audioRef.current.volume = 0.28; // 28% volume for subtle intro
+        
+        try {
+          await audioRef.current.play();
+          setActiveCategory(firstPreview.category);
+          setAutoPlayStarted(true);
+        } catch (error) {
+          console.log('Autoplay prevented by browser - user interaction needed');
+        }
+        setLoading(null);
+      }
+    };
+
+    const timer = setTimeout(startAutoPlay, 2000);
+    return () => clearTimeout(timer);
+  }, [autoPlayStarted]);
 
   const handlePlay = async (preview: PreviewCategory) => {
     // Check if already previewed
@@ -60,8 +96,12 @@ export const MusicPreviewRow: React.FC = () => {
 
     // If same category, toggle pause
     if (activeCategory === preview.category) {
-      audioRef.current?.pause();
-      setActiveCategory(null);
+      if (audioRef.current?.paused) {
+        audioRef.current?.play();
+      } else {
+        audioRef.current?.pause();
+        setActiveCategory(null);
+      }
       return;
     }
 
@@ -84,6 +124,7 @@ export const MusicPreviewRow: React.FC = () => {
 
     if (trackUrl && audioRef.current) {
       audioRef.current.src = trackUrl;
+      audioRef.current.volume = 0.28; // Maintain consistent volume
       try {
         await audioRef.current.play();
         setActiveCategory(preview.category);
