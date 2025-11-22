@@ -46,7 +46,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative flex flex-col">
+    <div className="w-full min-h-screen flex flex-col">
       {/* Background Video Carousel */}
       <BackgroundVideoCarousel />
 
@@ -59,7 +59,7 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Cinematic fade reveal */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-3 sm:py-8 min-h-screen">
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8">
           <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
             {/* Hero Container - Cinematic 2.4s fade-out */}
             <motion.div
@@ -135,10 +135,8 @@ const Index = () => {
           </div>
         </main>
 
-        {/* Footer - Raised for visibility */}
-        <div className="relative z-20 mt-[-200px]">
-          <Footer />
-        </div>
+        {/* Footer */}
+        <Footer />
         
         {/* Sales Assistant */}
         <SalesAssistant />
