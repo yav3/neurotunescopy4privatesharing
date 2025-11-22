@@ -61,9 +61,12 @@ export const Footer = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                   <ul className="space-y-3 pb-2">
-                    <li><Link to="/demo" className="text-sm text-white/60 hover:text-white transition-colors block">Demo</Link></li>
-                    <li><Link to="/pricing" className="text-sm text-white/60 hover:text-white transition-colors block">Pricing</Link></li>
-                    <li><Link to="/download" className="text-sm text-white/60 hover:text-white transition-colors block">App Download</Link></li>
+                    <li><Link to="/products/environmental" className="text-sm text-white/60 hover:text-white transition-colors block">Environmental & Background</Link></li>
+                    <li><Link to="/products/population-health" className="text-sm text-white/60 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
+                    <li><Link to="/products/enterprise-wellness" className="text-sm text-white/60 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
+                    <li><Link to="/app-download" className="text-sm text-white/60 hover:text-white transition-colors block">Personal Wellness App</Link></li>
+                    <li><Link to="/products/partnerships" className="text-sm text-white/60 hover:text-white transition-colors block">Partnerships & Integration</Link></li>
+                    <li><Link to="/products" className="text-sm text-white/60 hover:text-white transition-colors block">View All Products</Link></li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
@@ -148,9 +151,12 @@ export const Footer = () => {
                 Product
               </h3>
               <ul className="space-y-2 sm:space-y-2.5">
-                <li><Link to="/demo" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Demo</Link></li>
-                <li><Link to="/pricing" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Pricing</Link></li>
-                <li><Link to="/download" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">App Download</Link></li>
+                <li><Link to="/products/environmental" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Environmental & Background</Link></li>
+                <li><Link to="/products/population-health" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
+                <li><Link to="/products/enterprise-wellness" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
+                <li><Link to="/app-download" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Personal Wellness App</Link></li>
+                <li><Link to="/products/partnerships" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Partnerships & Integration</Link></li>
+                <li><Link to="/products" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">View All Products</Link></li>
               </ul>
             </div>
 
