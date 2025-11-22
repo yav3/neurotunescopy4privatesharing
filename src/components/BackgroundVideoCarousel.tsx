@@ -2,29 +2,14 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { TherapeuticCategory } from '@/utils/therapeuticAudio';
 
-// Import all videos
-import bgVideo1 from '../assets/bg-video-1.mp4';
-import bgVideo2 from '../assets/bg-video-2.gif';
-import bgVideo3 from '../assets/bg-video-3.gif';
-import bgVideo4 from '../assets/bg-video-4.gif';
-import bgVideo5 from '../assets/bg-video-5.mp4';
-import bgVideo6 from '../assets/bg-video-6.mp4';
-import bgVideo7 from '../assets/bg-video-7.mp4';
-import bgVideo8 from '../assets/bg-video-8.mp4';
-import bgVideo9 from '../assets/bg-video-9.gif';
-import bgVideo10 from '../assets/bg-video-10.mp4';
-import bgVideo11 from '../assets/bg-video-11.gif';
-import bgVideo12 from '../assets/bg-video-12.gif';
-import bgVideo13 from '../assets/bg-video-13.gif';
-import bgVideo14 from '../assets/bg-video-14.mp4';
-import bgVideo15 from '../assets/bg-video-15.mp4';
-import bgVideo16 from '../assets/bg-video-16.mp4';
-import bgVideo17 from '../assets/bg-video-17.mp4';
-import bgVideo18 from '../assets/bg-video-18.mp4';
-import bgVideo19 from '../assets/bg-video-19.mp4';
-import bgVideo20 from '../assets/bg-video-20.mp4';
-import bgVideo21 from '../assets/bg-video-21.mp4';
-import bgVideo22 from '../assets/bg-video-22.gif';
+// Import new background videos
+const bgVideo1 = '/videos/bg-video-1.mp4';
+const bgVideo2 = '/videos/bg-video-2.mp4';
+const bgVideo3 = '/videos/bg-video-3.mp4';
+const bgVideo4 = '/videos/bg-video-4.mp4';
+const bgVideo5 = '/videos/bg-video-5.mp4';
+const bgVideo6 = '/videos/bg-video-6.mp4';
+const bgVideo7 = '/videos/bg-video-7.mp4';
 
 interface VideoSource {
   src: string;
@@ -34,47 +19,33 @@ interface VideoSource {
 
 // Organize videos by therapeutic category for track-aware transitions
 const visualThemes: Record<TherapeuticCategory | 'default', VideoSource[]> = {
-  // Focus & Flow - Ambient, flowing, meditative chrome
+  // Focus & Flow - New Age sample
   focus: [
     { src: bgVideo1, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo5, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo6, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo14, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo16, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo2, type: 'video/mp4', duration: 15000 },
   ],
   
-  // Calm & Rest - Slower, darker, smoother visuals
+  // Nocturnes - Crossover Classical for Deep Rest
   calm: [
-    { src: bgVideo10, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo7, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo8, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo9, type: 'image/gif', duration: 12000 },
+    { src: bgVideo3, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo4, type: 'video/mp4', duration: 15000 },
   ],
   
-  // Mood Boost - Warmer, rhythmic, tropical energy
+  // Mood Boost - Placeholder
   boost: [
-    { src: bgVideo15, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo17, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo18, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo19, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo22, type: 'image/gif', duration: 12000 },
+    { src: bgVideo5, type: 'video/mp4', duration: 15000 },
   ],
   
-  // Energize (Samba) - Bright, percussive, energetic chrome ripple
+  // Serene Samba - Samba Jazz for Social Relaxation
   energize: [
-    { src: bgVideo20, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo21, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo2, type: 'image/gif', duration: 12000 },
-    { src: bgVideo3, type: 'image/gif', duration: 12000 },
-    { src: bgVideo4, type: 'image/gif', duration: 12000 },
+    { src: bgVideo6, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo7, type: 'video/mp4', duration: 15000 },
   ],
   
   // Default - Mixed selection for initial load
   default: [
     { src: bgVideo1, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo11, type: 'image/gif', duration: 12000 },
-    { src: bgVideo12, type: 'image/gif', duration: 12000 },
-    { src: bgVideo13, type: 'image/gif', duration: 12000 },
+    { src: bgVideo2, type: 'video/mp4', duration: 15000 },
   ],
 };
 

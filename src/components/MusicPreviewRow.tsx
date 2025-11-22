@@ -16,25 +16,19 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
     name: "Focus & Flow",
     bucket: "NewAgeandWorldFocus",
     category: "focus",
-    description: "Deep concentration"
+    description: "New Age sample"
   },
   {
     name: "Nocturnes",
     bucket: "Nocturnes",
     category: "calm",
-    description: "Peaceful relaxation"
+    description: "Crossover Classical for Deep Rest"
   },
   {
-    name: "Samba Jazz",
+    name: "Serene Samba",
     bucket: "samba",
     category: "energize",
-    description: "Rhythmic vitality"
-  },
-  {
-    name: "Mood Boosting House",
-    bucket: "tropicalhouse",
-    category: "boost",
-    description: "Uplifting vibes"
+    description: "Samba Jazz for Social Relaxation"
   }
 ];
 
@@ -94,7 +88,7 @@ export const MusicPreviewRow: React.FC = () => {
                   ? (activeCategory === preview.category ? 1 : 0.2)
                   : (isAutoPlayActive ? 1 : 0.35),
                 x: 0,
-                scale: (isActive || isAutoPlayActive) ? 1.05 : 1
+                scale: (isActive || isAutoPlayActive) ? 1.15 : 1
               }}
               transition={{ 
                 duration: 2.4,
@@ -115,11 +109,18 @@ export const MusicPreviewRow: React.FC = () => {
               onClick={() => handlePlay(preview)}
             >
 
+              {/* Genre name */}
+              <div className="mb-3">
+                <h3 className="text-white text-lg leading-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
+                  {preview.name}
+                </h3>
+              </div>
+
               {/* Play/Pause Button */}
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex justify-center mb-4">
                 <div className={`
                   w-14 h-14 rounded-full 
-                  flex items-center justify-center flex-shrink-0
+                  flex items-center justify-center
                   transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
                   ${(isActive || isAutoPlayActive) ? 'bg-white/20 scale-110' : 'bg-white/10'}
                   hover:bg-white/20 hover:scale-105
@@ -132,20 +133,17 @@ export const MusicPreviewRow: React.FC = () => {
                     <Play className="w-6 h-6 text-white ml-0.5" />
                   )}
                 </div>
+              </div>
 
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-bold text-lg leading-tight">
-                    {preview.name}
-                  </h3>
-                  <p className="text-white/60 text-sm mt-1 leading-snug">
-                    {preview.description}
-                  </p>
-                </div>
+              {/* Description */}
+              <div className="text-center">
+                <p className="text-white/60 text-sm leading-snug" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
+                  {preview.description}
+                </p>
               </div>
 
               {/* Status indicator */}
-              <div className="flex items-center justify-between text-xs text-white/40 mt-4">
-                <span>One preview track</span>
+              <div className="flex items-center justify-center text-xs text-white/40 mt-4">
                 {!canPlay && <span className="text-white/50">✓ Played</span>}
               </div>
             </motion.div>
