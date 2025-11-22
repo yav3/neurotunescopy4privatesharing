@@ -57,7 +57,7 @@ const Index = () => {
 
               {/* Subtitle */}
               <p className="text-[0.7rem] sm:text-sm md:text-base text-white/80 leading-relaxed font-light tracking-wide mt-7 whitespace-nowrap">
-                Neuroscience-backed • Clinically Validated • Therapeutic Music
+                Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
               </p>
             </motion.div>
           </div>
