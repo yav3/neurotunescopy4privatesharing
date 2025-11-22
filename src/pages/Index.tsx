@@ -45,18 +45,18 @@ const Index = () => {
           <div className="relative w-full max-w-4xl mx-auto">
             {/* Premium Glass Container */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-5 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-8 py-10 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
+              className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
               initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Logo/Title */}
-              <h1 className="font-light tracking-[-0.03em] text-[2.75rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              <h1 className="font-light tracking-[-0.03em] text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
                 +NeuroTunes
               </h1>
 
               {/* Subtitle */}
-              <p className="text-[0.65rem] sm:text-xs md:text-sm text-white/80 leading-relaxed font-light tracking-wide mt-4 whitespace-nowrap">
+              <p className="text-[0.6rem] leading-tight sm:text-xs md:text-sm text-white/80 font-light tracking-wide mt-4 max-w-[280px] sm:max-w-none sm:whitespace-nowrap text-center">
                 Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
               </p>
             </motion.div>
