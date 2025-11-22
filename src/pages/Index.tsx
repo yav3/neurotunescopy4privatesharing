@@ -50,7 +50,7 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Positioned higher and more compact */}
-        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-0 min-h-screen">
+        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[18vh] pb-8">
           <div className="relative w-full max-w-4xl mx-auto flex flex-col items-center">
             {/* Premium Glass Container */}
             <motion.div
@@ -95,9 +95,27 @@ const Index = () => {
               </AnimatePresence>
             </motion.div>
 
+            {/* Subtitle strip - appears after animation */}
+            <motion.div
+              className="w-full text-center mt-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ 
+                opacity: showSubtitle ? 0 : 1,
+                y: showSubtitle ? 10 : 0
+              }}
+              transition={{ 
+                duration: 0.6,
+                delay: showSubtitle ? 0 : 0.3
+              }}
+            >
+              <p className="text-white/60 text-xs sm:text-sm font-light tracking-wide">
+                Premium Therapeutic Music · Closed-loop AI Personalization (Year 3) · 8,500+ Purpose-Composed Tracks
+              </p>
+            </motion.div>
+
             {/* Music Preview Row - Directly below hero with minimal gap */}
             <motion.div
-              className="w-full mt-8"
+              className="w-full mt-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
                 opacity: showSubtitle ? 0 : 1,
@@ -105,7 +123,7 @@ const Index = () => {
               }}
               transition={{ 
                 duration: 0.6,
-                delay: showSubtitle ? 0 : 0.3
+                delay: showSubtitle ? 0 : 0.4
               }}
             >
               <MusicPreviewRow />

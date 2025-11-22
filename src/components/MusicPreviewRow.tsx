@@ -138,20 +138,14 @@ export const MusicPreviewRow: React.FC = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className={`
                 relative group cursor-pointer
-                backdrop-blur-xl bg-white/[0.08] border border-white/10
+                backdrop-blur-xl bg-white/[0.12] border border-white/10
                 rounded-3xl p-6 
-                hover:bg-white/[0.12] hover:border-white/20
+                hover:bg-white/[0.15] hover:border-white/20
                 transition-all duration-300
-                ${isActive ? 'ring-2 ring-white/30 bg-white/[0.15]' : ''}
+                ${isActive ? 'ring-2 ring-white/30 bg-white/[0.18]' : ''}
               `}
               onClick={() => handlePlay(preview)}
             >
-              {/* Lock overlay if already used */}
-              {!canPlay && (
-                <div className="absolute inset-0 backdrop-blur-sm bg-black/40 rounded-3xl flex items-center justify-center z-10">
-                  <Lock className="w-8 h-8 text-white/60" />
-                </div>
-              )}
 
               {/* Play/Pause Button */}
               <div className="flex items-center gap-4 mb-4">
