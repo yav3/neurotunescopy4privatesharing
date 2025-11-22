@@ -108,7 +108,7 @@ export const MusicPreviewRow: React.FC = () => {
         initial={{ opacity: 1 }}
         animate={{ opacity: showWelcome ? 1 : 0 }}
         transition={{ duration: 1 }}
-        className="absolute left-1/2 top-[30%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
+        className="absolute left-1/2 top-[25%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
         style={{ display: showWelcome ? 'block' : 'none' }}
       >
         <h1 className="text-white text-3xl sm:text-4xl font-light mb-4" style={{
@@ -126,7 +126,7 @@ export const MusicPreviewRow: React.FC = () => {
         </p>
       </motion.div>
 
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center items-center">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -134,69 +134,31 @@ export const MusicPreviewRow: React.FC = () => {
           const isAutoPlayActive = !activeCategory && index === autoPlayIndex;
           const isHighlighted = isActive || isAutoPlayActive;
           
-          // Calculate position relative to center
-          const centerIndex = !activeCategory ? autoPlayIndex : PREVIEW_CATEGORIES.findIndex(p => p.category === activeCategory);
-          const positionOffset = index - centerIndex;
+          // Only show the highlighted card
+          if (!isHighlighted) return null;
           
           return (
             <motion.div
               key={preview.category}
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
-                opacity: isHighlighted ? 1 : 0.08,
-                scale: isHighlighted ? 1 : 0.75,
-                filter: isHighlighted ? 'blur(0px) brightness(1)' : 'blur(12px) brightness(0.4)',
-                x: positionOffset * 420,
-                y: 0,
-                zIndex: isHighlighted ? 20 : 10 - Math.abs(positionOffset)
+                opacity: 1,
+                scale: 1,
               }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={{ 
-                duration: 1.5,
+                duration: 0.8,
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
-              className={`
-                relative
-                w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
-                rounded-[24px] 
-                p-4 sm:p-5
-                transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
-                ${isHighlighted
-                  ? 'shadow-[0_0_2px_rgba(255,255,255,0.6),0_24px_80px_rgba(0,0,0,0.95),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.6)]' 
-                  : 'shadow-[0_8px_32px_rgba(0,0,0,0.8)]'
-                }
-              `}
+              className="w-[200px] sm:w-[240px] cursor-pointer rounded-2xl p-4 backdrop-blur-sm bg-black/60 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
               onClick={() => handleCardClick(preview)}
-              style={{
-                background: isHighlighted 
-                  ? 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.92) 100%)'
-                  : 'rgba(0,0,0,0.5)',
-                border: isHighlighted 
-                  ? '2px solid transparent' 
-                  : '1px solid rgba(255,255,255,0.06)',
-                borderImage: isHighlighted 
-                  ? 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.4) 100%) 1'
-                  : 'none',
-                backdropFilter: 'blur(2px) saturate(100%)',
-                animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite, shimmer 8s ease-in-out infinite' : 'none',
-                pointerEvents: isHighlighted ? 'auto' : 'none'
-              }}
             >
-              {/* Diamond-cut frosted edge - very thin */}
-              <div className="absolute inset-[1px] rounded-[23px] pointer-events-none"
-                style={{
-                  boxShadow: isHighlighted 
-                    ? 'inset 0 0 0 1px rgba(255,255,255,0.3), inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.8)'
-                    : 'none',
-                  background: 'transparent'
-                }}
-              />
 
               {/* Genre name */}
               <div className="mb-2 text-center">
-                <h3 className="text-white text-sm sm:text-base font-normal leading-tight tracking-wide" style={{ 
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
-                  textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.15)' : 'none',
-                  letterSpacing: '0.02em'
+                <h3 className="text-white text-sm font-medium leading-tight tracking-wide" style={{ 
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
+                  textShadow: '0 1px 8px rgba(0,0,0,0.8)'
                 }}>
                   {preview.name}
                 </h3>
@@ -206,39 +168,30 @@ export const MusicPreviewRow: React.FC = () => {
               <div className="flex justify-center mb-2">
                 <motion.div 
                   animate={{
-                    scale: isHighlighted ? [1, 1.05, 1] : 1,
-                    boxShadow: isHighlighted 
-                      ? ['0 0 20px rgba(255,255,255,0.2)', '0 0 40px rgba(255,255,255,0.4)', '0 0 20px rgba(255,255,255,0.2)']
-                      : '0 0 0px rgba(255,255,255,0)'
+                    scale: [1, 1.05, 1],
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className={`
-                    w-12 h-12 rounded-full 
-                    flex items-center justify-center
-                    transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
-                    ${isHighlighted ? 'bg-white/20 backdrop-blur-xl border border-white/30' : 'bg-white/8 border border-white/10'}
-                  `}
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/15 backdrop-blur-xl border border-white/25"
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : isActive ? (
-                    <Pause className="w-5 h-5 text-white drop-shadow-lg" />
+                    <Pause className="w-4 h-4 text-white drop-shadow-lg" />
                   ) : (
-                    <Play className="w-5 h-5 text-white ml-0.5 drop-shadow-lg" />
+                    <Play className="w-4 h-4 text-white ml-0.5 drop-shadow-lg" />
                   )}
                 </motion.div>
               </div>
 
               {/* Description */}
               <div className="text-center">
-                <p className="text-white/85 text-[11px] sm:text-xs leading-snug font-normal" style={{ 
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
-                  textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.6), 0 0 15px rgba(255,255,255,0.1)' : 'none',
-                  letterSpacing: '0.01em'
+                <p className="text-white/75 text-[10px] leading-snug font-light" style={{ 
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
+                  textShadow: '0 1px 6px rgba(0,0,0,0.8)'
                 }}>
                   {preview.description}
                 </p>
@@ -246,8 +199,19 @@ export const MusicPreviewRow: React.FC = () => {
 
               {/* Status indicator */}
               {!canPlay && (
-                <div className="flex items-center justify-center text-xs text-white/40 mt-3">
+                <div className="flex items-center justify-center text-[10px] text-white/40 mt-2">
                   <span className="text-white/50">✓ Played</span>
+                </div>
+              )}
+              
+              {/* Instruction hint - only show on first card */}
+              {index === 0 && !isActive && (
+                <div className="text-center mt-2">
+                  <p className="text-white/50 text-[9px] font-light" style={{
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
+                  }}>
+                    Tap to play
+                  </p>
                 </div>
               )}
             </motion.div>
