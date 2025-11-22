@@ -65,18 +65,18 @@ const Index = () => {
           <div className="relative w-full max-w-4xl mx-auto">
             {/* Premium Glass Panel - World-class readability */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-8 sm:gap-10 mx-auto relative z-10 w-full max-w-[90%] sm:max-w-2xl px-8 py-16 sm:px-16 sm:py-20 md:px-20 md:py-24 rounded-[28px] sm:rounded-[40px] backdrop-blur-[60px] saturate-[140%] border border-white/[0.08] shadow-[0_0_30px_rgba(0,0,0,0.5),inset_0_0_20px_rgba(255,255,255,0.02),0_8px_40px_rgba(0,0,0,0.4)] bg-[rgba(20,20,20,0.60)]"
+              className="text-center flex flex-col items-center justify-center gap-6 sm:gap-8 mx-auto relative z-10 w-full max-w-[85%] sm:max-w-xl px-6 py-12 sm:px-12 sm:py-16 md:px-16 md:py-18 rounded-[24px] sm:rounded-[32px] backdrop-blur-[60px] saturate-[140%] border border-white/[0.08] shadow-[0_0_30px_rgba(0,0,0,0.5),inset_0_0_20px_rgba(255,255,255,0.02),0_8px_40px_rgba(0,0,0,0.4)] bg-[rgba(20,20,20,0.60)]"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Logo/Title - Apple-thin typography */}
-              <h1 className="font-light tracking-[-0.03em] text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
+              <h1 className="font-light tracking-[-0.03em] text-4xl leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
                 +NeuroTunes
               </h1>
 
               {/* Subtitle - Premium spacing and opacity */}
-              <p className="text-sm sm:text-base md:text-lg text-white/75 max-w-md leading-relaxed font-light">
+              <p className="text-xs sm:text-sm md:text-base text-white/75 max-w-md leading-relaxed font-light">
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
             </motion.div>
