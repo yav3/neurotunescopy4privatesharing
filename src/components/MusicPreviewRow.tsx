@@ -111,19 +111,12 @@ export const MusicPreviewRow: React.FC = () => {
         className="absolute left-1/2 top-[25%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
         style={{ display: showWelcome ? 'block' : 'none' }}
       >
-        <h1 className="text-white text-3xl sm:text-4xl font-light mb-4" style={{
+        <h1 className="text-white text-3xl sm:text-4xl font-light" style={{
           fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
           textShadow: '0 2px 20px rgba(0,0,0,0.8)'
         }}>
           + NeuroTunes
         </h1>
-        <p className="text-white/80 text-xs sm:text-sm font-light max-w-2xl px-6" style={{
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-          textShadow: '0 1px 10px rgba(0,0,0,0.8)',
-          letterSpacing: '0.02em'
-        }}>
-          Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
-        </p>
       </motion.div>
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
