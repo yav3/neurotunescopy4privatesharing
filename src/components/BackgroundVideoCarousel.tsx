@@ -71,6 +71,14 @@ export const BackgroundVideoCarousel = () => {
 
   const currentSource = videoSources[currentIndex];
 
+  // Notify parent about index changes (for audio sync)
+  useEffect(() => {
+    // Dispatch custom event that the Index page can listen to
+    window.dispatchEvent(new CustomEvent('videoCarouselChange', { 
+      detail: { index: currentIndex } 
+    }));
+  }, [currentIndex]);
+
   return (
     <div className="fixed inset-0 z-0">
       <AnimatePresence mode="wait">
