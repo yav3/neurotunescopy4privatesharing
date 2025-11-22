@@ -82,8 +82,9 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full overflow-hidden px-3 sm:px-6 lg:px-8">
-      <div className="relative flex justify-center items-center py-4 h-[400px]">
-        {PREVIEW_CATEGORIES.map((preview, index) => {
+      <div className="relative flex justify-center items-center py-4 min-h-[400px]">
+        <div className="relative w-full flex justify-center items-center">
+          {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
           const canPlay = canPreviewCategory(preview.category);
@@ -92,12 +93,12 @@ export const MusicPreviewRow: React.FC = () => {
           
           // Calculate horizontal offset to center the highlighted card
           const distanceFromCenter = !activeCategory ? (index - autoPlayIndex) : (isHighlighted ? 0 : (index - PREVIEW_CATEGORIES.findIndex(p => p.category === activeCategory)));
-          const offset = distanceFromCenter * 100; // Increased spacing
+          const offset = distanceFromCenter * 320; // pixels to move cards left/right
 
           return (
             <motion.div
               key={preview.category}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0 }}
               animate={{ 
                 opacity: isHighlighted ? 1 : 0.12,
                 x: offset,
@@ -109,8 +110,9 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.16, 1, 0.3, 1]
               }}
               className={`
-                min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] relative cursor-pointer
-                rounded-[16px] border flex-shrink-0
+                absolute left-1/2 -translate-x-1/2
+                min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] cursor-pointer
+                rounded-[16px] border
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
                 p-5
                 shadow-[0_12px_35px_rgba(0,0,0,0.75),inset_0_0_18px_rgba(255,255,255,0.055)]
@@ -123,10 +125,7 @@ export const MusicPreviewRow: React.FC = () => {
               onClick={() => handleCardClick(preview)}
               style={{
                 animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite' : 'none',
-                pointerEvents: isHighlighted ? 'auto' : 'none',
-                position: 'absolute',
-                left: '50%',
-                transform: `translateX(-50%)`
+                pointerEvents: isHighlighted ? 'auto' : 'none'
               }}
             >
 
@@ -170,6 +169,7 @@ export const MusicPreviewRow: React.FC = () => {
             </motion.div>
           );
         })}
+        </div>
       </div>
     </div>
   );
