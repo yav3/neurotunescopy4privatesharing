@@ -98,26 +98,34 @@ export const BackgroundVideoCarousel = () => {
     if (currentVideo.type === 'video/mp4' && videoRef.current) {
       const video = videoRef.current;
       
-      // Ensure video plays - try multiple times for reliability
+      // Ensure video plays - aggressive autoplay strategy
       const playVideo = async () => {
         try {
+          video.muted = true; // Ensure muted for autoplay
           await video.play();
           console.log('✅ Background video playing');
         } catch (err) {
-          console.log('⚠️ Background video autoplay blocked, user interaction needed:', err);
+          console.log('⚠️ Background video autoplay blocked:', err);
+          // Try again after a short delay
+          setTimeout(() => {
+            video.play().catch(() => {
+              console.log('⚠️ Background video requires user interaction');
+            });
+          }, 500);
         }
       };
 
-      // Try to play immediately if already loaded
-      if (video.readyState >= 2) {
-        playVideo();
-      }
+      // Force immediate play attempt
+      playVideo();
       
       // Also try when metadata loads
       video.addEventListener('loadedmetadata', playVideo, { once: true });
       
       // And when enough data is loaded
       video.addEventListener('canplay', playVideo, { once: true });
+      
+      // Try on loadeddata as well
+      video.addEventListener('loadeddata', playVideo, { once: true });
 
       const handleEnded = () => {
         setIsTransitioning(true);
