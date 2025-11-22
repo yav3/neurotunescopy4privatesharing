@@ -112,13 +112,12 @@ export const ConsumerPricing = () => {
             </p>
           </div>
 
-          {/* Pricing Cards - Horizontal Scroll */}
-          <div className="overflow-x-auto pb-8 -mx-6 px-6 mb-20">
-            <div className="flex gap-8 min-w-max">
-              {plans.map((plan, index) => (
-                <div
-                  key={index}
-                  className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col h-full w-[340px] flex-shrink-0"
+          {/* Pricing Cards - Responsive Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20 max-w-7xl mx-auto">
+            {plans.map((plan, index) => (
+              <div
+                key={index}
+                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col h-full"
                   style={{
                     background: plan.highlight 
                       ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
@@ -204,9 +203,8 @@ export const ConsumerPricing = () => {
                     {plan.cta}
                   </button>
                 </Link>
-              </div>
-            ))}
             </div>
+          ))}
           </div>
         </div>
       </main>
