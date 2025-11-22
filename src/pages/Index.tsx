@@ -39,25 +39,41 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Premium Apple-style layout */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-16 sm:pt-20 md:pt-24 pb-16 min-h-screen">
-          <div className="relative w-full max-w-3xl mx-auto -mt-8 sm:-mt-12 md:-mt-16">
-            {/* Premium Glass Panel - Apple Vision Pro style */}
+        {/* Hero Section - Positioned 22% from top */}
+        <main className="flex-1 flex items-start justify-center px-4 sm:px-6 md:px-8 pt-[22vh] pb-16 min-h-screen">
+          <div className="relative w-full max-w-4xl mx-auto">
+            {/* Premium Glass Container */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-5 sm:gap-7 mx-auto relative z-10 w-full max-w-[90%] sm:max-w-lg md:max-w-xl px-8 py-10 sm:px-14 sm:py-14 md:px-16 md:py-16 rounded-[28px] sm:rounded-[36px] backdrop-blur-[26px] saturate-[180%] border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_1px_2px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.15),inset_0_-1px_0_rgba(0,0,0,0.3)] bg-[rgba(20,20,20,0.32)] before:absolute before:inset-0 before:rounded-[28px] sm:before:rounded-[36px] before:bg-gradient-to-br before:from-white/10 before:via-transparent before:to-transparent before:pointer-events-none"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="text-center flex flex-col items-center justify-center gap-7 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-8 py-14 sm:px-12 sm:py-16 md:px-16 md:pt-16 md:pb-14 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Logo/Title - Apple-thin typography */}
+              {/* Logo/Title */}
               <h1 className="font-light tracking-[-0.03em] text-[2.75rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
                 +NeuroTunes
               </h1>
 
-              {/* Subtitle - Premium spacing and opacity */}
-              <p className="text-xs sm:text-sm md:text-base text-white/80 max-w-md leading-relaxed font-light tracking-wide">
+              {/* Subtitle */}
+              <p className="text-xs sm:text-sm md:text-base text-white/80 max-w-md leading-relaxed font-light tracking-wide mt-7">
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
+                <Link
+                  to="/samples"
+                  className="group relative px-8 py-3.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/20 text-obsidian font-medium text-sm tracking-wide hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-[0_4px_20px_rgba(255,255,255,0.15)]"
+                >
+                  Hear Demo
+                </Link>
+                <Link
+                  to="/browse"
+                  className="group relative px-8 py-3.5 rounded-full bg-obsidian/60 backdrop-blur-sm border border-white/10 text-white font-medium text-sm tracking-wide hover:bg-obsidian/80 hover:border-white/20 hover:scale-[1.02] transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+                >
+                  Explore Solutions
+                </Link>
+              </div>
             </motion.div>
           </div>
         </main>
