@@ -41,6 +41,18 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
 export const MusicPreviewRow: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TherapeuticCategory | null>(null);
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
+  const [autoPlayIndex, setAutoPlayIndex] = useState(0);
+
+  // Auto-play carousel effect
+  React.useEffect(() => {
+    if (activeCategory) return; // Don't auto-play if user has selected something
+    
+    const interval = setInterval(() => {
+      setAutoPlayIndex((prev) => (prev + 1) % PREVIEW_CATEGORIES.length);
+    }, 6000); // 6 seconds per card
+    
+    return () => clearInterval(interval);
+  }, [activeCategory]);
 
   const handlePlay = async (preview: PreviewCategory) => {
     // Check if already previewed
@@ -71,15 +83,18 @@ export const MusicPreviewRow: React.FC = () => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
           const canPlay = canPreviewCategory(preview.category);
+          const isAutoPlayActive = !activeCategory && index === autoPlayIndex;
 
           return (
             <motion.div
               key={preview.category}
               initial={{ opacity: 0, x: 50 }}
               animate={{ 
-                opacity: activeCategory && activeCategory !== preview.category ? 0.2 : 1,
+                opacity: activeCategory 
+                  ? (activeCategory === preview.category ? 1 : 0.2)
+                  : (isAutoPlayActive ? 1 : 0.35),
                 x: 0,
-                scale: isActive ? 1.05 : 1
+                scale: (isActive || isAutoPlayActive) ? 1.05 : 1
               }}
               transition={{ 
                 duration: 2.4,
@@ -106,7 +121,7 @@ export const MusicPreviewRow: React.FC = () => {
                   w-14 h-14 rounded-full 
                   flex items-center justify-center flex-shrink-0
                   transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                  ${isActive ? 'bg-white/20 scale-110' : 'bg-white/10'}
+                  ${(isActive || isAutoPlayActive) ? 'bg-white/20 scale-110' : 'bg-white/10'}
                   hover:bg-white/20 hover:scale-105
                 `}>
                   {isLoading ? (
