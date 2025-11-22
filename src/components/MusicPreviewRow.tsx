@@ -121,7 +121,7 @@ export const MusicPreviewRow: React.FC = () => {
   }, [activeCategory]);
 
   return (
-    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6">
+    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-0">
       <audio ref={audioRef} preload="auto" />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -189,13 +189,6 @@ export const MusicPreviewRow: React.FC = () => {
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Sign up prompt */}
-      <div className="text-center mt-8">
-        <p className="text-white/70 text-sm">
-          Sign up to unlock unlimited listening across all categories
-        </p>
       </div>
     </div>
   );
