@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DevDebugPanel } from "@/components/DevDebugPanel";
 import { FullPagePlayer } from "@/components/FullPagePlayer";
@@ -79,6 +79,7 @@ import HIPAA from "./pages/HIPAA";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const location = useLocation();
   const { currentTrack, playerMode } = useAudioStore();
 
   useEffect(() => {
@@ -214,8 +215,8 @@ const AppContent = () => {
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
       
-      {/* Global Music Players - Show full player by default, minimized when explicitly minimized */}
-      {playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />}
+      {/* Global Music Players - On home page, always use minimized player for previews */}
+      {playerMode === 'full' && location.pathname !== '/' ? <FullPagePlayer /> : <MinimizedPlayer />}
       
       <DevDebugPanel />
     </div>
