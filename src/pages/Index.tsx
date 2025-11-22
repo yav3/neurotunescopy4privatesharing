@@ -95,24 +95,6 @@ const Index = () => {
               </AnimatePresence>
             </motion.div>
 
-            {/* Subtitle strip - appears after animation */}
-            <motion.div
-              className="w-full text-center mt-6"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ 
-                opacity: showSubtitle ? 0 : 1,
-                y: showSubtitle ? 10 : 0
-              }}
-              transition={{ 
-                duration: 0.6,
-                delay: showSubtitle ? 0 : 0.3
-              }}
-            >
-              <p className="text-white/60 text-xs sm:text-sm font-light tracking-wide">
-                Premium Therapeutic Music · Closed-loop AI Personalization (Year 3) · 8,500+ Purpose-Composed Tracks
-              </p>
-            </motion.div>
-
             {/* Music Preview Row - Directly below hero with minimal gap */}
             <motion.div
               className="w-full mt-10"
