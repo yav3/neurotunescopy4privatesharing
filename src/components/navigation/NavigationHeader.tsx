@@ -60,28 +60,34 @@ export const NavigationHeader = () => {
               <div className="absolute top-full left-0 mt-2 w-64 bg-obsidian/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] z-[100] overflow-hidden">
                 <div className="py-2">
                   <Link
-                    to="/products/clinical"
+                    to="/products/environmental"
                     className="block px-5 py-3 text-sm font-light text-platinum-glow/85 hover:text-platinum-glow hover:bg-white/5 transition-all"
                   >
-                    Clinical Solutions
+                    Environmental & Background
                   </Link>
                   <Link
-                    to="/products/wellness"
+                    to="/products/population-health"
                     className="block px-5 py-3 text-sm font-light text-platinum-glow/85 hover:text-platinum-glow hover:bg-white/5 transition-all"
                   >
-                    Personal Wellness
+                    Enterprise Population Health
                   </Link>
                   <Link
-                    to="/products/enterprise"
+                    to="/products/enterprise-wellness"
                     className="block px-5 py-3 text-sm font-light text-platinum-glow/85 hover:text-platinum-glow hover:bg-white/5 transition-all"
                   >
-                    Enterprise & Healthcare
+                    Enterprise Wellness
                   </Link>
                   <Link
-                    to="/products/research"
+                    to="/app-download"
                     className="block px-5 py-3 text-sm font-light text-platinum-glow/85 hover:text-platinum-glow hover:bg-white/5 transition-all"
                   >
-                    Research & Studies
+                    Personal Wellness App
+                  </Link>
+                  <Link
+                    to="/products/partnerships"
+                    className="block px-5 py-3 text-sm font-light text-platinum-glow/85 hover:text-platinum-glow hover:bg-white/5 transition-all"
+                  >
+                    Partnerships & Integration
                   </Link>
                   <div className="h-px bg-white/10 my-2 mx-4" />
                   <Link
@@ -160,32 +166,39 @@ export const NavigationHeader = () => {
               {productsDropdownOpen && (
                 <div className="mt-3 ml-4 space-y-3 border-l border-white/10 pl-4">
                   <Link
-                    to="/products/clinical"
+                    to="/products/environmental"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-base font-light text-white/75 hover:text-white"
                   >
-                    Clinical Solutions
+                    Environmental & Background
                   </Link>
                   <Link
-                    to="/products/wellness"
+                    to="/products/population-health"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-base font-light text-white/75 hover:text-white"
                   >
-                    Personal Wellness
+                    Enterprise Population Health
                   </Link>
                   <Link
-                    to="/products/enterprise"
+                    to="/products/enterprise-wellness"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-base font-light text-white/75 hover:text-white"
                   >
-                    Enterprise & Healthcare
+                    Enterprise Wellness
                   </Link>
                   <Link
-                    to="/products/research"
+                    to="/app-download"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block text-base font-light text-white/75 hover:text-white"
                   >
-                    Research & Studies
+                    Personal Wellness App
+                  </Link>
+                  <Link
+                    to="/products/partnerships"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-base font-light text-white/75 hover:text-white"
+                  >
+                    Partnerships & Integration
                   </Link>
                   <Link
                     to="/products"
