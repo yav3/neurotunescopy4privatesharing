@@ -36,6 +36,15 @@ export const MusicPreviewRow: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TherapeuticCategory | null>(null);
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  // Hide welcome message after 4 seconds
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Auto-play carousel effect - 3 seconds per card
   React.useEffect(() => {
@@ -94,6 +103,29 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full h-screen overflow-hidden">
+      {/* Welcome message - fades out after 4 seconds */}
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: showWelcome ? 1 : 0 }}
+        transition={{ duration: 1 }}
+        className="absolute left-1/2 top-[30%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
+        style={{ display: showWelcome ? 'block' : 'none' }}
+      >
+        <h1 className="text-white text-3xl sm:text-4xl font-light mb-4" style={{
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
+          textShadow: '0 2px 20px rgba(0,0,0,0.8)'
+        }}>
+          + NeuroTunes
+        </h1>
+        <p className="text-white/80 text-xs sm:text-sm font-light max-w-2xl px-6" style={{
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
+          textShadow: '0 1px 10px rgba(0,0,0,0.8)',
+          letterSpacing: '0.02em'
+        }}>
+          Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
+        </p>
+      </motion.div>
+
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center items-center">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
@@ -126,7 +158,7 @@ export const MusicPreviewRow: React.FC = () => {
                 relative
                 w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
                 rounded-[24px] 
-                p-6 sm:p-7
+                p-4 sm:p-5
                 transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
                 ${isHighlighted
                   ? 'shadow-[0_0_2px_rgba(255,255,255,0.6),0_24px_80px_rgba(0,0,0,0.95),inset_0_2px_1px_rgba(255,255,255,0.2),inset_0_-2px_1px_rgba(0,0,0,0.6)]' 
@@ -160,8 +192,8 @@ export const MusicPreviewRow: React.FC = () => {
               />
 
               {/* Genre name */}
-              <div className="mb-3 text-center">
-                <h3 className="text-white text-base sm:text-lg font-normal leading-tight tracking-wide" style={{ 
+              <div className="mb-2 text-center">
+                <h3 className="text-white text-sm sm:text-base font-normal leading-tight tracking-wide" style={{ 
                   fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
                   textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.15)' : 'none',
                   letterSpacing: '0.02em'
@@ -171,7 +203,7 @@ export const MusicPreviewRow: React.FC = () => {
               </div>
 
               {/* Play/Pause Button */}
-              <div className="flex justify-center mb-3">
+              <div className="flex justify-center mb-2">
                 <motion.div 
                   animate={{
                     scale: isHighlighted ? [1, 1.05, 1] : 1,
@@ -185,7 +217,7 @@ export const MusicPreviewRow: React.FC = () => {
                     ease: "easeInOut"
                   }}
                   className={`
-                    w-14 h-14 rounded-full 
+                    w-12 h-12 rounded-full 
                     flex items-center justify-center
                     transition-all duration-[3500ms] ease-[cubic-bezier(0.19,1.0,0.22,1.0)]
                     ${isHighlighted ? 'bg-white/20 backdrop-blur-xl border border-white/30' : 'bg-white/8 border border-white/10'}
@@ -203,7 +235,7 @@ export const MusicPreviewRow: React.FC = () => {
 
               {/* Description */}
               <div className="text-center">
-                <p className="text-white/85 text-xs sm:text-sm leading-snug font-normal" style={{ 
+                <p className="text-white/85 text-[11px] sm:text-xs leading-snug font-normal" style={{ 
                   fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif',
                   textShadow: isHighlighted ? '0 1px 4px rgba(0,0,0,0.6), 0 0 15px rgba(255,255,255,0.1)' : 'none',
                   letterSpacing: '0.01em'
