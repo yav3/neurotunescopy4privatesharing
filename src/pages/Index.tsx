@@ -37,11 +37,11 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fade out entire hero after 2.5 seconds
+  // Fade out entire hero after music starts (4 seconds total)
   useEffect(() => {
     const fadeTimer = setTimeout(() => {
       setHeroVisible(false);
-    }, 2500);
+    }, 4000);
     return () => clearTimeout(fadeTimer);
   }, []);
 
