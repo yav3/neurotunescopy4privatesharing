@@ -58,6 +58,12 @@ export const NavigationHeader = () => {
 
         {/* Center: Menu Items */}
         <nav className="flex items-center gap-6 lg:gap-8 relative z-10">
+          <Link to="/demo">
+            <button className="px-5 lg:px-7 py-2.5 lg:py-3 rounded-full text-xs lg:text-sm font-medium transition-all bg-obsidian/85 border border-platinum-glow/18 text-platinum-glow/90 shadow-[0_0_24px_rgba(228,228,228,0.10),inset_0_1px_0_rgba(228,228,228,0.06)] hover:bg-obsidian-graphite/90 hover:border-platinum-glow/32 hover:shadow-[0_0_40px_rgba(228,228,228,0.18),inset_0_1px_0_rgba(228,228,228,0.10)]">
+              Hear Demo
+            </button>
+          </Link>
+
           <div
             className="relative"
             onMouseEnter={() => setShowSolutionsMega(true)}
@@ -194,11 +200,6 @@ export const NavigationHeader = () => {
         <div className="flex items-center gap-4 lg:gap-6 relative z-10">
           <Link to="/auth" className="text-sm lg:text-base font-light text-platinum-glow/86 hover:text-platinum-glow transition-colors">
             Log in
-          </Link>
-          <Link to="/demo">
-            <button className="px-5 lg:px-7 py-2.5 lg:py-3 rounded-full text-xs lg:text-sm font-medium transition-all bg-obsidian/85 border border-platinum-glow/18 text-platinum-glow/90 shadow-[0_0_24px_rgba(228,228,228,0.10),inset_0_1px_0_rgba(228,228,228,0.06)] hover:bg-obsidian-graphite/90 hover:border-platinum-glow/32 hover:shadow-[0_0_40px_rgba(228,228,228,0.18),inset_0_1px_0_rgba(228,228,228,0.10)]">
-              See Samples
-            </button>
           </Link>
         </div>
       </header>
@@ -352,7 +353,7 @@ export const NavigationHeader = () => {
 
             <Link to="/demo" onClick={() => setMobileMenuOpen(false)}>
               <button className="w-full px-6 py-3 rounded-full text-sm font-medium text-white bg-obsidian/80 border border-platinum-glow/14 shadow-[0_0_20px_rgba(255,255,255,0.08)]">
-                See Samples
+                Hear Demo
               </button>
             </Link>
           </div>
