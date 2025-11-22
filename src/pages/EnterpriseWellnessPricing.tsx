@@ -59,26 +59,27 @@ export const EnterpriseWellnessPricing = () => {
             </p>
           </div>
 
-          {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-            {plans.map((plan, index) => (
-              <div 
-                key={index}
-                className="rounded-3xl p-8 relative"
-                style={{
-                  background: plan.highlighted 
-                    ? 'rgba(6, 182, 212, 0.08)' 
-                    : 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(24px)',
-                  border: plan.highlighted
-                    ? '1px solid rgba(6, 182, 212, 0.30)'
-                    : '1px solid rgba(255, 255, 255, 0.10)',
-                  boxShadow: plan.highlighted
-                    ? '0 0 60px rgba(6, 182, 212, 0.20)'
-                    : '0 0 40px rgba(0, 0, 0, 0.8)',
-                  transform: plan.highlighted ? 'scale(1.05)' : 'scale(1)'
-                }}
-              >
+          {/* Pricing Cards - Horizontal Scroll */}
+          <div className="overflow-x-auto pb-8 -mx-6 px-6 mb-12">
+            <div className="flex gap-8 min-w-max">
+              {plans.map((plan, index) => (
+                <div 
+                  key={index}
+                  className="rounded-3xl p-8 relative w-[400px] flex-shrink-0"
+                  style={{
+                    background: plan.highlighted 
+                      ? 'rgba(6, 182, 212, 0.08)' 
+                      : 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(24px)',
+                    border: plan.highlighted
+                      ? '1px solid rgba(6, 182, 212, 0.30)'
+                      : '1px solid rgba(255, 255, 255, 0.10)',
+                    boxShadow: plan.highlighted
+                      ? '0 0 60px rgba(6, 182, 212, 0.20)'
+                      : '0 0 40px rgba(0, 0, 0, 0.8)',
+                    transform: plan.highlighted ? 'scale(1.05)' : 'scale(1)'
+                  }}
+                >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-medium"
                     style={{
@@ -124,6 +125,7 @@ export const EnterpriseWellnessPricing = () => {
                 </button>
               </div>
             ))}
+            </div>
           </div>
 
           {/* Additional Info */}
