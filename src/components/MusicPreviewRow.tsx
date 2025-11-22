@@ -119,7 +119,7 @@ export const MusicPreviewRow: React.FC = () => {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-semibold text-lg leading-tight tracking-wide">
+                  <h3 className="text-white font-bold text-lg leading-tight">
                     {preview.name}
                   </h3>
                   <p className="text-white/60 text-sm mt-1 leading-snug">
