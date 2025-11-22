@@ -48,8 +48,8 @@ export const Footer = () => {
           {/* Minimal Accordion Footer */}
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="footer-links" className="border-none">
-              <AccordionTrigger className="text-xs sm:text-sm text-white/60 hover:text-white hover:no-underline py-3 justify-center">
-                More
+              <AccordionTrigger className="text-xs sm:text-sm font-bold text-white/80 hover:text-white hover:no-underline py-3 justify-center tracking-wider">
+                MENU
               </AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-4 pb-6">

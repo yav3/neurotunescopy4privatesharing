@@ -6,94 +6,87 @@ import headerChromeTexture from '@/assets/header-chrome-texture.png';
 
 export const NavigationHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const isExpanded = isHovered || isScrolled;
 
   return (
     <>
-      {/* Desktop Navigation */}
+      {/* Desktop Navigation - Static Obsidian Glass */}
       <header 
-        className={`hidden md:flex items-center justify-between px-6 lg:px-8 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center transition-all duration-300 ${
-          isExpanded ? 'py-5 lg:py-6 opacity-100' : 'py-2 opacity-60'
-        }`}
+        className="hidden md:flex items-center justify-between px-6 lg:px-8 py-5 lg:py-6 fixed top-0 left-0 right-0 z-50"
         style={{
-          backgroundImage: `url(${headerChromeTexture})`,
+          background: 'rgba(10, 10, 12, 0.95)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.8)',
         }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Solid obsidian overlay - fully opaque */}
-        <div className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
-          isExpanded ? 'bg-gradient-to-b from-obsidian/98 to-obsidian/95' : 'bg-gradient-to-b from-obsidian/70 to-obsidian/60'
-        }`} />
+        {/* Obsidian glass texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            backgroundImage: `url(${headerChromeTexture})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         
-        {/* Chrome highlight at bottom edge */}
-        <div className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-300 ${
-          isExpanded ? 'bg-white/10 opacity-100' : 'bg-white/5 opacity-50'
-        }`} />
+        {/* Diamond highlight at bottom edge */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
 
         {/* Left: Logo */}
-        <Link to="/" className={`flex flex-col relative z-10 transition-all duration-300 ${
-          isExpanded ? 'scale-100 opacity-100' : 'scale-90 opacity-75'
-        }`}>
-          <span className="text-lg lg:text-xl font-light tracking-tight text-platinum-glow/90">
+        <Link to="/" className="flex flex-col relative z-10">
+          <span className="text-lg lg:text-xl font-light tracking-tight text-white/95">
             +NeuroTunes
           </span>
-          <span className={`text-[9px] lg:text-[10px] font-light tracking-wide text-platinum-glow/65 transition-all duration-300 ${
-            isExpanded ? 'opacity-100 max-h-4' : 'opacity-0 max-h-0 overflow-hidden'
-          }`}>
+          <span className="text-[9px] lg:text-[10px] font-light tracking-wide text-white/60">
             by Neuralpositive
           </span>
         </Link>
 
-        {/* Right: Auth + CTA */}
-        <div className={`flex items-center gap-4 lg:gap-6 relative z-10 transition-all duration-300 ${
-          isExpanded ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <Link to="/auth" className="text-sm lg:text-base font-light text-platinum-glow/86 hover:text-platinum-glow transition-colors">
-            Log in
+        {/* Right: Login CTA */}
+        <div className="flex items-center gap-4 lg:gap-6 relative z-10">
+          <Link 
+            to="/auth" 
+            className="px-6 py-2.5 rounded-full text-sm lg:text-base font-medium transition-all duration-200 hover:scale-105"
+            style={{
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: '1px solid rgba(255, 255, 255, 0.20)',
+              color: 'rgba(255, 255, 255, 0.95)',
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+            }}
+          >
+            Login
           </Link>
         </div>
       </header>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Static Obsidian Glass */}
       <header 
-        className={`md:hidden flex items-center justify-between px-5 fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C] bg-cover bg-center transition-all duration-300 ${
-          isScrolled ? 'py-4 opacity-100' : 'py-2 opacity-60'
-        }`}
+        className="md:hidden flex items-center justify-between px-5 py-4 fixed top-0 left-0 right-0 z-50"
         style={{
-          backgroundImage: `url(${headerChromeTexture})`,
+          background: 'rgba(10, 10, 12, 0.95)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.8)',
         }}
       >
-        {/* Solid obsidian overlay - fully opaque */}
-        <div className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
-          isScrolled ? 'bg-gradient-to-b from-obsidian/98 to-obsidian/95' : 'bg-gradient-to-b from-obsidian/70 to-obsidian/60'
-        }`} />
+        {/* Obsidian glass texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            backgroundImage: `url(${headerChromeTexture})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
         
-        {/* Chrome highlight at bottom edge */}
-        <div className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-300 ${
-          isScrolled ? 'bg-white/10 opacity-100' : 'bg-white/5 opacity-50'
-        }`} />
+        {/* Diamond highlight at bottom edge */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
         
-        <Link to="/" className={`flex flex-col relative z-10 transition-all duration-300 ${
-          isScrolled ? 'scale-100 opacity-100' : 'scale-90 opacity-75'
-        }`}>
-          <span className="text-lg font-light tracking-tight text-platinum-glow/90">
+        <Link to="/" className="flex flex-col relative z-10">
+          <span className="text-lg font-light tracking-tight text-white/95">
             +NeuroTunes
           </span>
-          <span className={`text-[9px] font-light tracking-wide text-platinum-glow/65 transition-all duration-300 ${
-            isScrolled ? 'opacity-100 max-h-4' : 'opacity-0 max-h-0 overflow-hidden'
-          }`}>
+          <span className="text-[9px] font-light tracking-wide text-white/60">
             by Neuralpositive
           </span>
         </Link>
@@ -117,14 +110,25 @@ export const NavigationHeader = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[57px] z-40 overflow-y-auto bg-gradient-to-br from-obsidian/98 to-obsidian-graphite">
+        <div 
+          className="md:hidden fixed inset-0 top-[65px] z-40 overflow-y-auto"
+          style={{
+            background: 'rgba(10, 10, 12, 0.98)',
+            backdropFilter: 'blur(20px)',
+          }}
+        >
           <div className="p-6 space-y-6">
             <Link
               to="/auth"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-lg font-light text-white/75 hover:text-white"
+              className="block px-6 py-3 rounded-full text-base font-medium text-center"
+              style={{
+                background: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.20)',
+                color: 'rgba(255, 255, 255, 0.95)',
+              }}
             >
-              Log in
+              Login
             </Link>
           </div>
         </div>
