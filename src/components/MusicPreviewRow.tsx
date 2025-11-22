@@ -75,12 +75,17 @@ export const MusicPreviewRow: React.FC = () => {
     setActiveCategory(preview.category);
 
     try {
+      console.log('🎵 Fetching preview track from bucket:', preview.bucket);
+      
       // Get a preview track from the bucket
       const trackUrl = await getPreviewTrackForBucket(preview.bucket);
+      
+      console.log('🎵 Preview track URL:', trackUrl);
       
       if (!trackUrl) {
         toast.error('Unable to load preview');
         setLoading(null);
+        setActiveCategory(null);
         return;
       }
 
@@ -92,10 +97,14 @@ export const MusicPreviewRow: React.FC = () => {
         album: 'Preview',
         genre: preview.category,
         bucket_name: preview.bucket,
+        storage_bucket: preview.bucket,
+        storage_key: trackUrl.split('/').pop() || '',
         file_path: trackUrl,
         duration_seconds: 30,
         duration_display: '0:30'
       };
+
+      console.log('🎵 Created preview track:', previewTrack);
 
       // Play the track using the audio store
       const audioStore = useAudioStore.getState();
@@ -106,8 +115,9 @@ export const MusicPreviewRow: React.FC = () => {
       
       toast.success(`Playing ${preview.name}`);
     } catch (error) {
-      console.error('Failed to play preview:', error);
+      console.error('❌ Failed to play preview:', error);
       toast.error('Failed to start playback');
+      setActiveCategory(null);
     } finally {
       setLoading(null);
     }
