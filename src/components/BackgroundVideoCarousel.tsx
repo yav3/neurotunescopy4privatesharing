@@ -9,6 +9,15 @@ import bgVideo6 from '../assets/bg-video-6.mp4';
 import bgVideo7 from '../assets/bg-video-7.mp4';
 import bgVideo8 from '../assets/bg-video-8.mp4';
 import bgVideo9 from '../assets/bg-video-9.gif';
+import bgVideo10 from '../assets/bg-video-10.mp4';
+import bgVideo11 from '../assets/bg-video-11.gif';
+import bgVideo12 from '../assets/bg-video-12.gif';
+import bgVideo13 from '../assets/bg-video-13.gif';
+import bgVideo14 from '../assets/bg-video-14.mp4';
+import bgVideo15 from '../assets/bg-video-15.mp4';
+import bgVideo16 from '../assets/bg-video-16.mp4';
+import bgVideo17 from '../assets/bg-video-17.mp4';
+import bgVideo18 from '../assets/bg-video-18.mp4';
 
 const videoSources = [
   { src: bgVideo1, type: 'video/mp4', duration: 15000 },
@@ -20,6 +29,15 @@ const videoSources = [
   { src: bgVideo7, type: 'video/mp4', duration: 15000 },
   { src: bgVideo8, type: 'video/mp4', duration: 15000 },
   { src: bgVideo9, type: 'image/gif', duration: 12000 },
+  { src: bgVideo10, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo11, type: 'image/gif', duration: 12000 },
+  { src: bgVideo12, type: 'image/gif', duration: 12000 },
+  { src: bgVideo13, type: 'image/gif', duration: 12000 },
+  { src: bgVideo14, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo15, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo16, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo17, type: 'video/mp4', duration: 15000 },
+  { src: bgVideo18, type: 'video/mp4', duration: 15000 },
 ];
 
 export const BackgroundVideoCarousel = () => {
