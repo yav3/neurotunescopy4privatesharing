@@ -5,19 +5,19 @@ import { Check } from "lucide-react";
 export const Pricing = () => {
   const plans = [
     {
-      name: "Individual",
-      price: "$29",
-      period: "/month",
-      description: "For personal use and individual wellness",
+      name: "Small Business",
+      price: "$29.99",
+      period: "/user/year",
+      description: "For teams and growing businesses (min 40 seats)",
       features: [
         "Full library access (8,500+ tracks)",
-        "Personalized recommendations",
-        "Offline playback",
-        "Progress tracking",
-        "All devices (web, iOS, Android)",
-        "Priority support"
+        "Web app for office use",
+        "Employee app store download codes",
+        "Basic usage analytics",
+        "Email support",
+        "Onboarding assistance"
       ],
-      cta: "Start Free Trial",
+      cta: "Request Quote",
       highlighted: false
     },
     {
@@ -26,7 +26,7 @@ export const Pricing = () => {
       period: "/month",
       description: "For therapists and healthcare providers",
       features: [
-        "Everything in Individual",
+        "Everything in Small Business",
         "Up to 50 patient accounts",
         "Clinical dashboards",
         "Session notes integration",
@@ -67,7 +67,7 @@ export const Pricing = () => {
           {/* Hero */}
           <div className="text-center mb-20">
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
-              Pricing
+              Business & Enterprise Pricing
             </h1>
             <p className="text-2xl font-light text-neutral-300">
               Choose the plan that fits your needs
