@@ -22,6 +22,15 @@
   }
 }
 
+@keyframes shimmer {
+  0%, 100% {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.08), 0 0 80px rgba(255,255,255,0.15);
+  }
+  50% {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.12), 0 0 100px rgba(255,255,255,0.25);
+  }
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
