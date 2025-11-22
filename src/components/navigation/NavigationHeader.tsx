@@ -43,7 +43,7 @@ export const NavigationHeader = () => {
 
           {/* Products & Solutions Dropdown */}
           <div 
-            className="relative"
+            className="relative group"
             onMouseEnter={() => setProductsDropdownOpen(true)}
             onMouseLeave={() => setProductsDropdownOpen(false)}
           >
@@ -55,9 +55,13 @@ export const NavigationHeader = () => {
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${productsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Dropdown Menu */}
+            {/* Dropdown Menu - stays open while hovering */}
             {productsDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-obsidian/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] z-[100] overflow-hidden">
+              <div 
+                className="absolute top-full left-0 mt-2 w-72 bg-obsidian/98 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] z-[100] overflow-hidden"
+                onMouseEnter={() => setProductsDropdownOpen(true)}
+                onMouseLeave={() => setProductsDropdownOpen(false)}
+              >
                 <div className="py-2">
                   <Link
                     to="/products/environmental"
