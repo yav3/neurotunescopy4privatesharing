@@ -89,25 +89,6 @@ const Index = () => {
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
             </motion.div>
-
-            {/* CTA Buttons - Outside hero box for better visual hierarchy */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center mt-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            >
-              <Link to="/products" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-8 py-3.5 sm:py-3 rounded-xl text-base sm:text-sm font-medium transition-all bg-white/10 backdrop-blur-xl shadow-[0_0_25px_rgba(255,255,255,0.1)_inset,0_4px_20px_rgba(0,0,0,0.3)] border border-white/20 text-platinum-glow/95 hover:bg-white/[0.15] hover:border-white/30 hover:shadow-[0_0_35px_rgba(255,255,255,0.15)_inset,0_6px_25px_rgba(0,0,0,0.4)] hover:scale-[1.02]">
-                  Explore Solutions
-                </button>
-              </Link>
-              <Link to="/demo" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto px-8 py-3.5 sm:py-3 rounded-xl text-base sm:text-sm font-medium transition-all bg-white/[0.05] backdrop-blur-xl border border-white/15 text-platinum-glow/85 hover:bg-white/10 hover:border-white/25 hover:text-platinum-glow/95 hover:scale-[1.02]">
-                  Hear Demo
-                </button>
-              </Link>
-            </motion.div>
           </div>
         </main>
 
