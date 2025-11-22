@@ -37,16 +37,26 @@ export const MusicPreviewRow: React.FC = () => {
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
 
-  // Auto-play carousel effect
+  // Auto-play carousel effect - very slow
   React.useEffect(() => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
     const interval = setInterval(() => {
       setAutoPlayIndex((prev) => (prev + 1) % PREVIEW_CATEGORIES.length);
-    }, 6000); // 6 seconds per card
+    }, 8000); // 8 seconds per card - slower breathing
     
     return () => clearInterval(interval);
   }, [activeCategory]);
+
+  const handleCardClick = (preview: PreviewCategory) => {
+    if (activeCategory === preview.category) {
+      // If clicking active card, play it
+      handlePlay(preview);
+    } else {
+      // Otherwise, just advance to this card
+      setAutoPlayIndex(PREVIEW_CATEGORIES.findIndex(p => p.category === preview.category));
+    }
+  };
 
   const handlePlay = async (preview: PreviewCategory) => {
     // Check if already previewed
@@ -72,41 +82,46 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full overflow-hidden px-3 sm:px-6 lg:px-8">
-      <div className="flex justify-start items-center gap-6 lg:gap-8 overflow-x-auto scrollbar-hide py-4 snap-x snap-mandatory">
+      <div className="flex justify-center items-center gap-8 lg:gap-12 py-4">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
           const canPlay = canPreviewCategory(preview.category);
           const isAutoPlayActive = !activeCategory && index === autoPlayIndex;
+          const isHighlighted = isActive || isAutoPlayActive;
+          
+          // Calculate horizontal offset for carousel movement
+          const offset = !activeCategory ? (autoPlayIndex - index) * 20 : 0;
 
           return (
             <motion.div
               key={preview.category}
               initial={{ opacity: 0, x: 50 }}
               animate={{ 
-                opacity: activeCategory 
-                  ? (activeCategory === preview.category ? 1 : 0.2)
-                  : (isAutoPlayActive ? 1 : 0.35),
-                x: 0,
-                scale: (isActive || isAutoPlayActive) ? 1.15 : 1
+                opacity: isHighlighted ? 1 : 0.15,
+                x: offset,
+                scale: isHighlighted ? 1.4 : 0.85,
               }}
               transition={{ 
-                duration: 2.4,
+                duration: 3.2,
                 ease: [0.16, 1, 0.3, 1]
               }}
               className={`
-                min-w-[320px] w-[320px] sm:min-w-[340px] sm:w-[340px] relative cursor-pointer snap-center
+                min-w-[320px] w-[320px] sm:min-w-[380px] sm:w-[380px] relative cursor-pointer
                 rounded-[24px] border flex-shrink-0
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
-                p-6
+                p-8
                 shadow-[0_12px_35px_rgba(0,0,0,0.75),inset_0_0_18px_rgba(255,255,255,0.055)]
-                transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                ${isActive 
+                transition-all duration-[3200ms] ease-[cubic-bezier(0.16,1,0.3,1)]
+                ${isHighlighted
                   ? 'border-white/[0.32] bg-white/[0.12]' 
                   : 'border-white/[0.14] hover:bg-white/[0.08] hover:border-white/[0.22]'
                 }
               `}
-              onClick={() => handlePlay(preview)}
+              onClick={() => handleCardClick(preview)}
+              style={{
+                animation: isHighlighted ? 'breathe 4s ease-in-out infinite' : 'none'
+              }}
             >
 
               {/* Genre name */}
