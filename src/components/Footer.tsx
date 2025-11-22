@@ -52,7 +52,7 @@ export const Footer = () => {
                 More
               </AccordionTrigger>
               <AccordionContent>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 sm:gap-8 pt-4 pb-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-4 pb-6">
                   
                   {/* PRODUCT */}
                   <div>
@@ -64,19 +64,6 @@ export const Footer = () => {
                       <li><Link to="/products/population-health" className="text-xs text-white/50 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
                       <li><Link to="/products/enterprise-wellness" className="text-xs text-white/50 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
                       <li><Link to="/app-download" className="text-xs text-white/50 hover:text-white transition-colors block">Personal Wellness App</Link></li>
-                    </ul>
-                  </div>
-
-                  {/* RESOURCES */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Resources
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li><Link to="/research" className="text-xs text-white/50 hover:text-white transition-colors block">Research</Link></li>
-                      <li><Link to="/whitepapers" className="text-xs text-white/50 hover:text-white transition-colors block">White Papers</Link></li>
-                      <li><Link to="/evidence" className="text-xs text-white/50 hover:text-white transition-colors block">Clinical Evidence</Link></li>
-                      <li><Link to="/press" className="text-xs text-white/50 hover:text-white transition-colors block">Press</Link></li>
                     </ul>
                   </div>
 
@@ -111,21 +98,17 @@ export const Footer = () => {
                       Support
                     </h3>
                     <ul className="space-y-1.5 sm:space-y-2">
-                      <li><Link to="/help" className="text-xs text-white/50 hover:text-white transition-colors block">Help Center</Link></li>
-                      <li><Link to="/help/clinical" className="text-xs text-white/50 hover:text-white transition-colors block">Clinical</Link></li>
-                      <li><Link to="/help/faq" className="text-xs text-white/50 hover:text-white transition-colors block">FAQs</Link></li>
-                    </ul>
-                  </div>
-
-                  {/* LANGUAGE */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Language
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li><button className="text-xs text-white/50 hover:text-white transition-colors text-left w-full">English</button></li>
-                      <li><button className="text-xs text-white/50 hover:text-white transition-colors text-left w-full">Português</button></li>
-                      <li><button className="text-xs text-white/50 hover:text-white transition-colors text-left w-full">Español</button></li>
+                      <li>
+                        <button 
+                          onClick={() => {
+                            const event = new CustomEvent('openSupportChat');
+                            window.dispatchEvent(event);
+                          }}
+                          className="text-xs text-white/50 hover:text-white transition-colors text-left w-full"
+                        >
+                          Chat Support
+                        </button>
+                      </li>
                     </ul>
                   </div>
 
