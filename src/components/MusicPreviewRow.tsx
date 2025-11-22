@@ -115,7 +115,7 @@ export const MusicPreviewRow: React.FC = () => {
                 scale: isHighlighted ? 1 : 0.75,
                 filter: isHighlighted ? 'blur(0px) brightness(1)' : 'blur(12px) brightness(0.4)',
                 x: positionOffset * 400,
-                y: -180,
+                y: 0,
                 zIndex: isHighlighted ? 20 : 10 - Math.abs(positionOffset)
               }}
               transition={{ 
@@ -123,7 +123,6 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
               className={`
-                absolute
                 w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
                 rounded-[24px] border
                 backdrop-blur-[120px]
