@@ -19,6 +19,12 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
     description: "Deep concentration"
   },
   {
+    name: "Nocturnes",
+    bucket: "Nocturnes",
+    category: "calm",
+    description: "Peaceful relaxation"
+  },
+  {
     name: "Samba Energy",
     bucket: "samba",
     category: "energize",
@@ -120,7 +126,7 @@ export const MusicPreviewRow: React.FC = () => {
     <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-0">
       <audio ref={audioRef} preload="auto" />
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
