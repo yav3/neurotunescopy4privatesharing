@@ -135,8 +135,10 @@ const Index = () => {
           </div>
         </main>
 
-        {/* Footer */}
-        <Footer />
+        {/* Footer - Raised for visibility */}
+        <div className="relative z-20 mt-[-200px]">
+          <Footer />
+        </div>
         
         {/* Sales Assistant */}
         <SalesAssistant />

@@ -136,25 +136,26 @@ export const MusicPreviewRow: React.FC = () => {
               onClick={() => handleCardClick(preview)}
               style={{
                 background: isHighlighted 
-                  ? 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.92) 100%)'
+                  ? 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.92) 100%)'
                   : 'rgba(0,0,0,0.5)',
                 border: isHighlighted 
-                  ? '1px solid rgba(255,255,255,0.25)' 
+                  ? '2px solid transparent' 
                   : '1px solid rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(1px) saturate(100%)',
+                borderImage: isHighlighted 
+                  ? 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.4) 100%) 1'
+                  : 'none',
+                backdropFilter: 'blur(2px) saturate(100%)',
                 animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite, shimmer 8s ease-in-out infinite' : 'none',
                 pointerEvents: isHighlighted ? 'auto' : 'none'
               }}
             >
-              {/* Edge frosting overlay - only at borders */}
-              <div className="absolute inset-0 rounded-[24px] pointer-events-none"
+              {/* Diamond-cut frosted edge - very thin */}
+              <div className="absolute inset-[1px] rounded-[23px] pointer-events-none"
                 style={{
-                  background: isHighlighted 
-                    ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 25%, transparent 75%, rgba(255,255,255,0.08) 100%)'
-                    : 'none',
                   boxShadow: isHighlighted 
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.5)'
-                    : 'none'
+                    ? 'inset 0 0 0 1px rgba(255,255,255,0.3), inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.8)'
+                    : 'none',
+                  background: 'transparent'
                 }}
               />
 
