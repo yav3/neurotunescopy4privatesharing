@@ -30,13 +30,21 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
         onOpenSalesChat();
       }
     } else if (product.id === 'environmental') {
-      setInterestType('Environmental & Background Music');
-      setContactOpen(true);
+      navigate('/pricing'); // Buy action - navigate to pricing page
     } else if (product.id === 'population-health') {
       setInterestType('Clinical Consultation');
       setContactOpen(true);
     } else if (product.id === 'enterprise-wellness') {
-      setInterestType('Enterprise Wellness');
+      navigate('/products/enterprise-wellness');
+    }
+  };
+
+  const handleSecondaryCTAClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (product.id === 'environmental') {
+      setInterestType('Environmental & Background Music - Site Assessment');
       setContactOpen(true);
     }
   };
@@ -102,27 +110,67 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
             {product.description}
           </p>
 
-          {/* CTA */}
-          <button
-            onClick={handleCTAClick}
-            className="flex items-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
-            style={{ 
-              color: 'rgba(228, 228, 228, 0.90)',
-              background: 'rgba(228, 228, 228, 0.08)',
-              border: '1px solid rgba(228, 228, 228, 0.15)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(228, 228, 228, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.25)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
-              e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.15)';
-            }}
-          >
-            {product.cta}
-            <span>→</span>
-          </button>
+          {/* Savings Message (for environmental product) */}
+          {product.savingsMessage && (
+            <div 
+              className="mb-6 px-4 py-3 rounded-lg text-sm font-light"
+              style={{ 
+                background: 'rgba(6, 182, 212, 0.10)',
+                border: '1px solid rgba(6, 182, 212, 0.25)',
+                color: 'rgba(6, 182, 212, 0.95)'
+              }}
+            >
+              {product.savingsMessage}
+            </div>
+          )}
+
+          {/* CTA Buttons */}
+          <div className="flex gap-3">
+            <button
+              onClick={handleCTAClick}
+              className="flex-1 flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
+              style={{ 
+                color: 'rgba(228, 228, 228, 0.90)',
+                background: 'rgba(228, 228, 228, 0.08)',
+                border: '1px solid rgba(228, 228, 228, 0.15)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(228, 228, 228, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.25)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.15)';
+              }}
+            >
+              {product.cta}
+              <span>→</span>
+            </button>
+            
+            {/* Secondary CTA (for environmental product) */}
+            {product.secondaryCta && (
+              <button
+                onClick={handleSecondaryCTAClick}
+                className="flex-1 flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
+                style={{ 
+                  color: 'rgba(228, 228, 228, 0.90)',
+                  background: 'rgba(228, 228, 228, 0.08)',
+                  border: '1px solid rgba(228, 228, 228, 0.15)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.25)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.15)';
+                }}
+              >
+                {product.secondaryCta}
+                <span>→</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

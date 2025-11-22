@@ -16,6 +16,8 @@ export interface Product {
   keyBenefits: string[];
   cta: string;
   path: string;
+  savingsMessage?: string;
+  secondaryCta?: string;
 }
 
 export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
@@ -47,7 +49,9 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Eliminates ASCAP/BMI/SESAC costs",
       "Cloud-managed system"
     ],
-    cta: "Request Site Assessment",
+    cta: "Buy",
+    secondaryCta: "Request Site Assessment",
+    savingsMessage: "Average customer will 50% savings for premium music for spaces, events, & experiences",
     path: "/products/environmental"
   },
 
