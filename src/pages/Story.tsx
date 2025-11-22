@@ -36,26 +36,9 @@ export const Story = () => {
 
             <section>
               <h2 className="text-3xl font-light text-white mb-6">The Science</h2>
-              <p className="mb-4">
+              <p>
                 Working with leading research institutions including Stanford Medicine, Weill Cornell Medicine, and the 
-                Jacobs Technion-Cornell Institute, we developed a comprehensive framework of 110 validated biomarkers.
-              </p>
-              <p>
-                Each piece of music in our library is engineered using these biomarkers to support specific cognitive 
-                and emotional states—from reducing anxiety to enhancing focus.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-3xl font-light text-white mb-6">The Impact</h2>
-              <p className="mb-4">
-                Today, NeuroTunes serves over 200 healthcare facilities, enterprises, and wellness organizations worldwide. 
-                Our platform has delivered more than 1 million therapeutic sessions, helping people manage stress, improve 
-                sleep, enhance cognitive performance, and support mental health recovery.
-              </p>
-              <p>
-                Clinical studies show 30-45% reduction in anxiety symptoms and measurable improvements in focus and sleep 
-                quality among our users.
+                Jacobs Technion-Cornell Institute, we continue to advance the science of therapeutic audio.
               </p>
             </section>
 
