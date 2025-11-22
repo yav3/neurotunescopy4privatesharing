@@ -65,8 +65,8 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full max-w-6xl mx-auto px-8">
-      <div className="flex flex-row justify-center items-start gap-8 flex-wrap lg:flex-nowrap">
+    <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-6 lg:gap-8 lg:flex-nowrap">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -79,7 +79,7 @@ export const MusicPreviewRow: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className={`
-                w-[270px] sm:w-[92%] sm:max-w-[360px] lg:w-[270px] relative group cursor-pointer
+                w-full max-w-[340px] sm:w-[270px] sm:max-w-none relative group cursor-pointer
                 rounded-[24px] border
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
                 p-[26px]
