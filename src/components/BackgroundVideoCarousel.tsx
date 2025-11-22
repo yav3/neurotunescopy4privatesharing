@@ -176,11 +176,11 @@ export const BackgroundVideoCarousel = () => {
         </AnimatePresence>
       </div>
       
-      {/* Premium gradient overlay - radial darkening from center */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.60)_50%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
+      {/* Premium gradient overlay - stronger darkening for better contrast */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.40)_0%,rgba(0,0,0,0.75)_50%,rgba(0,0,0,0.92)_100%)] pointer-events-none" />
       
       {/* Additional top-to-bottom gradient for navbar legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-transparent to-black/50 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70 pointer-events-none" />
     </div>
   );
 };
