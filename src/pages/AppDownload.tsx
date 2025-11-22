@@ -5,20 +5,19 @@ import { Check } from "lucide-react";
 export const AppDownload = () => {
   const plans = [
     {
-      name: "Individual",
-      priceMonthly: "$5.99",
-      priceYearly: "$25.99",
-      period: "per month / per year",
-      description: "Perfect for personal therapeutic audio access",
+      name: "Web App",
+      priceMonthly: null,
+      priceYearly: "$29.99",
+      period: "wellness access",
+      description: "Anytime upgrade to native iOS and Android with Lovable code",
       features: [
         "Full access to 8,500+ therapeutic tracks",
         "Personalized recommendations",
         "Offline playback",
         "Progress tracking",
-        "Sync across all devices",
-        "Spatial audio support"
+        "Upgrade to native apps anytime"
       ],
-      cta: "Pre-Order",
+      cta: "Start Free Trial",
       badge: "Black Friday Sale"
     },
     {
@@ -62,13 +61,13 @@ export const AppDownload = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
       <NavigationHeader />
       
-      <main className="pt-32 pb-28">
+      <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-6">
           
           {/* Hero */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-12">
             <div 
-              className="inline-block px-6 py-2 rounded-full mb-6"
+              className="inline-block px-6 py-2 rounded-full mb-4"
               style={{
                 background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
                 boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)'
@@ -76,20 +75,23 @@ export const AppDownload = () => {
             >
               <span className="text-white font-semibold tracking-wide">🎉 BLACK FRIDAY SPECIAL</span>
             </div>
-            <h1 className="text-6xl font-light tracking-tight text-white mb-6">
-              Personal Wellness App
+            <h1 className="text-5xl font-light tracking-tight text-white mb-4">
+              Personal Wellness Web App
             </h1>
-            <p className="text-2xl font-light text-neutral-300 max-w-3xl mx-auto">
+            <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto mb-2">
               Individual therapeutic music for anxiety relief, focus, sleep, and wellness
+            </p>
+            <p className="text-sm text-cyan-400 font-medium">
+              Offer valid until December 10th
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-3xl p-6 relative transition-all duration-300 hover:scale-[1.02]"
                 style={{
                   background: plan.highlight 
                     ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
@@ -116,25 +118,25 @@ export const AppDownload = () => {
                   {plan.badge}
                 </div>
 
-                <div className="text-center mb-8 mt-4">
-                  <h3 className="text-2xl font-light text-white mb-3">{plan.name}</h3>
+                <div className="text-center mb-6 mt-4">
+                  <h3 className="text-xl font-light text-white mb-2">{plan.name}</h3>
                   <div className="mb-2">
                     {plan.priceMonthly && (
-                      <div className="text-4xl font-light text-white mb-1">
+                      <div className="text-3xl font-light text-white mb-1">
                         {plan.priceMonthly}
-                        <span className="text-lg text-neutral-400"> / month</span>
+                        <span className="text-base text-neutral-400"> / month</span>
                       </div>
                     )}
-                    <div className={`${plan.priceMonthly ? 'text-3xl' : 'text-4xl'} font-light text-white`}>
+                    <div className={`${plan.priceMonthly ? 'text-2xl' : 'text-3xl'} font-light text-white`}>
                       {plan.priceYearly}
-                      <span className="text-lg text-neutral-400"> / year</span>
+                      <span className="text-base text-neutral-400"> / {plan.period}</span>
                     </div>
                   </div>
                   <p className="text-neutral-400 text-sm">{plan.description}</p>
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
@@ -165,7 +167,7 @@ export const AppDownload = () => {
 
           {/* Mobile App Download Section */}
           <div
-            className="rounded-3xl p-12 text-center"
+            className="rounded-3xl p-8 text-center"
             style={{
               background: 'rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(24px)',
@@ -173,10 +175,10 @@ export const AppDownload = () => {
               boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
             }}
           >
-            <h3 className="text-3xl font-light text-white mb-4">
+            <h3 className="text-2xl font-light text-white mb-3">
               Download the App
             </h3>
-            <p className="text-neutral-300 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-neutral-300 text-base mb-6 max-w-2xl mx-auto">
               Available on all platforms — choose your preferred way to access +NeuroTunes
             </p>
 
@@ -184,7 +186,7 @@ export const AppDownload = () => {
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {/* Web App (PWA) */}
               <button
-                className="group relative rounded-2xl p-8 transition-all duration-300 hover:scale-105"
+                className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -205,7 +207,7 @@ export const AppDownload = () => {
 
               {/* iOS App */}
               <button
-                className="group relative rounded-2xl p-8 transition-all duration-300 hover:scale-105"
+                className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -226,7 +228,7 @@ export const AppDownload = () => {
 
               {/* Android App */}
               <button
-                className="group relative rounded-2xl p-8 transition-all duration-300 hover:scale-105"
+                className="group relative rounded-2xl p-6 transition-all duration-300 hover:scale-105"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
