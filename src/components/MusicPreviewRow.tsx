@@ -93,8 +93,8 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full h-screen flex items-center justify-center overflow-hidden">
-      <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative z-10 w-full h-screen overflow-hidden">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -114,7 +114,8 @@ export const MusicPreviewRow: React.FC = () => {
                 opacity: isHighlighted ? 1 : 0.08,
                 scale: isHighlighted ? 1 : 0.75,
                 filter: isHighlighted ? 'blur(0px) brightness(1)' : 'blur(12px) brightness(0.4)',
-                x: `${positionOffset * 100}%`,
+                x: positionOffset * 400,
+                y: -180,
                 zIndex: isHighlighted ? 20 : 10 - Math.abs(positionOffset)
               }}
               transition={{ 
@@ -122,7 +123,7 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
               className={`
-                absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                absolute
                 w-[280px] sm:w-[320px] md:w-[360px] cursor-pointer
                 rounded-[24px] border
                 backdrop-blur-[120px]
