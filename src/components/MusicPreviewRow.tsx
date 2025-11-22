@@ -81,10 +81,9 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full overflow-hidden px-3 sm:px-6 lg:px-8">
-      <div className="relative flex justify-center items-center py-4 min-h-[400px]">
-        <div className="relative w-full flex justify-center items-center">
-          {PREVIEW_CATEGORIES.map((preview, index) => {
+    <div className="relative z-10 w-full h-screen flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-full flex items-center justify-center">
+        {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
           const canPlay = canPreviewCategory(preview.category);
@@ -93,7 +92,7 @@ export const MusicPreviewRow: React.FC = () => {
           
           // Calculate horizontal offset to center the highlighted card
           const distanceFromCenter = !activeCategory ? (index - autoPlayIndex) : (isHighlighted ? 0 : (index - PREVIEW_CATEGORIES.findIndex(p => p.category === activeCategory)));
-          const offset = distanceFromCenter * 320; // pixels to move cards left/right
+          const offset = distanceFromCenter * 350; // pixels to move cards left/right
 
           return (
             <motion.div
@@ -110,7 +109,7 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.16, 1, 0.3, 1]
               }}
               className={`
-                absolute left-1/2 -translate-x-1/2
+                absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                 min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] cursor-pointer
                 rounded-[16px] border
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
@@ -169,7 +168,6 @@ export const MusicPreviewRow: React.FC = () => {
             </motion.div>
           );
         })}
-        </div>
       </div>
     </div>
   );
