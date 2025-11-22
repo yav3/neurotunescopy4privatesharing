@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../components/auth/AuthProvider';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
@@ -15,6 +15,7 @@ import weillCornellLogo from '@/assets/weill-cornell.png';
 const Index = () => {
   const { user, loading } = useAuthContext();
   const [scrollY, setScrollY] = useState(0);
+  const [showSubtitle, setShowSubtitle] = useState(true);
   
   // Welcome returning users
   useWelcomeMessage();
@@ -25,6 +26,14 @@ const Index = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Hide subtitle after animation completes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSubtitle(false);
+    }, 2500); // Duration of zoom + hold time
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -45,7 +54,7 @@ const Index = () => {
           <div className="relative w-full max-w-4xl mx-auto">
             {/* Premium Glass Container */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none"
+              className="text-center flex flex-col items-center justify-center gap-4 mx-auto relative z-10 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden"
               initial={{ opacity: 0, scale: 0.96, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -55,16 +64,53 @@ const Index = () => {
                 +NeuroTunes
               </h1>
 
-              {/* Subtitle */}
-              <p className="text-[0.6rem] leading-tight sm:text-xs md:text-sm text-white/80 font-light tracking-wide mt-4 max-w-[280px] sm:max-w-none sm:whitespace-nowrap text-center">
-                Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
-              </p>
+              {/* Animated Subtitle - Zooms in then disappears */}
+              <AnimatePresence>
+                {showSubtitle && (
+                  <motion.p 
+                    className="text-[0.6rem] leading-tight sm:text-xs md:text-sm text-white/80 font-light tracking-wide mt-4 max-w-[280px] sm:max-w-none sm:whitespace-nowrap text-center absolute"
+                    initial={{ 
+                      scale: 0.3, 
+                      opacity: 0,
+                      filter: "blur(8px)"
+                    }}
+                    animate={{ 
+                      scale: [0.3, 1.8, 1.8, 1.8],
+                      opacity: [0, 1, 1, 0],
+                      filter: ["blur(8px)", "blur(0px)", "blur(0px)", "blur(4px)"]
+                    }}
+                    transition={{
+                      duration: 2.5,
+                      times: [0, 0.4, 0.7, 1],
+                      ease: [0.34, 1.56, 0.64, 1]
+                    }}
+                    style={{
+                      transformOrigin: "center center",
+                      pointerEvents: "none"
+                    }}
+                  >
+                    Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </main>
 
-        {/* Music Preview Row - Below Hero */}
-        <MusicPreviewRow />
+        {/* Music Preview Row - Fades in after subtitle disappears */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: showSubtitle ? 0 : 1,
+            y: showSubtitle ? 20 : 0
+          }}
+          transition={{ 
+            duration: 0.6,
+            delay: showSubtitle ? 0 : 0.3
+          }}
+        >
+          <MusicPreviewRow />
+        </motion.div>
 
         {/* Footer */}
         <Footer />
