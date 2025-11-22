@@ -46,7 +46,7 @@ export const MusicPreviewRow: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-play carousel effect - 30 seconds per card
+  // Auto-play carousel effect - 8 seconds per card
   React.useEffect(() => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
@@ -59,7 +59,7 @@ export const MusicPreviewRow: React.FC = () => {
         }));
         return nextIndex;
       });
-    }, 30000); // 30 seconds per card
+    }, 8000); // 8 seconds per card
     
     return () => clearInterval(interval);
   }, [activeCategory]);
@@ -117,6 +117,29 @@ export const MusicPreviewRow: React.FC = () => {
         }}>
           + NeuroTunes
         </h1>
+      </motion.div>
+
+      {/* Swipe indicator - subtle arrow */}
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ 
+          opacity: [0, 0.6, 0],
+          x: [0, 10, 20]
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          repeatDelay: 3,
+          ease: "easeInOut"
+        }}
+        className="absolute right-[10%] top-1/2 -translate-y-1/2 pointer-events-none z-20"
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-[1px] bg-white/40"></div>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-white/40">
+            <path d="M4 2L8 6L4 10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
       </motion.div>
 
       <div className="relative">
