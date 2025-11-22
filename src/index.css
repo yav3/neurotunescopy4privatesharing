@@ -313,10 +313,9 @@ All colors MUST be HSL.
     --shadow-card: 0 8px 32px hsl(var(--liquid-aquatic-deep) / 0.12), 0 4px 16px hsl(var(--liquid-glass-shadow) / 0.08);
     --shadow-player: 0 16px 48px hsl(var(--liquid-aquatic-deep) / 0.15), 0 8px 24px hsl(var(--liquid-glass-shadow) / 0.1);
     
-  /* San Francisco and Ditto font system */
-  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
-  --font-ditto: 'Ditto', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
-  --font-body: 'Ditto', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  /* San Francisco font system */
+  --font-sf: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
   
   /* Typography Scale - Premium Medical Interface */
   --text-xs: 0.75rem;     /* 12px */
@@ -346,8 +345,8 @@ All colors MUST be HSL.
   
   /* Font Weights */
   --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 400;
     
     /* Glass morphism effects - using HSL */
     --glass-bg: 0 0% 100% / 0.1;
@@ -403,6 +402,7 @@ All colors MUST be HSL.
   html, body {
     @apply bg-background text-foreground;
     font-family: var(--font-body) !important;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
@@ -493,9 +493,10 @@ All colors MUST be HSL.
 
   /* Design System Fix - Additional font overrides */
   
-  /* Body text uses Ditto */
+  /* Body text uses SF Pro with normal weight */
   body, p, span, div {
     font-family: var(--font-body) !important;
+    font-weight: 400;
   }
   
   /* Buttons and interactive elements use SF Pro (non-bold) */
@@ -505,9 +506,10 @@ All colors MUST be HSL.
     font-weight: var(--font-weight-normal) !important;
   }
   
-  /* Headings can use SF Pro */
+  /* Headings use SF Pro with normal weight */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sf) !important;
+    font-weight: 400;
   }
 
   /* Only apply text colors where they won't conflict with component styles */
@@ -606,14 +608,14 @@ All colors MUST be HSL.
     font-size: var(--text-4xl);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-tight);
-    font-weight: 600;
+    font-weight: 400;
   }
   
   .text-heading-2 {
     font-size: var(--text-3xl);
     line-height: var(--leading-snug);
     letter-spacing: var(--tracking-normal);
-    font-weight: 600;
+    font-weight: 400;
   }
   
   .text-body-large {
