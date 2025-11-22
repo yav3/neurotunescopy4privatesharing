@@ -35,7 +35,7 @@ export const SupportChat = () => {
   }, [messages]);
 
   const streamChat = async (userMessages: Message[]) => {
-    const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/support-chat`;
+    const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/anthropic-chat`;
     
     try {
       const resp = await fetch(CHAT_URL, {
