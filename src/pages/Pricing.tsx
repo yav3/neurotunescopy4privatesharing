@@ -139,39 +139,6 @@ export const Pricing = () => {
               </div>
             ))}
           </div>
-
-          {/* FAQ Section */}
-          <div 
-            className="rounded-3xl p-12 max-w-4xl mx-auto"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
-            }}
-          >
-            <h3 className="text-2xl font-light text-white mb-8 text-center">
-              Frequently Asked Questions
-            </h3>
-            <div className="space-y-6 text-neutral-400">
-              <div>
-                <h4 className="text-white mb-2">Is there a free trial?</h4>
-                <p>Yes, all plans include a 14-day free trial with full access to features.</p>
-              </div>
-              <div>
-                <h4 className="text-white mb-2">Can I change plans later?</h4>
-                <p>Absolutely. You can upgrade or downgrade your plan at any time.</p>
-              </div>
-              <div>
-                <h4 className="text-white mb-2">What's included in Enterprise support?</h4>
-                <p>Enterprise plans include a dedicated success manager, custom onboarding, SLA guarantees, and priority 24/7 support.</p>
-              </div>
-              <div>
-                <h4 className="text-white mb-2">Do you offer volume discounts?</h4>
-                <p>Yes, we offer custom pricing for organizations with 100+ users. Contact our sales team for details.</p>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
 
