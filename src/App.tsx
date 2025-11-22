@@ -72,6 +72,7 @@ import Help from "./pages/Help";
 import ConsumerPricing from "./pages/ConsumerPricing";
 import Checkout from "./pages/Checkout";
 import AppDownload from "./pages/AppDownload";
+import EnterpriseWellnessPricing from "./pages/EnterpriseWellnessPricing";
 import HIPAA from "./pages/HIPAA";
 
 const queryClient = new QueryClient();
@@ -152,7 +153,7 @@ const AppContent = () => {
         <Route path="/products/environmental" element={<ProductsOverview />} />
         <Route path="/products/senior-living" element={<ProductsOverview />} />
         <Route path="/products/healthcare" element={<ProductsOverview />} />
-        <Route path="/products/enterprise-wellness" element={<ProductsOverview />} />
+        <Route path="/products/enterprise-wellness" element={<EnterpriseWellnessPricing />} />
         <Route path="/products/population-health" element={<ProductsOverview />} />
         <Route path="/products/hospitality" element={<ProductsOverview />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
