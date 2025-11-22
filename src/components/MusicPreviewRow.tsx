@@ -37,7 +37,7 @@ export const MusicPreviewRow: React.FC = () => {
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
 
-  // Auto-play carousel effect - very slow
+  // Auto-play carousel effect - 3 seconds per card
   React.useEffect(() => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
@@ -50,7 +50,7 @@ export const MusicPreviewRow: React.FC = () => {
         }));
         return nextIndex;
       });
-    }, 8000); // 8 seconds per card - slower breathing
+    }, 3000); // 3 seconds per card
     
     return () => clearInterval(interval);
   }, [activeCategory]);
@@ -119,7 +119,7 @@ export const MusicPreviewRow: React.FC = () => {
                 zIndex: isHighlighted ? 20 : 10 - Math.abs(positionOffset)
               }}
               transition={{ 
-                duration: 3.5,
+                duration: 1.5,
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
               className={`
