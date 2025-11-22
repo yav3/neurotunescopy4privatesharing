@@ -154,7 +154,7 @@ export const BackgroundVideoCarousel = () => {
   return (
     <div className="fixed inset-0 z-0">
       {/* Video/GIF Layer with ultra-slow crossfade and cinematic dimming */}
-      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-60' : 'opacity-100'}`}>
+      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-85' : 'opacity-100'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTheme}-${currentIndex}`}
@@ -193,11 +193,11 @@ export const BackgroundVideoCarousel = () => {
         </AnimatePresence>
       </div>
       
-      {/* Premium gradient overlay - 40% opacity for cinematic depth */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.50)_0%,rgba(0,0,0,0.75)_50%,rgba(0,0,0,0.90)_100%)] pointer-events-none" />
+      {/* Premium gradient overlay - lighter for visibility */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0.40)_50%,rgba(0,0,0,0.60)_100%)] pointer-events-none" />
       
       {/* Additional top-to-bottom gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-black/65 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 pointer-events-none" />
     </div>
   );
 };
