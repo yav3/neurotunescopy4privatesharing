@@ -58,7 +58,7 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Cinematic fade reveal */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8">
+        <main className="flex-1 flex items-start justify-center pt-24 md:pt-32 px-4 sm:px-6 md:px-8">
           <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
             {/* Hero Container - Cinematic 2.4s fade-out */}
             <motion.div
@@ -137,8 +137,8 @@ const Index = () => {
         {/* Footer */}
         <Footer />
         
-        {/* Sales Assistant */}
-        <SalesAssistant />
+        {/* Hidden Sales Assistant (triggered from header) */}
+        <SalesAssistant externalOpen={false} />
         
         {/* Support Chat */}
         <SupportChat />

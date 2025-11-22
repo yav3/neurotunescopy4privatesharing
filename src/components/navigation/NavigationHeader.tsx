@@ -32,15 +32,32 @@ export const NavigationHeader = () => {
         {/* Diamond highlight at bottom edge */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
 
-        {/* Left: Logo */}
-        <Link to="/" className="flex flex-col relative z-10">
-          <span className="text-lg lg:text-xl font-light tracking-tight text-white/95">
-            +NeuroTunes
-          </span>
-          <span className="text-[9px] lg:text-[10px] font-light tracking-wide text-white/60">
-            by Neuralpositive
-          </span>
-        </Link>
+        {/* Left: Logo + Sales Chat */}
+        <div className="flex items-center gap-4 lg:gap-6 relative z-10">
+          <Link to="/" className="flex flex-col">
+            <span className="text-lg lg:text-xl font-light tracking-tight text-white/95">
+              +NeuroTunes
+            </span>
+            <span className="text-[9px] lg:text-[10px] font-light tracking-wide text-white/60">
+              by Neuralpositive
+            </span>
+          </Link>
+          
+          <button
+            onClick={() => {
+              const event = new CustomEvent('openSalesAssistant');
+              window.dispatchEvent(event);
+            }}
+            className="px-4 py-2 rounded-full text-xs lg:text-sm font-light transition-all duration-200 hover:scale-105"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              color: 'rgba(255, 255, 255, 0.88)',
+            }}
+          >
+            Chat with Sales
+          </button>
+        </div>
 
         {/* Right: Login CTA */}
         <div className="flex items-center gap-4 lg:gap-6 relative z-10">
@@ -82,14 +99,31 @@ export const NavigationHeader = () => {
         {/* Diamond highlight at bottom edge */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
         
-        <Link to="/" className="flex flex-col relative z-10">
-          <span className="text-lg font-light tracking-tight text-white/95">
-            +NeuroTunes
-          </span>
-          <span className="text-[9px] font-light tracking-wide text-white/60">
-            by Neuralpositive
-          </span>
-        </Link>
+        <div className="flex items-center gap-3 relative z-10">
+          <Link to="/" className="flex flex-col">
+            <span className="text-lg font-light tracking-tight text-white/95">
+              +NeuroTunes
+            </span>
+            <span className="text-[9px] font-light tracking-wide text-white/60">
+              by Neuralpositive
+            </span>
+          </Link>
+          
+          <button
+            onClick={() => {
+              const event = new CustomEvent('openSalesAssistant');
+              window.dispatchEvent(event);
+            }}
+            className="px-3 py-1.5 rounded-full text-xs font-light"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
+              color: 'rgba(255, 255, 255, 0.88)',
+            }}
+          >
+            Sales
+          </button>
+        </div>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

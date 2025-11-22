@@ -180,24 +180,6 @@ export const SalesAssistant = ({ externalOpen, onExternalClose }: SalesAssistant
 
   return (
     <>
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 px-6 py-3 rounded-full flex items-center gap-3 transition-all hover:scale-105 z-50 group"
-          style={{
-            background: 'rgba(10, 10, 12, 0.85)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(228, 228, 228, 0.18)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(228, 228, 228, 0.08)',
-          }}
-        >
-          <Plus className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
-          <span className="text-sm font-light" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
-            Chat with NeuroTunes AI Assistant
-          </span>
-        </button>
-      )}
-
       {isOpen && (
         <div 
           className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:w-96 h-[100dvh] sm:h-[600px] sm:rounded-2xl flex flex-col z-50 overflow-hidden"
