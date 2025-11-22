@@ -37,46 +37,46 @@ const Index = () => {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={chromeHeroBg} type="video/mp4" />
         </video>
         
-        {/* Dark obsidian overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Dark obsidian overlay with stronger mobile darkening */}
+        <div className="absolute inset-0 bg-black/60 sm:bg-black/50" />
         
         {/* Platinum vignette at edges */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-obsidian/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-obsidian/70" />
       </div>
 
       {/* Stable dark gradient behind navbar */}
-      <div className="fixed top-0 left-0 right-0 h-28 md:h-32 z-[5] pointer-events-none bg-gradient-to-b from-obsidian/98 via-obsidian/90 to-transparent" />
+      <div className="fixed top-0 left-0 right-0 h-24 sm:h-28 md:h-32 z-[5] pointer-events-none bg-gradient-to-b from-obsidian/98 via-obsidian/90 to-transparent" />
 
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Full height centered */}
-        <main className="flex-1 flex items-center justify-center px-6 md:px-8 pt-20 pb-16 min-h-[calc(100vh-4rem)]">
-          <div className="relative w-full max-w-4xl mx-auto">
+        {/* Hero Section - Full height centered with safe mobile padding */}
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-24 sm:pt-20 pb-12 sm:pb-16 min-h-screen">
+          <div className="relative w-full max-w-5xl mx-auto">
             {/* Chrome curves accent */}
             <div 
-              className="absolute inset-0 opacity-[0.04] pointer-events-none bg-cover bg-center mix-blend-screen"
+              className="absolute inset-0 opacity-[0.03] sm:opacity-[0.04] pointer-events-none bg-cover bg-center mix-blend-screen"
               style={{ backgroundImage: `url(${chromeCurves})` }}
             />
 
             {/* Radial darkening fade for readability */}
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
+            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] sm:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
             
-            {/* Premium Glass Panel with chrome edge glow */}
+            {/* Premium Glass Panel with chrome edge glow - mobile optimized */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-fit px-10 py-8 sm:px-14 sm:py-10 md:px-16 md:py-12 lg:px-20 lg:py-14 rounded-3xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.08)_inset] bg-gradient-to-b from-white/20 via-white/5 to-white/5"
+              className="text-center flex flex-col items-center justify-center mx-auto relative z-10 w-full sm:w-fit px-8 py-10 sm:px-12 sm:py-12 md:px-16 md:py-14 lg:px-20 lg:py-16 rounded-2xl sm:rounded-3xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.08)_inset] bg-gradient-to-b from-white/20 via-white/5 to-white/5"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              <h1 className="font-light tracking-[-0.02em] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.15] text-platinum-glow/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+              <h1 className="font-light tracking-[-0.02em] text-[2.5rem] leading-[1.1] sm:text-5xl sm:leading-[1.15] md:text-6xl lg:text-7xl text-platinum-glow/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
                 +NeuroTunes
               </h1>
             </motion.div>
