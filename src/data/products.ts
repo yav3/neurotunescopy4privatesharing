@@ -60,7 +60,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
     icon: Heart,
     title: "Enterprise Population Health",
     tagline: "Clinical-grade therapeutic music at scale",
-    description: "Deployed across health systems, insurance networks, and government wellness programs",
+    description: "Closed loop insights powered by HIPAA-compliant biomarker collection & integration with RTM, RPM systems for no disruption to clinical workflow and patient CCM",
     targetMarkets: [
       "Hospital systems (5,000+ patients)",
       "Health insurance networks",
