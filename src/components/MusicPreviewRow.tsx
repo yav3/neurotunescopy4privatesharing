@@ -58,14 +58,8 @@ export const MusicPreviewRow: React.FC = () => {
   }, [activeCategory]);
 
   const handleCardClick = (preview: PreviewCategory) => {
-    if (activeCategory === preview.category) {
-      // If clicking active card, play it
-      handlePlay(preview);
-    } else {
-      // Otherwise, just advance to this card
-      const newIndex = PREVIEW_CATEGORIES.findIndex(p => p.category === preview.category);
-      setAutoPlayIndex(newIndex);
-    }
+    // Always play when tapped
+    handlePlay(preview);
   };
 
   const handlePlay = async (preview: PreviewCategory) => {
