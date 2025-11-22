@@ -87,7 +87,7 @@ export const BackgroundVideoCarousel = () => {
     };
   }, []);
 
-  // Auto-cycle within current theme every 15 seconds
+  // Auto-cycle within current theme and ensure video plays
   useEffect(() => {
     // Clear existing timer
     if (autoCycleTimer.current) {
@@ -96,6 +96,22 @@ export const BackgroundVideoCarousel = () => {
 
     // For MP4s, let video end naturally
     if (currentVideo.type === 'video/mp4' && videoRef.current) {
+      const video = videoRef.current;
+      
+      // Ensure video plays
+      const playVideo = () => {
+        video.play().catch(err => {
+          console.log('Background video autoplay blocked:', err);
+        });
+      };
+
+      // Try to play when loaded
+      if (video.readyState >= 3) {
+        playVideo();
+      } else {
+        video.addEventListener('loadeddata', playVideo, { once: true });
+      }
+
       const handleEnded = () => {
         setIsTransitioning(true);
         setTimeout(() => {
@@ -104,11 +120,11 @@ export const BackgroundVideoCarousel = () => {
         }, 3200); // Match ultra-slow transition duration
       };
       
-      videoRef.current.addEventListener('ended', handleEnded);
+      video.addEventListener('ended', handleEnded);
       return () => {
-        videoRef.current?.removeEventListener('ended', handleEnded);
+        video.removeEventListener('ended', handleEnded);
       };
-    } 
+    }
     
     // For GIFs, use auto-cycle timer
     if (currentVideo.type === 'image/gif') {
