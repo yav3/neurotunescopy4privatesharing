@@ -72,22 +72,6 @@ const Index = () => {
               <p className="text-xs sm:text-sm md:text-base text-white/80 max-w-md leading-relaxed font-light tracking-wide mt-7">
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full sm:w-auto">
-                <Link
-                  to="/samples"
-                  className="group relative px-8 py-3.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/20 text-obsidian font-medium text-sm tracking-wide hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-[0_4px_20px_rgba(255,255,255,0.15)]"
-                >
-                  Hear Demo
-                </Link>
-                <Link
-                  to="/browse"
-                  className="group relative px-8 py-3.5 rounded-full bg-obsidian/60 backdrop-blur-sm border border-white/10 text-white font-medium text-sm tracking-wide hover:bg-obsidian/80 hover:border-white/20 hover:scale-[1.02] transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
-                >
-                  Explore Solutions
-                </Link>
-              </div>
             </motion.div>
           </div>
         </main>
