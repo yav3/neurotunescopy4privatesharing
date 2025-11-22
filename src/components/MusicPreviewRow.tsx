@@ -81,12 +81,12 @@ export const MusicPreviewRow: React.FC = () => {
               className={`
                 relative group cursor-pointer
                 rounded-3xl border-[0.5px]
-                bg-white/[0.05] backdrop-blur-xl
+                bg-white/[0.08] backdrop-blur-xl
                 p-6 
                 transition-all duration-300
                 ${isActive 
-                  ? 'border-white/20 bg-white/[0.12] shadow-[0_0_60px_rgba(255,255,255,0.12)] scale-[1.02]' 
-                  : 'border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)] hover:bg-white/[0.10] hover:border-white/15 hover:scale-[1.015]'
+                  ? 'border-white/20 bg-white/[0.14] shadow-[0_0_60px_rgba(255,255,255,0.12)] scale-[1.02]' 
+                  : 'border-white/15 shadow-[0_0_40px_rgba(255,255,255,0.06)] hover:bg-white/[0.12] hover:border-white/20 hover:scale-[1.015] hover:shadow-[0_0_60px_rgba(255,255,255,0.10)]'
                 }
               `}
               onClick={() => handlePlay(preview)}

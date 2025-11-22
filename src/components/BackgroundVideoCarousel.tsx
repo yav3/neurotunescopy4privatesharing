@@ -82,11 +82,20 @@ export const BackgroundVideoCarousel = () => {
   const [activeTheme, setActiveTheme] = useState<TherapeuticCategory | 'default'>('default');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [dimBackground, setDimBackground] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const autoCycleTimer = useRef<NodeJS.Timeout | null>(null);
 
   const activeVideoList = visualThemes[activeTheme];
   const currentVideo = activeVideoList[currentIndex];
+
+  // Listen for hero fade event to dim background
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDimBackground(true); // Dim at 8 seconds when hero fades
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Listen for category changes from MusicPreviewRow
   useEffect(() => {
@@ -144,8 +153,8 @@ export const BackgroundVideoCarousel = () => {
 
   return (
     <div className="fixed inset-0 z-0">
-      {/* Video/GIF Layer with smooth crossfade */}
-      <div className="absolute inset-0">
+      {/* Video/GIF Layer with smooth crossfade and cinematic dimming */}
+      <div className={`absolute inset-0 transition-all duration-[2000ms] ${dimBackground ? 'opacity-40' : 'opacity-100'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTheme}-${currentIndex}`}
@@ -153,7 +162,7 @@ export const BackgroundVideoCarousel = () => {
             animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: 'easeInOut' }}
-            className="absolute inset-0"
+            className={`absolute inset-0 transition-all duration-[2000ms] ${dimBackground ? 'blur-[4px]' : 'blur-0'}`}
           >
             {currentVideo.type === 'video/mp4' ? (
               <video
@@ -176,11 +185,11 @@ export const BackgroundVideoCarousel = () => {
         </AnimatePresence>
       </div>
       
-      {/* Premium gradient overlay - stronger darkening for better contrast */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.40)_0%,rgba(0,0,0,0.75)_50%,rgba(0,0,0,0.92)_100%)] pointer-events-none" />
+      {/* Premium gradient overlay - 40% opacity for cinematic depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.50)_0%,rgba(0,0,0,0.75)_50%,rgba(0,0,0,0.90)_100%)] pointer-events-none" />
       
-      {/* Additional top-to-bottom gradient for navbar legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70 pointer-events-none" />
+      {/* Additional top-to-bottom gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-black/65 pointer-events-none" />
     </div>
   );
 };
