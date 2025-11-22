@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Play, Pause, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { getPreviewTrackForBucket, canPreviewCategory, markCategoryPreviewed, TherapeuticCategory } from '@/utils/therapeuticAudio';
+import { canPreviewCategory, TherapeuticCategory } from '@/utils/therapeuticAudio';
 import { toast } from 'sonner';
 
 interface PreviewCategory {
@@ -41,49 +41,6 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
 export const MusicPreviewRow: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TherapeuticCategory | null>(null);
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
-  const [trackUrls, setTrackUrls] = useState<Record<TherapeuticCategory, string | null>>({
-    focus: null,
-    calm: null,
-    boost: null,
-    energize: null
-  });
-  const [autoPlayStarted, setAutoPlayStarted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  // Auto-start first preview track after 2 seconds
-  useEffect(() => {
-    const startAutoPlay = async () => {
-      if (autoPlayStarted) return;
-      
-      const firstPreview = PREVIEW_CATEGORIES[0];
-      setLoading(firstPreview.category);
-      
-      // Change background to match first category
-      window.dispatchEvent(new CustomEvent('categoryChange', { 
-        detail: { category: firstPreview.category } 
-      }));
-
-      // Get track URL
-      const trackUrl = await getPreviewTrackForBucket(firstPreview.bucket);
-      if (trackUrl && audioRef.current) {
-        setTrackUrls(prev => ({ ...prev, [firstPreview.category]: trackUrl }));
-        audioRef.current.src = trackUrl;
-        audioRef.current.volume = 0.28; // 28% volume for subtle intro
-        
-        try {
-          await audioRef.current.play();
-          setActiveCategory(firstPreview.category);
-          setAutoPlayStarted(true);
-        } catch (error) {
-          console.log('Autoplay prevented by browser - user interaction needed');
-        }
-        setLoading(null);
-      }
-    };
-
-    const timer = setTimeout(startAutoPlay, 2000);
-    return () => clearTimeout(timer);
-  }, [autoPlayStarted]);
 
   const handlePlay = async (preview: PreviewCategory) => {
     // Check if already previewed
@@ -94,79 +51,21 @@ export const MusicPreviewRow: React.FC = () => {
       return;
     }
 
-    // If same category, toggle pause
-    if (activeCategory === preview.category) {
-      if (audioRef.current?.paused) {
-        audioRef.current?.play();
-      } else {
-        audioRef.current?.pause();
-        setActiveCategory(null);
-      }
-      return;
-    }
-
-    // Load and play new category
-    setLoading(preview.category);
-    
     // Change background video theme to match category
     window.dispatchEvent(new CustomEvent('categoryChange', { 
       detail: { category: preview.category } 
     }));
 
-    // Get track URL
-    let trackUrl = trackUrls[preview.category];
-    if (!trackUrl) {
-      trackUrl = await getPreviewTrackForBucket(preview.bucket);
-      if (trackUrl) {
-        setTrackUrls(prev => ({ ...prev, [preview.category]: trackUrl }));
-      }
-    }
-
-    if (trackUrl && audioRef.current) {
-      audioRef.current.src = trackUrl;
-      audioRef.current.volume = 0.28; // Maintain consistent volume
-      try {
-        await audioRef.current.play();
-        setActiveCategory(preview.category);
-        setLoading(null);
-      } catch (error) {
-        console.error('Playback failed:', error);
-        toast.error('Playback failed', {
-          description: 'Please try again'
-        });
-        setLoading(null);
-      }
-    } else {
-      toast.error('No audio found', {
-        description: 'Unable to load preview track'
-      });
-      setLoading(null);
-    }
+    // For now, just show a message - proper integration with main player coming soon
+    toast.success(`${preview.name} selected`, {
+      description: 'Full playback integration coming soon'
+    });
+    
+    setActiveCategory(preview.category);
   };
-
-  // Handle audio end
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleEnded = () => {
-      if (activeCategory) {
-        markCategoryPreviewed(activeCategory);
-        toast.success('Preview complete', {
-          description: 'Sign up to unlock unlimited listening'
-        });
-        setActiveCategory(null);
-      }
-    };
-
-    audio.addEventListener('ended', handleEnded);
-    return () => audio.removeEventListener('ended', handleEnded);
-  }, [activeCategory]);
 
   return (
     <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-0">
-      <audio ref={audioRef} preload="auto" />
-      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
