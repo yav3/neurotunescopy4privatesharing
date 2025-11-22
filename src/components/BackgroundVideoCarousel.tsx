@@ -44,6 +44,18 @@ export const BackgroundVideoCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Listen for external video index changes
+  useEffect(() => {
+    const handleSetIndex = (e: CustomEvent) => {
+      setCurrentIndex(e.detail.index);
+    };
+
+    window.addEventListener('setVideoIndex', handleSetIndex as EventListener);
+    return () => {
+      window.removeEventListener('setVideoIndex', handleSetIndex as EventListener);
+    };
+  }, []);
+
   useEffect(() => {
     const current = videoSources[currentIndex];
     

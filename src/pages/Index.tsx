@@ -7,7 +7,7 @@ import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
-import { TherapeuticAudioPreview } from '@/components/TherapeuticAudioPreview';
+import { MusicPreviewRow } from '@/components/MusicPreviewRow';
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
@@ -15,22 +15,9 @@ import weillCornellLogo from '@/assets/weill-cornell.png';
 const Index = () => {
   const { user, loading } = useAuthContext();
   const [scrollY, setScrollY] = useState(0);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   
   // Welcome returning users
   useWelcomeMessage();
-
-  // Listen for video carousel changes
-  useEffect(() => {
-    const handleCarouselChange = (e: CustomEvent) => {
-      setCurrentVideoIndex(e.detail.index);
-    };
-
-    window.addEventListener('videoCarouselChange', handleCarouselChange as EventListener);
-    return () => {
-      window.removeEventListener('videoCarouselChange', handleCarouselChange as EventListener);
-    };
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,11 +63,11 @@ const Index = () => {
           </div>
         </main>
 
+        {/* Music Preview Row - Below Hero */}
+        <MusicPreviewRow />
+
         {/* Footer */}
         <Footer />
-        
-        {/* Therapeutic Audio Preview - Synced with Video Carousel */}
-        <TherapeuticAudioPreview currentSlideIndex={currentVideoIndex} />
         
         {/* Sales Assistant */}
         <SalesAssistant />
