@@ -46,7 +46,7 @@ export const MusicPreviewRow: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-play carousel effect - 3 seconds per card
+  // Auto-play carousel effect - 30 seconds per card
   React.useEffect(() => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
@@ -59,7 +59,7 @@ export const MusicPreviewRow: React.FC = () => {
         }));
         return nextIndex;
       });
-    }, 3000); // 3 seconds per card
+    }, 30000); // 30 seconds per card
     
     return () => clearInterval(interval);
   }, [activeCategory]);
@@ -102,13 +102,13 @@ export const MusicPreviewRow: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 w-full h-screen overflow-hidden">
+    <div className="relative z-10 w-full flex items-center justify-center" style={{ height: 'calc(100vh - 200px)' }}>
       {/* Welcome message - fades out after 4 seconds */}
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: showWelcome ? 1 : 0 }}
         transition={{ duration: 1 }}
-        className="absolute left-1/2 top-[25%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
+        className="absolute left-1/2 top-[20%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
         style={{ display: showWelcome ? 'block' : 'none' }}
       >
         <h1 className="text-white text-3xl sm:text-4xl font-light" style={{
@@ -119,7 +119,7 @@ export const MusicPreviewRow: React.FC = () => {
         </h1>
       </motion.div>
 
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="relative">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -140,7 +140,7 @@ export const MusicPreviewRow: React.FC = () => {
               }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ 
-                duration: 0.8,
+                duration: 2.5,
                 ease: [0.19, 1.0, 0.22, 1.0]
               }}
               className="w-[200px] sm:w-[240px] cursor-pointer rounded-2xl p-4 backdrop-blur-sm bg-black/60 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.6)]"

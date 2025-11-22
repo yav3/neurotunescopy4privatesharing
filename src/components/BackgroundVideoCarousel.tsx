@@ -131,7 +131,7 @@ export const BackgroundVideoCarousel = () => {
   return (
     <div className="fixed inset-0 z-0">
       {/* Video/GIF Layer with ultra-slow crossfade and cinematic dimming */}
-      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-40' : 'opacity-100'}`}>
+      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-60' : 'opacity-100'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTheme}-${currentIndex}`}
@@ -139,7 +139,7 @@ export const BackgroundVideoCarousel = () => {
             animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 3.2, ease: 'easeInOut' }}
-            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[4px]' : 'blur-0'}`}
+            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[2px]' : 'blur-0'}`}
           >
             {currentVideo.type === 'video/mp4' ? (
               <video
