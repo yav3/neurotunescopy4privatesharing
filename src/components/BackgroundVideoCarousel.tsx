@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { TherapeuticCategory } from '@/utils/therapeuticAudio';
+
+// Import all videos
 import bgVideo1 from '../assets/bg-video-1.mp4';
 import bgVideo2 from '../assets/bg-video-2.gif';
 import bgVideo3 from '../assets/bg-video-3.gif';
@@ -23,54 +26,96 @@ import bgVideo20 from '../assets/bg-video-20.mp4';
 import bgVideo21 from '../assets/bg-video-21.mp4';
 import bgVideo22 from '../assets/bg-video-22.gif';
 
-const videoSources = [
-  { src: bgVideo1, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo2, type: 'image/gif', duration: 12000 },
-  { src: bgVideo3, type: 'image/gif', duration: 12000 },
-  { src: bgVideo4, type: 'image/gif', duration: 12000 },
-  { src: bgVideo5, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo6, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo7, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo8, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo9, type: 'image/gif', duration: 12000 },
-  { src: bgVideo10, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo11, type: 'image/gif', duration: 12000 },
-  { src: bgVideo12, type: 'image/gif', duration: 12000 },
-  { src: bgVideo13, type: 'image/gif', duration: 12000 },
-  { src: bgVideo14, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo15, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo16, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo17, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo18, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo19, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo20, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo21, type: 'video/mp4', duration: 15000 },
-  { src: bgVideo22, type: 'image/gif', duration: 12000 },
-];
+interface VideoSource {
+  src: string;
+  type: 'video/mp4' | 'image/gif';
+  duration: number;
+}
+
+// Organize videos by therapeutic category for track-aware transitions
+const visualThemes: Record<TherapeuticCategory | 'default', VideoSource[]> = {
+  // Focus & Flow - Ambient, flowing, meditative chrome
+  focus: [
+    { src: bgVideo1, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo5, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo6, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo14, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo16, type: 'video/mp4', duration: 15000 },
+  ],
+  
+  // Calm & Rest - Slower, darker, smoother visuals
+  calm: [
+    { src: bgVideo10, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo7, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo8, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo9, type: 'image/gif', duration: 12000 },
+  ],
+  
+  // Mood Boost - Warmer, rhythmic, tropical energy
+  boost: [
+    { src: bgVideo15, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo17, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo18, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo19, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo22, type: 'image/gif', duration: 12000 },
+  ],
+  
+  // Energize (Samba) - Bright, percussive, energetic chrome ripple
+  energize: [
+    { src: bgVideo20, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo21, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo2, type: 'image/gif', duration: 12000 },
+    { src: bgVideo3, type: 'image/gif', duration: 12000 },
+    { src: bgVideo4, type: 'image/gif', duration: 12000 },
+  ],
+  
+  // Default - Mixed selection for initial load
+  default: [
+    { src: bgVideo1, type: 'video/mp4', duration: 15000 },
+    { src: bgVideo11, type: 'image/gif', duration: 12000 },
+    { src: bgVideo12, type: 'image/gif', duration: 12000 },
+    { src: bgVideo13, type: 'image/gif', duration: 12000 },
+  ],
+};
 
 export const BackgroundVideoCarousel = () => {
+  const [activeTheme, setActiveTheme] = useState<TherapeuticCategory | 'default'>('default');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const autoCycleTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Listen for external video index changes
+  const activeVideoList = visualThemes[activeTheme];
+  const currentVideo = activeVideoList[currentIndex];
+
+  // Listen for category changes from MusicPreviewRow
   useEffect(() => {
-    const handleSetIndex = (e: CustomEvent) => {
-      setCurrentIndex(e.detail.index);
+    const handleCategoryChange = (e: CustomEvent<{ category: TherapeuticCategory }>) => {
+      setActiveTheme(e.detail.category);
+      setCurrentIndex(0); // Start from first video in new theme
     };
 
-    window.addEventListener('setVideoIndex', handleSetIndex as EventListener);
+    window.addEventListener('categoryChange', handleCategoryChange as EventListener);
     return () => {
-      window.removeEventListener('setVideoIndex', handleSetIndex as EventListener);
+      window.removeEventListener('categoryChange', handleCategoryChange as EventListener);
     };
   }, []);
 
+  // Auto-cycle within current theme every 15 seconds
   useEffect(() => {
-    const current = videoSources[currentIndex];
-    
-    // For MP4s, listen to video end
-    if (current.type === 'video/mp4' && videoRef.current) {
+    // Clear existing timer
+    if (autoCycleTimer.current) {
+      clearTimeout(autoCycleTimer.current);
+    }
+
+    // For MP4s, let video end naturally
+    if (currentVideo.type === 'video/mp4' && videoRef.current) {
       const handleEnded = () => {
-        setCurrentIndex((prev) => (prev + 1) % videoSources.length);
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
+          setIsTransitioning(false);
+        }, 600); // Match transition duration
       };
       
       videoRef.current.addEventListener('ended', handleEnded);
@@ -79,62 +124,63 @@ export const BackgroundVideoCarousel = () => {
       };
     } 
     
-    // For GIFs, use timer
-    if (current.type === 'image/gif') {
-      const timer = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % videoSources.length);
-      }, current.duration);
+    // For GIFs, use auto-cycle timer
+    if (currentVideo.type === 'image/gif') {
+      autoCycleTimer.current = setTimeout(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
+          setIsTransitioning(false);
+        }, 600); // Match transition duration
+      }, currentVideo.duration);
       
-      return () => clearTimeout(timer);
+      return () => {
+        if (autoCycleTimer.current) {
+          clearTimeout(autoCycleTimer.current);
+        }
+      };
     }
-  }, [currentIndex]);
-
-  const currentSource = videoSources[currentIndex];
-
-  // Notify parent about index changes (for audio sync)
-  useEffect(() => {
-    // Dispatch custom event that the Index page can listen to
-    window.dispatchEvent(new CustomEvent('videoCarouselChange', { 
-      detail: { index: currentIndex } 
-    }));
-  }, [currentIndex]);
+  }, [currentIndex, currentVideo, activeVideoList.length]);
 
   return (
     <div className="fixed inset-0 z-0">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: 'easeInOut' }}
-          className="absolute inset-0"
-        >
-          {currentSource.type === 'video/mp4' ? (
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover object-center"
-            >
-              <source src={currentSource.src} type="video/mp4" />
-            </video>
-          ) : (
-            <img
-              src={currentSource.src}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover object-center"
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      {/* Video/GIF Layer with smooth crossfade */}
+      <div className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${activeTheme}-${currentIndex}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isTransitioning ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            {currentVideo.type === 'video/mp4' ? (
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              >
+                <source src={currentVideo.src} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={currentVideo.src}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
       
-      {/* Layered gradient overlays for depth and readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/15 to-black/50" />
+      {/* Premium gradient overlay - radial darkening from center */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.60)_50%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
       
-      {/* Premium vignette - Apple-style radial darkening */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
+      {/* Additional top-to-bottom gradient for navbar legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-transparent to-black/50 pointer-events-none" />
     </div>
   );
 };

@@ -8,7 +8,6 @@ interface PreviewCategory {
   name: string;
   bucket: string;
   category: TherapeuticCategory;
-  videoIndex: number;
   description: string;
 }
 
@@ -17,21 +16,18 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
     name: "Focus & Flow",
     bucket: "NewAgeandWorldFocus",
     category: "focus",
-    videoIndex: 0,
     description: "Deep concentration"
   },
   {
     name: "Samba Energy",
     bucket: "samba",
     category: "energize",
-    videoIndex: 6,
     description: "Rhythmic vitality"
   },
   {
     name: "Mood Boosting House",
     bucket: "tropicalhouse",
     category: "boost",
-    videoIndex: 12,
     description: "Uplifting vibes"
   }
 ];
@@ -66,9 +62,9 @@ export const MusicPreviewRow: React.FC = () => {
     // Load and play new category
     setLoading(preview.category);
     
-    // Change background video
-    window.dispatchEvent(new CustomEvent('setVideoIndex', { 
-      detail: { index: preview.videoIndex } 
+    // Change background video theme to match category
+    window.dispatchEvent(new CustomEvent('categoryChange', { 
+      detail: { category: preview.category } 
     }));
 
     // Get track URL
