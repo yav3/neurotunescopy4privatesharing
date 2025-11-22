@@ -82,7 +82,7 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full overflow-hidden px-3 sm:px-6 lg:px-8">
-      <div className="flex justify-center items-center gap-8 lg:gap-12 py-4">
+      <div className="relative flex justify-center items-center py-4 h-[400px]">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -102,6 +102,7 @@ export const MusicPreviewRow: React.FC = () => {
                 opacity: isHighlighted ? 1 : 0.12,
                 x: offset,
                 scale: isHighlighted ? 1.4 : 0.85,
+                filter: isHighlighted ? 'blur(0px)' : 'blur(8px)'
               }}
               transition={{ 
                 duration: 3.2,
@@ -122,7 +123,10 @@ export const MusicPreviewRow: React.FC = () => {
               onClick={() => handleCardClick(preview)}
               style={{
                 animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite' : 'none',
-                pointerEvents: isHighlighted ? 'auto' : 'none'
+                pointerEvents: isHighlighted ? 'auto' : 'none',
+                position: 'absolute',
+                left: '50%',
+                transform: `translateX(-50%)`
               }}
             >
 
