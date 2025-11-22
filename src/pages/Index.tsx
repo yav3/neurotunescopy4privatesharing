@@ -37,19 +37,19 @@ const Index = () => {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover object-center md:object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         >
           <source src={chromeHeroBg} type="video/mp4" />
         </video>
         
-        {/* Dark obsidian overlay with stronger mobile darkening for readability */}
-        <div className="absolute inset-0 bg-black/65 sm:bg-black/55 md:bg-black/50" />
+        {/* Strong dark overlay for video calming */}
+        <div className="absolute inset-0 bg-black/70" />
         
-        {/* Edge lighting gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-transparent md:from-black/40 md:via-black/20" />
+        {/* Premium vignette - Apple-style radial darkening */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
         
-        {/* Platinum vignette at edges */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-obsidian/60" />
+        {/* Subtle top-to-bottom gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
       </div>
 
       {/* Stable dark gradient behind navbar */}
@@ -60,32 +60,23 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Mobile-first vertical stacking */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-32 sm:pt-28 md:pt-24 pb-16 sm:pb-20 md:pb-16 min-h-screen">
-          <div className="relative w-full max-w-5xl mx-auto">
-            {/* Chrome curves accent */}
-            <div 
-              className="absolute inset-0 opacity-[0.03] sm:opacity-[0.04] pointer-events-none bg-cover bg-center mix-blend-screen"
-              style={{ backgroundImage: `url(${chromeCurves})` }}
-            />
-
-            {/* Radial darkening fade for readability */}
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] sm:bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.6)_0%,transparent_70%)]" />
-            
-            {/* Premium Glass Panel - mobile optimized with proper hierarchy */}
+        {/* Hero Section - Premium Apple-style layout */}
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 pt-24 pb-16 min-h-screen">
+          <div className="relative w-full max-w-4xl mx-auto">
+            {/* Premium Glass Panel - World-class readability */}
             <motion.div
-              className="text-center flex flex-col items-center justify-center gap-6 sm:gap-8 mx-auto relative z-10 w-[92%] sm:w-fit px-6 py-12 sm:px-12 sm:py-12 md:px-16 md:py-14 lg:px-20 lg:py-16 rounded-xl sm:rounded-2xl md:rounded-[40px] backdrop-blur-[40px] border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.1)_inset,0_0_40px_rgba(0,0,0,0.3)] bg-gradient-to-b from-white/[0.15] via-white/[0.08] to-white/[0.05]"
-              initial={{ opacity: 0, scale: 0.95 }}
+              className="text-center flex flex-col items-center justify-center gap-8 sm:gap-10 mx-auto relative z-10 w-full max-w-[90%] sm:max-w-2xl px-8 py-16 sm:px-16 sm:py-20 md:px-20 md:py-24 rounded-[28px] sm:rounded-[40px] backdrop-blur-[60px] saturate-[140%] border border-white/[0.08] shadow-[0_0_30px_rgba(0,0,0,0.5),inset_0_0_20px_rgba(255,255,255,0.02),0_8px_40px_rgba(0,0,0,0.4)] bg-[rgba(20,20,20,0.60)]"
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Logo/Title - Mobile optimized sizing */}
-              <h1 className="font-light tracking-[-0.02em] text-[2.75rem] leading-[1.1] sm:text-5xl sm:leading-[1.12] md:text-6xl lg:text-7xl text-platinum-glow/95 drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+              {/* Logo/Title - Apple-thin typography */}
+              <h1 className="font-light tracking-[-0.03em] text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
                 +NeuroTunes
               </h1>
 
-              {/* Subtitle - Better mobile readability */}
-              <p className="text-sm sm:text-base md:text-lg text-platinum-glow/70 max-w-md sm:max-w-lg leading-[1.6] px-2">
+              {/* Subtitle - Premium spacing and opacity */}
+              <p className="text-sm sm:text-base md:text-lg text-white/75 max-w-md leading-relaxed font-light">
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
             </motion.div>
