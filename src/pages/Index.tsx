@@ -59,7 +59,7 @@ const Index = () => {
         <NavigationHeader />
 
         {/* Hero Section - Cinematic fade reveal */}
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 min-h-screen">
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-3 sm:py-8 min-h-screen">
           <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
             {/* Hero Container - Cinematic 2.4s fade-out */}
             <motion.div
@@ -77,10 +77,10 @@ const Index = () => {
               }}
             >
               {/* Premium Glass Hero Card */}
-              <div className="text-center flex flex-col items-center justify-center gap-4 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-8 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden relative"
+              <div className="text-center flex flex-col items-center justify-center gap-4 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-6 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[24px] sm:rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[24px] sm:before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden relative"
               >
               {/* Logo/Title */}
-              <h1 className="font-light tracking-[-0.03em] text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              <h1 className="font-light tracking-[-0.03em] text-[2rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
                 +NeuroTunes
               </h1>
 
