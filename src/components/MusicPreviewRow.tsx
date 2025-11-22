@@ -90,15 +90,16 @@ export const MusicPreviewRow: React.FC = () => {
           const isAutoPlayActive = !activeCategory && index === autoPlayIndex;
           const isHighlighted = isActive || isAutoPlayActive;
           
-          // Calculate horizontal offset for carousel movement
-          const offset = !activeCategory ? (autoPlayIndex - index) * 20 : 0;
+          // Calculate horizontal offset to center the highlighted card
+          const distanceFromCenter = !activeCategory ? (index - autoPlayIndex) : (isHighlighted ? 0 : (index - PREVIEW_CATEGORIES.findIndex(p => p.category === activeCategory)));
+          const offset = distanceFromCenter * 100; // Increased spacing
 
           return (
             <motion.div
               key={preview.category}
               initial={{ opacity: 0, x: 50 }}
               animate={{ 
-                opacity: isHighlighted ? 1 : 0.15,
+                opacity: isHighlighted ? 1 : 0.12,
                 x: offset,
                 scale: isHighlighted ? 1.4 : 0.85,
               }}
@@ -120,7 +121,8 @@ export const MusicPreviewRow: React.FC = () => {
               `}
               onClick={() => handleCardClick(preview)}
               style={{
-                animation: isHighlighted ? 'breathe 4s ease-in-out infinite' : 'none'
+                animation: isHighlighted ? 'breathe 5.3s ease-in-out infinite' : 'none',
+                pointerEvents: isHighlighted ? 'auto' : 'none'
               }}
             >
 
