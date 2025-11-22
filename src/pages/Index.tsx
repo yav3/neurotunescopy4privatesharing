@@ -37,11 +37,11 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fade out hero after subtitle animation
+  // Fade out hero after 8 seconds (5 seconds slower for cinematic effect)
   useEffect(() => {
     const fadeTimer = setTimeout(() => {
       setHeroVisible(false);
-    }, 4000); // Hero fades 1.5s after subtitle disappears
+    }, 8000);
     return () => clearTimeout(fadeTimer);
   }, []);
 
@@ -58,20 +58,20 @@ const Index = () => {
         {/* Navigation Header */}
         <NavigationHeader />
 
-        {/* Hero Section - Positioned higher and more compact */}
+        {/* Hero Section - Cinematic fade reveal */}
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 min-h-screen">
-          <div className="relative w-full max-w-5xl mx-auto">
-            {/* Hero Container - Fades out to reveal cards */}
+          <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
+            {/* Hero Container - Absolutely positioned, fades out */}
             <motion.div
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ 
                 opacity: heroVisible ? 1 : 0, 
-                scale: heroVisible ? 1 : 0.92,
-                filter: heroVisible ? "blur(0px)" : "blur(8px)"
+                y: heroVisible ? 0 : -20,
+                filter: heroVisible ? "blur(0px)" : "blur(4px)"
               }}
               transition={{ 
-                duration: heroVisible ? 0.8 : 1.8, 
+                duration: heroVisible ? 0.8 : 1.6, 
                 delay: heroVisible ? 0.1 : 0,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
@@ -116,18 +116,17 @@ const Index = () => {
               </div>
             </motion.div>
 
-            {/* Music Preview Row - Revealed after hero fades */}
+            {/* Music Preview Row - Perfectly centered, revealed after hero */}
             <motion.div
-              className="w-full relative z-10"
-              initial={{ opacity: 0, scale: 0.95 }}
+              className="w-full relative z-10 flex items-center justify-center"
+              initial={{ opacity: 0, y: 15 }}
               animate={{ 
                 opacity: !heroVisible ? 1 : 0,
-                scale: !heroVisible ? 1 : 0.95,
-                filter: !heroVisible ? "blur(0px)" : "blur(4px)"
+                y: !heroVisible ? 0 : 15
               }}
               transition={{ 
-                duration: 1.4,
-                delay: !heroVisible ? 0.5 : 0,
+                duration: 1.5,
+                delay: !heroVisible ? 1.5 : 0,
                 ease: [0.25, 0.1, 0.25, 1]
               }}
             >
