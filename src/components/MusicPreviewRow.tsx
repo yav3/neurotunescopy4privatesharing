@@ -121,7 +121,7 @@ export const MusicPreviewRow: React.FC = () => {
   }, [activeCategory]);
 
   return (
-    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-12">
+    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6">
       <audio ref={audioRef} preload="auto" />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
