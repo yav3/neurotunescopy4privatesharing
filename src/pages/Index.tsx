@@ -56,7 +56,7 @@ const Index = () => {
               </h1>
 
               {/* Subtitle */}
-              <p className="text-xs sm:text-sm md:text-base text-white/80 max-w-md leading-relaxed font-light tracking-wide mt-7">
+              <p className="text-[0.7rem] sm:text-sm md:text-base text-white/80 leading-relaxed font-light tracking-wide mt-7 whitespace-nowrap">
                 Neuroscience-backed • Clinically Validated • Therapeutic Music
               </p>
             </motion.div>
