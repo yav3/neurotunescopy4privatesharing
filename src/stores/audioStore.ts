@@ -516,11 +516,21 @@ export const useAudioStore = create<AudioState>((set, get) => {
           }
         });
         
+        // Check if we can advance to next track
+        const { queue, index, lastGoal } = get();
+        const hasMoreTracks = index < queue.length - 1;
+        
         // Auto-advance to next track when current track ends (continuous play)
-        // The next() function will handle queue refilling and session completion
         if (!isNexting) {
-          console.log('🎵 Track ended naturally, advancing to next track');
-          get().next();
+          if (hasMoreTracks || lastGoal) {
+            console.log('🎵 Track ended naturally, advancing to next track');
+            get().next();
+          } else {
+            // No more tracks and no goal to fetch more - loop current track
+            console.log('🎵 Track ended - no more tracks available, looping current track');
+            audio.currentTime = 0;
+            audio.play().catch(console.error);
+          }
         }
       });
       
