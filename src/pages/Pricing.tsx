@@ -74,13 +74,12 @@ export const Pricing = () => {
             </p>
           </div>
 
-          {/* Pricing Cards - Horizontal Scroll */}
-          <div className="overflow-x-auto pb-8 -mx-6 px-6 mb-20">
-            <div className="flex gap-8 min-w-max">
-              {plans.map((plan, index) => (
-                <div 
-                  key={index}
-                  className="rounded-3xl p-8 relative w-[340px] flex-shrink-0"
+          {/* Pricing Cards - Responsive Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 max-w-6xl mx-auto">
+            {plans.map((plan, index) => (
+              <div 
+                key={index}
+                className="rounded-3xl p-8 relative"
                   style={{
                     background: plan.highlighted 
                       ? 'rgba(6, 182, 212, 0.08)' 
@@ -139,7 +138,6 @@ export const Pricing = () => {
                 </button>
               </div>
             ))}
-            </div>
           </div>
         </div>
       </main>
