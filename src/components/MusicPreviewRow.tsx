@@ -36,15 +36,6 @@ export const MusicPreviewRow: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TherapeuticCategory | null>(null);
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
-  const [showWelcome, setShowWelcome] = useState(true);
-
-  // Hide welcome message after 4 seconds
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWelcome(false);
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Auto-play carousel effect - 8 seconds per card
   React.useEffect(() => {
@@ -103,22 +94,6 @@ export const MusicPreviewRow: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full flex items-center justify-center" style={{ minHeight: '400px' }}>
-      {/* Welcome message - fades out after 4 seconds */}
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{ opacity: showWelcome ? 1 : 0 }}
-        transition={{ duration: 1 }}
-        className="absolute left-1/2 top-[20%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-30"
-        style={{ display: showWelcome ? 'block' : 'none' }}
-      >
-        <h1 className="text-white text-3xl sm:text-4xl font-light" style={{
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-          textShadow: '0 2px 20px rgba(0,0,0,0.8)'
-        }}>
-          + NeuroTunes
-        </h1>
-      </motion.div>
-
       {/* Swipe indicator - subtle arrow */}
       <motion.div
         initial={{ opacity: 0, x: -10 }}
