@@ -3,13 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { TherapeuticCategory } from '@/utils/therapeuticAudio';
 
 // Import new background videos
-const bgVideo1 = '/videos/bg-video-1.mp4';
-const bgVideo2 = '/videos/bg-video-2.mp4';
-const bgVideo3 = '/videos/bg-video-3.mp4';
-const bgVideo4 = '/videos/bg-video-4.mp4';
-const bgVideo5 = '/videos/bg-video-5.mp4';
-const bgVideo6 = '/videos/bg-video-6.mp4';
-const bgVideo7 = '/videos/bg-video-7.mp4';
+const focusVideo1 = '/videos/focus-1.mp4';
+const focusVideo2 = '/videos/focus-2.mp4';
+const calmVideo = '/videos/calm-1.mp4';
+const energizeVideo = '/videos/energize-1.mp4';
+const defaultVideo = '/videos/default-1.mp4';
 
 interface VideoSource {
   src: string;
@@ -21,31 +19,28 @@ interface VideoSource {
 const visualThemes: Record<TherapeuticCategory | 'default', VideoSource[]> = {
   // Focus & Flow - New Age sample
   focus: [
-    { src: bgVideo1, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo2, type: 'video/mp4', duration: 15000 },
+    { src: focusVideo1, type: 'video/mp4', duration: 20000 },
+    { src: focusVideo2, type: 'video/mp4', duration: 20000 },
   ],
   
   // Nocturnes - Crossover Classical for Deep Rest
   calm: [
-    { src: bgVideo3, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo4, type: 'video/mp4', duration: 15000 },
+    { src: calmVideo, type: 'video/mp4', duration: 20000 },
   ],
   
   // Mood Boost - Placeholder
   boost: [
-    { src: bgVideo5, type: 'video/mp4', duration: 15000 },
+    { src: defaultVideo, type: 'video/mp4', duration: 20000 },
   ],
   
   // Serene Samba - Samba Jazz for Social Relaxation
   energize: [
-    { src: bgVideo6, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo7, type: 'video/mp4', duration: 15000 },
+    { src: energizeVideo, type: 'video/mp4', duration: 20000 },
   ],
   
   // Default - Mixed selection for initial load
   default: [
-    { src: bgVideo1, type: 'video/mp4', duration: 15000 },
-    { src: bgVideo2, type: 'video/mp4', duration: 15000 },
+    { src: defaultVideo, type: 'video/mp4', duration: 20000 },
   ],
 };
 
@@ -95,7 +90,7 @@ export const BackgroundVideoCarousel = () => {
         setTimeout(() => {
           setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
           setIsTransitioning(false);
-        }, 600); // Match transition duration
+        }, 3200); // Match ultra-slow transition duration
       };
       
       videoRef.current.addEventListener('ended', handleEnded);
@@ -111,7 +106,7 @@ export const BackgroundVideoCarousel = () => {
         setTimeout(() => {
           setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
           setIsTransitioning(false);
-        }, 600); // Match transition duration
+        }, 3200); // Match ultra-slow transition duration
       }, currentVideo.duration);
       
       return () => {
@@ -124,16 +119,16 @@ export const BackgroundVideoCarousel = () => {
 
   return (
     <div className="fixed inset-0 z-0">
-      {/* Video/GIF Layer with smooth crossfade and cinematic dimming */}
-      <div className={`absolute inset-0 transition-all duration-[2000ms] ${dimBackground ? 'opacity-40' : 'opacity-100'}`}>
+      {/* Video/GIF Layer with ultra-slow crossfade and cinematic dimming */}
+      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-40' : 'opacity-100'}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTheme}-${currentIndex}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
-            className={`absolute inset-0 transition-all duration-[2000ms] ${dimBackground ? 'blur-[4px]' : 'blur-0'}`}
+            transition={{ duration: 3.2, ease: 'easeInOut' }}
+            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[4px]' : 'blur-0'}`}
           >
             {currentVideo.type === 'video/mp4' ? (
               <video
@@ -141,7 +136,11 @@ export const BackgroundVideoCarousel = () => {
                 autoPlay
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover object-center"
+                className="absolute inset-0 w-full h-full object-cover object-center scale-105"
+                style={{ 
+                  transition: 'transform 8s ease-in-out',
+                  transform: isTransitioning ? 'scale(1.05)' : 'scale(1.1)'
+                }}
               >
                 <source src={currentVideo.src} type="video/mp4" />
               </video>
@@ -149,7 +148,11 @@ export const BackgroundVideoCarousel = () => {
               <img
                 src={currentVideo.src}
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover object-center"
+                className="absolute inset-0 w-full h-full object-cover object-center scale-105"
+                style={{ 
+                  transition: 'transform 8s ease-in-out',
+                  transform: isTransitioning ? 'scale(1.05)' : 'scale(1.1)'
+                }}
               />
             )}
           </motion.div>
