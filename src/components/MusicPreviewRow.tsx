@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Pause, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { canPreviewCategory, TherapeuticCategory } from '@/utils/therapeuticAudio';
+import { canPreviewCategory, TherapeuticCategory, markCategoryPreviewed, getPreviewTrackForBucket } from '@/utils/therapeuticAudio';
 import { toast } from 'sonner';
+import { useAudioStore } from '@/stores';
 
 interface PreviewCategory {
   name: string;
@@ -36,20 +37,21 @@ export const MusicPreviewRow: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<TherapeuticCategory | null>(null);
   const [loading, setLoading] = useState<TherapeuticCategory | null>(null);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
+  const { isPlaying: audioStoreIsPlaying, currentTrack } = useAudioStore();
+
+  // Sync background video with carousel changes
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('carouselChange', { 
+      detail: { category: PREVIEW_CATEGORIES[autoPlayIndex].category } 
+    }));
+  }, [autoPlayIndex]);
 
   // Auto-play carousel effect - 8 seconds per card
-  React.useEffect(() => {
+  useEffect(() => {
     if (activeCategory) return; // Don't auto-play if user has selected something
     
     const interval = setInterval(() => {
-      setAutoPlayIndex((prev) => {
-        const nextIndex = (prev + 1) % PREVIEW_CATEGORIES.length;
-        // Dispatch event to sync background video
-        window.dispatchEvent(new CustomEvent('carouselChange', { 
-          detail: { category: PREVIEW_CATEGORIES[nextIndex].category } 
-        }));
-        return nextIndex;
-      });
+      setAutoPlayIndex((prev) => (prev + 1) % PREVIEW_CATEGORIES.length);
     }, 8000); // 8 seconds per card
     
     return () => clearInterval(interval);
@@ -63,10 +65,6 @@ export const MusicPreviewRow: React.FC = () => {
       // Otherwise, just advance to this card
       const newIndex = PREVIEW_CATEGORIES.findIndex(p => p.category === preview.category);
       setAutoPlayIndex(newIndex);
-      // Sync background video
-      window.dispatchEvent(new CustomEvent('carouselChange', { 
-        detail: { category: preview.category } 
-      }));
     }
   };
 
@@ -79,17 +77,46 @@ export const MusicPreviewRow: React.FC = () => {
       return;
     }
 
-    // Change background video theme to match category
-    window.dispatchEvent(new CustomEvent('categoryChange', { 
-      detail: { category: preview.category } 
-    }));
-
-    // For now, just show a message - proper integration with main player coming soon
-    toast.success(`${preview.name} selected`, {
-      description: 'Full playback integration coming soon'
-    });
-    
+    setLoading(preview.category);
     setActiveCategory(preview.category);
+
+    try {
+      // Get a preview track from the bucket
+      const trackUrl = await getPreviewTrackForBucket(preview.bucket);
+      
+      if (!trackUrl) {
+        toast.error('Unable to load preview');
+        setLoading(null);
+        return;
+      }
+
+      // Create a temporary track object for the audio player
+      const previewTrack = {
+        id: `preview-${preview.category}`,
+        title: preview.name,
+        artist: 'NeuroTunes',
+        album: 'Preview',
+        genre: preview.category,
+        bucket_name: preview.bucket,
+        file_path: trackUrl,
+        duration_seconds: 30,
+        duration_display: '0:30'
+      };
+
+      // Play the track using the audio store
+      const audioStore = useAudioStore.getState();
+      await audioStore.playTrack(previewTrack);
+
+      // Mark category as previewed
+      markCategoryPreviewed(preview.category);
+      
+      toast.success(`Playing ${preview.name}`);
+    } catch (error) {
+      console.error('Failed to play preview:', error);
+      toast.error('Failed to start playback');
+    } finally {
+      setLoading(null);
+    }
   };
 
   return (
