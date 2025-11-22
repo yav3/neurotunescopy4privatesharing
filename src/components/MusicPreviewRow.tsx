@@ -107,10 +107,10 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.16, 1, 0.3, 1]
               }}
               className={`
-                min-w-[320px] w-[320px] sm:min-w-[380px] sm:w-[380px] relative cursor-pointer
-                rounded-[24px] border flex-shrink-0
+                min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] relative cursor-pointer
+                rounded-[16px] border flex-shrink-0
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
-                p-8
+                p-5
                 shadow-[0_12px_35px_rgba(0,0,0,0.75),inset_0_0_18px_rgba(255,255,255,0.055)]
                 transition-all duration-[3200ms] ease-[cubic-bezier(0.16,1,0.3,1)]
                 ${isHighlighted
@@ -125,40 +125,40 @@ export const MusicPreviewRow: React.FC = () => {
             >
 
               {/* Genre name */}
-              <div className="mb-3">
-                <h3 className="text-white text-lg leading-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
+              <div className="mb-2 text-center">
+                <h3 className="text-white text-base leading-tight" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
                   {preview.name}
                 </h3>
               </div>
 
               {/* Play/Pause Button */}
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-3">
                 <div className={`
-                  w-14 h-14 rounded-full 
+                  w-12 h-12 rounded-full 
                   flex items-center justify-center
                   transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
                   ${(isActive || isAutoPlayActive) ? 'bg-white/20 scale-110' : 'bg-white/10'}
                   hover:bg-white/20 hover:scale-105
                 `}>
                   {isLoading ? (
-                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : isActive ? (
-                    <Pause className="w-6 h-6 text-white" />
+                    <Pause className="w-5 h-5 text-white" />
                   ) : (
-                    <Play className="w-6 h-6 text-white ml-0.5" />
+                    <Play className="w-5 h-5 text-white ml-0.5" />
                   )}
                 </div>
               </div>
 
               {/* Description */}
               <div className="text-center">
-                <p className="text-white/60 text-sm leading-snug" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
+                <p className="text-white/60 text-xs leading-snug" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif' }}>
                   {preview.description}
                 </p>
               </div>
 
               {/* Status indicator */}
-              <div className="flex items-center justify-center text-xs text-white/40 mt-4">
+              <div className="flex items-center justify-center text-xs text-white/40 mt-3">
                 {!canPlay && <span className="text-white/50">✓ Played</span>}
               </div>
             </motion.div>
