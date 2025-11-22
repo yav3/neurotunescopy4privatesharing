@@ -112,25 +112,26 @@ export const ConsumerPricing = () => {
             </p>
           </div>
 
-          {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-            {plans.map((plan, index) => (
-              <div
-                key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col h-full"
-                style={{
-                  background: plan.highlight 
-                    ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
-                    : 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(24px)',
-                  border: plan.highlight 
-                    ? '2px solid rgba(192, 192, 192, 0.6)' 
-                    : '1px solid rgba(255, 255, 255, 0.10)',
-                  boxShadow: plan.highlight
-                    ? '0 0 60px rgba(192, 192, 192, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                    : '0 0 40px rgba(0, 0, 0, 0.8)'
-                }}
-              >
+          {/* Pricing Cards - Horizontal Scroll */}
+          <div className="overflow-x-auto pb-8 -mx-6 px-6 mb-20">
+            <div className="flex gap-8 min-w-max">
+              {plans.map((plan, index) => (
+                <div
+                  key={index}
+                  className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02] flex flex-col h-full w-[340px] flex-shrink-0"
+                  style={{
+                    background: plan.highlight 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.12), rgba(229, 229, 229, 0.12))'
+                      : 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(24px)',
+                    border: plan.highlight 
+                      ? '2px solid rgba(192, 192, 192, 0.6)' 
+                      : '1px solid rgba(255, 255, 255, 0.10)',
+                    boxShadow: plan.highlight
+                      ? '0 0 60px rgba(192, 192, 192, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                      : '0 0 40px rgba(0, 0, 0, 0.8)'
+                  }}
+                >
                 {/* Badge - Fixed height */}
                 <div 
                   className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
@@ -205,6 +206,7 @@ export const ConsumerPricing = () => {
                 </Link>
               </div>
             ))}
+            </div>
           </div>
         </div>
       </main>
