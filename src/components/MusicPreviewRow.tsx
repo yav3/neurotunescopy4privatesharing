@@ -164,10 +164,10 @@ export const MusicPreviewRow: React.FC = () => {
   }, [activeCategory]);
 
   return (
-    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-0">
+    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-0">
       <audio ref={audioRef} preload="auto" />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {PREVIEW_CATEGORIES.map((preview, index) => {
           const isActive = activeCategory === preview.category;
           const isLoading = loading === preview.category;
@@ -181,11 +181,14 @@ export const MusicPreviewRow: React.FC = () => {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className={`
                 relative group cursor-pointer
-                backdrop-blur-xl bg-white/[0.12] border border-white/10
-                rounded-3xl p-6 
-                hover:bg-white/[0.15] hover:border-white/20
+                rounded-3xl border-[0.5px]
+                bg-white/[0.05] backdrop-blur-xl
+                p-6 
                 transition-all duration-300
-                ${isActive ? 'ring-2 ring-white/30 bg-white/[0.18]' : ''}
+                ${isActive 
+                  ? 'border-white/20 bg-white/[0.12] shadow-[0_0_60px_rgba(255,255,255,0.12)] scale-[1.02]' 
+                  : 'border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)] hover:bg-white/[0.10] hover:border-white/15 hover:scale-[1.015]'
+                }
               `}
               onClick={() => handlePlay(preview)}
             >
@@ -193,35 +196,35 @@ export const MusicPreviewRow: React.FC = () => {
               {/* Play/Pause Button */}
               <div className="flex items-center gap-4 mb-4">
                 <div className={`
-                  w-14 h-14 rounded-full 
+                  w-12 h-12 rounded-full 
                   flex items-center justify-center
                   transition-all duration-300
                   ${isActive ? 'bg-white/20' : 'bg-white/10'}
                   group-hover:bg-white/20 group-hover:scale-105
                 `}>
                   {isLoading ? (
-                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : isActive ? (
-                    <Pause className="w-6 h-6 text-white" />
+                    <Pause className="w-5 h-5 text-white" />
                   ) : (
-                    <Play className="w-6 h-6 text-white ml-0.5" />
+                    <Play className="w-5 h-5 text-white ml-0.5" />
                   )}
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="text-white font-medium text-lg tracking-wide">
+                  <h3 className="text-white font-semibold text-lg leading-tight tracking-wide">
                     {preview.name}
                   </h3>
-                  <p className="text-white/60 text-sm">
+                  <p className="text-white/60 text-sm mt-0.5">
                     {preview.description}
                   </p>
                 </div>
               </div>
 
               {/* Status indicator */}
-              <div className="flex items-center justify-between text-xs text-white/50">
+              <div className="flex items-center justify-between text-xs text-white/40 mt-4">
                 <span>One preview track</span>
-                {!canPlay && <span className="text-white/70">✓ Played</span>}
+                {!canPlay && <span className="text-white/50">✓ Played</span>}
               </div>
             </motion.div>
           );
