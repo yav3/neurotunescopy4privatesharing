@@ -25,7 +25,7 @@ const PREVIEW_CATEGORIES: PreviewCategory[] = [
     description: "Peaceful relaxation"
   },
   {
-    name: "Samba Energy",
+    name: "Samba Jazz",
     bucket: "samba",
     category: "energize",
     description: "Rhythmic vitality"
