@@ -32,13 +32,6 @@ export const NavigationHeader = () => {
           </span>
         </Link>
 
-        {/* Center: Tagline */}
-        <div className="flex-1 flex justify-center relative z-10">
-          <p className="text-[9px] lg:text-[10px] font-light tracking-wide text-platinum-glow/65 max-w-3xl text-center leading-relaxed">
-            Neuroscience-backed • Clinically Validated • Patented • Medical-grade Therapeutic Music & AI Streaming
-          </p>
-        </div>
-
         {/* Right: Auth + CTA */}
         <div className="flex items-center gap-4 lg:gap-6 relative z-10">
           <Link to="/auth" className="text-sm lg:text-base font-light text-platinum-glow/86 hover:text-platinum-glow transition-colors">
