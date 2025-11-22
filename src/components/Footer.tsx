@@ -58,7 +58,17 @@ export const Footer = () => {
                     <li><Link to="/products/population-health" className="text-sm text-white/60 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
                     <li><Link to="/products/enterprise-wellness" className="text-sm text-white/60 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
                     <li><Link to="/app-download" className="text-sm text-white/60 hover:text-white transition-colors block">Personal Wellness App</Link></li>
-                    <li><Link to="/products/partnerships" className="text-sm text-white/60 hover:text-white transition-colors block">Partnerships & Integration</Link></li>
+                    <li>
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.dispatchEvent(new Event('openSalesAssistant'));
+                        }}
+                        className="text-sm text-white/60 hover:text-white transition-colors block text-left w-full"
+                      >
+                        Partnerships & Integration
+                      </button>
+                    </li>
                     <li><Link to="/products" className="text-sm text-white/60 hover:text-white transition-colors block">View All Products</Link></li>
                   </ul>
                 </AccordionContent>
@@ -148,7 +158,17 @@ export const Footer = () => {
                 <li><Link to="/products/population-health" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
                 <li><Link to="/products/enterprise-wellness" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
                 <li><Link to="/app-download" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Personal Wellness App</Link></li>
-                <li><Link to="/products/partnerships" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">Partnerships & Integration</Link></li>
+                <li>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.dispatchEvent(new Event('openSalesAssistant'));
+                    }}
+                    className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block text-left w-full"
+                  >
+                    Partnerships & Integration
+                  </button>
+                </li>
                 <li><Link to="/products" className="text-xs sm:text-sm text-white/50 hover:text-white transition-colors block">View All Products</Link></li>
               </ul>
             </div>
