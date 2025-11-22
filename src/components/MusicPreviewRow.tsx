@@ -100,8 +100,7 @@ export const MusicPreviewRow: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ 
                 opacity: isHighlighted ? 1 : 0.12,
-                x: `calc(50vw - 50% + ${offset}px)`,
-                y: '-50%',
+                x: offset,
                 scale: isHighlighted ? 1.4 : 0.85,
                 filter: isHighlighted ? 'blur(0px)' : 'blur(8px)'
               }}
@@ -110,13 +109,12 @@ export const MusicPreviewRow: React.FC = () => {
                 ease: [0.16, 1, 0.3, 1]
               }}
               className={`
-                absolute top-1/2 left-0
+                absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                 min-w-[240px] w-[240px] sm:min-w-[280px] sm:w-[280px] cursor-pointer
                 rounded-[16px] border
                 bg-white/[0.045] backdrop-blur-[28px] saturate-[180%]
                 p-5
                 shadow-[0_12px_35px_rgba(0,0,0,0.75),inset_0_0_18px_rgba(255,255,255,0.055)]
-                transition-all duration-[3200ms] ease-[cubic-bezier(0.16,1,0.3,1)]
                 ${isHighlighted
                   ? 'border-white/[0.32] bg-white/[0.12]' 
                   : 'border-white/[0.14] hover:bg-white/[0.08] hover:border-white/[0.22]'
