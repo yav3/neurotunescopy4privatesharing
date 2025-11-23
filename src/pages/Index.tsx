@@ -79,7 +79,7 @@ const Index = () => {
               <div className="text-center flex flex-col items-center justify-center gap-4 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-6 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[24px] sm:rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[24px] sm:before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden relative"
               >
               {/* Logo/Title */}
-              <h1 className="font-sf font-normal uppercase tracking-[-0.03em] text-[2rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              <h1 className="font-sf font-normal tracking-[-0.03em] text-[2rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
                 +NeuroTunes
               </h1>
 
