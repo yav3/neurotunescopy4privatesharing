@@ -21,16 +21,6 @@ export const NavigationHeader = () => {
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-6">
-          <button
-            onClick={() => {
-              const event = new CustomEvent('openSalesAssistant');
-              window.dispatchEvent(event);
-            }}
-            className="text-sm text-white/70 hover:text-white transition-colors duration-200"
-          >
-            Chat with Sales
-          </button>
-          
           <Link 
             to="/auth" 
             className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-200 text-sm"
@@ -72,16 +62,6 @@ export const NavigationHeader = () => {
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-0 top-[61px] z-40 overflow-y-auto bg-black/95 backdrop-blur-xl">
           <div className="p-6 space-y-4">
-            <button
-              onClick={() => {
-                const event = new CustomEvent('openSalesAssistant');
-                window.dispatchEvent(event);
-                setMobileMenuOpen(false);
-              }}
-              className="block w-full py-3 text-center text-white/70 hover:text-white transition-colors text-sm"
-            >
-              Chat with Sales
-            </button>
             <Link
               to="/auth"
               onClick={() => setMobileMenuOpen(false)}
