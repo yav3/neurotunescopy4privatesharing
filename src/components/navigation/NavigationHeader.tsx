@@ -11,7 +11,7 @@ export const NavigationHeader = () => {
       <header className="hidden md:flex items-center justify-between px-8 py-3 bg-black/20 backdrop-blur-md border-b border-white/10 fixed top-0 left-0 right-0 z-50">
         {/* Left: Logo */}
         <Link to="/" className="flex flex-col leading-tight">
-          <span className="text-xl font-semibold tracking-tight text-white">
+          <span className="text-xl tracking-tight text-white uppercase">
             +NeuroTunes
           </span>
           <span className="text-[10px] font-light tracking-wide text-white/40">
@@ -43,7 +43,7 @@ export const NavigationHeader = () => {
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
       <header className="md:hidden flex items-center justify-between px-5 py-3 bg-black/20 backdrop-blur-md border-b border-white/10 fixed top-0 left-0 right-0 z-50">
         <Link to="/" className="flex flex-col leading-tight">
-          <span className="text-lg font-semibold tracking-tight text-white">
+          <span className="text-lg tracking-tight text-white uppercase">
             +NeuroTunes
           </span>
           <span className="text-[9px] font-light tracking-wide text-white/40">
