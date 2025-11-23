@@ -1,207 +1,118 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { TherapeuticCategory } from '@/utils/therapeuticAudio';
-
-// Import new background videos
-const focusVideo1 = '/videos/focus-1.mp4';
-const focusVideo2 = '/videos/focus-2.mp4';
-const calmVideo = '/videos/calm-1.mp4';
-const energizeVideo = '/videos/energize-1.mp4';
-const defaultVideo = '/videos/default-1.mp4';
+import { supabase } from '@/integrations/supabase/client';
 
 interface VideoSource {
   src: string;
-  type: 'video/mp4' | 'image/gif';
-  duration: number;
+  type: 'video/mp4';
 }
 
-// Organize videos by therapeutic category for track-aware transitions
-const visualThemes: Record<TherapeuticCategory | 'default', VideoSource[]> = {
-  // Focus & Flow - New Age sample
-  focus: [
-    { src: focusVideo1, type: 'video/mp4', duration: 20000 },
-    { src: focusVideo2, type: 'video/mp4', duration: 20000 },
-  ],
-  
-  // Nocturnes - Crossover Classical for Deep Rest
-  calm: [
-    { src: calmVideo, type: 'video/mp4', duration: 20000 },
-  ],
-  
-  // Mood Boost - Placeholder
-  boost: [
-    { src: defaultVideo, type: 'video/mp4', duration: 20000 },
-  ],
-  
-  // Serene Samba - Samba Jazz for Social Relaxation
-  energize: [
-    { src: energizeVideo, type: 'video/mp4', duration: 20000 },
-  ],
-  
-  // Default - Mixed selection for initial load
-  default: [
-    { src: defaultVideo, type: 'video/mp4', duration: 20000 },
-  ],
-};
-
 export const BackgroundVideoCarousel = () => {
-  const [activeTheme, setActiveTheme] = useState<TherapeuticCategory | 'default'>('default');
+  const [videos, setVideos] = useState<VideoSource[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [dimBackground, setDimBackground] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const autoCycleTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const activeVideoList = visualThemes[activeTheme];
-  const currentVideo = activeVideoList[currentIndex];
-
-  // Cinematic background dim - 2.4s delay
+  // Fetch videos from Supabase landingpage bucket
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDimBackground(true);
-    }, 2400);
-    return () => clearTimeout(timer);
+    const fetchVideos = async () => {
+      const { data, error } = await supabase.storage
+        .from('landingpage')
+        .list('', { 
+          limit: 100,
+          sortBy: { column: 'name', order: 'asc' }
+        });
+
+      if (error) {
+        console.error('Error fetching videos:', error);
+        return;
+      }
+
+      const videoFiles = data
+        ?.filter(file => file.name.endsWith('.mp4'))
+        .map(file => ({
+          src: supabase.storage.from('landingpage').getPublicUrl(file.name).data.publicUrl,
+          type: 'video/mp4' as const
+        })) || [];
+
+      if (videoFiles.length > 0) {
+        setVideos(videoFiles);
+      }
+    };
+
+    fetchVideos();
   }, []);
 
-  // Listen for category changes from preview cards
+  const currentVideo = videos[currentIndex];
+
+  // Auto-advance to next video when current video ends
   useEffect(() => {
-    const handleCategoryChange = (event: CustomEvent<{ category: TherapeuticCategory }>) => {
-      console.log('🎭 Category changed to:', event.detail.category);
-      setActiveTheme(event.detail.category);
-      setCurrentIndex(0);
+    if (!currentVideo || videos.length === 0) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleEnded = () => {
       setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % videos.length);
+        setIsTransitioning(false);
+      }, 1000);
     };
 
-    const handleCarouselChange = (event: CustomEvent<{ category: TherapeuticCategory }>) => {
-      console.log('🎠 Carousel changed to:', event.detail.category);
-      setActiveTheme(event.detail.category);
-      setCurrentIndex(0);
-      setIsTransitioning(true);
-    };
+    video.addEventListener('ended', handleEnded);
+    return () => video.removeEventListener('ended', handleEnded);
+  }, [currentVideo, videos.length]);
 
-    window.addEventListener('categoryChange', handleCategoryChange as EventListener);
-    window.addEventListener('carouselChange', handleCarouselChange as EventListener);
-    return () => {
-      window.removeEventListener('categoryChange', handleCategoryChange as EventListener);
-      window.removeEventListener('carouselChange', handleCarouselChange as EventListener);
-    };
-  }, []);
-
-  // Auto-cycle within current theme and ensure video plays
+  // Ensure video plays continuously
   useEffect(() => {
-    // Clear existing timer
-    if (autoCycleTimer.current) {
-      clearTimeout(autoCycleTimer.current);
-    }
+    if (!currentVideo || !videoRef.current) return;
 
-    // For MP4s, let video end naturally
-    if (currentVideo.type === 'video/mp4' && videoRef.current) {
-      const video = videoRef.current;
-      
-      // Ensure video plays - aggressive autoplay strategy
-      const playVideo = async () => {
-        try {
-          video.muted = true; // Ensure muted for autoplay
-          await video.play();
-          console.log('✅ Background video playing');
-        } catch (err) {
-          console.log('⚠️ Background video autoplay blocked:', err);
-          // Try again after a short delay
-          setTimeout(() => {
-            video.play().catch(() => {
-              console.log('⚠️ Background video requires user interaction');
-            });
-          }, 500);
-        }
-      };
-
-      // Force immediate play attempt
-      playVideo();
-      
-      // Also try when metadata loads
-      video.addEventListener('loadedmetadata', playVideo, { once: true });
-      
-      // And when enough data is loaded
-      video.addEventListener('canplay', playVideo, { once: true });
-      
-      // Try on loadeddata as well
-      video.addEventListener('loadeddata', playVideo, { once: true });
-
-      const handleEnded = () => {
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
-          setIsTransitioning(false);
-        }, 3200); // Match ultra-slow transition duration
-      };
-      
-      video.addEventListener('ended', handleEnded);
-      return () => {
-        video.removeEventListener('ended', handleEnded);
-      };
-    }
+    const video = videoRef.current;
     
-    // For GIFs, use auto-cycle timer
-    if (currentVideo.type === 'image/gif') {
-      autoCycleTimer.current = setTimeout(() => {
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % activeVideoList.length);
-          setIsTransitioning(false);
-        }, 3200); // Match ultra-slow transition duration
-      }, currentVideo.duration);
-      
-      return () => {
-        if (autoCycleTimer.current) {
-          clearTimeout(autoCycleTimer.current);
-        }
-      };
-    }
-  }, [currentIndex, currentVideo, activeVideoList.length]);
+    const playVideo = async () => {
+      try {
+        video.muted = true;
+        await video.play();
+        console.log('✅ Video playing:', currentVideo.src);
+      } catch (err) {
+        console.error('⚠️ Video autoplay blocked:', err);
+        setTimeout(() => video.play().catch(console.error), 500);
+      }
+    };
+
+    playVideo();
+    video.addEventListener('loadeddata', playVideo, { once: true });
+    
+  }, [currentVideo]);
+
+  if (!currentVideo) return null;
 
   return (
     <div className="fixed inset-0 z-0">
-      {/* Video/GIF Layer with ultra-slow crossfade */}
       <div className="absolute inset-0">
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${activeTheme}-${currentIndex}`}
+            key={currentIndex}
             initial={{ opacity: 0 }}
-            animate={{ opacity: isTransitioning ? 0 : 1 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 3.2, ease: 'easeInOut' }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
             className="absolute inset-0"
           >
-            {currentVideo.type === 'video/mp4' ? (
-              <video
-                ref={videoRef}
-                autoPlay
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover object-center scale-105"
-                style={{ 
-                  transition: 'transform 8s ease-in-out',
-                  transform: isTransitioning ? 'scale(1.05)' : 'scale(1.1)'
-                }}
-              >
-                <source src={currentVideo.src} type="video/mp4" />
-              </video>
-            ) : (
-              <img
-                src={currentVideo.src}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover object-center scale-105"
-                style={{ 
-                  transition: 'transform 8s ease-in-out',
-                  transform: isTransitioning ? 'scale(1.05)' : 'scale(1.1)'
-                }}
-              />
-            )}
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={currentVideo.src} type="video/mp4" />
+            </video>
           </motion.div>
         </AnimatePresence>
       </div>
       
-      {/* Minimal gradient overlay for text readability only */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
     </div>
   );
