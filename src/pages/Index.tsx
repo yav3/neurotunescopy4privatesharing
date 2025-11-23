@@ -14,135 +14,23 @@ import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
 
 const Index = () => {
-  const { user, loading } = useAuthContext();
-  const [scrollY, setScrollY] = useState(0);
-  const [showSubtitle, setShowSubtitle] = useState(true);
-  const [heroVisible, setHeroVisible] = useState(true);
-  
   // Welcome returning users
   useWelcomeMessage();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Hide subtitle after animation completes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSubtitle(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Cinematic fade: 2.4s delay, then 2.4s fade-out
-  useEffect(() => {
-    const fadeTimer = setTimeout(() => {
-      setHeroVisible(false);
-    }, 2400);
-    return () => clearTimeout(fadeTimer);
-  }, []);
-
   return (
-    <div className="w-full min-h-screen flex flex-col">
-      {/* Background Video Carousel */}
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Full-screen video background */}
       <BackgroundVideoCarousel />
-
-
-      {/* Content overlay */}
-      <div className="relative z-10 flex flex-col flex-1">
-        {/* Navigation Header */}
-        <NavigationHeader />
-
-        {/* Hero Section - Cinematic fade reveal */}
-        <main className="flex-1 flex justify-center mt-24 md:mt-32 px-4 sm:px-6 md:px-8">
-          <div className="relative w-full max-w-6xl mx-auto flex items-center justify-center">
-            {/* Hero Container - Cinematic 2.4s fade-out */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ 
-                opacity: heroVisible ? 1 : 0, 
-                y: heroVisible ? 0 : -20,
-                filter: heroVisible ? "blur(0px)" : "blur(4px)"
-              }}
-              transition={{ 
-                duration: heroVisible ? 0.8 : 2.4, 
-                delay: heroVisible ? 0.1 : 0,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              {/* Premium Glass Hero Card */}
-              <div className="text-center flex flex-col items-center justify-center gap-4 w-[95%] sm:w-[90%] md:w-[65%] px-6 py-6 sm:px-12 sm:py-12 md:px-16 md:pt-12 md:pb-10 rounded-[24px] sm:rounded-[36px] md:rounded-[48px] backdrop-blur-[22px] saturate-[180%] border border-white/[0.08] shadow-[0_0_70px_rgba(0,0,0,0.6)] bg-[rgba(20,20,20,0.55)] before:absolute before:inset-0 before:rounded-[24px] sm:before:rounded-[36px] md:before:rounded-[48px] before:bg-gradient-to-br before:from-white/[0.05] before:via-transparent before:to-transparent before:pointer-events-none overflow-hidden relative"
-              >
-              {/* Logo/Title */}
-              <h1 className="font-sf font-normal tracking-[-0.03em] text-[2rem] leading-[1.05] sm:text-6xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
-                +NeuroTunes
-              </h1>
-
-              {/* Animated Subtitle - Zooms in then disappears */}
-              <AnimatePresence>
-                {showSubtitle && (
-                  <motion.p 
-                    className="text-[0.6rem] leading-tight sm:text-xs md:text-sm text-white/80 font-light tracking-wide mt-4 max-w-[280px] sm:max-w-none sm:whitespace-nowrap text-center absolute"
-                    initial={{ 
-                      scale: 0.3, 
-                      opacity: 0,
-                      filter: "blur(8px)"
-                    }}
-                    animate={{ 
-                      scale: [0.3, 1.8, 1.8, 1.8],
-                      opacity: [0, 1, 1, 0],
-                      filter: ["blur(8px)", "blur(0px)", "blur(0px)", "blur(4px)"]
-                    }}
-                    transition={{
-                      duration: 2.5,
-                      times: [0, 0.4, 0.7, 1],
-                      ease: [0.34, 1.56, 0.64, 1]
-                    }}
-                    style={{
-                      transformOrigin: "center center",
-                      pointerEvents: "none"
-                    }}
-                  >
-                    Neuroscience-backed • Clinically Validated • Premium Environmental & Wellness Music
-                  </motion.p>
-                )}
-              </AnimatePresence>
-              </div>
-            </motion.div>
-
-            {/* Music Cards - Perfectly centered, cinematic reveal */}
-            <motion.div
-              className="w-full relative z-10 flex items-center justify-center"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ 
-                opacity: !heroVisible ? 1 : 0,
-                y: !heroVisible ? 0 : 15
-              }}
-              transition={{ 
-                duration: 1.4,
-                delay: !heroVisible ? 0.2 : 0,
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              <MusicPreviewRow />
-            </motion.div>
-          </div>
-        </main>
-
-        {/* Footer */}
-        <Footer />
-        
-        {/* Hidden Sales Assistant (triggered from header) */}
-        <SalesAssistant externalOpen={false} />
-        
-        {/* Support Chat */}
-        <SupportChat />
-      </div>
+      
+      {/* Header and Footer only - no hero content */}
+      <NavigationHeader />
+      <Footer />
+      
+      {/* Hidden Sales Assistant (triggered from header) */}
+      <SalesAssistant externalOpen={false} />
+      
+      {/* Support Chat */}
+      <SupportChat />
     </div>
   );
 };
