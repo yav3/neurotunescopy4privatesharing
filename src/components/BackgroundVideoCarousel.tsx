@@ -161,8 +161,8 @@ export const BackgroundVideoCarousel = () => {
 
   return (
     <div className="fixed inset-0 z-0">
-      {/* Video/GIF Layer with ultra-slow crossfade and cinematic dimming */}
-      <div className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'opacity-100' : 'opacity-100'}`}>
+      {/* Video/GIF Layer with ultra-slow crossfade */}
+      <div className="absolute inset-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTheme}-${currentIndex}`}
@@ -170,7 +170,7 @@ export const BackgroundVideoCarousel = () => {
             animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 3.2, ease: 'easeInOut' }}
-            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[1px]' : 'blur-0'}`}
+            className="absolute inset-0"
           >
             {currentVideo.type === 'video/mp4' ? (
               <video
@@ -201,11 +201,8 @@ export const BackgroundVideoCarousel = () => {
         </AnimatePresence>
       </div>
       
-      {/* Premium gradient overlay - much lighter for video visibility */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.05)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.30)_100%)] pointer-events-none" />
-      
-      {/* Additional top-to-bottom gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
+      {/* Minimal gradient overlay for text readability only */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
     </div>
   );
 };
