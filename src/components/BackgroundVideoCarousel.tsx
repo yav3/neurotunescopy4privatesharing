@@ -170,7 +170,7 @@ export const BackgroundVideoCarousel = () => {
             animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 3.2, ease: 'easeInOut' }}
-            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[2px]' : 'blur-0'}`}
+            className={`absolute inset-0 transition-all duration-[3200ms] ${dimBackground ? 'blur-[1px]' : 'blur-0'}`}
           >
             {currentVideo.type === 'video/mp4' ? (
               <video
@@ -201,11 +201,11 @@ export const BackgroundVideoCarousel = () => {
         </AnimatePresence>
       </div>
       
-      {/* Premium gradient overlay - lighter for visibility */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.25)_50%,rgba(0,0,0,0.40)_100%)] pointer-events-none" />
+      {/* Premium gradient overlay - much lighter for video visibility */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,0,0,0.05)_0%,rgba(0,0,0,0.15)_50%,rgba(0,0,0,0.30)_100%)] pointer-events-none" />
       
       {/* Additional top-to-bottom gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
     </div>
   );
 };
