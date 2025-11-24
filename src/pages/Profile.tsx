@@ -9,12 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { User, Music, Clock, Edit3, Heart, Calendar, Settings, TrendingUp, TrendingDown, Minus, Headphones, Volume2, Shuffle, BarChart3, Shield, Download, Trash2 } from "lucide-react";
+import { User, Music, Clock, Edit3, Heart, Calendar, Settings, TrendingUp, TrendingDown, Minus, Headphones, Volume2, Shuffle, BarChart3, Shield, Download, Trash2, ArrowLeft } from "lucide-react";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import type { FrequencyBand } from '@/types'
 import { useAppStore } from "@/stores/appStore";
 import { DeviceManager } from "@/components/DeviceManager";
+import { Link } from "react-router-dom";
 
 interface UserStats {
   totalSessions: number;
@@ -293,6 +294,15 @@ const Profile = () => {
       <Header />
       
       <div className="container max-w-4xl mx-auto px-4 py-6 pb-32 sm:pb-36 mb-safe">
+        {/* Back Button */}
+        <Link 
+          to="/goals" 
+          className="inline-flex items-center gap-2 text-foreground/70 hover:text-foreground mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Home</span>
+        </Link>
+
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8">
           <div>
