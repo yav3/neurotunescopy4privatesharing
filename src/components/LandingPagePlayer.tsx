@@ -101,6 +101,12 @@ export const LandingPagePlayer = ({
   const trackTimerRef = useRef<NodeJS.Timeout>();
   const syncFrameRef = useRef<number>();
 
+  // Expose the currently active audio element globally so the video layer can sync to it
+  useEffect(() => {
+    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    (window as any).__landingActiveAudio = currentAudio || null;
+  }, [activeAudioRef]);
+
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
@@ -352,6 +358,7 @@ export const LandingPagePlayer = ({
       audioRef1.current?.pause();
       audioRef2.current?.pause();
       videoRef.current?.pause();
+      (window as any).__landingActiveAudio = null;
     };
   }, []);
 
