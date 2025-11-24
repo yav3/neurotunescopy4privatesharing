@@ -23,6 +23,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoUrls, setVideoUrls] = useState<string[]>([]);
+  const [fadeOpacity, setFadeOpacity] = useState(0);
 
   // Build public URLs for the curated video files
   useEffect(() => {
@@ -33,7 +34,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     setVideoUrls(urls);
   }, []);
 
-  // Load/change the video source when the index changes
+  // Load/change the video source with fade-to-black transition
   useEffect(() => {
     const video = videoRef.current;
     if (!video || videoUrls.length === 0) return;
@@ -44,16 +45,26 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     const nextSrc = videoUrls[safeIndex];
 
     if (video.src !== nextSrc) {
-      video.src = nextSrc;
-      video.load();
-      if (isPlaying) {
-        const playPromise = video.play();
-        if (playPromise && (playPromise as any).catch) {
-          (playPromise as Promise<void>).catch(() => {
-            // Autoplay might be blocked; user play will retry
-          });
+      // Fade to black
+      setFadeOpacity(1);
+      
+      setTimeout(() => {
+        // Switch video while black
+        video.src = nextSrc;
+        video.load();
+        
+        if (isPlaying) {
+          const playPromise = video.play();
+          if (playPromise && (playPromise as any).catch) {
+            (playPromise as Promise<void>).catch(() => {});
+          }
         }
-      }
+        
+        // Fade back in
+        setTimeout(() => {
+          setFadeOpacity(0);
+        }, 100);
+      }, 500);
     }
   }, [currentVideoIndex, videoUrls, isPlaying]);
 
@@ -114,7 +125,13 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
         muted
         playsInline
         preload="auto"
+        loop
         className="w-full h-full object-cover"
+      />
+      {/* Fade-to-black transition overlay */}
+      <div 
+        className="absolute inset-0 bg-black pointer-events-none transition-opacity duration-500"
+        style={{ opacity: fadeOpacity }}
       />
       {/* Subtle dark overlay for readability */}
       <div className="absolute inset-0 bg-black/35" />
