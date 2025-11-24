@@ -26,11 +26,11 @@ interface LandingPagePlayerProps {
 const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
 
-// Direct URLs for audio tracks
+// Direct URLs for audio tracks - now with expanded video rotation
 const CURATED_PLAYLIST = [
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3',
-    videoFilename: '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4',
+    videoPath: '/videos/landing-01.mp4',
     therapeuticGoal: 'Focus Enhancement Goal',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -39,7 +39,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
-    videoFilename: '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4',
+    videoPath: '/videos/landing-02.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'House',
     artist: 'Van Wild',
@@ -48,7 +48,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
-    videoFilename: '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',
+    videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Pain Reduction',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -57,7 +57,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/malaga-classical-focus-part-four-(remastered).mp3',
-    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
+    videoPath: '/videos/landing-04.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'Classical',
     artist: 'The Scientists',
@@ -66,7 +66,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
-    videoFilename: '20251123_1513_01kanep60pf8mr4494225wy94z.mp4',
+    videoPath: '/videos/landing-05.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country Pop',
     artist: 'Van Wild',
@@ -75,7 +75,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
-    videoFilename: '20251123_1513_01kanf03azfr5b3gy0328zj5j8.mp4',
+    videoPath: '/videos/landing-06.mp4',
     therapeuticGoal: 'Sleep Enhancement',
     genre: 'Ambient',
     artist: 'Yasmine',
@@ -84,7 +84,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/adonis--bossa-nova-samba.mp3',
-    videoFilename: '20251123_1513_01kanfadzdfj8bw4v44zkkd7p6.mp4',
+    videoPath: '/videos/landing-07.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -93,24 +93,13 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/tropicana-chill-bossa-nova-big-band-radio-mix.mp3',
-    videoFilename: '20251123_1513_01kanfhac2e0sabhsp8c9zp85w.mp4',
+    videoPath: '/videos/landing-08.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Tropicana Chill',
     estimatedBPM: 88
   }
-];
-
-// Additional videos to cycle through when looping is needed during 35-second tracks
-const ADDITIONAL_VIDEOS = [
-  '20251123_1513_01kanep60pf8mr4494225wy94z.mp4',
-  '20251123_1513_01kanf03azfr5b3gy0328zj5j8.mp4',
-  '20251123_1513_01kanfadzdfj8bw4v44zkkd7p6.mp4',
-  '20251123_1513_01kanfhac2e0sabhsp8c9zp85w.mp4',
-  '20251123_1514_01kasce44qefe9j5s49v6jkg0t.mp4',
-  '20251123_1514_01kascfe9he71bcdzcw3wp3e2n.mp4',
-  '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4'
 ];
 
 export const LandingPagePlayer = ({
@@ -140,10 +129,9 @@ export const LandingPagePlayer = ({
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
-      // Build curated tracks with direct URLs
+      // Build curated tracks with direct video paths
       const audioTracks = CURATED_PLAYLIST.map(track => {
-        const videoSrc = supabase.storage.from('landingpage').getPublicUrl(track.videoFilename).data.publicUrl;
-        console.log(`🎵 Loading track: ${track.name} → 🎬 ${track.videoFilename}`);
+        console.log(`🎵 Loading track: ${track.name} → 🎬 ${track.videoPath}`);
         return {
           src: track.audioUrl,
           name: track.name,
@@ -154,9 +142,9 @@ export const LandingPagePlayer = ({
         };
       });
       
-      // Build video array matching the track order
+      // Build video array matching the track order with local video paths
       const videoFiles = CURATED_PLAYLIST.map(track => ({
-        src: supabase.storage.from('landingpage').getPublicUrl(track.videoFilename).data.publicUrl
+        src: track.videoPath
       }));
       
       setTracks(audioTracks);

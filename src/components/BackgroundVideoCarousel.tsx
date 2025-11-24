@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-// Using smaller local MP4 files for better performance
+// Local video files matched to each track
 const CURATED_VIDEO_FILES = [
-  '/videos/video1.mp4', // Track 1
-  '/videos/video2.mp4', // Track 2
-  '/videos/video3.mp4', // Track 3
-  '/videos/video1.mp4', // Track 4 (loop)
-  '/videos/video2.mp4', // Track 5 (loop)
-  '/videos/video3.mp4', // Track 6 (loop)
-  '/videos/video1.mp4', // Track 7 (loop)
-  '/videos/video2.mp4', // Track 8 (loop)
+  '/videos/landing-01.mp4', // Track 1
+  '/videos/landing-02.mp4', // Track 2
+  '/videos/landing-03.mp4', // Track 3
+  '/videos/landing-04.mp4', // Track 4
+  '/videos/landing-05.mp4', // Track 5
+  '/videos/landing-06.mp4', // Track 6
+  '/videos/landing-07.mp4', // Track 7
+  '/videos/landing-08.mp4', // Track 8
 ];
 
 interface BackgroundVideoCarouselProps {
