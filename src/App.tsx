@@ -75,6 +75,7 @@ import AppDownload from "./pages/AppDownload";
 import EnterpriseWellnessPricing from "./pages/EnterpriseWellnessPricing";
 import ClinicalPricing from "./pages/ClinicalPricing";
 import HIPAA from "./pages/HIPAA";
+import Subscribe from "./pages/Subscribe";
 
 const queryClient = new QueryClient();
 
@@ -150,6 +151,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/subscribe" element={<Subscribe />} />
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<ProductsOverview />} />

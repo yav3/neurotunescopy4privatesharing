@@ -22,7 +22,7 @@ export const NavigationHeader = () => {
         {/* Right: CTAs */}
         <div className="flex items-center gap-4">
           <Link 
-            to="/products" 
+            to="/subscribe" 
             className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
           >
             Subscribe
@@ -31,7 +31,7 @@ export const NavigationHeader = () => {
             to="/auth" 
             className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-200 text-sm"
           >
-            Login
+            Login / Sign Up
           </Link>
         </div>
       </header>
@@ -49,7 +49,7 @@ export const NavigationHeader = () => {
 
         <div className="flex items-center gap-3">
           <Link 
-            to="/products" 
+            to="/subscribe" 
             className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
           >
             Subscribe
@@ -81,7 +81,7 @@ export const NavigationHeader = () => {
               onClick={() => setMobileMenuOpen(false)}
               className="block w-full px-4 py-2 rounded-full border border-white/20 bg-white/10 text-white/80 text-center hover:bg-white/20 transition-all text-sm"
             >
-              Login
+              Login / Sign Up
             </Link>
           </div>
         </div>
