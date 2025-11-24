@@ -3,8 +3,10 @@ import { Footer } from "@/components/Footer";
 import { SalesAssistant } from "@/components/sales/SalesAssistant";
 import { SupportChat } from "@/components/SupportChat";
 import { Check } from "lucide-react";
+import { useState } from "react";
 
 export const AppDownload = () => {
+  const [salesAssistantOpen, setSalesAssistantOpen] = useState(false);
   const plans = [
     {
       name: "Individual",
@@ -131,11 +133,21 @@ export const AppDownload = () => {
 
                 {/* CTA Button */}
                 <button
+                  onClick={() => setSalesAssistantOpen(true)}
                   className="w-full py-3 rounded-full font-semibold transition-all hover:bg-white/10"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
-                    color: 'white'
+                    color: 'white',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.20)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.10)';
                   }}
                 >
                   {plan.cta}
@@ -148,7 +160,10 @@ export const AppDownload = () => {
       </main>
 
       <Footer />
-      <SalesAssistant />
+      <SalesAssistant 
+        externalOpen={salesAssistantOpen}
+        onExternalClose={() => setSalesAssistantOpen(false)}
+      />
       <SupportChat />
     </div>
   );

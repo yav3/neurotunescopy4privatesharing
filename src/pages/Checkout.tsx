@@ -3,10 +3,13 @@ import { Footer } from "@/components/Footer";
 import { useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const Checkout = () => {
   const [searchParams] = useSearchParams();
   const plan = searchParams.get('plan') || 'lovable';
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const planDetails = {
     lovable: {
@@ -24,6 +27,17 @@ export const Checkout = () => {
   };
 
   const currentPlan = planDetails[plan as keyof typeof planDetails] || planDetails.lovable;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    toast.success("Request submitted successfully! Our team will contact you within 24 hours.");
+    setIsSubmitting(false);
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
@@ -97,7 +111,7 @@ export const Checkout = () => {
             >
               <h2 className="text-2xl font-light text-white mb-6">Contact Information</h2>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label className="block text-sm text-neutral-300 mb-2">Company Name</label>
                   <input
@@ -166,14 +180,15 @@ export const Checkout = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full font-semibold transition-all hover:scale-[1.02]"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-full font-semibold transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   style={{
                     background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.9), rgba(37, 99, 235, 0.9))',
                     boxShadow: '0 0 30px rgba(6, 182, 212, 0.4)',
                     color: 'white'
                   }}
                 >
-                  Submit Request
+                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
                 </button>
 
                 <p className="text-xs text-center text-neutral-500">

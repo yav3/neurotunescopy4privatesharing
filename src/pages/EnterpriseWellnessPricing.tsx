@@ -1,8 +1,12 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { Check } from "lucide-react";
+import { useState } from "react";
+import { FooterContactHandler } from "@/components/FooterContactHandler";
 
 export const EnterpriseWellnessPricing = () => {
+  const [contactOpen, setContactOpen] = useState(false);
+  const [interestType, setInterestType] = useState("");
   const plans = [
     {
       name: "Small Business",
@@ -111,7 +115,11 @@ export const EnterpriseWellnessPricing = () => {
                 </ul>
 
                 <button 
-                  className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all"
+                  onClick={() => {
+                    setInterestType(`Enterprise Wellness - ${plan.name} Plan`);
+                    setContactOpen(true);
+                  }}
+                  className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all cursor-pointer"
                   style={{
                     background: plan.highlighted
                       ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
@@ -145,7 +153,11 @@ export const EnterpriseWellnessPricing = () => {
               For organizations with unique requirements or larger deployments, we offer customized enterprise packages with flexible pricing and dedicated support.
             </p>
             <button
-              className="px-8 py-3 rounded-full text-sm font-medium transition-all"
+              onClick={() => {
+                setInterestType("Enterprise Wellness - Custom Solution");
+                setContactOpen(true);
+              }}
+              className="px-8 py-3 rounded-full text-sm font-medium transition-all cursor-pointer hover:bg-white/10"
               style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 border: '1px solid rgba(255, 255, 255, 0.10)',
@@ -159,6 +171,11 @@ export const EnterpriseWellnessPricing = () => {
       </main>
 
       <Footer />
+      <FooterContactHandler
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+        interestType={interestType}
+      />
     </div>
   );
 };

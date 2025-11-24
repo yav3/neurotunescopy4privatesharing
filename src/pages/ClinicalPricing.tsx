@@ -1,8 +1,12 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { Check } from "lucide-react";
+import { useState } from "react";
+import { FooterContactHandler } from "@/components/FooterContactHandler";
 
 export const ClinicalPricing = () => {
+  const [contactOpen, setContactOpen] = useState(false);
+  const [interestType, setInterestType] = useState("");
   const plans = [
     {
       name: "Clinical",
@@ -111,7 +115,11 @@ export const ClinicalPricing = () => {
                 </ul>
 
                 <button 
-                  className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all"
+                  onClick={() => {
+                    setInterestType(`Clinical - ${plan.name} Plan`);
+                    setContactOpen(true);
+                  }}
+                  className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all cursor-pointer"
                   style={{
                     background: plan.highlighted
                       ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
@@ -131,6 +139,11 @@ export const ClinicalPricing = () => {
       </main>
 
       <Footer />
+      <FooterContactHandler
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+        interestType={interestType}
+      />
     </div>
   );
 };
