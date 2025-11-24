@@ -198,6 +198,15 @@ const CURATED_PLAYLIST = [
     artist: 'DJ CHRIS',
     name: 'Chef de Voce Um Hino',
     estimatedBPM: 128
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/reggaeton%20meets%20tropical%20house%20dj%20elissa%20(3).mp3',
+    videoPath: '/videos/landing-04.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'House/Reggaeton',
+    artist: 'DJ Chris & Yasmine',
+    name: 'Reggaeton Meets Tropical House',
+    estimatedBPM: 118
   }
 ];
 
