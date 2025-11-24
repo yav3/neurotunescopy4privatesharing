@@ -74,6 +74,9 @@ export const LandingPageControls = ({
             {currentTrack?.therapeuticGoal || 'Loading...'}, {currentTrack?.genre || ''}
           </div>
           <div className="text-sm text-white font-normal truncate">
+            {currentTrack?.name || ''}
+          </div>
+          <div className="text-xs text-white/70 font-light truncate">
             {currentTrack?.artist || ''}
           </div>
         </div>
