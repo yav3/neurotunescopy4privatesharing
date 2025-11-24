@@ -4,7 +4,6 @@ import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { SupportChat } from '@/components/SupportChat';
-import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
 

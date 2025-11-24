@@ -362,7 +362,12 @@ export const LandingPagePlayer = ({
         playsInline
         preload="auto"
         muted
+        loop
         className="fixed inset-0 w-full h-full object-cover z-0"
+        onLoadedData={() => console.log('🎬 Video loaded and ready')}
+        onPlay={() => console.log('🎬 Video started playing')}
+        onPause={() => console.log('🎬 Video paused')}
+        onError={(e) => console.error('🎬 Video error:', e)}
       />
       <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" muted={false} />
       <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" muted={false} />
