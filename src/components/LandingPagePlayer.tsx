@@ -76,8 +76,8 @@ const CURATED_PLAYLIST = [
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
     videoPath: '/videos/landing-06.mp4',
-    therapeuticGoal: 'Sleep Enhancement',
-    genre: 'Ambient',
+    therapeuticGoal: 'Deep Rest',
+    genre: 'Classical',
     artist: 'Yasmine',
     name: 'Quietude Nocturne',
     estimatedBPM: 60
