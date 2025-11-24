@@ -232,7 +232,7 @@ export const FullPagePlayer = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex flex-col justify-center overflow-hidden"
+      className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex flex-col overflow-y-auto"
       onClick={(e) => {
         // Allow closing by clicking the background (but not the content area)
         if (e.target === e.currentTarget) {
@@ -274,7 +274,7 @@ export const FullPagePlayer = () => {
 
       {/* Player content - properly sized container */}
       <div 
-        className="relative z-10 w-full max-w-md mx-auto px-6 py-6 h-full flex flex-col justify-center"
+        className="relative z-10 w-full max-w-md mx-auto px-6 py-20 min-h-full flex flex-col justify-center"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Album artwork with Glass Morphism - optimized size */}
