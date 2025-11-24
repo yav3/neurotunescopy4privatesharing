@@ -20,7 +20,13 @@ export const NavigationHeader = () => {
         </Link>
 
         {/* Right: CTAs */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          <Link 
+            to="/products" 
+            className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
+          >
+            Subscribe
+          </Link>
           <Link 
             to="/auth" 
             className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-200 text-sm"
@@ -41,21 +47,29 @@ export const NavigationHeader = () => {
           </span>
         </Link>
 
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 flex-shrink-0"
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <X className="w-5 h-5 text-white/80" />
-          ) : (
-            <div className="flex flex-col gap-1.5 w-5">
-              <div className="w-full h-0.5 bg-white/80" />
-              <div className="w-full h-0.5 bg-white/80" />
-              <div className="w-full h-0.5 bg-white/80" />
-            </div>
-          )}
-        </button>
+        <div className="flex items-center gap-3">
+          <Link 
+            to="/products" 
+            className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
+          >
+            Subscribe
+          </Link>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 flex-shrink-0"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 text-white/80" />
+            ) : (
+              <div className="flex flex-col gap-1.5 w-5">
+                <div className="w-full h-0.5 bg-white/80" />
+                <div className="w-full h-0.5 bg-white/80" />
+                <div className="w-full h-0.5 bg-white/80" />
+              </div>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Menu */}
