@@ -121,7 +121,7 @@ export const Footer = () => {
           <div className="pt-4 border-t border-white/8">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <p className="text-[10px] text-white/30 text-center sm:text-left">
-                © {new Date().getFullYear()} NeuroPositive Tech, Inc.
+                © 2025 Neuralpositive, all rights reserved, content copyrighted and patented
               </p>
               <a 
                 href="https://linkedin.com/company/neuralpositive" 
