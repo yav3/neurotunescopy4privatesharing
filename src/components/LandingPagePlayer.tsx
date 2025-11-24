@@ -41,9 +41,9 @@ const CURATED_PLAYLIST = [
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
     videoFilename: '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4',
     therapeuticGoal: 'Mood Boost',
-    genre: 'Country',
+    genre: 'House',
     artist: 'Van Wild',
-    name: 'Cross The Line House Mix',
+    name: 'Na Na Oohhh Cross The Line House Mix',
     estimatedBPM: 80
   },
   {
