@@ -130,7 +130,7 @@ export const BackgroundVideoCarousel = ({
     }
   }, [playbackRate]);
 
-  // Ensure video plays continuously
+  // Ensure video plays continuously - only reload when video source changes
   useEffect(() => {
     if (!currentVideo || !videoRef.current) return;
 
@@ -165,7 +165,7 @@ export const BackgroundVideoCarousel = ({
     return () => {
       video.removeEventListener('loadeddata', playMedia);
     };
-  }, [currentVideo, playbackRate]);
+  }, [currentVideo]); // Only depend on currentVideo, not playbackRate
 
   if (!currentVideo) {
     return (
