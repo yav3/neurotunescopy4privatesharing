@@ -110,10 +110,8 @@ export const LandingPagePlayer = ({
   
   const audioRef1 = useRef<HTMLAudioElement>(null);
   const audioRef2 = useRef<HTMLAudioElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeAudioRef, setActiveAudioRef] = useState<1 | 2>(1);
   const trackTimerRef = useRef<NodeJS.Timeout>();
-  const syncFrameRef = useRef<number>();
 
   // Expose the currently active audio element globally so the video layer can sync to it
   useEffect(() => {
@@ -169,36 +167,27 @@ export const LandingPagePlayer = ({
     }
 
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    
-    // Guard: Don't proceed if current audio isn't actually playing
-    if (!currentAudio || currentAudio.paused || !currentAudio.src) {
-      console.log('❌ Current audio not ready, skipping track advance');
-      return;
-    }
 
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
     const nextVideo = videos[nextIndex];
     const nextVideoIndex = nextIndex;
     
-    console.log(`🔄 Playing next track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
-    console.log(`🎬 Switching to tethered video [${nextVideoIndex + 1}/${videos.length}]`);
+    console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
+    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}]`);
+    console.log(`🎵 Current track was: ${tracks[currentTrackIndex]?.name}`);
+    
     
     const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
-    const video = videoRef.current;
 
-    if (!nextAudio || !video) {
-      console.error('❌ Next audio ref or video ref is null');
+    if (!nextAudio) {
+      console.error('❌ Next audio ref is null');
       return;
     }
 
-    // Switch video
-    video.src = nextVideo.src;
-    video.muted = false;
-    video.volume = 0;
+    // Update video via callback (BackgroundVideoCarousel handles actual video switching)
+    onVideoChange(nextVideoIndex);
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
-    video.playbackRate = playbackRate;
-    video.play().catch(console.error);
     onVideoPlaybackRateChange(playbackRate);
     console.log('🎬 Video playback rate:', playbackRate);
 
@@ -257,33 +246,9 @@ export const LandingPagePlayer = ({
     }
   };
 
-  // Sync audio and video playback (only when actually playing)
-  useEffect(() => {
-    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    const video = videoRef.current;
-    
-    if (!currentAudio || !video || !isPlaying) return;
-
-    // Guard: Only sync if audio is actually playing
-    if (currentAudio.paused || !currentAudio.src) return;
-
-    const syncLoop = () => {
-      if (isPlaying && !currentAudio.paused && Math.abs(video.currentTime - currentAudio.currentTime) > 0.05) {
-        video.currentTime = currentAudio.currentTime;
-      }
-      syncFrameRef.current = requestAnimationFrame(syncLoop);
-    };
-
-    syncLoop();
-    return () => {
-      if (syncFrameRef.current) cancelAnimationFrame(syncFrameRef.current);
-    };
-  }, [isPlaying, activeAudioRef]);
-
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    const video = videoRef.current;
     
     // Guard: Don't attempt playback if tracks not loaded yet
     if (tracks.length === 0 || videos.length === 0) {
@@ -296,31 +261,24 @@ export const LandingPagePlayer = ({
         // First play - set up audio and video
         const firstTrack = tracks[0];
         const firstVideo = videos[0];
-        if (currentAudio && video && firstVideo) {
+        if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // CRITICAL: Set muted states BEFORE setting src
+          // Set up audio
           currentAudio.muted = false;
-          video.muted = false; // Unmute video to unlock audio context
-          
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          video.src = firstVideo.src;
-          video.volume = 0; // Video audio at 0, actual audio from audio element
-          video.preload = 'auto';
-          
+          // Trigger video via callback
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
-          video.playbackRate = playbackRate;
           onVideoPlaybackRateChange(playbackRate);
+          onVideoChange(0);
           
-          // Attempt to play both - WAIT for success before scheduling next track
+          // Attempt to play audio
           const attemptPlay = async () => {
             try {
-              await video.play();
-              console.log('✅ Video playing');
               await currentAudio.play();
               console.log('✅ Audio playing successfully');
               
@@ -337,7 +295,6 @@ export const LandingPagePlayer = ({
               // Retry after a short delay
               setTimeout(async () => {
                 try {
-                  await video.play();
                   await currentAudio.play();
                   console.log('✅ Playing after retry');
                   
@@ -360,7 +317,6 @@ export const LandingPagePlayer = ({
       } else {
         // Resume playback
         console.log('▶️ Resuming playback...');
-        video?.play().catch(console.error);
         currentAudio?.play()
           .then(() => {
             console.log('✅ Audio resumed successfully');
@@ -379,7 +335,6 @@ export const LandingPagePlayer = ({
       }
     } else {
       console.log('⏸️ Pausing playback...');
-      video?.pause();
       currentAudio?.pause();
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
@@ -406,27 +361,14 @@ export const LandingPagePlayer = ({
   useEffect(() => {
     return () => {
       if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-      if (syncFrameRef.current) cancelAnimationFrame(syncFrameRef.current);
       audioRef1.current?.pause();
       audioRef2.current?.pause();
-      videoRef.current?.pause();
       (window as any).__landingActiveAudio = null;
     };
   }, []);
 
   return (
     <>
-      <video
-        ref={videoRef}
-        playsInline
-        preload="auto"
-        loop
-        className="fixed inset-0 w-full h-full object-cover z-0"
-        onLoadedData={() => console.log('🎬 Video loaded and ready')}
-        onPlay={() => console.log('🎬 Video started playing')}
-        onPause={() => console.log('🎬 Video paused')}
-        onError={(e) => console.error('🎬 Video error:', e)}
-      />
       <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" />
       <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" />
     </>
