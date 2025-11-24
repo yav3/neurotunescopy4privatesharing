@@ -225,6 +225,15 @@ const CURATED_PLAYLIST = [
     artist: 'DJ Chris',
     name: 'Mami Maybe',
     estimatedBPM: 122
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
+    videoPath: '/videos/landing-07.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Pop',
+    artist: 'Van Wild',
+    name: 'Deja Vu',
+    estimatedBPM: 112
   }
 ];
 
