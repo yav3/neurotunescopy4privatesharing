@@ -215,8 +215,10 @@ const AppContent = () => {
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
       
-      {/* Global Music Players - Hide on landing page to avoid conflicts with LandingPagePlayer */}
-      {location.pathname !== '/' && (playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />)}
+      {/* Global Music Players - COMPLETELY HIDE on landing page to prevent conflicts with LandingPagePlayer */}
+      {location.pathname !== '/' && location.pathname !== '/landing' && (
+        playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />
+      )}
       
       <DevDebugPanel />
     </div>

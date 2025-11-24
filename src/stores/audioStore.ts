@@ -316,9 +316,15 @@ export const useAudioStore = create<AudioState>((set, get) => {
     initTherapeuticAudio();
   }
   
-  // Force audio element creation on store initialization
-  console.log('🎵 Audio store initializing - creating therapeutic audio element...');
-  const initialAudio = ensureAudioElement();
+  // Force audio element creation on store initialization - but NOT on landing page
+  console.log('🎵 Audio store initializing - checking if we should create audio element...');
+  const isLandingPage = typeof window !== 'undefined' && window.location.pathname === '/';
+  
+  if (!isLandingPage) {
+    const initialAudio = ensureAudioElement();
+  } else {
+    console.log('🎵 Skipping global audio element creation on landing page');
+  }
   
   // Sync initial state with audio element
   setTimeout(() => {

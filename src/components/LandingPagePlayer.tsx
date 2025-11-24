@@ -234,11 +234,8 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          // Load the audio first
-          currentAudio.load();
-          
-          // Play immediately after loading
-          currentAudio.addEventListener('canplaythrough', () => {
+          // Attempt to play immediately
+          const attemptPlay = () => {
             const playPromise = currentAudio.play();
             if (playPromise !== undefined) {
               playPromise
@@ -247,11 +244,25 @@ export const LandingPagePlayer = ({
                   onPlaybackStateChange(true);
                 })
                 .catch(err => {
-                  console.error('❌ Audio play failed:', err);
-                  onPlaybackStateChange(false);
+                  console.error('❌ Audio play failed:', err.name);
+                  // Retry after a short delay
+                  setTimeout(() => {
+                    currentAudio.play()
+                      .then(() => {
+                        console.log('✅ Audio playing after retry');
+                        onPlaybackStateChange(true);
+                      })
+                      .catch(e => {
+                        console.error('❌ Audio retry failed:', e);
+                        onPlaybackStateChange(false);
+                      });
+                  }, 100);
                 });
             }
-          }, { once: true });
+          };
+          
+          // Try to play immediately
+          attemptPlay();
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
