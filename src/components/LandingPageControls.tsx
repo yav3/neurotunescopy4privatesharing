@@ -31,8 +31,8 @@ export const LandingPageControls = ({
     <motion.div
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed bottom-36 left-1/2 -translate-x-1/2 z-50"
+      transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
+      className="fixed bottom-36 left-1/2 -translate-x-1/2 z-[60]"
     >
       <div 
         className="flex items-center gap-4 px-6 py-3 rounded-full backdrop-blur-2xl"
