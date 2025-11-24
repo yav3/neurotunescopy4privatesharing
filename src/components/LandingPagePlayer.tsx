@@ -96,8 +96,10 @@ export const LandingPagePlayer = ({
   
   const audioRef1 = useRef<HTMLAudioElement>(null);
   const audioRef2 = useRef<HTMLAudioElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [activeAudioRef, setActiveAudioRef] = useState<1 | 2>(1);
   const trackTimerRef = useRef<NodeJS.Timeout>();
+  const syncFrameRef = useRef<number>();
 
   // Fetch media on mount
   useEffect(() => {
@@ -149,18 +151,29 @@ export const LandingPagePlayer = ({
 
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
-    const nextVideoIndex = nextIndex; // Video index matches track index (tethered)
+    const nextVideo = videos[nextIndex];
+    const nextVideoIndex = nextIndex;
     
     console.log(`🔄 Playing next track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
     console.log(`🎬 Switching to tethered video [${nextVideoIndex + 1}/${videos.length}]`);
     
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
+    const video = videoRef.current;
 
-    if (!nextAudio) {
-      console.error('❌ Next audio ref is null');
+    if (!nextAudio || !video) {
+      console.error('❌ Next audio ref or video ref is null');
       return;
     }
+
+    // Switch video
+    video.src = nextVideo.src;
+    video.muted = true;
+    const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
+    video.playbackRate = playbackRate;
+    video.play().catch(console.error);
+    onVideoPlaybackRateChange(playbackRate);
+    console.log('🎬 Video playback rate:', playbackRate);
 
     // Prepare next track
     nextAudio.src = nextTrack.src;
@@ -208,11 +221,6 @@ export const LandingPagePlayer = ({
     onCurrentTrackChange(nextTrack);
     onVideoChange(nextVideoIndex);
     console.log('✅ State updated, active audio:', activeAudioRef === 1 ? 2 : 1);
-    
-    // Update video playback rate
-    const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
-    onVideoPlaybackRateChange(playbackRate);
-    console.log('🎬 Video playback rate:', playbackRate);
 
     // Schedule next track
     if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
@@ -220,15 +228,37 @@ export const LandingPagePlayer = ({
     console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
   };
 
+  // Sync audio and video playback
+  useEffect(() => {
+    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    const video = videoRef.current;
+    
+    if (!currentAudio || !video) return;
+
+    const syncLoop = () => {
+      if (isPlaying && Math.abs(video.currentTime - currentAudio.currentTime) > 0.05) {
+        video.currentTime = currentAudio.currentTime;
+      }
+      syncFrameRef.current = requestAnimationFrame(syncLoop);
+    };
+
+    syncLoop();
+    return () => {
+      if (syncFrameRef.current) cancelAnimationFrame(syncFrameRef.current);
+    };
+  }, [isPlaying, activeAudioRef]);
+
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    const video = videoRef.current;
     
     if (isPlaying && tracks.length > 0) {
       if (!currentAudio?.src) {
-        // First play - set up audio
+        // First play - set up audio and video
         const firstTrack = tracks[0];
-        if (currentAudio) {
+        const firstVideo = videos[0];
+        if (currentAudio && video && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           currentAudio.src = firstTrack.src;
           currentAudio.muted = false;
@@ -236,38 +266,40 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          // Attempt to play immediately
-          const attemptPlay = () => {
-            const playPromise = currentAudio.play();
-            if (playPromise !== undefined) {
-              playPromise
-                .then(() => {
-                  console.log('✅ Audio playing successfully');
+          video.src = firstVideo.src;
+          video.muted = true; // Video is always muted, audio comes from audio element
+          video.preload = 'auto';
+          
+          const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
+          video.playbackRate = playbackRate;
+          onVideoPlaybackRateChange(playbackRate);
+          
+          // Attempt to play both
+          const attemptPlay = async () => {
+            try {
+              await video.play();
+              console.log('✅ Video playing');
+              await currentAudio.play();
+              console.log('✅ Audio playing successfully');
+              onPlaybackStateChange(true);
+            } catch (err) {
+              console.error('❌ Play failed:', err);
+              // Retry after a short delay
+              setTimeout(async () => {
+                try {
+                  await video.play();
+                  await currentAudio.play();
+                  console.log('✅ Playing after retry');
                   onPlaybackStateChange(true);
-                })
-                .catch(err => {
-                  console.error('❌ Audio play failed:', err.name);
-                  // Retry after a short delay
-                  setTimeout(() => {
-                    currentAudio.play()
-                      .then(() => {
-                        console.log('✅ Audio playing after retry');
-                        onPlaybackStateChange(true);
-                      })
-                      .catch(e => {
-                        console.error('❌ Audio retry failed:', e);
-                        onPlaybackStateChange(false);
-                      });
-                  }, 100);
-                });
+                } catch (e) {
+                  console.error('❌ Retry failed:', e);
+                  onPlaybackStateChange(false);
+                }
+              }, 100);
             }
           };
           
-          // Try to play immediately
           attemptPlay();
-          
-          const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
-          onVideoPlaybackRateChange(playbackRate);
           onCurrentTrackChange(firstTrack);
           console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
         }
@@ -277,27 +309,26 @@ export const LandingPagePlayer = ({
       } else {
         // Resume playback
         console.log('▶️ Resuming playback...');
-        const playPromise = currentAudio?.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log('✅ Audio resumed successfully');
-              onPlaybackStateChange(true);
-            })
-            .catch(err => {
-              console.error('❌ Audio resume failed:', err);
-              onPlaybackStateChange(false);
-            });
-        }
+        video?.play().catch(console.error);
+        currentAudio?.play()
+          .then(() => {
+            console.log('✅ Audio resumed successfully');
+            onPlaybackStateChange(true);
+          })
+          .catch(err => {
+            console.error('❌ Audio resume failed:', err);
+            onPlaybackStateChange(false);
+          });
       }
     } else if (!isPlaying) {
       console.log('⏸️ Pausing playback...');
+      video?.pause();
       currentAudio?.pause();
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
       }
     }
-  }, [isPlaying, tracks, isMuted]);
+  }, [isPlaying, tracks, videos, isMuted]);
 
   // Handle mute
   useEffect(() => {
@@ -317,13 +348,22 @@ export const LandingPagePlayer = ({
   useEffect(() => {
     return () => {
       if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
+      if (syncFrameRef.current) cancelAnimationFrame(syncFrameRef.current);
       audioRef1.current?.pause();
       audioRef2.current?.pause();
+      videoRef.current?.pause();
     };
   }, []);
 
   return (
     <>
+      <video
+        ref={videoRef}
+        playsInline
+        preload="auto"
+        muted
+        className="fixed inset-0 w-full h-full object-cover z-0"
+      />
       <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" muted={false} />
       <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" muted={false} />
     </>
