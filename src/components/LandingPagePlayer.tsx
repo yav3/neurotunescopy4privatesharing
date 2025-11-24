@@ -153,10 +153,10 @@ export const LandingPagePlayer = ({
     fetchMedia();
   }, []);
 
-  // Calculate video playback rate from BPM (very slow for calm, moderate for energetic: 0.4x-0.9x)
+  // Calculate video playback rate from BPM (very slow for calm, fast for energetic: 0.4x-1.3x)
   const getPlaybackRate = (bpm: number): number => {
     const normalizedBPM = Math.max(60, Math.min(120, bpm));
-    return 0.4 + ((normalizedBPM - 60) / 60) * 0.5;
+    return 0.4 + ((normalizedBPM - 60) / 60) * 0.9;
   };
 
   // Start next track with crossfade - each track tethered to its specific video
