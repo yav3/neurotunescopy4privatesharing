@@ -376,10 +376,14 @@ export const LandingPagePlayer = ({
   // Skip to next track
   useEffect(() => {
     (window as any).__skipLandingTrack = () => {
-      if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
+      console.log('⏭️ Skip button clicked');
+      if (trackTimerRef.current) {
+        clearTimeout(trackTimerRef.current);
+        trackTimerRef.current = undefined;
+      }
       playNextTrack();
     };
-  }, [currentTrackIndex, tracks, videos, activeAudioRef]);
+  }, [playNextTrack]);
 
   // Cleanup
   useEffect(() => {
