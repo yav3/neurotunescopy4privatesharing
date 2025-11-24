@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AudioTrack {
@@ -178,7 +178,7 @@ export const LandingPagePlayer = ({
   };
 
   // Start next track with crossfade - each track tethered to its specific video
-  const playNextTrack = () => {
+  const playNextTrack = useCallback(() => {
     console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length);
     
     if (tracks.length === 0) {
@@ -276,7 +276,7 @@ export const LandingPagePlayer = ({
     } else {
       console.log('⚠️ Not scheduling next track because isPlaying is false');
     }
-  };
+  }, [isPlaying, tracks, videos, currentTrackIndex, activeAudioRef, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
