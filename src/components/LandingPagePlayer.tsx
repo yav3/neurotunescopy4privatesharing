@@ -180,6 +180,24 @@ const CURATED_PLAYLIST = [
     artist: 'The Scientists',
     name: 'The Seventh Wonder',
     estimatedBPM: 72
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
+    videoPath: '/videos/landing-02.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Pop',
+    artist: 'Van Wild',
+    name: 'We Were Born to Come Alive',
+    estimatedBPM: 124
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Cat%20Daddy%20HOUSE%20MIX%202.mp3',
+    videoPath: '/videos/landing-03.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Tropical House',
+    artist: 'Yasmine',
+    name: 'Cat Daddy',
+    estimatedBPM: 120
   }
 ];
 
