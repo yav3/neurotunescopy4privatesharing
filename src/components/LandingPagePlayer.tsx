@@ -26,47 +26,61 @@ interface LandingPagePlayerProps {
 const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
 
-// Curated playlist with specific tracks tethered to specific videos
+// Direct URLs for audio tracks
 const CURATED_PLAYLIST = [
   {
-    filename: 'The Spartan New Age.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3',
     videoFilename: '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4',
     therapeuticGoal: 'Focus Enhancement Goal',
     genre: 'New Age',
     artist: 'The Scientists',
+    name: 'The Spartan Age',
     estimatedBPM: 75
   },
   {
-    filename: 'Can we cross the line small room Radio.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
     videoFilename: '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
+    name: 'Cross The Line House Mix',
     estimatedBPM: 80
   },
   {
-    filename: 'Expanding universe instrumental.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Alternative%20frequencies%20expanding%20universe%20instrumental.mp3',
     videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
     therapeuticGoal: 'Relaxation Goal',
     genre: 'Crossover Classical',
     artist: 'Yasmine',
+    name: 'Expanding Universe',
     estimatedBPM: 65
   },
   {
-    filename: 'venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
     videoFilename: '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',
     therapeuticGoal: 'Pain Reduction',
     genre: 'Serene Samba',
     artist: 'Yasmine',
+    name: 'Venha ao Meu Jardim',
     estimatedBPM: 90
   },
   {
-    filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/_DJ%20CHRIS%20Versus%20DJ%20EDward%20VOL%204%20HOUSE%20WORLD%20.mp3',
     videoFilename: '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',
     therapeuticGoal: 'Energy Boost Goal',
     genre: 'Tropical House',
     artist: 'DJ CHRIS Versus DJ EDward',
+    name: 'House World',
     estimatedBPM: 120
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
+    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
+    therapeuticGoal: 'Sleep Enhancement',
+    genre: 'Ambient',
+    artist: 'Yasmine',
+    name: 'Quietude Nocturne',
+    estimatedBPM: 60
   }
 ];
 
@@ -110,14 +124,13 @@ export const LandingPagePlayer = ({
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
-      // Build curated tracks with tethered videos from playlist
+      // Build curated tracks with direct URLs
       const audioTracks = CURATED_PLAYLIST.map(track => {
-        const audioSrc = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(track.filename).data.publicUrl;
         const videoSrc = supabase.storage.from('landingpage').getPublicUrl(track.videoFilename).data.publicUrl;
-        console.log(`🎵 Loading track: ${track.filename} → 🎬 ${track.videoFilename}`);
+        console.log(`🎵 Loading track: ${track.name} → 🎬 ${track.videoFilename}`);
         return {
-          src: audioSrc,
-          name: track.filename.replace(/\.(mp3|MP3)$/, '').replace(/_/g, ' '),
+          src: track.audioUrl,
+          name: track.name,
           genre: track.genre,
           artist: track.artist,
           therapeuticGoal: track.therapeuticGoal,
