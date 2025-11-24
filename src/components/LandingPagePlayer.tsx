@@ -234,6 +234,15 @@ const CURATED_PLAYLIST = [
     artist: 'Van Wild',
     name: 'Deja Vu',
     estimatedBPM: 112
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Dawned%20A%20New%20Age%20Movement%202%20(1).mp3',
+    videoPath: '/videos/landing-08.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'Dawned A New Age Movement 2',
+    estimatedBPM: 70
   }
 ];
 
