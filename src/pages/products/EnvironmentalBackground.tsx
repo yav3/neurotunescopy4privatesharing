@@ -2,9 +2,10 @@ import { useState } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud } from "lucide-react";
+import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud, ArrowLeft } from "lucide-react";
 import obsidianLiquid from '@/assets/obsidian-liquid-1.png';
 import { FooterContactHandler } from "@/components/FooterContactHandler";
+import { Link } from "react-router-dom";
 
 export default function EnvironmentalBackground() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -90,6 +91,19 @@ export default function EnvironmentalBackground() {
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
+          
+          {/* Back Button */}
+          <Link 
+            to="/products"
+            className="inline-flex items-center gap-2 mb-12 group"
+            style={{ color: 'rgba(255, 255, 255, 0.60)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.60)'}
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm">Back to Products</span>
+          </Link>
+          
           <div className="max-w-4xl">
             {/* Sound wave icon */}
             <div 

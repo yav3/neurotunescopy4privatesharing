@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
@@ -49,13 +50,71 @@ const Index = () => {
       {/* Single full-screen card */}
       <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-8">
         <div 
-          className="w-full h-full max-w-7xl backdrop-blur-3xl rounded-3xl"
+          className="w-full h-full max-w-7xl backdrop-blur-3xl rounded-3xl flex flex-col items-center justify-center p-8"
           style={{
             background: 'rgba(255, 255, 255, 0.05)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 255, 255, 0.06)',
           }}
         >
-          {/* Card content goes here */}
+          {/* Hero Content */}
+          <div className="text-center space-y-6 max-w-3xl">
+            <h1 
+              className="text-5xl md:text-6xl font-light tracking-tight"
+              style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+            >
+              Clinical-grade therapeutic music
+            </h1>
+            <p 
+              className="text-xl md:text-2xl font-light"
+              style={{ color: 'rgba(255, 255, 255, 0.70)' }}
+            >
+              Experience music designed to enhance focus, reduce anxiety, and improve well-being
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+              <Link
+                to="/products"
+                className="px-8 py-4 rounded-full font-medium transition-all text-base group"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.10))',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  color: 'rgba(255, 255, 255, 0.95)',
+                  boxShadow: '0 0 30px rgba(255, 255, 255, 0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.10))';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                }}
+              >
+                Explore Solutions
+              </Link>
+              
+              <Link
+                to="/app-download"
+                className="px-8 py-4 rounded-full font-medium transition-all text-base"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  color: 'rgba(255, 255, 255, 0.90)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                }}
+              >
+                Download App
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       

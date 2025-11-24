@@ -1,7 +1,8 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import { Check } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 
 export const EnterpriseWellnessPricing = () => {
@@ -52,6 +53,15 @@ export const EnterpriseWellnessPricing = () => {
       
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Back Button */}
+          <Link 
+            to="/products"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm">Back to Products</span>
+          </Link>
           
           {/* Hero */}
           <div className="text-center mb-12">

@@ -2,8 +2,9 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { SalesAssistant } from "@/components/sales/SalesAssistant";
 import { SupportChat } from "@/components/SupportChat";
-import { Check } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const AppDownload = () => {
   const [salesAssistantOpen, setSalesAssistantOpen] = useState(false);
@@ -63,6 +64,15 @@ export const AppDownload = () => {
       
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Back to Home Button */}
+          <Link 
+            to="/"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm">Back to Home</span>
+          </Link>
           
           {/* Hero */}
           <div className="text-center mb-12">
