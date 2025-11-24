@@ -95,29 +95,8 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     video.playbackRate = playbackRate || 1.0;
   }, [playbackRate]);
 
-  // Sync video time to the active audio element (gentle sync to avoid flickering)
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Use interval instead of requestAnimationFrame to reduce sync frequency
-    const syncInterval = setInterval(() => {
-      const audio = (window as any).__landingActiveAudio as
-        | HTMLAudioElement
-        | null;
-
-      if (audio && !audio.paused) {
-        const diff = Math.abs(video.currentTime - audio.currentTime);
-        // Only sync if drift is significant (300ms) to avoid visible flickering
-        if (diff > 0.3) {
-          video.currentTime = audio.currentTime;
-          console.log(`🎬 Video sync correction: ${diff.toFixed(2)}s drift`);
-        }
-      }
-    }, 500); // Check every 500ms instead of every frame
-
-    return () => clearInterval(syncInterval);
-  }, []);
+  // No time sync - let video play smoothly at its own pace
+  // The BPM-adjusted playback rate creates visual rhythm without forcing exact sync
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden">
