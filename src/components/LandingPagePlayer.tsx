@@ -161,8 +161,15 @@ export const LandingPagePlayer = ({
 
   // Start next track with crossfade - each track tethered to its specific video
   const playNextTrack = () => {
-    if (tracks.length === 0 || !isPlaying) {
-      console.log('❌ Cannot play next track: no tracks or not playing');
+    console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length);
+    
+    if (tracks.length === 0) {
+      console.log('❌ Cannot play next track: no tracks loaded');
+      return;
+    }
+    
+    if (!isPlaying) {
+      console.log('❌ Cannot play next track: isPlaying is false');
       return;
     }
 
@@ -217,6 +224,7 @@ export const LandingPagePlayer = ({
         if (step >= fadeSteps) {
           clearInterval(fadeTimer);
           if (currentAudio) {
+            console.log('⏸️ Pausing previous audio after crossfade');
             currentAudio.pause();
             currentAudio.src = '';
           }
@@ -236,10 +244,19 @@ export const LandingPagePlayer = ({
     console.log('✅ Sync complete - Track:', nextTrack.name, '| Video:', nextVideoIndex, '| Active audio:', activeAudioRef === 1 ? 2 : 1);
 
     // Schedule next track ONLY if still playing
-    if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
+    if (trackTimerRef.current) {
+      console.log('⏱️ Clearing existing timer');
+      clearTimeout(trackTimerRef.current);
+    }
+    
     if (isPlaying) {
-      trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
-      console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
+      console.log(`⏱️ Scheduling next track in ${TRACK_DURATION / 1000}s`);
+      trackTimerRef.current = setTimeout(() => {
+        console.log('⏰ Timer fired - calling playNextTrack');
+        playNextTrack();
+      }, TRACK_DURATION);
+    } else {
+      console.log('⚠️ Not scheduling next track because isPlaying is false');
     }
   };
 
@@ -281,8 +298,11 @@ export const LandingPagePlayer = ({
               
               // CRITICAL: Only schedule next track AFTER playback confirmed
               if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-              trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
-              console.log(`⏱️ Track will play for ${TRACK_DURATION / 1000}s`);
+              trackTimerRef.current = setTimeout(() => {
+                console.log('⏰ First track timer fired - calling playNextTrack');
+                playNextTrack();
+              }, TRACK_DURATION);
+              console.log(`⏱️ First track will play for ${TRACK_DURATION / 1000}s`);
               
               onPlaybackStateChange(true);
               onCurrentTrackChange(firstTrack);
@@ -297,7 +317,10 @@ export const LandingPagePlayer = ({
                   
                   // Schedule timer after successful retry
                   if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-                  trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+                  trackTimerRef.current = setTimeout(() => {
+                    console.log('⏰ First track timer fired (retry) - calling playNextTrack');
+                    playNextTrack();
+                  }, TRACK_DURATION);
                   
                   onPlaybackStateChange(true);
                   onCurrentTrackChange(firstTrack);
@@ -322,7 +345,11 @@ export const LandingPagePlayer = ({
             // Restart timer if not already running
             if (!trackTimerRef.current && isPlaying) {
               const timeLeft = (currentAudio?.duration || TRACK_DURATION / 1000) - (currentAudio?.currentTime || 0);
-              trackTimerRef.current = setTimeout(playNextTrack, timeLeft * 1000);
+              console.log(`⏱️ Restarting timer with ${timeLeft}s remaining`);
+              trackTimerRef.current = setTimeout(() => {
+                console.log('⏰ Resume timer fired - calling playNextTrack');
+                playNextTrack();
+              }, timeLeft * 1000);
             }
           })
           .catch(err => {
