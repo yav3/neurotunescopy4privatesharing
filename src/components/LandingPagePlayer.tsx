@@ -132,24 +132,35 @@ export const LandingPagePlayer = ({
 
   // Start next track with crossfade
   const playNextTrack = () => {
-    if (tracks.length === 0) return;
+    if (tracks.length === 0) {
+      console.log('❌ Cannot play next track: no tracks loaded');
+      return;
+    }
 
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
     const nextVideoIndex = (currentVideoIndex + 1) % videos.length;
     
+    console.log(`🔄 Playing next track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
+    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}]`);
+    
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
 
-    if (!nextAudio) return;
+    if (!nextAudio) {
+      console.error('❌ Next audio ref is null');
+      return;
+    }
 
     // Prepare next track
     nextAudio.src = nextTrack.src;
     nextAudio.volume = 0;
     nextAudio.load();
+    console.log('📥 Next track loaded:', nextTrack.src);
 
     // Start playing next track
     nextAudio.play().then(() => {
+      console.log('✅ Next track playing, starting crossfade');
       // Crossfade
       const fadeSteps = 20;
       const fadeInterval = CROSSFADE_DURATION / fadeSteps;
@@ -172,8 +183,11 @@ export const LandingPagePlayer = ({
             currentAudio.pause();
             currentAudio.src = '';
           }
+          console.log('✅ Crossfade complete');
         }
       }, fadeInterval);
+    }).catch(err => {
+      console.error('❌ Next track play failed:', err);
     });
 
     // Update state
@@ -182,14 +196,17 @@ export const LandingPagePlayer = ({
     setActiveAudioRef(activeAudioRef === 1 ? 2 : 1);
     onCurrentTrackChange(nextTrack);
     onVideoChange(nextVideoIndex);
+    console.log('✅ State updated, active audio:', activeAudioRef === 1 ? 2 : 1);
     
     // Update video playback rate
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     onVideoPlaybackRateChange(playbackRate);
+    console.log('🎬 Video playback rate:', playbackRate);
 
     // Schedule next track
     if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
     trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+    console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
   };
 
   // Handle play/pause
