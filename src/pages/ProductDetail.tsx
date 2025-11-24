@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import { NEUROTUNES_PRODUCTS } from '@/data/products';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
@@ -7,6 +7,7 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { ProductCarousel } from '@/components/products/ProductCarousel';
 import { RegistrationChatAssistant } from '@/components/registration/RegistrationChatAssistant';
 import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 import liquidGlassBg from '@/assets/liquid-glass-bg.png';
 import bgAbstract1 from '@/assets/bg-abstract-1.png';
 
@@ -39,6 +40,16 @@ export const ProductDetail = () => {
       {/* Hero */}
       <section className="relative z-10 py-20 px-6">
         <div className="max-w-5xl mx-auto">
+          
+          {/* Back Button */}
+          <Link 
+            to="/products"
+            className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm">Back to Products</span>
+          </Link>
+          
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

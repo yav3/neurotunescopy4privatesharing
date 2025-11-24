@@ -5,6 +5,8 @@ import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { useState } from 'react';
 import { FooterContactHandler } from '@/components/FooterContactHandler';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import chromeBg1 from '@/assets/chrome-bg-1.png';
 import chromeBg2 from '@/assets/chrome-bg-2.png';
 import chromeBg3 from '@/assets/chrome-bg-3.png';
@@ -48,6 +50,18 @@ export const ProductsOverview = () => {
       
       <section className="relative z-10 py-32 px-6">
         <div className="max-w-7xl mx-auto">
+          
+          {/* Back to Home Button */}
+          <Link 
+            to="/"
+            className="inline-flex items-center gap-2 mb-12 group"
+            style={{ color: 'rgba(228, 228, 228, 0.60)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.95)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.60)'}
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm">Back to Home</span>
+          </Link>
           
           {/* Header */}
           <div className="text-center mb-16">
