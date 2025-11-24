@@ -272,7 +272,13 @@ export const LandingPagePlayer = ({
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const video = videoRef.current;
     
-    if (isPlaying && tracks.length > 0) {
+    // Guard: Don't attempt playback if tracks not loaded yet
+    if (tracks.length === 0 || videos.length === 0) {
+      console.log('⏳ Waiting for media to load...');
+      return;
+    }
+    
+    if (isPlaying) {
       if (!currentAudio?.src) {
         // First play - set up audio and video
         const firstTrack = tracks[0];
@@ -358,7 +364,7 @@ export const LandingPagePlayer = ({
             onPlaybackStateChange(false);
           });
       }
-    } else if (!isPlaying) {
+    } else {
       console.log('⏸️ Pausing playback...');
       video?.pause();
       currentAudio?.pause();
