@@ -110,17 +110,8 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 88
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Ode%20to%20My%20Love%20americana.mp3',
-    videoPath: '/videos/landing-02.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Americana',
-    artist: 'Van Wild',
-    name: 'Ode to My Love',
-    estimatedBPM: 85
-  },
-  {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20prayer%20of%20the%20oud%20%20new%20age%20focus.mp3',
-    videoPath: '/videos/landing-03.mp4',
+    videoPath: '/videos/landing-02.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
