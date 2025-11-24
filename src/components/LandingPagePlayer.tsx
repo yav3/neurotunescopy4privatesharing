@@ -172,9 +172,10 @@ export const LandingPagePlayer = ({
     const nextTrack = tracks[nextIndex];
     const nextVideo = videos[nextIndex];
     const nextVideoIndex = nextIndex;
+    const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     
     console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
-    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}]`);
+    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}] at ${playbackRate}x speed`);
     console.log(`🎵 Current track was: ${tracks[currentTrackIndex]?.name}`);
     
     
@@ -185,11 +186,7 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // Update video via callback (BackgroundVideoCarousel handles actual video switching)
-    onVideoChange(nextVideoIndex);
-    const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
-    onVideoPlaybackRateChange(playbackRate);
-    console.log('🎬 Video playback rate:', playbackRate);
+    console.log('🎬 Preparing audio/video sync - Rate:', playbackRate, '| Track:', nextTrack.name, '| Video index:', nextVideoIndex);
 
     // Prepare next track
     nextAudio.src = nextTrack.src;
@@ -230,13 +227,13 @@ export const LandingPagePlayer = ({
       console.error('❌ Next track play failed:', err);
     });
 
-    // Update state
+    // Update state and video
     setCurrentTrackIndex(nextIndex);
-    setCurrentVideoIndex(nextVideoIndex);
     setActiveAudioRef(activeAudioRef === 1 ? 2 : 1);
     onCurrentTrackChange(nextTrack);
+    onVideoPlaybackRateChange(playbackRate);
     onVideoChange(nextVideoIndex);
-    console.log('✅ State updated, active audio:', activeAudioRef === 1 ? 2 : 1);
+    console.log('✅ Sync complete - Track:', nextTrack.name, '| Video:', nextVideoIndex, '| Active audio:', activeAudioRef === 1 ? 2 : 1);
 
     // Schedule next track ONLY if still playing
     if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
