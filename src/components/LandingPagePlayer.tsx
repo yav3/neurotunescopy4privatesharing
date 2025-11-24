@@ -124,10 +124,10 @@ export const LandingPagePlayer = ({
     fetchMedia();
   }, []);
 
-  // Calculate video playback rate from BPM (slower for calm, faster for energetic: 0.6x-1.2x)
+  // Calculate video playback rate from BPM (very slow for calm, moderate for energetic: 0.4x-0.9x)
   const getPlaybackRate = (bpm: number): number => {
     const normalizedBPM = Math.max(60, Math.min(120, bpm));
-    return 0.6 + ((normalizedBPM - 60) / 60) * 0.6;
+    return 0.4 + ((normalizedBPM - 60) / 60) * 0.5;
   };
 
   // Start next track with crossfade
@@ -221,27 +221,29 @@ export const LandingPagePlayer = ({
           console.log('🎵 Starting first playback:', firstTrack.src);
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
+          currentAudio.crossOrigin = 'anonymous';
           currentAudio.load();
           
-          // Add event listeners for debugging
-          currentAudio.addEventListener('canplay', () => console.log('✅ Audio can play'));
-          currentAudio.addEventListener('playing', () => console.log('✅ Audio is playing'));
-          currentAudio.addEventListener('error', (e) => console.error('❌ Audio error:', e));
+          // Wait for canplaythrough event before playing
+          const playAudio = () => {
+            currentAudio.play()
+              .then(() => {
+                console.log('✅ Audio playing successfully');
+                onPlaybackStateChange(true);
+              })
+              .catch(err => {
+                console.error('❌ Audio play failed:', err);
+                if (err.name === 'NotAllowedError') {
+                  console.log('🔒 Autoplay blocked - user needs to click play button');
+                }
+              });
+          };
           
-          currentAudio.play()
-            .then(() => {
-              console.log('✅ Audio playing successfully');
-              onPlaybackStateChange(true);
-            })
-            .catch(err => {
-              console.error('❌ Audio play failed:', err);
-              // Try to enable autoplay by user interaction
-              console.log('💡 Try clicking play button to enable audio');
-            });
+          currentAudio.addEventListener('canplaythrough', playAudio, { once: true });
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
-          console.log('🎬 Initial video playback rate:', playbackRate);
+          console.log('🎬 Initial video playback rate:', playbackRate, 'for BPM:', firstTrack.estimatedBPM);
         }
         
         trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
