@@ -207,6 +207,15 @@ const CURATED_PLAYLIST = [
     artist: 'DJ Chris & Yasmine',
     name: 'Reggaeton Meets Tropical House',
     estimatedBPM: 118
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Ondas%20No%20Mar%20reggaeton%20%20(1).mp3',
+    videoPath: '/videos/landing-05.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Pop/House',
+    artist: 'DJ CHRIS & Van Wild',
+    name: 'Ondas No Mar',
+    estimatedBPM: 116
   }
 ];
 
