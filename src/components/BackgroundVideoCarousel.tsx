@@ -3,11 +3,12 @@ import { supabase } from '@/integrations/supabase/client';
 
 // These must match the video filenames in CURATED_PLAYLIST from LandingPagePlayer
 const CURATED_VIDEO_FILES = [
-  '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4', // Spartan New Age
-  '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4', // Can we cross the line
-  '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',       // Expanding universe
-  '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',       // Samba / bossa
-  '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',       // DJ CHRIS vs EDward
+  '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4', // The Spartan Age
+  '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4', // Cross The Line
+  '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',       // Expanding Universe
+  '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',       // Venha ao Meu Jardim
+  '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',       // House World
+  '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',       // Quietude Nocturne (shares video with Expanding Universe)
 ];
 
 interface BackgroundVideoCarouselProps {
@@ -44,7 +45,10 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
       videoUrls.length;
     const nextSrc = videoUrls[safeIndex];
 
+    console.log(`🎬 Video index ${currentVideoIndex} → ${safeIndex}, URL: ${nextSrc.substring(nextSrc.lastIndexOf('/') + 1)}`);
+
     if (video.src !== nextSrc) {
+      console.log('🎬 Starting fade-to-black transition');
       // Fade to black
       setFadeOpacity(1);
       
@@ -60,6 +64,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
           }
         }
         
+        console.log('🎬 Video switched, fading back in');
         // Fade back in
         setTimeout(() => {
           setFadeOpacity(0);
