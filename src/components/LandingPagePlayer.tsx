@@ -30,7 +30,7 @@ const CROSSFADE_DURATION = 2000; // 2 seconds
 const CURATED_PLAYLIST = [
   {
     filename: 'The Spartan New Age.mp3',
-    videoFilename: 'video1.mp4', // Replace with actual video filename for this track
+    videoFilename: '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4',
     therapeuticGoal: 'Focus Enhancement Goal',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -38,7 +38,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'Can we cross the line small room Radio.mp3',
-    videoFilename: 'video2.mp4', // Replace with actual video filename for this track
+    videoFilename: '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
@@ -46,7 +46,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'Expanding universe instrumental.mp3',
-    videoFilename: 'video3.mp4', // Replace with actual video filename for this track
+    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
     therapeuticGoal: 'Relaxation Goal',
     genre: 'Crossover Classical',
     artist: 'Yasmine',
@@ -54,7 +54,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
-    videoFilename: 'video4.mp4', // Replace with actual video filename for this track
+    videoFilename: '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',
     therapeuticGoal: 'Pain Reduction',
     genre: 'Serene Samba',
     artist: 'Yasmine',
@@ -62,7 +62,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD.mp3',
-    videoFilename: 'video5.mp4', // Replace with actual video filename for this track
+    videoFilename: '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',
     therapeuticGoal: 'Energy Boost Goal',
     genre: 'Tropical House',
     artist: 'DJ CHRIS Versus DJ EDward',
