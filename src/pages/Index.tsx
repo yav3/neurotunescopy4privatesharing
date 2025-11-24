@@ -28,10 +28,9 @@ const Index = () => {
       {/* Single full-screen card */}
       <div className="relative z-10 flex-1 flex items-center justify-center px-4 py-8">
         <div 
-          className="w-full h-full max-w-7xl backdrop-blur-3xl rounded-3xl border"
+          className="w-full h-full max-w-7xl backdrop-blur-3xl rounded-3xl"
           style={{
             background: 'rgba(255, 255, 255, 0.05)',
-            borderColor: 'rgba(255, 255, 255, 0.10)',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 255, 255, 0.06)',
           }}
         >
