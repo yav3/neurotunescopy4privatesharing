@@ -31,7 +31,7 @@ const CURATED_PLAYLIST = [
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3',
     videoPath: '/videos/landing-01.mp4',
-    therapeuticGoal: 'Focus Enhancement Goal',
+    therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Spartan Age',
@@ -99,6 +99,69 @@ const CURATED_PLAYLIST = [
     artist: 'Yasmine',
     name: 'Tropicana Chill',
     estimatedBPM: 88
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Ode%20to%20My%20Love%20americana.mp3',
+    videoPath: '/videos/landing-01.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Americana',
+    artist: 'Van Wild',
+    name: 'Ode to My Love',
+    estimatedBPM: 85
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20prayer%20of%20the%20oud%20%20new%20age%20focus.mp3',
+    videoPath: '/videos/landing-02.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'The Prayer of the Oud',
+    estimatedBPM: 68
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Im%20on%20your%20team%20INDIE%20POP%20VERSION%203.mp3',
+    videoPath: '/videos/landing-03.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Indie Pop',
+    artist: 'Van Wild',
+    name: 'I\'m on Your Team',
+    estimatedBPM: 115
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/All%20I_ve%20ever%20wanted%20country%20Radio%20Mix%20for%20ML.mp3',
+    videoPath: '/videos/landing-04.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Country',
+    artist: 'Van Wild',
+    name: 'All I\'ve Ever Wanted',
+    estimatedBPM: 100
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Can%20we%20cross%20the%20line%20COUNTRY%20RADIO%20mix.mp3',
+    videoPath: '/videos/landing-05.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Country',
+    artist: 'Van Wild',
+    name: 'Can We Cross the Line',
+    estimatedBPM: 98
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Como%20con%20tu%20sombra%20samba%20bossa%20nova.mp3',
+    videoPath: '/videos/landing-06.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Serene Samba',
+    artist: 'Yasmine',
+    name: 'Como con Tu Sombra',
+    estimatedBPM: 87
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/hold%20on%20child%20EDM%20HIIT.mp3',
+    videoPath: '/videos/landing-07.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'EDM',
+    artist: 'Yasmine',
+    name: 'Hold on Child',
+    estimatedBPM: 135
   }
 ];
 
