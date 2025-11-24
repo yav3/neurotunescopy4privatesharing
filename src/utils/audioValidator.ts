@@ -12,8 +12,20 @@ export class AudioValidator {
     const errors: string[] = [];
     const warnings: string[] = [];
     
-    // Check for multiple audio elements
+    // Check for multiple audio elements (but ignore landing page's dual-audio system)
     const audioElements = document.querySelectorAll('audio');
+    const landingPageAudioCount = document.querySelectorAll('audio:not([id])').length;
+    
+    // If we're on landing page (multiple audio elements without IDs), skip validation
+    if (landingPageAudioCount >= 2) {
+      return {
+        isValid: true,
+        errors: [],
+        warnings: ['Landing page audio system detected - skipping validation'],
+        audioElement: null
+      };
+    }
+    
     if (audioElements.length === 0) {
       errors.push('No audio element found');
     } else if (audioElements.length > 1) {

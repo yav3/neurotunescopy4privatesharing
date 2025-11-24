@@ -150,8 +150,16 @@ export const LandingPagePlayer = ({
 
   // Start next track with crossfade - each track tethered to its specific video
   const playNextTrack = () => {
-    if (tracks.length === 0) {
-      console.log('❌ Cannot play next track: no tracks loaded');
+    if (tracks.length === 0 || !isPlaying) {
+      console.log('❌ Cannot play next track: no tracks or not playing');
+      return;
+    }
+
+    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    
+    // Guard: Don't proceed if current audio isn't actually playing
+    if (!currentAudio || currentAudio.paused || !currentAudio.src) {
+      console.log('❌ Current audio not ready, skipping track advance');
       return;
     }
 
@@ -163,7 +171,6 @@ export const LandingPagePlayer = ({
     console.log(`🔄 Playing next track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
     console.log(`🎬 Switching to tethered video [${nextVideoIndex + 1}/${videos.length}]`);
     
-    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
     const video = videoRef.current;
 
@@ -174,7 +181,8 @@ export const LandingPagePlayer = ({
 
     // Switch video
     video.src = nextVideo.src;
-    video.muted = true;
+    video.muted = false;
+    video.volume = 0;
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     video.playbackRate = playbackRate;
     video.play().catch(console.error);
@@ -228,21 +236,26 @@ export const LandingPagePlayer = ({
     onVideoChange(nextVideoIndex);
     console.log('✅ State updated, active audio:', activeAudioRef === 1 ? 2 : 1);
 
-    // Schedule next track
+    // Schedule next track ONLY if still playing
     if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-    trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
-    console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
+    if (isPlaying) {
+      trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+      console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
+    }
   };
 
-  // Sync audio and video playback
+  // Sync audio and video playback (only when actually playing)
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const video = videoRef.current;
     
-    if (!currentAudio || !video) return;
+    if (!currentAudio || !video || !isPlaying) return;
+
+    // Guard: Only sync if audio is actually playing
+    if (currentAudio.paused || !currentAudio.src) return;
 
     const syncLoop = () => {
-      if (isPlaying && Math.abs(video.currentTime - currentAudio.currentTime) > 0.05) {
+      if (isPlaying && !currentAudio.paused && Math.abs(video.currentTime - currentAudio.currentTime) > 0.05) {
         video.currentTime = currentAudio.currentTime;
       }
       syncFrameRef.current = requestAnimationFrame(syncLoop);
@@ -284,14 +297,22 @@ export const LandingPagePlayer = ({
           video.playbackRate = playbackRate;
           onVideoPlaybackRateChange(playbackRate);
           
-          // Attempt to play both
+          // Attempt to play both - WAIT for success before scheduling next track
           const attemptPlay = async () => {
             try {
               await video.play();
               console.log('✅ Video playing');
               await currentAudio.play();
               console.log('✅ Audio playing successfully');
+              
+              // CRITICAL: Only schedule next track AFTER playback confirmed
+              if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
+              trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+              console.log(`⏱️ Track will play for ${TRACK_DURATION / 1000}s`);
+              
               onPlaybackStateChange(true);
+              onCurrentTrackChange(firstTrack);
+              console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
             } catch (err) {
               console.error('❌ Play failed:', err);
               // Retry after a short delay
@@ -300,7 +321,13 @@ export const LandingPagePlayer = ({
                   await video.play();
                   await currentAudio.play();
                   console.log('✅ Playing after retry');
+                  
+                  // Schedule timer after successful retry
+                  if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
+                  trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+                  
                   onPlaybackStateChange(true);
+                  onCurrentTrackChange(firstTrack);
                 } catch (e) {
                   console.error('❌ Retry failed:', e);
                   onPlaybackStateChange(false);
@@ -310,12 +337,7 @@ export const LandingPagePlayer = ({
           };
           
           attemptPlay();
-          onCurrentTrackChange(firstTrack);
-          console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
         }
-        
-        trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
-        console.log(`⏱️ Track will play for ${TRACK_DURATION / 1000}s`);
       } else {
         // Resume playback
         console.log('▶️ Resuming playback...');
@@ -324,6 +346,12 @@ export const LandingPagePlayer = ({
           .then(() => {
             console.log('✅ Audio resumed successfully');
             onPlaybackStateChange(true);
+            
+            // Restart timer if not already running
+            if (!trackTimerRef.current && isPlaying) {
+              const timeLeft = (currentAudio?.duration || TRACK_DURATION / 1000) - (currentAudio?.currentTime || 0);
+              trackTimerRef.current = setTimeout(playNextTrack, timeLeft * 1000);
+            }
           })
           .catch(err => {
             console.error('❌ Audio resume failed:', err);
@@ -336,6 +364,7 @@ export const LandingPagePlayer = ({
       currentAudio?.pause();
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
+        trackTimerRef.current = undefined;
       }
     }
   }, [isPlaying, tracks, videos, isMuted]);
