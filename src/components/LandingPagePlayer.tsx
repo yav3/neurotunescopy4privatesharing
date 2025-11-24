@@ -216,6 +216,15 @@ const CURATED_PLAYLIST = [
     artist: 'DJ CHRIS & Van Wild',
     name: 'Ondas No Mar',
     estimatedBPM: 116
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/mami%20maybe%20tropical%20house%20reggaeton.mp3',
+    videoPath: '/videos/landing-06.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'House/Reggaeton',
+    artist: 'DJ Chris',
+    name: 'Mami Maybe',
+    estimatedBPM: 122
   }
 ];
 
