@@ -15,16 +15,20 @@ interface BackgroundVideoCarouselProps {
   playbackRate?: number;
   currentVideoIndex?: number;
   isLandingPagePlayerActive?: boolean;
+  additionalVideos?: string[]; // Additional videos to cycle through
 }
 
 export const BackgroundVideoCarousel = ({ 
   playbackRate = 1.0,
   currentVideoIndex,
-  isLandingPagePlayerActive = false
+  isLandingPagePlayerActive = false,
+  additionalVideos = []
 }: BackgroundVideoCarouselProps) => {
   const [videos, setVideos] = useState<VideoSource[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [additionalVideoPool, setAdditionalVideoPool] = useState<VideoSource[]>([]);
+  const [additionalVideoIndex, setAdditionalVideoIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Fetch videos from Supabase
@@ -58,10 +62,20 @@ export const BackgroundVideoCarousel = ({
           console.warn('⚠️ No MP4 videos found in landingpage bucket');
         }
       }
+      
+      // Build additional video pool if provided
+      if (additionalVideos.length > 0) {
+        const additionalVideoFiles = additionalVideos.map(filename => ({
+          src: supabase.storage.from('landingpage').getPublicUrl(filename).data.publicUrl,
+          type: 'video/mp4' as const
+        }));
+        setAdditionalVideoPool(additionalVideoFiles);
+        console.log(`✅ Loaded ${additionalVideoFiles.length} additional videos for cycling`);
+      }
     };
 
     fetchMedia();
-  }, []);
+  }, [additionalVideos]);
 
   const currentVideo = videos[currentIndex];
 
@@ -76,24 +90,37 @@ export const BackgroundVideoCarousel = ({
     }
   }, [currentVideoIndex]);
 
-  // Auto-advance to next video when current video ends (only if not controlled externally)
+  // Auto-advance to next video from additional pool when current video ends during track playback
   useEffect(() => {
-    if (!currentVideo || videos.length === 0 || currentVideoIndex !== undefined) return;
+    if (!currentVideo || videos.length === 0) return;
 
     const video = videoRef.current;
     if (!video) return;
 
     const handleEnded = () => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % videos.length);
-        setIsTransitioning(false);
-      }, 1000);
+      // If we have additional videos and are controlled externally, cycle through them
+      if (currentVideoIndex !== undefined && additionalVideoPool.length > 0) {
+        const nextAdditionalIndex = (additionalVideoIndex + 1) % additionalVideoPool.length;
+        setAdditionalVideoIndex(nextAdditionalIndex);
+        console.log(`🔄 Cycling to additional video [${nextAdditionalIndex + 1}/${additionalVideoPool.length}]`);
+        
+        // Load and play the next additional video
+        video.src = additionalVideoPool[nextAdditionalIndex].src;
+        video.load();
+        video.play().catch(console.error);
+      } else if (currentVideoIndex === undefined) {
+        // Original behavior for non-controlled mode
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % videos.length);
+          setIsTransitioning(false);
+        }, 1000);
+      }
     };
 
     video.addEventListener('ended', handleEnded);
     return () => video.removeEventListener('ended', handleEnded);
-  }, [currentVideo, videos.length, currentVideoIndex]);
+  }, [currentVideo, videos.length, currentVideoIndex, additionalVideoPool, additionalVideoIndex]);
 
   // Set video playback rate
   useEffect(() => {
@@ -168,7 +195,6 @@ export const BackgroundVideoCarousel = ({
               autoPlay
               muted
               playsInline
-              loop
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src={currentVideo.src} type="video/mp4" />
