@@ -4,7 +4,6 @@ import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { SupportChat } from '@/components/SupportChat';
-import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
 
@@ -26,14 +25,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
-      {/* Full-screen video background, synced to audio */}
-      <BackgroundVideoCarousel
-        playbackRate={videoPlaybackRate}
-        currentVideoIndex={currentVideoIndex}
-        isPlaying={isPlaying}
-      />
-
-      {/* Landing Page Audio Player (drives audio + video state) */}
+      {/* Landing Page Audio + Video Player */}
       <LandingPagePlayer
         onPlaybackStateChange={setIsPlaying}
         onCurrentTrackChange={(track) => setCurrentTrack(track)}
