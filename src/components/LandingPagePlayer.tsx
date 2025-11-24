@@ -26,10 +26,11 @@ interface LandingPagePlayerProps {
 const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
 
-// Curated playlist with specific tracks
+// Curated playlist with specific tracks tethered to specific videos
 const CURATED_PLAYLIST = [
   {
     filename: 'The Spartan New Age.mp3',
+    videoFilename: 'video1.mp4', // Replace with actual video filename for this track
     therapeuticGoal: 'Focus Enhancement Goal',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -37,6 +38,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'Can we cross the line small room Radio.mp3',
+    videoFilename: 'video2.mp4', // Replace with actual video filename for this track
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
@@ -44,6 +46,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'Expanding universe instrumental.mp3',
+    videoFilename: 'video3.mp4', // Replace with actual video filename for this track
     therapeuticGoal: 'Relaxation Goal',
     genre: 'Crossover Classical',
     artist: 'Yasmine',
@@ -51,6 +54,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: 'venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
+    videoFilename: 'video4.mp4', // Replace with actual video filename for this track
     therapeuticGoal: 'Pain Reduction',
     genre: 'Serene Samba',
     artist: 'Yasmine',
@@ -58,6 +62,7 @@ const CURATED_PLAYLIST = [
   },
   {
     filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD.mp3',
+    videoFilename: 'video5.mp4', // Replace with actual video filename for this track
     therapeuticGoal: 'Energy Boost Goal',
     genre: 'Tropical House',
     artist: 'DJ CHRIS Versus DJ EDward',
@@ -86,12 +91,13 @@ export const LandingPagePlayer = ({
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
-      // Build curated tracks from playlist
+      // Build curated tracks with tethered videos from playlist
       const audioTracks = CURATED_PLAYLIST.map(track => {
-        const src = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(track.filename).data.publicUrl;
-        console.log(`🎵 Loading track: ${track.filename}`, src);
+        const audioSrc = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(track.filename).data.publicUrl;
+        const videoSrc = supabase.storage.from('landingpage').getPublicUrl(track.videoFilename).data.publicUrl;
+        console.log(`🎵 Loading track: ${track.filename} → 🎬 ${track.videoFilename}`);
         return {
-          src,
+          src: audioSrc,
           name: track.filename.replace(/\.(mp3|MP3)$/, '').replace(/_/g, ' '),
           genre: track.genre,
           artist: track.artist,
@@ -100,24 +106,17 @@ export const LandingPagePlayer = ({
         };
       });
       
+      // Build video array matching the track order
+      const videoFiles = CURATED_PLAYLIST.map(track => ({
+        src: supabase.storage.from('landingpage').getPublicUrl(track.videoFilename).data.publicUrl
+      }));
+      
       setTracks(audioTracks);
+      setVideos(videoFiles);
+      
       if (audioTracks.length > 0) {
         console.log('🎵 Setting initial track:', audioTracks[0]);
         onCurrentTrackChange(audioTracks[0]);
-      }
-
-      // Fetch videos
-      const { data: videoData } = await supabase.storage
-        .from('landingpage')
-        .list('', { limit: 100, sortBy: { column: 'name', order: 'asc' } });
-
-      if (videoData) {
-        const videoFiles = videoData
-          .filter(file => file.name.endsWith('.mp4') || file.name.endsWith('.MP4'))
-          .map(file => ({
-            src: supabase.storage.from('landingpage').getPublicUrl(file.name).data.publicUrl
-          }));
-        setVideos(videoFiles);
       }
     };
 
@@ -130,7 +129,7 @@ export const LandingPagePlayer = ({
     return 0.4 + ((normalizedBPM - 60) / 60) * 0.5;
   };
 
-  // Start next track with crossfade
+  // Start next track with crossfade - each track tethered to its specific video
   const playNextTrack = () => {
     if (tracks.length === 0) {
       console.log('❌ Cannot play next track: no tracks loaded');
@@ -139,10 +138,10 @@ export const LandingPagePlayer = ({
 
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
-    const nextVideoIndex = (currentVideoIndex + 1) % videos.length;
+    const nextVideoIndex = nextIndex; // Video index matches track index (tethered)
     
     console.log(`🔄 Playing next track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
-    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}]`);
+    console.log(`🎬 Switching to tethered video [${nextVideoIndex + 1}/${videos.length}]`);
     
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
