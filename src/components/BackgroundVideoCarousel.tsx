@@ -124,7 +124,7 @@ export const BackgroundVideoCarousel = () => {
           audio.volume = 0.6;
           audio.load(); // Force reload
           await audio.play();
-          console.log('✅ Audio playing:', currentAudio.src);
+          console.log('✅ Landing page audio playing:', currentAudio.src);
         }
       } catch (err) {
         console.error('⚠️ Media autoplay blocked or failed:', err);
@@ -151,6 +151,19 @@ export const BackgroundVideoCarousel = () => {
       video.removeEventListener('loadeddata', playMedia);
     };
   }, [currentVideo, currentAudio]);
+
+  // Cleanup audio on unmount to prevent conflicts with main player
+  useEffect(() => {
+    return () => {
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.src = '';
+        audio.load();
+        console.log('🧹 Landing page audio cleaned up on unmount');
+      }
+    };
+  }, []);
 
   if (!currentVideo) {
     return (
