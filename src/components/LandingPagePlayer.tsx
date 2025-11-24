@@ -198,6 +198,15 @@ const CURATED_PLAYLIST = [
     artist: 'Yasmine',
     name: 'Cat Daddy',
     estimatedBPM: 120
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Chef%20de%20Voce%20Um%20Hino%20Indie%20Pop%20remix%20DJ%20Chris%20and%20Fresh%20Edward.mp3',
+    videoPath: '/videos/landing-04.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'House',
+    artist: 'DJ CHRIS',
+    name: 'Chef de Voce Um Hino',
+    estimatedBPM: 128
   }
 ];
 
