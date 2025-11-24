@@ -162,6 +162,24 @@ const CURATED_PLAYLIST = [
     artist: 'Yasmine',
     name: 'Hold on Child',
     estimatedBPM: 135
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/elysian-fields-house.mp3',
+    videoPath: '/videos/landing-08.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Pop',
+    artist: 'Van Wild',
+    name: 'Elysian Fields',
+    estimatedBPM: 125
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20Seventh%20Wonder%20New%20Age%20Focus%202.mp3',
+    videoPath: '/videos/landing-01.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'The Seventh Wonder',
+    estimatedBPM: 72
   }
 ];
 
