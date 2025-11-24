@@ -22,6 +22,8 @@ export const BackgroundVideoCarousel = () => {
   // Fetch videos and audio from Supabase
   useEffect(() => {
     const fetchMedia = async () => {
+      console.log('🎬 Fetching videos from landingpage bucket...');
+      
       // Fetch videos
       const { data: videoData, error: videoError } = await supabase.storage
         .from('landingpage')
@@ -31,21 +33,27 @@ export const BackgroundVideoCarousel = () => {
         });
 
       if (videoError) {
-        console.error('Error fetching videos:', videoError);
+        console.error('❌ Error fetching videos:', videoError);
       } else {
+        console.log('📦 Raw video data:', videoData);
         const videoFiles = videoData
-          ?.filter(file => file.name.endsWith('.mp4'))
+          ?.filter(file => file.name.endsWith('.mp4') || file.name.endsWith('.MP4'))
           .map(file => ({
             src: supabase.storage.from('landingpage').getPublicUrl(file.name).data.publicUrl,
             type: 'video/mp4' as const
           })) || [];
 
+        console.log(`✅ Found ${videoFiles.length} videos:`, videoFiles.map(v => v.src));
+        
         if (videoFiles.length > 0) {
           setVideos(videoFiles);
+        } else {
+          console.warn('⚠️ No MP4 videos found in landingpage bucket');
         }
       }
 
       // Fetch audio tracks
+      console.log('🎵 Fetching audio from landingpagemusicexcerpts bucket...');
       const { data: audioData, error: audioError } = await supabase.storage
         .from('landingpagemusicexcerpts')
         .list('', { 
@@ -54,16 +62,21 @@ export const BackgroundVideoCarousel = () => {
         });
 
       if (audioError) {
-        console.error('Error fetching audio:', audioError);
+        console.error('❌ Error fetching audio:', audioError);
       } else {
+        console.log('📦 Raw audio data:', audioData);
         const audioFiles = audioData
-          ?.filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav'))
+          ?.filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.MP3'))
           .map(file => ({
             src: supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(file.name).data.publicUrl
           })) || [];
 
+        console.log(`✅ Found ${audioFiles.length} audio tracks:`, audioFiles.map(a => a.src));
+        
         if (audioFiles.length > 0) {
           setAudioTracks(audioFiles);
+        } else {
+          console.warn('⚠️ No audio files found in landingpagemusicexcerpts bucket');
         }
       }
     };
@@ -103,29 +116,52 @@ export const BackgroundVideoCarousel = () => {
     const playMedia = async () => {
       try {
         video.muted = true;
+        video.load(); // Force reload
         await video.play();
         console.log('✅ Video playing:', currentVideo.src);
         
         if (audio && currentAudio) {
           audio.volume = 0.6;
+          audio.load(); // Force reload
           await audio.play();
           console.log('✅ Audio playing:', currentAudio.src);
         }
       } catch (err) {
-        console.error('⚠️ Media autoplay blocked:', err);
+        console.error('⚠️ Media autoplay blocked or failed:', err);
+        // Retry after a short delay
         setTimeout(() => {
-          video.play().catch(console.error);
-          audio?.play().catch(console.error);
+          video.play().catch(e => console.error('Video retry failed:', e));
+          audio?.play().catch(e => console.error('Audio retry failed:', e));
         }, 500);
       }
     };
 
+    // Play immediately
     playMedia();
-    video.addEventListener('loadeddata', playMedia, { once: true });
     
+    // Also play when metadata is loaded
+    video.addEventListener('loadeddata', playMedia, { once: true });
+    video.addEventListener('canplay', () => {
+      if (video.paused) {
+        video.play().catch(console.error);
+      }
+    });
+    
+    return () => {
+      video.removeEventListener('loadeddata', playMedia);
+    };
   }, [currentVideo, currentAudio]);
 
-  if (!currentVideo) return null;
+  if (!currentVideo) {
+    return (
+      <div className="fixed inset-0 z-0 bg-black flex items-center justify-center text-white text-sm">
+        <div className="text-center">
+          <div className="mb-2">Loading videos...</div>
+          <div className="text-xs opacity-60">Videos: {videos.length} | Audio: {audioTracks.length}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-0">
