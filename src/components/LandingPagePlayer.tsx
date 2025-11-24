@@ -38,8 +38,17 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 75
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20Seventh%20Wonder%20New%20Age%20Focus%202.mp3',
     videoPath: '/videos/landing-02.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'The Seventh Wonder',
+    estimatedBPM: 72
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
+    videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'House',
     artist: 'Van Wild',
@@ -48,7 +57,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
-    videoPath: '/videos/landing-03.mp4',
+    videoPath: '/videos/landing-04.mp4',
     therapeuticGoal: 'Pain Reduction',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -57,7 +66,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/malaga-classical-focus-part-four-(remastered).mp3',
-    videoPath: '/videos/landing-04.mp4',
+    videoPath: '/videos/landing-05.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'Classical',
     artist: 'The Scientists',
@@ -66,7 +75,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
-    videoPath: '/videos/landing-05.mp4',
+    videoPath: '/videos/landing-06.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country Pop',
     artist: 'Van Wild',
@@ -75,7 +84,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
-    videoPath: '/videos/landing-06.mp4',
+    videoPath: '/videos/landing-07.mp4',
     therapeuticGoal: 'Deep Rest',
     genre: 'Classical',
     artist: 'Yasmine',
@@ -84,7 +93,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/adonis--bossa-nova-samba.mp3',
-    videoPath: '/videos/landing-07.mp4',
+    videoPath: '/videos/landing-08.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -93,7 +102,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/tropicana-chill-bossa-nova-big-band-radio-mix.mp3',
-    videoPath: '/videos/landing-08.mp4',
+    videoPath: '/videos/landing-01.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -102,7 +111,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Ode%20to%20My%20Love%20americana.mp3',
-    videoPath: '/videos/landing-01.mp4',
+    videoPath: '/videos/landing-02.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Americana',
     artist: 'Van Wild',
@@ -111,7 +120,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20prayer%20of%20the%20oud%20%20new%20age%20focus.mp3',
-    videoPath: '/videos/landing-02.mp4',
+    videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -120,7 +129,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Im%20on%20your%20team%20INDIE%20POP%20VERSION%203.mp3',
-    videoPath: '/videos/landing-03.mp4',
+    videoPath: '/videos/landing-04.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'Indie Pop',
     artist: 'Van Wild',
@@ -129,7 +138,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/All%20I_ve%20ever%20wanted%20country%20Radio%20Mix%20for%20ML.mp3',
-    videoPath: '/videos/landing-04.mp4',
+    videoPath: '/videos/landing-05.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
@@ -138,7 +147,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Can%20we%20cross%20the%20line%20COUNTRY%20RADIO%20mix.mp3',
-    videoPath: '/videos/landing-05.mp4',
+    videoPath: '/videos/landing-06.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
@@ -147,7 +156,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Como%20con%20tu%20sombra%20samba%20bossa%20nova.mp3',
-    videoPath: '/videos/landing-06.mp4',
+    videoPath: '/videos/landing-07.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Serene Samba',
     artist: 'Yasmine',
@@ -156,7 +165,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/hold%20on%20child%20EDM%20HIIT.mp3',
-    videoPath: '/videos/landing-07.mp4',
+    videoPath: '/videos/landing-08.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'EDM',
     artist: 'Yasmine',
@@ -165,21 +174,12 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/elysian-fields-house.mp3',
-    videoPath: '/videos/landing-08.mp4',
+    videoPath: '/videos/landing-01.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Pop',
     artist: 'Van Wild',
     name: 'Elysian Fields',
     estimatedBPM: 125
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20Seventh%20Wonder%20New%20Age%20Focus%202.mp3',
-    videoPath: '/videos/landing-01.mp4',
-    therapeuticGoal: 'Focus Enhancement',
-    genre: 'New Age',
-    artist: 'The Scientists',
-    name: 'The Seventh Wonder',
-    estimatedBPM: 72
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
