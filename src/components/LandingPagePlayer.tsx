@@ -215,43 +215,48 @@ export const LandingPagePlayer = ({
     
     if (isPlaying && tracks.length > 0) {
       if (!currentAudio?.src) {
-        // First play
+        // First play - set up audio
         const firstTrack = tracks[0];
         if (currentAudio) {
-          console.log('🎵 Starting first playback:', firstTrack.src);
+          console.log('🎵 Starting first playback:', firstTrack.name);
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.crossOrigin = 'anonymous';
-          currentAudio.load();
+          currentAudio.preload = 'auto';
           
-          // Wait for canplaythrough event before playing
-          const playAudio = () => {
-            currentAudio.play()
+          // Try to play immediately (may be blocked by autoplay policy)
+          const playPromise = currentAudio.play();
+          
+          if (playPromise !== undefined) {
+            playPromise
               .then(() => {
                 console.log('✅ Audio playing successfully');
                 onPlaybackStateChange(true);
               })
               .catch(err => {
-                console.error('❌ Audio play failed:', err);
+                console.error('❌ Audio play blocked:', err.name);
                 if (err.name === 'NotAllowedError') {
-                  console.log('🔒 Autoplay blocked - user needs to click play button');
+                  console.log('🔒 Autoplay blocked - waiting for user to click play');
+                  // Don't change playback state, let user click play button
                 }
               });
-          };
-          
-          currentAudio.addEventListener('canplaythrough', playAudio, { once: true });
+          }
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
-          console.log('🎬 Initial video playback rate:', playbackRate, 'for BPM:', firstTrack.estimatedBPM);
+          console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
         }
         
         trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
-        console.log(`⏱️ First track will play for ${TRACK_DURATION / 1000}s`);
+        console.log(`⏱️ Track will play for ${TRACK_DURATION / 1000}s`);
       } else {
-        currentAudio?.play()
-          .then(() => console.log('✅ Audio resumed'))
-          .catch(err => console.error('❌ Audio resume failed:', err));
+        // Resume playback
+        const playPromise = currentAudio?.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => console.log('✅ Audio resumed'))
+            .catch(err => console.error('❌ Audio resume failed:', err));
+        }
       }
     } else {
       currentAudio?.pause();
@@ -286,8 +291,8 @@ export const LandingPagePlayer = ({
 
   return (
     <>
-      <audio ref={audioRef1} className="hidden" />
-      <audio ref={audioRef2} className="hidden" />
+      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" />
+      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" />
     </>
   );
 };
