@@ -195,7 +195,7 @@ const CURATED_PLAYLIST = [
     videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'Tropical House',
-    artist: 'Yasmine',
+    artist: 'DJ CHRIS',
     name: 'Cat Daddy',
     estimatedBPM: 120
   },
