@@ -89,6 +89,7 @@ export const LandingPagePlayer = ({
       // Build curated tracks from playlist
       const audioTracks = CURATED_PLAYLIST.map(track => {
         const src = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(track.filename).data.publicUrl;
+        console.log(`🎵 Loading track: ${track.filename}`, src);
         return {
           src,
           name: track.filename.replace(/\.(mp3|MP3)$/, '').replace(/_/g, ' '),
@@ -101,6 +102,7 @@ export const LandingPagePlayer = ({
       
       setTracks(audioTracks);
       if (audioTracks.length > 0) {
+        console.log('🎵 Setting initial track:', audioTracks[0]);
         onCurrentTrackChange(audioTracks[0]);
       }
 
@@ -199,10 +201,15 @@ export const LandingPagePlayer = ({
         // First play
         const firstTrack = tracks[0];
         if (currentAudio) {
+          console.log('🎵 Starting playback:', firstTrack.src);
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.load();
-          currentAudio.play();
+          currentAudio.play().then(() => {
+            console.log('✅ Audio playing successfully');
+          }).catch(err => {
+            console.error('❌ Audio play failed:', err);
+          });
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
@@ -210,7 +217,11 @@ export const LandingPagePlayer = ({
         
         trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
       } else {
-        currentAudio?.play();
+        currentAudio?.play().then(() => {
+          console.log('✅ Audio resumed');
+        }).catch(err => {
+          console.error('❌ Audio resume failed:', err);
+        });
       }
     } else {
       currentAudio?.pause();
