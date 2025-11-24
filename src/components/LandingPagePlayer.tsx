@@ -209,7 +209,7 @@ export const LandingPagePlayer = ({
     console.log(`⏱️ Next track scheduled in ${TRACK_DURATION / 1000}s`);
   };
 
-  // Handle play/pause
+  // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     
@@ -224,26 +224,28 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          // Try to play immediately (may be blocked by autoplay policy)
-          const playPromise = currentAudio.play();
+          // Load the audio first
+          currentAudio.load();
           
-          if (playPromise !== undefined) {
-            playPromise
-              .then(() => {
-                console.log('✅ Audio playing successfully');
-                onPlaybackStateChange(true);
-              })
-              .catch(err => {
-                console.error('❌ Audio play blocked:', err.name);
-                if (err.name === 'NotAllowedError') {
-                  console.log('🔒 Autoplay blocked - waiting for user to click play');
-                  // Don't change playback state, let user click play button
-                }
-              });
-          }
+          // Play immediately after loading
+          currentAudio.addEventListener('canplaythrough', () => {
+            const playPromise = currentAudio.play();
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  console.log('✅ Audio playing successfully');
+                  onPlaybackStateChange(true);
+                })
+                .catch(err => {
+                  console.error('❌ Audio play failed:', err);
+                  onPlaybackStateChange(false);
+                });
+            }
+          }, { once: true });
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
+          onCurrentTrackChange(firstTrack);
           console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
         }
         
@@ -251,20 +253,28 @@ export const LandingPagePlayer = ({
         console.log(`⏱️ Track will play for ${TRACK_DURATION / 1000}s`);
       } else {
         // Resume playback
+        console.log('▶️ Resuming playback...');
         const playPromise = currentAudio?.play();
         if (playPromise !== undefined) {
           playPromise
-            .then(() => console.log('✅ Audio resumed'))
-            .catch(err => console.error('❌ Audio resume failed:', err));
+            .then(() => {
+              console.log('✅ Audio resumed successfully');
+              onPlaybackStateChange(true);
+            })
+            .catch(err => {
+              console.error('❌ Audio resume failed:', err);
+              onPlaybackStateChange(false);
+            });
         }
       }
-    } else {
+    } else if (!isPlaying) {
+      console.log('⏸️ Pausing playback...');
       currentAudio?.pause();
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
       }
     }
-  }, [isPlaying, tracks]);
+  }, [isPlaying, tracks, isMuted]);
 
   // Handle mute
   useEffect(() => {
