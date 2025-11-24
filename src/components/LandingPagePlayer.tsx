@@ -27,9 +27,10 @@ const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
 
 // Curated playlist with specific tracks tethered to specific videos
+// ✅ Using EXACT filenames from Supabase storage buckets
 const CURATED_PLAYLIST = [
   {
-    filename: 'The Spartan New Age.mp3',
+    filename: 'The-Spartan-Age-(1).mp3',
     videoFilename: '19700121_0255_6920bf4af3c8819193e99453d6ad674a.mp4',
     therapeuticGoal: 'Focus Enhancement Goal',
     genre: 'New Age',
@@ -37,15 +38,15 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 75
   },
   {
-    filename: 'Can we cross the line small room Radio.mp3',
+    filename: 'na na oohhh CROSS THE LINE HOUSE MIX.mp3',
     videoFilename: '19700121_0258_6923840584fc8191a6b2658f4caceac4.mp4',
     therapeuticGoal: 'Mood Boost',
-    genre: 'Country',
+    genre: 'House',
     artist: 'Van Wild',
     estimatedBPM: 80
   },
   {
-    filename: 'Expanding universe instrumental.mp3',
+    filename: 'Alternative frequencies expanding universe instrumental.mp3',
     videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
     therapeuticGoal: 'Relaxation Goal',
     genre: 'Crossover Classical',
@@ -61,7 +62,7 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 90
   },
   {
-    filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD.mp3',
+    filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD .mp3',
     videoFilename: '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',
     therapeuticGoal: 'Energy Boost Goal',
     genre: 'Tropical House',
