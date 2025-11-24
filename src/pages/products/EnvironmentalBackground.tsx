@@ -4,9 +4,11 @@ import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud } from "lucide-react";
 import obsidianLiquid from '@/assets/obsidian-liquid-1.png';
+import { FooterContactHandler } from "@/components/FooterContactHandler";
 
 export default function EnvironmentalBackground() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const useCases = [
     {
@@ -121,11 +123,13 @@ export default function EnvironmentalBackground() {
             </motion.p>
 
             <motion.button
+              onClick={() => setContactOpen(true)}
               className="px-8 py-4 rounded-full text-base font-medium transition-all"
               style={{
                 background: 'rgba(255, 255, 255, 0.10)',
                 border: '1px solid rgba(255, 255, 255, 0.20)',
                 color: 'rgba(255, 255, 255, 0.95)',
+                cursor: 'pointer'
               }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -300,12 +304,14 @@ export default function EnvironmentalBackground() {
             </p>
 
             <button
+              onClick={() => setContactOpen(true)}
               className="px-10 py-4 rounded-full text-lg font-medium transition-all"
               style={{
                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08))',
                 border: '1px solid rgba(255, 255, 255, 0.20)',
                 color: 'rgba(255, 255, 255, 0.95)',
                 boxShadow: '0 0 30px rgba(255, 255, 255, 0.08)',
+                cursor: 'pointer'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.12))';
@@ -325,6 +331,11 @@ export default function EnvironmentalBackground() {
       </section>
 
       <Footer />
+      <FooterContactHandler
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+        interestType="Environmental & Background Music - Site Assessment"
+      />
     </div>
   );
 }
