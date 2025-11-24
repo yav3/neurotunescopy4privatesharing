@@ -47,40 +47,58 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 80
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Alternative%20frequencies%20expanding%20universe%20instrumental.mp3',
-    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
-    therapeuticGoal: 'Relaxation Goal',
-    genre: 'Crossover Classical',
-    artist: 'Yasmine',
-    name: 'Expanding Universe',
-    estimatedBPM: 65
-  },
-  {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
     videoFilename: '20251122_0450_01kanf03azfr5b3gy0328zj5j8.mp4',
     therapeuticGoal: 'Pain Reduction',
-    genre: 'Serene Samba',
+    genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Venha ao Meu Jardim',
     estimatedBPM: 90
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/_DJ%20CHRIS%20Versus%20DJ%20EDward%20VOL%204%20HOUSE%20WORLD%20.mp3',
-    videoFilename: '20251123_1505_01kakyxn2mfma8jw0q7bjwax6x.mp4',
-    therapeuticGoal: 'Energy Boost Goal',
-    genre: 'Tropical House',
-    artist: 'DJ CHRIS Versus DJ EDward',
-    name: 'House World',
-    estimatedBPM: 120
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/malaga-classical-focus-part-four-(remastered).mp3',
+    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Classical',
+    artist: 'The Scientists',
+    name: 'Malaga Classical Focus Part Four',
+    estimatedBPM: 70
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
+    videoFilename: '20251123_1513_01kanep60pf8mr4494225wy94z.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Country Pop',
+    artist: 'Van Wild',
+    name: 'Just How You Like It',
+    estimatedBPM: 95
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
-    videoFilename: '20251122_0435_01kanep60pf8mr4494225wy94z.mp4',
+    videoFilename: '20251123_1513_01kanf03azfr5b3gy0328zj5j8.mp4',
     therapeuticGoal: 'Sleep Enhancement',
     genre: 'Ambient',
     artist: 'Yasmine',
     name: 'Quietude Nocturne',
     estimatedBPM: 60
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/adonis--bossa-nova-samba.mp3',
+    videoFilename: '20251123_1513_01kanfadzdfj8bw4v44zkkd7p6.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Bossa Nova',
+    artist: 'Yasmine',
+    name: 'Adonis',
+    estimatedBPM: 85
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/tropicana-chill-bossa-nova-big-band-radio-mix.mp3',
+    videoFilename: '20251123_1513_01kanfhac2e0sabhsp8c9zp85w.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Bossa Nova',
+    artist: 'Yasmine',
+    name: 'Tropicana Chill',
+    estimatedBPM: 88
   }
 ];
 
