@@ -124,10 +124,10 @@ export const LandingPagePlayer = ({
     fetchMedia();
   }, []);
 
-  // Calculate video playback rate from BPM (60-90 BPM -> 0.85x-1.15x)
+  // Calculate video playback rate from BPM (slower, more cinematic: 0.5x-0.8x)
   const getPlaybackRate = (bpm: number): number => {
-    const normalizedBPM = Math.max(60, Math.min(90, bpm));
-    return 0.85 + ((normalizedBPM - 60) / 30) * 0.3;
+    const normalizedBPM = Math.max(60, Math.min(120, bpm));
+    return 0.5 + ((normalizedBPM - 60) / 60) * 0.3;
   };
 
   // Start next track with crossfade
@@ -218,27 +218,38 @@ export const LandingPagePlayer = ({
         // First play
         const firstTrack = tracks[0];
         if (currentAudio) {
-          console.log('🎵 Starting playback:', firstTrack.src);
+          console.log('🎵 Starting first playback:', firstTrack.src);
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.load();
-          currentAudio.play().then(() => {
-            console.log('✅ Audio playing successfully');
-          }).catch(err => {
-            console.error('❌ Audio play failed:', err);
-          });
+          
+          // Add event listeners for debugging
+          currentAudio.addEventListener('canplay', () => console.log('✅ Audio can play'));
+          currentAudio.addEventListener('playing', () => console.log('✅ Audio is playing'));
+          currentAudio.addEventListener('error', (e) => console.error('❌ Audio error:', e));
+          
+          currentAudio.play()
+            .then(() => {
+              console.log('✅ Audio playing successfully');
+              onPlaybackStateChange(true);
+            })
+            .catch(err => {
+              console.error('❌ Audio play failed:', err);
+              // Try to enable autoplay by user interaction
+              console.log('💡 Try clicking play button to enable audio');
+            });
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
+          console.log('🎬 Initial video playback rate:', playbackRate);
         }
         
         trackTimerRef.current = setTimeout(playNextTrack, TRACK_DURATION);
+        console.log(`⏱️ First track will play for ${TRACK_DURATION / 1000}s`);
       } else {
-        currentAudio?.play().then(() => {
-          console.log('✅ Audio resumed');
-        }).catch(err => {
-          console.error('❌ Audio resume failed:', err);
-        });
+        currentAudio?.play()
+          .then(() => console.log('✅ Audio resumed'))
+          .catch(err => console.error('❌ Audio resume failed:', err));
       }
     } else {
       currentAudio?.pause();
