@@ -5,6 +5,8 @@ interface AudioTrack {
   src: string;
   name: string;
   genre: string;
+  artist: string;
+  therapeuticGoal: string;
   estimatedBPM: number;
 }
 
@@ -24,24 +26,44 @@ interface LandingPagePlayerProps {
 const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
 
-// Estimate BPM from filename or default to relaxing tempo
-const estimateBPM = (filename: string): number => {
-  const bpmMatch = filename.match(/(\d{2,3})bpm/i);
-  if (bpmMatch) return parseInt(bpmMatch[1]);
-  
-  // Default to relaxing tempo range
-  return 70;
-};
-
-// Determine genre from filename
-const determineGenre = (filename: string): string => {
-  const lower = filename.toLowerCase();
-  if (lower.includes('focus')) return 'Focus';
-  if (lower.includes('sleep') || lower.includes('calm')) return 'Sleep';
-  if (lower.includes('energy') || lower.includes('active')) return 'Energy';
-  if (lower.includes('meditat')) return 'Meditation';
-  return 'Relaxation';
-};
+// Curated playlist with specific tracks
+const CURATED_PLAYLIST = [
+  {
+    filename: 'The Spartan New Age.mp3',
+    therapeuticGoal: 'Focus Enhancement Goal',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    estimatedBPM: 75
+  },
+  {
+    filename: 'Can we cross the line small room Radio.mp3',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Country',
+    artist: 'Van Wild',
+    estimatedBPM: 80
+  },
+  {
+    filename: 'Expanding universe instrumental.mp3',
+    therapeuticGoal: 'Relaxation Goal',
+    genre: 'Crossover Classical',
+    artist: 'Yasmine',
+    estimatedBPM: 65
+  },
+  {
+    filename: 'venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
+    therapeuticGoal: 'Pain Reduction',
+    genre: 'Serene Samba',
+    artist: 'Yasmine',
+    estimatedBPM: 90
+  },
+  {
+    filename: '_DJ CHRIS Versus DJ EDward VOL 4 HOUSE WORLD.mp3',
+    therapeuticGoal: 'Energy Boost Goal',
+    genre: 'Tropical House',
+    artist: 'DJ CHRIS Versus DJ EDward',
+    estimatedBPM: 120
+  }
+];
 
 export const LandingPagePlayer = ({
   onPlaybackStateChange,
@@ -64,28 +86,22 @@ export const LandingPagePlayer = ({
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
-      // Fetch audio
-      const { data: audioData } = await supabase.storage
-        .from('landingpagemusicexcerpts')
-        .list('', { limit: 100, sortBy: { column: 'name', order: 'asc' } });
-
-      if (audioData) {
-        const audioTracks = audioData
-          .filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.MP3'))
-          .map(file => {
-            const src = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(file.name).data.publicUrl;
-            const estimatedBPM = estimateBPM(file.name);
-            return {
-              src,
-              name: file.name.replace(/\.(mp3|MP3)$/, '').replace(/_/g, ' '),
-              genre: determineGenre(file.name),
-              estimatedBPM
-            };
-          });
-        setTracks(audioTracks);
-        if (audioTracks.length > 0) {
-          onCurrentTrackChange(audioTracks[0]);
-        }
+      // Build curated tracks from playlist
+      const audioTracks = CURATED_PLAYLIST.map(track => {
+        const src = supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(track.filename).data.publicUrl;
+        return {
+          src,
+          name: track.filename.replace(/\.(mp3|MP3)$/, '').replace(/_/g, ' '),
+          genre: track.genre,
+          artist: track.artist,
+          therapeuticGoal: track.therapeuticGoal,
+          estimatedBPM: track.estimatedBPM
+        };
+      });
+      
+      setTracks(audioTracks);
+      if (audioTracks.length > 0) {
+        onCurrentTrackChange(audioTracks[0]);
       }
 
       // Fetch videos

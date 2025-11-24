@@ -8,6 +8,8 @@ interface LandingPageControlsProps {
   currentTrack: {
     name: string;
     genre: string;
+    artist?: string;
+    therapeuticGoal?: string;
   } | null;
   onPlayPause: () => void;
   onSkip: () => void;
@@ -67,12 +69,12 @@ export const LandingPageControls = ({
         <div className="w-px h-8 bg-white/20" />
 
         {/* Track Info */}
-        <div className="flex flex-col min-w-[200px]">
+        <div className="flex flex-col min-w-[240px]">
           <div className="text-xs text-white/60 font-light tracking-wide">
-            {currentTrack?.genre || 'Loading...'}
+            {currentTrack?.therapeuticGoal || 'Loading...'}, {currentTrack?.genre || ''}
           </div>
           <div className="text-sm text-white font-normal truncate">
-            {currentTrack?.name || 'Preparing...'}
+            {currentTrack?.artist || ''}
           </div>
         </div>
 
