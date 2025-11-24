@@ -266,14 +266,18 @@ export const LandingPagePlayer = ({
         const firstVideo = videos[0];
         if (currentAudio && video && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
-          currentAudio.src = firstTrack.src;
+          
+          // CRITICAL: Set muted states BEFORE setting src
           currentAudio.muted = false;
+          video.muted = false; // Unmute video to unlock audio context
+          
+          currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
           video.src = firstVideo.src;
-          video.muted = true; // Video is always muted, audio comes from audio element
+          video.volume = 0; // Video audio at 0, actual audio from audio element
           video.preload = 'auto';
           
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
@@ -368,7 +372,6 @@ export const LandingPagePlayer = ({
         ref={videoRef}
         playsInline
         preload="auto"
-        muted
         loop
         className="fixed inset-0 w-full h-full object-cover z-0"
         onLoadedData={() => console.log('🎬 Video loaded and ready')}
@@ -376,8 +379,8 @@ export const LandingPagePlayer = ({
         onPause={() => console.log('🎬 Video paused')}
         onError={(e) => console.error('🎬 Video error:', e)}
       />
-      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" muted={false} />
-      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" muted={false} />
+      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" />
+      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" />
     </>
   );
 };
