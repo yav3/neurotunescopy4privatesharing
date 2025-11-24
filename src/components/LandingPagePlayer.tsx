@@ -164,6 +164,7 @@ export const LandingPagePlayer = ({
 
     // Prepare next track
     nextAudio.src = nextTrack.src;
+    nextAudio.muted = false;
     nextAudio.volume = 0;
     nextAudio.load();
     console.log('📥 Next track loaded:', nextTrack.src);
@@ -230,6 +231,7 @@ export const LandingPagePlayer = ({
         if (currentAudio) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           currentAudio.src = firstTrack.src;
+          currentAudio.muted = false;
           currentAudio.volume = isMuted ? 0 : 0.6;
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
@@ -322,8 +324,8 @@ export const LandingPagePlayer = ({
 
   return (
     <>
-      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" />
-      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" />
+      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" muted={false} />
+      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" muted={false} />
     </>
   );
 };
