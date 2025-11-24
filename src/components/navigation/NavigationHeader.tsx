@@ -1,10 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
 
 export const NavigationHeader = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <>
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
@@ -25,13 +21,7 @@ export const NavigationHeader = () => {
             to="/subscribe" 
             className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
           >
-            Subscribe
-          </Link>
-          <Link 
-            to="/auth" 
-            className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white/80 hover:bg-white/20 transition-all duration-200 text-sm"
-          >
-            Login / Sign Up
+            Get Started
           </Link>
         </div>
       </header>
@@ -52,40 +42,11 @@ export const NavigationHeader = () => {
             to="/subscribe" 
             className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
           >
-            Subscribe
+            Get Started
           </Link>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 flex-shrink-0"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5 text-white/80" />
-            ) : (
-              <div className="flex flex-col gap-1.5 w-5">
-                <div className="w-full h-0.5 bg-white/80" />
-                <div className="w-full h-0.5 bg-white/80" />
-                <div className="w-full h-0.5 bg-white/80" />
-              </div>
-            )}
-          </button>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[61px] z-40 overflow-y-auto bg-black/95 backdrop-blur-xl">
-          <div className="p-6 space-y-4">
-            <Link
-              to="/auth"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block w-full px-4 py-2 rounded-full border border-white/20 bg-white/10 text-white/80 text-center hover:bg-white/20 transition-all text-sm"
-            >
-              Login / Sign Up
-            </Link>
-          </div>
-        </div>
-      )}
     </>
   );
 };

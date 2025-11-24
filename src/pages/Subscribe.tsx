@@ -15,9 +15,15 @@ export default function Subscribe() {
             <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-6">
               Choose Your Plan
             </h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            <p className="text-xl text-white/70 max-w-2xl mx-auto mb-4">
               Experience clinical-grade therapeutic music designed to enhance focus, reduce anxiety, and improve well-being
             </p>
+            <Link 
+              to="/auth"
+              className="inline-block text-sm text-white/60 hover:text-white/90 transition-colors underline underline-offset-4"
+            >
+              Already a subscriber? Login here
+            </Link>
           </div>
 
           {/* Pricing Cards */}

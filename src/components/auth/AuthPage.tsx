@@ -16,6 +16,11 @@ function AuthPageContent({ onBack }: AuthPageProps) {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
 
+  // Redirect signup attempts to subscribe page
+  const handleToggleToSignup = () => {
+    navigate('/subscribe');
+  };
+
   // Redirect authenticated users to goals page
   useEffect(() => {
     if (!loading && user) {
@@ -66,7 +71,7 @@ function AuthPageContent({ onBack }: AuthPageProps) {
           
           <div className="relative">
             {isLoginMode ? (
-              <LoginForm onToggleMode={() => setIsLoginMode(false)} />
+              <LoginForm onToggleMode={handleToggleToSignup} />
             ) : (
               <SignupForm onToggleMode={() => setIsLoginMode(true)} />
             )}
