@@ -164,15 +164,6 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 135
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/elysian-fields-house.mp3',
-    videoPath: '/videos/landing-01.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Pop',
-    artist: 'Van Wild',
-    name: 'Elysian Fields',
-    estimatedBPM: 125
-  },
-  {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
     videoPath: '/videos/landing-02.mp4',
     therapeuticGoal: 'Energy Boost',
