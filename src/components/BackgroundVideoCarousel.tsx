@@ -11,20 +11,27 @@ interface AudioSource {
   src: string;
 }
 
-export const BackgroundVideoCarousel = () => {
+interface BackgroundVideoCarouselProps {
+  playbackRate?: number;
+  currentVideoIndex?: number;
+  isLandingPagePlayerActive?: boolean;
+}
+
+export const BackgroundVideoCarousel = ({ 
+  playbackRate = 1.0,
+  currentVideoIndex,
+  isLandingPagePlayerActive = false
+}: BackgroundVideoCarouselProps) => {
   const [videos, setVideos] = useState<VideoSource[]>([]);
-  const [audioTracks, setAudioTracks] = useState<AudioSource[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Fetch videos and audio from Supabase
+  // Fetch videos from Supabase
   useEffect(() => {
     const fetchMedia = async () => {
       console.log('🎬 Fetching videos from landingpage bucket...');
       
-      // Fetch videos
       const { data: videoData, error: videoError } = await supabase.storage
         .from('landingpage')
         .list('', { 
@@ -51,45 +58,27 @@ export const BackgroundVideoCarousel = () => {
           console.warn('⚠️ No MP4 videos found in landingpage bucket');
         }
       }
-
-      // Fetch audio tracks
-      console.log('🎵 Fetching audio from landingpagemusicexcerpts bucket...');
-      const { data: audioData, error: audioError } = await supabase.storage
-        .from('landingpagemusicexcerpts')
-        .list('', { 
-          limit: 100,
-          sortBy: { column: 'name', order: 'asc' }
-        });
-
-      if (audioError) {
-        console.error('❌ Error fetching audio:', audioError);
-      } else {
-        console.log('📦 Raw audio data:', audioData);
-        const audioFiles = audioData
-          ?.filter(file => file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.MP3'))
-          .map(file => ({
-            src: supabase.storage.from('landingpagemusicexcerpts').getPublicUrl(file.name).data.publicUrl
-          })) || [];
-
-        console.log(`✅ Found ${audioFiles.length} audio tracks:`, audioFiles.map(a => a.src));
-        
-        if (audioFiles.length > 0) {
-          setAudioTracks(audioFiles);
-        } else {
-          console.warn('⚠️ No audio files found in landingpagemusicexcerpts bucket');
-        }
-      }
     };
 
     fetchMedia();
   }, []);
 
   const currentVideo = videos[currentIndex];
-  const currentAudio = audioTracks[currentIndex % audioTracks.length];
 
-  // Auto-advance to next video and audio when current video ends
+  // Update index when controlled externally
   useEffect(() => {
-    if (!currentVideo || videos.length === 0) return;
+    if (currentVideoIndex !== undefined && currentVideoIndex !== currentIndex) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(currentVideoIndex);
+        setIsTransitioning(false);
+      }, 1000);
+    }
+  }, [currentVideoIndex]);
+
+  // Auto-advance to next video when current video ends (only if not controlled externally)
+  useEffect(() => {
+    if (!currentVideo || videos.length === 0 || currentVideoIndex !== undefined) return;
 
     const video = videoRef.current;
     if (!video) return;
@@ -104,34 +93,33 @@ export const BackgroundVideoCarousel = () => {
 
     video.addEventListener('ended', handleEnded);
     return () => video.removeEventListener('ended', handleEnded);
-  }, [currentVideo, videos.length]);
+  }, [currentVideo, videos.length, currentVideoIndex]);
 
-  // Ensure video and audio play continuously
+  // Set video playback rate
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = playbackRate;
+      console.log(`🎬 Video playback rate set to ${playbackRate.toFixed(2)}x`);
+    }
+  }, [playbackRate]);
+
+  // Ensure video plays continuously
   useEffect(() => {
     if (!currentVideo || !videoRef.current) return;
 
     const video = videoRef.current;
-    const audio = audioRef.current;
     
     const playMedia = async () => {
       try {
         video.muted = true;
-        video.load(); // Force reload
+        video.playbackRate = playbackRate;
+        video.load();
         await video.play();
         console.log('✅ Video playing:', currentVideo.src);
-        
-        if (audio && currentAudio) {
-          audio.volume = 0.6;
-          audio.load(); // Force reload
-          await audio.play();
-          console.log('✅ Landing page audio playing:', currentAudio.src);
-        }
       } catch (err) {
-        console.error('⚠️ Media autoplay blocked or failed:', err);
-        // Retry after a short delay
+        console.error('⚠️ Video autoplay blocked or failed:', err);
         setTimeout(() => {
           video.play().catch(e => console.error('Video retry failed:', e));
-          audio?.play().catch(e => console.error('Audio retry failed:', e));
         }, 500);
       }
     };
@@ -150,27 +138,14 @@ export const BackgroundVideoCarousel = () => {
     return () => {
       video.removeEventListener('loadeddata', playMedia);
     };
-  }, [currentVideo, currentAudio]);
-
-  // Cleanup audio on unmount to prevent conflicts with main player
-  useEffect(() => {
-    return () => {
-      const audio = audioRef.current;
-      if (audio) {
-        audio.pause();
-        audio.src = '';
-        audio.load();
-        console.log('🧹 Landing page audio cleaned up on unmount');
-      }
-    };
-  }, []);
+  }, [currentVideo, playbackRate]);
 
   if (!currentVideo) {
     return (
       <div className="fixed inset-0 z-0 bg-black flex items-center justify-center text-white text-sm">
         <div className="text-center">
           <div className="mb-2">Loading videos...</div>
-          <div className="text-xs opacity-60">Videos: {videos.length} | Audio: {audioTracks.length}</div>
+          <div className="text-xs opacity-60">Videos: {videos.length}</div>
         </div>
       </div>
     );
@@ -193,6 +168,7 @@ export const BackgroundVideoCarousel = () => {
               autoPlay
               muted
               playsInline
+              loop
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src={currentVideo.src} type="video/mp4" />
@@ -200,18 +176,6 @@ export const BackgroundVideoCarousel = () => {
           </motion.div>
         </AnimatePresence>
       </div>
-      
-      {/* Synced audio track */}
-      {currentAudio && (
-        <audio
-          ref={audioRef}
-          autoPlay
-          loop={false}
-          className="hidden"
-        >
-          <source src={currentAudio.src} />
-        </audio>
-      )}
       
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
     </div>
