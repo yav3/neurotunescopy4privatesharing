@@ -93,6 +93,10 @@ export const EnterpriseWellnessPricing = () => {
                     quantity={plan.name === "Small Business" ? 40 : 1000}
                     isPopular={plan.highlighted}
                     buttonText={plan.cta}
+                    onCustomClick={plan.name === "Enterprise" ? () => {
+                      setInterestType("Enterprise Wellness - 1,000+ Seats");
+                      setContactOpen(true);
+                    } : undefined}
                   />
                 </div>
               ))}
