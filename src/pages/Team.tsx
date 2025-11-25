@@ -12,26 +12,11 @@ export const Team = () => {
           
           {/* Hero */}
           <div className="text-center mb-20">
-            <h1 className="text-6xl font-light tracking-tight text-white mb-6">
-              Leadership Team
-            </h1>
-            <p className="text-2xl font-light text-neutral-300">
-              World-class experts in neuroscience, music therapy, and technology
-            </p>
+          <h1 className="text-6xl font-light tracking-tight text-white mb-6">
+            Leadership Team
+          </h1>
           </div>
 
-          {/* Team Image */}
-          <div className="mb-20">
-            <img 
-              src={teamLeadershipImage}
-              alt="NeuroTunes Leadership Team"
-              className="w-full rounded-3xl"
-              style={{ 
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
-              }}
-            />
-          </div>
 
           {/* Advisory Board Section */}
           <div className="mt-28 text-center">
