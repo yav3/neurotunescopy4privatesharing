@@ -29,7 +29,7 @@ export const NavigationHeader = () => {
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
               <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-black border border-white/20 shadow-2xl z-[100]">
+            <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
@@ -121,7 +121,7 @@ export const NavigationHeader = () => {
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-black border border-white/20 shadow-2xl z-[100]">
+            <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
