@@ -18,6 +18,12 @@ export const NavigationHeader = () => {
         {/* Right: CTAs */}
         <div className="flex items-center gap-4">
           <Link 
+            to="/auth" 
+            className="text-white/70 hover:text-white transition-colors text-sm font-medium"
+          >
+            Login
+          </Link>
+          <Link 
             to="/subscribe" 
             className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
           >
@@ -38,6 +44,12 @@ export const NavigationHeader = () => {
         </Link>
 
         <div className="flex items-center gap-3">
+          <Link 
+            to="/auth" 
+            className="text-white/70 hover:text-white transition-colors text-xs font-medium"
+          >
+            Login
+          </Link>
           <Link 
             to="/subscribe" 
             className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
