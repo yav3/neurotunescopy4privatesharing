@@ -61,23 +61,47 @@ const Index = () => {
       {/* Hero Section with Buttons */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="bg-platinum-pearl/10 backdrop-blur-md rounded-[40px] p-12 border border-platinum-pearl/20 pointer-events-auto">
-            <div className="flex gap-6">
-              <button
-                onClick={handlePlaySession}
-                className="px-10 py-4 rounded-full bg-platinum-pearl text-obsidian-950 font-normal text-lg transition-all hover:bg-platinum-pearl/90 hover:scale-105"
-                style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+          <div className="flex flex-col gap-6 pointer-events-auto">
+            {/* Big Play Button */}
+            <button
+              onClick={handlePlaySession}
+              className="w-32 h-32 rounded-full backdrop-blur-md transition-all hover:scale-105 flex items-center justify-center group"
+              style={{ 
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                background: 'rgba(228, 228, 228, 0.15)',
+                border: '1px solid rgba(228, 228, 228, 0.4)'
+              }}
+            >
+              <svg 
+                className="w-12 h-12 ml-1" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor"
+                style={{ color: '#0f172a' }}
               >
-                Play Session
-              </button>
-              <button
-                onClick={handleSubscribe}
-                className="px-10 py-4 rounded-full bg-platinum-pearl text-obsidian-950 font-normal text-lg transition-all hover:bg-platinum-pearl/90 hover:scale-105"
-                style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
-              >
-                Subscribe
-              </button>
-            </div>
+                <path 
+                  d="M5 3l14 9-14 9V3z" 
+                  fill="currentColor"
+                  strokeWidth="0"
+                />
+              </svg>
+            </button>
+            
+            {/* Pill-shaped Subscribe Button */}
+            <button
+              onClick={handleSubscribe}
+              className="px-16 py-5 rounded-full backdrop-blur-md transition-all hover:scale-105"
+              style={{ 
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                background: 'rgba(228, 228, 228, 0.15)',
+                border: '1px solid rgba(228, 228, 228, 0.4)',
+                color: '#0f172a',
+                fontSize: '20px',
+                fontWeight: 400
+              }}
+            >
+              Subscribe
+            </button>
           </div>
         </div>
       )}
