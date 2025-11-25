@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export const NavigationHeader = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSupportChat = () => {
     const event = new CustomEvent('openSupportChat');
     window.dispatchEvent(event);
-    setMenuOpen(false);
+    setDesktopMenuOpen(false);
+    setMobileMenuOpen(false);
   };
   return (
     <>
@@ -25,7 +27,7 @@ export const NavigationHeader = () => {
       <header className="hidden md:flex items-center justify-between px-8 py-3 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50">
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
-          <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+          <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
               <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
@@ -117,7 +119,7 @@ export const NavigationHeader = () => {
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
       <header className="md:hidden flex items-center justify-between px-5 py-3 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50">
         <div className="flex items-center gap-3">
-          <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+          <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
