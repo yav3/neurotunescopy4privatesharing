@@ -10,6 +10,21 @@ export const AppDownload = () => {
   const [salesAssistantOpen, setSalesAssistantOpen] = useState(false);
   const plans = [
     {
+      name: "Trial Offer",
+      priceYearly: "Free",
+      period: "1 month",
+      description: "Try NeuroTunes risk-free for one month",
+      features: [
+        "Full access to 8,500+ therapeutic tracks",
+        "Personalized recommendations",
+        "Offline playback",
+        "Progress tracking",
+        "No credit card required"
+      ],
+      cta: "Start Free Trial",
+      badge: "Limited Time"
+    },
+    {
       name: "Individual",
       priceYearly: "$59.99",
       period: "year",
@@ -97,11 +112,11 @@ export const AppDownload = () => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-4 mb-12 max-w-7xl mx-auto">
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-8 relative transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-3xl p-6 relative transition-all duration-300 hover:scale-[1.02]"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   backdropFilter: 'blur(24px)',
@@ -120,23 +135,23 @@ export const AppDownload = () => {
                   {plan.badge}
                 </div>
 
-                <div className="text-center mb-6 mt-4">
-                  <h3 className="text-xl font-light text-white mb-2">{plan.name}</h3>
+                <div className="text-center mb-5 mt-4">
+                  <h3 className="text-lg font-light text-white mb-2">{plan.name}</h3>
                   <div className="mb-2">
-                    <div className="text-3xl font-light text-white">
+                    <div className="text-2xl font-light text-white">
                       {plan.priceYearly}
-                      <span className="text-base text-neutral-400"> / {plan.period}</span>
+                      <span className="text-sm text-neutral-400"> / {plan.period}</span>
                     </div>
                   </div>
-                  <p className="text-neutral-400 text-sm">{plan.description}</p>
+                  <p className="text-neutral-400 text-xs leading-tight">{plan.description}</p>
                 </div>
 
                 {/* Features */}
-                <ul className="space-y-3 mb-6">
+                <ul className="space-y-2 mb-5">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-neutral-300 text-sm">{feature}</span>
+                    <li key={featureIndex} className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-neutral-300 text-xs">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -144,7 +159,7 @@ export const AppDownload = () => {
                 {/* CTA Button */}
                 <button
                   onClick={() => setSalesAssistantOpen(true)}
-                  className="w-full py-3 rounded-full font-semibold transition-all hover:bg-white/10"
+                  className="w-full py-2.5 rounded-full font-semibold text-sm transition-all hover:bg-white/10"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
