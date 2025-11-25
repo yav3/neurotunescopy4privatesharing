@@ -7,7 +7,8 @@ interface PricingCardProps {
   period: string;
   description: string;
   features: string[];
-  priceId: string;
+  priceId?: string;
+  paymentLink?: string;
   isPopular?: boolean;
   buttonText?: string;
   quantity?: number;
@@ -21,6 +22,7 @@ export function PricingCard({
   description,
   features,
   priceId,
+  paymentLink,
   isPopular = false,
   buttonText = 'Get Started',
   quantity = 1,
@@ -33,12 +35,19 @@ export function PricingCard({
       onCustomClick();
       return;
     }
+
+    if (paymentLink) {
+      window.open(paymentLink, '_blank');
+      return;
+    }
     
-    await createCheckoutSession({
-      priceId,
-      quantity,
-      mode: 'subscription',
-    });
+    if (priceId) {
+      await createCheckoutSession({
+        priceId,
+        quantity,
+        mode: 'subscription',
+      });
+    }
   };
 
   return (
