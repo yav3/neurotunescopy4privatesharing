@@ -32,11 +32,11 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   useEffect(() => {
     setVideoUrls(CURATED_VIDEO_FILES);
     
-    // Initialize video with muted=false via JavaScript (not JSX) to allow programmatic control
+    // CRITICAL: Video must be muted - only music player audio should be heard
     const video = videoRef.current;
     if (video) {
-      video.muted = false;
-      video.volume = 0.6;
+      video.muted = true;
+      video.volume = 0;
     }
   }, []);
 
