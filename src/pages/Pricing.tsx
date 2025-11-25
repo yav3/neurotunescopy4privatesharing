@@ -85,11 +85,7 @@ export const Pricing = () => {
                 period={plan.period}
                 description={plan.description}
                 features={plan.features}
-                priceId={
-                  plan.name === "Small Business" ? STRIPE_PRICES.SMALL_BUSINESS :
-                  plan.name === "Clinical" ? STRIPE_PRICES.CLINICAL :
-                  STRIPE_PRICES.ENTERPRISE_CUSTOM
-                }
+                paymentLink={plan.name === "Small Business" ? "https://buy.stripe.com/6oUbJ24TwbzM87R4134c800" : undefined}
                 quantity={plan.name === "Small Business" ? 40 : 1}
                 isPopular={plan.highlighted}
                 buttonText={plan.cta}
