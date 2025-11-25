@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Play, CheckCircle, XCircle, AlertCircle, RefreshCw, Database, FileAudio, Download } from 'lucide-react'
-import { serviceSupabase } from '@/integrations/supabase/service-client'
+import { supabase } from '@/integrations/supabase/client'
 
 interface AnalysisResult {
   name: string
@@ -60,7 +60,7 @@ export const AudioAnalysisRunner: React.FC = () => {
       steps[0].message = 'Testing Supabase connection...'
       setResults([...steps])
 
-      const { count, error: countError } = await serviceSupabase
+      const { count, error: countError } = await supabase
         .from('tracks')
         .select('*', { count: 'exact', head: true })
         .eq('storage_bucket', 'audio')
@@ -77,7 +77,7 @@ export const AudioAnalysisRunner: React.FC = () => {
       setResults([...steps])
 
       // Use a simpler query approach to avoid OR syntax issues - only audio bucket tracks
-      const { data: allTracks, error: tracksError } = await serviceSupabase
+      const { data: allTracks, error: tracksError } = await supabase
         .from('tracks')
         .select('id, bpm, camelot, analysis_status, storage_bucket')
         .eq('storage_bucket', 'audio')
@@ -157,7 +157,7 @@ export const AudioAnalysisRunner: React.FC = () => {
         steps[2].message = `Running comprehensive analysis on ${needsAnalysisCount} tracks...`
         setResults([...steps])
 
-        const response = await serviceSupabase.functions.invoke('complete-audio-analysis', {
+        const response = await supabase.functions.invoke('complete-audio-analysis', {
           body: {}
         })
 

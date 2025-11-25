@@ -1,10 +1,10 @@
 // Image utility functions for handling responsive images and fallbacks
-import { serviceSupabase } from '@/integrations/supabase/service-client';
+import { supabase } from '@/integrations/supabase/client';
 
-// Generate artwork URL from albumart bucket using service client
+// Generate artwork URL from albumart bucket
 export const getAlbumArtworkUrl = (filename: string): string => {
   try {
-    const { data } = serviceSupabase.storage.from('albumart').getPublicUrl(filename);
+    const { data } = supabase.storage.from('albumart').getPublicUrl(filename);
     console.log('🖼️ Generated artwork URL for', filename, ':', data.publicUrl);
     return data.publicUrl;
   } catch (error) {
