@@ -31,6 +31,13 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   // Use local video files directly
   useEffect(() => {
     setVideoUrls(CURATED_VIDEO_FILES);
+    
+    // Initialize video with muted=false via JavaScript (not JSX) to allow programmatic control
+    const video = videoRef.current;
+    if (video) {
+      video.muted = false;
+      video.volume = 0.6;
+    }
   }, []);
 
   // Load/change the video source with fade-to-black transition
@@ -102,7 +109,6 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     <div className="fixed inset-0 z-0 overflow-hidden">
       <video
         ref={videoRef}
-        muted
         playsInline
         preload="auto"
         loop
