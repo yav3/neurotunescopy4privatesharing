@@ -18,11 +18,22 @@ const Index = () => {
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string } | null>(null);
   const [videoPlaybackRate, setVideoPlaybackRate] = useState(1.0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [showHero, setShowHero] = useState(true);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
       (window as any).__skipLandingTrack();
     }
+  };
+
+  const handlePlaySession = () => {
+    setShowHero(false);
+    setIsPlaying(true);
+  };
+
+  const handleSubscribe = () => {
+    setShowHero(false);
+    window.location.href = '/products/environmental';
   };
 
   return (
@@ -46,6 +57,30 @@ const Index = () => {
       
       {/* Header */}
       <NavigationHeader />
+      
+      {/* Hero Section with Buttons */}
+      {showHero && (
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          <div className="bg-platinum-pearl/10 backdrop-blur-md rounded-[40px] p-12 border border-platinum-pearl/20 pointer-events-auto">
+            <div className="flex gap-6">
+              <button
+                onClick={handlePlaySession}
+                className="px-10 py-4 rounded-full bg-platinum-pearl text-obsidian-950 font-normal text-lg transition-all hover:bg-platinum-pearl/90 hover:scale-105"
+                style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+              >
+                Play Session
+              </button>
+              <button
+                onClick={handleSubscribe}
+                className="px-10 py-4 rounded-full bg-platinum-pearl text-obsidian-950 font-normal text-lg transition-all hover:bg-platinum-pearl/90 hover:scale-105"
+                style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* Spacer for layout */}
       <div className="flex-1" />
