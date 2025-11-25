@@ -1,4 +1,4 @@
-import { serviceSupabase } from '@/integrations/supabase/service-client';
+import { supabase } from '@/integrations/supabase/client';
 
 export const testAmericanaJamBandAccess = async () => {
   console.log('🧪 Testing Americana & Jam Band storage access with service client...');
@@ -11,7 +11,7 @@ export const testAmericanaJamBandAccess = async () => {
     
     try {
       // Test bucket access with service role
-      const { data: files, error } = await serviceSupabase.storage
+      const { data: files, error } = await supabase.storage
         .from(bucket)
         .list('', { limit: 10 });
 
@@ -35,7 +35,7 @@ export const testAmericanaJamBandAccess = async () => {
 
         // Test public URL generation
         if (files && files.length > 0) {
-          const { data } = serviceSupabase.storage.from(bucket).getPublicUrl(files[0].name);
+          const { data } = supabase.storage.from(bucket).getPublicUrl(files[0].name);
           results[bucket].sampleUrl = data.publicUrl;
           console.log(`🔗 Sample URL for ${bucket}: ${data.publicUrl}`);
         }

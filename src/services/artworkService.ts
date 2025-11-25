@@ -1,5 +1,4 @@
 import { supabase } from '@/integrations/supabase/client';
-import { serviceSupabase } from '@/integrations/supabase/service-client';
 import { storageRequestManager } from '@/services/storageRequestManager';
 import { albumArtPool } from '@/utils/albumArtPool';
 import { getAlbumArtworkUrl } from '@/utils/imageUtils';
@@ -87,7 +86,7 @@ export class ArtworkService {
         
         console.log('✅ Selected artwork file:', chosen.name, 'for track', track.id);
         
-        const { data: urlData } = serviceSupabase.storage.from('albumart').getPublicUrl(chosen.name);
+        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
         const artworkUrl = urlData.publicUrl;
         
         console.log('🔗 Generated artwork URL:', artworkUrl);
