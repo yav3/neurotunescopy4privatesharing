@@ -108,7 +108,7 @@ export const NavigationHeader = () => {
             Login
           </Link>
           <Link 
-            to="/subscribe" 
+            to="/products/environmental" 
             className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
           >
             Get Started
@@ -199,7 +199,7 @@ export const NavigationHeader = () => {
             Login
           </Link>
           <Link 
-            to="/subscribe" 
+            to="/products/environmental" 
             className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
           >
             Get Started

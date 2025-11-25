@@ -156,7 +156,7 @@ const AppContent = () => {
         <Route path="/subscribe" element={<Subscribe />} />
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
-        <Route path="/products/environmental" element={<ProductsOverview />} />
+        <Route path="/products/environmental" element={<EnvironmentalBackground />} />
         <Route path="/products/senior-living" element={<ProductsOverview />} />
         <Route path="/products/healthcare" element={<ProductsOverview />} />
         <Route path="/products/enterprise-wellness" element={<EnterpriseWellnessPricing />} />
