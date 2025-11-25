@@ -109,17 +109,19 @@ const Index = () => {
       {/* Spacer for layout */}
       <div className="flex-1" />
       
-      {/* Landing Page Controls */}
-      <LandingPageControls
-        isPlaying={isPlaying}
-        isMuted={isMuted}
-        isSpatialAudio={isSpatialAudio}
-        currentTrack={currentTrack}
-        onPlayPause={() => setIsPlaying(!isPlaying)}
-        onSkip={handleSkip}
-        onToggleMute={() => setIsMuted(!isMuted)}
-        onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
-      />
+      {/* Landing Page Controls - only show when hero is hidden */}
+      {!showHero && (
+        <LandingPageControls
+          isPlaying={isPlaying}
+          isMuted={isMuted}
+          isSpatialAudio={isSpatialAudio}
+          currentTrack={currentTrack}
+          onPlayPause={() => setIsPlaying(!isPlaying)}
+          onSkip={handleSkip}
+          onToggleMute={() => setIsMuted(!isMuted)}
+          onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
+        />
+      )}
       
       {/* Footer */}
       <Footer />
