@@ -1,12 +1,5 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FooterContactHandler } from "./FooterContactHandler";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
@@ -26,7 +19,7 @@ export const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           
           {/* Logos Section - Compact */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-6">
             <span className="text-[10px] sm:text-xs text-white/30 uppercase tracking-widest">Supported by</span>
             <img 
               src={jacobsTechnionLogo} 
@@ -44,78 +37,6 @@ export const Footer = () => {
               className="h-6 sm:h-7 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
             />
           </div>
-
-          {/* Minimal Accordion Footer */}
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="footer-links" className="border-none">
-              <AccordionTrigger className="text-xs sm:text-sm font-bold text-white/80 hover:text-white hover:no-underline py-3 justify-center tracking-wider">
-                MENU
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-4 pb-6">
-                  
-                  {/* PRODUCT */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Product
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li><Link to="/products/environmental" className="text-xs text-white/50 hover:text-white transition-colors block">Environmental & Background</Link></li>
-                      <li><Link to="/products/population-health" className="text-xs text-white/50 hover:text-white transition-colors block">Enterprise Population Health</Link></li>
-                      <li><Link to="/products/enterprise-wellness" className="text-xs text-white/50 hover:text-white transition-colors block">Enterprise Wellness</Link></li>
-                      <li><Link to="/app-download" className="text-xs text-white/50 hover:text-white transition-colors block">Personal Wellness App</Link></li>
-                    </ul>
-                  </div>
-
-                  {/* COMPANY */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Company
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li><Link to="/story" className="text-xs text-white/50 hover:text-white transition-colors block">Our Story</Link></li>
-                      <li><Link to="/team" className="text-xs text-white/50 hover:text-white transition-colors block">Leadership</Link></li>
-                      <li><button onClick={() => openContact('General')} className="text-xs text-white/50 hover:text-white transition-colors text-left w-full">Contact</button></li>
-                    </ul>
-                  </div>
-
-                  {/* LEGAL */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Legal
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li><Link to="/privacy" className="text-xs text-white/50 hover:text-white transition-colors block">Privacy</Link></li>
-                      <li><Link to="/legal" className="text-xs text-white/50 hover:text-white transition-colors block">Terms</Link></li>
-                      <li><Link to="/cookies" className="text-xs text-white/50 hover:text-white transition-colors block">Cookies</Link></li>
-                      <li><Link to="/hipaa" className="text-xs text-white/50 hover:text-white transition-colors block">HIPAA</Link></li>
-                    </ul>
-                  </div>
-
-                  {/* SUPPORT */}
-                  <div>
-                    <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest mb-2 sm:mb-3 text-white/90">
-                      Support
-                    </h3>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      <li>
-                        <button 
-                          onClick={() => {
-                            const event = new CustomEvent('openSupportChat');
-                            window.dispatchEvent(event);
-                          }}
-                          className="text-xs text-white/50 hover:text-white transition-colors text-left w-full"
-                        >
-                          Chat Support
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
 
           {/* Bottom Bar - Minimal */}
           <div className="pt-4 border-t border-white/8">
