@@ -46,6 +46,9 @@ export const NavigationHeader = () => {
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
+                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -92,9 +95,6 @@ export const NavigationHeader = () => {
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
                 <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
                   Chat Support
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -138,6 +138,9 @@ export const NavigationHeader = () => {
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
+                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -184,9 +187,6 @@ export const NavigationHeader = () => {
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
                 <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
                   Chat Support
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
