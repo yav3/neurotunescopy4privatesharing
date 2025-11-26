@@ -58,76 +58,23 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Hero Section - Floating Elements */}
+      {/* Hero Section - Play Button Only */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-center gap-8 max-w-4xl mx-auto px-6">
-            {/* Description Text - Floating and Centered */}
-            <div 
-              className="animate-fade-in"
+          <div className="pointer-events-auto">
+            <button
+              onClick={handlePlaySession}
+              className="group transition-all hover:scale-110 relative"
               style={{
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                animationDelay: '0.3s',
-                animationFillMode: 'forwards',
-                opacity: 0
+                filter: 'drop-shadow(0 16px 40px rgba(192, 192, 192, 0.5))'
               }}
             >
-              <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
-                Neuroscience-backed · Clinically Validated
-              </p>
-            </div>
-
-            {/* Music & AI Text - Floating and Centered */}
-            <div 
-              className="animate-fade-in"
-              style={{
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                animationDelay: '0.6s',
-                animationFillMode: 'forwards',
-                opacity: 0
-              }}
-            >
-              <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
-                Music & AI Streaming
-              </p>
-            </div>
-
-            {/* Play Button - Centered */}
-            <div className="flex flex-col items-center gap-4 animate-fade-in" style={{ animationDelay: '0.9s', animationFillMode: 'forwards', opacity: 0 }}>
-              <button
-                onClick={handlePlaySession}
-                className="group transition-all hover:scale-105 relative"
-                style={{
-                  filter: 'drop-shadow(0 12px 32px rgba(192, 192, 192, 0.4))'
-                }}
-              >
-                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" className="transition-all group-hover:drop-shadow-[0_0_20px_rgba(192,192,192,0.6)]">
-                  <circle cx="60" cy="60" r="58" fill="none" stroke="#c0c0c0" strokeWidth="1.5" opacity="0.3" />
-                  <path d="M48 35v50l40-25z" fill="none" stroke="#c0c0c0" strokeWidth="3" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
-                </svg>
-                <div className="absolute inset-0 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
-              
-              <span className="text-lg tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: 400, letterSpacing: '0.05em', fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-                Listen Now
-              </span>
-              
-              {/* Free Trial Text - Fades in below play button */}
-              <span 
-                className="animate-fade-in" 
-                style={{ 
-                  color: 'rgba(255, 255, 255, 0.75)', 
-                  fontWeight: 400, 
-                  letterSpacing: '0.05em',
-                  fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                  animationDelay: '1.5s',
-                  animationFillMode: 'forwards',
-                  opacity: 0
-                }}
-              >
-                Free Trial
-              </span>
-            </div>
+              <svg width="140" height="140" viewBox="0 0 140 140" fill="none" className="transition-all group-hover:drop-shadow-[0_0_30px_rgba(192,192,192,0.8)]">
+                <circle cx="70" cy="70" r="68" fill="none" stroke="#c0c0c0" strokeWidth="2" opacity="0.4" />
+                <path d="M55 40v60l50-30z" fill="none" stroke="#c0c0c0" strokeWidth="3.5" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
+              </svg>
+              <div className="absolute inset-0 rounded-full bg-white/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
           </div>
         </div>
       )}
