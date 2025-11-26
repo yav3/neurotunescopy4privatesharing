@@ -116,7 +116,7 @@ export const AppDownload = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className="rounded-3xl p-6 relative transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-3xl p-6 relative transition-all duration-300 hover:scale-[1.02] flex flex-col"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   backdropFilter: 'blur(24px)',
@@ -146,8 +146,8 @@ export const AppDownload = () => {
                   <p className="text-neutral-400 text-xs leading-tight">{plan.description}</p>
                 </div>
 
-                {/* Features */}
-                <ul className="space-y-2 mb-5">
+                {/* Features - flex-grow pushes button down */}
+                <ul className="space-y-2 mb-5 flex-grow">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
@@ -156,10 +156,10 @@ export const AppDownload = () => {
                   ))}
                 </ul>
 
-                {/* CTA Button */}
+                {/* CTA Button - mt-auto keeps it at bottom */}
                 <button
                   onClick={() => setSalesAssistantOpen(true)}
-                  className="w-full py-2.5 rounded-full font-semibold text-sm transition-all hover:bg-white/10"
+                  className="w-full py-2.5 rounded-full font-semibold text-sm transition-all hover:bg-white/10 mt-auto"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.10)',
