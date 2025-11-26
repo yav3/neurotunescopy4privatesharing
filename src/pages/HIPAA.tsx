@@ -126,7 +126,6 @@ export const HIPAA = () => {
             <section>
               <h2 className="text-3xl font-light text-white mb-6">Certifications & Audits</h2>
               <p>
-                NeuroTunes undergoes regular third-party security audits and maintains compliance certifications. 
                 Our infrastructure providers are HIPAA-compliant and SOC 2 Type II certified.
               </p>
             </section>
