@@ -84,7 +84,7 @@ const Index = () => {
             {/* Primary CTA */}
             <div className="flex flex-col items-center gap-3">
               <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
-                Listen Now
+                Experience Now
               </span>
               <span className="text-[#e4e4e4]/60 text-sm tracking-wider" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
                 Preview the Experience
