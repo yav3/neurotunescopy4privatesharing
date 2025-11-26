@@ -100,13 +100,13 @@ export const NavigationHeader = () => {
         <div className="flex items-center gap-4">
           <Link 
             to="/auth" 
-            className="text-white/70 hover:text-white transition-colors text-sm font-medium"
+            className="px-6 py-2 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all duration-200 text-sm font-medium"
           >
             Login
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-5 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-sm font-medium"
+            className="px-7 py-2.5 rounded-full bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-200 text-sm font-medium"
           >
             Free Trial
           </Link>
@@ -188,13 +188,13 @@ export const NavigationHeader = () => {
         <div className="flex items-center gap-3">
           <Link 
             to="/auth" 
-            className="text-white/70 hover:text-white transition-colors text-xs font-medium"
+            className="px-4 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all duration-200 text-xs font-medium"
           >
             Login
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-4 py-1 rounded-full bg-white text-black hover:bg-white/90 transition-all duration-200 text-xs font-medium"
+            className="px-5 py-2 rounded-full bg-white text-black hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-200 text-xs font-medium"
           >
             Free Trial
           </Link>
