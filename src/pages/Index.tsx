@@ -94,7 +94,7 @@ const Index = () => {
                   }}
                 >
                   <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                    <path d="M28 18v44l36-22z" fill="rgba(255, 255, 255, 0.95)" stroke="#c0c0c0" strokeWidth="1.5" />
+                    <path d="M28 18v44l36-22z" fill="none" stroke="#c0c0c0" strokeWidth="2" strokeLinejoin="round" />
                   </svg>
                 </button>
                 <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>
