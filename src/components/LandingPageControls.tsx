@@ -99,7 +99,9 @@ export const LandingPageControls = ({
                 </button>
                 <div className="flex-1 min-w-0">
                   <div className="text-xs text-white font-normal truncate">{currentTrack?.name}</div>
-                  <div className="text-[10px] text-white/60 truncate">{currentTrack?.artist}</div>
+                  <div className="text-[10px] text-white/60 truncate">
+                    {currentTrack?.therapeuticGoal}, {currentTrack?.genre}
+                  </div>
                 </div>
               </div>
               <ChevronUp className="w-4 h-4 text-white/60 flex-shrink-0" />
@@ -140,11 +142,10 @@ export const LandingPageControls = ({
 
                 {/* Track Info - Compact */}
                 <div className="flex flex-col min-w-0 flex-1">
+                  <div className="text-[10px] text-white font-normal truncate">{currentTrack?.name}</div>
                   <div className="text-[9px] text-white/60 font-light truncate">
                     {currentTrack?.therapeuticGoal}, {currentTrack?.genre}
                   </div>
-                  <div className="text-[10px] text-white font-normal truncate">{currentTrack?.name}</div>
-                  <div className="text-[9px] text-white/70 font-light truncate">{currentTrack?.artist}</div>
                 </div>
 
                 <div className="w-px h-6 bg-white/20" />
@@ -192,11 +193,10 @@ export const LandingPageControls = ({
 
               {/* Track Info */}
               <div className="mb-3 text-center">
-                <div className="text-xs text-white/60 font-light mb-1">
+                <div className="text-sm text-white font-normal mb-1">{currentTrack?.name}</div>
+                <div className="text-xs text-white/60 font-light">
                   {currentTrack?.therapeuticGoal} • {currentTrack?.genre}
                 </div>
-                <div className="text-sm text-white font-normal mb-0.5">{currentTrack?.name}</div>
-                <div className="text-xs text-white/70 font-light">{currentTrack?.artist}</div>
               </div>
 
               {/* All Controls */}

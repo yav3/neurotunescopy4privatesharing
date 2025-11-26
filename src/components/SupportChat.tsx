@@ -174,9 +174,9 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
 
   return (
     <>
-      {/* Chat Support/Subscribe Button - positioned next to player or above footer */}
-      <div className={nextToPlayer ? "fixed bottom-[120px] right-4 sm:right-6 md:right-8 lg:right-12 z-[60]" : "relative z-30 px-6 pb-6"}>
-        <div className={nextToPlayer ? "" : "max-w-7xl mx-auto flex justify-end"}>
+      {/* Chat Support/Subscribe Button - positioned directly next to player */}
+      <div className={nextToPlayer ? "fixed bottom-[120px] left-4 sm:left-auto sm:right-6 md:right-8 lg:right-12 z-[60]" : "relative z-30 px-6 pb-6"}>
+        <div className={nextToPlayer ? "flex justify-start sm:justify-end" : "max-w-7xl mx-auto flex justify-end"}>
           {!isOpen && (
             <button
               onClick={() => setIsOpen(true)}
