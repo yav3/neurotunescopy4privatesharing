@@ -3,11 +3,41 @@ import { Footer } from "@/components/Footer";
 import { SalesAssistant } from "@/components/sales/SalesAssistant";
 import { SupportChat } from "@/components/SupportChat";
 import { Check, ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const AppDownload = () => {
   const [salesAssistantOpen, setSalesAssistantOpen] = useState(false);
+  const [enrollmentModalOpen, setEnrollmentModalOpen] = useState(false);
+  const [enrollmentData, setEnrollmentData] = useState({ name: '', email: '' });
+  const [enrollmentError, setEnrollmentError] = useState('');
+  const [enrollmentSuccess, setEnrollmentSuccess] = useState(false);
+
+  const handleEnrollment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEnrollmentError('');
+
+    // Validate inputs
+    if (!enrollmentData.name.trim()) {
+      setEnrollmentError('Name is required');
+      return;
+    }
+    if (!enrollmentData.email.trim() || !enrollmentData.email.includes('@')) {
+      setEnrollmentError('Valid email is required');
+      return;
+    }
+
+    // TODO: Send enrollment data to backend/database
+    console.log('Free trial enrollment:', enrollmentData);
+    
+    setEnrollmentSuccess(true);
+    setTimeout(() => {
+      setEnrollmentModalOpen(false);
+      setEnrollmentSuccess(false);
+      setEnrollmentData({ name: '', email: '' });
+    }, 2000);
+  };
+
   const plans = [
     {
       name: "Trial Offer",
@@ -158,7 +188,13 @@ export const AppDownload = () => {
 
                 {/* CTA Button - mt-auto keeps it at bottom */}
                 <button
-                  onClick={() => setSalesAssistantOpen(true)}
+                  onClick={() => {
+                    if (plan.name === "Trial Offer") {
+                      setEnrollmentModalOpen(true);
+                    } else {
+                      setSalesAssistantOpen(true);
+                    }
+                  }}
                   className="w-full py-2.5 rounded-full font-semibold text-sm transition-all hover:bg-white/10 mt-auto"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
@@ -190,6 +226,105 @@ export const AppDownload = () => {
         onExternalClose={() => setSalesAssistantOpen(false)}
       />
       <SupportChat />
+
+      {/* Free Trial Enrollment Modal */}
+      {enrollmentModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0, 0, 0, 0.85)' }}
+          onClick={() => setEnrollmentModalOpen(false)}
+        >
+          <div 
+            className="max-w-md w-full rounded-3xl p-8"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255, 255, 255, 0.10)',
+              boxShadow: '0 0 60px rgba(0, 0, 0, 0.8)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {enrollmentSuccess ? (
+              <div className="text-center">
+                <div className="text-4xl mb-4">🎉</div>
+                <h3 className="text-2xl font-light text-white mb-2">Welcome!</h3>
+                <p className="text-neutral-300">Your free trial is being activated...</p>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-2xl font-light text-white mb-2 text-center">Start Your Free Trial</h3>
+                <p className="text-neutral-400 text-sm text-center mb-6">
+                  Get full access for one month. No credit card required.
+                </p>
+
+                <form onSubmit={handleEnrollment} className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-neutral-300 mb-2">Name</label>
+                    <input
+                      type="text"
+                      value={enrollmentData.name}
+                      onChange={(e) => setEnrollmentData({ ...enrollmentData, name: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl text-white"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.10)',
+                      }}
+                      placeholder="Enter your name"
+                      maxLength={100}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-neutral-300 mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={enrollmentData.email}
+                      onChange={(e) => setEnrollmentData({ ...enrollmentData, email: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl text-white"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.10)',
+                      }}
+                      placeholder="Enter your email"
+                      maxLength={255}
+                    />
+                  </div>
+
+                  {enrollmentError && (
+                    <p className="text-red-400 text-sm">{enrollmentError}</p>
+                  )}
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setEnrollmentModalOpen(false)}
+                      className="flex-1 py-3 rounded-full font-semibold text-sm transition-all"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.10)',
+                        color: 'white'
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-3 rounded-full font-semibold text-sm transition-all"
+                      style={{
+                        background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                        color: 'white',
+                        boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)'
+                      }}
+                    >
+                      Start Trial
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
