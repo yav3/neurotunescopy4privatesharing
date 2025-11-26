@@ -150,8 +150,10 @@ export const AppDownload = () => {
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
                   backdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(255, 255, 255, 0.10)',
-                  boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
+                  border: plan.name === "Trial Offer" ? '2px solid rgba(192, 192, 192, 0.8)' : '1px solid rgba(255, 255, 255, 0.10)',
+                  boxShadow: plan.name === "Trial Offer" 
+                    ? '0 0 60px rgba(192, 192, 192, 0.6), 0 0 40px rgba(255, 255, 255, 0.4)' 
+                    : '0 0 40px rgba(0, 0, 0, 0.8)'
                 }}
               >
                 {/* Badge */}
@@ -254,7 +256,7 @@ export const AppDownload = () => {
               <>
                 <h3 className="text-2xl font-light text-white mb-2 text-center">Start Your Free Trial</h3>
                 <p className="text-neutral-400 text-sm text-center mb-6">
-                  Get full access for one month. No credit card required.
+                  Enter a valid email to subscribe. Authenticate via email to activate.
                 </p>
 
                 <form onSubmit={handleEnrollment} className="space-y-4">
