@@ -8,8 +8,6 @@ import { SupportChat } from '@/components/SupportChat';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
-import chromeTexture from '@/assets/chrome-texture.png';
-import darkSparkleTexture from '@/assets/dark-sparkle-texture.png';
 
 const Index = () => {
   useWelcomeMessage();
@@ -60,98 +58,61 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Hero Section with Buttons - Zoomed Out */}
+      {/* Hero Section with Card - Inspired by Reference */}
       {showHero && (
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none scale-75">
-          <div className="flex flex-col gap-8 items-center pointer-events-auto">
-            {/* Big Platinum Play Triangle with Layered Textures */}
-            <button
-              onClick={handlePlaySession}
-              className="transition-all hover:scale-110 group relative"
-              style={{ 
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5))'
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          <div 
+            className="pointer-events-auto relative rounded-3xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 50%, rgba(0, 0, 0, 0.95) 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif'
+            }}
+          >
+            {/* Free Trial Badge */}
+            <div 
+              className="absolute top-6 right-6 px-4 py-2 rounded-full text-xs tracking-wide"
+              style={{
+                background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'rgba(255, 255, 255, 0.9)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
               }}
             >
-              <svg 
-                width="180" 
-                height="210" 
-                viewBox="0 0 180 210" 
-                fill="none"
-                className="transition-all group-hover:brightness-110"
+              Free Trial
+            </div>
+
+            {/* Card Content */}
+            <div className="p-16 flex flex-col items-center text-center">
+              <h1 className="text-5xl tracking-tight text-white mb-4">
+                +NeuroTunes
+              </h1>
+              <p className="text-white/60 text-sm mb-2 max-w-lg leading-relaxed">
+                Neuroscience-backed · Clinically Validated
+              </p>
+              <p className="text-white/60 text-sm mb-12 max-w-lg leading-relaxed">
+                Medical-grade Therapeutic Music & AI Streaming
+              </p>
+
+              {/* Listen Now Button */}
+              <button
+                onClick={handlePlaySession}
+                className="px-12 py-4 rounded-full transition-all hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  fontSize: '18px',
+                  fontWeight: 400,
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                }}
               >
-                <defs>
-                  <pattern id="chromePattern" patternUnits="userSpaceOnUse" width="180" height="210">
-                    <image href={chromeTexture} x="0" y="0" width="180" height="210" />
-                  </pattern>
-                  <pattern id="darkSparklePattern" patternUnits="userSpaceOnUse" width="180" height="210">
-                    <image href={darkSparkleTexture} x="0" y="0" width="180" height="210" />
-                  </pattern>
-                  <clipPath id="triangleClip">
-                    <path d="M 30 15 L 165 105 L 30 195 Z" />
-                  </clipPath>
-                </defs>
-                {/* Base chrome layer */}
-                <path 
-                  d="M 30 15 L 165 105 L 30 195 Z" 
-                  fill="url(#chromePattern)"
-                  stroke="#6b7280"
-                  strokeWidth="2"
-                  style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))'
-                  }}
-                />
-                {/* Dark sparkle overlay layer */}
-                <path 
-                  d="M 30 15 L 165 105 L 30 195 Z" 
-                  fill="url(#darkSparklePattern)"
-                  opacity="0.4"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              </svg>
-            </button>
-            
-            {/* Pill-shaped Subscribe Button with Layered Textures */}
-            <button
-              onClick={handleSubscribe}
-              className="relative px-20 py-6 rounded-full transition-all hover:scale-105 overflow-hidden"
-              style={{ 
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                border: '1px solid rgba(107, 114, 128, 0.5)',
-                fontSize: '24px',
-                fontWeight: 400
-              }}
-            >
-              {/* Chrome texture base */}
-              <div 
-                className="absolute inset-0 opacity-70"
-                style={{
-                  backgroundImage: `url(${chromeTexture})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              />
-              {/* Dark sparkle overlay */}
-              <div 
-                className="absolute inset-0 opacity-30"
-                style={{
-                  backgroundImage: `url(${darkSparkleTexture})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  mixBlendMode: 'multiply'
-                }}
-              />
-              {/* Frosted glass for text readability */}
-              <div 
-                className="absolute inset-0"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)'
-                }}
-              />
-              <span className="relative z-10 text-black">Subscribe</span>
-            </button>
+                Listen Now
+              </button>
+            </div>
           </div>
         </div>
       )}
