@@ -112,46 +112,21 @@ const Index = () => {
               </svg>
             </button>
             
-            {/* Pill-shaped Subscribe Button with Layered Textures */}
+            {/* High-Gloss Obsidian Subscribe Button */}
             <button
               onClick={handleSubscribe}
-              className="relative px-20 py-6 rounded-full transition-all hover:scale-105 overflow-hidden"
+              className="relative px-20 py-6 rounded-full transition-all hover:scale-105"
               style={{ 
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                border: '1px solid rgba(107, 114, 128, 0.5)',
+                background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 30%, #404040 50%, #2d2d2d 70%, #1a1a1a 100%)',
+                border: '1px solid #000000',
                 fontSize: '24px',
-                fontWeight: 400
+                fontWeight: 400,
+                boxShadow: '0 12px 32px rgba(0, 0, 0, 0.8), inset 0 2px 8px rgba(255, 255, 255, 0.1)',
+                color: '#ffffff'
               }}
             >
-              {/* Chrome texture base */}
-              <div 
-                className="absolute inset-0 opacity-70"
-                style={{
-                  backgroundImage: `url(${chromeTexture})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              />
-              {/* Dark sparkle overlay */}
-              <div 
-                className="absolute inset-0 opacity-30"
-                style={{
-                  backgroundImage: `url(${darkSparkleTexture})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  mixBlendMode: 'multiply'
-                }}
-              />
-              {/* Frosted glass for text readability */}
-              <div 
-                className="absolute inset-0"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)'
-                }}
-              />
-              <span className="relative z-10 text-black">Subscribe</span>
+              <span className="relative z-10">Subscribe</span>
             </button>
           </div>
         </div>
