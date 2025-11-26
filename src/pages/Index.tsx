@@ -64,13 +64,13 @@ const Index = () => {
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none scale-75">
           <div className="flex flex-col gap-8 items-center pointer-events-auto">
-            {/* Big Platinum Play Triangle with Layered Textures */}
+            {/* Big High-Gloss Obsidian Play Triangle */}
             <button
               onClick={handlePlaySession}
               className="transition-all hover:scale-110 group relative"
               style={{ 
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5))'
+                filter: 'drop-shadow(0 12px 32px rgba(0, 0, 0, 0.8))'
               }}
             >
               <svg 
@@ -78,35 +78,36 @@ const Index = () => {
                 height="210" 
                 viewBox="0 0 180 210" 
                 fill="none"
-                className="transition-all group-hover:brightness-110"
+                className="transition-all group-hover:brightness-125"
               >
                 <defs>
-                  <pattern id="chromePattern" patternUnits="userSpaceOnUse" width="180" height="210">
-                    <image href={chromeTexture} x="0" y="0" width="180" height="210" />
-                  </pattern>
-                  <pattern id="darkSparklePattern" patternUnits="userSpaceOnUse" width="180" height="210">
-                    <image href={darkSparkleTexture} x="0" y="0" width="180" height="210" />
-                  </pattern>
-                  <clipPath id="triangleClip">
-                    <path d="M 30 15 L 165 105 L 30 195 Z" />
-                  </clipPath>
+                  <linearGradient id="obsidianGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#1a1a1a', stopOpacity: 1 }} />
+                    <stop offset="30%" style={{ stopColor: '#2d2d2d', stopOpacity: 1 }} />
+                    <stop offset="50%" style={{ stopColor: '#404040', stopOpacity: 1 }} />
+                    <stop offset="70%" style={{ stopColor: '#2d2d2d', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#1a1a1a', stopOpacity: 1 }} />
+                  </linearGradient>
+                  <radialGradient id="gloss" cx="40%" cy="35%">
+                    <stop offset="0%" style={{ stopColor: '#ffffff', stopOpacity: 0.6 }} />
+                    <stop offset="30%" style={{ stopColor: '#ffffff', stopOpacity: 0.3 }} />
+                    <stop offset="100%" style={{ stopColor: '#ffffff', stopOpacity: 0 }} />
+                  </radialGradient>
                 </defs>
-                {/* Base chrome layer */}
+                {/* Base obsidian shape */}
                 <path 
                   d="M 30 15 L 165 105 L 30 195 Z" 
-                  fill="url(#chromePattern)"
-                  stroke="#6b7280"
+                  fill="url(#obsidianGradient)"
+                  stroke="#000000"
                   strokeWidth="2"
                   style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))'
+                    filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.9))'
                   }}
                 />
-                {/* Dark sparkle overlay layer */}
+                {/* High gloss highlight */}
                 <path 
                   d="M 30 15 L 165 105 L 30 195 Z" 
-                  fill="url(#darkSparklePattern)"
-                  opacity="0.4"
-                  style={{ mixBlendMode: 'multiply' }}
+                  fill="url(#gloss)"
                 />
               </svg>
             </button>
