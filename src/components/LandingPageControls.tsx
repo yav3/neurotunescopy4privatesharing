@@ -69,14 +69,14 @@ export const LandingPageControls = ({
         <div className="w-px h-8 bg-white/20" />
 
         {/* Track Info */}
-        <div className="hidden sm:flex flex-col min-w-[160px] md:min-w-[200px] lg:min-w-[240px]">
-          <div className="text-[10px] md:text-xs text-white/60 font-light tracking-wide">
+        <div className="flex flex-col min-w-[140px] sm:min-w-[160px] md:min-w-[200px] lg:min-w-[240px]">
+          <div className="text-[9px] sm:text-[10px] md:text-xs text-white/60 font-light tracking-wide">
             {currentTrack?.therapeuticGoal || 'Loading...'}, {currentTrack?.genre || ''}
           </div>
-          <div className="text-xs md:text-sm text-white font-normal truncate">
+          <div className="text-[10px] sm:text-xs md:text-sm text-white font-normal truncate">
             {currentTrack?.name || ''}
           </div>
-          <div className="text-[10px] md:text-xs text-white/70 font-light truncate">
+          <div className="text-[9px] sm:text-[10px] md:text-xs text-white/70 font-light truncate">
             {currentTrack?.artist || ''}
           </div>
         </div>
