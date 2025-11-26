@@ -112,30 +112,22 @@ serve(async (req) => {
     // If validation passed, send confirmation email and create trial record
     if (errors.length === 0) {
       try {
-        // Send confirmation email
-        const emailResponse = await fetch(
-          `${Deno.env.get('SUPABASE_URL')}/functions/v1/send-auth-email`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              type: 'trial-confirmation',
-              to: email,
-              data: {
-                displayName: nameToValidate,
-                email: email,
-              }
-            })
+        // Send confirmation email using Supabase client invoke
+        const { data: emailData, error: emailError } = await supabase.functions.invoke('send-auth-email', {
+          body: {
+            type: 'trial-confirmation',
+            to: email,
+            data: {
+              displayName: nameToValidate,
+              email: email,
+            }
           }
-        );
+        });
 
-        if (!emailResponse.ok) {
-          console.error('Failed to send confirmation email:', await emailResponse.text());
+        if (emailError) {
+          console.error('Failed to send confirmation email:', emailError);
         } else {
-          console.log('✅ Confirmation email sent to', email);
+          console.log('✅ Confirmation email sent to', email, emailData);
         }
 
         // Store trial request in database (you may need to create this table)
