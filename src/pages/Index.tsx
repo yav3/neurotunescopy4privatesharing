@@ -58,10 +58,11 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Hero Section - Play Button Only */}
+      {/* Hero Section - Play Button with CTAs */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto flex flex-col items-center gap-6">
+            {/* Play Button */}
             <button
               onClick={handlePlaySession}
               className="group transition-all hover:scale-110 relative"
@@ -74,6 +75,25 @@ const Index = () => {
                 <path d="M70 50v80l65-40z" fill="none" stroke="#c0c0c0" strokeWidth="4" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
               </svg>
               <div className="absolute inset-0 rounded-full bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+            
+            {/* Primary CTA */}
+            <div className="flex flex-col items-center gap-3">
+              <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
+                Listen Now
+              </span>
+              <span className="text-[#e4e4e4]/60 text-sm tracking-wider" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
+                Preview the Experience
+              </span>
+            </div>
+
+            {/* Subscribe CTA */}
+            <button
+              onClick={handleSubscribe}
+              className="mt-4 px-8 py-3 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 transition-all backdrop-blur-sm"
+              style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
+            >
+              Subscribe
             </button>
           </div>
         </div>
@@ -101,9 +121,6 @@ const Index = () => {
       
       {/* Hidden Sales Assistant (triggered from header) */}
       <SalesAssistant externalOpen={false} />
-      
-      {/* Subscribe Button (Chat Support on landing page) */}
-      <SupportChat buttonText="Subscribe" nextToPlayer={true} />
     </div>
   );
 };
