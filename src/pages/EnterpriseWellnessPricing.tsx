@@ -72,9 +72,6 @@ export const EnterpriseWellnessPricing = () => {
             <h1 className="text-5xl font-light tracking-tight text-white mb-4">
               Free Business Trial
             </h1>
-            <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto">
-              Experience workplace mental health transformation with a complimentary 30-day trial
-            </p>
           </div>
 
           {/* Free Trial Form */}
