@@ -12,62 +12,109 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
     
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    if (!ANTHROPIC_API_KEY) {
+      console.error("ANTHROPIC_API_KEY is not configured");
+      throw new Error("ANTHROPIC_API_KEY is not configured");
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    console.log("Using Anthropic API with claude-sonnet-4-5");
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { 
-            role: "system", 
-            content: "You are a helpful AI assistant for NeuroTunes. Provide clear, concise, and friendly responses about therapeutic music, wellness, and how our platform can help users achieve their mental health and wellness goals."
-          },
-          ...messages,
-        ],
+        model: "claude-sonnet-4-5",
+        max_tokens: 4096,
+        system: "You are a helpful AI assistant for NeuroTunes. Provide clear, concise, and friendly responses about therapeutic music, wellness, and how our platform can help users achieve their mental health and wellness goals.",
+        messages: messages,
         stream: true,
       }),
     });
 
-    if (response.status === 429) {
-      return new Response(JSON.stringify({ error: "Rate limits exceeded, please try again later." }), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Anthropic API error:", response.status, errorText);
+      return new Response(
+        JSON.stringify({ 
+          error: `Anthropic API error: ${response.status} - ${errorText}` 
+        }), {
+          status: response.status,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
-    if (response.status === 402) {
-      return new Response(JSON.stringify({ error: "Payment required, please add funds to your Lovable AI workspace." }), {
-        status: 402,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!response.body) {
+      throw new Error("No response body from Anthropic API");
     }
 
-    if (!response.ok || !response.body) {
-      const text = await response.text();
-      console.error("AI gateway error:", response.status, text);
-      return new Response(JSON.stringify({ error: "AI gateway error" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // Create a transform stream to convert Anthropic's SSE format to OpenAI-compatible format
+    const readable = response.body;
+    const transformStream = new TransformStream({
+      async transform(chunk, controller) {
+        const text = new TextDecoder().decode(chunk);
+        const lines = text.split('\n');
+        
+        for (const line of lines) {
+          if (!line.trim() || line.startsWith(':')) continue;
+          
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            
+            if (data === '[DONE]') {
+              controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+              continue;
+            }
+            
+            try {
+              const parsed = JSON.parse(data);
+              
+              // Convert Anthropic format to OpenAI-compatible format
+              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                const openAIFormat = {
+                  choices: [{
+                    delta: {
+                      content: parsed.delta.text
+                    }
+                  }]
+                };
+                controller.enqueue(
+                  new TextEncoder().encode(`data: ${JSON.stringify(openAIFormat)}\n\n`)
+                );
+              } else if (parsed.type === 'message_stop') {
+                controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+              }
+            } catch (e) {
+              console.error('Error parsing Anthropic response:', e);
+            }
+          }
+        }
+      }
+    });
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    return new Response(readable.pipeThrough(transformStream), {
+      headers: { 
+        ...corsHeaders, 
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
     });
   } catch (error) {
-    console.error("chat error:", error);
-    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error("Chat error:", error);
+    return new Response(
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : "Unknown error" 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
   }
 });
