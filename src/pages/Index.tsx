@@ -80,13 +80,17 @@ const Index = () => {
               >
                 <defs>
                   <linearGradient id="platinumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#e8e8e8', stopOpacity: 1 }} />
-                    <stop offset="20%" style={{ stopColor: '#f5f5f5', stopOpacity: 1 }} />
-                    <stop offset="45%" style={{ stopColor: '#fafafa', stopOpacity: 1 }} />
-                    <stop offset="55%" style={{ stopColor: '#fafafa', stopOpacity: 1 }} />
-                    <stop offset="80%" style={{ stopColor: '#e0e0e0', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#d0d0d0', stopOpacity: 1 }} />
+                    <stop offset="0%" style={{ stopColor: '#9ca3af', stopOpacity: 1 }} />
+                    <stop offset="30%" style={{ stopColor: '#d1d5db', stopOpacity: 1 }} />
+                    <stop offset="50%" style={{ stopColor: '#e5e7eb', stopOpacity: 1 }} />
+                    <stop offset="70%" style={{ stopColor: '#d1d5db', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#9ca3af', stopOpacity: 1 }} />
                   </linearGradient>
+                  <radialGradient id="platinumRadial" cx="40%" cy="40%">
+                    <stop offset="0%" style={{ stopColor: '#f3f4f6', stopOpacity: 0.8 }} />
+                    <stop offset="50%" style={{ stopColor: '#d1d5db', stopOpacity: 0.4 }} />
+                    <stop offset="100%" style={{ stopColor: '#9ca3af', stopOpacity: 0 }} />
+                  </radialGradient>
                   <filter id="shine">
                     <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
                     <feComponentTransfer>
@@ -97,16 +101,21 @@ const Index = () => {
                 <path 
                   d="M 20 10 L 110 70 L 20 130 Z" 
                   fill="url(#platinumGradient)"
-                  stroke="rgba(255, 255, 255, 0.8)"
+                  stroke="#6b7280"
                   strokeWidth="2"
                   style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3))'
+                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))'
                   }}
                 />
-                {/* Shine highlight */}
+                {/* Radial highlight for metallic effect */}
                 <path 
-                  d="M 30 25 L 95 70 L 30 115 Z" 
-                  fill="rgba(255, 255, 255, 0.3)"
+                  d="M 20 10 L 110 70 L 20 130 Z" 
+                  fill="url(#platinumRadial)"
+                />
+                {/* Edge shine */}
+                <path 
+                  d="M 30 20 L 100 70 L 30 120 Z" 
+                  fill="rgba(255, 255, 255, 0.15)"
                   style={{ mixBlendMode: 'overlay' }}
                 />
               </svg>
