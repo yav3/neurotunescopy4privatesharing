@@ -65,14 +65,7 @@ const Index = () => {
       {/* Hero Section - Play Button with CTAs */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-center gap-8">
-            {/* Value Proposition Tagline */}
-            <div className="text-center mb-4">
-              <p className="text-[#e4e4e4]/80 text-lg tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
-                Clinically validated • 110+ biomarkers • Personalized therapeutics
-              </p>
-            </div>
-
+          <div className="pointer-events-auto flex flex-col items-center gap-12">
             {/* Play Button */}
             <button
               onClick={handlePlaySession}
@@ -89,25 +82,20 @@ const Index = () => {
             </button>
             
             {/* Primary CTA */}
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center">
               <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
                 Experience Now
               </span>
             </div>
 
-            {/* Subscribe CTA with Value Prop */}
-            <div className="flex flex-col items-center gap-3 mt-2">
-              <span className="text-[#e4e4e4]/60 text-sm tracking-wider" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
-                Start your therapeutic journey
-              </span>
-              <button
-                onClick={handleSubscribe}
-                className="px-8 py-3 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 transition-all backdrop-blur-sm"
-                style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
-              >
-                Subscribe
-              </button>
-            </div>
+            {/* Subscribe CTA */}
+            <button
+              onClick={handleSubscribe}
+              className="px-8 py-3 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 transition-all backdrop-blur-sm"
+              style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
+            >
+              Subscribe
+            </button>
           </div>
         </div>
       )}
