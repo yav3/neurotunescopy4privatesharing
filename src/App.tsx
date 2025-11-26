@@ -78,6 +78,7 @@ import HIPAA from "./pages/HIPAA";
 import Subscribe from "./pages/Subscribe";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
+import BlackFriday from "./pages/BlackFriday";
 
 const queryClient = new QueryClient();
 
@@ -206,6 +207,7 @@ const AppContent = () => {
         <Route path="/app-download" element={<AppDownload />} />
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancelled" element={<PaymentCancelled />} />
+        <Route path="/black-friday" element={<BlackFriday />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />

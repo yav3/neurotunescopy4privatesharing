@@ -78,6 +78,10 @@ export const pageBackgrounds: Record<string, { video?: string; gif?: string; ove
     video: '/videos/landing-19.mp4',
     overlayOpacity: 0.6,
   },
+  '/black-friday': {
+    video: '/videos/landing-20.mp4',
+    overlayOpacity: 0.7,
+  },
   // Add more pages as needed
   'default': {
     video: '/videos/landing-01.mp4',
