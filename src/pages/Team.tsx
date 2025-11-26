@@ -23,7 +23,7 @@ export const Team = () => {
             <h2 className="text-4xl font-light text-white mb-6">Advisory Board</h2>
             <p className="text-neutral-400 max-w-3xl mx-auto leading-relaxed">
               Our advisory board includes leading researchers from Stanford Medicine, Weill Cornell Medicine, 
-              MIT Media Lab, and the Jacobs Technion-Cornell Institute, ensuring our platform remains at the 
+              and the Jacobs Technion-Cornell Institute, ensuring our platform remains at the 
               forefront of neuroscience and music therapy research.
             </p>
           </div>
