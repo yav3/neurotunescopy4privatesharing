@@ -44,8 +44,14 @@ export function useFreeTrialChat() {
         }
       );
 
-      if (!response.ok || !response.body) {
-        throw new Error('Failed to start stream');
+      if (!response.ok) {
+        if (response.status === 402) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'AI credits depleted');
+        }
+        if (!response.body) {
+          throw new Error('Failed to start stream');
+        }
       }
 
       const reader = response.body.getReader();

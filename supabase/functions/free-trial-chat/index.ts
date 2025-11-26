@@ -69,7 +69,7 @@ Current collected data: ${JSON.stringify(collectedData || {})}`
         })
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: 'Service temporarily unavailable.' }), {
+        return new Response(JSON.stringify({ error: 'AI service credits depleted. Please add credits to your Lovable workspace in Settings → Usage.' }), {
           status: 402,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
