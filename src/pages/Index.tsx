@@ -58,49 +58,72 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Hero Section with Card - Inspired by Reference */}
+      {/* Hero Section - Floating Elements */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div 
-            className="pointer-events-auto relative rounded-3xl overflow-hidden max-w-md"
-            style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), inset 0 2px 4px rgba(255, 255, 255, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.5)',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-              fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif'
-            }}
-          >
-            {/* Card Content */}
-            <div className="p-10 flex flex-col items-center text-center">
-              <h1 className="text-4xl tracking-tight mb-3" style={{ fontWeight: 400, color: '#ffffff' }}>
-                +NeuroTunes
-              </h1>
-              <p className="text-sm mb-2 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
+          <div className="pointer-events-auto flex flex-col items-center gap-6">
+            {/* Description Text Floating Element */}
+            <div 
+              className="rounded-2xl px-6 py-3 animate-fade-in"
+              style={{
+                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif'
+              }}
+            >
+              <p className="text-sm leading-snug text-center" style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 400 }}>
                 Neuroscience-backed · Clinically Validated
               </p>
-              <p className="text-sm mb-10 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
+            </div>
+
+            {/* Music & AI Text Floating Element */}
+            <div 
+              className="rounded-2xl px-6 py-3 animate-fade-in"
+              style={{
+                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                animationDelay: '0.1s'
+              }}
+            >
+              <p className="text-sm leading-snug text-center" style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 400 }}>
                 Music & AI Streaming
               </p>
+            </div>
 
-              {/* Play Button and Text */}
-              <div className="flex flex-col items-center gap-3">
-                <button
-                  onClick={handlePlaySession}
-                  className="transition-all hover:scale-110"
-                  style={{
-                    filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.8))'
-                  }}
-                >
-                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                    <path d="M28 18v44l36-22z" fill="none" stroke="#c0c0c0" strokeWidth="2" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>
-                  Listen Now
-                </span>
-              </div>
+            {/* Play Button Floating Element */}
+            <div 
+              className="rounded-2xl px-8 py-6 flex flex-col items-center gap-3 animate-fade-in"
+              style={{
+                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                animationDelay: '0.2s'
+              }}
+            >
+              <button
+                onClick={handlePlaySession}
+                className="transition-all hover:scale-110"
+                style={{
+                  filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.8))'
+                }}
+              >
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                  <path d="M28 18v44l36-22z" fill="none" stroke="#c0c0c0" strokeWidth="2" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>
+                Listen Now
+              </span>
             </div>
           </div>
         </div>
