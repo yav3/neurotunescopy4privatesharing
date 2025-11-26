@@ -88,29 +88,30 @@ export const EnterpriseWellnessPricing = () => {
           {/* Chat Interface */}
           <div className="max-w-2xl mx-auto mb-12">
             <div
-              className="rounded-3xl p-6 flex flex-col"
+              className="rounded-3xl p-4 flex flex-col"
               style={{
                 background: 'rgba(0, 0, 0, 0.6)',
                 backdropFilter: 'blur(24px)',
                 border: '1px solid rgba(228, 228, 228, 0.15)',
-                height: '500px'
+                height: '420px'
               }}
             >
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+              <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-2">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+                      className={`max-w-[85%] px-3 py-2 rounded-xl text-sm ${
                         message.role === 'user'
-                          ? 'bg-[#e4e4e4] text-[#050607]'
-                          : 'bg-black/60 text-[#e4e4e4] border border-[#e4e4e4]/10'
+                          ? 'text-[#0a0a0c]'
+                          : 'bg-black/40 text-[#e4e4e4] border border-[#e4e4e4]/10'
                       }`}
                       style={{
                         fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                        backgroundColor: message.role === 'user' ? '#e4e4e4' : undefined,
                       }}
                     >
                       {message.content}
@@ -119,11 +120,11 @@ export const EnterpriseWellnessPricing = () => {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-black/60 text-[#e4e4e4] px-4 py-3 rounded-2xl border border-[#e4e4e4]/10">
+                    <div className="bg-black/40 text-[#e4e4e4] px-3 py-2 rounded-xl border border-[#e4e4e4]/10">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     </div>
                   </div>
@@ -139,7 +140,7 @@ export const EnterpriseWellnessPricing = () => {
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isSubmitting}
-                  className="flex-1 px-4 py-3 rounded-full text-[#e4e4e4] placeholder-[#c0c0c0]/50 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
+                  className="flex-1 px-3 py-2 rounded-full text-sm text-[#e4e4e4] placeholder-[#c0c0c0]/50 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
                   style={{ 
                     fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                     backgroundColor: '#000000',
@@ -149,18 +150,18 @@ export const EnterpriseWellnessPricing = () => {
                 <button
                   type="submit"
                   disabled={isLoading || isSubmitting || !inputMessage.trim()}
-                  className="p-3 rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     backgroundColor: '#000000',
                     border: '1px solid #e4e4e4',
                     color: '#e4e4e4',
                   }}
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-4 h-4" />
                 </button>
               </form>
 
-              <p className="text-center text-sm text-white/50 mt-4">
+              <p className="text-center text-xs text-white/50 mt-2">
                 No credit card required • Full access • Cancel anytime
               </p>
             </div>

@@ -83,13 +83,23 @@ export function useFreeTrialChat() {
             if (content) {
               assistantMessage += content;
               
-              // Check if the message contains the completion JSON and filter it out
-              const completionMatch = assistantMessage.match(/\{[\s\S]*"complete":\s*true[\s\S]*\}/);
-              const displayMessage = completionMatch 
-                ? assistantMessage.replace(completionMatch[0], '').trim()
-                : assistantMessage;
+              // Aggressively strip out JSON artifacts and markdown code blocks
+              let cleanMessage = assistantMessage;
               
-              setMessages([...newMessages, { role: 'assistant', content: displayMessage }]);
+              // Remove markdown code blocks (```json ... ```)
+              cleanMessage = cleanMessage.replace(/```json[\s\S]*?```/g, '');
+              cleanMessage = cleanMessage.replace(/```[\s\S]*?```/g, '');
+              
+              // Remove JSON completion data
+              cleanMessage = cleanMessage.replace(/\{[\s\S]*"complete":\s*true[\s\S]*\}/g, '');
+              
+              // Clean up any remaining backticks
+              cleanMessage = cleanMessage.replace(/`{1,3}/g, '');
+              
+              // Trim whitespace
+              cleanMessage = cleanMessage.trim();
+              
+              setMessages([...newMessages, { role: 'assistant', content: cleanMessage }]);
             }
           } catch {
             textBuffer = line + '\n' + textBuffer;
@@ -104,8 +114,19 @@ export function useFreeTrialChat() {
         if (completionMatch) {
           const completionData = JSON.parse(completionMatch[0]);
           if (completionData.complete && completionData.data) {
-            // Ensure the final message doesn't contain JSON
-            const cleanMessage = assistantMessage.replace(completionMatch[0], '').trim();
+            // Aggressively clean the final message
+            let cleanMessage = assistantMessage.replace(completionMatch[0], '');
+            
+            // Remove markdown code blocks
+            cleanMessage = cleanMessage.replace(/```json[\s\S]*?```/g, '');
+            cleanMessage = cleanMessage.replace(/```[\s\S]*?```/g, '');
+            
+            // Remove any remaining backticks
+            cleanMessage = cleanMessage.replace(/`{1,3}/g, '');
+            
+            // Trim whitespace
+            cleanMessage = cleanMessage.trim();
+            
             setMessages([...newMessages, { role: 'assistant', content: cleanMessage }]);
             setCollectedData(completionData.data);
             setIsComplete(true);
