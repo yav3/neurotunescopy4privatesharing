@@ -65,7 +65,7 @@ const Index = () => {
       {/* Hero Section - Play Button with CTAs */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-center gap-12">
+          <div className="pointer-events-auto flex flex-col items-center gap-16">
             {/* Play Button */}
             <button
               onClick={handlePlaySession}
@@ -74,24 +74,22 @@ const Index = () => {
                 filter: 'drop-shadow(0 20px 50px rgba(192, 192, 192, 0.6))'
               }}
             >
-              <svg width="180" height="180" viewBox="0 0 180 180" fill="none" className="transition-all duration-300 group-hover:drop-shadow-[0_0_60px_rgba(192,192,192,1)] group-active:drop-shadow-[0_0_80px_rgba(192,192,192,1)]">
-                <circle cx="90" cy="90" r="87" fill="none" stroke="#c0c0c0" strokeWidth="2.5" opacity="0.5" className="group-hover:opacity-100 transition-opacity duration-300" />
-                <path d="M70 50v80l65-40z" fill="none" stroke="#c0c0c0" strokeWidth="4" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300" />
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="transition-all duration-300 group-hover:drop-shadow-[0_0_60px_rgba(192,192,192,1)] group-active:drop-shadow-[0_0_80px_rgba(192,192,192,1)]">
+                <circle cx="100" cy="100" r="97" fill="none" stroke="#c0c0c0" strokeWidth="2.5" opacity="0.5" className="group-hover:opacity-100 transition-opacity duration-300" />
+                <path d="M78 56v88l72-44z" fill="none" stroke="#c0c0c0" strokeWidth="4" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300" />
               </svg>
               <div className="absolute inset-0 rounded-full bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300" />
             </button>
             
-            {/* Primary CTA */}
-            <div className="flex flex-col items-center">
-              <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
-                Experience Now
-              </span>
-            </div>
+            {/* Experience Now Label */}
+            <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
+              Experience Now
+            </span>
 
             {/* Subscribe CTA */}
             <button
               onClick={handleSubscribe}
-              className="px-8 py-3 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 transition-all backdrop-blur-sm"
+              className="px-10 py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-base"
               style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
             >
               Subscribe
