@@ -46,13 +46,13 @@ export const NavigationHeader = () => {
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
+                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Population Health</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
@@ -135,13 +135,13 @@ export const NavigationHeader = () => {
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
+                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Population Health</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Free Business Trial</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
