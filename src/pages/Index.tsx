@@ -40,12 +40,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
-      {/* Full-screen video background, synced to audio */}
-      <BackgroundVideoCarousel
-        playbackRate={videoPlaybackRate}
-        currentVideoIndex={currentVideoIndex}
-        isPlaying={isPlaying}
-      />
+      {/* Full-screen video background, synced to audio - only show after overlay completes */}
+      {overlayComplete && (
+        <BackgroundVideoCarousel
+          playbackRate={videoPlaybackRate}
+          currentVideoIndex={currentVideoIndex}
+          isPlaying={isPlaying}
+        />
+      )}
 
       {/* Landing Page Audio Player (drives audio + video state) */}
       <LandingPagePlayer
