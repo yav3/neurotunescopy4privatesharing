@@ -90,7 +90,7 @@ export const EnterpriseWellnessPricing = () => {
             >
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-light text-white/70 mb-2">
+                  <label htmlFor="fullName" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
                     Full Legal Name *
                   </label>
                   <input
@@ -99,14 +99,18 @@ export const EnterpriseWellnessPricing = () => {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
                     placeholder="First and Last Name"
-                    style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+                    style={{ 
+                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                      backgroundColor: '#000000',
+                      border: '1px solid #e4e4e4'
+                    }}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-light text-white/70 mb-2">
+                  <label htmlFor="email" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
                     Work Email *
                   </label>
                   <input
@@ -115,14 +119,18 @@ export const EnterpriseWellnessPricing = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
                     placeholder="you@company.com"
-                    style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+                    style={{ 
+                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                      backgroundColor: '#000000',
+                      border: '1px solid #e4e4e4'
+                    }}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-light text-white/70 mb-2">
+                  <label htmlFor="companyName" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
                     Company Name *
                   </label>
                   <input
@@ -131,14 +139,18 @@ export const EnterpriseWellnessPricing = () => {
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
                     placeholder="Your Company"
-                    style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+                    style={{ 
+                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                      backgroundColor: '#000000',
+                      border: '1px solid #e4e4e4'
+                    }}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="employeeCount" className="block text-sm font-light text-white/70 mb-2">
+                  <label htmlFor="employeeCount" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
                     Number of Employees *
                   </label>
                   <select
@@ -146,8 +158,12 @@ export const EnterpriseWellnessPricing = () => {
                     required
                     value={employeeCount}
                     onChange={(e) => setEmployeeCount(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-white/30 transition-colors"
-                    style={{ fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}
+                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] focus:outline-none focus:border-[#e4e4e4] transition-colors"
+                    style={{ 
+                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                      backgroundColor: '#000000',
+                      border: '1px solid #e4e4e4'
+                    }}
                   >
                     <option value="" className="bg-[#050607]">Select range</option>
                     <option value="1-50" className="bg-[#050607]">1-50</option>
@@ -160,10 +176,11 @@ export const EnterpriseWellnessPricing = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-8 py-4 rounded-full font-medium text-black transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-8 py-4 rounded-full font-medium transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
-                    background: 'linear-gradient(135deg, #e8e8e8 0%, #fafafa 50%, #e0e0e0 100%)',
-                    border: '1px solid rgba(107, 114, 128, 0.3)',
+                    backgroundColor: '#000000',
+                    border: '1px solid #e4e4e4',
+                    color: '#c0c0c0',
                     fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                     fontSize: '18px'
                   }}
