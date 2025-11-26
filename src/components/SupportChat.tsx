@@ -7,7 +7,12 @@ interface Message {
   content: string;
 }
 
-export const SupportChat = () => {
+interface SupportChatProps {
+  buttonText?: string;
+  nextToPlayer?: boolean;
+}
+
+export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false }: SupportChatProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -169,13 +174,13 @@ export const SupportChat = () => {
 
   return (
     <>
-      {/* Chat Support Button - positioned above footer */}
-      <div className="relative z-30 px-6 pb-6">
-        <div className="max-w-7xl mx-auto flex justify-end">
+      {/* Chat Support/Subscribe Button - positioned next to player or above footer */}
+      <div className={nextToPlayer ? "fixed bottom-[180px] right-4 sm:right-6 md:right-8 lg:right-12 z-[60]" : "relative z-30 px-6 pb-6"}>
+        <div className={nextToPlayer ? "" : "max-w-7xl mx-auto flex justify-end"}>
           {!isOpen && (
             <button
               onClick={() => setIsOpen(true)}
-              className="px-6 py-3 rounded-full flex items-center gap-3 transition-all hover:scale-105 group"
+              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full flex items-center gap-2 sm:gap-2.5 transition-all hover:scale-105 group"
               style={{
                 background: 'rgba(10, 10, 12, 0.85)',
                 backdropFilter: 'blur(20px)',
@@ -183,9 +188,9 @@ export const SupportChat = () => {
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(228, 228, 228, 0.08)',
               }}
             >
-              <MessageCircle className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
-              <span className="text-sm font-light" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
-                Chat Support
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
+              <span className="text-xs sm:text-sm font-light" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>
+                {buttonText}
               </span>
             </button>
           )}

@@ -102,8 +102,8 @@ const Index = () => {
       {/* Hidden Sales Assistant (triggered from header) */}
       <SalesAssistant externalOpen={false} />
       
-      {/* Support Chat */}
-      <SupportChat />
+      {/* Subscribe Button (Chat Support on landing page) */}
+      <SupportChat buttonText="Subscribe" nextToPlayer={true} />
     </div>
   );
 };
