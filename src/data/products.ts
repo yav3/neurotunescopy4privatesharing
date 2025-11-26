@@ -21,6 +21,34 @@ export interface Product {
 }
 
 export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
+  consumer: {
+    id: "consumer",
+    icon: Smartphone,
+    title: "Personal Wellness App",
+    tagline: "Individual therapeutic music",
+    description: "iOS and Android app for personal anxiety relief, focus, sleep, and wellness",
+    targetMarkets: [
+      "Individual consumers",
+      "Clinicians for personal use",
+      "Wellness enthusiasts",
+      "Anyone seeking therapeutic music"
+    ],
+    pricing: {
+      model: "🎉 Black Friday Special",
+      starting: "$25.99/year or $5.99/month",
+      minimum: "Web, iOS & Android"
+    },
+    keyBenefits: [
+      "8,500+ therapeutic tracks",
+      "Offline download",
+      "Mood tracking",
+      "Personalized recommendations",
+      "Family plan available (up to 6 accounts)"
+    ],
+    cta: "Download App",
+    path: "/app-download"
+  },
+
   environmental: {
     id: "environmental",
     icon: Volume2,
@@ -115,34 +143,6 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
     ],
     cta: "Request Wellness Consultation",
     path: "/products/enterprise-wellness"
-  },
-
-  consumer: {
-    id: "consumer",
-    icon: Smartphone,
-    title: "Personal Wellness App",
-    tagline: "Individual therapeutic music",
-    description: "iOS and Android app for personal anxiety relief, focus, sleep, and wellness",
-    targetMarkets: [
-      "Individual consumers",
-      "Clinicians for personal use",
-      "Wellness enthusiasts",
-      "Anyone seeking therapeutic music"
-    ],
-    pricing: {
-      model: "🎉 Black Friday Special",
-      starting: "$25.99/year or $5.99/month",
-      minimum: "Web, iOS & Android"
-    },
-    keyBenefits: [
-      "8,500+ therapeutic tracks",
-      "Offline download",
-      "Mood tracking",
-      "Personalized recommendations",
-      "Family plan available (up to 6 accounts)"
-    ],
-    cta: "Download App",
-    path: "/app-download"
   },
 
   partnerships: {
