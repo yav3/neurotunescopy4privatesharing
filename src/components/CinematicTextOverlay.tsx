@@ -10,6 +10,10 @@ interface TextItem {
   emphasis?: boolean
 }
 
+interface CinematicTextOverlayProps {
+  onComplete?: () => void
+}
+
 const MESSAGES: TextItem[] = [
   { 
     main: "Real Music", 
@@ -31,7 +35,7 @@ const MESSAGES: TextItem[] = [
   },
 ]
 
-export function CinematicTextOverlay() {
+export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
@@ -57,6 +61,7 @@ export function CinematicTextOverlay() {
           // Fade to black briefly, then complete
           setTimeout(() => {
             setHasCompleted(true)
+            onComplete?.()
           }, 500)
         }
       }, 800)

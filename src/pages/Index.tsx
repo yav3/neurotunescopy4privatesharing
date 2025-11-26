@@ -20,6 +20,7 @@ const Index = () => {
   const [videoPlaybackRate, setVideoPlaybackRate] = useState(1.0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showHero, setShowHero] = useState(true);
+  const [overlayComplete, setOverlayComplete] = useState(false);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
@@ -60,10 +61,10 @@ const Index = () => {
       <NavigationHeader />
       
       {/* Cinematic Text Overlay - only show when hero is visible */}
-      {showHero && <CinematicTextOverlay />}
+      {showHero && !overlayComplete && <CinematicTextOverlay onComplete={() => setOverlayComplete(true)} />}
       
       {/* Hero Section - Play Button with CTAs */}
-      {showHero && (
+      {showHero && overlayComplete && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
           <div className="pointer-events-auto flex flex-col items-center gap-16">
             {/* Play Button */}
