@@ -44,7 +44,6 @@ KEY FEATURES & VALUE PROPS:
 • 110 scientifically validated biomarkers for tracking effectiveness
 • 30-45% anxiety reduction (clinically validated in peer-reviewed studies)
 • Patented GRN (Generative Resonance Network) technology
-• Trusted by 200+ hospitals and healthcare organizations
 • Available on web app, iOS, and Android with seamless sync
 • Spatial audio support for immersive therapeutic experiences
 • Real-time therapeutic goal tracking and progress monitoring

@@ -45,12 +45,6 @@ const MESSAGES: TextItem[] = [
     emphasis: true 
   },
   { 
-    main: "200+ Hospitals", 
-    sub: "Trust NeuroTunes",
-    duration: 3000, 
-    animation: 'zoom-out'
-  },
-  { 
     main: "Real Results", 
     sub: "Real Science",
     duration: 3500, 
@@ -116,7 +110,7 @@ export function CinematicTextOverlay() {
           {/* Main text */}
           <h2
             className={`
-              font-bold text-white mb-3
+              text-white mb-3
               ${current.emphasis 
                 ? 'text-6xl md:text-8xl bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent' 
                 : 'text-5xl md:text-7xl'
@@ -129,7 +123,7 @@ export function CinematicTextOverlay() {
               letterSpacing: '0.02em',
               lineHeight: '1.1',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: current.emphasis ? 600 : 400,
+              fontWeight: 400,
             }}
           >
             {current.main}
@@ -138,11 +132,11 @@ export function CinematicTextOverlay() {
           {/* Subtext */}
           {current.sub && (
             <p
-              className="text-2xl md:text-4xl text-white/90 font-light tracking-wide"
+              className="text-2xl md:text-4xl text-white/90 tracking-wide"
               style={{
                 textShadow: '0 2px 20px rgba(0, 0, 0, 0.8)',
                 fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
+                fontWeight: 400,
               }}
             >
               {current.sub}
