@@ -61,28 +61,52 @@ const Index = () => {
       {/* Hero Section with Buttons */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="flex flex-col gap-6 pointer-events-auto">
-            {/* Big Play Button */}
+          <div className="flex flex-col gap-6 items-center pointer-events-auto">
+            {/* Big Platinum Play Triangle */}
             <button
               onClick={handlePlaySession}
-              className="w-32 h-32 rounded-full backdrop-blur-md transition-all hover:scale-105 flex items-center justify-center group"
+              className="transition-all hover:scale-110 group"
               style={{ 
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                background: 'rgba(228, 228, 228, 0.15)',
-                border: '1px solid rgba(228, 228, 228, 0.4)'
+                filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5))'
               }}
             >
               <svg 
-                className="w-12 h-12 ml-1" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor"
-                style={{ color: '#0f172a' }}
+                width="120" 
+                height="140" 
+                viewBox="0 0 120 140" 
+                fill="none"
+                className="transition-all group-hover:brightness-110"
               >
+                <defs>
+                  <linearGradient id="platinumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#f0f0f0', stopOpacity: 1 }} />
+                    <stop offset="25%" style={{ stopColor: '#ffffff', stopOpacity: 1 }} />
+                    <stop offset="50%" style={{ stopColor: '#e4e4e4', stopOpacity: 1 }} />
+                    <stop offset="75%" style={{ stopColor: '#d4d4d8', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#f0f0f0', stopOpacity: 1 }} />
+                  </linearGradient>
+                  <filter id="shine">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                    <feComponentTransfer>
+                      <feFuncA type="discrete" tableValues="0 1" />
+                    </feComponentTransfer>
+                  </filter>
+                </defs>
                 <path 
-                  d="M5 3l14 9-14 9V3z" 
-                  fill="currentColor"
-                  strokeWidth="0"
+                  d="M 20 10 L 110 70 L 20 130 Z" 
+                  fill="url(#platinumGradient)"
+                  stroke="rgba(255, 255, 255, 0.8)"
+                  strokeWidth="2"
+                  style={{
+                    filter: 'drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3))'
+                  }}
+                />
+                {/* Shine highlight */}
+                <path 
+                  d="M 30 25 L 95 70 L 30 115 Z" 
+                  fill="rgba(255, 255, 255, 0.3)"
+                  style={{ mixBlendMode: 'overlay' }}
                 />
               </svg>
             </button>
