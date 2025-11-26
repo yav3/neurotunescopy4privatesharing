@@ -6,55 +6,73 @@ import { STRIPE_PRICES } from "@/config/stripe";
 export const Pricing = () => {
   const plans = [
     {
-      name: "Small Business",
-      price: "$29.99",
-      period: "/user/year",
-      description: "For teams and growing businesses (min 40 seats)",
+      name: "Trial Offer",
+      price: "Free",
+      period: "for 1 month",
+      description: "Experience the full therapeutic music library",
       features: [
-        "Full library access (8,500+ tracks)",
-        "Web app for office use",
-        "Employee app store download codes",
-        "Basic usage analytics",
-        "Email support",
-        "Onboarding assistance"
+        "Sample of full music library",
+        "Web app for office/personal use",
+        "One end-user web app experience",
+        "30-day trial period",
+        "10% discount code after trial"
       ],
-      cta: "Request Quote",
-      highlighted: false
+      cta: "Start Free Trial",
+      highlighted: false,
+      isTrial: true,
+      priceId: undefined,
+      paymentLink: "/products/enterprise-wellness" // Link to free trial signup
     },
     {
-      name: "Clinical",
-      price: "$299",
-      period: "/month",
-      description: "For therapists and healthcare providers",
+      name: "Individual",
+      price: "$59.99",
+      period: "per year",
+      description: "Perfect for personal wellness and focus",
       features: [
-        "Everything in Small Business",
-        "Up to 50 patient accounts",
-        "Clinical dashboards",
-        "Session notes integration",
-        "Outcome tracking",
-        "HIPAA compliance",
-        "Dedicated support"
+        "Full access to 8,500+ therapeutic tracks",
+        "Web app + iOS & Android apps",
+        "Personalized recommendations",
+        "Unlimited streaming",
+        "Offline listening",
+        "Ad-free experience"
       ],
-      cta: "Request Demo",
-      highlighted: true
+      cta: "Subscribe",
+      highlighted: true,
+      priceId: STRIPE_PRICES.INDIVIDUAL
     },
     {
-      name: "Enterprise",
-      price: "Custom",
-      period: "",
-      description: "For hospitals and large organizations",
+      name: "Student/Service",
+      price: "$49.99",
+      period: "per year",
+      description: "Special pricing for students and first responders",
       features: [
-        "Everything in Clinical",
-        "Unlimited users",
-        "Custom branding",
-        "API access",
-        "SSO integration",
-        "Custom reporting",
-        "SLA guarantee",
-        "Dedicated success manager"
+        "Full access to 8,500+ therapeutic tracks",
+        "Web app + iOS & Android apps",
+        "Personalized recommendations",
+        "Unlimited streaming",
+        "Offline listening",
+        "Verification required"
       ],
-      cta: "Contact Sales",
-      highlighted: false
+      cta: "Subscribe",
+      highlighted: false,
+      priceId: STRIPE_PRICES.STUDENT_SERVICE
+    },
+    {
+      name: "Family & Besties",
+      price: "$99.99",
+      period: "per year",
+      description: "Share wellness with up to 6 people",
+      features: [
+        "All Individual plan features",
+        "Up to 6 user accounts",
+        "Separate profiles for each user",
+        "Family usage analytics",
+        "Shared playlists",
+        "Best value for groups"
+      ],
+      cta: "Subscribe",
+      highlighted: false,
+      priceId: STRIPE_PRICES.FAMILY
     }
   ];
 
@@ -66,17 +84,20 @@ export const Pricing = () => {
         <div className="max-w-7xl mx-auto px-6">
           
           {/* Hero */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
+            <p className="text-lg font-medium text-cyan-400 mb-4">
+              Sale pricing ends December 10th, 2025
+            </p>
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
-              Business & Enterprise Pricing
+              Personal Wellness Plans
             </h1>
             <p className="text-2xl font-light text-neutral-300">
-              Choose the plan that fits your needs
+              Transform your mind with neuroscience-backed music
             </p>
           </div>
 
-          {/* Pricing Cards - Responsive Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 max-w-6xl mx-auto">
+          {/* Pricing Cards - Vertically Stacked */}
+          <div className="space-y-8 mb-20 max-w-3xl mx-auto">
             {plans.map((plan, index) => (
               <PricingCard
                 key={index}
@@ -85,8 +106,8 @@ export const Pricing = () => {
                 period={plan.period}
                 description={plan.description}
                 features={plan.features}
-                paymentLink={plan.name === "Small Business" ? "https://buy.stripe.com/6oUbJ24TwbzM87R4134c800" : undefined}
-                quantity={plan.name === "Small Business" ? 40 : 1}
+                priceId={plan.priceId}
+                paymentLink={plan.paymentLink}
                 isPopular={plan.highlighted}
                 buttonText={plan.cta}
               />
