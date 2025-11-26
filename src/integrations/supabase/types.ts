@@ -4362,6 +4362,42 @@ export type Database = {
         }
         Relationships: []
       }
+      trial_requests: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          email: string
+          employee_count: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          email: string
+          employee_count?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          employee_count?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       user_blocks: {
         Row: {
           created_at: string | null
