@@ -17,7 +17,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hi! I'm here to help you with any questions or technical support.\n\nHow can I assist you today?"
+      content: "Hi! I'm your NeuroTunes support assistant. I can help you with subscriptions, technical issues, billing questions, or any other concerns.\n\nHow can I assist you today?"
     }
   ]);
   const [input, setInput] = useState('');
@@ -40,7 +40,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
   }, [messages]);
 
   const streamChat = async (userMessages: Message[]) => {
-    const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/anthropic-chat`;
+    const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/support-chat`;
     
     try {
       const resp = await fetch(CHAT_URL, {
