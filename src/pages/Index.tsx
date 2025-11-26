@@ -64,11 +64,12 @@ const Index = () => {
           <div className="pointer-events-auto flex flex-col items-center gap-8 max-w-4xl mx-auto px-6">
             {/* Description Text - Floating and Centered */}
             <div 
-              className="opacity-0 animate-fade-in"
+              className="animate-fade-in"
               style={{
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                 animationDelay: '0.3s',
-                animationFillMode: 'forwards'
+                animationFillMode: 'forwards',
+                opacity: 0
               }}
             >
               <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
@@ -78,11 +79,12 @@ const Index = () => {
 
             {/* Music & AI Text - Floating and Centered */}
             <div 
-              className="opacity-0 animate-fade-in"
+              className="animate-fade-in"
               style={{
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                 animationDelay: '0.6s',
-                animationFillMode: 'forwards'
+                animationFillMode: 'forwards',
+                opacity: 0
               }}
             >
               <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
@@ -91,7 +93,7 @@ const Index = () => {
             </div>
 
             {/* Play Button - Centered */}
-            <div className="flex flex-col items-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
+            <div className="flex flex-col items-center gap-4 animate-fade-in" style={{ animationDelay: '0.9s', animationFillMode: 'forwards', opacity: 0 }}>
               <button
                 onClick={handlePlaySession}
                 className="group transition-all hover:scale-105 relative"
@@ -112,14 +114,15 @@ const Index = () => {
               
               {/* Free Trial Text - Fades in below play button */}
               <span 
-                className="text-base tracking-wide opacity-0 animate-fade-in" 
+                className="animate-fade-in" 
                 style={{ 
                   color: 'rgba(255, 255, 255, 0.75)', 
                   fontWeight: 400, 
                   letterSpacing: '0.05em',
                   fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                   animationDelay: '1.5s',
-                  animationFillMode: 'forwards'
+                  animationFillMode: 'forwards',
+                  opacity: 0
                 }}
               >
                 Free Trial
