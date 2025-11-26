@@ -18,37 +18,38 @@ export const Footer = () => {
       <footer className="relative text-foreground border-t border-white/8 bg-[#050607]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           
-          {/* Logos Section - Compact */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-6">
-            <span className="text-[10px] sm:text-xs text-white/30 uppercase tracking-widest">Supported by</span>
-            <img 
-              src={jacobsTechnionLogo} 
-              alt="Jacobs Technion-Cornell" 
-              className="h-6 sm:h-7 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
-            />
-            <img 
-              src={stanfordLogo} 
-              alt="Stanford Medicine" 
-              className="h-6 sm:h-7 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
-            />
-            <img 
-              src={weillCornellLogo} 
-              alt="Weill Cornell Medicine" 
-              className="h-6 sm:h-7 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
-            />
-          </div>
+          {/* Single Row - Logos and Copyright Together */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Left: Supported By + Logos */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4">
+              <span className="text-[10px] text-white/30 uppercase tracking-widest">Supported by</span>
+              <img 
+                src={jacobsTechnionLogo} 
+                alt="Jacobs Technion-Cornell" 
+                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              />
+              <img 
+                src={stanfordLogo} 
+                alt="Stanford Medicine" 
+                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              />
+              <img 
+                src={weillCornellLogo} 
+                alt="Weill Cornell Medicine" 
+                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+              />
+            </div>
 
-          {/* Bottom Bar - Minimal */}
-          <div className="pt-4 border-t border-white/8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <p className="text-[10px] text-white/30 text-center sm:text-left">
+            {/* Right: Copyright + LinkedIn */}
+            <div className="flex items-center gap-4">
+              <p className="text-[10px] text-white/30 text-center sm:text-right">
                 © 2025 Neuralpositive, all rights reserved, content copyrighted and patented
               </p>
               <a 
                 href="https://linkedin.com/company/neuralpositive" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white/30 hover:text-white transition-colors"
+                className="text-white/30 hover:text-white transition-colors flex-shrink-0"
                 aria-label="LinkedIn"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
