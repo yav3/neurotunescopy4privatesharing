@@ -82,7 +82,14 @@ export function useFreeTrialChat() {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantMessage += content;
-              setMessages([...newMessages, { role: 'assistant', content: assistantMessage }]);
+              
+              // Check if the message contains the completion JSON and filter it out
+              const completionMatch = assistantMessage.match(/\{[\s\S]*"complete":\s*true[\s\S]*\}/);
+              const displayMessage = completionMatch 
+                ? assistantMessage.replace(completionMatch[0], '').trim()
+                : assistantMessage;
+              
+              setMessages([...newMessages, { role: 'assistant', content: displayMessage }]);
             }
           } catch {
             textBuffer = line + '\n' + textBuffer;
@@ -97,7 +104,7 @@ export function useFreeTrialChat() {
         if (completionMatch) {
           const completionData = JSON.parse(completionMatch[0]);
           if (completionData.complete && completionData.data) {
-            // Remove the JSON from the displayed message
+            // Ensure the final message doesn't contain JSON
             const cleanMessage = assistantMessage.replace(completionMatch[0], '').trim();
             setMessages([...newMessages, { role: 'assistant', content: cleanMessage }]);
             setCollectedData(completionData.data);
