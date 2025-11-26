@@ -19,24 +19,24 @@ export const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           
           {/* Single Row - Logos and Copyright Together */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Left: Supported By + Logos */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6 sm:gap-8">
               <span className="text-[10px] text-white/30 uppercase tracking-widest">Supported by</span>
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
-                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
-                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
               />
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell Medicine" 
-                className="h-5 sm:h-6 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
               />
             </div>
 
