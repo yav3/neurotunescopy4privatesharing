@@ -89,7 +89,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
   enterpriseWellness: {
     id: "enterprise-wellness",
     icon: Briefcase,
-    title: "Enterprise Wellness",
+    title: "Free Business Trial",
     tagline: "Workplace mental health & productivity",
     description: "Corporate wellness programs for employee mental health, focus, and resilience",
     targetMarkets: [
