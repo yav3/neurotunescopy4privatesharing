@@ -33,7 +33,7 @@ const Index = () => {
 
   const handleSubscribe = () => {
     setShowHero(false);
-    window.location.href = '/products/environmental';
+    window.location.href = '/products';
   };
 
   return (
