@@ -261,6 +261,63 @@ export type Database = {
           },
         ]
       }
+      blocked_companies: {
+        Row: {
+          company_name: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      blocked_countries: {
+        Row: {
+          country_code: string
+          country_name: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          country_code: string
+          country_name: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          country_code?: string
+          country_name?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      blocked_names: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_name?: string
+        }
+        Relationships: []
+      }
       blocked_tracks: {
         Row: {
           blocked_at: string
@@ -5291,6 +5348,7 @@ export type Database = {
         Args: { track_id: string }
         Returns: undefined
       }
+      is_blocked_company_email: { Args: { email: string }; Returns: boolean }
       is_track_favorited_unified: {
         Args: { p_track_identifier: string; p_user_id: string }
         Returns: boolean
@@ -5405,6 +5463,7 @@ export type Database = {
           status: string
         }[]
       }
+      validate_user_name: { Args: { full_name: string }; Returns: boolean }
       verify_all_tracks: {
         Args: never
         Returns: {
