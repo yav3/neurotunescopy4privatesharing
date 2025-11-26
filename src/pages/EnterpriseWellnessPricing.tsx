@@ -90,10 +90,9 @@ export const EnterpriseWellnessPricing = () => {
             <div
               className="rounded-3xl p-6 flex flex-col"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'rgba(0, 0, 0, 0.6)',
                 backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(228, 228, 228, 0.2)',
-                boxShadow: '0 0 40px rgba(228, 228, 228, 0.1)',
+                border: '1px solid rgba(228, 228, 228, 0.15)',
                 height: '500px'
               }}
             >
@@ -108,7 +107,7 @@ export const EnterpriseWellnessPricing = () => {
                       className={`max-w-[80%] px-4 py-3 rounded-2xl ${
                         message.role === 'user'
                           ? 'bg-[#e4e4e4] text-[#050607]'
-                          : 'bg-black/40 text-[#e4e4e4] border border-[#e4e4e4]/20'
+                          : 'bg-black/60 text-[#e4e4e4] border border-[#e4e4e4]/10'
                       }`}
                       style={{
                         fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -120,7 +119,7 @@ export const EnterpriseWellnessPricing = () => {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-black/40 text-[#e4e4e4] px-4 py-3 rounded-2xl border border-[#e4e4e4]/20">
+                    <div className="bg-black/60 text-[#e4e4e4] px-4 py-3 rounded-2xl border border-[#e4e4e4]/10">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '0ms' }} />
                         <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '150ms' }} />
