@@ -109,6 +109,57 @@ serve(async (req) => {
       errors
     }
 
+    // If validation passed, send confirmation email and create trial record
+    if (errors.length === 0) {
+      try {
+        // Send confirmation email
+        const emailResponse = await fetch(
+          `${Deno.env.get('SUPABASE_URL')}/functions/v1/send-auth-email`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              type: 'trial-confirmation',
+              to: email,
+              data: {
+                displayName: nameToValidate,
+                email: email,
+              }
+            })
+          }
+        );
+
+        if (!emailResponse.ok) {
+          console.error('Failed to send confirmation email:', await emailResponse.text());
+        } else {
+          console.log('✅ Confirmation email sent to', email);
+        }
+
+        // Store trial request in database (you may need to create this table)
+        const { error: insertError } = await supabase
+          .from('trial_requests')
+          .insert({
+            email,
+            full_name: nameToValidate,
+            status: 'pending',
+            created_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Failed to create trial record:', insertError);
+        } else {
+          console.log('✅ Trial request record created for', email);
+        }
+
+      } catch (emailError) {
+        console.error('Error in post-validation steps:', emailError);
+        // Don't fail the validation if email/db operations fail
+      }
+    }
+
     return new Response(
       JSON.stringify(response),
       { 

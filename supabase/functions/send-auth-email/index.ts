@@ -5,6 +5,7 @@ import React from 'npm:react@18.3.1';
 import { WelcomeEmail } from './_templates/welcome.tsx';
 import { PasswordResetEmail } from './_templates/password-reset.tsx';
 import { MagicLinkEmail } from './_templates/magic-link.tsx';
+import { TrialConfirmationEmail } from './_templates/trial-confirmation.tsx';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +15,7 @@ const corsHeaders = {
 const resend = new Resend(Deno.env.get('RESEND_API_KEY') as string);
 
 interface EmailRequest {
-  type: 'welcome' | 'password-reset' | 'magic-link';
+  type: 'welcome' | 'password-reset' | 'magic-link' | 'trial-confirmation';
   to: string;
   data: {
     displayName?: string;
@@ -70,6 +71,16 @@ const handler = async (req: Request): Promise<Response> => {
           })
         );
         subject = 'Your VIP Access to NeuroTunes';
+        break;
+
+      case 'trial-confirmation':
+        html = await renderAsync(
+          React.createElement(TrialConfirmationEmail, {
+            displayName: data.displayName || 'User',
+            email: data.email || to,
+          })
+        );
+        subject = 'Your NeuroTunes Free Business Trial is Confirmed';
         break;
 
       default:
