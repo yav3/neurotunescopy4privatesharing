@@ -13,63 +13,67 @@ interface TextItem {
 const MESSAGES: TextItem[] = [
   { 
     main: "Real Music, Real Science, Real Health Results", 
-    sub: "Experience Now",
-    duration: 5000, 
-    animation: 'fade',
+    duration: 4000, 
+    animation: 'zoom-in',
     emphasis: false 
   },
 ]
 
 export function CinematicTextOverlay() {
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
+  const [hasCompleted, setHasCompleted] = useState(false)
 
   useEffect(() => {
+    // Start with entering animation
     setIsEntering(true)
     setIsExiting(false)
     
-    const current = MESSAGES[currentIndex]
+    const current = MESSAGES[0]
     
+    // After duration, start exit animation
     const exitTimer = setTimeout(() => {
       setIsExiting(true)
       setIsEntering(false)
       
+      // Complete and hide overlay
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % MESSAGES.length)
-      }, 800)
+        setHasCompleted(true)
+      }, 1000)
     }, current.duration)
 
     return () => clearTimeout(exitTimer)
-  }, [currentIndex])
+  }, [])
 
-  const current = MESSAGES[currentIndex]
+  const current = MESSAGES[0]
+
+  // If completed, don't render anything
+  if (hasCompleted) {
+    return null
+  }
 
   const getAnimationClass = () => {
     if (isExiting) {
-      return current.animation === 'zoom-in' ? 'scale-110 opacity-0'
-        : current.animation === 'zoom-out' ? 'scale-75 opacity-0'
-        : 'opacity-0'
+      return 'scale-110 opacity-0'
     }
     if (isEntering) {
       return 'scale-100 opacity-100'
     }
-    return 'scale-95 opacity-0'
+    return 'scale-75 opacity-0'
+  }
+
+  const getBackgroundOpacity = () => {
+    if (isExiting) return 'opacity-0'
+    if (isEntering) return 'opacity-100'
+    return 'opacity-0'
   }
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-      {/* Vignette sheen */}
+      {/* Black background that fades out */}
       <div 
-        className="absolute inset-0 backdrop-blur-[2px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 100%)'
-        }}
+        className={`absolute inset-0 bg-black transition-opacity duration-1000 ${getBackgroundOpacity()}`}
       />
-      
-      {/* Letterbox bars */}
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
       
       {/* Text content */}
       <div className="relative px-6 text-center max-w-5xl">
@@ -111,23 +115,6 @@ export function CinematicTextOverlay() {
           )}
         </div>
 
-        {/* Accent lines */}
-        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-20 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent transition-all duration-1000 ${isEntering ? 'opacity-100 -translate-x-24' : 'opacity-0'}`} />
-        <div className={`absolute right-0 top-1/2 -translate-y-1/2 w-20 h-px bg-gradient-to-l from-transparent via-cyan-400/60 to-transparent transition-all duration-1000 ${isEntering ? 'opacity-100 translate-x-24' : 'opacity-0'}`} />
-      </div>
-
-      {/* Progress bar */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-2">
-        {MESSAGES.map((_, index) => (
-          <div
-            key={index}
-            className={`h-1 rounded-full transition-all duration-500 ${
-              index === currentIndex 
-                ? 'bg-gradient-to-r from-cyan-400 to-blue-500 w-12 shadow-lg shadow-cyan-400/50' 
-                : 'bg-white/20 w-8'
-            }`}
-          />
-        ))}
       </div>
     </div>
   )
