@@ -8,6 +8,7 @@ import { SupportChat } from '@/components/SupportChat';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
+import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
 
 const Index = () => {
   useWelcomeMessage();
@@ -57,6 +58,9 @@ const Index = () => {
       
       {/* Header */}
       <NavigationHeader />
+      
+      {/* Cinematic Text Overlay - only show when hero is visible */}
+      {showHero && <CinematicTextOverlay />}
       
       {/* Hero Section - Play Button with CTAs */}
       {showHero && (
