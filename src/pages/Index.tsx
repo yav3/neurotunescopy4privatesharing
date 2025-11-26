@@ -110,18 +110,20 @@ const Index = () => {
                 animationDelay: '0.2s'
               }}
             >
-              <button
+            <button
                 onClick={handlePlaySession}
-                className="transition-all hover:scale-110"
+                className="group transition-all hover:scale-105 relative"
                 style={{
-                  filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.8))'
+                  filter: 'drop-shadow(0 12px 32px rgba(192, 192, 192, 0.4))'
                 }}
               >
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                  <path d="M28 18v44l36-22z" fill="none" stroke="#c0c0c0" strokeWidth="2" strokeLinejoin="round" />
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" className="transition-all group-hover:drop-shadow-[0_0_20px_rgba(192,192,192,0.6)]">
+                  <circle cx="60" cy="60" r="58" fill="none" stroke="#c0c0c0" strokeWidth="1.5" opacity="0.3" />
+                  <path d="M48 35v50l40-25z" fill="none" stroke="#c0c0c0" strokeWidth="3" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
                 </svg>
+                <div className="absolute inset-0 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
-              <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>
+              <span className="text-lg tracking-wide mt-2" style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: 400, letterSpacing: '0.05em' }}>
                 Listen Now
               </span>
             </div>
