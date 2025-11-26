@@ -1,28 +1,39 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, Send } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useFreeTrialChat } from "@/hooks/useFreeTrialChat";
 
 export const EnterpriseWellnessPricing = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [employeeCount, setEmployeeCount] = useState("");
+  const { messages, isLoading, sendMessage, isComplete, collectedData } = useFreeTrialChat();
+  const [inputMessage, setInputMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (isComplete && collectedData) {
+      handleValidation();
+    }
+  }, [isComplete, collectedData]);
+
+  const handleValidation = async () => {
     setIsSubmitting(true);
-
     try {
-      // Validate the user before allowing trial signup
       const { data, error } = await supabase.functions.invoke('validate-signup', {
         body: { 
-          displayName: fullName,
-          email: email
+          displayName: collectedData.fullName,
+          email: collectedData.email
         }
       });
 
@@ -30,25 +41,25 @@ export const EnterpriseWellnessPricing = () => {
 
       if (!data.isValid) {
         toast.error(data.errors?.join(', ') || 'Validation failed');
-        setIsSubmitting(false);
         return;
       }
 
-      // Here you would typically create the trial account
-      // For now, we'll just show a success message
       toast.success('Free trial request submitted! We\'ll contact you shortly.');
-      
-      // Reset form
-      setFullName("");
-      setEmail("");
-      setCompanyName("");
-      setEmployeeCount("");
     } catch (err: any) {
       console.error('Trial signup error:', err);
       toast.error(err.message || 'Failed to submit trial request');
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputMessage.trim() || isLoading) return;
+
+    const message = inputMessage;
+    setInputMessage("");
+    await sendMessage(message);
   };
 
   return (
@@ -74,122 +85,86 @@ export const EnterpriseWellnessPricing = () => {
             </h1>
           </div>
 
-          {/* Free Trial Form */}
+          {/* Chat Interface */}
           <div className="max-w-2xl mx-auto mb-12">
-            <form onSubmit={handleSubmit}
-              className="rounded-3xl p-8"
+            <div
+              className="rounded-3xl p-6 flex flex-col"
               style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(24px)',
                 border: '1px solid rgba(228, 228, 228, 0.2)',
-                boxShadow: '0 0 40px rgba(228, 228, 228, 0.1)'
+                boxShadow: '0 0 40px rgba(228, 228, 228, 0.1)',
+                height: '500px'
               }}
             >
-              <div className="space-y-6">
-                <div>
-                  <label htmlFor="fullName" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
-                    Full Legal Name *
-                  </label>
-                  <input
-                    id="fullName"
-                    type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
-                    placeholder="First and Last Name"
-                    style={{ 
-                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                      backgroundColor: '#000000',
-                      border: '1px solid #e4e4e4'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
-                    Work Email *
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
-                    placeholder="you@company.com"
-                    style={{ 
-                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                      backgroundColor: '#000000',
-                      border: '1px solid #e4e4e4'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="companyName" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
-                    Company Name *
-                  </label>
-                  <input
-                    id="companyName"
-                    type="text"
-                    required
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors"
-                    placeholder="Your Company"
-                    style={{ 
-                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                      backgroundColor: '#000000',
-                      border: '1px solid #e4e4e4'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="employeeCount" className="block text-sm font-light mb-2" style={{ color: '#c0c0c0' }}>
-                    Number of Employees *
-                  </label>
-                  <select
-                    id="employeeCount"
-                    required
-                    value={employeeCount}
-                    onChange={(e) => setEmployeeCount(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg text-[#c0c0c0] focus:outline-none focus:border-[#e4e4e4] transition-colors"
-                    style={{ 
-                      fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                      backgroundColor: '#000000',
-                      border: '1px solid #e4e4e4'
-                    }}
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <option value="" className="bg-[#050607]">Select range</option>
-                    <option value="1-50" className="bg-[#050607]">1-50</option>
-                    <option value="51-200" className="bg-[#050607]">51-200</option>
-                    <option value="201-1000" className="bg-[#050607]">201-1,000</option>
-                    <option value="1000+" className="bg-[#050607]">1,000+</option>
-                  </select>
-                </div>
+                    <div
+                      className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+                        message.role === 'user'
+                          ? 'bg-[#e4e4e4] text-[#050607]'
+                          : 'bg-black/40 text-[#c0c0c0] border border-[#e4e4e4]/20'
+                      }`}
+                      style={{
+                        fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                      }}
+                    >
+                      {message.content}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-black/40 text-[#c0c0c0] px-4 py-3 rounded-2xl border border-[#e4e4e4]/20">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
 
+              {/* Input */}
+              <form onSubmit={handleSendMessage} className="flex gap-2">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  disabled={isLoading || isSubmitting}
+                  className="flex-1 px-4 py-3 rounded-full text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
+                  style={{ 
+                    fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                    backgroundColor: '#000000',
+                    border: '1px solid #e4e4e4'
+                  }}
+                />
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full px-8 py-4 rounded-full font-medium transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isLoading || isSubmitting || !inputMessage.trim()}
+                  className="p-3 rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     backgroundColor: '#000000',
                     border: '1px solid #e4e4e4',
                     color: '#c0c0c0',
-                    fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                    fontSize: '18px'
                   }}
                 >
-                  {isSubmitting ? 'Submitting...' : 'Start Free 30-Day Trial'}
+                  <Send className="w-5 h-5" />
                 </button>
+              </form>
 
-                <p className="text-center text-sm text-white/50 mt-4">
-                  No credit card required • Full access • Cancel anytime
-                </p>
-              </div>
-            </form>
+              <p className="text-center text-sm text-white/50 mt-4">
+                No credit card required • Full access • Cancel anytime
+              </p>
+            </div>
           </div>
 
           {/* Benefits */}
