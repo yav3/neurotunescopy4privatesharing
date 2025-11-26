@@ -97,6 +97,9 @@ export function useFreeTrialChat() {
         if (completionMatch) {
           const completionData = JSON.parse(completionMatch[0]);
           if (completionData.complete && completionData.data) {
+            // Remove the JSON from the displayed message
+            const cleanMessage = assistantMessage.replace(completionMatch[0], '').trim();
+            setMessages([...newMessages, { role: 'assistant', content: cleanMessage }]);
             setCollectedData(completionData.data);
             setIsComplete(true);
             return completionData.data;

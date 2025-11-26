@@ -182,7 +182,7 @@ export const EnterpriseWellnessPricing = () => {
             <div className="grid md:grid-cols-2 gap-6 text-neutral-300">
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Full therapeutic music library access</p>
+                <p>Sample of therapeutic music library</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
@@ -190,20 +190,17 @@ export const EnterpriseWellnessPricing = () => {
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Employee app download codes</p>
+                <p>One end user web app experience</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Usage analytics dashboard</p>
+                <p>One month trial period</p>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Dedicated onboarding support</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Priority customer service</p>
-              </div>
+            </div>
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-center text-neutral-300 text-sm">
+                After trial: Redeem 10% discount for full SAAS access including web app, iOS, Android, and admin controller with complete therapeutic suite
+              </p>
             </div>
           </div>
         </div>
