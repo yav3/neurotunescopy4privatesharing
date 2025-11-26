@@ -77,10 +77,10 @@ const Index = () => {
               <h1 className="text-4xl tracking-tight mb-3" style={{ fontWeight: 400, color: '#ffffff' }}>
                 +NeuroTunes
               </h1>
-              <p className="text-sm mb-2 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              <p className="text-sm mb-2 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
                 Neuroscience-backed · Clinically Validated
               </p>
-              <p className="text-sm mb-10 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              <p className="text-sm mb-10 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400 }}>
                 Music & AI Streaming
               </p>
 
@@ -94,7 +94,7 @@ const Index = () => {
                   }}
                 >
                   <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                    <path d="M28 18v44l36-22z" fill="rgba(255, 255, 255, 0.95)" />
+                    <path d="M28 18v44l36-22z" fill="rgba(255, 255, 255, 0.95)" stroke="#c0c0c0" strokeWidth="1.5" />
                   </svg>
                 </button>
                 <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>

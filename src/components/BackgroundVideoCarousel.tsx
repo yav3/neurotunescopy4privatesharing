@@ -109,7 +109,8 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
         playsInline
         preload="auto"
         loop
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
+        style={{ transform: 'scale(1.0)' }}
       />
       {/* Fade-to-black transition overlay */}
       <div 
