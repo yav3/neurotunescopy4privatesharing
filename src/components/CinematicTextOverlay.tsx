@@ -12,14 +12,27 @@ interface TextItem {
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Real Music, Real Science, Real Health Results", 
-    duration: 4000, 
-    animation: 'zoom-in',
+    main: "Real Music", 
+    duration: 2000, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Real Science", 
+    duration: 2000, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Real Health Results", 
+    duration: 2000, 
+    animation: 'fade',
     emphasis: false 
   },
 ]
 
 export function CinematicTextOverlay() {
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
@@ -29,23 +42,30 @@ export function CinematicTextOverlay() {
     setIsEntering(true)
     setIsExiting(false)
     
-    const current = MESSAGES[0]
+    const current = MESSAGES[currentIndex]
     
     // After duration, start exit animation
     const exitTimer = setTimeout(() => {
       setIsExiting(true)
       setIsEntering(false)
       
-      // Complete and hide overlay
+      // Move to next message or complete
       setTimeout(() => {
-        setHasCompleted(true)
-      }, 1000)
+        if (currentIndex < MESSAGES.length - 1) {
+          setCurrentIndex(prev => prev + 1)
+        } else {
+          // Fade to black briefly, then complete
+          setTimeout(() => {
+            setHasCompleted(true)
+          }, 500)
+        }
+      }, 800)
     }, current.duration)
 
     return () => clearTimeout(exitTimer)
-  }, [])
+  }, [currentIndex])
 
-  const current = MESSAGES[0]
+  const current = MESSAGES[currentIndex]
 
   // If completed, don't render anything
   if (hasCompleted) {
