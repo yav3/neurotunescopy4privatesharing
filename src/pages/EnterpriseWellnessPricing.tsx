@@ -86,16 +86,47 @@ export const EnterpriseWellnessPricing = () => {
           </div>
 
           {/* Chat Interface */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-3xl mx-auto">
             <div
-              className="rounded-3xl p-4 flex flex-col"
+              className="rounded-3xl p-6 flex flex-col"
               style={{
-                background: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(228, 228, 228, 0.15)',
-                height: '420px'
+                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 12, 0.98) 100%)',
+                backdropFilter: 'blur(40px) saturate(180%)',
+                border: '2px solid rgba(228, 228, 228, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                minHeight: '600px'
               }}
             >
+              {/* Trial Benefits Header */}
+              <div className="mb-6 pb-6 border-b border-white/20">
+                <h3 className="text-xl font-light text-white mb-4 text-center">
+                  What's Included in Your Trial
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] mt-1.5 flex-shrink-0" />
+                    <p className="text-[#e4e4e4]">Sample of therapeutic music library</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] mt-1.5 flex-shrink-0" />
+                    <p className="text-[#e4e4e4]">Web app for office use</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] mt-1.5 flex-shrink-0" />
+                    <p className="text-[#e4e4e4]">One end user web app experience</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] mt-1.5 flex-shrink-0" />
+                    <p className="text-[#e4e4e4]">One month trial period</p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-white/10">
+                  <p className="text-center text-[#c0c0c0] text-xs">
+                    After trial: Redeem 10% discount for full SAAS access including web app, iOS, Android, and admin controller with complete therapeutic suite
+                  </p>
+                </div>
+              </div>
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-2">
                 {messages.map((message, index) => (
@@ -107,7 +138,7 @@ export const EnterpriseWellnessPricing = () => {
                       className={`max-w-[85%] px-3 py-2 rounded-xl text-sm ${
                         message.role === 'user'
                           ? 'text-[#0a0a0c]'
-                          : 'bg-black/40 text-[#e4e4e4] border border-[#e4e4e4]/10'
+                          : 'bg-black/60 text-[#e4e4e4] border border-[#e4e4e4]/20'
                       }`}
                       style={{
                         fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -120,7 +151,7 @@ export const EnterpriseWellnessPricing = () => {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-black/40 text-[#e4e4e4] px-3 py-2 rounded-xl border border-[#e4e4e4]/10">
+                    <div className="bg-black/60 text-[#e4e4e4] px-3 py-2 rounded-xl border border-[#e4e4e4]/20">
                       <div className="flex gap-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '0ms' }} />
                         <div className="w-1.5 h-1.5 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -140,20 +171,20 @@ export const EnterpriseWellnessPricing = () => {
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isSubmitting}
-                  className="flex-1 px-3 py-2 rounded-full text-sm text-[#e4e4e4] placeholder-[#c0c0c0]/50 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 rounded-full text-sm text-[#e4e4e4] placeholder-[#c0c0c0]/50 focus:outline-none focus:ring-2 focus:ring-[#e4e4e4]/30 transition-all disabled:opacity-50"
                   style={{ 
                     fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                     backgroundColor: '#000000',
-                    border: '1px solid #e4e4e4'
+                    border: '1.5px solid #e4e4e4'
                   }}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || isSubmitting || !inputMessage.trim()}
-                  className="p-2 rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2.5 rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     backgroundColor: '#000000',
-                    border: '1px solid #e4e4e4',
+                    border: '1.5px solid #e4e4e4',
                     color: '#e4e4e4',
                   }}
                 >
@@ -161,46 +192,8 @@ export const EnterpriseWellnessPricing = () => {
                 </button>
               </form>
 
-              <p className="text-center text-xs text-white/50 mt-2">
+              <p className="text-center text-xs text-[#c0c0c0] mt-3">
                 No credit card required • Full access • Cancel anytime
-              </p>
-            </div>
-          </div>
-
-          {/* Benefits */}
-          <div 
-            className="rounded-3xl p-8 max-w-4xl mx-auto"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              boxShadow: '0 0 40px rgba(0, 0, 0, 0.8)'
-            }}
-          >
-            <h3 className="text-2xl font-light text-white mb-6 text-center">
-              What's Included in Your Trial
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6 text-neutral-300">
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Sample of therapeutic music library</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>Web app for office use</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>One end user web app experience</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-white/70 mt-2 flex-shrink-0" />
-                <p>One month trial period</p>
-              </div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <p className="text-center text-neutral-300 text-sm">
-                After trial: Redeem 10% discount for full SAAS access including web app, iOS, Android, and admin controller with complete therapeutic suite
               </p>
             </div>
           </div>
