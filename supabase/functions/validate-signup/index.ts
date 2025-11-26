@@ -8,7 +8,8 @@ const corsHeaders = {
 
 interface ValidationRequest {
   email: string
-  fullName: string
+  fullName?: string
+  displayName?: string
   clientIp?: string
 }
 
@@ -28,14 +29,17 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { email, fullName, clientIp } = await req.json() as ValidationRequest
+    const { email, fullName, displayName, clientIp } = await req.json() as ValidationRequest
     const errors: string[] = []
+    
+    // Use either fullName or displayName (displayName is what the frontend sends)
+    const nameToValidate = fullName || displayName || ''
 
-    console.log('Validating signup:', { email, fullName, clientIp })
+    console.log('Validating signup:', { email, fullName, displayName, clientIp })
 
     // Validate full name (First + Last minimum)
     const { data: nameValid, error: nameError } = await supabase
-      .rpc('validate_user_name', { full_name: fullName })
+      .rpc('validate_user_name', { full_name: nameToValidate })
 
     if (nameError) {
       console.error('Name validation error:', nameError)
