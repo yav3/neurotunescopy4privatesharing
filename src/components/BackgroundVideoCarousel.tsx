@@ -11,6 +11,8 @@ const CURATED_VIDEO_FILES = [
   '/videos/landing-06.mp4', // Track 6
   '/videos/landing-07.mp4', // Track 7
   '/videos/landing-08.mp4', // Track 8
+  '/videos/landing-09.mp4', // Track 9
+  '/videos/landing-10.mp4', // Track 10
 ];
 
 interface BackgroundVideoCarouselProps {
