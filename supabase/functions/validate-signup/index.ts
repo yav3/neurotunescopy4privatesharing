@@ -38,14 +38,22 @@ serve(async (req) => {
     console.log('Validating signup:', { email, fullName, displayName, clientIp })
 
     // Validate full name (First + Last minimum)
-    const { data: nameValid, error: nameError } = await supabase
-      .rpc('validate_user_name', { full_name: nameToValidate })
-
-    if (nameError) {
-      console.error('Name validation error:', nameError)
-      errors.push('Error validating name')
-    } else if (!nameValid) {
+    if (!nameToValidate || nameToValidate.trim().length === 0) {
+      console.log('❌ No name provided')
       errors.push('Please provide your full legal name (first and last name required, no fake names)')
+    } else {
+      const { data: nameValid, error: nameError } = await supabase
+        .rpc('validate_user_name', { full_name: nameToValidate })
+
+      if (nameError) {
+        console.error('❌ Name validation RPC error:', nameError)
+        errors.push('Error validating name: ' + nameError.message)
+      } else {
+        console.log('✅ Name validation result:', nameValid)
+        if (!nameValid) {
+          errors.push('Please provide your full legal name (first and last name required, no fake names)')
+        }
+      }
     }
 
     // Check if email domain is from blocked company
