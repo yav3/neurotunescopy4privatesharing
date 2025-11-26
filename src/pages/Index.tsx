@@ -62,55 +62,42 @@ const Index = () => {
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
           <div 
-            className="pointer-events-auto relative rounded-3xl overflow-hidden"
+            className="pointer-events-auto relative rounded-3xl overflow-hidden max-w-md"
             style={{
-              background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.75) 0%, rgba(10, 10, 10, 0.75) 50%, rgba(0, 0, 0, 0.75) 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), inset 0 2px 4px rgba(255, 255, 255, 0.1), inset 0 -2px 4px rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
               fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif'
             }}
           >
-            {/* Free Trial Badge */}
-            <div 
-              className="absolute top-6 right-6 px-4 py-2 rounded-full text-xs tracking-wide"
-              style={{
-                background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#1a1a1a',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
-              }}
-            >
-              Free Trial
-            </div>
-
             {/* Card Content */}
-            <div className="p-16 flex flex-col items-center text-center">
-              <h1 className="text-5xl tracking-tight mb-4" style={{ fontWeight: 400, color: '#1a1a1a' }}>
+            <div className="p-10 flex flex-col items-center text-center">
+              <h1 className="text-4xl tracking-tight mb-3" style={{ fontWeight: 400, color: '#ffffff' }}>
                 +NeuroTunes
               </h1>
-              <p className="text-sm mb-2 max-w-lg leading-relaxed" style={{ color: '#2a2a2a' }}>
+              <p className="text-sm mb-2 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                 Neuroscience-backed · Clinically Validated
               </p>
-              <p className="text-sm mb-12 max-w-lg leading-relaxed" style={{ color: '#2a2a2a' }}>
+              <p className="text-sm mb-10 max-w-md leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                 Music & AI Streaming
               </p>
 
               {/* Play Button and Text */}
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-3">
                 <button
                   onClick={handlePlaySession}
                   className="transition-all hover:scale-110"
                   style={{
-                    filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))'
+                    filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.8))'
                   }}
                 >
-                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
-                    <path d="M32 20v56l44-28z" fill="#1a1a1a" />
+                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                    <path d="M28 18v44l36-22z" fill="rgba(255, 255, 255, 0.95)" />
                   </svg>
                 </button>
-                <span className="text-lg tracking-wide" style={{ color: '#1a1a1a', fontWeight: 400 }}>
+                <span className="text-base tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 400 }}>
                   Listen Now
                 </span>
               </div>
