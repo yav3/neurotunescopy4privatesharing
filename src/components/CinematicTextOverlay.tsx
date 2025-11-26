@@ -12,7 +12,7 @@ interface TextItem {
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "30-45%", 
+    main: "50%", 
     sub: "Anxiety Reduction",
     duration: 3500, 
     animation: 'zoom-in',

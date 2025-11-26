@@ -41,7 +41,7 @@ PRODUCT CATALOG:
 
 KEY FEATURES & VALUE PROPS:
 • 8,500+ therapeutic music tracks across all therapeutic categories
-• 30-45% anxiety reduction (clinically validated in peer-reviewed studies)
+• 50% anxiety reduction (clinically validated in peer-reviewed studies)
 • Patented GRN (Generative Resonance Network) technology
 • Available on web app, iOS, and Android with seamless sync
 • Spatial audio support for immersive therapeutic experiences
