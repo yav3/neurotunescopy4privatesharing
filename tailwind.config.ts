@@ -78,7 +78,7 @@ export default {
 					glow: 'hsl(0, 0%, 89%)', // #E4E4E4 Platinum silver glow
 				},
 				chrome: {
-					highlight: 'hsl(0, 0%, 100%)', // White for chrome effects
+					highlight: 'hsl(0, 0%, 75%)', // Pearl grey for chrome effects
 				},
 				'music-focus': 'hsl(var(--music-focus))',
 				'music-mood': 'hsl(var(--music-mood))',

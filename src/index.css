@@ -45,35 +45,35 @@ All colors MUST be HSL.
     
     /* Accent: Platinum Silver Glow */
     --platinum-glow: 0 0% 89%; /* #E4E4E4 - Platinum silver */
-    --chrome-highlight: 0 0% 100%; /* White for chrome effects */
+    --chrome-highlight: 0 0% 75%; /* Pearl grey for chrome effects */
     
     /* Glass borders: Platinum */
     --glass-border: 0 0% 89%; /* Platinum at 12% opacity */
 
     /* SEMANTIC TOKENS - Obsidian-Chrome Theme */
     --background: 240 8% 4%; /* Deep obsidian black #0A0A0C */
-    --foreground: 0 0% 92%; /* White at 92% opacity */
+    --foreground: 0 0% 75%; /* Pearl grey #c0c0c0 */
 
     --card: 240 7% 10%; /* Graphite */
-    --card-foreground: 0 0% 92%; /* White at 92% */
+    --card-foreground: 0 0% 75%; /* Pearl grey */
 
     --popover: 240 8% 4%; /* Obsidian black */
-    --popover-foreground: 0 0% 92%; /* White at 92% */
+    --popover-foreground: 0 0% 75%; /* Pearl grey */
 
     --primary: 0 0% 89%; /* Platinum glow */
     --primary-foreground: 240 8% 4%; /* Obsidian black */
 
     --secondary: 240 7% 10%; /* Graphite */
-    --secondary-foreground: 0 0% 92%; /* White at 92% */
+    --secondary-foreground: 0 0% 75%; /* Pearl grey */
 
     --muted: 240 8% 7%; /* Carbon grey */
-    --muted-foreground: 0 0% 75%; /* White at 75% opacity */
+    --muted-foreground: 0 0% 75%; /* Pearl grey */
 
     --accent: 240 7% 10%; /* Graphite */
-    --accent-foreground: 0 0% 92%; /* White at 92% */
+    --accent-foreground: 0 0% 75%; /* Pearl grey */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 92%;
+    --destructive-foreground: 0 0% 75%; /* Pearl grey */
 
     --border: 0 0% 89% / 0.12; /* Platinum at 12% opacity */
     --input: 240 8% 4%; /* Obsidian black */
@@ -101,28 +101,28 @@ All colors MUST be HSL.
   .dark {
     /* Obsidian-Chrome Dark Mode - High-Gloss Liquid Glass */
     --background: 240 8% 4%; /* Deep obsidian black */
-    --foreground: 0 0% 92%; /* White at 92% */
+    --foreground: 0 0% 75%; /* Pearl grey */
 
     --card: 240 7% 10%; /* Graphite */
-    --card-foreground: 0 0% 92%; /* White at 92% */
+    --card-foreground: 0 0% 75%; /* Pearl grey */
 
     --popover: 240 8% 4%; /* Obsidian black */
-    --popover-foreground: 0 0% 92%; /* White at 92% */
+    --popover-foreground: 0 0% 75%; /* Pearl grey */
 
     --primary: 0 0% 89%; /* Platinum glow */
     --primary-foreground: 240 8% 4%; /* Obsidian black */
 
     --secondary: 240 7% 10%; /* Graphite */
-    --secondary-foreground: 0 0% 92%; /* White at 92% */
+    --secondary-foreground: 0 0% 75%; /* Pearl grey */
 
     --muted: 240 8% 7%; /* Carbon grey */
-    --muted-foreground: 0 0% 75%; /* White at 75% */
+    --muted-foreground: 0 0% 75%; /* Pearl grey */
 
     --accent: 240 7% 10%; /* Graphite */
-    --accent-foreground: 0 0% 92%; /* White at 92% */
+    --accent-foreground: 0 0% 75%; /* Pearl grey */
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 92%;
+    --destructive-foreground: 0 0% 75%; /* Pearl grey */
 
     --border: 0 0% 89% / 0.12; /* Platinum at 12% */
     --input: 240 8% 4%; /* Obsidian black */
@@ -135,11 +135,11 @@ All colors MUST be HSL.
     
     /* Sidebar - Obsidian-Chrome */
     --sidebar-background: 240 8% 4%;
-    --sidebar-foreground: 0 0% 92%;
+    --sidebar-foreground: 0 0% 75%; /* Pearl grey */
     --sidebar-primary: 0 0% 89%;
     --sidebar-primary-foreground: 240 8% 4%;
     --sidebar-accent: 240 7% 10%;
-    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-accent-foreground: 0 0% 75%; /* Pearl grey */
     --sidebar-border: 0 0% 89% / 0.12;
     --sidebar-ring: 0 0% 89% / 0.3;
 
@@ -180,11 +180,11 @@ All colors MUST be HSL.
     --teal-glow: 174 68% 56%;               /* #2CCEC4 Faint teal glow */
     --teal-bright: 174 70% 60%;             /* Brightest teal (for glows only) */
     
-    /* Typography - White Opacity System */
-    --text-primary: 0 0% 100%;              /* Pure white */
-    --text-primary-opacity: 0.92;           /* 92% white for primary text */
-    --text-secondary-opacity: 0.75;         /* 75% white for supporting text */
-    --text-muted-opacity: 0.60;             /* 60% white for muted text */
+    /* Typography - Pearl Grey Opacity System */
+    --text-primary: 0 0% 75%;              /* Pearl grey */
+    --text-primary-opacity: 0.95;          /* 95% pearl grey for primary text */
+    --text-secondary-opacity: 0.80;        /* 80% pearl grey for supporting text */
+    --text-muted-opacity: 0.65;            /* 65% pearl grey for muted text */
     
     /* Icons - Teal Luminescence */
     --icon-default: 174 62% 58%;            /* Teal accent */
@@ -231,49 +231,49 @@ All colors MUST be HSL.
       hsl(186 90% 7% / 0.3) 100%
     );
     
-    /* Text gradients - Subtle white-to-teal */
+    /* Text gradients - Subtle pearl grey-to-teal */
     --gradient-text: linear-gradient(135deg, 
-      hsl(0 0% 92%) 0%,
+      hsl(0 0% 75%) 0%,
       hsl(174 62% 58% / 0.8) 100%
     );
     
     --gradient-white-section: linear-gradient(135deg,
-      hsl(0, 0%, 100%) 0%,
-      hsl(180, 10%, 98%) 25%,
-      hsl(180, 15%, 96%) 50%,
-      hsl(180, 20%, 98%) 75%,
-      hsl(0, 0%, 100%) 100%
+      hsl(0, 0%, 75%) 0%,
+      hsl(180, 10%, 73%) 25%,
+      hsl(180, 15%, 71%) 50%,
+      hsl(180, 20%, 73%) 75%,
+      hsl(0, 0%, 75%) 100%
     );
 
     /* Enhanced Gradient Text Effects with Sophisticated Blues */
     --gradient-text-primary: linear-gradient(135deg,
-      hsl(0, 0%, 100%) 0%,
-      hsl(176, 75%, 95%) 25%,   /* brand-50 */
-      hsl(178, 56%, 85%) 50%,   /* brand-200 */
+      hsl(0, 0%, 75%) 0%,
+      hsl(176, 75%, 75%) 25%,   /* brand-50 */
+      hsl(178, 56%, 75%) 50%,   /* brand-200 */
       hsl(179, 58%, 75%) 75%,   /* brand-300 */
       hsl(182, 63%, 65%) 100%   /* brand-500 */
     );
     
     --gradient-text-hero: linear-gradient(135deg,
-      hsl(0, 0%, 100%) 0%,
-      hsl(176, 75%, 92%) 30%,   /* brand-50 */
-      hsl(178, 56%, 82%) 60%,   /* brand-200 */
+      hsl(0, 0%, 75%) 0%,
+      hsl(176, 75%, 75%) 30%,   /* brand-50 */
+      hsl(178, 56%, 75%) 60%,   /* brand-200 */
       hsl(179, 58%, 72%) 100%   /* brand-300 */
     );
     
     /* Text gradients for brand hero */
     --gradient-text-hero-main: linear-gradient(135deg,
-      hsl(0, 0%, 100%) 0%,
-      hsl(0, 0%, 98%) 20%,
-      hsl(176, 75%, 95%) 40%,   /* brand-50 */
-      hsl(176, 75%, 90%) 60%,   /* lighter brand */
-      hsl(178, 56%, 85%) 80%,   /* brand-200 */
-      hsl(179, 58%, 80%) 100%   /* brand-300 */
+      hsl(0, 0%, 75%) 0%,
+      hsl(0, 0%, 75%) 20%,
+      hsl(176, 75%, 75%) 40%,   /* brand-50 */
+      hsl(176, 75%, 75%) 60%,   /* lighter brand */
+      hsl(178, 56%, 75%) 80%,   /* brand-200 */
+      hsl(179, 58%, 75%) 100%   /* brand-300 */
     );
     
     --gradient-text-hero-secondary: linear-gradient(135deg,
-      hsl(176, 75%, 86%) 0%,    /* brand-100 */
-      hsl(178, 56%, 80%) 25%,   /* lighter brand */
+      hsl(176, 75%, 75%) 0%,    /* brand-100 */
+      hsl(178, 56%, 75%) 25%,   /* lighter brand */
       hsl(179, 58%, 75%) 50%,   /* brand-300 */
       hsl(181, 61%, 70%) 75%,   /* brand-400 */
       hsl(182, 63%, 65%) 100%   /* brand-500 */
@@ -349,14 +349,14 @@ All colors MUST be HSL.
   --font-weight-semibold: 400;
     
     /* Glass morphism effects - using HSL */
-    --glass-bg: 0 0% 100% / 0.1;
-    --glass-border: 0 0% 100% / 0.2;
+    --glass-bg: 0 0% 75% / 0.1; /* Pearl grey glass */
+    --glass-border: 0 0% 75% / 0.2; /* Pearl grey border */
     --glass-shadow: 0 8px 32px 0 hsl(228 45% 32% / 0.37);
     
     /* High contrast text colors for accessibility */
-    --text-white: 0 0% 100%;
-    --text-gray-50: 0 0% 98%;
-    --text-gray-100: 0 0% 85%;
+    --text-white: 0 0% 75%; /* Pearl grey */
+    --text-gray-50: 0 0% 75%;
+    --text-gray-100: 0 0% 75%;
     --text-gray-200: 0 0% 70%;
     --text-gray-300: 0 0% 55%;
     --text-gray-400: 0 0% 40%;
@@ -385,7 +385,7 @@ All colors MUST be HSL.
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 0 0% 15%;
     --sidebar-primary: 0 0% 15%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 75%; /* Pearl grey text */
     --sidebar-accent: 0 0% 96%;
     --sidebar-accent-foreground: 0 0% 15%;
     --sidebar-border: 0 0% 90%;
