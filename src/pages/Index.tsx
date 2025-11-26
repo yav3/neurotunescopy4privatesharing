@@ -8,6 +8,8 @@ import { SupportChat } from '@/components/SupportChat';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
+import chromeTexture from '@/assets/chrome-texture.png';
+import darkSparkleTexture from '@/assets/dark-sparkle-texture.png';
 
 const Index = () => {
   useWelcomeMessage();
@@ -58,83 +60,97 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Hero Section with Buttons */}
+      {/* Hero Section with Buttons - Zoomed Out */}
       {showHero && (
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="flex flex-col gap-6 items-center pointer-events-auto">
-            {/* Big Platinum Play Triangle */}
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none scale-75">
+          <div className="flex flex-col gap-8 items-center pointer-events-auto">
+            {/* Big Platinum Play Triangle with Layered Textures */}
             <button
               onClick={handlePlaySession}
-              className="transition-all hover:scale-110 group"
+              className="transition-all hover:scale-110 group relative"
               style={{ 
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                 filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5))'
               }}
             >
               <svg 
-                width="120" 
-                height="140" 
-                viewBox="0 0 120 140" 
+                width="180" 
+                height="210" 
+                viewBox="0 0 180 210" 
                 fill="none"
                 className="transition-all group-hover:brightness-110"
               >
                 <defs>
-                  <linearGradient id="platinumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: '#9ca3af', stopOpacity: 1 }} />
-                    <stop offset="30%" style={{ stopColor: '#d1d5db', stopOpacity: 1 }} />
-                    <stop offset="50%" style={{ stopColor: '#e5e7eb', stopOpacity: 1 }} />
-                    <stop offset="70%" style={{ stopColor: '#d1d5db', stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: '#9ca3af', stopOpacity: 1 }} />
-                  </linearGradient>
-                  <radialGradient id="platinumRadial" cx="40%" cy="40%">
-                    <stop offset="0%" style={{ stopColor: '#f3f4f6', stopOpacity: 0.8 }} />
-                    <stop offset="50%" style={{ stopColor: '#d1d5db', stopOpacity: 0.4 }} />
-                    <stop offset="100%" style={{ stopColor: '#9ca3af', stopOpacity: 0 }} />
-                  </radialGradient>
-                  <filter id="shine">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-                    <feComponentTransfer>
-                      <feFuncA type="discrete" tableValues="0 1" />
-                    </feComponentTransfer>
-                  </filter>
+                  <pattern id="chromePattern" patternUnits="userSpaceOnUse" width="180" height="210">
+                    <image href={chromeTexture} x="0" y="0" width="180" height="210" />
+                  </pattern>
+                  <pattern id="darkSparklePattern" patternUnits="userSpaceOnUse" width="180" height="210">
+                    <image href={darkSparkleTexture} x="0" y="0" width="180" height="210" />
+                  </pattern>
+                  <clipPath id="triangleClip">
+                    <path d="M 30 15 L 165 105 L 30 195 Z" />
+                  </clipPath>
                 </defs>
+                {/* Base chrome layer */}
                 <path 
-                  d="M 20 10 L 110 70 L 20 130 Z" 
-                  fill="url(#platinumGradient)"
+                  d="M 30 15 L 165 105 L 30 195 Z" 
+                  fill="url(#chromePattern)"
                   stroke="#6b7280"
                   strokeWidth="2"
                   style={{
                     filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))'
                   }}
                 />
-                {/* Radial highlight for metallic effect */}
+                {/* Dark sparkle overlay layer */}
                 <path 
-                  d="M 20 10 L 110 70 L 20 130 Z" 
-                  fill="url(#platinumRadial)"
-                />
-                {/* Edge shine */}
-                <path 
-                  d="M 30 20 L 100 70 L 30 120 Z" 
-                  fill="rgba(255, 255, 255, 0.15)"
-                  style={{ mixBlendMode: 'overlay' }}
+                  d="M 30 15 L 165 105 L 30 195 Z" 
+                  fill="url(#darkSparklePattern)"
+                  opacity="0.4"
+                  style={{ mixBlendMode: 'multiply' }}
                 />
               </svg>
             </button>
             
-            {/* Pill-shaped Subscribe Button */}
+            {/* Pill-shaped Subscribe Button with Layered Textures */}
             <button
               onClick={handleSubscribe}
-              className="px-16 py-5 rounded-full backdrop-blur-md transition-all hover:scale-105"
+              className="relative px-20 py-6 rounded-full transition-all hover:scale-105 overflow-hidden"
               style={{ 
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                background: 'rgba(228, 228, 228, 0.15)',
-                border: '1px solid rgba(228, 228, 228, 0.4)',
-                color: '#0f172a',
-                fontSize: '20px',
+                border: '1px solid rgba(107, 114, 128, 0.5)',
+                fontSize: '24px',
                 fontWeight: 400
               }}
             >
-              Subscribe
+              {/* Chrome texture base */}
+              <div 
+                className="absolute inset-0 opacity-70"
+                style={{
+                  backgroundImage: `url(${chromeTexture})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              />
+              {/* Dark sparkle overlay */}
+              <div 
+                className="absolute inset-0 opacity-30"
+                style={{
+                  backgroundImage: `url(${darkSparkleTexture})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  mixBlendMode: 'multiply'
+                }}
+              />
+              {/* Frosted glass for text readability */}
+              <div 
+                className="absolute inset-0"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)'
+                }}
+              />
+              <span className="relative z-10 text-black">Subscribe</span>
             </button>
           </div>
         </div>
