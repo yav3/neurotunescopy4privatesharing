@@ -4,8 +4,11 @@ import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud, ArrowRight } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
+import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
+import { usePageBackground } from "@/hooks/usePageBackground";
 
 export default function EnvironmentalBackground() {
+  const background = usePageBackground();
   const [contactOpen, setContactOpen] = useState(false);
   const [hoveredUseCase, setHoveredUseCase] = useState<number | null>(null);
   const [hoveredBenefit, setHoveredBenefit] = useState<number | null>(null);
@@ -67,8 +70,14 @@ export default function EnvironmentalBackground() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050607] text-white overflow-hidden">
-      <NavigationHeader />
+    <div className="min-h-screen bg-[#050607] text-white overflow-hidden relative">
+      <PageBackgroundMedia 
+        videoSrc={background.video}
+        gifSrc={background.gif}
+        overlayOpacity={background.overlayOpacity}
+      />
+      <div className="relative z-10">
+        <NavigationHeader />
 
       {/* Condensed Hero - Minimal Padding */}
       <section className="relative pt-24 pb-8 px-6">
@@ -336,6 +345,7 @@ export default function EnvironmentalBackground() {
           }
         }
       `}</style>
+      </div>
     </div>
   );
 }
