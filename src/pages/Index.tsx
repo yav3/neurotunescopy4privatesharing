@@ -61,56 +61,48 @@ const Index = () => {
       {/* Hero Section - Floating Elements */}
       {showHero && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="pointer-events-auto flex flex-col items-center gap-6">
-            {/* Description Text Floating Element */}
+          <div className="pointer-events-auto flex flex-col items-center gap-8 max-w-4xl mx-auto px-6">
+            {/* Description Text - Floating and Centered */}
             <div 
-              className="rounded-2xl px-6 py-3 animate-fade-in"
+              className="rounded-2xl px-8 py-4 opacity-0 animate-fade-in"
               style={{
-                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(10, 10, 10, 0.7) 50%, rgba(0, 0, 0, 0.8) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif'
+                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                animationDelay: '0.3s',
+                animationFillMode: 'forwards'
               }}
             >
-              <p className="text-sm leading-snug text-center" style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 400 }}>
+              <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
                 Neuroscience-backed · Clinically Validated
               </p>
             </div>
 
-            {/* Music & AI Text Floating Element */}
+            {/* Music & AI Text - Floating and Centered */}
             <div 
-              className="rounded-2xl px-6 py-3 animate-fade-in"
+              className="rounded-2xl px-8 py-4 opacity-0 animate-fade-in"
               style={{
-                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(10, 10, 10, 0.7) 50%, rgba(0, 0, 0, 0.8) 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                animationDelay: '0.1s'
+                animationDelay: '0.6s',
+                animationFillMode: 'forwards'
               }}
             >
-              <p className="text-sm leading-snug text-center" style={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 400 }}>
+              <p className="text-base leading-relaxed text-center" style={{ color: 'rgba(255, 255, 255, 0.85)', fontWeight: 400 }}>
                 Music & AI Streaming
               </p>
             </div>
 
-            {/* Play Button Floating Element */}
-            <div 
-              className="rounded-2xl px-8 py-6 flex flex-col items-center gap-3 animate-fade-in"
-              style={{
-                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.95) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
-                animationDelay: '0.2s'
-              }}
-            >
-            <button
+            {/* Play Button - Centered */}
+            <div className="flex flex-col items-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
+              <button
                 onClick={handlePlaySession}
                 className="group transition-all hover:scale-105 relative"
                 style={{
@@ -123,8 +115,24 @@ const Index = () => {
                 </svg>
                 <div className="absolute inset-0 rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
-              <span className="text-lg tracking-wide mt-2" style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: 400, letterSpacing: '0.05em' }}>
+              
+              <span className="text-lg tracking-wide" style={{ color: 'rgba(255, 255, 255, 0.95)', fontWeight: 400, letterSpacing: '0.05em', fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif' }}>
                 Listen Now
+              </span>
+              
+              {/* Free Trial Text - Fades in below play button */}
+              <span 
+                className="text-base tracking-wide opacity-0 animate-fade-in" 
+                style={{ 
+                  color: 'rgba(255, 255, 255, 0.75)', 
+                  fontWeight: 400, 
+                  letterSpacing: '0.05em',
+                  fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
+                  animationDelay: '1.5s',
+                  animationFillMode: 'forwards'
+                }}
+              >
+                Free Trial
               </span>
             </div>
           </div>
