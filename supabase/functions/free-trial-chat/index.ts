@@ -1,5 +1,5 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,10 +13,10 @@ serve(async (req) => {
 
   try {
     const { messages, collectedData } = await req.json()
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY')
+    const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')
     
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured')
+    if (!anthropicApiKey) {
+      throw new Error('ANTHROPIC_API_KEY is not configured')
     }
 
     const systemPrompt = `You are a friendly AI assistant helping users sign up for a free 30-day business trial of NeuroTunes.
@@ -45,41 +45,81 @@ Important guidelines:
 
 Current collected data: ${JSON.stringify(collectedData || {})}`
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
+        'x-api-key': anthropicApiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages,
-        ],
+        model: 'claude-sonnet-4-5',
+        max_tokens: 1024,
+        system: systemPrompt,
+        messages: messages,
         stream: true,
       }),
     })
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }), {
-          status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: 'AI service credits depleted. Please add credits to your Lovable workspace in Settings → Usage.' }), {
-          status: 402,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
-      }
-      const errorText = await response.text()
-      console.error('AI gateway error:', response.status, errorText)
-      throw new Error('AI gateway error')
+      const error = await response.text()
+      console.error('Anthropic API error:', error)
+      throw new Error(`Anthropic API error: ${response.status}`)
     }
 
-    return new Response(response.body, {
+    // Transform Anthropic's streaming format to OpenAI-compatible format
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error('No response body')
+    }
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder()
+        const decoder = new TextDecoder()
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+
+            const chunk = decoder.decode(value)
+            const lines = chunk.split('\n')
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6)
+                if (data === '[DONE]') continue
+
+                try {
+                  const parsed = JSON.parse(data)
+                  
+                  if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                    const openAIFormat = {
+                      choices: [{
+                        delta: { content: parsed.delta.text },
+                        index: 0
+                      }]
+                    }
+                    controller.enqueue(
+                      encoder.encode(`data: ${JSON.stringify(openAIFormat)}\n\n`)
+                    )
+                  }
+                } catch (e) {
+                  // Skip invalid JSON
+                }
+              }
+            }
+          }
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          controller.close()
+        } catch (error) {
+          controller.error(error)
+        }
+      }
+    })
+
+    return new Response(stream, {
       headers: { ...corsHeaders, 'Content-Type': 'text/event-stream' },
     })
   } catch (error) {
