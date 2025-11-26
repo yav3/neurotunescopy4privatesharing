@@ -64,7 +64,7 @@ const Index = () => {
           <div 
             className="pointer-events-auto relative rounded-3xl overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(50, 50, 50, 0.92) 0%, rgba(35, 35, 35, 0.92) 50%, rgba(20, 20, 20, 0.92) 100%)',
+              background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.75) 0%, rgba(10, 10, 10, 0.75) 50%, rgba(0, 0, 0, 0.75) 100%)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(20px)',
@@ -76,9 +76,9 @@ const Index = () => {
             <div 
               className="absolute top-6 right-6 px-4 py-2 rounded-full text-xs tracking-wide"
               style={{
-                background: 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%)',
+                background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: '#1a1a1a',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
               }}
             >
@@ -87,30 +87,33 @@ const Index = () => {
 
             {/* Card Content */}
             <div className="p-16 flex flex-col items-center text-center">
-              <h1 className="text-5xl tracking-tight text-white mb-4" style={{ fontWeight: 400 }}>
+              <h1 className="text-5xl tracking-tight mb-4" style={{ fontWeight: 400, color: '#1a1a1a' }}>
                 +NeuroTunes
               </h1>
-              <p className="text-white/60 text-sm mb-2 max-w-lg leading-relaxed">
+              <p className="text-sm mb-2 max-w-lg leading-relaxed" style={{ color: '#2a2a2a' }}>
                 Neuroscience-backed · Clinically Validated
               </p>
-              <p className="text-white/60 text-sm mb-12 max-w-lg leading-relaxed">
+              <p className="text-sm mb-12 max-w-lg leading-relaxed" style={{ color: '#2a2a2a' }}>
                 Music & AI Streaming
               </p>
 
-              {/* Play Button */}
-              <button
-                onClick={handlePlaySession}
-                className="w-16 h-16 rounded-full transition-all hover:scale-110 flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="ml-1">
-                  <path d="M8 5v14l11-7z" fill="rgba(255, 255, 255, 0.9)" />
-                </svg>
-              </button>
+              {/* Play Button and Text */}
+              <div className="flex flex-col items-center gap-4">
+                <button
+                  onClick={handlePlaySession}
+                  className="transition-all hover:scale-110"
+                  style={{
+                    filter: 'drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))'
+                  }}
+                >
+                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
+                    <path d="M32 20v56l44-28z" fill="#1a1a1a" />
+                  </svg>
+                </button>
+                <span className="text-lg tracking-wide" style={{ color: '#1a1a1a', fontWeight: 400 }}>
+                  Listen Now
+                </span>
+              </div>
             </div>
           </div>
         </div>
