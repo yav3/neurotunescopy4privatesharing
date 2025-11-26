@@ -1,11 +1,20 @@
 import { Footer } from "@/components/Footer";
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Link } from "react-router-dom";
+import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
+import { usePageBackground } from "@/hooks/usePageBackground";
 
 const Demo = () => {
+  const background = usePageBackground();
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <PageBackgroundMedia 
+        videoSrc={background.video}
+        gifSrc={background.gif}
+        overlayOpacity={background.overlayOpacity}
+      />
+      
       {/* Background Effects - Mobile optimized */}
       <div className="fixed inset-0 z-0">
         <div 

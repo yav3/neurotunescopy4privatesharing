@@ -2,8 +2,12 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { PricingCard } from "@/components/pricing/PricingCard";
 import { STRIPE_PRICES } from "@/config/stripe";
+import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
+import { usePageBackground } from "@/hooks/usePageBackground";
 
 export const Pricing = () => {
+  const background = usePageBackground();
+  
   const plans = [
     {
       name: "Trial Offer",
@@ -77,8 +81,14 @@ export const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
-      <NavigationHeader />
+    <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
+      <PageBackgroundMedia 
+        videoSrc={background.video}
+        gifSrc={background.gif}
+        overlayOpacity={background.overlayOpacity}
+      />
+      <div className="relative z-10">
+        <NavigationHeader />
       
       <main className="pt-32 pb-28">
         <div className="max-w-7xl mx-auto px-6">
@@ -116,7 +126,8 @@ export const Pricing = () => {
         </div>
       </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

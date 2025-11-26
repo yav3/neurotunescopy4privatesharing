@@ -1,8 +1,12 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { CheckCircle2 } from "lucide-react";
+import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
+import { usePageBackground } from "@/hooks/usePageBackground";
 
 export const Evidence = () => {
+  const background = usePageBackground();
+  
   const outcomes = [
     {
       stat: "30-45%",
@@ -45,8 +49,14 @@ export const Evidence = () => {
   ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
-      <NavigationHeader />
+    <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
+      <PageBackgroundMedia 
+        videoSrc={background.video}
+        gifSrc={background.gif}
+        overlayOpacity={background.overlayOpacity}
+      />
+      <div className="relative z-10">
+        <NavigationHeader />
       
       <main className="pt-32 pb-28">
         <div className="max-w-6xl mx-auto px-6">
@@ -58,7 +68,8 @@ export const Evidence = () => {
         </div>
       </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
