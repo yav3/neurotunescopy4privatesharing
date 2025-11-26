@@ -134,7 +134,7 @@ export const AppDownload = () => {
               Personal Wellness Web App
             </h1>
             <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto mb-2">
-              Individual therapeutic music for anxiety relief, focus, sleep, and wellness
+              Individual therapeutic music for anxiety, stress, focus, mood, pain management, and fitness
             </p>
             <p className="text-sm text-cyan-400 font-medium">
               Prices valid until December 5th
