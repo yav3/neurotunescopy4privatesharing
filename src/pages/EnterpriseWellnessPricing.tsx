@@ -28,7 +28,7 @@ export const EnterpriseWellnessPricing = () => {
 
       if (error) throw error;
 
-      if (!data.valid) {
+      if (!data.isValid) {
         toast.error(data.errors?.join(', ') || 'Validation failed');
         setIsSubmitting(false);
         return;
