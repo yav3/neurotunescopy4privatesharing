@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import { useParams, Navigate, Link, useNavigate } from 'react-router-dom';
 import { NEUROTUNES_PRODUCTS } from '@/data/products';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { ProductCarousel } from '@/components/products/ProductCarousel';
-import { RegistrationChatAssistant } from '@/components/registration/RegistrationChatAssistant';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import liquidGlassBg from '@/assets/liquid-glass-bg.png';
@@ -13,8 +11,8 @@ import bgAbstract1 from '@/assets/bg-abstract-1.png';
 
 export const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
+  const navigate = useNavigate();
   const product = productId ? Object.values(NEUROTUNES_PRODUCTS).find(p => p.id === productId) : null;
-  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 
   if (!product) {
     return <Navigate to="/products" replace />;
@@ -25,7 +23,6 @@ export const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <NavigationHeader />
-      <RegistrationChatAssistant isOpen={isRegistrationOpen} onClose={() => setIsRegistrationOpen(false)} />
 
       {/* Background with teal liquid glass */}
       <div className="fixed inset-0 z-0">
@@ -70,7 +67,7 @@ export const ProductDetail = () => {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
-                onClick={() => setIsRegistrationOpen(true)}
+                onClick={() => navigate('/products')}
                 className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition"
               >
                 {product.cta}
@@ -103,7 +100,7 @@ export const ProductDetail = () => {
             Ready to transform your space with therapeutic music?
           </h2>
           <button 
-            onClick={() => setIsRegistrationOpen(true)}
+            onClick={() => navigate('/products')}
             className="px-8 py-4 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground rounded-xl font-semibold hover:shadow-xl hover:shadow-primary/30 transition"
           >
             {product.cta}
