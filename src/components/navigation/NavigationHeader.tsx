@@ -93,6 +93,9 @@ export const NavigationHeader = () => {
                 <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
                   Chat Support
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -181,6 +184,9 @@ export const NavigationHeader = () => {
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
                 <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
                   Chat Support
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/app-download" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">App Store Download</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
