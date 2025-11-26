@@ -30,11 +30,14 @@ export const LandingPageControls = ({
   onToggleMute,
   onToggleSpatial
 }: LandingPageControlsProps) => {
-  const [playerState, setPlayerState] = useState<PlayerState>('standard');
+  const [playerState, setPlayerState] = useState<PlayerState>('minimized');
+
+  // Auto-minimize when not playing
+  const effectiveState = !isPlaying && playerState !== 'minimized' ? 'minimized' : playerState;
 
   const toggleState = () => {
-    if (playerState === 'minimized') setPlayerState('standard');
-    else if (playerState === 'standard') setPlayerState('expanded');
+    if (effectiveState === 'minimized') setPlayerState('standard');
+    else if (effectiveState === 'standard') setPlayerState('expanded');
     else setPlayerState('minimized');
   };
 
@@ -78,7 +81,7 @@ export const LandingPageControls = ({
       >
         <AnimatePresence mode="wait">
           {/* Minimized State */}
-          {playerState === 'minimized' && (
+          {effectiveState === 'minimized' && (
             <motion.div
               key="minimized"
               initial={{ opacity: 0, height: 0 }}
@@ -109,76 +112,76 @@ export const LandingPageControls = ({
           )}
 
           {/* Standard State - All controls inline */}
-          {playerState === 'standard' && (
+          {effectiveState === 'standard' && (
             <motion.div
               key="standard"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="px-3 py-2.5"
+              className="px-3 py-1.5"
             >
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5">
                 {/* Play/Pause & Skip */}
-                <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={onPlayPause}
-                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
                   >
                     {isPlaying ? (
-                      <Pause className="w-4 h-4 text-white" fill="white" />
+                      <Pause className="w-3.5 h-3.5 text-white" fill="white" />
                     ) : (
-                      <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
+                      <Play className="w-3.5 h-3.5 text-white ml-0.5" fill="white" />
                     )}
                   </button>
                   <button
                     onClick={onSkip}
-                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
                   >
-                    <SkipForward className="w-4 h-4 text-white" />
+                    <SkipForward className="w-3.5 h-3.5 text-white" />
                   </button>
                 </div>
 
-                <div className="w-px h-6 bg-white/20" />
+                <div className="w-px h-5 bg-white/20 mx-0.5" />
 
-                {/* Track Info - Compact */}
+                {/* Track Info - Ultra Compact */}
                 <div className="flex flex-col min-w-0 flex-1">
-                  <div className="text-[10px] text-white font-normal truncate">{currentTrack?.name}</div>
-                  <div className="text-[9px] text-white/60 font-light truncate">
-                    {currentTrack?.therapeuticGoal}, {currentTrack?.genre}
+                  <div className="text-[9px] text-white font-normal truncate leading-tight">{currentTrack?.name}</div>
+                  <div className="text-[8px] text-white/50 font-light truncate leading-tight">
+                    {currentTrack?.therapeuticGoal} • {currentTrack?.genre}
                   </div>
                 </div>
 
-                <div className="w-px h-6 bg-white/20" />
+                <div className="w-px h-5 bg-white/20 mx-0.5" />
 
                 {/* Spatial & Volume - Inline */}
-                <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-0.5" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={onToggleSpatial}
-                    className={`w-8 h-8 rounded-full transition-all flex items-center justify-center ${
+                    className={`w-7 h-7 rounded-full transition-all flex items-center justify-center ${
                       isSpatialAudio ? 'bg-white/20' : 'bg-white/10 hover:bg-white/20'
                     }`}
                   >
-                    <Waves className={`w-4 h-4 ${isSpatialAudio ? 'text-white' : 'text-white/70'}`} />
+                    <Waves className={`w-3.5 h-3.5 ${isSpatialAudio ? 'text-white' : 'text-white/70'}`} />
                   </button>
                   <button
                     onClick={onToggleMute}
-                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
                   >
                     {isMuted ? (
-                      <VolumeX className="w-4 h-4 text-white/70" />
+                      <VolumeX className="w-3.5 h-3.5 text-white/70" />
                     ) : (
-                      <Volume2 className="w-4 h-4 text-white" />
+                      <Volume2 className="w-3.5 h-3.5 text-white" />
                     )}
                   </button>
                 </div>
 
-                <ChevronUp className="w-4 h-4 text-white/60 flex-shrink-0" />
+                <ChevronUp className="w-3.5 h-3.5 text-white/60 flex-shrink-0 ml-0.5" />
               </div>
             </motion.div>
           )}
 
           {/* Expanded State - With Waveform */}
-          {playerState === 'expanded' && (
+          {effectiveState === 'expanded' && (
             <motion.div
               key="expanded"
               initial={{ opacity: 0 }}
