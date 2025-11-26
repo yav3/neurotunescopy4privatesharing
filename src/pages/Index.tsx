@@ -64,13 +64,8 @@ const Index = () => {
           <div className="pointer-events-auto flex flex-col items-center gap-8 max-w-4xl mx-auto px-6">
             {/* Description Text - Floating and Centered */}
             <div 
-              className="rounded-2xl px-8 py-4 opacity-0 animate-fade-in"
+              className="opacity-0 animate-fade-in"
               style={{
-                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(10, 10, 10, 0.7) 50%, rgba(0, 0, 0, 0.8) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                 animationDelay: '0.3s',
                 animationFillMode: 'forwards'
@@ -83,13 +78,8 @@ const Index = () => {
 
             {/* Music & AI Text - Floating and Centered */}
             <div 
-              className="rounded-2xl px-8 py-4 opacity-0 animate-fade-in"
+              className="opacity-0 animate-fade-in"
               style={{
-                background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(10, 10, 10, 0.7) 50%, rgba(0, 0, 0, 0.8) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
                 fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                 animationDelay: '0.6s',
                 animationFillMode: 'forwards'
