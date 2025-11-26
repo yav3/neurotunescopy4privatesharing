@@ -76,8 +76,13 @@ export const ProductsOverview = () => {
           </div>
 
           {/* Product Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.values(NEUROTUNES_PRODUCTS).map((product, index) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1600px] mx-auto">
+            {[
+              NEUROTUNES_PRODUCTS.enterpriseWellness,
+              NEUROTUNES_PRODUCTS.environmental,
+              NEUROTUNES_PRODUCTS.populationHealth,
+              NEUROTUNES_PRODUCTS.partnerships
+            ].map((product, index) => (
               <ProductCard 
                 key={product.id} 
                 product={product} 
