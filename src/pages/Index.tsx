@@ -64,7 +64,7 @@ const Index = () => {
           <div 
             className="pointer-events-auto relative rounded-3xl overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.95) 50%, rgba(0, 0, 0, 0.95) 100%)',
+              background: 'linear-gradient(135deg, rgba(50, 50, 50, 0.92) 0%, rgba(35, 35, 35, 0.92) 50%, rgba(20, 20, 20, 0.92) 100%)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(20px)',
@@ -76,7 +76,7 @@ const Index = () => {
             <div 
               className="absolute top-6 right-6 px-4 py-2 rounded-full text-xs tracking-wide"
               style={{
-                background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%)',
+                background: 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 color: 'rgba(255, 255, 255, 0.9)',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
@@ -87,30 +87,29 @@ const Index = () => {
 
             {/* Card Content */}
             <div className="p-16 flex flex-col items-center text-center">
-              <h1 className="text-5xl tracking-tight text-white mb-4">
+              <h1 className="text-5xl tracking-tight text-white mb-4" style={{ fontWeight: 400 }}>
                 +NeuroTunes
               </h1>
               <p className="text-white/60 text-sm mb-2 max-w-lg leading-relaxed">
                 Neuroscience-backed · Clinically Validated
               </p>
               <p className="text-white/60 text-sm mb-12 max-w-lg leading-relaxed">
-                Medical-grade Therapeutic Music & AI Streaming
+                Music & AI Streaming
               </p>
 
-              {/* Listen Now Button */}
+              {/* Play Button */}
               <button
                 onClick={handlePlaySession}
-                className="px-12 py-4 rounded-full transition-all hover:scale-105"
+                className="w-16 h-16 rounded-full transition-all hover:scale-110 flex items-center justify-center"
                 style={{
-                  background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  fontSize: '18px',
-                  fontWeight: 400,
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  background: 'linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                 }}
               >
-                Listen Now
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="ml-1">
+                  <path d="M8 5v14l11-7z" fill="rgba(255, 255, 255, 0.9)" />
+                </svg>
               </button>
             </div>
           </div>
