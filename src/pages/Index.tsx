@@ -66,14 +66,14 @@ const Index = () => {
               onClick={handlePlaySession}
               className="group transition-all hover:scale-110 relative"
               style={{
-                filter: 'drop-shadow(0 16px 40px rgba(192, 192, 192, 0.5))'
+                filter: 'drop-shadow(0 20px 50px rgba(192, 192, 192, 0.6))'
               }}
             >
-              <svg width="140" height="140" viewBox="0 0 140 140" fill="none" className="transition-all group-hover:drop-shadow-[0_0_30px_rgba(192,192,192,0.8)]">
-                <circle cx="70" cy="70" r="68" fill="none" stroke="#c0c0c0" strokeWidth="2" opacity="0.4" />
-                <path d="M55 40v60l50-30z" fill="none" stroke="#c0c0c0" strokeWidth="3.5" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
+              <svg width="180" height="180" viewBox="0 0 180 180" fill="none" className="transition-all group-hover:drop-shadow-[0_0_40px_rgba(192,192,192,0.9)]">
+                <circle cx="90" cy="90" r="87" fill="none" stroke="#c0c0c0" strokeWidth="2.5" opacity="0.5" />
+                <path d="M70 50v80l65-40z" fill="none" stroke="#c0c0c0" strokeWidth="4" strokeLinejoin="round" className="group-hover:stroke-white transition-colors" />
               </svg>
-              <div className="absolute inset-0 rounded-full bg-white/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 rounded-full bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           </div>
         </div>

@@ -128,8 +128,8 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
         className="absolute inset-0 bg-black pointer-events-none transition-opacity duration-500"
         style={{ opacity: fadeOpacity }}
       />
-      {/* Subtle dark overlay for readability */}
-      <div className="absolute inset-0 bg-black/35" />
+      {/* Black frosting overlay for depth */}
+      <div className="absolute inset-0 bg-black/50" />
     </div>
   );
 };
