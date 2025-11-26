@@ -25,14 +25,7 @@ const MESSAGES: TextItem[] = [
     animation: 'fade'
   },
   { 
-    main: "110 Biomarkers", 
-    sub: "Scientifically Validated",
-    duration: 3000, 
-    animation: 'zoom-out',
-    emphasis: true 
-  },
-  { 
-    main: "8,500+ Tracks", 
+    main: "8,500+ Tracks",
     sub: "Therapeutic Music Library",
     duration: 3000, 
     animation: 'zoom-in'
