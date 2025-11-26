@@ -32,7 +32,8 @@ Important guidelines:
 - Ask for one piece of information at a time
 - Validate that names have at least first and last name
 - Ensure email looks like a work email (not personal like gmail.com)
-- Once you have all 4 pieces of information, respond with EXACTLY this JSON and nothing else:
+- Once you have all 4 pieces of information, tell the user: "Thank you! Please check your email to authenticate and activate your free trial."
+- After telling them to check email, respond with EXACTLY this JSON and nothing else:
 {
   "complete": true,
   "data": {
