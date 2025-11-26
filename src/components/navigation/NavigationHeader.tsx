@@ -23,6 +23,17 @@ export const NavigationHeader = () => {
   };
   return (
     <>
+      {/* Backdrop Overlay - dims background when menu is open */}
+      {(desktopMenuOpen || mobileMenuOpen) && (
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 transition-opacity duration-200"
+          onClick={() => {
+            setDesktopMenuOpen(false);
+            setMobileMenuOpen(false);
+          }}
+        />
+      )}
+
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
       <header className="hidden md:flex items-center justify-between px-8 py-3 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50">
         {/* Left: Logo + Menu */}
