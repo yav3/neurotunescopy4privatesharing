@@ -108,7 +108,7 @@ export const EnterpriseWellnessPricing = () => {
                       className={`max-w-[80%] px-4 py-3 rounded-2xl ${
                         message.role === 'user'
                           ? 'bg-[#e4e4e4] text-[#050607]'
-                          : 'bg-black/40 text-[#c0c0c0] border border-[#e4e4e4]/20'
+                          : 'bg-black/40 text-[#e4e4e4] border border-[#e4e4e4]/20'
                       }`}
                       style={{
                         fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -120,11 +120,11 @@ export const EnterpriseWellnessPricing = () => {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-black/40 text-[#c0c0c0] px-4 py-3 rounded-2xl border border-[#e4e4e4]/20">
+                    <div className="bg-black/40 text-[#e4e4e4] px-4 py-3 rounded-2xl border border-[#e4e4e4]/20">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 rounded-full bg-[#e4e4e4] animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     </div>
                   </div>
@@ -140,7 +140,7 @@ export const EnterpriseWellnessPricing = () => {
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isSubmitting}
-                  className="flex-1 px-4 py-3 rounded-full text-[#c0c0c0] placeholder-white/30 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-3 rounded-full text-[#e4e4e4] placeholder-[#c0c0c0]/50 focus:outline-none focus:border-[#e4e4e4] transition-colors disabled:opacity-50"
                   style={{ 
                     fontFamily: 'SF Pro, -apple-system, BlinkMacSystemFont, sans-serif',
                     backgroundColor: '#000000',
@@ -154,7 +154,7 @@ export const EnterpriseWellnessPricing = () => {
                   style={{
                     backgroundColor: '#000000',
                     border: '1px solid #e4e4e4',
-                    color: '#c0c0c0',
+                    color: '#e4e4e4',
                   }}
                 >
                   <Send className="w-5 h-5" />
