@@ -12,37 +12,11 @@ interface TextItem {
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "50%", 
-    sub: "Anxiety Reduction",
-    duration: 3500, 
-    animation: 'zoom-in',
-    emphasis: true 
-  },
-  { 
-    main: "Clinically Validated", 
-    sub: "Peer-Reviewed Studies",
-    duration: 3000, 
-    animation: 'fade'
-  },
-  { 
-    main: "8,500+ Tracks",
-    sub: "Therapeutic Music Library",
-    duration: 3000, 
-    animation: 'zoom-in'
-  },
-  { 
-    main: "Patented Technology", 
-    sub: "GRN Generative Network",
-    duration: 3500, 
+    main: "Real Music, Real Science, Real Health Results", 
+    sub: "Experience Now",
+    duration: 5000, 
     animation: 'fade',
-    emphasis: true 
-  },
-  { 
-    main: "Real Results", 
-    sub: "Real Science",
-    duration: 3500, 
-    animation: 'zoom-in',
-    emphasis: true 
+    emphasis: false 
   },
 ]
 
