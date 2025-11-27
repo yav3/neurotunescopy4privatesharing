@@ -117,6 +117,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     <div className="fixed inset-0 z-0 overflow-hidden">
       <video
         ref={videoRef}
+        muted
         playsInline
         preload="auto"
         loop
