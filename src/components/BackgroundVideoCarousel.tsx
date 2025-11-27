@@ -71,6 +71,8 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
       setTimeout(() => {
         // Switch video while black
         video.src = nextSrc;
+        video.muted = true;
+        video.volume = 0;
         video.load();
         
         if (isPlaying) {
@@ -93,6 +95,10 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   useEffect(() => {
     const video = videoRef.current;
     if (!video || videoUrls.length === 0) return;
+
+    // Ensure video is completely muted before playing
+    video.muted = true;
+    video.volume = 0;
 
     const playPromise = video.play();
     if (playPromise && (playPromise as any).catch) {
