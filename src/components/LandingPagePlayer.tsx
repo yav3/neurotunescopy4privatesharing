@@ -47,13 +47,13 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 72
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/na%20na%20oohhh%20CROSS%20THE%20LINE%20HOUSE%20MIX.mp3',
+    audioUrl: '/audio/just-how-you-like-it-kpop.mp3',
     videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Mood Boost',
-    genre: 'House',
+    genre: 'K-Pop',
     artist: 'Van Wild',
-    name: 'Na Na Oohhh Cross The Line House Mix',
-    estimatedBPM: 80
+    name: 'Just How You Like It',
+    estimatedBPM: 95
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
