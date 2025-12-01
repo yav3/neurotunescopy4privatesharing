@@ -15,9 +15,6 @@ export const Story = () => {
             <h1 className="text-6xl font-light tracking-tight text-white mb-6">
               Our Story
             </h1>
-            <p className="text-2xl font-light text-neutral-300">
-              From neuroscience research to transforming global wellbeing
-            </p>
           </div>
 
           {/* Content */}
