@@ -120,7 +120,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Im%20on%20your%20team%20INDIE%20POP%20VERSION%203.mp3',
-    videoPath: '/videos/landing-37.mp4',
+    videoPath: '/videos/landing-40.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'Indie Pop',
     artist: 'Van Wild',
@@ -138,7 +138,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/blanca-blanqueando.mp3',
-    videoPath: '/videos/landing-06.mp4',
+    videoPath: '/videos/landing-41.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
