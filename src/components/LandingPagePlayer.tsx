@@ -366,21 +366,8 @@ export const LandingPagePlayer = ({
     onVideoChange(nextVideoIndex);
     console.log('✅ Sync complete - Track:', nextTrack.name, '| Video:', nextVideoIndex, '| Active audio:', activeAudioRef === 1 ? 2 : 1);
 
-    // Schedule next track ONLY if still playing
-    if (trackTimerRef.current) {
-      console.log('⏱️ Clearing existing timer');
-      clearTimeout(trackTimerRef.current);
-    }
-    
-    if (isPlaying) {
-      console.log(`⏱️ Scheduling next track in ${TRACK_DURATION / 1000}s`);
-      trackTimerRef.current = setTimeout(() => {
-        console.log('⏰ Timer fired - calling playNextTrack');
-        playNextTrack();
-      }, TRACK_DURATION);
-    } else {
-      console.log('⚠️ Not scheduling next track because isPlaying is false');
-    }
+    // Video onEnded event will trigger next track - no timer needed
+    console.log('🎬 Waiting for video to end to trigger next track');
   }, [isPlaying, tracks, videos, currentTrackIndex, activeAudioRef, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
   // Handle play/pause - directly triggered from user interaction
@@ -432,13 +419,8 @@ export const LandingPagePlayer = ({
               await currentAudio.play();
               console.log('✅ Audio playing successfully');
               
-              // CRITICAL: Only schedule next track AFTER playback confirmed
-              if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-              trackTimerRef.current = setTimeout(() => {
-                console.log('⏰ First track timer fired - calling playNextTrack');
-                playNextTrack();
-              }, TRACK_DURATION);
-              console.log(`⏱️ First track will play for ${TRACK_DURATION / 1000}s`);
+              // Video onEnded event will trigger next track - no timer needed
+              console.log('🎬 Waiting for video to end to trigger next track');
               
               onPlaybackStateChange(true);
               onCurrentTrackChange(firstTrack);
@@ -451,12 +433,7 @@ export const LandingPagePlayer = ({
                   await currentAudio.play();
                   console.log('✅ Playing after retry');
                   
-                  // Schedule timer after successful retry
-                  if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-                  trackTimerRef.current = setTimeout(() => {
-                    console.log('⏰ First track timer fired (retry) - calling playNextTrack');
-                    playNextTrack();
-                  }, TRACK_DURATION);
+                  // Video onEnded event will trigger next track - no timer needed
                   
                   onPlaybackStateChange(true);
                   onCurrentTrackChange(firstTrack);
@@ -477,16 +454,7 @@ export const LandingPagePlayer = ({
           .then(() => {
             console.log('✅ Audio resumed successfully');
             onPlaybackStateChange(true);
-            
-            // Restart timer if not already running
-            if (!trackTimerRef.current && isPlaying) {
-              const timeLeft = (currentAudio?.duration || TRACK_DURATION / 1000) - (currentAudio?.currentTime || 0);
-              console.log(`⏱️ Restarting timer with ${timeLeft}s remaining`);
-              trackTimerRef.current = setTimeout(() => {
-                console.log('⏰ Resume timer fired - calling playNextTrack');
-                playNextTrack();
-              }, timeLeft * 1000);
-            }
+            // Video onEnded event will trigger next track - no timer needed
           })
           .catch(err => {
             console.error('❌ Audio resume failed:', err);
