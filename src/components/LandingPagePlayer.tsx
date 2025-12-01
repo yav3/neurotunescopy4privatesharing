@@ -401,7 +401,20 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // Set up audio
+          // CRITICAL: Ensure the OTHER audio element is completely silent and reset
+          // This prevents any "intro music" overlap from preloaded content
+          const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
+          if (otherAudio) {
+            otherAudio.pause();
+            otherAudio.src = '';
+            otherAudio.currentTime = 0;
+            otherAudio.volume = 0;
+            console.log('🔇 Reset other audio element to prevent overlap');
+          }
+          
+          // Reset current audio to start fresh from position 0
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
           currentAudio.muted = false;
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
