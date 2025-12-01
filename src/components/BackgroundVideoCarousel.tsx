@@ -119,6 +119,14 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   // No time sync - let video play smoothly at its own pace
   // The BPM-adjusted playback rate creates visual rhythm without forcing exact sync
 
+  // When video ends, skip to next track (no looping)
+  const handleVideoEnded = () => {
+    console.log('🎬 Video ended, triggering next track');
+    if ((window as any).__skipLandingTrack) {
+      (window as any).__skipLandingTrack();
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-0 overflow-hidden">
       <video
@@ -126,7 +134,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
         muted
         playsInline
         preload="auto"
-        loop
+        onEnded={handleVideoEnded}
         className="w-full h-full object-contain"
         style={{ transform: 'scale(1.0)' }}
       />
