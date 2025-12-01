@@ -514,7 +514,7 @@ export const LandingPagePlayer = ({
         trackTimerRef.current = undefined;
       }
     }
-  }, [isPlaying, tracks, videos, isMuted]);
+  }, [isPlaying, tracks, videos, isMuted, playNextTrack, onPlaybackStateChange, onCurrentTrackChange, onVideoPlaybackRateChange, getPlaybackRate, activeAudioRef, currentTrackIndex]);
 
   // Handle mute
   useEffect(() => {
