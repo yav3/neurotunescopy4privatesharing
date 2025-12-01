@@ -283,21 +283,24 @@ export default function EnvironmentalBackground() {
 
               <button
                 onClick={() => setContactOpen(true)}
-                className="group relative px-12 py-5 rounded-full text-lg font-medium transition-all duration-300"
+                className="group relative px-12 py-5 rounded-full text-lg transition-all duration-300"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85))',
-                  color: '#000000',
-                  boxShadow: '0 8px 32px rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(255, 255, 255, 0.4)',
+                  background: '#000000',
+                  color: '#c0c0c0',
+                  border: '1px solid rgba(192, 192, 192, 0.3)',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
                   cursor: 'pointer',
-                  animation: 'pulse-glow 2s ease-in-out infinite',
+                  fontWeight: 400,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 12px 48px rgba(255, 255, 255, 0.35), 0 0 0 8px rgba(255, 255, 255, 0.15)';
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.background = '#0a0a0a';
+                  e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.5)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(255, 255, 255, 0.4)';
+                  e.currentTarget.style.background = '#000000';
+                  e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.3)';
                 }}
               >
                 <span className="flex items-center gap-2 justify-center">
