@@ -137,13 +137,13 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 100
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Can%20we%20cross%20the%20line%20COUNTRY%20RADIO%20mix.mp3',
+    audioUrl: '/audio/blanca-blanqueando.mp3',
     videoPath: '/videos/landing-06.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Country',
-    artist: 'Van Wild',
-    name: 'Can We Cross the Line',
-    estimatedBPM: 98
+    therapeuticGoal: 'Relaxation',
+    genre: 'Bossa Nova',
+    artist: 'Yasmine',
+    name: 'Blanca Blanqueando',
+    estimatedBPM: 90
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Como%20con%20tu%20sombra%20samba%20bossa%20nova.mp3',
