@@ -58,6 +58,7 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoUrls, setVideoUrls] = useState<string[]>([]);
   const [fadeOpacity, setFadeOpacity] = useState(0);
+  const [internalVideoIndex, setInternalVideoIndex] = useState(0);
 
   // Use local video files directly
   useEffect(() => {
@@ -81,7 +82,10 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
       videoUrls.length;
     const nextSrc = videoUrls[safeIndex];
 
-    console.log(`🎬 Video index ${currentVideoIndex} → ${safeIndex}, URL: ${nextSrc.substring(nextSrc.lastIndexOf('/') + 1)}`);
+    console.log(`🎬 Track changed - Video index ${currentVideoIndex} → ${safeIndex}, URL: ${nextSrc.substring(nextSrc.lastIndexOf('/') + 1)}`);
+
+    // Update internal tracking when track changes
+    setInternalVideoIndex(safeIndex);
 
     if (video.src !== nextSrc) {
       console.log('🎬 Starting fade-to-black transition');
@@ -139,12 +143,39 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   // No time sync - let video play smoothly at its own pace
   // The BPM-adjusted playback rate creates visual rhythm without forcing exact sync
 
-  // When video ends, skip to next track (no looping)
+  // When video ends, advance to next video (not next track)
   const handleVideoEnded = () => {
-    console.log('🎬 Video ended, triggering next track');
-    if ((window as any).__skipLandingTrack) {
-      (window as any).__skipLandingTrack();
-    }
+    console.log('🎬 Video ended, cycling to next video');
+    const nextVideoIndex = (internalVideoIndex + 1) % videoUrls.length;
+    setInternalVideoIndex(nextVideoIndex);
+    
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const nextSrc = videoUrls[nextVideoIndex];
+    console.log(`🎬 Cycling from video ${internalVideoIndex} to ${nextVideoIndex}`);
+    
+    // Fade to black
+    setFadeOpacity(1);
+    
+    setTimeout(() => {
+      // Switch video while black
+      video.src = nextSrc;
+      video.muted = true;
+      video.volume = 0;
+      video.load();
+      
+      const playPromise = video.play();
+      if (playPromise && (playPromise as any).catch) {
+        (playPromise as Promise<void>).catch(() => {});
+      }
+      
+      console.log('🎬 New video loaded, fading back in');
+      // Fade back in
+      setTimeout(() => {
+        setFadeOpacity(0);
+      }, 100);
+    }, 500);
   };
 
   return (
