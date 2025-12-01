@@ -201,7 +201,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/ondas-no-mar-samba.mp3',
-    videoPath: '/videos/landing-06.mp4',
+    videoPath: '/videos/landing-39.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Samba',
     artist: 'Yasmine',
