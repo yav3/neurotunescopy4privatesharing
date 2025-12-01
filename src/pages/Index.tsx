@@ -13,7 +13,7 @@ import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
 const Index = () => {
   useWelcomeMessage();
   
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Start playing immediately for intro
   const [isMuted, setIsMuted] = useState(false);
   const [isSpatialAudio, setIsSpatialAudio] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string } | null>(null);
