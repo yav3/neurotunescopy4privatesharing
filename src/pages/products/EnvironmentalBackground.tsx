@@ -71,11 +71,6 @@ export default function EnvironmentalBackground() {
 
   return (
     <div className="min-h-screen bg-[#050607] text-white overflow-hidden relative">
-      <PageBackgroundMedia 
-        videoSrc={background.video}
-        gifSrc={background.gif}
-        overlayOpacity={background.overlayOpacity}
-      />
       <div className="relative z-10">
         <NavigationHeader />
 
