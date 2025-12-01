@@ -66,60 +66,31 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   const [fadeOpacity, setFadeOpacity] = useState(0);
   const [internalVideoIndex, setInternalVideoIndex] = useState(0);
 
-  // Use local video files directly
+  // Use local video files directly and load first video
   useEffect(() => {
     setVideoUrls(CURATED_VIDEO_FILES);
     
-    // CRITICAL: Video must be muted - only music player audio should be heard
     const video = videoRef.current;
     if (video) {
+      // CRITICAL: Video must be muted - only music player audio should be heard
       video.muted = true;
       video.volume = 0;
+      
+      // Load first video
+      video.src = CURATED_VIDEO_FILES[0];
+      video.load();
     }
   }, []);
 
-  // Load/change the video source with fade-to-black transition
+  // Videos cycle independently from track changes - don't reset video index on track change
+  // This allows all 45 videos to be shown even though there are only 23 tracks
   useEffect(() => {
     const video = videoRef.current;
     if (!video || videoUrls.length === 0) return;
 
-    const safeIndex =
-      ((currentVideoIndex % videoUrls.length) + videoUrls.length) %
-      videoUrls.length;
-    const nextSrc = videoUrls[safeIndex];
-
-    console.log(`🎬 Track changed - Video index ${currentVideoIndex} → ${safeIndex}, URL: ${nextSrc.substring(nextSrc.lastIndexOf('/') + 1)}`);
-
-    // Update internal tracking when track changes
-    setInternalVideoIndex(safeIndex);
-
-    if (video.src !== nextSrc) {
-      console.log('🎬 Starting fade-to-black transition');
-      // Fade to black
-      setFadeOpacity(1);
-      
-      setTimeout(() => {
-        // Switch video while black
-        video.src = nextSrc;
-        video.muted = true;
-        video.volume = 0;
-        video.load();
-        
-        if (isPlaying) {
-          const playPromise = video.play();
-          if (playPromise && (playPromise as any).catch) {
-            (playPromise as Promise<void>).catch(() => {});
-          }
-        }
-        
-        console.log('🎬 Video switched, fading back in');
-        // Fade back in
-        setTimeout(() => {
-          setFadeOpacity(0);
-        }, 100);
-      }, 500);
-    }
-  }, [currentVideoIndex, videoUrls, isPlaying]);
+    // Only log track changes, don't change video
+    console.log(`🎵 Track changed to index ${currentVideoIndex}`);
+  }, [currentVideoIndex, videoUrls]);
 
   // Autoplay video immediately, independent of audio playback
   useEffect(() => {
