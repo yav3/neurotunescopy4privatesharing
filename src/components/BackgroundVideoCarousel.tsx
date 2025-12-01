@@ -92,23 +92,26 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     console.log(`🎵 Track changed to index ${currentVideoIndex}`);
   }, [currentVideoIndex, videoUrls]);
 
-  // Autoplay video immediately, independent of audio playback
+  // Control video playback based on isPlaying state
   useEffect(() => {
     const video = videoRef.current;
     if (!video || videoUrls.length === 0) return;
 
-    // Ensure video is completely muted before playing
+    // Ensure video is completely muted
     video.muted = true;
     video.volume = 0;
 
-    const playPromise = video.play();
-    if (playPromise && (playPromise as any).catch) {
-      (playPromise as Promise<void>).catch(() => {
-        // Ignore autoplay block; user interaction will allow playback
-        console.log('🎬 Video autoplay blocked, waiting for user interaction');
-      });
+    if (isPlaying) {
+      const playPromise = video.play();
+      if (playPromise && (playPromise as any).catch) {
+        (playPromise as Promise<void>).catch(() => {
+          console.log('🎬 Video play blocked, waiting for user interaction');
+        });
+      }
+    } else {
+      video.pause();
     }
-  }, [videoUrls]);
+  }, [isPlaying, videoUrls]);
 
   // Apply BPM-derived playbackRate
   useEffect(() => {
