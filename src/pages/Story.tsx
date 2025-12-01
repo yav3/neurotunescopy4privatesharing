@@ -1,18 +1,9 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
-import { usePageBackground } from "@/hooks/usePageBackground";
 
 export const Story = () => {
-  const background = usePageBackground();
-  
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
-      <PageBackgroundMedia 
-        videoSrc={background.video}
-        gifSrc={background.gif}
-        overlayOpacity={background.overlayOpacity}
-      />
       <div className="relative z-10">
         <NavigationHeader />
       
