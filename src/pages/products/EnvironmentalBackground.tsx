@@ -80,7 +80,7 @@ export default function EnvironmentalBackground() {
         <NavigationHeader />
 
       {/* Condensed Hero - Minimal Padding */}
-      <section className="relative pt-24 pb-8 px-6">
+      <section className="relative pt-24 pb-4 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h1 
             className="text-4xl lg:text-5xl font-light mb-3"
@@ -105,7 +105,7 @@ export default function EnvironmentalBackground() {
       </section>
 
       {/* Benefits - Compact 2x2 Grid with Hover Expand */}
-      <section className="relative py-8 px-6">
+      <section className="relative py-4 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 
             className="text-2xl lg:text-3xl font-light mb-6 text-center"
