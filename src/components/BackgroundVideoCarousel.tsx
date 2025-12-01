@@ -39,12 +39,15 @@ const CURATED_VIDEO_FILES = [
   '/videos/landing-34.gif', // Track 34
   '/videos/landing-35.gif', // Track 35
   '/videos/landing-36.gif', // Track 36
-  '/videos/landing-37.mp4', // Track 37
-  '/videos/landing-38.mp4', // Track 38
-  '/videos/landing-39.mp4', // Track 39
-  '/videos/landing-40.mp4', // Track 40
-  '/videos/landing-41.mp4', // Track 41
-  '/videos/landing-42.mp4', // Track 42
+  '/landingpage/landing-37.gif', // Track 37
+  '/landingpage/landing-38.gif', // Track 38
+  '/landingpage/landing-39.gif', // Track 39
+  '/landingpage/landing-40.gif', // Track 40
+  '/landingpage/landing-41.gif', // Track 41
+  '/landingpage/landing-42.gif', // Track 42
+  '/landingpage/landing-43.gif', // Track 43
+  '/landingpage/landing-44.gif', // Track 44
+  '/landingpage/landing-45.gif', // Track 45
 ];
 
 interface BackgroundVideoCarouselProps {
