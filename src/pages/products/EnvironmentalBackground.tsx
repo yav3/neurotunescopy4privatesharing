@@ -173,33 +173,8 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
-      {/* Commercial Video */}
-      <section className="relative py-8 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl overflow-hidden"
-            style={{
-              border: '1px solid rgba(192, 192, 192, 0.2)',
-            }}
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-auto"
-            >
-              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
-            </video>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Prominent CTA - Eye-catching Design */}
-      <section className="relative py-12 px-6">
+      <section className="relative py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
             className="relative rounded-3xl overflow-hidden"
@@ -264,6 +239,31 @@ export default function EnvironmentalBackground() {
                 animation: 'pulse-soft 3s ease-in-out infinite',
               }}
             />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Commercial Video - Smaller Size */}
+      <section className="relative py-8 px-6">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-2xl overflow-hidden"
+            style={{
+              border: '1px solid rgba(192, 192, 192, 0.2)',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto"
+            >
+              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
+            </video>
           </motion.div>
         </div>
       </section>
