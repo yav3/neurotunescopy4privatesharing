@@ -21,6 +21,7 @@ const Index = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showHero, setShowHero] = useState(true);
   const [overlayComplete, setOverlayComplete] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
@@ -29,8 +30,15 @@ const Index = () => {
   };
 
   const handlePlaySession = () => {
-    setShowHero(false);
+    // Start crossfade transition
+    setIsTransitioning(true);
     setIsPlaying(true);
+    
+    // After crossfade completes, hide hero
+    setTimeout(() => {
+      setShowHero(false);
+      setIsTransitioning(false);
+    }, 1000);
   };
 
   const handleSubscribe = () => {
@@ -65,14 +73,17 @@ const Index = () => {
       {/* Cinematic Text Overlay - only show when hero is visible */}
       {showHero && !overlayComplete && <CinematicTextOverlay onComplete={() => setOverlayComplete(true)} />}
       
-      {/* Hero Section - Play Button with CTAs */}
+      {/* Hero Section - Play Button with CTAs - with crossfade transition */}
       {showHero && overlayComplete && (
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+        <div 
+          className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        >
           <div className="pointer-events-auto flex flex-col items-center gap-16">
             {/* Play Button */}
             <button
               onClick={handlePlaySession}
-              className="group transition-all duration-300 hover:scale-110 active:scale-105 relative"
+              disabled={isTransitioning}
+              className="group transition-all duration-300 hover:scale-110 active:scale-105 relative disabled:pointer-events-none"
               style={{
                 filter: 'drop-shadow(0 20px 50px rgba(192, 192, 192, 0.6))'
               }}
@@ -92,7 +103,8 @@ const Index = () => {
             {/* Subscribe CTA */}
             <button
               onClick={handleSubscribe}
-              className="px-10 py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-base"
+              disabled={isTransitioning}
+              className="px-10 py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-base disabled:pointer-events-none"
               style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
             >
               Subscribe
@@ -104,18 +116,26 @@ const Index = () => {
       {/* Spacer for layout */}
       <div className="flex-1" />
       
-      {/* Landing Page Controls - only show when hero is hidden */}
-      {!showHero && (
-        <LandingPageControls
-          isPlaying={isPlaying}
-          isMuted={isMuted}
-          isSpatialAudio={isSpatialAudio}
-          currentTrack={currentTrack}
-          onPlayPause={() => setIsPlaying(!isPlaying)}
-          onSkip={handleSkip}
-          onToggleMute={() => setIsMuted(!isMuted)}
-          onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
-        />
+      {/* Landing Page Controls - show during transition (fade in) or when hero is hidden */}
+      {(isTransitioning || !showHero) && (
+        <div 
+          className="transition-opacity duration-1000"
+          style={{ 
+            opacity: showHero ? 0 : 1,
+            animation: isTransitioning ? 'fadeIn 1s ease-out forwards' : undefined
+          }}
+        >
+          <LandingPageControls
+            isPlaying={isPlaying}
+            isMuted={isMuted}
+            isSpatialAudio={isSpatialAudio}
+            currentTrack={currentTrack}
+            onPlayPause={() => setIsPlaying(!isPlaying)}
+            onSkip={handleSkip}
+            onToggleMute={() => setIsMuted(!isMuted)}
+            onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
+          />
+        </div>
       )}
       
       {/* Footer */}
