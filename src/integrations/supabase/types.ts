@@ -4883,46 +4883,6 @@ export type Database = {
       }
     }
     Views: {
-      enhanced_user_favorites: {
-        Row: {
-          added_at: string | null
-          album: string | null
-          artist: string | null
-          artwork_url: string | null
-          created_at: string | null
-          duration: number | null
-          duration_seconds: number | null
-          genre: string | null
-          id: string | null
-          last_played_at: string | null
-          play_count: number | null
-          playlist_id: string | null
-          storage_bucket: string | null
-          storage_path: string | null
-          title: string | null
-          track_artist: string | null
-          track_id: string | null
-          track_name: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_favorites_track_id_fkey"
-            columns: ["track_id"]
-            isOneToOne: false
-            referencedRelation: "music_tracks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_favorites_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
