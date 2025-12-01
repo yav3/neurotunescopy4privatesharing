@@ -104,80 +104,6 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
-      {/* Use Cases - Compact Grid with Hover Expand */}
-      <section className="relative py-8 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 
-            className="text-2xl lg:text-3xl font-light mb-6 text-center"
-            style={{ color: 'rgba(255, 255, 255, 0.90)' }}
-          >
-            Perfect for:
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {useCases.map((useCase, index) => {
-              const Icon = useCase.icon;
-              const isHovered = hoveredUseCase === index;
-              
-              return (
-                <motion.div
-                  key={index}
-                  className="relative group cursor-pointer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.03 }}
-                  onMouseEnter={() => setHoveredUseCase(index)}
-                  onMouseLeave={() => setHoveredUseCase(null)}
-                >
-                  <div 
-                    className="relative p-4 rounded-2xl backdrop-blur-xl transition-all duration-300"
-                    style={{
-                      background: isHovered ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.04)',
-                      border: `1px solid ${isHovered ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)'}`,
-                      minHeight: isHovered ? '180px' : '120px',
-                    }}
-                  >
-                    <div 
-                      className="flex items-center justify-center w-10 h-10 rounded-xl mb-3 mx-auto"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                      }}
-                    >
-                      <Icon className="w-5 h-5" style={{ color: 'rgba(255, 255, 255, 0.85)' }} />
-                    </div>
-
-                    <h3 
-                      className="text-sm font-light text-center mb-2"
-                      style={{ color: 'rgba(255, 255, 255, 0.95)' }}
-                    >
-                      {useCase.title}
-                    </h3>
-
-                    <motion.p 
-                      className="text-xs text-center leading-relaxed"
-                      style={{ 
-                        color: 'rgba(255, 255, 255, 0.65)',
-                        opacity: isHovered ? 1 : 0,
-                        height: isHovered ? 'auto' : 0,
-                      }}
-                      initial={false}
-                      animate={{ 
-                        opacity: isHovered ? 1 : 0,
-                        height: isHovered ? 'auto' : 0 
-                      }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {useCase.description}
-                    </motion.p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Benefits - Compact 2x2 Grid with Hover Expand */}
       <section className="relative py-8 px-6">
         <div className="max-w-7xl mx-auto">
@@ -249,6 +175,31 @@ export default function EnvironmentalBackground() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Commercial Video */}
+      <section className="relative py-8 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-2xl overflow-hidden"
+            style={{
+              border: '1px solid rgba(192, 192, 192, 0.2)',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto"
+            >
+              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
         </div>
       </section>
 
