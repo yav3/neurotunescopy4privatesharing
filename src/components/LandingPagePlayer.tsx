@@ -216,6 +216,24 @@ const CURATED_PLAYLIST = [
     artist: 'Van Wild',
     name: 'Deja Vu',
     estimatedBPM: 112
+  },
+  {
+    audioUrl: '/audio/nocturnes-chamber-orchestra.mp3',
+    videoPath: '/videos/landing-42.mp4',
+    therapeuticGoal: 'Deep Rest',
+    genre: 'Classical',
+    artist: 'The Scientists',
+    name: 'Nocturnes for Chamber Orchestra',
+    estimatedBPM: 65
+  },
+  {
+    audioUrl: '/audio/your-love-big-band.mp3',
+    videoPath: '/videos/landing-09.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Big Band',
+    artist: 'The Scientists',
+    name: 'Your Love',
+    estimatedBPM: 95
   }
 ];
 
