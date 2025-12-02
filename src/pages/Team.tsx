@@ -1,7 +1,13 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import mikeHeadshot from "@/assets/team/mike-larson.jpg";
-import yasmineHeadshot from "@/assets/team/yasmine-van-wilt.jpg";
+import yasmineHeadshot from "@/assets/team/yasmine-wilt.png";
+import mikeHeadshot from "@/assets/team/mike-larson-new.png";
+import chrisHeadshot from "@/assets/team/christopher-long.png";
+import brianHeadshot from "@/assets/team/brian-wallace.png";
+import joshHeadshot from "@/assets/team/joshua-langenthal.png";
+import peterHeadshot from "@/assets/team/peter-blumen.png";
+import jimHeadshot from "@/assets/team/jim-anderson.png";
+import marcinHeadshot from "@/assets/team/marcin-waryszak.png";
 
 interface TeamMember {
   name: string;
@@ -29,30 +35,36 @@ const foundingTeam: TeamMember[] = [
     name: "Christopher Long",
     credentials: "MBA",
     role: "CFO, COO",
+    photo: chrisHeadshot,
   },
   {
     name: "Brian E. Wallace",
     credentials: "MD, PhD, MBA",
     role: "CMedO, President",
+    photo: brianHeadshot,
   },
   // Second row - Josh, Peter, Jim, Marcin
   {
     name: "Joshua Langenthal",
     credentials: "MCRP, MLA",
     role: "",
+    photo: joshHeadshot,
   },
   {
     name: "Peter Blumen",
     credentials: "ScM, MBA",
     role: "Co-Founder",
+    photo: peterHeadshot,
   },
   {
     name: "Jim Anderson",
     role: "Co-Founder",
+    photo: jimHeadshot,
   },
   {
     name: "Marcin Waryszak",
     role: "SVP Operations",
+    photo: marcinHeadshot,
   },
 ];
 
@@ -87,8 +99,7 @@ export const Team = () => {
                       <img 
                         src={member.photo} 
                         alt={member.name}
-                        className="w-full h-full object-cover"
-                        style={member.name === "Mike Larson" ? { objectPosition: 'center 15%', transform: 'scale(1.8)' } : {}}
+                        className="w-full h-full object-cover object-left"
                       />
                     </div>
                   ) : (
@@ -117,8 +128,7 @@ export const Team = () => {
                       <img 
                         src={member.photo} 
                         alt={member.name}
-                        className="w-full h-full object-cover"
-                        style={member.name === "Mike Larson" ? { objectPosition: 'center 15%', transform: 'scale(1.8)' } : {}}
+                        className="w-full h-full object-cover object-left"
                       />
                     </div>
                   ) : (
