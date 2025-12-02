@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
 import { usePageBackground } from "@/hooks/usePageBackground";
 import mikeHeadshot from "@/assets/team/mike-larson.jpg";
+import yasmineHeadshot from "@/assets/team/yasmine-van-wilt.jpg";
 
 interface TeamMember {
   name: string;
@@ -19,6 +20,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "PhD, FRSA",
     role: "Co-Founder",
     title: "CEO, CTO",
+    photo: yasmineHeadshot,
   },
   {
     name: "Mike Larson",
