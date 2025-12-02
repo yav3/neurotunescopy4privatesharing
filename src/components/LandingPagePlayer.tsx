@@ -47,10 +47,10 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 72
   },
   {
-    audioUrl: '/audio/just-how-you-like-it-kpop.mp3',
-    videoPath: '/videos/landing-03.mp4',
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
+    videoPath: '/videos/landing-06.mp4',
     therapeuticGoal: 'Mood Boost',
-    genre: 'K-Pop',
+    genre: 'Country Pop',
     artist: 'Van Wild',
     name: 'Just How You Like It',
     estimatedBPM: 95
@@ -74,10 +74,10 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 70
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
-    videoPath: '/videos/landing-06.mp4',
+    audioUrl: '/audio/just-how-you-like-it-kpop.mp3',
+    videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Mood Boost',
-    genre: 'Country Pop',
+    genre: 'K-Pop',
     artist: 'Van Wild',
     name: 'Just How You Like It',
     estimatedBPM: 95
