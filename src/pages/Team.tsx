@@ -88,65 +88,32 @@ export const Team = () => {
           </div>
 
           {/* Team Grid */}
-          <div className="mb-20">
-            
-            {/* Top Row - 4 members */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-              {foundingTeam.slice(0, 4).map((member, index) => (
-                <div key={index} className="text-center">
-                  {member.photo ? (
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border border-neutral-700/50">
-                      <img 
-                        src={member.photo} 
-                        alt={member.name}
-                        className="w-full h-full object-cover object-[25%_center]"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
-                  )}
-                  <h3 className="text-lg font-light text-neutral-200">{member.name}</h3>
-                  {member.credentials && (
-                    <p className="text-sm text-neutral-400">{member.credentials}</p>
-                  )}
-                  {member.role && (
-                    <p className="text-sm text-neutral-500 mt-1">{member.role}</p>
-                  )}
-                  {member.title && (
-                    <p className="text-sm text-neutral-500">{member.title}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Second Row - 4 members */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {foundingTeam.slice(4, 8).map((member, index) => (
-                <div key={index} className="text-center">
-                  {member.photo ? (
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border border-neutral-700/50">
-                      <img 
-                        src={member.photo} 
-                        alt={member.name}
-                        className="w-full h-full object-cover object-[25%_center]"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
-                  )}
-                  <h3 className="text-lg font-light text-neutral-200">{member.name}</h3>
-                  {member.credentials && (
-                    <p className="text-sm text-neutral-400">{member.credentials}</p>
-                  )}
-                  {member.role && (
-                    <p className="text-sm text-neutral-500 mt-1">{member.role}</p>
-                  )}
-                  {member.title && (
-                    <p className="text-sm text-neutral-500">{member.title}</p>
-                  )}
-                </div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 max-w-4xl mx-auto">
+            {foundingTeam.map((member, index) => (
+              <div key={index} className="flex flex-col items-center text-center">
+                {member.photo ? (
+                  <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50">
+                    <img 
+                      src={member.photo} 
+                      alt={member.name}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-28 h-28 mb-3 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
+                )}
+                <h3 className="text-base font-light text-neutral-200 leading-tight">{member.name}</h3>
+                {member.credentials && (
+                  <p className="text-xs text-neutral-400 mt-0.5">{member.credentials}</p>
+                )}
+                {member.role && (
+                  <p className="text-xs text-neutral-500 mt-1">{member.role}</p>
+                )}
+                {member.title && (
+                  <p className="text-xs text-neutral-500">{member.title}</p>
+                )}
+              </div>
+            ))}
           </div>
 
           {/* Advisory Board Section */}
