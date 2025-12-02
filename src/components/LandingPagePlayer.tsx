@@ -401,6 +401,7 @@ export const LandingPagePlayer = ({
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
     
     // Guard: Don't attempt playback if tracks not loaded yet
     if (tracks.length === 0 || videos.length === 0) {
@@ -417,19 +418,29 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // CRITICAL: Ensure the OTHER audio element is completely silent and reset
-          const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
-          if (otherAudio) {
-            otherAudio.pause();
-            otherAudio.src = '';
-            otherAudio.currentTime = 0;
-            otherAudio.volume = 0;
-            console.log('🔇 Reset other audio element to prevent overlap');
+          // CRITICAL: Ensure BOTH audio elements are completely silent and reset before starting
+          // This prevents any "intro music" overlap from preloaded content or stale state
+          if (audioRef1.current) {
+            audioRef1.current.pause();
+            audioRef1.current.src = '';
+            audioRef1.current.currentTime = 0;
+            audioRef1.current.volume = 0;
+          }
+          if (audioRef2.current) {
+            audioRef2.current.pause();
+            audioRef2.current.src = '';
+            audioRef2.current.currentTime = 0;
+            audioRef2.current.volume = 0;
+          }
+          console.log('🔇 Reset ALL audio elements to prevent overlap');
+          
+          // Clear any existing timers
+          if (trackTimerRef.current) {
+            clearTimeout(trackTimerRef.current);
+            trackTimerRef.current = undefined;
           }
           
-          // Reset current audio to start fresh from position 0
-          currentAudio.pause();
-          currentAudio.currentTime = 0;
+          // Now set up the first track on the active audio element
           currentAudio.muted = false;
           currentAudio.src = firstTrack.src;
           currentAudio.volume = isMuted ? 0 : 0.6;
@@ -494,6 +505,13 @@ export const LandingPagePlayer = ({
         }
       } else if (currentAudio?.src && currentAudio.paused && !isInitializingRef.current) {
         // Resume playback - only if actually paused and not initializing
+        // Also ensure the other audio is stopped
+        if (otherAudio && !otherAudio.paused) {
+          console.log('⚠️ Other audio was still playing during resume, stopping it');
+          otherAudio.pause();
+          otherAudio.src = '';
+        }
+        
         console.log('▶️ Resuming playback...');
         currentAudio?.play()
           .then(() => {
@@ -514,7 +532,9 @@ export const LandingPagePlayer = ({
       }
     } else {
       console.log('⏸️ Pausing playback...');
-      currentAudio?.pause();
+      // Pause BOTH audio elements to be safe
+      audioRef1.current?.pause();
+      audioRef2.current?.pause();
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
         trackTimerRef.current = undefined;
