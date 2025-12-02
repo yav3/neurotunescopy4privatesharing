@@ -93,6 +93,7 @@ export const Team = () => {
                       src={member.photo} 
                       alt={member.name}
                       className="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-neutral-700/50"
+                      style={{ objectPosition: 'center 20%', transform: 'scale(1.3)', transformOrigin: 'center 30%' }}
                     />
                   ) : (
                     <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
