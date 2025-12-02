@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '@/components/auth/AuthProvider';
 import { securityMonitoring } from '@/services/securityMonitoring';
-import { secureApi } from '@/services/secureApi';
 import { logger } from '@/services/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AdvancedAuthGuardProps {
   children: React.ReactNode;
@@ -87,13 +87,17 @@ export const AdvancedAuthGuard: React.FC<AdvancedAuthGuardProps> = ({
         return;
       }
 
-      // Additional admin checks
+      // Additional admin checks - verify server-side via has_role function
       if (adminOnly || requiredRole === 'admin') {
-        // Verify admin status for @neuralpositive.com emails
-        const isAdmin = user.email?.endsWith('@neuralpositive.com') || 
-                       user.user_metadata?.role === 'admin';
+        // Server-side admin verification using has_role function
+        const { data: isAdmin, error: roleError } = await supabase
+          .rpc('has_role', { _user_id: user.id, _role: 'admin' });
+        
+        // Also check for super_admin role
+        const { data: isSuperAdmin } = await supabase
+          .rpc('has_role', { _user_id: user.id, _role: 'super_admin' });
 
-        if (!isAdmin) {
+        if (roleError || (!isAdmin && !isSuperAdmin)) {
           // Log admin access attempt by non-admin
           await securityMonitoring.logSecurityIncident({
             attempted_route: currentPath,
