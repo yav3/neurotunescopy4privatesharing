@@ -75,9 +75,8 @@ export const Team = () => {
             </h1>
           </div>
 
-          {/* Founding Team Grid */}
+          {/* Team Grid */}
           <div className="mb-20">
-            <h2 className="text-3xl font-light text-neutral-200 text-center mb-12">Founding Team</h2>
             
             {/* Top Row - 4 members */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
