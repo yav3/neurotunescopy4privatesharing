@@ -395,6 +395,9 @@ export const LandingPagePlayer = ({
     console.log('⏰ 35-second timer set for next track');
   }, [isPlaying, tracks, videos, currentTrackIndex, activeAudioRef, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
+  // Track if we're currently initializing to prevent double-play
+  const isInitializingRef = useRef(false);
+
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
@@ -406,15 +409,15 @@ export const LandingPagePlayer = ({
     }
     
     if (isPlaying) {
-      if (!currentAudio?.src) {
+      if (!currentAudio?.src && !isInitializingRef.current) {
         // First play - set up audio and video
+        isInitializingRef.current = true;
         const firstTrack = tracks[0];
         const firstVideo = videos[0];
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
           // CRITICAL: Ensure the OTHER audio element is completely silent and reset
-          // This prevents any "intro music" overlap from preloaded content
           const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
           if (otherAudio) {
             otherAudio.pause();
@@ -457,6 +460,7 @@ export const LandingPagePlayer = ({
               onPlaybackStateChange(true);
               onCurrentTrackChange(firstTrack);
               console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
+              isInitializingRef.current = false;
             } catch (err) {
               console.error('❌ Play failed:', err);
               // Retry after a short delay
@@ -476,9 +480,11 @@ export const LandingPagePlayer = ({
                   
                   onPlaybackStateChange(true);
                   onCurrentTrackChange(firstTrack);
+                  isInitializingRef.current = false;
                 } catch (e) {
                   console.error('❌ Retry failed:', e);
                   onPlaybackStateChange(false);
+                  isInitializingRef.current = false;
                 }
               }, 100);
             }
@@ -486,8 +492,8 @@ export const LandingPagePlayer = ({
           
           attemptPlay();
         }
-      } else {
-        // Resume playback
+      } else if (currentAudio?.src && currentAudio.paused && !isInitializingRef.current) {
+        // Resume playback - only if actually paused and not initializing
         console.log('▶️ Resuming playback...');
         currentAudio?.play()
           .then(() => {
@@ -514,7 +520,7 @@ export const LandingPagePlayer = ({
         trackTimerRef.current = undefined;
       }
     }
-  }, [isPlaying, tracks, videos, isMuted, playNextTrack, onPlaybackStateChange, onCurrentTrackChange, onVideoPlaybackRateChange, getPlaybackRate, activeAudioRef, currentTrackIndex]);
+  }, [isPlaying, tracks, videos, isMuted, playNextTrack, onPlaybackStateChange, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange, getPlaybackRate, activeAudioRef]);
 
   // Handle mute
   useEffect(() => {
