@@ -1,7 +1,5 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
-import { usePageBackground } from "@/hooks/usePageBackground";
 import mikeHeadshot from "@/assets/team/mike-larson.jpg";
 import yasmineHeadshot from "@/assets/team/yasmine-van-wilt.jpg";
 
@@ -60,15 +58,11 @@ const foundingTeam: TeamMember[] = [
 ];
 
 export const Team = () => {
-  const background = usePageBackground();
-  
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
-      <PageBackgroundMedia 
-        videoSrc={background.video}
-        gifSrc={background.gif}
-        overlayOpacity={background.overlayOpacity}
-      />
+    <div className="min-h-screen relative" style={{ 
+      backgroundColor: '#050607',
+      background: 'radial-gradient(ellipse at 30% 20%, rgba(30, 30, 35, 0.8) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(20, 20, 25, 0.6) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(15, 15, 20, 0.4) 0%, transparent 70%), linear-gradient(180deg, #050607 0%, #0a0a0c 50%, #050607 100%)'
+    }}>
       <div className="relative z-10">
         <NavigationHeader />
       
@@ -91,12 +85,14 @@ export const Team = () => {
               {foundingTeam.slice(0, 4).map((member, index) => (
                 <div key={index} className="text-center">
                   {member.photo ? (
-                    <img 
-                      src={member.photo} 
-                      alt={member.name}
-                      className="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-neutral-700/50"
-                      style={{ objectPosition: 'center 20%', transform: 'scale(1.3)', transformOrigin: 'center 30%' }}
-                    />
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border border-neutral-700/50">
+                      <img 
+                        src={member.photo} 
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        style={member.name === "Mike Larson" ? { objectPosition: 'center 15%', transform: 'scale(1.8)' } : {}}
+                      />
+                    </div>
                   ) : (
                     <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
                   )}
@@ -119,11 +115,14 @@ export const Team = () => {
               {foundingTeam.slice(4, 8).map((member, index) => (
                 <div key={index} className="text-center">
                   {member.photo ? (
-                    <img 
-                      src={member.photo} 
-                      alt={member.name}
-                      className="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-neutral-700/50"
-                    />
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border border-neutral-700/50">
+                      <img 
+                        src={member.photo} 
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        style={member.name === "Mike Larson" ? { objectPosition: 'center 15%', transform: 'scale(1.8)' } : {}}
+                      />
+                    </div>
                   ) : (
                     <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
                   )}
