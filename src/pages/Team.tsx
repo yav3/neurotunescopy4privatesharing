@@ -99,7 +99,7 @@ export const Team = () => {
                       <img 
                         src={member.photo} 
                         alt={member.name}
-                        className="w-full h-full object-cover object-left"
+                        className="w-full h-full object-cover object-[25%_center]"
                       />
                     </div>
                   ) : (
@@ -128,7 +128,7 @@ export const Team = () => {
                       <img 
                         src={member.photo} 
                         alt={member.name}
-                        className="w-full h-full object-cover object-left"
+                        className="w-full h-full object-cover object-[25%_center]"
                       />
                     </div>
                   ) : (
