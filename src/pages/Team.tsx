@@ -33,22 +33,20 @@ const foundingTeam: TeamMember[] = [
     credentials: "MD, PhD, MBA",
     role: "CMedO, President",
   },
-  // Second row
-  {
-    name: "Peter Blumen",
-    credentials: "ScM, MBA",
-    role: "Co-Founder",
-    title: "CIO",
-  },
-  {
-    name: "Jim Anderson",
-    role: "Co-Founder",
-    title: "Chief Architect",
-  },
+  // Second row - Josh, Peter, Jim, Marcin
   {
     name: "Joshua Langenthal",
     credentials: "MCRP, MLA",
     role: "",
+  },
+  {
+    name: "Peter Blumen",
+    credentials: "ScM, MBA",
+    role: "Co-Founder",
+  },
+  {
+    name: "Jim Anderson",
+    role: "Co-Founder",
   },
   {
     name: "Marcin Waryszak",
