@@ -2,12 +2,14 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
 import { usePageBackground } from "@/hooks/usePageBackground";
+import yasmineHeadshot from "@/assets/team/yasmine-van-wilt.jpg";
 
 interface TeamMember {
   name: string;
   credentials?: string;
   role: string;
   title?: string;
+  photo?: string;
 }
 
 const foundingTeam: TeamMember[] = [
@@ -17,6 +19,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "PhD, FRSA",
     role: "Co-Founder",
     title: "CEO, CTO",
+    photo: yasmineHeadshot,
   },
   {
     name: "Mike Larson",
@@ -85,7 +88,15 @@ export const Team = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
               {foundingTeam.slice(0, 4).map((member, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
+                  {member.photo ? (
+                    <img 
+                      src={member.photo} 
+                      alt={member.name}
+                      className="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-neutral-700/50"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
+                  )}
                   <h3 className="text-lg font-light text-neutral-200">{member.name}</h3>
                   {member.credentials && (
                     <p className="text-sm text-neutral-400">{member.credentials}</p>
@@ -104,7 +115,15 @@ export const Team = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {foundingTeam.slice(4, 8).map((member, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
+                  {member.photo ? (
+                    <img 
+                      src={member.photo} 
+                      alt={member.name}
+                      className="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-neutral-700/50"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-neutral-800/50 border border-neutral-700/50" />
+                  )}
                   <h3 className="text-lg font-light text-neutral-200">{member.name}</h3>
                   {member.credentials && (
                     <p className="text-sm text-neutral-400">{member.credentials}</p>
