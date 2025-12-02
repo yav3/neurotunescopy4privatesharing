@@ -2,7 +2,7 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
 import { usePageBackground } from "@/hooks/usePageBackground";
-import yasmineHeadshot from "@/assets/team/yasmine-van-wilt.jpg";
+import mikeHeadshot from "@/assets/team/mike-larson.jpg";
 
 interface TeamMember {
   name: string;
@@ -19,12 +19,12 @@ const foundingTeam: TeamMember[] = [
     credentials: "PhD, FRSA",
     role: "Co-Founder",
     title: "CEO, CTO",
-    photo: yasmineHeadshot,
   },
   {
     name: "Mike Larson",
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
+    photo: mikeHeadshot,
   },
   {
     name: "Christopher Long",
