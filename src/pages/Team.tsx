@@ -14,8 +14,7 @@ interface TeamMember {
 const foundingTeam: TeamMember[] = [
   // Top row - as requested: Yasmine, Mike, Chris, Brian
   {
-    name: "Yasmine Van Wilt",
-    credentials: "PhD, FRSA",
+    name: "Yasmine Wilt, PhD",
     role: "Co-Founder",
     title: "CEO, CTO",
     photo: yasmineHeadshot,
