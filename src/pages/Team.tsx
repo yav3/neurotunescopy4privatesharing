@@ -1,12 +1,12 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import yasmineHeadshot from "@/assets/team/yasmine-wilt.png";
-import mikeHeadshot from "@/assets/team/mike-larson-new.png";
+import yasmineHeadshot from "@/assets/team/yasmine-wilt-new.jpg";
+import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
 import chrisHeadshot from "@/assets/team/christopher-long.png";
-import brianHeadshot from "@/assets/team/brian-wallace.png";
-import joshHeadshot from "@/assets/team/joshua-langenthal.png";
-import peterHeadshot from "@/assets/team/peter-blumen.png";
-import jimHeadshot from "@/assets/team/jim-anderson.png";
+import brianHeadshot from "@/assets/team/brian-wallace-new.png";
+import joshHeadshot from "@/assets/team/joshua-langenthal-new.png";
+import peterHeadshot from "@/assets/team/peter-blumen-new.png";
+import jimHeadshot from "@/assets/team/jim-anderson-new.png";
 import marcinHeadshot from "@/assets/team/marcin-waryszak.png";
 
 interface TeamMember {
@@ -15,6 +15,7 @@ interface TeamMember {
   role: string;
   title?: string;
   photo?: string;
+  objectPosition?: string;
 }
 
 const foundingTeam: TeamMember[] = [
@@ -24,24 +25,28 @@ const foundingTeam: TeamMember[] = [
     role: "Co-Founder",
     title: "CEO, CTO",
     photo: yasmineHeadshot,
+    objectPosition: "center 20%",
   },
   {
     name: "Mike Larson",
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
+    objectPosition: "center 25%",
   },
   {
     name: "Christopher Long",
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
+    objectPosition: "left center",
   },
   {
     name: "Brian E. Wallace",
     credentials: "MD, PhD, MBA",
     role: "CMedO, President",
     photo: brianHeadshot,
+    objectPosition: "center 35%",
   },
   // Second row - Josh, Peter, Jim, Marcin
   {
@@ -49,22 +54,26 @@ const foundingTeam: TeamMember[] = [
     credentials: "MCRP, MLA",
     role: "",
     photo: joshHeadshot,
+    objectPosition: "center 30%",
   },
   {
     name: "Peter Blumen",
     credentials: "ScM, MBA",
     role: "Co-Founder",
     photo: peterHeadshot,
+    objectPosition: "center 20%",
   },
   {
     name: "Jim Anderson",
     role: "Co-Founder",
     photo: jimHeadshot,
+    objectPosition: "center 35%",
   },
   {
     name: "Marcin Waryszak",
     role: "SVP Operations",
     photo: marcinHeadshot,
+    objectPosition: "left center",
   },
 ];
 
@@ -96,7 +105,8 @@ export const Team = () => {
                     <img 
                       src={member.photo} 
                       alt={member.name}
-                      className="w-full h-full object-cover object-left"
+                      className="w-full h-full object-cover scale-150"
+                      style={{ objectPosition: member.objectPosition || 'center' }}
                     />
                   </div>
                 ) : (
