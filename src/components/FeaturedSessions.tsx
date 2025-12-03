@@ -13,13 +13,12 @@ interface SessionData {
   benefits: string[];
 }
 
-// Session data with albumart bucket images
+// Session data with playlistcards bucket images
 const SESSION_CONFIG = [
   {
     id: "stress-relief",
     title: "Stress Relief",
     description: "Scientifically designed to lower cortisol levels and support parasympathetic recovery through theta-wave frequencies.",
-    artFileName: "stress-relief.jpg",
     bucketName: "meditation",
     benefits: ["Reduced stress and anxiety", "Easier emotional regulation", "More stable mood"],
   },
@@ -27,7 +26,6 @@ const SESSION_CONFIG = [
     id: "deep-sleep",
     title: "Deep Sleep",
     description: "Delta-wave inspired frequencies and gentle melodic architecture for deeper, restorative sleep cycles.",
-    artFileName: "deep-sleep.jpg",
     bucketName: "gentleclassicalforpain",
     benefits: ["Faster sleep onset", "Deeper REM cycles", "Improved morning clarity"],
   },
@@ -35,7 +33,6 @@ const SESSION_CONFIG = [
     id: "natural-energy",
     title: "Natural Energy",
     description: "Energizing compositions with uplifting rhythms and activating spectral patterns to boost cognitive performance.",
-    artFileName: "natural-energy.jpg",
     bucketName: "ENERGYBOOST",
     benefits: ["Increased motivation", "Sustained cognitive energy", "Reduced fatigue"],
   },
@@ -43,7 +40,6 @@ const SESSION_CONFIG = [
     id: "meditation",
     title: "Meditation Support",
     description: "Theta-focused soundscapes to support deeper meditative states and mindful presence through binaural entrainment.",
-    artFileName: "meditation.jpg",
     bucketName: "NewAgeandWorldFocus",
     benefits: ["Easier entry into meditation", "Improved focus", "Greater sense of calm"],
   },
@@ -54,31 +50,33 @@ export default function FeaturedSessions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadSessionsWithAlbumart();
+    loadSessionsWithPlaylistCards();
   }, []);
 
-  async function loadSessionsWithAlbumart() {
+  async function loadSessionsWithPlaylistCards() {
     try {
-      // List files from albumart bucket
+      // List files from playlistcards bucket
       const { data: files, error } = await supabase.storage
-        .from('albumart')
+        .from('playlistcards')
         .list('', { limit: 100 });
 
       if (error) {
-        console.error("Error fetching albumart:", error);
+        console.error("Error fetching playlistcards:", error);
       }
 
-      // Map sessions with albumart URLs
+      // Filter out folders, only get image files
+      const imageFiles = files?.filter(f => !f.id && f.name && (f.name.endsWith('.jpg') || f.name.endsWith('.png') || f.name.endsWith('.jpeg') || f.name.endsWith('.webp'))) || [];
+
+      // Map sessions with playlistcards URLs
       const sessionsWithArt = SESSION_CONFIG.map((config, index) => {
-        // Try to find matching file or use first available files
         let artUrl = "/placeholder.svg";
         
-        if (files && files.length > 0) {
+        if (imageFiles.length > 0) {
           // Use files in order if available
-          const fileToUse = files[index % files.length];
+          const fileToUse = imageFiles[index % imageFiles.length];
           if (fileToUse && fileToUse.name) {
             const { data: urlData } = supabase.storage
-              .from('albumart')
+              .from('playlistcards')
               .getPublicUrl(fileToUse.name);
             artUrl = urlData.publicUrl;
           }
