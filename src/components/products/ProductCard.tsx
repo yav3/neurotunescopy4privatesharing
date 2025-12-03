@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Product } from '@/data/products';
-import { FooterContactHandler } from '@/components/FooterContactHandler';
 
 interface ProductCardProps {
   product: Product;
@@ -11,55 +9,27 @@ interface ProductCardProps {
   onOpenSalesChat?: () => void;
 }
 
-export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }: ProductCardProps) => {
+export const ProductCard = ({ product, index, backgroundImage }: ProductCardProps) => {
   const Icon = product.icon;
   const navigate = useNavigate();
-  const [contactOpen, setContactOpen] = useState(false);
-  const [interestType, setInterestType] = useState("");
 
   const handleCTAClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Different actions based on product type
-    if (product.id === 'consumer') {
-      navigate('/app-download');
-    } else if (product.id === 'partnerships') {
-      // Open AI Sales Assistant for partnerships
-      if (onOpenSalesChat) {
-        onOpenSalesChat();
-      }
-    } else if (product.id === 'environmental') {
-      navigate('/pricing'); // Buy action - navigate to pricing page
-    } else if (product.id === 'population-health') {
-      setInterestType('Clinical Consultation');
-      setContactOpen(true);
-    } else if (product.id === 'enterprise-wellness') {
-      navigate('/products/enterprise-wellness');
-    }
-  };
-
-  const handleSecondaryCTAClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (product.id === 'environmental') {
-      setInterestType('Environmental & Background Music - Site Assessment');
-      setContactOpen(true);
-    }
+    navigate(product.path);
   };
   
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.1 }}
-        className="h-full"
-      >
-        <div
-          className="group relative flex flex-col h-full p-6 lg:p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02] cursor-pointer min-h-[580px]"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="h-full"
+    >
+      <div
+        className="group relative flex flex-col h-full p-6 lg:p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02] cursor-pointer min-h-[580px]"
+        onClick={() => navigate(product.path)}
         style={{
           background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.95) 100%)',
           backdropFilter: 'blur(40px)',
@@ -127,8 +97,8 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
             )}
           </div>
 
-          {/* CTA Buttons */}
-          <div className={`mt-auto pt-6 ${product.secondaryCta ? 'flex flex-col gap-3' : 'flex gap-3'}`}>
+          {/* CTA Button */}
+          <div className="mt-auto pt-6">
             <button
               onClick={handleCTAClick}
               className="flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl w-full"
@@ -149,39 +119,9 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
               {product.cta}
               <span>→</span>
             </button>
-            
-            {/* Secondary CTA (for environmental product) */}
-            {product.secondaryCta && (
-              <button
-                onClick={handleSecondaryCTAClick}
-                className="flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl w-full"
-                style={{ 
-                  color: 'rgba(228, 228, 228, 0.90)',
-                  background: 'rgba(228, 228, 228, 0.08)',
-                  border: '1px solid rgba(228, 228, 228, 0.15)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.15)';
-                  e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.25)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.08)';
-                  e.currentTarget.style.borderColor = 'rgba(228, 228, 228, 0.15)';
-                }}
-              >
-                {product.secondaryCta}
-              </button>
-            )}
           </div>
         </div>
       </div>
     </motion.div>
-
-    <FooterContactHandler
-      isOpen={contactOpen}
-      onClose={() => setContactOpen(false)}
-      interestType={interestType}
-    />
-  </>
   );
 };
