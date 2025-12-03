@@ -577,32 +577,50 @@ export const LandingPagePlayer = ({
 
   // Cleanup - CRITICAL: Fully stop and clear all audio to prevent double playback
   useEffect(() => {
+    // Store refs locally so cleanup can access them even after unmount
+    const audio1 = audioRef1.current;
+    const audio2 = audioRef2.current;
+    const timerRef = trackTimerRef;
+    
     return () => {
-      console.log('🧹 LandingPagePlayer cleanup: stopping all audio');
-      if (trackTimerRef.current) {
-        clearTimeout(trackTimerRef.current);
-        trackTimerRef.current = undefined;
+      console.log('🧹 LandingPagePlayer cleanup: AGGRESSIVELY stopping all audio');
+      
+      // Clear timer first
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = undefined;
       }
       
-      // Fully stop audio 1
-      if (audioRef1.current) {
-        audioRef1.current.pause();
-        audioRef1.current.src = '';
-        audioRef1.current.currentTime = 0;
-        audioRef1.current.volume = 0;
+      // Stop audio using stored refs
+      if (audio1) {
+        audio1.pause();
+        audio1.src = '';
+        audio1.currentTime = 0;
+        audio1.volume = 0;
       }
       
-      // Fully stop audio 2
-      if (audioRef2.current) {
-        audioRef2.current.pause();
-        audioRef2.current.src = '';
-        audioRef2.current.currentTime = 0;
-        audioRef2.current.volume = 0;
+      if (audio2) {
+        audio2.pause();
+        audio2.src = '';
+        audio2.currentTime = 0;
+        audio2.volume = 0;
       }
+      
+      // NUCLEAR OPTION: Find and stop ALL audio elements on the page
+      const allAudioElements = document.querySelectorAll('audio');
+      allAudioElements.forEach((audio) => {
+        console.log('🔇 Force stopping audio element');
+        audio.pause();
+        audio.src = '';
+        audio.volume = 0;
+      });
       
       // Clear global references
       (window as any).__landingActiveAudio = null;
       (window as any).__skipLandingTrack = null;
+      
+      // Reset the playback started flag
+      hasStartedPlaybackRef.current = false;
     };
   }, []);
 
