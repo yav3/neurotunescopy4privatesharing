@@ -513,8 +513,8 @@ export const LandingPagePlayer = ({
           
           attemptPlay();
         }
-      } else if (currentAudio?.src && currentAudio.paused && !isInitializingRef.current) {
-        // Resume playback - only if actually paused and not initializing
+      } else if (currentAudio && !isInitializingRef.current) {
+        // Resume or re-initialize playback
         hasStartedPlaybackRef.current = true;
         
         // Also ensure the other audio is stopped
@@ -524,8 +524,18 @@ export const LandingPagePlayer = ({
           otherAudio.src = '';
         }
         
+        // If no valid source, re-initialize with current track
+        const currentTrack = tracks[currentTrackIndex];
+        if (!currentAudio.src || !currentTrack) {
+          console.log('🔄 No valid source, re-initializing...');
+          if (currentTrack) {
+            currentAudio.src = currentTrack.src;
+            currentAudio.volume = isMuted ? 0 : 0.6;
+          }
+        }
+        
         console.log('▶️ Resuming playback...');
-        currentAudio?.play()
+        currentAudio.play()
           .then(() => {
             console.log('✅ Audio resumed successfully');
             onPlaybackStateChange(true);
@@ -538,9 +548,28 @@ export const LandingPagePlayer = ({
             }
           })
           .catch(err => {
-            console.error('❌ Audio resume failed:', err);
-            onPlaybackStateChange(false);
-            hasStartedPlaybackRef.current = false;
+            console.error('❌ Audio resume failed, trying re-init:', err);
+            // Re-initialize from scratch
+            if (currentTrack) {
+              currentAudio.src = currentTrack.src;
+              currentAudio.volume = isMuted ? 0 : 0.6;
+              currentAudio.currentTime = 0;
+              currentAudio.play()
+                .then(() => {
+                  console.log('✅ Audio playing after re-init');
+                  onPlaybackStateChange(true);
+                  if (!trackTimerRef.current) {
+                    trackTimerRef.current = setTimeout(() => {
+                      playNextTrack();
+                    }, TRACK_DURATION);
+                  }
+                })
+                .catch(e => {
+                  console.error('❌ Re-init also failed:', e);
+                  onPlaybackStateChange(false);
+                  hasStartedPlaybackRef.current = false;
+                });
+            }
           });
       }
     } else {
