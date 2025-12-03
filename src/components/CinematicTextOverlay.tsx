@@ -202,15 +202,16 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       
       {/* Text content - black for contrast, positioned lower */}
       <div className="absolute bottom-32 left-0 right-0 px-6 text-center">
-        <div className={`transition-all duration-1000 ease-out ${getAnimationClass()}`}>
+        <div className={`transition-all ${current.emphasis ? 'duration-1500' : 'duration-1000'} ease-out ${getAnimationClass()}`}>
           <h2
-            className="text-6xl md:text-8xl mb-3"
+            className={`text-6xl md:text-8xl mb-3 ${current.emphasis ? 'animate-fade-in' : ''}`}
             style={{
-              color: '#000000',
+              color: 'black',
               letterSpacing: '0.02em',
               lineHeight: '1.1',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
               fontWeight: 400,
+              textShadow: 'none',
             }}
           >
             {current.main}
