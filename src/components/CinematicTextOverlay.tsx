@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import neurotunesLogo from '@/assets/neurotunes-logo.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -34,7 +35,26 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Real Health Results", 
+    main: "Real Results", 
+    duration: 2000, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "LOGO", 
+    sub: "Environmental Music for Businesses",
+    duration: 2500, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Enterprise Wellness", 
+    duration: 2000, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Population Health", 
     duration: 2000, 
     animation: 'fade',
     emphasis: false 
@@ -192,18 +212,39 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       {/* Text content - white on black, centered */}
       <div className="px-6 text-center">
         <div className={`transition-all ${current.emphasis ? 'duration-[1500ms]' : 'duration-1000'} ease-out ${getAnimationClass()}`}>
-          <h2
-            className="text-6xl md:text-8xl mb-3"
-            style={{
-              color: '#e4e4e4',
-              letterSpacing: '0.02em',
-              lineHeight: '1.1',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 400,
-            }}
-          >
-            {current.main}
-          </h2>
+          {current.main === "LOGO" ? (
+            <div className="flex flex-col items-center gap-6">
+              <img 
+                src={neurotunesLogo} 
+                alt="NeuroTunes" 
+                className="w-32 h-32 md:w-48 md:h-48"
+              />
+              <p
+                className="text-2xl md:text-3xl"
+                style={{
+                  color: '#e4e4e4',
+                  letterSpacing: '0.05em',
+                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                  fontWeight: 400,
+                }}
+              >
+                {current.sub}
+              </p>
+            </div>
+          ) : (
+            <h2
+              className="text-6xl md:text-8xl mb-3"
+              style={{
+                color: '#e4e4e4',
+                letterSpacing: '0.02em',
+                lineHeight: '1.1',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 400,
+              }}
+            >
+              {current.main}
+            </h2>
+          )}
         </div>
       </div>
     </div>
