@@ -48,13 +48,13 @@ export const ProductsOverview = () => {
         </div>
       </div>
       
-      <section className="relative z-10 py-32 px-6">
+      <section className="relative z-10 pt-20 pb-16 px-6">
         <div className="max-w-7xl mx-auto">
           
           {/* Back to Home Button */}
           <Link 
             to="/"
-            className="inline-flex items-center gap-2 mb-12 group"
+            className="inline-flex items-center gap-2 mb-6 group"
             style={{ color: 'rgba(228, 228, 228, 0.60)' }}
             onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.95)'}
             onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(228, 228, 228, 0.60)'}
@@ -64,11 +64,9 @@ export const ProductsOverview = () => {
           </Link>
           
           {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.95)' }}>
-              Choose the right solution
-              <br />
-              for your needs
+          <div className="text-center mb-10">
+            <h1 className="text-4xl md:text-5xl font-light mb-3" style={{ color: 'rgba(228, 228, 228, 0.95)' }}>
+              Enterprise Products
             </h1>
             <p className="text-lg md:text-xl font-light max-w-2xl mx-auto" style={{ color: 'rgba(228, 228, 228, 0.75)' }}>
               Clinical-grade therapeutic music deployed across multiple platforms and scales

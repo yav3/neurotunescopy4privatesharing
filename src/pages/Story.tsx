@@ -21,6 +21,44 @@ export const Story = () => {
             </p>
           </div>
 
+          {/* What is NeuroTunes - Expanded */}
+          <section className="mb-20">
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>AI-Powered Personalization</h3>
+                <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+                  Our patented closed-loop engine continuously adapts playlists based on quick patient input 
+                  and physiological response. Each session is uniquely generated—no two listening experiences 
+                  are the same.
+                </p>
+              </div>
+              
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>Clinically Validated</h3>
+                <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, with insights from 15,000+ 
+                  peer-reviewed neuroscience and music-therapy articles. Pilot studies demonstrate 
+                  statistically significant anxiety reductions (p&lt;.05).
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>&gt;50%</div>
+                <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Anxiety reduction in clinical pilots</p>
+              </div>
+              <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>7,000+</div>
+                <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Purpose-composed therapeutic tracks</p>
+              </div>
+              <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>14K+</div>
+                <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Subjects analyzed via biobank AI</p>
+              </div>
+            </div>
+          </section>
+
           {/* Team */}
           <section className="mb-20">
             <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>Made by Neuralpositive</h2>
