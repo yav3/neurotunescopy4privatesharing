@@ -17,7 +17,6 @@ export interface Product {
   cta: string;
   path: string;
   savingsMessage?: string;
-  secondaryCta?: string;
 }
 
 export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
@@ -49,8 +48,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Eliminates ASCAP/BMI/SESAC costs",
       "Cloud-managed system"
     ],
-    cta: "Buy",
-    secondaryCta: "Request Site Assessment",
+    cta: "Learn More",
     savingsMessage: "Average customer will 50% savings for premium music for spaces, events, & experiences",
     path: "/products/environmental"
   },
@@ -82,15 +80,15 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Clinical outcomes tracking",
       "Population-scale analytics"
     ],
-    cta: "Schedule Clinical Consultation",
+    cta: "Learn More",
     path: "/products/population-health"
   },
 
   enterpriseWellness: {
     id: "enterprise-wellness",
     icon: Briefcase,
-    title: "Free Business Trial",
-    tagline: "Workplace mental health & productivity",
+    title: "Enterprise Wellness",
+    tagline: "Help your employees focus and improve their wellness",
     description: "Corporate wellness programs for employee mental health, focus, and resilience",
     targetMarkets: [
       "Corporate offices (1,000+ employees)",
@@ -113,7 +111,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "Mental wellness support",
       "Integration with HR systems"
     ],
-    cta: "Request Wellness Consultation",
+    cta: "Learn More",
     path: "/products/enterprise-wellness"
   },
 
@@ -143,7 +141,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
       "API access",
       "Co-development opportunities"
     ],
-    cta: "Explore Partnership",
+    cta: "Learn More",
     path: "/products/partnerships"
   }
 };
