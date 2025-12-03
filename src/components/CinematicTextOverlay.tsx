@@ -111,10 +111,22 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         loop
       />
       
-      {/* Subtle dark overlay */}
-      <div 
-        className={`absolute inset-0 bg-black/30 transition-opacity duration-1000 ${getBackgroundOpacity()}`}
-      />
+      {/* Text content - black for contrast against light video */}
+      <div className="relative px-6 text-center max-w-5xl">
+        <div className={`transition-all duration-1000 ease-out ${getAnimationClass()}`}>
+          <h2
+            className="text-6xl md:text-8xl text-black mb-3"
+            style={{
+              letterSpacing: '0.02em',
+              lineHeight: '1.1',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 400,
+            }}
+          >
+            {current.main}
+          </h2>
+        </div>
+      </div>
     </div>
   )
 }
