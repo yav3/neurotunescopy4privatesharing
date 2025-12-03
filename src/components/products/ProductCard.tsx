@@ -59,7 +59,7 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
         className="h-full"
       >
         <div
-          className="group relative flex flex-col h-full p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02] cursor-pointer min-h-[520px]"
+          className="group relative flex flex-col h-full p-6 lg:p-8 rounded-[32px] overflow-hidden transition-all hover:scale-[1.02] cursor-pointer min-h-[580px]"
         style={{
           background: 'linear-gradient(135deg, rgba(10, 10, 12, 0.95) 0%, rgba(19, 20, 22, 0.95) 100%)',
           backdropFilter: 'blur(40px)',
@@ -84,7 +84,7 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
         <div className="relative z-10 flex flex-col h-full">
           {/* Icon */}
           <div 
-            className="w-14 h-14 rounded-xl flex items-center justify-center mb-8 group-hover:scale-110 transition"
+            className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition"
             style={{
               background: 'rgba(228, 228, 228, 0.08)',
               border: '1px solid rgba(228, 228, 228, 0.15)',
@@ -95,27 +95,27 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
 
           {/* Title */}
           <h3 
-            className="text-xl font-light mb-3 group-hover:opacity-100 transition"
+            className="text-lg lg:text-xl font-light mb-4 group-hover:opacity-100 transition leading-tight"
             style={{ color: 'rgba(228, 228, 228, 0.95)' }}
           >
             {product.title}
           </h3>
           
           {/* Tagline */}
-          <p className="text-sm font-light mb-4" style={{ color: 'rgba(228, 228, 228, 0.75)' }}>
+          <p className="text-sm font-light mb-5 leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.80)' }}>
             {product.tagline}
           </p>
           
           {/* Description - flex-grow pushes buttons to bottom */}
           <div className="flex-grow">
-            <p className="text-sm font-light mb-6" style={{ color: 'rgba(228, 228, 228, 0.65)', lineHeight: '1.6' }}>
+            <p className="text-sm font-light mb-6 leading-[1.8]" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
               {product.description}
             </p>
 
             {/* Savings Message (for environmental product) */}
             {product.savingsMessage && (
               <div 
-                className="mb-6 px-4 py-3 rounded-lg text-sm font-light"
+                className="mb-6 px-4 py-4 rounded-lg text-sm font-light leading-relaxed"
                 style={{ 
                   background: 'rgba(6, 182, 212, 0.10)',
                   border: '1px solid rgba(6, 182, 212, 0.25)',
