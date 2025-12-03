@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -13,6 +13,9 @@ interface TextItem {
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
+
+// Intro audio URL - first track from the playlist
+const INTRO_AUDIO_URL = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3'
 
 const MESSAGES: TextItem[] = [
   { 
@@ -46,6 +49,41 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
+  const introAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Start intro audio on mount
+  useEffect(() => {
+    const audio = new Audio(INTRO_AUDIO_URL)
+    audio.volume = 0.5
+    audio.crossOrigin = 'anonymous'
+    introAudioRef.current = audio
+    
+    // Expose globally so main player can stop it
+    ;(window as any).__introAudio = audio
+    
+    audio.play().catch(err => {
+      console.log('Intro audio autoplay blocked:', err)
+    })
+    
+    return () => {
+      // Clean up on unmount
+      audio.pause()
+      audio.src = ''
+      audio.volume = 0
+      ;(window as any).__introAudio = null
+    }
+  }, [])
+
+  // Stop intro audio when complete
+  useEffect(() => {
+    if (hasCompleted && introAudioRef.current) {
+      console.log('🔇 Stopping intro audio on completion')
+      introAudioRef.current.pause()
+      introAudioRef.current.src = ''
+      introAudioRef.current.volume = 0
+      ;(window as any).__introAudio = null
+    }
+  }, [hasCompleted])
 
   useEffect(() => {
     // Start with entering animation

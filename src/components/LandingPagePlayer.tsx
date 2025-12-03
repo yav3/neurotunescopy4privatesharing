@@ -435,6 +435,16 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
+          // CRITICAL: Stop intro audio first
+          if ((window as any).__introAudio) {
+            console.log('🔇 Stopping intro audio before main playback');
+            const introAudio = (window as any).__introAudio;
+            introAudio.pause();
+            introAudio.src = '';
+            introAudio.volume = 0;
+            (window as any).__introAudio = null;
+          }
+          
           // CRITICAL: Kill ALL audio on the entire page first
           console.log('🔇 KILLING ALL AUDIO on page before first play');
           document.querySelectorAll('audio').forEach((audio) => {
