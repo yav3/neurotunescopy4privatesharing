@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 // Local video files matched to each track
 const CURATED_VIDEO_FILES = [
   '/videos/landing-01.mp4', // Track 1
-  '/videos/landing-02.mp4', // Track 2
+  '/videos/landing-47.mp4', // Track 2 - Blue lagoon (swapped from dark video)
   '/videos/landing-03.mp4', // Track 3
   '/videos/landing-04.mp4', // Track 4
   '/videos/landing-05.mp4', // Track 5
@@ -48,6 +48,8 @@ const CURATED_VIDEO_FILES = [
   '/videos/landing-43.gif', // Track 43
   '/videos/landing-44.gif', // Track 44
   '/videos/landing-45.gif', // Track 45
+  '/videos/landing-46.mp4', // Track 46 - New video
+  '/videos/landing-02.mp4', // Track 47 - Original dark video moved to later
 ];
 
 interface BackgroundVideoCarouselProps {
