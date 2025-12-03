@@ -255,6 +255,28 @@ export const LandingPagePlayer = ({
   const [activeAudioRef, setActiveAudioRef] = useState<1 | 2>(1);
   const trackTimerRef = useRef<NodeJS.Timeout>();
 
+  // CRITICAL: On mount, stop ALL existing audio elements to prevent double playback
+  useEffect(() => {
+    console.log('🧹 LandingPagePlayer mount: cleaning up any existing audio');
+    const allAudioElements = document.querySelectorAll('audio');
+    allAudioElements.forEach((audio) => {
+      if (audio !== audioRef1.current && audio !== audioRef2.current) {
+        audio.pause();
+        audio.src = '';
+        audio.volume = 0;
+      }
+    });
+    
+    // Also clear any window references
+    if ((window as any).__landingActiveAudio) {
+      const oldAudio = (window as any).__landingActiveAudio;
+      if (oldAudio && oldAudio !== audioRef1.current && oldAudio !== audioRef2.current) {
+        oldAudio.pause();
+        oldAudio.src = '';
+      }
+    }
+  }, []);
+
   // Expose the currently active audio element globally so the video layer can sync to it
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
@@ -560,13 +582,34 @@ export const LandingPagePlayer = ({
     };
   }, [playNextTrack]);
 
-  // Cleanup
+  // Cleanup - CRITICAL: Fully stop and clear all audio to prevent double playback
   useEffect(() => {
     return () => {
-      if (trackTimerRef.current) clearTimeout(trackTimerRef.current);
-      audioRef1.current?.pause();
-      audioRef2.current?.pause();
+      console.log('🧹 LandingPagePlayer cleanup: stopping all audio');
+      if (trackTimerRef.current) {
+        clearTimeout(trackTimerRef.current);
+        trackTimerRef.current = undefined;
+      }
+      
+      // Fully stop audio 1
+      if (audioRef1.current) {
+        audioRef1.current.pause();
+        audioRef1.current.src = '';
+        audioRef1.current.currentTime = 0;
+        audioRef1.current.volume = 0;
+      }
+      
+      // Fully stop audio 2
+      if (audioRef2.current) {
+        audioRef2.current.pause();
+        audioRef2.current.src = '';
+        audioRef2.current.currentTime = 0;
+        audioRef2.current.volume = 0;
+      }
+      
+      // Clear global references
       (window as any).__landingActiveAudio = null;
+      (window as any).__skipLandingTrack = null;
     };
   }, []);
 
