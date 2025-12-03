@@ -33,6 +33,12 @@ const MESSAGES: TextItem[] = [
     animation: 'fade',
     emphasis: false 
   },
+  { 
+    main: "Experience Now", 
+    duration: 2500, 
+    animation: 'fade',
+    emphasis: true 
+  },
 ]
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {

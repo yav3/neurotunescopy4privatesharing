@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
@@ -22,17 +22,6 @@ const Index = () => {
   const [showHero, setShowHero] = useState(true);
   const [overlayComplete, setOverlayComplete] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [showExperienceLabel, setShowExperienceLabel] = useState(true);
-
-  // Fade out "Experience Now" label after 3 seconds
-  useEffect(() => {
-    if (overlayComplete && showExperienceLabel) {
-      const timer = setTimeout(() => {
-        setShowExperienceLabel(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [overlayComplete, showExperienceLabel]);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
@@ -89,29 +78,68 @@ const Index = () => {
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div className="pointer-events-auto flex flex-col items-center gap-8">
-            {/* Experience Now Label - above play button, fades out */}
-            <span 
-              className={`text-[#c0c0c0] text-2xl tracking-wide transition-opacity duration-1000 ${showExperienceLabel ? 'opacity-100' : 'opacity-0'}`}
-              style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
-            >
-              Experience Now
-            </span>
-
-            {/* Play Button */}
+          <div className="pointer-events-auto flex flex-col items-center gap-12">
+            {/* Glass Play Button */}
             <button
               onClick={handlePlaySession}
               disabled={isTransitioning}
-              className="group transition-all duration-300 hover:scale-110 active:scale-105 relative disabled:pointer-events-none"
-              style={{
-                filter: 'drop-shadow(0 20px 50px rgba(192, 192, 192, 0.6))'
-              }}
+              className="group transition-all duration-500 hover:scale-110 active:scale-105 relative disabled:pointer-events-none"
             >
-              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="transition-all duration-300 group-hover:drop-shadow-[0_0_60px_rgba(192,192,192,1)] group-active:drop-shadow-[0_0_80px_rgba(192,192,192,1)]">
-                <circle cx="100" cy="100" r="97" fill="none" stroke="#c0c0c0" strokeWidth="2.5" opacity="0.5" className="group-hover:opacity-100 transition-opacity duration-300" />
-                <path d="M78 56v88l72-44z" fill="none" stroke="#c0c0c0" strokeWidth="4" strokeLinejoin="round" className="group-hover:stroke-white transition-colors duration-300" />
+              {/* Outer glow ring */}
+              <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-white/10 via-white/5 to-transparent blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Glass circle background */}
+              <div 
+                className="absolute inset-0 rounded-full backdrop-blur-md transition-all duration-500"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)',
+                  boxShadow: `
+                    0 0 60px rgba(192, 192, 192, 0.3),
+                    inset 0 1px 1px rgba(255,255,255,0.3),
+                    inset 0 -1px 1px rgba(0,0,0,0.2)
+                  `,
+                  border: '1px solid rgba(255,255,255,0.2)',
+                }}
+              />
+              
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="relative z-10 transition-all duration-300">
+                {/* Outer ring with glass effect */}
+                <circle 
+                  cx="100" cy="100" r="97" 
+                  fill="none" 
+                  stroke="url(#glassGradient)" 
+                  strokeWidth="2" 
+                  className="group-hover:stroke-white/80 transition-all duration-300" 
+                />
+                {/* Inner highlight */}
+                <circle 
+                  cx="100" cy="100" r="90" 
+                  fill="none" 
+                  stroke="rgba(255,255,255,0.1)" 
+                  strokeWidth="1" 
+                />
+                {/* Play triangle with gradient */}
+                <path 
+                  d="M82 60v80l64-40z" 
+                  fill="url(#playGradient)" 
+                  className="group-hover:fill-white transition-colors duration-300"
+                  style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
+                />
+                <defs>
+                  <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.6)" />
+                    <stop offset="50%" stopColor="rgba(192,192,192,0.4)" />
+                    <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
+                  </linearGradient>
+                  <linearGradient id="playGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+                    <stop offset="100%" stopColor="rgba(192,192,192,0.7)" />
+                  </linearGradient>
+                </defs>
               </svg>
-              <div className="absolute inset-0 rounded-full bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300" />
+              
+              {/* Hover glow effect */}
+              <div className="absolute inset-0 rounded-full bg-white/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </button>
 
             {/* Subscribe CTA */}
