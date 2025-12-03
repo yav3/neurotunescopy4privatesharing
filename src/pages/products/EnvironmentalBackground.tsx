@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud, ArrowRight } from "lucide-react";
+import { Building2, ShoppingBag, Coffee, Dumbbell, Home, Users, Volume2, Clock, Shield, Cloud, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 import { PageBackgroundMedia } from "@/components/PageBackgroundMedia";
 import { usePageBackground } from "@/hooks/usePageBackground";
@@ -10,8 +10,7 @@ import { usePageBackground } from "@/hooks/usePageBackground";
 export default function EnvironmentalBackground() {
   const background = usePageBackground();
   const [contactOpen, setContactOpen] = useState(false);
-  const [hoveredUseCase, setHoveredUseCase] = useState<number | null>(null);
-  const [hoveredBenefit, setHoveredBenefit] = useState<number | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const useCases = [
     {
@@ -69,6 +68,16 @@ export default function EnvironmentalBackground() {
     },
   ];
 
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = 300;
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#050607] text-white overflow-hidden relative">
       <div className="relative z-10">
@@ -88,7 +97,7 @@ export default function EnvironmentalBackground() {
           </motion.h1>
 
           <motion.p 
-            className="text-base lg:text-lg mb-8"
+            className="text-base lg:text-lg mb-6"
             style={{ color: 'rgba(255, 255, 255, 0.60)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -99,81 +108,124 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
-      {/* Benefits - Compact 2x2 Grid with Hover Expand */}
+      {/* Commercial Video - 50% Smaller, Moved Up */}
       <section className="relative py-4 px-6">
+        <div className="max-w-lg mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-2xl overflow-hidden"
+            style={{
+              border: '1px solid rgba(192, 192, 192, 0.2)',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto"
+            >
+              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Benefits - Horizontal Carousel */}
+      <section className="relative py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 
             className="text-2xl lg:text-3xl font-light mb-6 text-center"
             style={{ color: 'rgba(255, 255, 255, 0.90)' }}
           >
-            Key Benefits:
+            Key Benefits
           </h2>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {benefits.map((benefit, index) => {
-              const Icon = benefit.icon;
-              const isHovered = hoveredBenefit === index;
-              
-              return (
-                <motion.div
-                  key={index}
-                  className="relative group cursor-pointer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  onMouseEnter={() => setHoveredBenefit(index)}
-                  onMouseLeave={() => setHoveredBenefit(null)}
-                >
-                  <div 
-                    className="relative p-5 rounded-2xl backdrop-blur-xl transition-all duration-300"
-                    style={{
-                      background: isHovered ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.04)',
-                      border: `1px solid ${isHovered ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)'}`,
-                      minHeight: isHovered ? '200px' : '140px',
-                    }}
+          <div className="relative">
+            {/* Left Arrow */}
+            <button
+              onClick={() => scrollCarousel('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all"
+              style={{
+                background: 'rgba(0, 0, 0, 0.6)',
+                border: '1px solid rgba(192, 192, 192, 0.3)',
+              }}
+            >
+              <ChevronLeft className="w-5 h-5" style={{ color: 'rgba(192, 192, 192, 0.9)' }} />
+            </button>
+
+            {/* Carousel Container */}
+            <div
+              ref={carouselRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide px-12 pb-4"
+              style={{ scrollSnapType: 'x mandatory' }}
+            >
+              {benefits.map((benefit, index) => {
+                const Icon = benefit.icon;
+                
+                return (
+                  <motion.div
+                    key={index}
+                    className="flex-shrink-0 w-72"
+                    style={{ scrollSnapAlign: 'start' }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
                   >
                     <div 
-                      className="flex items-center justify-center w-12 h-12 rounded-xl mb-3 mx-auto"
+                      className="p-6 rounded-2xl backdrop-blur-xl h-full transition-all duration-300 hover:scale-[1.02]"
                       style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}
                     >
-                      <Icon className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.85)' }} />
+                      <div 
+                        className="flex items-center justify-center w-12 h-12 rounded-xl mb-4"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.08)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                        }}
+                      >
+                        <Icon className="w-6 h-6" style={{ color: 'rgba(255, 255, 255, 0.85)' }} />
+                      </div>
+
+                      <h3 
+                        className="text-base font-light mb-2"
+                        style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+                      >
+                        {benefit.title}
+                      </h3>
+
+                      <p 
+                        className="text-sm leading-relaxed"
+                        style={{ color: 'rgba(255, 255, 255, 0.65)' }}
+                      >
+                        {benefit.description}
+                      </p>
                     </div>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-                    <h3 
-                      className="text-sm font-light text-center mb-2"
-                      style={{ color: 'rgba(255, 255, 255, 0.95)' }}
-                    >
-                      {benefit.title}
-                    </h3>
-
-                    <motion.p 
-                      className="text-xs text-center leading-relaxed"
-                      style={{ 
-                        color: 'rgba(255, 255, 255, 0.65)',
-                        opacity: isHovered ? 1 : 0,
-                        height: isHovered ? 'auto' : 0,
-                      }}
-                      initial={false}
-                      animate={{ 
-                        opacity: isHovered ? 1 : 0,
-                        height: isHovered ? 'auto' : 0 
-                      }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {benefit.description}
-                    </motion.p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {/* Right Arrow */}
+            <button
+              onClick={() => scrollCarousel('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all"
+              style={{
+                background: 'rgba(0, 0, 0, 0.6)',
+                border: '1px solid rgba(192, 192, 192, 0.3)',
+              }}
+            >
+              <ChevronRight className="w-5 h-5" style={{ color: 'rgba(192, 192, 192, 0.9)' }} />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Prominent CTA - Eye-catching Design */}
+      {/* Prominent CTA */}
       <section className="relative py-8 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -243,31 +295,6 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
-      {/* Commercial Video - Smaller Size */}
-      <section className="relative py-8 px-6">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl overflow-hidden"
-            style={{
-              border: '1px solid rgba(192, 192, 192, 0.2)',
-            }}
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-auto"
-            >
-              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
-            </video>
-          </motion.div>
-        </div>
-      </section>
-
       <Footer />
       <FooterContactHandler
         isOpen={contactOpen}
@@ -276,15 +303,6 @@ export default function EnvironmentalBackground() {
       />
 
       <style>{`
-        @keyframes pulse-glow {
-          0%, 100% {
-            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.25), 0 0 0 0 rgba(255, 255, 255, 0.4);
-          }
-          50% {
-            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.35), 0 0 0 4px rgba(255, 255, 255, 0.2);
-          }
-        }
-        
         @keyframes pulse-soft {
           0%, 100% {
             opacity: 0.2;
@@ -292,6 +310,14 @@ export default function EnvironmentalBackground() {
           50% {
             opacity: 0.4;
           }
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
       </div>
