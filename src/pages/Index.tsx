@@ -113,8 +113,11 @@ const Index = () => {
               </svg>
             </button>
 
-            {/* Action buttons row - perfectly centered beneath play button */}
-            <div className="flex items-center justify-center gap-3 mt-2">
+            {/* Action buttons row - optically centered beneath play button */}
+            <div 
+              className="flex items-center justify-center gap-3 mt-2"
+              style={{ transform: 'translateX(-12px)' }} /* Optical correction for asymmetric button widths */
+            >
               {/* Subscribe CTA */}
               <button
                 onClick={handleSubscribe}
