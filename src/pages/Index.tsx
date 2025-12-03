@@ -78,79 +78,73 @@ const Index = () => {
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div className="pointer-events-auto flex flex-col items-center gap-6 sm:gap-8 md:gap-12">
-            {/* Glass Play Button - Responsive sizing */}
+          <div className="pointer-events-auto flex flex-col items-center gap-4 sm:gap-6">
+            {/* Subtle Glass Play Button - Smaller sizing */}
             <button
               onClick={handlePlaySession}
               disabled={isTransitioning}
-              className="group transition-all duration-500 hover:scale-110 active:scale-105 relative disabled:pointer-events-none w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] md:w-[160px] md:h-[160px] lg:w-[200px] lg:h-[200px]"
+              className="group transition-all duration-500 hover:scale-105 active:scale-100 relative disabled:pointer-events-none w-[56px] h-[56px] sm:w-[72px] sm:h-[72px] md:w-[88px] md:h-[88px]"
             >
-              {/* Outer glow ring */}
-              <div className="absolute inset-[-10px] sm:inset-[-15px] md:inset-[-20px] rounded-full bg-gradient-to-br from-white/10 via-white/5 to-transparent blur-xl sm:blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Subtle glow */}
+              <div className="absolute inset-[-8px] rounded-full bg-white/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               {/* Glass circle background */}
               <div 
-                className="absolute inset-0 rounded-full backdrop-blur-md transition-all duration-500"
+                className="absolute inset-0 rounded-full backdrop-blur-sm transition-all duration-500"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)',
-                  boxShadow: `
-                    0 0 40px rgba(192, 192, 192, 0.25),
-                    inset 0 1px 1px rgba(255,255,255,0.3),
-                    inset 0 -1px 1px rgba(0,0,0,0.2)
-                  `,
-                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.15)',
                 }}
               />
               
               <svg viewBox="0 0 200 200" fill="none" className="relative z-10 transition-all duration-300 w-full h-full">
-                {/* Outer ring with glass effect */}
                 <circle 
                   cx="100" cy="100" r="97" 
                   fill="none" 
-                  stroke="url(#glassGradient)" 
-                  strokeWidth="2" 
-                  className="group-hover:stroke-white/80 transition-all duration-300" 
+                  stroke="rgba(192,192,192,0.3)" 
+                  strokeWidth="1.5" 
+                  className="group-hover:stroke-white/50 transition-all duration-300" 
                 />
-                {/* Inner highlight */}
-                <circle 
-                  cx="100" cy="100" r="90" 
-                  fill="none" 
-                  stroke="rgba(255,255,255,0.1)" 
-                  strokeWidth="1" 
-                />
-                {/* Play triangle with gradient */}
                 <path 
                   d="M82 60v80l64-40z" 
-                  fill="url(#playGradient)" 
-                  className="group-hover:fill-white transition-colors duration-300"
-                  style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
+                  fill="rgba(192,192,192,0.6)" 
+                  className="group-hover:fill-white/80 transition-colors duration-300"
                 />
-                <defs>
-                  <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(255,255,255,0.6)" />
-                    <stop offset="50%" stopColor="rgba(192,192,192,0.4)" />
-                    <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
-                  </linearGradient>
-                  <linearGradient id="playGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
-                    <stop offset="100%" stopColor="rgba(192,192,192,0.7)" />
-                  </linearGradient>
-                </defs>
               </svg>
-              
-              {/* Hover glow effect */}
-              <div className="absolute inset-0 rounded-full bg-white/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </button>
 
-            {/* Subscribe CTA */}
-            <button
-              onClick={handleSubscribe}
-              disabled={isTransitioning}
-              className="px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base disabled:pointer-events-none"
-              style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
-            >
-              Subscribe
-            </button>
+            {/* Action buttons row */}
+            <div className="flex items-center gap-3">
+              {/* Subscribe CTA */}
+              <button
+                onClick={handleSubscribe}
+                disabled={isTransitioning}
+                className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#c0c0c0]/08 border border-[#c0c0c0]/20 text-[#c0c0c0]/80 hover:bg-[#c0c0c0]/15 hover:border-[#c0c0c0]/40 hover:text-[#c0c0c0] transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm disabled:pointer-events-none"
+                style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
+              >
+                Subscribe
+              </button>
+
+              {/* Mute Toggle */}
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#c0c0c0]/08 border border-[#c0c0c0]/20 text-[#c0c0c0]/60 hover:bg-[#c0c0c0]/15 hover:border-[#c0c0c0]/40 hover:text-[#c0c0c0] transition-all duration-300 backdrop-blur-sm flex items-center justify-center"
+                title={isMuted ? "Unmute audio" : "Mute audio"}
+              >
+                {isMuted ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                    <line x1="23" y1="9" x2="17" y2="15"/>
+                    <line x1="17" y1="9" x2="23" y2="15"/>
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
