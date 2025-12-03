@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
+import { StoryIntro } from "@/components/StoryIntro";
 
 export const Story = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
+      {/* Cinematic intro overlay */}
+      {showIntro && <StoryIntro onComplete={() => setShowIntro(false)} />}
+      
       <div className="relative z-10">
         <NavigationHeader />
       

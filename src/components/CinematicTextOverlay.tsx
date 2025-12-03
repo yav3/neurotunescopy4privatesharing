@@ -189,29 +189,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
-      {/* Video background for cinematic intro - plays in sequence */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-contain"
-        src={INTRO_VIDEOS[currentVideoIndex]}
-        autoPlay
-        muted
-        playsInline
-        onEnded={handleVideoEnded}
-      />
-      
-      {/* Text content - black for contrast, positioned lower */}
-      <div className="absolute bottom-32 left-0 right-0 px-6 text-center">
-        <div className={`transition-all ${current.emphasis ? 'duration-1500' : 'duration-1000'} ease-out ${getAnimationClass()}`}>
+      {/* Text content - white on black, centered */}
+      <div className="px-6 text-center">
+        <div className={`transition-all ${current.emphasis ? 'duration-[1500ms]' : 'duration-1000'} ease-out ${getAnimationClass()}`}>
           <h2
-            className={`text-6xl md:text-8xl mb-3 ${current.emphasis ? 'animate-fade-in' : ''}`}
+            className="text-6xl md:text-8xl mb-3"
             style={{
-              color: 'black',
+              color: '#e4e4e4',
               letterSpacing: '0.02em',
               lineHeight: '1.1',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
               fontWeight: 400,
-              textShadow: 'none',
             }}
           >
             {current.main}
