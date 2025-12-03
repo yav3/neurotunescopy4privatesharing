@@ -13,13 +13,13 @@ interface SessionData {
   benefits: string[];
 }
 
-// Mock data for initial display - will be replaced with real Supabase data
-const MOCK_SESSIONS: SessionData[] = [
+// Session data with albumart bucket images
+const SESSION_CONFIG = [
   {
     id: "stress-relief",
     title: "Stress Relief",
     description: "Scientifically designed to lower cortisol levels and support parasympathetic recovery through theta-wave frequencies.",
-    coverArtUrl: "/placeholder.svg",
+    artFileName: "stress-relief.jpg",
     bucketName: "meditation",
     benefits: ["Reduced stress and anxiety", "Easier emotional regulation", "More stable mood"],
   },
@@ -27,7 +27,7 @@ const MOCK_SESSIONS: SessionData[] = [
     id: "deep-sleep",
     title: "Deep Sleep",
     description: "Delta-wave inspired frequencies and gentle melodic architecture for deeper, restorative sleep cycles.",
-    coverArtUrl: "/placeholder.svg",
+    artFileName: "deep-sleep.jpg",
     bucketName: "gentleclassicalforpain",
     benefits: ["Faster sleep onset", "Deeper REM cycles", "Improved morning clarity"],
   },
@@ -35,7 +35,7 @@ const MOCK_SESSIONS: SessionData[] = [
     id: "natural-energy",
     title: "Natural Energy",
     description: "Energizing compositions with uplifting rhythms and activating spectral patterns to boost cognitive performance.",
-    coverArtUrl: "/placeholder.svg",
+    artFileName: "natural-energy.jpg",
     bucketName: "ENERGYBOOST",
     benefits: ["Increased motivation", "Sustained cognitive energy", "Reduced fatigue"],
   },
@@ -43,41 +43,72 @@ const MOCK_SESSIONS: SessionData[] = [
     id: "meditation",
     title: "Meditation Support",
     description: "Theta-focused soundscapes to support deeper meditative states and mindful presence through binaural entrainment.",
-    coverArtUrl: "/placeholder.svg",
+    artFileName: "meditation.jpg",
     bucketName: "NewAgeandWorldFocus",
     benefits: ["Easier entry into meditation", "Improved focus", "Greater sense of calm"],
   },
 ];
 
 export default function FeaturedSessions() {
-  const [sessions, setSessions] = useState<SessionData[]>(MOCK_SESSIONS);
+  const [sessions, setSessions] = useState<SessionData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadSessions();
+    loadSessionsWithAlbumart();
   }, []);
 
-  async function loadSessions() {
+  async function loadSessionsWithAlbumart() {
     try {
-      // TODO: Replace with actual Supabase view query when playlists_index is created
-      // const { data, error } = await supabase
-      //   .from("playlists_index")
-      //   .select("*");
-      // if (!error && data) {
-      //   setSessions(data);
-      // }
-      
-      // For now, use mock data
-      setSessions(MOCK_SESSIONS);
+      // List files from albumart bucket
+      const { data: files, error } = await supabase.storage
+        .from('albumart')
+        .list('', { limit: 100 });
+
+      if (error) {
+        console.error("Error fetching albumart:", error);
+      }
+
+      // Map sessions with albumart URLs
+      const sessionsWithArt = SESSION_CONFIG.map((config, index) => {
+        // Try to find matching file or use first available files
+        let artUrl = "/placeholder.svg";
+        
+        if (files && files.length > 0) {
+          // Use files in order if available
+          const fileToUse = files[index % files.length];
+          if (fileToUse && fileToUse.name) {
+            const { data: urlData } = supabase.storage
+              .from('albumart')
+              .getPublicUrl(fileToUse.name);
+            artUrl = urlData.publicUrl;
+          }
+        }
+
+        return {
+          id: config.id,
+          title: config.title,
+          description: config.description,
+          coverArtUrl: artUrl,
+          bucketName: config.bucketName,
+          benefits: config.benefits,
+        };
+      });
+
+      setSessions(sessionsWithArt);
     } catch (error) {
       console.error("Error loading sessions:", error);
+      // Fallback to placeholder
+      setSessions(SESSION_CONFIG.map(c => ({
+        ...c,
+        coverArtUrl: "/placeholder.svg",
+      })));
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden" style={{ backgroundColor: '#000000' }}>
+    <section className="relative w-full overflow-hidden pt-24" style={{ backgroundColor: '#000000' }}>
       {/* Obsidian liquid background */}
       <div 
         className="absolute inset-0 opacity-30"
@@ -97,7 +128,7 @@ export default function FeaturedSessions() {
       />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         
         {/* Header */}
         <motion.div 
