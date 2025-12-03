@@ -35,7 +35,7 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-3 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]">
+      <header className="hidden md:flex items-center justify-between px-8 py-1.5 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]">
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
@@ -100,7 +100,7 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex flex-col leading-tight">
+          <Link to="/" className="flex items-baseline gap-2">
             <span className="text-xl tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
@@ -128,7 +128,7 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-3 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]">
+      <header className="md:hidden flex items-center justify-between px-5 py-1.5 bg-black border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">
@@ -192,7 +192,7 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex flex-col leading-tight">
+          <Link to="/" className="flex items-baseline gap-1.5">
             <span className="text-lg tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
