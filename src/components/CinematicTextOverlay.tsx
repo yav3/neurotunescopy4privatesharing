@@ -204,8 +204,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       <div className="absolute bottom-32 left-0 right-0 px-6 text-center">
         <div className={`transition-all duration-1000 ease-out ${getAnimationClass()}`}>
           <h2
-            className="text-6xl md:text-8xl text-black mb-3"
+            className="text-6xl md:text-8xl mb-3"
             style={{
+              color: '#000000',
               letterSpacing: '0.02em',
               lineHeight: '1.1',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
