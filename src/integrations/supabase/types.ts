@@ -4998,10 +4998,22 @@ export type Database = {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
       }
-      add_user_favorite_unified: {
-        Args: { p_track_identifier: string; p_user_id: string }
-        Returns: string
-      }
+      add_user_favorite_unified:
+        | {
+            Args: {
+              p_artist?: string
+              p_storage_bucket?: string
+              p_storage_path?: string
+              p_track_id: string
+              p_track_name?: string
+              p_user_id: string
+            }
+            Returns: string
+          }
+        | {
+            Args: { p_track_identifier: string; p_user_id: string }
+            Returns: string
+          }
       analyze_session_coverage: {
         Args: never
         Returns: {
@@ -5122,6 +5134,7 @@ export type Database = {
           artwork_type: string
           artwork_url: string
           display_order: number
+          id: string
         }[]
       }
       get_all_display_groups: {
@@ -5226,6 +5239,7 @@ export type Database = {
           artwork_semantic_label: string
           artwork_type: string
           artwork_url: string
+          id: string
         }[]
       }
       get_sambajazznocturnes_url: {
@@ -5395,10 +5409,12 @@ export type Database = {
         Returns: undefined
       }
       is_blocked_company_email: { Args: { email: string }; Returns: boolean }
-      is_track_favorited_unified: {
-        Args: { p_track_identifier: string; p_user_id: string }
-        Returns: boolean
-      }
+      is_track_favorited_unified:
+        | {
+            Args: { p_track_identifier: string; p_user_id: string }
+            Returns: boolean
+          }
+        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
       is_valid_uuid: { Args: { input_text: string }; Returns: boolean }
       is_vip_member: { Args: { _user_id?: string }; Returns: boolean }
       mark_likely_missing_tracks: { Args: never; Returns: number }
@@ -5437,23 +5453,36 @@ export type Database = {
         }[]
       }
       range: { Args: never; Returns: string[] }
-      remove_user_favorite_unified: {
-        Args: { p_track_identifier: string; p_user_id: string }
-        Returns: boolean
-      }
-      resolve_track_info_unified: {
-        Args: { p_track_identifier: string }
-        Returns: {
-          album: string
-          artist: string
-          duration_seconds: number
-          genre: string
-          storage_bucket: string
-          storage_path: string
-          track_id: string
-          track_title: string
-        }[]
-      }
+      remove_user_favorite_unified:
+        | {
+            Args: { p_track_identifier: string; p_user_id: string }
+            Returns: boolean
+          }
+        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
+      resolve_track_info_unified:
+        | {
+            Args: { p_track_identifier: string }
+            Returns: {
+              album: string
+              artist: string
+              duration_seconds: number
+              genre: string
+              storage_bucket: string
+              storage_path: string
+              track_id: string
+              track_title: string
+            }[]
+          }
+        | {
+            Args: { p_track_id: string }
+            Returns: {
+              artist: string
+              storage_bucket: string
+              storage_path: string
+              title: string
+              track_id: string
+            }[]
+          }
       safe_cast_to_music_genre: {
         Args: { text_value: string }
         Returns: Database["public"]["Enums"]["music_genre"]
@@ -5472,7 +5501,7 @@ export type Database = {
           total_sessions: number
         }[]
       }
-      sync_hiit_storage: { Args: never; Returns: string }
+      sync_hiit_storage: { Args: never; Returns: undefined }
       update_session_activity: {
         Args: { session_id: string }
         Returns: undefined

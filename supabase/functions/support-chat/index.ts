@@ -6,18 +6,63 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Simple in-memory rate limiting
+const rateLimits = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 30; // requests per window
+const RATE_WINDOW = 60000; // 1 minute in ms
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimits.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimits.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+  
+  record.count++;
+  return true;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Get client IP for rate limiting
+  const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                   req.headers.get('cf-connecting-ip') || 
+                   'unknown';
+
+  // Check rate limit
+  if (!checkRateLimit(clientIP)) {
+    console.warn(`Rate limit exceeded for IP: ${clientIP}`);
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please wait a moment.' }),
+      {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
+  }
+
   try {
     const { messages } = await req.json();
+    
+    // Limit message history to prevent token abuse
+    const limitedMessages = messages.slice(-15);
+    
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
 
     if (!anthropicApiKey) {
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
+
+    console.log(`Support chat request from IP: ${clientIP}, messages: ${limitedMessages.length}`);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -61,7 +106,7 @@ SUPPORT EXCELLENCE GUIDELINES:
 TONE: Professional yet conversational, solution-oriented, patient, and genuinely invested in optimal user experience.
 
 Always aim for first-contact resolution while making users feel heard, valued, and confident in our product.`,
-        messages: messages,
+        messages: limitedMessages,
         stream: true,
       }),
     });
