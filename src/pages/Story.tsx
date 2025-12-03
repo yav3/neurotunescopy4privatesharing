@@ -21,6 +21,22 @@ export const Story = () => {
             </p>
           </div>
 
+          {/* Team */}
+          <section className="mb-20">
+            <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>The Team</h2>
+            
+            <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+              <p className="leading-relaxed mb-6" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+                Neuroscientists, physicians, AI engineers (including ex-Spotify architect/inventor), composers, 
+                and a 5× Grammy-winning sound lead. Proven leadership, ready to deploy and deliver calmer care 
+                and measurable relief for patients.
+              </p>
+              <p className="text-sm" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>
+                Founding team with combined total of more than $500M in exits through M&amp;A and IPO.
+              </p>
+            </div>
+          </section>
+
           {/* Content */}
           <div className="space-y-20" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
             
@@ -225,20 +241,6 @@ export const Story = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
-            </section>
-
-            {/* Team */}
-            <section>
-              <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>The Team</h2>
-              
-              <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
-                <p className="leading-relaxed mb-6">
-                  Neuroscientists, physicians, AI engineers (including ex-Spotify architect/inventor), composers, 
-                  and a 5× Grammy-winning sound lead. Proven leadership, ready to deploy and deliver calmer care 
-                  and measurable relief for patients.
-                </p>
-                
               </div>
             </section>
 
