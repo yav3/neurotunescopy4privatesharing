@@ -17,6 +17,9 @@ interface CinematicTextOverlayProps {
 // Intro audio URL - first track from the playlist
 const INTRO_AUDIO_URL = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3'
 
+// Intro videos in sequence
+const INTRO_VIDEOS = ['/videos/intro-1.mp4', '/videos/intro-2.mp4']
+
 const MESSAGES: TextItem[] = [
   { 
     main: "Real Music", 
@@ -46,11 +49,20 @@ const MESSAGES: TextItem[] = [
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
   const [audioStarted, setAudioStarted] = useState(false)
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  // Handle video ended - advance to next video
+  const handleVideoEnded = () => {
+    if (currentVideoIndex < INTRO_VIDEOS.length - 1) {
+      setCurrentVideoIndex(prev => prev + 1)
+    }
+  }
 
   // Start intro audio on mount - with fallback for autoplay blocked
   useEffect(() => {
@@ -177,14 +189,15 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-      {/* Video background for cinematic intro */}
+      {/* Video background for cinematic intro - plays in sequence */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/intro-cinematic.mp4"
+        src={INTRO_VIDEOS[currentVideoIndex]}
         autoPlay
         muted
         playsInline
-        loop
+        onEnded={handleVideoEnded}
       />
       
       {/* Text content - black for contrast against light video */}
