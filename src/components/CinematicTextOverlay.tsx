@@ -101,9 +101,19 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-      {/* Black background that fades out */}
+      {/* Video background for cinematic intro */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/intro-cinematic.mp4"
+        autoPlay
+        muted
+        playsInline
+        loop
+      />
+      
+      {/* Dark overlay for text readability */}
       <div 
-        className={`absolute inset-0 bg-black transition-opacity duration-1000 ${getBackgroundOpacity()}`}
+        className={`absolute inset-0 bg-black/60 transition-opacity duration-1000 ${getBackgroundOpacity()}`}
       />
       
       {/* Text content */}
