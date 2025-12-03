@@ -128,10 +128,10 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex gap-3 mt-auto pt-6">
+          <div className={`mt-auto pt-6 ${product.secondaryCta ? 'flex flex-col gap-3' : 'flex gap-3'}`}>
             <button
               onClick={handleCTAClick}
-              className="flex-1 flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
+              className="flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl w-full"
               style={{ 
                 color: 'rgba(228, 228, 228, 0.90)',
                 background: 'rgba(228, 228, 228, 0.08)',
@@ -154,7 +154,7 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
             {product.secondaryCta && (
               <button
                 onClick={handleSecondaryCTAClick}
-                className="flex-1 flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl"
+                className="flex items-center justify-center gap-2 font-medium text-sm group-hover:gap-3 transition-all px-6 py-3 rounded-xl w-full"
                 style={{ 
                   color: 'rgba(228, 228, 228, 0.90)',
                   background: 'rgba(228, 228, 228, 0.08)',
@@ -170,7 +170,6 @@ export const ProductCard = ({ product, index, backgroundImage, onOpenSalesChat }
                 }}
               >
                 {product.secondaryCta}
-                <span>→</span>
               </button>
             )}
           </div>
