@@ -107,7 +107,19 @@ export const LandingPageControls = ({
                   </div>
                 </div>
               </div>
-              <ChevronUp className="w-4 h-4 text-white/60 flex-shrink-0" />
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={(e) => { e.stopPropagation(); onToggleMute(); }}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-4 h-4 text-white/70" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-white" />
+                  )}
+                </button>
+                <ChevronUp className="w-4 h-4 text-white/60" />
+              </div>
             </motion.div>
           )}
 
