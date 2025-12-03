@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
@@ -22,6 +22,17 @@ const Index = () => {
   const [showHero, setShowHero] = useState(true);
   const [overlayComplete, setOverlayComplete] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showExperienceLabel, setShowExperienceLabel] = useState(true);
+
+  // Fade out "Experience Now" label after 3 seconds
+  useEffect(() => {
+    if (overlayComplete && showExperienceLabel) {
+      const timer = setTimeout(() => {
+        setShowExperienceLabel(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [overlayComplete, showExperienceLabel]);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
@@ -78,7 +89,15 @@ const Index = () => {
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div className="pointer-events-auto flex flex-col items-center gap-16">
+          <div className="pointer-events-auto flex flex-col items-center gap-8">
+            {/* Experience Now Label - above play button, fades out */}
+            <span 
+              className={`text-[#c0c0c0] text-2xl tracking-wide transition-opacity duration-1000 ${showExperienceLabel ? 'opacity-100' : 'opacity-0'}`}
+              style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
+            >
+              Experience Now
+            </span>
+
             {/* Play Button */}
             <button
               onClick={handlePlaySession}
@@ -94,11 +113,6 @@ const Index = () => {
               </svg>
               <div className="absolute inset-0 rounded-full bg-white/5 blur-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300" />
             </button>
-            
-            {/* Experience Now Label */}
-            <span className="text-[#c0c0c0] text-2xl tracking-wide" style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}>
-              Experience Now
-            </span>
 
             {/* Subscribe CTA */}
             <button
