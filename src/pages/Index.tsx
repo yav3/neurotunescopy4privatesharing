@@ -78,15 +78,15 @@ const Index = () => {
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div className="pointer-events-auto flex flex-col items-center gap-12">
-            {/* Glass Play Button */}
+          <div className="pointer-events-auto flex flex-col items-center gap-6 sm:gap-8 md:gap-12">
+            {/* Glass Play Button - Responsive sizing */}
             <button
               onClick={handlePlaySession}
               disabled={isTransitioning}
-              className="group transition-all duration-500 hover:scale-110 active:scale-105 relative disabled:pointer-events-none"
+              className="group transition-all duration-500 hover:scale-110 active:scale-105 relative disabled:pointer-events-none w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] md:w-[160px] md:h-[160px] lg:w-[200px] lg:h-[200px]"
             >
               {/* Outer glow ring */}
-              <div className="absolute inset-[-20px] rounded-full bg-gradient-to-br from-white/10 via-white/5 to-transparent blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-[-10px] sm:inset-[-15px] md:inset-[-20px] rounded-full bg-gradient-to-br from-white/10 via-white/5 to-transparent blur-xl sm:blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               
               {/* Glass circle background */}
               <div 
@@ -94,7 +94,7 @@ const Index = () => {
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)',
                   boxShadow: `
-                    0 0 60px rgba(192, 192, 192, 0.3),
+                    0 0 40px rgba(192, 192, 192, 0.25),
                     inset 0 1px 1px rgba(255,255,255,0.3),
                     inset 0 -1px 1px rgba(0,0,0,0.2)
                   `,
@@ -102,7 +102,7 @@ const Index = () => {
                 }}
               />
               
-              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="relative z-10 transition-all duration-300">
+              <svg viewBox="0 0 200 200" fill="none" className="relative z-10 transition-all duration-300 w-full h-full">
                 {/* Outer ring with glass effect */}
                 <circle 
                   cx="100" cy="100" r="97" 
@@ -146,7 +146,7 @@ const Index = () => {
             <button
               onClick={handleSubscribe}
               disabled={isTransitioning}
-              className="px-10 py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-base disabled:pointer-events-none"
+              className="px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-3.5 rounded-full bg-[#c0c0c0]/10 border border-[#c0c0c0]/30 text-[#c0c0c0] hover:bg-[#c0c0c0]/20 hover:border-[#c0c0c0]/50 hover:scale-105 active:scale-100 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base disabled:pointer-events-none"
               style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
             >
               Subscribe
