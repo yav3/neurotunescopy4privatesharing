@@ -336,8 +336,16 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // CRITICAL: Stop ALL audio IMMEDIATELY before doing anything else
-    console.log('🔇 STOPPING ALL AUDIO IMMEDIATELY');
+    // CRITICAL: Kill ALL audio on the page before playing next track
+    console.log('🔇 KILLING ALL AUDIO before next track');
+    document.querySelectorAll('audio').forEach((audio) => {
+      audio.pause();
+      audio.src = '';
+      audio.volume = 0;
+      audio.currentTime = 0;
+    });
+    
+    // Also reset both refs
     if (audioRef1.current) {
       audioRef1.current.pause();
       audioRef1.current.src = '';
@@ -427,8 +435,16 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // CRITICAL: Ensure BOTH audio elements are completely silent and reset before starting
-          // This prevents any "intro music" overlap from preloaded content or stale state
+          // CRITICAL: Kill ALL audio on the entire page first
+          console.log('🔇 KILLING ALL AUDIO on page before first play');
+          document.querySelectorAll('audio').forEach((audio) => {
+            audio.pause();
+            audio.src = '';
+            audio.volume = 0;
+            audio.currentTime = 0;
+          });
+          
+          // Also reset both refs explicitly
           if (audioRef1.current) {
             audioRef1.current.pause();
             audioRef1.current.src = '';
@@ -441,7 +457,6 @@ export const LandingPagePlayer = ({
             audioRef2.current.currentTime = 0;
             audioRef2.current.volume = 0;
           }
-          console.log('🔇 Reset ALL audio elements to prevent overlap');
           
           // Clear any existing timers
           if (trackTimerRef.current) {
@@ -517,60 +532,56 @@ export const LandingPagePlayer = ({
         // Resume or re-initialize playback
         hasStartedPlaybackRef.current = true;
         
-        // Also ensure the other audio is stopped
-        if (otherAudio && !otherAudio.paused) {
-          console.log('⚠️ Other audio was still playing during resume, stopping it');
-          otherAudio.pause();
-          otherAudio.src = '';
+        // CRITICAL: Stop ALL audio on the page before playing anything
+        console.log('🔇 KILLING ALL AUDIO before resume/re-init');
+        document.querySelectorAll('audio').forEach((audio) => {
+          audio.pause();
+          audio.volume = 0;
+        });
+        
+        // Also reset both refs
+        if (audioRef1.current) {
+          audioRef1.current.pause();
+          audioRef1.current.src = '';
+          audioRef1.current.currentTime = 0;
+          audioRef1.current.volume = 0;
+        }
+        if (audioRef2.current) {
+          audioRef2.current.pause();
+          audioRef2.current.src = '';
+          audioRef2.current.currentTime = 0;
+          audioRef2.current.volume = 0;
         }
         
-        // If no valid source, re-initialize with current track
+        // Re-initialize with current track
         const currentTrack = tracks[currentTrackIndex];
-        if (!currentAudio.src || !currentTrack) {
-          console.log('🔄 No valid source, re-initializing...');
-          if (currentTrack) {
-            currentAudio.src = currentTrack.src;
-            currentAudio.volume = isMuted ? 0 : 0.6;
-          }
-        }
-        
-        console.log('▶️ Resuming playback...');
-        currentAudio.play()
-          .then(() => {
-            console.log('✅ Audio resumed successfully');
-            onPlaybackStateChange(true);
-            // Resume 35-second timer if not already running
-            if (!trackTimerRef.current) {
+        if (currentTrack) {
+          console.log('🔄 Re-initializing audio with:', currentTrack.name);
+          currentAudio.src = currentTrack.src;
+          currentAudio.volume = isMuted ? 0 : 0.6;
+          currentAudio.currentTime = 0;
+          
+          console.log('▶️ Starting playback...');
+          currentAudio.play()
+            .then(() => {
+              console.log('✅ Audio playing successfully');
+              onPlaybackStateChange(true);
+              onCurrentTrackChange(currentTrack);
+              // Set 35-second timer
+              if (trackTimerRef.current) {
+                clearTimeout(trackTimerRef.current);
+              }
               trackTimerRef.current = setTimeout(() => {
                 console.log('⏰ 35-second timer expired, advancing to next track');
                 playNextTrack();
               }, TRACK_DURATION);
-            }
-          })
-          .catch(err => {
-            console.error('❌ Audio resume failed, trying re-init:', err);
-            // Re-initialize from scratch
-            if (currentTrack) {
-              currentAudio.src = currentTrack.src;
-              currentAudio.volume = isMuted ? 0 : 0.6;
-              currentAudio.currentTime = 0;
-              currentAudio.play()
-                .then(() => {
-                  console.log('✅ Audio playing after re-init');
-                  onPlaybackStateChange(true);
-                  if (!trackTimerRef.current) {
-                    trackTimerRef.current = setTimeout(() => {
-                      playNextTrack();
-                    }, TRACK_DURATION);
-                  }
-                })
-                .catch(e => {
-                  console.error('❌ Re-init also failed:', e);
-                  onPlaybackStateChange(false);
-                  hasStartedPlaybackRef.current = false;
-                });
-            }
-          });
+            })
+            .catch(e => {
+              console.error('❌ Playback failed:', e);
+              onPlaybackStateChange(false);
+              hasStartedPlaybackRef.current = false;
+            });
+        }
       }
     } else {
       console.log('⏸️ Pausing playback...');
