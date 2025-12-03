@@ -430,8 +430,10 @@ export const LandingPagePlayer = ({
         // First play - set up audio and video
         isInitializingRef.current = true;
         hasStartedPlaybackRef.current = true;
-        const firstTrack = tracks[0];
-        const firstVideo = videos[0];
+        // Start from track 1 (The Seventh Wonder) since intro played track 0 (The Spartan Age)
+        const startIndex = 1;
+        const firstTrack = tracks[startIndex];
+        const firstVideo = videos[startIndex];
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
@@ -481,10 +483,13 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
+          // Set the track index to startIndex
+          setCurrentTrackIndex(startIndex);
+          
           // Trigger video via callback
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
           onVideoPlaybackRateChange(playbackRate);
-          onVideoChange(0);
+          onVideoChange(startIndex);
           
           // Attempt to play audio
           const attemptPlay = async () => {
