@@ -135,20 +135,20 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
       <div 
         className="relative w-full max-w-lg h-[600px] rounded-2xl flex flex-col overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, rgba(2, 16, 20, 0.95) 0%, rgba(0, 37, 44, 0.95) 100%)',
+          background: 'linear-gradient(135deg, rgba(5, 5, 7, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%)',
           backdropFilter: 'blur(40px)',
-          border: '1px solid rgba(20, 184, 166, 0.2)',
-          boxShadow: '0 20px 60px rgba(0, 220, 255, 0.15)',
+          border: '1px solid rgba(192, 192, 192, 0.15)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
         }}
       >
         {/* Background Plus Logo Watermark */}
         <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-          <Plus className="w-96 h-96 text-cyan-400" />
+          <Plus className="w-96 h-96 text-white" />
         </div>
         
-        {/* Glow effects */}
-        <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-cyan-400/10 blur-[80px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-400/10 blur-[80px] rounded-full pointer-events-none" />
+        {/* Subtle glow effects */}
+        <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
 
         <div 
           className="relative flex items-center justify-between p-4"
@@ -160,11 +160,11 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
             <div 
               className="w-10 h-10 rounded-lg flex items-center justify-center"
               style={{
-                background: 'rgba(20, 184, 166, 0.2)',
-                border: '1px solid rgba(20, 184, 166, 0.3)',
+                background: 'rgba(192, 192, 192, 0.1)',
+                border: '1px solid rgba(192, 192, 192, 0.2)',
               }}
             >
-              <Plus className="w-5 h-5 text-cyan-400" />
+              <Plus className="w-5 h-5 text-[#c0c0c0]" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">Site Assessment Request</h2>
@@ -197,9 +197,9 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
             <div className="flex justify-start">
               <div className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]">
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40" />
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40 delay-100" />
-                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce shadow-lg shadow-cyan-400/40 delay-200" />
+                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce delay-100" />
+                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce delay-200" />
                 </div>
               </div>
             </div>
@@ -225,13 +225,13 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your answer..."
               disabled={isLoading || currentStep === "done"}
-              className="flex-1 bg-white/[0.06] border-white/[0.12] text-white placeholder-white/40 focus:border-cyan-400/40 focus:ring-cyan-400/20"
+              className="flex-1 bg-white/[0.06] border-white/[0.12] text-white placeholder-white/40 focus:border-white/30 focus:ring-white/10"
             />
             <Button 
               type="submit" 
               size="icon" 
               disabled={isLoading || currentStep === "done"}
-              className="bg-gradient-to-br from-cyan-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/30"
+              className="bg-[#c0c0c0] hover:bg-[#e4e4e4] text-black"
             >
               <Send className="w-4 h-4" />
             </Button>
