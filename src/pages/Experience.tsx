@@ -17,8 +17,11 @@ export default function Experience() {
         onClose={() => setIsRegistrationOpen(false)} 
       />
 
+      {/* FEATURED SESSIONS - Moved to top */}
+      <FeaturedSessions />
+
       {/* HERO */}
-      <section className="relative overflow-hidden pt-32">
+      <section className="relative overflow-hidden pt-16">
         {/* Chrome/obsidian background */}
         <div className="fixed inset-0 z-0">
           <div 
@@ -89,9 +92,6 @@ export default function Experience() {
           </motion.div>
         </div>
       </section>
-
-      {/* FEATURED SESSIONS */}
-      <FeaturedSessions />
 
 
       <Footer />
