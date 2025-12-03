@@ -74,14 +74,28 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [])
 
-  // Stop intro audio when complete
-  useEffect(() => {
-    if (hasCompleted && introAudioRef.current) {
+  // Stop intro audio when complete - BEFORE notifying parent
+  const stopIntroAudio = () => {
+    if (introAudioRef.current) {
       console.log('🔇 Stopping intro audio on completion')
       introAudioRef.current.pause()
       introAudioRef.current.src = ''
       introAudioRef.current.volume = 0
-      ;(window as any).__introAudio = null
+      introAudioRef.current = null
+    }
+    ;(window as any).__introAudio = null
+    
+    // Also kill any other audio elements that might exist
+    document.querySelectorAll('audio').forEach((audio) => {
+      audio.pause()
+      audio.src = ''
+      audio.volume = 0
+    })
+  }
+
+  useEffect(() => {
+    if (hasCompleted) {
+      stopIntroAudio()
     }
   }, [hasCompleted])
 
@@ -104,6 +118,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         } else {
           // Fade to black briefly, then complete
           setTimeout(() => {
+            // CRITICAL: Stop intro audio BEFORE notifying completion
+            stopIntroAudio()
             setHasCompleted(true)
             onComplete?.()
           }, 500)
