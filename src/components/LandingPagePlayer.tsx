@@ -419,8 +419,11 @@ export const LandingPagePlayer = ({
 
   // Track if we're currently initializing to prevent double-play
   const isInitializingRef = useRef(false);
+  // Track if audio has been started (to prevent re-triggering on dependency changes)
+  const hasStartedPlaybackRef = useRef(false);
 
   // Handle play/pause - directly triggered from user interaction
+  // CRITICAL: Only depend on isPlaying to prevent re-triggering on other state changes
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
     const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
@@ -432,9 +435,16 @@ export const LandingPagePlayer = ({
     }
     
     if (isPlaying) {
+      // CRITICAL: Only initialize once - prevent double playback when dependencies change
+      if (hasStartedPlaybackRef.current) {
+        console.log('🔒 Playback already started, skipping re-initialization');
+        return;
+      }
+      
       if (!currentAudio?.src && !isInitializingRef.current) {
         // First play - set up audio and video
         isInitializingRef.current = true;
+        hasStartedPlaybackRef.current = true;
         const firstTrack = tracks[0];
         const firstVideo = videos[0];
         if (currentAudio && firstVideo) {
@@ -518,6 +528,7 @@ export const LandingPagePlayer = ({
                   console.error('❌ Retry failed:', e);
                   onPlaybackStateChange(false);
                   isInitializingRef.current = false;
+                  hasStartedPlaybackRef.current = false; // Allow retry
                 }
               }, 100);
             }
@@ -527,6 +538,8 @@ export const LandingPagePlayer = ({
         }
       } else if (currentAudio?.src && currentAudio.paused && !isInitializingRef.current) {
         // Resume playback - only if actually paused and not initializing
+        hasStartedPlaybackRef.current = true;
+        
         // Also ensure the other audio is stopped
         if (otherAudio && !otherAudio.paused) {
           console.log('⚠️ Other audio was still playing during resume, stopping it');
@@ -550,6 +563,7 @@ export const LandingPagePlayer = ({
           .catch(err => {
             console.error('❌ Audio resume failed:', err);
             onPlaybackStateChange(false);
+            hasStartedPlaybackRef.current = false;
           });
       }
     } else {
@@ -557,12 +571,14 @@ export const LandingPagePlayer = ({
       // Pause BOTH audio elements to be safe
       audioRef1.current?.pause();
       audioRef2.current?.pause();
+      hasStartedPlaybackRef.current = false; // Reset so next play can initialize
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
         trackTimerRef.current = undefined;
       }
     }
-  }, [isPlaying, tracks, videos, isMuted, playNextTrack, onPlaybackStateChange, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange, getPlaybackRate, activeAudioRef]);
+  // CRITICAL: Only depend on isPlaying - other changes should NOT re-trigger playback
+  }, [isPlaying, tracks.length, videos.length]);
 
   // Handle mute
   useEffect(() => {
