@@ -36,25 +36,21 @@ export const Story = () => {
               <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
                 <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>Clinically Validated</h3>
                 <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, with insights from 15,000+ 
-                  peer-reviewed neuroscience and music-therapy articles. Pilot studies demonstrate 
-                  statistically significant anxiety reductions (p&lt;.05).
+                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, informed by a meta-analysis of 
+                  thousands of journal articles examining the therapeutic use of music and music therapy. 
+                  Pilot studies demonstrate statistically significant anxiety reductions (p&lt;.05).
                 </p>
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
                 <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>&gt;50%</div>
                 <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Anxiety reduction in clinical pilots</p>
               </div>
               <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
-                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>7,000+</div>
+                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>8,000+</div>
                 <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Purpose-composed therapeutic tracks</p>
-              </div>
-              <div className="p-5 rounded-xl text-center" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
-                <div className="text-2xl font-light mb-2" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>14K+</div>
-                <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>Subjects analyzed via biobank AI</p>
               </div>
             </div>
           </section>
@@ -97,7 +93,7 @@ export const Story = () => {
                 <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
                   <h3 className="text-lg font-light mb-3" style={{ color: '#e4e4e4' }}>Catalog</h3>
                   <p className="leading-relaxed text-sm">
-                    7,000+ purpose-composed tracks with indication-specific dosing algorithms for anxiety and pain. 
+                    8,000+ purpose-composed tracks with indication-specific dosing algorithms for anxiety and pain. 
                     Fully owned IP—no royalties, predictable lower cost, and no licensing risk.
                   </p>
                 </div>
@@ -108,15 +104,11 @@ export const Story = () => {
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-3">
                     <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                    <span>Insights from 15,000+ peer-reviewed neuroscience &amp; music-therapy articles</span>
+                    <span>Meta-analysis of thousands of journal articles examining therapeutic use of music and music therapy</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
                     <span>8+ years R&amp;D at Columbia / Cornell Tech; pilot/UX studies show pre/post anxiety reductions (p&lt;.05)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                    <span>14k+ subjects (biobank AI analysis): reproduced pre-specified symptom–response patterns across indications</span>
                   </li>
                 </ul>
               </div>
