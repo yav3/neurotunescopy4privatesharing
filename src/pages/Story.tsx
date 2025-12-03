@@ -239,15 +239,6 @@ export const Story = () => {
                   and measurable relief for patients.
                 </p>
                 
-                <div className="pt-6" style={{ borderTop: '1px solid rgba(228, 228, 228, 0.08)' }}>
-                  <p className="text-sm mb-2" style={{ color: '#e4e4e4' }}>Yasmine Wilt, PhD</p>
-                  <p className="text-sm" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>
-                    y@neuralpositive.com • neuralpositive.com
-                  </p>
-                  <p className="text-xs mt-4" style={{ color: 'rgba(228, 228, 228, 0.4)' }}>
-                    Patents US 11,694,786 and 12,361,263. Four additional pending.
-                  </p>
-                </div>
               </div>
             </section>
 
