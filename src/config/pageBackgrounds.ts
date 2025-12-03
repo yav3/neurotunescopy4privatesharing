@@ -47,7 +47,7 @@ export const pageBackgrounds: Record<string, { video?: string; gif?: string; ove
     overlayOpacity: 0.6,
   },
   '/products/environmental': {
-    video: '/videos/landing-12.mp4',
+    video: '/videos/environmental-bg.mp4',
     overlayOpacity: 0.6,
   },
   '/consumer-pricing': {
