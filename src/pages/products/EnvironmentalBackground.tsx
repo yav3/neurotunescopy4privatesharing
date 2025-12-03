@@ -84,10 +84,10 @@ export default function EnvironmentalBackground() {
         <NavigationHeader />
 
       {/* Condensed Hero - Minimal Padding */}
-      <section className="relative pt-24 pb-4 px-6">
+      <section className="relative pt-16 pb-2 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h1 
-            className="text-4xl lg:text-5xl font-light mb-3"
+            className="text-3xl lg:text-4xl font-light mb-2"
             style={{ color: 'rgba(255, 255, 255, 0.95)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -97,7 +97,7 @@ export default function EnvironmentalBackground() {
           </motion.h1>
 
           <motion.p 
-            className="text-base lg:text-lg mb-6"
+            className="text-sm lg:text-base mb-4"
             style={{ color: 'rgba(255, 255, 255, 0.60)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -108,14 +108,14 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
-      {/* Commercial Video - 50% Smaller, Moved Up */}
-      <section className="relative py-4 px-6">
-        <div className="max-w-lg mx-auto">
+      {/* Commercial Video - Constrained Height */}
+      <section className="relative py-2 px-6">
+        <div className="max-w-sm mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="rounded-2xl overflow-hidden"
+            className="rounded-xl overflow-hidden"
             style={{
               border: '1px solid rgba(192, 192, 192, 0.2)',
             }}
@@ -125,7 +125,7 @@ export default function EnvironmentalBackground() {
               loop
               muted
               playsInline
-              className="w-full h-auto"
+              className="w-full h-auto max-h-[35vh] object-cover"
             >
               <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
             </video>
