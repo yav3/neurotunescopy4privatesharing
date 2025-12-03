@@ -322,7 +322,7 @@ export const LandingPagePlayer = ({
     return 0.4 + ((normalizedBPM - 60) / 60) * 0.9;
   };
 
-  // Start next track with crossfade - each track tethered to its specific video
+  // Start next track - IMMEDIATELY stop previous to prevent overlap
   const playNextTrack = useCallback(() => {
     console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length);
     
@@ -336,75 +336,53 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
+    // CRITICAL: Stop ALL audio IMMEDIATELY before doing anything else
+    console.log('🔇 STOPPING ALL AUDIO IMMEDIATELY');
+    if (audioRef1.current) {
+      audioRef1.current.pause();
+      audioRef1.current.src = '';
+      audioRef1.current.currentTime = 0;
+      audioRef1.current.volume = 0;
+    }
+    if (audioRef2.current) {
+      audioRef2.current.pause();
+      audioRef2.current.src = '';
+      audioRef2.current.currentTime = 0;
+      audioRef2.current.volume = 0;
+    }
 
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
-    const nextVideo = videos[nextIndex];
     const nextVideoIndex = nextIndex;
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     
     console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
-    console.log(`🎬 Switching to video [${nextVideoIndex + 1}/${videos.length}] at ${playbackRate}x speed`);
-    console.log(`🎵 Current track was: ${tracks[currentTrackIndex]?.name}`);
     
-    
-    const nextAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
+    // Always use audioRef1 for simplicity - we've stopped everything
+    const nextAudio = audioRef1.current;
 
     if (!nextAudio) {
-      console.error('❌ Next audio ref is null');
+      console.error('❌ Audio ref is null');
       return;
     }
 
-    console.log('🎬 Preparing audio/video sync - Rate:', playbackRate, '| Track:', nextTrack.name, '| Video index:', nextVideoIndex);
-
-    // Prepare next track
+    // Set up and play the next track
     nextAudio.src = nextTrack.src;
-    nextAudio.muted = false;
-    nextAudio.volume = 0;
-    nextAudio.load();
-    console.log('📥 Next track loaded:', nextTrack.src);
-
-    // Start playing next track
+    nextAudio.volume = isMuted ? 0 : 0.6;
+    nextAudio.currentTime = 0;
+    
     nextAudio.play().then(() => {
-      console.log('✅ Next track playing, starting crossfade');
-      // Crossfade
-      const fadeSteps = 20;
-      const fadeInterval = CROSSFADE_DURATION / fadeSteps;
-      let step = 0;
-
-      const fadeTimer = setInterval(() => {
-        step++;
-        const progress = step / fadeSteps;
-        
-        if (currentAudio) {
-          currentAudio.volume = isMuted ? 0 : (1 - progress) * 0.6;
-        }
-        if (nextAudio) {
-          nextAudio.volume = isMuted ? 0 : progress * 0.6;
-        }
-
-        if (step >= fadeSteps) {
-          clearInterval(fadeTimer);
-          if (currentAudio) {
-            console.log('⏸️ Pausing previous audio after crossfade');
-            currentAudio.pause();
-            currentAudio.src = '';
-          }
-          console.log('✅ Crossfade complete');
-        }
-      }, fadeInterval);
+      console.log('✅ Next track playing:', nextTrack.name);
     }).catch(err => {
       console.error('❌ Next track play failed:', err);
     });
 
-    // Update state and video
+    // Update state
     setCurrentTrackIndex(nextIndex);
-    setActiveAudioRef(activeAudioRef === 1 ? 2 : 1);
+    setActiveAudioRef(1); // Always use ref 1 now
     onCurrentTrackChange(nextTrack);
     onVideoPlaybackRateChange(playbackRate);
     onVideoChange(nextVideoIndex);
-    console.log('✅ Sync complete - Track:', nextTrack.name, '| Video:', nextVideoIndex, '| Active audio:', activeAudioRef === 1 ? 2 : 1);
 
     // Set 35-second timer for next track
     if (trackTimerRef.current) {
@@ -414,8 +392,7 @@ export const LandingPagePlayer = ({
       console.log('⏰ 35-second timer expired, advancing to next track');
       playNextTrack();
     }, TRACK_DURATION);
-    console.log('⏰ 35-second timer set for next track');
-  }, [isPlaying, tracks, videos, currentTrackIndex, activeAudioRef, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
+  }, [isPlaying, tracks, videos, currentTrackIndex, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
   // Track if we're currently initializing to prevent double-play
   const isInitializingRef = useRef(false);
