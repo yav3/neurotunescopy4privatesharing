@@ -200,8 +200,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         onEnded={handleVideoEnded}
       />
       
-      {/* Text content - black for contrast against light video */}
-      <div className="relative px-6 text-center max-w-5xl">
+      {/* Text content - black for contrast, positioned lower */}
+      <div className="absolute bottom-32 left-0 right-0 px-6 text-center">
         <div className={`transition-all duration-1000 ease-out ${getAnimationClass()}`}>
           <h2
             className="text-6xl md:text-8xl text-black mb-3"
