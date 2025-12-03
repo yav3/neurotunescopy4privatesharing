@@ -188,11 +188,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }
 
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+    <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
       {/* Video background for cinematic intro - plays in sequence */}
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-contain"
         src={INTRO_VIDEOS[currentVideoIndex]}
         autoPlay
         muted
