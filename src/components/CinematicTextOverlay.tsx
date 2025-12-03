@@ -111,52 +111,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         loop
       />
       
-      {/* Dark overlay for text readability */}
+      {/* Subtle dark overlay */}
       <div 
-        className={`absolute inset-0 bg-black/60 transition-opacity duration-1000 ${getBackgroundOpacity()}`}
+        className={`absolute inset-0 bg-black/30 transition-opacity duration-1000 ${getBackgroundOpacity()}`}
       />
-      
-      {/* Text content */}
-      <div className="relative px-6 text-center max-w-5xl">
-        <div className={`transition-all duration-1000 ease-out ${getAnimationClass()}`}>
-          {/* Main text */}
-          <h2
-            className={`
-              text-6xl md:text-8xl text-white mb-3
-              ${current.emphasis 
-                ? 'bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent' 
-                : ''
-              }
-            `}
-            style={{
-              textShadow: current.emphasis 
-                ? '0 0 60px rgba(6, 182, 212, 0.6)' 
-                : '0 2px 40px rgba(0, 0, 0, 0.9)',
-              letterSpacing: '0.02em',
-              lineHeight: '1.1',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 400,
-            }}
-          >
-            {current.main}
-          </h2>
-
-          {/* Subtext */}
-          {current.sub && (
-            <p
-              className="text-3xl md:text-4xl text-white/90 tracking-wide"
-              style={{
-                textShadow: '0 2px 20px rgba(0, 0, 0, 0.8)',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 400,
-              }}
-            >
-              {current.sub}
-            </p>
-          )}
-        </div>
-
-      </div>
     </div>
   )
 }
