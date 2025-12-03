@@ -23,9 +23,12 @@ export const Story = () => {
 
           {/* Team */}
           <section className="mb-20">
-            <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>The Team</h2>
+            <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>Made by Neuralpositive</h2>
             
             <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+              <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+                Neuralpositive is a deep tech AI company that spun out of the Runway Postdoctoral Program of the Jacobs Technion Institute at Cornell Tech.
+              </p>
               <p className="leading-relaxed mb-6" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
                 Neuroscientists, physicians, AI engineers (including ex-Spotify architect/inventor), composers, 
                 and a 5× Grammy-winning sound lead. Proven leadership, ready to deploy and deliver calmer care 
