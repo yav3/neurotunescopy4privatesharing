@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
@@ -12,6 +12,7 @@ import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
 
 const Index = () => {
   useWelcomeMessage();
+  const navigate = useNavigate();
   
   const [isPlaying, setIsPlaying] = useState(true); // Start playing immediately for intro
   const [isMuted, setIsMuted] = useState(false);
@@ -42,8 +43,7 @@ const Index = () => {
   };
 
   const handleSubscribe = () => {
-    setShowHero(false);
-    window.location.href = '/products';
+    navigate('/products');
   };
 
   return (
@@ -113,8 +113,8 @@ const Index = () => {
               </svg>
             </button>
 
-            {/* Action buttons row */}
-            <div className="flex items-center gap-3">
+            {/* Action buttons row - perfectly centered beneath play button */}
+            <div className="flex items-center justify-center gap-3 mt-2">
               {/* Subscribe CTA */}
               <button
                 onClick={handleSubscribe}
