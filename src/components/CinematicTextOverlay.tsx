@@ -49,9 +49,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [isEntering, setIsEntering] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
+  const [audioStarted, setAudioStarted] = useState(false)
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Start intro audio on mount
+  // Start intro audio on mount - with fallback for autoplay blocked
   useEffect(() => {
     const audio = new Audio(INTRO_AUDIO_URL)
     audio.volume = 0.5
@@ -61,9 +62,28 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     // Expose globally so main player can stop it
     ;(window as any).__introAudio = audio
     
-    audio.play().catch(err => {
-      console.log('Intro audio autoplay blocked:', err)
+    // Try autoplay
+    audio.play().then(() => {
+      console.log('✅ Intro audio autoplay succeeded')
+      setAudioStarted(true)
+    }).catch(err => {
+      console.log('⚠️ Intro audio autoplay blocked, waiting for interaction:', err)
     })
+    
+    // Fallback: start on any user interaction
+    const startOnInteraction = () => {
+      if (!audioStarted && introAudioRef.current) {
+        introAudioRef.current.play().then(() => {
+          console.log('✅ Intro audio started on interaction')
+          setAudioStarted(true)
+        }).catch(() => {})
+      }
+      document.removeEventListener('click', startOnInteraction)
+      document.removeEventListener('touchstart', startOnInteraction)
+    }
+    
+    document.addEventListener('click', startOnInteraction)
+    document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
       // Clean up on unmount
@@ -71,6 +91,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       audio.src = ''
       audio.volume = 0
       ;(window as any).__introAudio = null
+      document.removeEventListener('click', startOnInteraction)
+      document.removeEventListener('touchstart', startOnInteraction)
     }
   }, [])
 
