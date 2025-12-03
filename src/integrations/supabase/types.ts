@@ -100,6 +100,39 @@ export type Database = {
         }
         Relationships: []
       }
+      animated_artworks: {
+        Row: {
+          artwork_semantic_label: string
+          artwork_type: string
+          artwork_url: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          artwork_semantic_label: string
+          artwork_type: string
+          artwork_url: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          artwork_semantic_label?: string
+          artwork_type?: string
+          artwork_url?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       api_data_sources: {
         Row: {
           api_endpoint: string | null
@@ -4883,6 +4916,46 @@ export type Database = {
       }
     }
     Views: {
+      enhanced_user_favorites: {
+        Row: {
+          added_at: string | null
+          album: string | null
+          artist: string | null
+          artwork_url: string | null
+          created_at: string | null
+          duration: number | null
+          duration_seconds: number | null
+          genre: string | null
+          id: string | null
+          last_played_at: string | null
+          play_count: number | null
+          playlist_id: string | null
+          storage_bucket: string | null
+          storage_path: string | null
+          title: string | null
+          track_artist: string | null
+          track_id: string | null
+          track_name: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
@@ -5082,6 +5155,15 @@ export type Database = {
         Args: { bucket_name_param: string }
         Returns: string
       }
+      get_all_animated_artworks: {
+        Args: never
+        Returns: {
+          artwork_semantic_label: string
+          artwork_type: string
+          artwork_url: string
+          display_order: number
+        }[]
+      }
       get_all_display_groups: {
         Args: never
         Returns: {
@@ -5176,6 +5258,14 @@ export type Database = {
           therapeutic_tags: string[]
           title: string
           track_id: string
+        }[]
+      }
+      get_random_animated_artwork: {
+        Args: never
+        Returns: {
+          artwork_semantic_label: string
+          artwork_type: string
+          artwork_url: string
         }[]
       }
       get_sambajazznocturnes_url: {
