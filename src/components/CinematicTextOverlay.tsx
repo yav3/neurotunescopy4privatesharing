@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.png'
 
-type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
+type AnimationType = 'zoom-in' | 'zoom-out' | 'fade' | 'zoom-in-out'
 
 interface TextItem {
   main: string
@@ -43,14 +43,14 @@ const MESSAGES: TextItem[] = [
   },
   { 
     main: "Join Us", 
-    duration: 2200, 
-    animation: 'fade',
+    duration: 2500, 
+    animation: 'zoom-in-out',
     emphasis: false 
   },
   { 
     main: "", 
-    duration: 2000, 
-    animation: 'fade',
+    duration: 2500, 
+    animation: 'zoom-in-out',
     emphasis: false,
     isLogo: true
   },
@@ -63,6 +63,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [isExiting, setIsExiting] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
   const [audioStarted, setAudioStarted] = useState(false)
+  const [zoomPhase, setZoomPhase] = useState<'in' | 'out'>('in')
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
@@ -159,8 +160,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     // Start with entering animation
     setIsEntering(true)
     setIsExiting(false)
+    setZoomPhase('in')
     
     const current = MESSAGES[currentIndex]
+    
+    // For zoom-in-out animation, trigger the zoom-out phase midway
+    let zoomOutTimer: NodeJS.Timeout | undefined
+    if (current.animation === 'zoom-in-out') {
+      zoomOutTimer = setTimeout(() => {
+        setZoomPhase('out')
+      }, current.duration * 0.4) // Start zoom-out at 40% of duration
+    }
     
     // After duration, start exit animation
     const exitTimer = setTimeout(() => {
@@ -181,7 +191,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       }, 800)
     }, current.duration)
 
-    return () => clearTimeout(exitTimer)
+    return () => {
+      clearTimeout(exitTimer)
+      if (zoomOutTimer) clearTimeout(zoomOutTimer)
+    }
   }, [currentIndex])
 
   const current = MESSAGES[currentIndex]
@@ -228,9 +241,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         <div 
           className="transition-all ease-in-out"
           style={{ 
-            transitionDuration: '1200ms',
+            transitionDuration: current.animation === 'zoom-in-out' ? '1000ms' : '1200ms',
             opacity: isEntering && !isExiting ? 1 : 0,
-            transform: isEntering && !isExiting ? 'scale(1)' : 'scale(0.95)'
+            transform: current.animation === 'zoom-in-out' 
+              ? (zoomPhase === 'in' ? 'scale(1.15)' : 'scale(0.9)')
+              : (isEntering && !isExiting ? 'scale(1)' : 'scale(0.95)')
           }}
         >
           {current.isLogo ? (
