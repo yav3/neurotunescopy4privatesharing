@@ -64,24 +64,47 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   isPlaying,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [videoUrls, setVideoUrls] = useState<string[]>([]);
+  const [videoUrls, setVideoUrls] = useState<string[]>(CURATED_VIDEO_FILES);
   const [fadeOpacity, setFadeOpacity] = useState(0);
   const [internalVideoIndex, setInternalVideoIndex] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
 
-  // Use local video files directly and load first video
+  // Initialize video on mount
   useEffect(() => {
-    setVideoUrls(CURATED_VIDEO_FILES);
-    
     const video = videoRef.current;
-    if (video) {
-      // CRITICAL: Video must be muted - only music player audio should be heard
-      video.muted = true;
-      video.volume = 0;
-      
-      // Load first video
-      video.src = CURATED_VIDEO_FILES[0];
-      video.load();
+    if (!video) {
+      console.log('🎬 Video ref not available');
+      return;
     }
+
+    // CRITICAL: Video must be muted - only music player audio should be heard
+    video.muted = true;
+    video.volume = 0;
+    
+    const handleCanPlay = () => {
+      console.log('🎬 Video can play now');
+      setVideoReady(true);
+      if (isPlaying) {
+        video.play().catch(() => console.log('🎬 Auto-play blocked'));
+      }
+    };
+
+    const handleError = (e: Event) => {
+      console.error('🎬 Video error:', e);
+    };
+
+    video.addEventListener('canplaythrough', handleCanPlay);
+    video.addEventListener('error', handleError);
+
+    // Load first video
+    console.log('🎬 Loading first video:', CURATED_VIDEO_FILES[0]);
+    video.src = CURATED_VIDEO_FILES[0];
+    video.load();
+
+    return () => {
+      video.removeEventListener('canplaythrough', handleCanPlay);
+      video.removeEventListener('error', handleError);
+    };
   }, []);
 
   // Videos cycle independently from track changes - don't reset video index on track change
@@ -97,23 +120,22 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
   // Control video playback based on isPlaying state
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || videoUrls.length === 0) return;
+    if (!video) return;
 
     // Ensure video is completely muted
     video.muted = true;
     video.volume = 0;
 
+    console.log('🎬 isPlaying changed:', isPlaying, 'videoReady:', videoReady);
+
     if (isPlaying) {
-      const playPromise = video.play();
-      if (playPromise && (playPromise as any).catch) {
-        (playPromise as Promise<void>).catch(() => {
-          console.log('🎬 Video play blocked, waiting for user interaction');
-        });
-      }
+      video.play().catch((err) => {
+        console.log('🎬 Video play error:', err.message);
+      });
     } else {
       video.pause();
     }
-  }, [isPlaying, videoUrls]);
+  }, [isPlaying, videoReady]);
 
   // Apply BPM-derived playbackRate
   useEffect(() => {
