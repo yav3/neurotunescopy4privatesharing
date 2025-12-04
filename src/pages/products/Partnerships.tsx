@@ -275,7 +275,7 @@ export default function Partnerships() {
                 className="text-sm mb-4"
                 style={{ color: 'rgba(255, 255, 255, 0.65)' }}
               >
-                Starting from $150K to $5M+ annually depending on partnership scope
+                Custom pricing based on partnership scope and integration requirements
               </p>
               <p 
                 className="text-xs"

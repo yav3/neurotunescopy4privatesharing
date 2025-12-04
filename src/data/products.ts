@@ -131,7 +131,7 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
     ],
     pricing: {
       model: "Custom partnership agreements",
-      starting: "$150K-$5M per year",
+      starting: "Contact for pricing",
       minimum: "Varies by partnership type"
     },
     keyBenefits: [
