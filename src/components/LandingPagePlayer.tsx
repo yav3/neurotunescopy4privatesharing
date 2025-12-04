@@ -243,6 +243,60 @@ const CURATED_PLAYLIST = [
     artist: 'The Scientists',
     name: 'The Wonder of Reverie',
     estimatedBPM: 60
+  },
+  {
+    audioUrl: '/audio/focus-on-air-focus-world.mp3',
+    videoPath: '/videos/landing-25.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Ambient',
+    artist: 'The Scientists',
+    name: 'Focus on Air',
+    estimatedBPM: 72
+  },
+  {
+    audioUrl: '/audio/solfeggio-frequencies.mp3',
+    videoPath: '/videos/landing-26.mp4',
+    therapeuticGoal: 'Deep Rest',
+    genre: 'Sound Healing',
+    artist: 'The Scientists',
+    name: 'Solfeggio Frequencies',
+    estimatedBPM: 60
+  },
+  {
+    audioUrl: '/audio/cinematic-hz.mp3',
+    videoPath: '/videos/landing-27.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Cinematic',
+    artist: 'The Scientists',
+    name: 'Cinematic Hz',
+    estimatedBPM: 75
+  },
+  {
+    audioUrl: '/audio/maltese-acoustics-spatial-expansion.mp3',
+    videoPath: '/videos/landing-28.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Spatial Audio',
+    artist: 'The Scientists',
+    name: 'Maltese Acoustics',
+    estimatedBPM: 68
+  },
+  {
+    audioUrl: '/audio/o-vis-aeternitatis.mp3',
+    videoPath: '/videos/landing-29.gif',
+    therapeuticGoal: 'Deep Rest',
+    genre: 'Choral',
+    artist: 'The Scientists',
+    name: 'O Vis Aeternitatis',
+    estimatedBPM: 58
+  },
+  {
+    audioUrl: '/audio/resonance-in-altered-frequencies.mp3',
+    videoPath: '/videos/landing-30.gif',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Experimental',
+    artist: 'The Scientists',
+    name: 'Resonance in Altered Frequencies',
+    estimatedBPM: 65
   }
 ];
 
