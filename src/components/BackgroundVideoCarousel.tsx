@@ -154,12 +154,21 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     }
   }, [isPlaying, videoReady]);
 
-  // Apply BPM-derived playbackRate
+  // Apply playbackRate - slow down videos 2-5 (indices 1-4) by 50%
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    video.playbackRate = playbackRate || 1.0;
-  }, [playbackRate]);
+    
+    const videoIndex = currentVideoIndex % videoUrls.length;
+    const slowDownIndices = [1, 2, 3, 4]; // Videos 2, 3, 4, 5
+    
+    if (slowDownIndices.includes(videoIndex)) {
+      video.playbackRate = 0.5;
+      console.log(`🎬 Video ${videoIndex + 1} slowed to 50%`);
+    } else {
+      video.playbackRate = playbackRate || 1.0;
+    }
+  }, [playbackRate, currentVideoIndex, videoUrls.length]);
 
   // No time sync - let video play smoothly at its own pace
   // The BPM-adjusted playback rate creates visual rhythm without forcing exact sync
