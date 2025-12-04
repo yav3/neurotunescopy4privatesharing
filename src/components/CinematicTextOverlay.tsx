@@ -22,10 +22,34 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Begin the Experience", 
-    duration: 3000, 
+    main: "Built from real neuroscience", 
+    duration: 2400, 
     animation: 'fade',
     emphasis: false 
+  },
+  { 
+    main: "Proven to improve the way people feel", 
+    duration: 2400, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Composed by award-winning musicians", 
+    duration: 2400, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Engineered for real-world impact", 
+    duration: 2400, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Enter the Experience", 
+    duration: 2000, 
+    animation: 'fade',
+    emphasis: true 
   },
 ]
 
