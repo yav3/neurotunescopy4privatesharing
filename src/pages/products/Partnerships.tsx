@@ -297,18 +297,11 @@ export default function Partnerships() {
             >
               <div className="relative z-10 p-10 text-center">
                 <h2 
-                  className="text-3xl lg:text-4xl font-light mb-4"
+                  className="text-3xl lg:text-4xl font-light mb-8"
                   style={{ color: 'rgba(255, 255, 255, 0.98)' }}
                 >
-                  Ready to partner with us?
+                  Have A Serious Partnership Proposal?
                 </h2>
-
-                <p 
-                  className="text-base mb-8 max-w-2xl mx-auto"
-                  style={{ color: 'rgba(255, 255, 255, 0.75)' }}
-                >
-                  Let's explore how therapeutic music can enhance your platform and delight your users
-                </p>
 
                 <button
                   onClick={() => setContactOpen(true)}
