@@ -27,11 +27,6 @@ export default function EnterpriseWellness() {
       description: "Deep work support for complex problem-solving and sustained concentration",
     },
     {
-      title: "Creative Agencies & Studios",
-      icon: Zap,
-      description: "Teams requiring sustained creative focus and flow states",
-    },
-    {
       title: "Universities & Academic Institutions",
       icon: GraduationCap,
       description: "Student wellness programs and faculty stress management",
@@ -207,7 +202,7 @@ export default function EnterpriseWellness() {
               className="text-2xl lg:text-3xl font-light mb-6 text-center"
               style={{ color: 'rgba(255, 255, 255, 0.90)' }}
             >
-              Target Markets
+              We Love to Serve
             </h2>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
