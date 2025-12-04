@@ -38,7 +38,7 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 75
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20Seventh%20Wonder%20New%20Age%20Focus%202.mp3',
+    audioUrl: '/audio/The_Seventh_Wonder_New_Age_Focus_2.mp3',
     videoPath: '/videos/landing-02.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
