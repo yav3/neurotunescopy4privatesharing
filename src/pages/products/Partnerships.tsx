@@ -272,16 +272,10 @@ export default function Partnerships() {
                 Custom Partnership Agreements
               </h3>
               <p 
-                className="text-sm mb-4"
+                className="text-sm"
                 style={{ color: 'rgba(255, 255, 255, 0.65)' }}
               >
                 Custom pricing based on partnership scope and integration requirements
-              </p>
-              <p 
-                className="text-xs"
-                style={{ color: 'rgba(255, 255, 255, 0.50)' }}
-              >
-                Includes co-development opportunities, revenue sharing models, and dedicated support
               </p>
             </motion.div>
           </div>
