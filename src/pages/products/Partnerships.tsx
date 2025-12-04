@@ -11,16 +11,6 @@ export default function Partnerships() {
 
   const partnerTypes = [
     {
-      title: "Content Licensing",
-      icon: Layers,
-      description: "License our 8,000+ therapeutic music catalog for your existing platform",
-    },
-    {
-      title: "White-Label Platform",
-      icon: Palette,
-      description: "Full platform deployment under your brand with custom theming",
-    },
-    {
       title: "OEM Integration",
       icon: Code,
       description: "Deep integration into hardware and software products",
