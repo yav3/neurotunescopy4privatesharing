@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.png';
+import neuralpositiveLogoHeader from '@/assets/neuralpositive-logo-header.png';
 
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -130,7 +130,7 @@ export const NavigationHeader = () => {
 
           <Link to="/" className="flex items-center gap-0.5">
             <img 
-              src={neuralpositiveLogoObsidian} 
+              src={neuralpositiveLogoHeader} 
               alt="Neuralpositive" 
               className="h-8 w-8 object-contain"
             />
@@ -244,7 +244,7 @@ export const NavigationHeader = () => {
 
           <Link to="/" className="flex items-center gap-0.5">
             <img 
-              src={neuralpositiveLogoObsidian} 
+              src={neuralpositiveLogoHeader} 
               alt="Neuralpositive" 
               className="h-6 w-6 object-contain"
             />
