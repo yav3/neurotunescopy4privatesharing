@@ -28,61 +28,6 @@ export const Story = () => {
             </p>
           </div>
 
-          {/* Environmental Music */}
-          <section className="mb-20">
-            <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>Environmental Music</h2>
-            
-            <div className="p-6 rounded-2xl mb-8" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
-              <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                NeuroTunes is a premium AI-guided environmental music streaming SaaS delivered as an app for desktop and native download. 
-                It enables seamless control of numerous administrative accounts across a customizable, scalable number of locations and set-ups.
-              </p>
-              <p className="leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                Each space an administrative user controls is designed to enhance the experience of those within it. Continuous play 
-                with advanced schedule programming enables the delivery of music sessions that meet the specific needs of environments, taking 
-                environmental factors, staff needs, community health, and visitor comfort into consideration.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
-                <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>The Science Behind It</h3>
-                <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                  Our streaming SaaS is a patented, evidence-based, and clinically-validated system that uses core principles from 
-                  music therapy, music cognition, and neuropsychiatry. All music has been purpose-composed using specific musical 
-                  patterns, frequencies, audio settings, and beats to support anxiety reduction and cognitive clarity.
-                </p>
-              </div>
-              
-              <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
-                <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>AI-Powered Scheduling</h3>
-                <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                  Our machine learning and AI technology pre-programs ideal music streaming playlists for specific times of day and 
-                  environmental needs. Administrative users can add notes and teach the playlists to improve through favoriting and 
-                  skipping, ensuring the right music plays at the right time and place.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
-              <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>Evidence-Based Principles</h3>
-              <ul className="space-y-3 text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                <li className="flex items-start gap-3">
-                  <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                  <span>Protocol design informed by thousands of publications across music therapy, music cognition, AI, machine learning, neuropsychiatry, neurology, and neuroscience</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                  <span>Informed by the principles of music therapy—a field with decades of documented best practices—made scalable and on-demand through our streaming service</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                  <span>Delivers benefits for members, visitors, patients, staff, and employees—reduced anxiety and improved focus</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-
           {/* Team */}
           <section className="mb-20">
             <h2 className="text-3xl font-light mb-8" style={{ color: '#e4e4e4' }}>Made by Neuralpositive</h2>
