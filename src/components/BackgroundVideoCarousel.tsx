@@ -107,35 +107,8 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     };
   }, []);
 
-  // Sync video with track changes - CRITICAL: Reset internalVideoIndex to stay in sync
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || videoUrls.length === 0) return;
-
-    // Reset internal index to match track's video index
-    setInternalVideoIndex(currentVideoIndex);
-    
-    const videoSrc = videoUrls[currentVideoIndex % videoUrls.length];
-    console.log(`🎬 Track changed - loading video: ${videoSrc} (index: ${currentVideoIndex})`);
-    
-    // Fade to black
-    setFadeOpacity(1);
-    
-    setTimeout(() => {
-      video.src = videoSrc;
-      video.muted = true;
-      video.volume = 0;
-      video.load();
-      
-      video.oncanplaythrough = () => {
-        console.log('🎬 Video ready to play');
-        if (isPlaying) {
-          video.play().catch(err => console.log('🎬 Play error:', err.message));
-        }
-        setTimeout(() => setFadeOpacity(0), 100);
-      };
-    }, 300);
-  }, [currentVideoIndex, videoUrls, isPlaying]);
+  // Videos cycle independently - DON'T reset when tracks change
+  // This ensures all 47 videos are used before any repeat
 
   // Control video playback based on isPlaying state
   useEffect(() => {
