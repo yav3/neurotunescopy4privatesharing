@@ -24,7 +24,7 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Designed for Purpose", 
+    main: "Engineered for Purpose", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
@@ -36,13 +36,13 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Led by a KOL physician neuroscientist", 
+    main: "KOL Physician Leadership", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Begin Your Experience", 
+    main: "Join Us", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
