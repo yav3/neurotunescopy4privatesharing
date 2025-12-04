@@ -297,6 +297,87 @@ const CURATED_PLAYLIST = [
     artist: 'The Scientists',
     name: 'Resonance in Altered Frequencies',
     estimatedBPM: 65
+  },
+  {
+    audioUrl: '/audio/i-run-to-you-club-mix.mp3',
+    videoPath: '/videos/landing-31.gif',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Club',
+    artist: 'Van Wild',
+    name: 'I Run to You',
+    estimatedBPM: 128
+  },
+  {
+    audioUrl: '/audio/a-summer-day-acoustic-pop.mp3',
+    videoPath: '/videos/landing-32.gif',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Acoustic Pop',
+    artist: 'Van Wild',
+    name: 'A Summer Day',
+    estimatedBPM: 95
+  },
+  {
+    audioUrl: '/audio/es-una-necesidad-bachata.mp3',
+    videoPath: '/videos/landing-33.gif',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Bachata',
+    artist: 'Yasmine',
+    name: 'Es Una Necesidad',
+    estimatedBPM: 120
+  },
+  {
+    audioUrl: '/audio/te-comparare-verano-remix.mp3',
+    videoPath: '/videos/landing-34.gif',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Latin Pop',
+    artist: 'Yasmine',
+    name: 'Te Compararé con un Día de Verano',
+    estimatedBPM: 110
+  },
+  {
+    audioUrl: '/audio/spinosa-dreams-remix.mp3',
+    videoPath: '/videos/landing-35.gif',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Electronic',
+    artist: 'The Scientists',
+    name: 'Spinosa Dreams',
+    estimatedBPM: 90
+  },
+  {
+    audioUrl: '/audio/architect-of-my-strength.mp3',
+    videoPath: '/videos/landing-36.gif',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Affirmation',
+    artist: 'The Scientists',
+    name: 'The Architect of My Strength',
+    estimatedBPM: 70
+  },
+  {
+    audioUrl: '/audio/elysian-fields-house.mp3',
+    videoPath: '/videos/landing-37.gif',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'House',
+    artist: 'The Scientists',
+    name: 'Elysian Fields',
+    estimatedBPM: 125
+  },
+  {
+    audioUrl: '/audio/i-love-you-remix.mp3',
+    videoPath: '/videos/landing-38.gif',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Pop Remix',
+    artist: 'Van Wild',
+    name: 'I Love You',
+    estimatedBPM: 118
+  },
+  {
+    audioUrl: '/audio/the-mystery-swells-radio-mix.mp3',
+    videoPath: '/videos/landing-39.gif',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Indie',
+    artist: 'Van Wild',
+    name: 'The Mystery Swells',
+    estimatedBPM: 85
   }
 ];
 
