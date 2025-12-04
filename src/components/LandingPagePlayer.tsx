@@ -507,60 +507,27 @@ export const LandingPagePlayer = ({
           
           attemptPlay();
         }
-      } else if (currentAudio && !isInitializingRef.current) {
-        // Resume or re-initialize playback
-        hasStartedPlaybackRef.current = true;
-        
-        // CRITICAL: Stop ALL audio on the page before playing anything
-        console.log('🔇 KILLING ALL AUDIO before resume/re-init');
-        document.querySelectorAll('audio').forEach((audio) => {
-          audio.pause();
-          audio.volume = 0;
-        });
-        
-        // Also reset both refs
-        if (audioRef1.current) {
-          audioRef1.current.pause();
-          audioRef1.current.src = '';
-          audioRef1.current.currentTime = 0;
-          audioRef1.current.volume = 0;
-        }
-        if (audioRef2.current) {
-          audioRef2.current.pause();
-          audioRef2.current.src = '';
-          audioRef2.current.currentTime = 0;
-          audioRef2.current.volume = 0;
-        }
-        
-        // Re-initialize with current track
-        const currentTrack = tracks[currentTrackIndex];
-        if (currentTrack) {
-          console.log('🔄 Re-initializing audio with:', currentTrack.name);
-          currentAudio.src = currentTrack.src;
-          currentAudio.volume = isMuted ? 0 : 0.6;
-          currentAudio.currentTime = 0;
-          
-          console.log('▶️ Starting playback...');
-          currentAudio.play()
-            .then(() => {
-              console.log('✅ Audio playing successfully');
-              onPlaybackStateChange(true);
-              onCurrentTrackChange(currentTrack);
-              // Set 35-second timer
-              if (trackTimerRef.current) {
-                clearTimeout(trackTimerRef.current);
-              }
+      } else if (currentAudio && !isInitializingRef.current && currentAudio.paused) {
+        // Resume playback ONLY if audio is paused - don't re-initialize if already playing
+        console.log('▶️ Resuming paused audio');
+        currentAudio.play()
+          .then(() => {
+            console.log('✅ Audio resumed');
+            onPlaybackStateChange(true);
+            // Re-set timer if not already running
+            if (!trackTimerRef.current) {
               trackTimerRef.current = setTimeout(() => {
                 console.log('⏰ 35-second timer expired, advancing to next track');
                 playNextTrack();
               }, TRACK_DURATION);
-            })
-            .catch(e => {
-              console.error('❌ Playback failed:', e);
-              onPlaybackStateChange(false);
-              hasStartedPlaybackRef.current = false;
-            });
-        }
+            }
+          })
+          .catch(e => {
+            console.error('❌ Resume failed:', e);
+          });
+      } else if (currentAudio && !currentAudio.paused) {
+        // Audio is already playing - do nothing
+        console.log('🔒 Audio already playing, no action needed');
       }
     } else {
       console.log('⏸️ Pausing playback...');
