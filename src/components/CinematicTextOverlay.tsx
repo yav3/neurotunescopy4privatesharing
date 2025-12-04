@@ -202,12 +202,13 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       {!current.isLogo && (
         <div 
           className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
-          style={{ opacity: 0.04 }}
+          style={{ opacity: 0.08 }}
         >
           <img 
             src={neuralpositiveLogoImg} 
             alt=""
             className="w-[500px] h-[500px] md:w-[700px] md:h-[700px] lg:w-[900px] lg:h-[900px] object-contain"
+            style={{ mixBlendMode: 'lighten' }}
           />
         </div>
       )}
@@ -237,6 +238,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 alt="Neuralpositive"
                 className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain transition-all duration-[2000ms]"
                 style={{
+                  mixBlendMode: 'lighten',
                   filter: isEntering && !isExiting 
                     ? 'brightness(1.15) drop-shadow(0 0 60px rgba(200,200,220,0.4))' 
                     : 'brightness(0.8)',
