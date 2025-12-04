@@ -24,13 +24,19 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Composed & performed by award-winners", 
+    main: "Designed for Purpose", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Designed by a KOL physician-neuroscientist", 
+    main: "Music by award-winners", 
+    duration: 2200, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Led by a KOL physician neuroscientist", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
