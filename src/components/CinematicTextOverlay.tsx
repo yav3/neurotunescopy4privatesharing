@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -189,6 +190,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
+      {/* Faint pearl-on-obsidian lissajous background */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
+        style={{ opacity: 0.12 }}
+      >
+        <img 
+          src={neuralpositiveLogoObsidian} 
+          alt=""
+          className="w-[400px] h-[400px] md:w-[550px] md:h-[550px] lg:w-[700px] lg:h-[700px] object-contain"
+        />
+      </div>
       {/* Text content - white on black, centered */}
       <div className="px-6 text-center relative z-10">
         <div 
