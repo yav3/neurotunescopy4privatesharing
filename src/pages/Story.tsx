@@ -72,14 +72,10 @@ export const Story = () => {
           {/* About NeuroTunes */}
           <section className="mb-16">
             <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
-              <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+              <p className="leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
                 NeuroTunes, our flagship app, delivers purpose-composed sessions that adapt to each user. 
                 The team behind it includes neuroscientists, physician-scientists, developers, composers, 
                 and a 5x Grammy winning engineer.
-              </p>
-              <p className="leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                We began at Cornell Tech's Jacobs Technion–Cornell Institute and have built on more than 
-                eight years of sponsored research.
               </p>
             </div>
           </section>
