@@ -435,12 +435,12 @@ export const LandingPagePlayer = ({
         return;
       }
       
-      if (!currentAudio?.src && !isInitializingRef.current) {
+      if (!isInitializingRef.current) {
         // First play - set up audio and video
         isInitializingRef.current = true;
         hasStartedPlaybackRef.current = true;
-        // Start from track 1 (The Seventh Wonder) since intro played track 0 (The Spartan Age)
-        const startIndex = 1;
+        // Start from track 0 (The Spartan Age) - the displayed track
+        const startIndex = 0;
         const firstTrack = tracks[startIndex];
         const firstVideo = videos[startIndex];
         if (currentAudio && firstVideo) {
@@ -552,27 +552,6 @@ export const LandingPagePlayer = ({
           
           attemptPlay();
         }
-      } else if (currentAudio && !isInitializingRef.current && currentAudio.paused) {
-        // Resume playback ONLY if audio is paused - don't re-initialize if already playing
-        console.log('▶️ Resuming paused audio');
-        currentAudio.play()
-          .then(() => {
-            console.log('✅ Audio resumed');
-            onPlaybackStateChange(true);
-            // Re-set timer if not already running
-            if (!trackTimerRef.current) {
-              trackTimerRef.current = setTimeout(() => {
-                console.log('⏰ 35-second timer expired, advancing to next track');
-                playNextTrack();
-              }, TRACK_DURATION);
-            }
-          })
-          .catch(e => {
-            console.error('❌ Resume failed:', e);
-          });
-      } else if (currentAudio && !currentAudio.paused) {
-        // Audio is already playing - do nothing
-        console.log('🔒 Audio already playing, no action needed');
       }
     } else {
       console.log('⏸️ Pausing playback...');
