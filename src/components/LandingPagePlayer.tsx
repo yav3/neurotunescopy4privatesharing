@@ -74,17 +74,8 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 70
   },
   {
-    audioUrl: '/audio/just-how-you-like-it-kpop.mp3',
-    videoPath: '/videos/landing-06.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'K-Pop',
-    artist: 'Van Wild',
-    name: 'Just How You Like It',
-    estimatedBPM: 95
-  },
-  {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
-    videoPath: '/videos/landing-07.mp4',
+    videoPath: '/videos/landing-06.mp4',
     therapeuticGoal: 'Deep Rest',
     genre: 'Classical',
     artist: 'Yasmine',
@@ -93,7 +84,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/adonis--bossa-nova-samba.mp3',
-    videoPath: '/videos/landing-08.mp4',
+    videoPath: '/videos/landing-07.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -102,7 +93,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/tropicana-chill-bossa-nova-big-band-radio-mix.mp3',
-    videoPath: '/videos/landing-09.mp4',
+    videoPath: '/videos/landing-08.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -111,7 +102,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The%20prayer%20of%20the%20oud%20%20new%20age%20focus.mp3',
-    videoPath: '/videos/landing-10.mp4',
+    videoPath: '/videos/landing-09.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -120,7 +111,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Im%20on%20your%20team%20INDIE%20POP%20VERSION%203.mp3',
-    videoPath: '/videos/landing-11.mp4',
+    videoPath: '/videos/landing-10.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'Indie Pop',
     artist: 'Van Wild',
@@ -129,7 +120,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/All%20I_ve%20ever%20wanted%20country%20Radio%20Mix%20for%20ML.mp3',
-    videoPath: '/videos/landing-12.mp4',
+    videoPath: '/videos/landing-11.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Country',
     artist: 'Van Wild',
@@ -138,7 +129,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/blanca-blanqueando.mp3',
-    videoPath: '/videos/landing-13.mp4',
+    videoPath: '/videos/landing-12.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Bossa Nova',
     artist: 'Yasmine',
@@ -147,7 +138,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Como%20con%20tu%20sombra%20samba%20bossa%20nova.mp3',
-    videoPath: '/videos/landing-14.mp4',
+    videoPath: '/videos/landing-13.mp4',
     therapeuticGoal: 'Relaxation',
     genre: 'Serene Samba',
     artist: 'Yasmine',
@@ -156,7 +147,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/hold%20on%20child%20EDM%20HIIT.mp3',
-    videoPath: '/videos/landing-15.mp4',
+    videoPath: '/videos/landing-14.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'EDM',
     artist: 'Yasmine',
@@ -165,7 +156,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
-    videoPath: '/videos/landing-16.mp4',
+    videoPath: '/videos/landing-15.mp4',
     therapeuticGoal: 'Energy Boost',
     genre: 'Pop',
     artist: 'Van Wild',
@@ -174,7 +165,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
-    videoPath: '/videos/landing-17.mp4',
+    videoPath: '/videos/landing-16.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Pop',
     artist: 'Van Wild',
@@ -183,7 +174,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/nocturnes-chamber-orchestra.mp3',
-    videoPath: '/videos/landing-18.mp4',
+    videoPath: '/videos/landing-17.mp4',
     therapeuticGoal: 'Deep Rest',
     genre: 'Classical',
     artist: 'The Scientists',
@@ -192,7 +183,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/your-love-big-band.mp3',
-    videoPath: '/videos/landing-19.mp4',
+    videoPath: '/videos/landing-18.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Big Band',
     artist: 'The Scientists',
