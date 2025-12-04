@@ -143,16 +143,7 @@ const Legal = () => {
           <p className="text-muted-foreground mb-4">
             By agreeing to these Terms, you waive any right to a jury trial or participation in a class, collective, or representative action, except where prohibited by law.
           </p>
-          <h3 className="text-xl font-normal mb-3 text-foreground/90">13.3 Opt-Out</h3>
-          <p className="text-muted-foreground mb-4">
-            You may opt out of arbitration within 30 days of agreeing to these Terms by sending written notice (with your legal name, mailing address, and email used for registration) via certified mail to:
-          </p>
-          <p className="text-muted-foreground mb-4 pl-4">
-            Neuropositive Tech, Inc., DBA Neuralpositive<br />
-            1800 South Brand Boulevard, Suite 114<br />
-            Glendale, California 91204
-          </p>
-          <h3 className="text-xl font-normal mb-3 text-foreground/90">13.4 Enforceability</h3>
+          <h3 className="text-xl font-normal mb-3 text-foreground/90">13.3 Enforceability</h3>
           <p className="text-muted-foreground mb-4">
             If the arbitration requirement is found unenforceable in whole or part, disputes shall be resolved exclusively as provided in Section 12.
           </p>
