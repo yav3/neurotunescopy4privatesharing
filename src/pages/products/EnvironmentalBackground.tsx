@@ -108,6 +108,31 @@ export default function EnvironmentalBackground() {
         </div>
       </section>
 
+      {/* Commercial Video - Moved Up */}
+      <section className="relative py-6 px-6">
+        <div className="max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-xl overflow-hidden"
+            style={{
+              border: '1px solid rgba(192, 192, 192, 0.2)',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-auto object-cover"
+            >
+              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Environmental Music Overview */}
       <section className="relative py-8 px-6">
         <div className="max-w-5xl mx-auto">
@@ -160,31 +185,6 @@ export default function EnvironmentalBackground() {
               </li>
             </ul>
           </div>
-        </div>
-      </section>
-
-      {/* Commercial Video - Constrained Height */}
-      <section className="relative py-2 px-6">
-        <div className="max-w-sm mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-xl overflow-hidden"
-            style={{
-              border: '1px solid rgba(192, 192, 192, 0.2)',
-            }}
-          >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-auto max-h-[35vh] object-cover"
-            >
-              <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
-            </video>
-          </motion.div>
         </div>
       </section>
 
