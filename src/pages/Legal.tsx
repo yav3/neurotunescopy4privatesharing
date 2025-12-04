@@ -72,7 +72,7 @@ const Legal = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-normal mb-4">6. DMCA Compliance</h2>
           <p className="text-muted-foreground mb-4">
-            Neuralpositive complies with the Digital Millennium Copyright Act ("DMCA"). Users may not download, store, distribute, upload, or otherwise use Neuralpositive Content in a manner that infringes intellectual property rights. Unauthorized use of protected works is strictly prohibited. Third-party licensors retain all rights in their respective content and may enforce those rights directly.
+            Neuralpositive complies with the Digital Millennium Copyright Act ("DMCA"). Users may not download, store, distribute, upload, or otherwise use Neuralpositive Content in a manner that infringes intellectual property rights. Unauthorized use of protected works is strictly prohibited.
           </p>
         </section>
 
