@@ -110,9 +110,9 @@ export default function PopulationHealth() {
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-3 gap-4">
               {[
+                { stat: ">50%", label: "Anxiety Reduction in Clinical Pilots" },
+                { stat: "8,000+", label: "Purpose-Composed Tracks" },
                 { stat: "5,000+", label: "Covered Lives Minimum" },
-                { stat: "30-45%", label: "Anxiety Reduction" },
-                { stat: "$250K+", label: "Starting Investment" },
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -127,7 +127,7 @@ export default function PopulationHealth() {
                 >
                   <div 
                     className="text-2xl lg:text-3xl font-light mb-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.95)' }}
+                    style={{ color: 'rgba(6, 182, 212, 0.9)' }}
                   >
                     {item.stat}
                   </div>
@@ -139,6 +139,206 @@ export default function PopulationHealth() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* AI-Powered Personalization & Clinically Validated */}
+        <section className="relative py-8 px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>AI-Powered Personalization</h3>
+                <p className="leading-relaxed text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  Our patented closed-loop engine continuously adapts playlists based on quick patient input 
+                  and physiological response. Each session is uniquely generated—no two listening experiences 
+                  are the same.
+                </p>
+              </div>
+              
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Clinically Validated</h3>
+                <p className="leading-relaxed text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, informed by a meta-analysis of 
+                  thousands of journal articles examining the therapeutic use of music and music therapy. 
+                  Pilot studies demonstrate statistically significant anxiety reductions (p&lt;.05).
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Patient Journey */}
+        <section className="relative py-8 px-6">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl lg:text-3xl font-light mb-6 text-center" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              Patient Journey
+            </h2>
+            
+            <div className="space-y-6">
+              {/* Waiting Room */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-xs px-3 py-1 rounded-full" style={{ background: 'rgba(6, 182, 212, 0.15)', color: 'rgba(6, 182, 212, 0.9)' }}>Pre-Procedure</span>
+                  <h3 className="text-lg font-light" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Waiting Room</h3>
+                </div>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  Patient scans a QR code → 60-second intake (choose goal and preferred genre) → 10–15 minute sessions 
+                  while waiting. Each session is newly generated from the catalog (no repeats).
+                </p>
+                <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  <span className="font-light">Benefits:</span> Patient arrives calmer; lower perceived pain and tension; smoother flow; higher experience scores.
+                </div>
+              </div>
+
+              {/* During Procedure */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-xs px-3 py-1 rounded-full" style={{ background: 'rgba(6, 182, 212, 0.15)', color: 'rgba(6, 182, 212, 0.9)' }}>During Treatment</span>
+                  <h3 className="text-lg font-light" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Infusion / ED / Exam Room</h3>
+                </div>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  Patient scans QR → selects goal and genre → 15–30 minute sessions during treatment or observation. 
+                  Each session is newly generated.
+                </p>
+                <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  <span className="font-light">Benefits:</span> Reduced anxiety and pain; potential reduction in sedatives and analgesics; higher satisfaction.
+                </div>
+              </div>
+
+              {/* Take-Home */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-xs px-3 py-1 rounded-full" style={{ background: 'rgba(6, 182, 212, 0.15)', color: 'rgba(6, 182, 212, 0.9)' }}>Post-Visit</span>
+                  <h3 className="text-lg font-light" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Take-Home</h3>
+                </div>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  Patient leaves with a link; short sessions at home for 7–14 days. Each session newly generated.
+                </p>
+                <div className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  <span className="font-light">Benefits:</span> Simple routine to stay calm between visits; consistent experience beyond the hospital.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Clinical Pilots */}
+        <section className="relative py-8 px-6">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl lg:text-3xl font-light mb-6 text-center" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              Clinical Pilot Options
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Oncology */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <span className="text-xs px-3 py-1 rounded-full mb-4 inline-block" style={{ background: 'rgba(168, 85, 247, 0.15)', color: 'rgba(168, 85, 247, 0.9)' }}>Pilot A</span>
+                <h3 className="text-lg font-light mb-3" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Oncology</h3>
+                <p className="text-sm mb-3" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Infusion &amp; RT Support</p>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  20–30 min during infusion; 10–15 min pre-RT or during setup; optional at-home after visit.
+                </p>
+                <p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  Goal: Calmer treatments; ease anxiety &amp; pain.
+                </p>
+              </div>
+
+              {/* Emergency */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <span className="text-xs px-3 py-1 rounded-full mb-4 inline-block" style={{ background: 'rgba(239, 68, 68, 0.15)', color: 'rgba(239, 68, 68, 0.9)' }}>Pilot B</span>
+                <h3 className="text-lg font-light mb-3" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Emergency</h3>
+                <p className="text-sm mb-3" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Triage / Observation</p>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  10–20 min sessions while awaiting labs/re-evaluation. Typical ESI 3–5 patients.
+                </p>
+                <p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  Goal: Fast relief during the wait; ease anxiety &amp; pain.
+                </p>
+              </div>
+
+              {/* Executive */}
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <span className="text-xs px-3 py-1 rounded-full mb-4 inline-block" style={{ background: 'rgba(34, 197, 94, 0.15)', color: 'rgba(34, 197, 94, 0.9)' }}>Pilot C</span>
+                <h3 className="text-lg font-light mb-3" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Executive Check-Up</h3>
+                <p className="text-sm mb-3" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Concierge</p>
+                <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  8–10 min in-suite demo; 14–30 days at home. Peak-performance &amp; resilience playlists.
+                </p>
+                <p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                  Goal: Reduce anxiety &amp; stress; support calm/focus.
+                </p>
+              </div>
+            </div>
+
+            {/* Success Metrics */}
+            <div className="mt-8 p-6 rounded-2xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+              <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Success Metrics (Any Two Met → Scale)</h3>
+              <div className="grid md:grid-cols-4 gap-4 text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                <div>
+                  <span style={{ color: 'rgba(6, 182, 212, 0.9)' }}>Anxiety VAS</span>
+                  <p className="mt-1">≥ 25–30% mean reduction</p>
+                </div>
+                <div>
+                  <span style={{ color: 'rgba(6, 182, 212, 0.9)' }}>Pain NRS</span>
+                  <p className="mt-1">−1.0 or better</p>
+                </div>
+                <div>
+                  <span style={{ color: 'rgba(6, 182, 212, 0.9)' }}>Experience</span>
+                  <p className="mt-1">NPS +10 points</p>
+                </div>
+                <div>
+                  <span style={{ color: 'rgba(6, 182, 212, 0.9)' }}>Operations</span>
+                  <p className="mt-1">↓ medication use, ↓ LOS</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Integration & Privacy */}
+        <section className="relative py-8 px-6">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl lg:text-3xl font-light mb-6 text-center" style={{ color: 'rgba(255, 255, 255, 0.90)' }}>
+              Integration &amp; Privacy
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Low-Lift Integration</h3>
+                <ul className="space-y-3 text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>Distribution via QR posters/cards and deep links</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>Secure web dashboard for clinician view</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>De-identified CSV/FHIR data exports for research/quality teams</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Security &amp; Privacy</h3>
+                <ul className="space-y-3 text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>No PII collected in sessions</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>Tokenized access</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
+                    <span>Encryption in transit and at rest (LGPD-aligned)</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
