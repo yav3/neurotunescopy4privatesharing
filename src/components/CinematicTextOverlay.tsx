@@ -10,6 +10,7 @@ interface TextItem {
   animation: AnimationType
   emphasis?: boolean
   isLogo?: boolean
+  isFinal?: boolean
 }
 
 interface CinematicTextOverlayProps {
@@ -42,17 +43,18 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Join Us", 
-    duration: 2500, 
-    animation: 'zoom-in-out',
-    emphasis: false 
-  },
-  { 
     main: "", 
-    duration: 2500, 
+    duration: 2000, 
     animation: 'zoom-in-out',
     emphasis: false,
     isLogo: true
+  },
+  { 
+    main: "Join Us", 
+    duration: 1200, 
+    animation: 'zoom-in',
+    emphasis: false,
+    isFinal: true
   },
 ]
 
@@ -177,7 +179,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       setIsExiting(true)
       setIsEntering(false)
       
-      // Move to next message or complete
+      // Move to next message or complete - faster for final item
+      const transitionDelay = current.isFinal ? 300 : 800
       setTimeout(() => {
         if (currentIndex < MESSAGES.length - 1) {
           setCurrentIndex(prev => prev + 1)
@@ -188,7 +191,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             onComplete?.()
           })
         }
-      }, 800)
+      }, transitionDelay)
     }, current.duration)
 
     return () => {
