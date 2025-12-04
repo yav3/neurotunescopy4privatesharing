@@ -107,13 +107,16 @@ export const BackgroundVideoCarousel: React.FC<BackgroundVideoCarouselProps> = (
     };
   }, []);
 
-  // Sync video with track changes
+  // Sync video with track changes - CRITICAL: Reset internalVideoIndex to stay in sync
   useEffect(() => {
     const video = videoRef.current;
     if (!video || videoUrls.length === 0) return;
 
+    // Reset internal index to match track's video index
+    setInternalVideoIndex(currentVideoIndex);
+    
     const videoSrc = videoUrls[currentVideoIndex % videoUrls.length];
-    console.log(`🎬 Track changed - loading video: ${videoSrc}`);
+    console.log(`🎬 Track changed - loading video: ${videoSrc} (index: ${currentVideoIndex})`);
     
     // Fade to black
     setFadeOpacity(1);
