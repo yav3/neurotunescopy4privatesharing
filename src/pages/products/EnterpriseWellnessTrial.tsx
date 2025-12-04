@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useFreeTrialChat } from "@/hooks/useFreeTrialChat";
 
-export const EnterpriseWellnessPricing = () => {
+export const EnterpriseWellnessTrial = () => {
   const { messages, isLoading, sendMessage, isComplete, collectedData } = useFreeTrialChat();
   const [inputMessage, setInputMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,17 +71,17 @@ export const EnterpriseWellnessPricing = () => {
           
           {/* Back Button */}
           <Link 
-            to="/products"
+            to="/products/enterprise-wellness"
             className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm">Back to Products</span>
+            <span className="text-sm">Back to Enterprise Wellness</span>
           </Link>
           
           {/* Hero */}
           <div className="text-center mb-12">
             <h1 className="text-5xl font-light tracking-tight text-white mb-4">
-              Free Business Trial
+              Enterprise Wellness Trial
             </h1>
           </div>
 
@@ -205,4 +205,4 @@ export const EnterpriseWellnessPricing = () => {
   );
 };
 
-export default EnterpriseWellnessPricing;
+export default EnterpriseWellnessTrial;
