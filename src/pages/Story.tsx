@@ -3,7 +3,7 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { StoryIntro } from "@/components/StoryIntro";
 import { motion } from "framer-motion";
-import { Brain, Heart, Zap, Moon, Shield, Activity, Hospital, Plane, Building2 } from "lucide-react";
+import { Brain, Heart, Zap, Moon, Shield, Activity, Hospital, Plane, Building2, Music } from "lucide-react";
 
 export const Story = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -198,7 +198,22 @@ export const Story = () => {
               Real-World Deployment
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="p-5 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+                <div 
+                  className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+                  style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+                >
+                  <Music className="w-5 h-5" style={{ color: 'rgba(255, 255, 255, 0.8)' }} />
+                </div>
+                <h3 className="text-sm font-light mb-2" style={{ color: '#e4e4e4' }}>Environmental & Background Music</h3>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.60)' }}>
+                  Hotels, retail stores, restaurants, spas, gyms, senior living facilities, and public spaces. 
+                  PRO-free therapeutic background music with multi-zone control, time-of-day programming, 
+                  and cloud management. No licensing fees.
+                </p>
+              </div>
+
               <div className="p-5 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
                 <div 
                   className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
@@ -223,7 +238,7 @@ export const Story = () => {
                 </div>
                 <h3 className="text-sm font-light mb-2" style={{ color: '#e4e4e4' }}>Enterprise & Performance</h3>
                 <p className="text-xs leading-relaxed" style={{ color: 'rgba(228, 228, 228, 0.60)' }}>
-                  Airlines, hotels, spas, peak performance programs, and employee benefit offerings. 
+                  Airlines, corporate wellness, peak performance programs, and employee benefit offerings. 
                   On-demand stress relief, focus support, and recovery as a premium service — 
                   no medication and no extra hardware.
                 </p>
