@@ -16,8 +16,8 @@ interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro audio URL - first track from the playlist
-const INTRO_AUDIO_URL = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-(1).mp3'
+// Intro audio URL - The Spartan Age plays during cinematic intro
+const INTRO_AUDIO_URL = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-%281%29.mp3'
 
 // Intro videos in sequence
 const INTRO_VIDEOS = ['/videos/intro-2.mp4']
