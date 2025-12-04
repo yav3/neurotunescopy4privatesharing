@@ -22,26 +22,26 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Built from real neuroscience", 
-    duration: 2400, 
+    main: "Backed by neuroscience", 
+    duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Proven to improve the way people feel", 
-    duration: 2400, 
+    main: "Real music by award-winning artists", 
+    duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Composed by award-winning musicians", 
-    duration: 2400, 
+    main: "Designed for purpose", 
+    duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Engineered for real-world impact", 
-    duration: 2400, 
+    main: "Evidence-based", 
+    duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
