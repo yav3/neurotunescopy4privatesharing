@@ -14,7 +14,7 @@ export default function EnterpriseWellness() {
     {
       title: "Corporate Offices",
       icon: Building2,
-      description: "Large enterprises with 1,000+ employees seeking productivity and wellness solutions",
+      description: "Enterprises seeking employee wellness and focus solutions",
     },
     {
       title: "Call Centers & Customer Service",
@@ -45,19 +45,19 @@ export default function EnterpriseWellness() {
 
   const benefits = [
     {
-      title: "Boost Productivity 15-25%",
-      icon: TrendingUp,
-      description: "Measurable improvements in employee focus and output through therapeutic audio",
-    },
-    {
-      title: "Reduce Stress-Related Absence",
+      title: "Reduce Anxiety & Stress",
       icon: Heart,
-      description: "Lower absenteeism rates with proactive mental wellness support",
+      description: "Clinically validated protocols shown to reduce anxiety by over 50% in studies",
     },
     {
-      title: "Improve Focus & Cognition",
+      title: "User-Reported Focus Improvement",
+      icon: TrendingUp,
+      description: "Employees report feeling more focused and clear-headed during work",
+    },
+    {
+      title: "Evidence-Based Protocols",
       icon: Brain,
-      description: "Evidence-based music protocols designed to enhance concentration",
+      description: "Music protocols designed using principles from music therapy and neuroscience",
     },
     {
       title: "Enhance Employee Retention",
@@ -103,44 +103,6 @@ export default function EnterpriseWellness() {
             >
               Help your employees focus and improve their wellness
             </motion.p>
-          </div>
-        </section>
-
-        {/* Key Stats */}
-        <section className="relative py-8 px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { stat: "1,000+", label: "Employees Typical" },
-                { stat: "15-25%", label: "Productivity Boost" },
-                { stat: "Custom", label: "Pricing Available" },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center p-6 rounded-2xl"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <div 
-                    className="text-2xl lg:text-3xl font-light mb-1"
-                    style={{ color: 'rgba(255, 255, 255, 0.95)' }}
-                  >
-                    {item.stat}
-                  </div>
-                  <div 
-                    className="text-xs lg:text-sm"
-                    style={{ color: 'rgba(255, 255, 255, 0.60)' }}
-                  >
-                    {item.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -316,7 +278,7 @@ export default function EnterpriseWellness() {
                   className="text-base mb-8 max-w-2xl mx-auto"
                   style={{ color: 'rgba(255, 255, 255, 0.75)' }}
                 >
-                  Start with a free trial and see the impact on your team's wellness and productivity
+                  Reach out to discuss pricing and see the impact on your team's wellness
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
