@@ -128,7 +128,7 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-1.5">
+          <Link to="/" className="flex items-center gap-0.5">
             <img 
               src={neuralpositiveLogoObsidian} 
               alt="Neuralpositive" 
@@ -242,7 +242,7 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-1.5">
+          <Link to="/" className="flex items-center gap-0.5">
             <img 
               src={neuralpositiveLogoObsidian} 
               alt="Neuralpositive" 
