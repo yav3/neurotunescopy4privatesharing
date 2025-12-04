@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import neuralpositiveLogoImg from '@/assets/neuralpositive-logo.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -9,7 +8,6 @@ interface TextItem {
   duration: number
   animation: AnimationType
   emphasis?: boolean
-  isLogo?: boolean
 }
 
 interface CinematicTextOverlayProps {
@@ -46,13 +44,6 @@ const MESSAGES: TextItem[] = [
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
-  },
-  { 
-    main: "", 
-    duration: 2500, 
-    animation: 'fade',
-    emphasis: false,
-    isLogo: true
   },
 ]
 
@@ -198,21 +189,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
-      {/* Faint background lissajous - visible during text phases */}
-      {!current.isLogo && (
-        <div 
-          className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
-          style={{ opacity: 0.08 }}
-        >
-          <img 
-            src={neuralpositiveLogoImg} 
-            alt=""
-            className="w-[500px] h-[500px] md:w-[700px] md:h-[700px] lg:w-[900px] lg:h-[900px] object-contain"
-            style={{ mixBlendMode: 'lighten' }}
-          />
-        </div>
-      )}
-      
       {/* Text content - white on black, centered */}
       <div className="px-6 text-center relative z-10">
         <div 
@@ -223,42 +199,18 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             transform: isEntering && !isExiting ? 'scale(1)' : 'scale(0.95)'
           }}
         >
-          {current.isLogo ? (
-            <div className="relative">
-              {/* Cinematic glow effect */}
-              <div 
-                className="absolute inset-0 blur-3xl transition-opacity duration-[2000ms]"
-                style={{
-                  opacity: isEntering && !isExiting ? 0.3 : 0,
-                  background: 'radial-gradient(circle, rgba(200,200,220,0.4) 0%, transparent 70%)'
-                }}
-              />
-              <img 
-                src={neuralpositiveLogoImg} 
-                alt="Neuralpositive"
-                className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain transition-all duration-[2000ms]"
-                style={{
-                  mixBlendMode: 'lighten',
-                  filter: isEntering && !isExiting 
-                    ? 'brightness(1.15) drop-shadow(0 0 60px rgba(200,200,220,0.4))' 
-                    : 'brightness(0.8)',
-                }}
-              />
-            </div>
-          ) : (
-            <h2
-              className="text-4xl md:text-6xl"
-              style={{
-                color: '#e4e4e4',
-                letterSpacing: '0.05em',
-                lineHeight: '1.1',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 200,
-              }}
-            >
-              {current.main}
-            </h2>
-          )}
+          <h2
+            className="text-4xl md:text-6xl"
+            style={{
+              color: '#e4e4e4',
+              letterSpacing: '0.05em',
+              lineHeight: '1.1',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 200,
+            }}
+          >
+            {current.main}
+          </h2>
         </div>
       </div>
     </div>
