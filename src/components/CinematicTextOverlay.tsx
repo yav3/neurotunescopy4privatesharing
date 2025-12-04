@@ -40,20 +40,8 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Environments", 
-    duration: 2200, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "Clinical Care", 
-    duration: 2200, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "Workplace Wellbeing", 
-    duration: 2200, 
+    main: "Environmental  |  Clinical  |  Workplace", 
+    duration: 2800, 
     animation: 'fade',
     emphasis: false 
   },
