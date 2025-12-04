@@ -40,25 +40,25 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Environmental Music for Businesses", 
-    duration: 2500, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "Enterprise Wellness", 
+    main: "Environments", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Population Health", 
+    main: "Clinical Care", 
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Experience Now", 
+    main: "Workplace Wellbeing", 
+    duration: 2200, 
+    animation: 'fade',
+    emphasis: false 
+  },
+  { 
+    main: "Enter the Experience", 
     duration: 2500, 
     animation: 'fade',
     emphasis: true 
