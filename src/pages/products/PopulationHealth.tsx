@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Hospital, HeartPulse, Activity, Shield, BarChart3, Users, ArrowRight, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
+import { Hospital, HeartPulse, Activity, Shield, BarChart3, Users, ArrowRight, ChevronLeft, ChevronRight, Building2, Home } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 
 export default function PopulationHealth() {
@@ -16,9 +16,9 @@ export default function PopulationHealth() {
       description: "Integrated therapeutic music for 5,000+ patient populations with EMR connectivity",
     },
     {
-      title: "Health Insurance Networks",
-      icon: Shield,
-      description: "Value-based care programs with measurable outcomes and cost reduction",
+      title: "Nursing Homes & Assisted Living Communities",
+      icon: Home,
+      description: "Support cognitive health, reduce agitation, and enhance quality of life for residents",
     },
     {
       title: "Government Health Programs",
