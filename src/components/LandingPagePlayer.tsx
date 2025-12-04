@@ -29,7 +29,7 @@ const CROSSFADE_DURATION = 2000; // 2 seconds
 // Direct URLs for audio tracks - now with expanded video rotation
 const CURATED_PLAYLIST = [
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/The-Spartan-Age-%281%29.mp3',
+    audioUrl: '/audio/the-spartan-age.mp3',
     videoPath: '/videos/landing-01.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
