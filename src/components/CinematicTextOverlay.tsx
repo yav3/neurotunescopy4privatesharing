@@ -142,14 +142,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           audio.src = ''
           introAudioRef.current = null
           ;(window as any).__introAudio = null
-          
-          // Also kill any other audio elements
-          document.querySelectorAll('audio').forEach((el) => {
-            el.pause()
-            ;(el as HTMLAudioElement).src = ''
-            ;(el as HTMLAudioElement).volume = 0
-          })
-          
+          // NOTE: Don't kill ALL audio elements here - let the main player handle its own audio
           resolve()
         }
       }, fadeInterval)
