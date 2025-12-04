@@ -25,36 +25,30 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
+    main: "", 
+    duration: 2500, 
+    animation: 'fade',
+    emphasis: false,
+    isLogo: true // Start with logo
+  },
+  { 
     main: "Engineered for Purpose", 
-    duration: 2200, 
+    duration: 2000, 
     animation: 'fade',
     emphasis: false 
   },
   { 
     main: "Music by award-winners", 
-    duration: 2200, 
+    duration: 2000, 
     animation: 'fade',
     emphasis: false 
   },
   { 
     main: "KOL Physician Leadership", 
-    duration: 2200, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "", 
     duration: 2000, 
-    animation: 'zoom-in-out',
+    animation: 'fade',
     emphasis: false,
-    isLogo: true
-  },
-  { 
-    main: "Join Us", 
-    duration: 1200, 
-    animation: 'zoom-in',
-    emphasis: false,
-    isFinal: true
+    isFinal: true // End with this, smooth fade to play button
   },
 ]
 
@@ -224,40 +218,36 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }
 
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
-      {/* Faint pearl-on-obsidian lissajous background - hidden during logo phase */}
-      {!current.isLogo && (
-        <div 
-          className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
-          style={{ opacity: 0.12 }}
-        >
-          <img 
-            src={neuralpositiveLogoObsidian} 
-            alt=""
-            className="w-[400px] h-[400px] md:w-[550px] md:h-[550px] lg:w-[700px] lg:h-[700px] object-contain"
-          />
-        </div>
-      )}
+    <div 
+      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black transition-opacity duration-1000"
+      style={{ opacity: isExiting && current.isFinal ? 0 : 1 }}
+    >
+      {/* Logo always visible - prominent when isLogo, subtle background otherwise */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out"
+        style={{ 
+          opacity: current.isLogo ? (isEntering && !isExiting ? 1 : 0.3) : 0.08,
+          transform: current.isLogo ? 'scale(1)' : 'scale(0.85)'
+        }}
+      >
+        <img 
+          src={neuralpositiveLogoObsidian} 
+          alt=""
+          className="w-[350px] h-[350px] md:w-[450px] md:h-[450px] lg:w-[550px] lg:h-[550px] object-contain"
+        />
+      </div>
       
-      {/* Content - either text or full logo reveal */}
-      <div className="px-6 text-center relative z-10">
-        <div 
-          className="transition-all ease-in-out"
-          style={{ 
-            transitionDuration: current.animation === 'zoom-in-out' ? '1000ms' : '1200ms',
-            opacity: isEntering && !isExiting ? 1 : 0,
-            transform: current.animation === 'zoom-in-out' 
-              ? (zoomPhase === 'in' ? 'scale(1.15)' : 'scale(0.9)')
-              : (isEntering && !isExiting ? 'scale(1)' : 'scale(0.95)')
-          }}
-        >
-          {current.isLogo ? (
-            <img 
-              src={neuralpositiveLogoObsidian} 
-              alt="Neuralpositive"
-              className="w-80 h-80 md:w-[420px] md:h-[420px] lg:w-[520px] lg:h-[520px] object-contain"
-            />
-          ) : (
+      {/* Text content - shown over logo background */}
+      {!current.isLogo && (
+        <div className="px-6 text-center relative z-10">
+          <div 
+            className="transition-all ease-in-out"
+            style={{ 
+              transitionDuration: '1000ms',
+              opacity: isEntering && !isExiting ? 1 : 0,
+              transform: isEntering && !isExiting ? 'scale(1) translateY(0)' : 'scale(0.98) translateY(10px)'
+            }}
+          >
             <h2
               className="text-4xl md:text-6xl"
               style={{
@@ -270,9 +260,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             >
               {current.main}
             </h2>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
