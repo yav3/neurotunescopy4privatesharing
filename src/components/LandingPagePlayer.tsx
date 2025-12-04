@@ -173,44 +173,8 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 124
   },
   {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Chef%20de%20Voce%20Um%20Hino%20Indie%20Pop%20remix%20DJ%20Chris%20and%20Fresh%20Edward.mp3',
-    videoPath: '/videos/landing-17.mp4',
-    therapeuticGoal: 'Energy Boost',
-    genre: 'House',
-    artist: 'DJ CHRIS',
-    name: 'Chef de Voce Um Hino',
-    estimatedBPM: 128
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/reggaeton%20meets%20tropical%20house%20dj%20elissa%20(3).mp3',
-    videoPath: '/videos/landing-18.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'House/Reggaeton',
-    artist: 'DJ Chris & Yasmine',
-    name: 'Reggaeton Meets Tropical House',
-    estimatedBPM: 118
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Ondas%20No%20Mar%20reggaeton%20%20(1).mp3',
-    videoPath: '/videos/landing-19.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Pop/House',
-    artist: 'DJ CHRIS & Van Wild',
-    name: 'Ondas No Mar',
-    estimatedBPM: 116
-  },
-  {
-    audioUrl: '/audio/ondas-no-mar-samba.mp3',
-    videoPath: '/videos/landing-20.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Samba',
-    artist: 'Yasmine',
-    name: 'Ondas No Mar',
-    estimatedBPM: 105
-  },
-  {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
-    videoPath: '/videos/landing-21.mp4',
+    videoPath: '/videos/landing-17.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Pop',
     artist: 'Van Wild',
@@ -219,7 +183,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/nocturnes-chamber-orchestra.mp3',
-    videoPath: '/videos/landing-22.mp4',
+    videoPath: '/videos/landing-18.mp4',
     therapeuticGoal: 'Deep Rest',
     genre: 'Classical',
     artist: 'The Scientists',
@@ -228,7 +192,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/your-love-big-band.mp3',
-    videoPath: '/videos/landing-23.mp4',
+    videoPath: '/videos/landing-19.mp4',
     therapeuticGoal: 'Mood Boost',
     genre: 'Big Band',
     artist: 'The Scientists',
