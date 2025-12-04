@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
@@ -11,7 +11,6 @@ import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
 
 const Index = () => {
   useWelcomeMessage();
-  const navigate = useNavigate();
   
   const [isPlaying, setIsPlaying] = useState(false); // Wait for cinematic intro to complete
   const [isMuted, setIsMuted] = useState(false);
@@ -55,10 +54,6 @@ const Index = () => {
     }, 1000);
   };
 
-  const handleSubscribe = () => {
-    navigate('/products');
-  };
-
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
       {/* Full-screen video background, synced to audio - only show after overlay completes */}
@@ -91,7 +86,7 @@ const Index = () => {
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
-          <div className="pointer-events-auto flex flex-col items-center gap-4 sm:gap-6">
+          <div className="pointer-events-auto flex flex-col items-center">
             {/* Subtle Glass Play Button - Smaller sizing */}
             <button
               onClick={handlePlaySession}
@@ -125,42 +120,6 @@ const Index = () => {
                 />
               </svg>
             </button>
-
-            {/* Action buttons row - optically centered beneath play button */}
-            <div 
-              className="flex items-center justify-center gap-3 mt-2"
-              style={{ transform: 'translateX(-12px)' }} /* Optical correction for asymmetric button widths */
-            >
-              {/* Subscribe CTA */}
-              <button
-                onClick={handleSubscribe}
-                disabled={isTransitioning}
-                className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#c0c0c0]/08 border border-[#c0c0c0]/20 text-[#c0c0c0]/80 hover:bg-[#c0c0c0]/15 hover:border-[#c0c0c0]/40 hover:text-[#c0c0c0] transition-all duration-300 backdrop-blur-sm text-xs sm:text-sm disabled:pointer-events-none"
-                style={{ fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif', fontWeight: 400 }}
-              >
-                Subscribe
-              </button>
-
-              {/* Mute Toggle */}
-              <button
-                onClick={() => setIsMuted(!isMuted)}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#c0c0c0]/08 border border-[#c0c0c0]/20 text-[#c0c0c0]/60 hover:bg-[#c0c0c0]/15 hover:border-[#c0c0c0]/40 hover:text-[#c0c0c0] transition-all duration-300 backdrop-blur-sm flex items-center justify-center"
-                title={isMuted ? "Unmute audio" : "Mute audio"}
-              >
-                {isMuted ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                    <line x1="23" y1="9" x2="17" y2="15"/>
-                    <line x1="17" y1="9" x2="23" y2="15"/>
-                  </svg>
-                ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                  </svg>
-                )}
-              </button>
-            </div>
           </div>
         </div>
       )}
