@@ -117,28 +117,48 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [])
 
-  // Stop intro audio when complete - BEFORE notifying parent
-  const stopIntroAudio = () => {
-    if (introAudioRef.current) {
-      console.log('🔇 Stopping intro audio on completion')
-      introAudioRef.current.pause()
-      introAudioRef.current.src = ''
-      introAudioRef.current.volume = 0
-      introAudioRef.current = null
-    }
-    ;(window as any).__introAudio = null
-    
-    // Also kill any other audio elements that might exist
-    document.querySelectorAll('audio').forEach((audio) => {
-      audio.pause()
-      audio.src = ''
-      audio.volume = 0
+  // Fade out intro audio smoothly before stopping
+  const fadeOutIntroAudio = (): Promise<void> => {
+    return new Promise((resolve) => {
+      const audio = introAudioRef.current
+      if (!audio) {
+        resolve()
+        return
+      }
+      
+      console.log('🔇 Fading out intro audio')
+      const startVolume = audio.volume
+      const fadeSteps = 20
+      const fadeInterval = 50 // 1 second total fade
+      let step = 0
+      
+      const fadeTimer = setInterval(() => {
+        step++
+        audio.volume = Math.max(0, startVolume * (1 - step / fadeSteps))
+        
+        if (step >= fadeSteps) {
+          clearInterval(fadeTimer)
+          audio.pause()
+          audio.src = ''
+          introAudioRef.current = null
+          ;(window as any).__introAudio = null
+          
+          // Also kill any other audio elements
+          document.querySelectorAll('audio').forEach((el) => {
+            el.pause()
+            ;(el as HTMLAudioElement).src = ''
+            ;(el as HTMLAudioElement).volume = 0
+          })
+          
+          resolve()
+        }
+      }, fadeInterval)
     })
   }
 
   useEffect(() => {
     if (hasCompleted) {
-      stopIntroAudio()
+      fadeOutIntroAudio()
     }
   }, [hasCompleted])
 
@@ -159,13 +179,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         if (currentIndex < MESSAGES.length - 1) {
           setCurrentIndex(prev => prev + 1)
         } else {
-          // Fade to black briefly, then complete
-          setTimeout(() => {
-            // CRITICAL: Stop intro audio BEFORE notifying completion
-            stopIntroAudio()
+          // Fade out audio smoothly, then complete
+          fadeOutIntroAudio().then(() => {
             setHasCompleted(true)
             onComplete?.()
-          }, 500)
+          })
         }
       }, 800)
     }, current.duration)
