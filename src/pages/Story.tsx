@@ -269,13 +269,15 @@ export const Story = () => {
             
             <div className="p-6 rounded-2xl mb-6" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
               <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                Neuralpositive is a deep tech AI company that spun out of the Runway Postdoctoral Program 
-                of the Jacobs Technion Institute at Cornell Tech.
-              </p>
-              <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
                 Neuroscientists, physicians, AI engineers (including ex-Spotify architect/inventor), composers, 
                 and a 5× Grammy-winning sound lead. Proven leadership, ready to deploy and deliver calmer care 
                 and measurable relief for patients.
+              </p>
+              <p className="leading-relaxed mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+                We are built on sponsored research. Thanks to investment from the Jacobs Technion Institute 
+                at Cornell Tech, we spun out of the Runway Postdoctoral Program and have received support, 
+                mentorship, and further investment from institutions like Weill Cornell Medical College, 
+                Cornell University, Stanford University Medical School, and others.
               </p>
               <p className="text-sm" style={{ color: 'rgba(6, 182, 212, 0.9)' }}>
                 Founding team with combined total of more than $500M in exits through M&amp;A and IPO.
