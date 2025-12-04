@@ -189,6 +189,60 @@ const CURATED_PLAYLIST = [
     artist: 'The Scientists',
     name: 'Your Love',
     estimatedBPM: 95
+  },
+  {
+    audioUrl: '/audio/barcelona-classical-focus.mp3',
+    videoPath: '/videos/landing-19.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Classical',
+    artist: 'The Scientists',
+    name: 'Barcelona Classical Focus',
+    estimatedBPM: 72
+  },
+  {
+    audioUrl: '/audio/baroque-sonata-a-major.mp3',
+    videoPath: '/videos/landing-20.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'Classical',
+    artist: 'The Scientists',
+    name: 'Baroque Sonata in A Major',
+    estimatedBPM: 68
+  },
+  {
+    audioUrl: '/audio/to-what-shall-i-compare-thee.mp3',
+    videoPath: '/videos/landing-21.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'French Folk',
+    artist: 'Yasmine',
+    name: 'To What Shall I Compare Thee',
+    estimatedBPM: 85
+  },
+  {
+    audioUrl: '/audio/the-age-of-wonder.mp3',
+    videoPath: '/videos/landing-22.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'The Age of Wonder',
+    estimatedBPM: 70
+  },
+  {
+    audioUrl: '/audio/the-lover-movement-1.mp3',
+    videoPath: '/videos/landing-23.mp4',
+    therapeuticGoal: 'Relaxation',
+    genre: 'Classical',
+    artist: 'The Scientists',
+    name: 'The Lover Movement 1',
+    estimatedBPM: 65
+  },
+  {
+    audioUrl: '/audio/the-wonder-of-reverie.mp3',
+    videoPath: '/videos/landing-24.mp4',
+    therapeuticGoal: 'Deep Rest',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'The Wonder of Reverie',
+    estimatedBPM: 60
   }
 ];
 
