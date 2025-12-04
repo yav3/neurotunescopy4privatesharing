@@ -202,15 +202,6 @@ export const Story = () => {
             </div>
           </section>
 
-          {/* Research Partners */}
-          <section className="text-center">
-            <p className="text-xs mb-2" style={{ color: 'rgba(228, 228, 228, 0.50)' }}>
-              Work originating from
-            </p>
-            <p className="text-sm font-light" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-              Columbia University · Cornell Tech · Weill Cornell Medicine
-            </p>
-          </section>
 
         </div>
       </main>
