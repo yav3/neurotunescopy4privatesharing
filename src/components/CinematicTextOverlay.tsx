@@ -49,7 +49,7 @@ const MESSAGES: TextItem[] = [
   },
   { 
     main: "", 
-    duration: 2800, 
+    duration: 2000, 
     animation: 'fade',
     emphasis: false,
     isLogo: true
@@ -226,10 +226,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <img 
               src={neuralpositiveLogoObsidian} 
               alt="Neuralpositive"
-              className="w-72 h-72 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] object-contain"
-              style={{
-                filter: 'drop-shadow(0 0 40px rgba(200,200,220,0.25))'
-              }}
+              className="w-80 h-80 md:w-[420px] md:h-[420px] lg:w-[520px] lg:h-[520px] object-contain"
             />
           ) : (
             <h2
