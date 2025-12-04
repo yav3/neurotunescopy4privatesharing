@@ -102,14 +102,12 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-2">
-            <div className="bg-black rounded p-0.5">
-              <img 
-                src={neuralpositiveLogoImg} 
-                alt="Neuralpositive" 
-                className="h-7 w-auto object-contain"
-                style={{ filter: 'brightness(1.1)' }}
-              />
-            </div>
+            <img 
+              src={neuralpositiveLogoImg} 
+              alt="Neuralpositive" 
+              className="h-7 w-auto object-contain"
+              style={{ mixBlendMode: 'lighten' }}
+            />
             <span className="text-xl tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
@@ -202,14 +200,12 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-1.5">
-            <div className="bg-black rounded p-0.5">
-              <img 
-                src={neuralpositiveLogoImg} 
-                alt="Neuralpositive" 
-                className="h-5 w-auto object-contain"
-                style={{ filter: 'brightness(1.1)' }}
-              />
-            </div>
+            <img 
+              src={neuralpositiveLogoImg} 
+              alt="Neuralpositive" 
+              className="h-5 w-auto object-contain"
+              style={{ mixBlendMode: 'lighten' }}
+            />
             <span className="text-lg tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
