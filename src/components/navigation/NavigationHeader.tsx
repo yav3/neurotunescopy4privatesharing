@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import neuralpositiveLogoImg from '@/assets/neuralpositive-logo.png';
 
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -100,7 +101,12 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-baseline gap-2">
+          <Link to="/" className="flex items-center gap-2">
+            <img 
+              src={neuralpositiveLogoImg} 
+              alt="Neuralpositive" 
+              className="h-7 w-auto object-contain"
+            />
             <span className="text-xl tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
@@ -192,7 +198,12 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-baseline gap-1.5">
+          <Link to="/" className="flex items-center gap-1.5">
+            <img 
+              src={neuralpositiveLogoImg} 
+              alt="Neuralpositive" 
+              className="h-5 w-auto object-contain"
+            />
             <span className="text-lg tracking-tight text-white uppercase">
               +NeuroTunes
             </span>
