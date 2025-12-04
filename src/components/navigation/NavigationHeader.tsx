@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, Volume2, VolumeX } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,24 @@ import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.p
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+
+  // Listen for mute state changes from player
+  useEffect(() => {
+    const handleMuteChange = (e: CustomEvent) => {
+      setIsMuted(e.detail.muted);
+    };
+    window.addEventListener('landingPlayerMuteChange' as any, handleMuteChange);
+    return () => window.removeEventListener('landingPlayerMuteChange' as any, handleMuteChange);
+  }, []);
+
+  const handleSoundToggle = () => {
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    window.dispatchEvent(new CustomEvent('headerMuteToggle', { detail: { muted: newMuted } }));
+  };
 
   const handleSupportChat = () => {
     const event = new CustomEvent('openSupportChat');
@@ -50,13 +68,22 @@ export const NavigationHeader = () => {
                   <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Population Health</Link>
+                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Population Health</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Wellness & Employee Benefits</Link>
+                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Employee Benefits</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/products/partnerships" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Partnerships & APIs</Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator className="bg-white/20 my-1" />
+
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Sales</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/contact" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Contact Sales</Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
@@ -101,32 +128,42 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center gap-1.5">
             <img 
               src={neuralpositiveLogoObsidian} 
               alt="Neuralpositive" 
-              className="h-7 w-7 object-contain"
+              className="h-8 w-8 object-contain"
             />
             <span className="text-xl tracking-tight text-white uppercase">
-              +NeuroTunes
-            </span>
-            <span className="text-[10px] font-light tracking-wide text-white/40">
-              by Neuralpositive
+              NeuroTunes
             </span>
           </Link>
         </div>
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-4">
+          {isLandingPage && (
+            <button
+              onClick={handleSoundToggle}
+              className="p-2 rounded-full hover:bg-white/10 transition-all duration-200"
+              aria-label={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? (
+                <VolumeX className="w-5 h-5 text-[#e4e4e4]/70" />
+              ) : (
+                <Volume2 className="w-5 h-5 text-[#e4e4e4]" />
+              )}
+            </button>
+          )}
           <Link 
             to="/auth" 
-            className="px-6 py-2 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all duration-200 text-sm font-medium"
+            className="px-6 py-2 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-sm font-normal"
           >
             Login
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-7 py-2.5 rounded-full bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-200 text-sm font-medium"
+            className="px-7 py-2.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-sm font-normal"
           >
             Free Trial
           </Link>
@@ -147,10 +184,10 @@ export const NavigationHeader = () => {
                   <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Population Health</Link>
+                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Population Health</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Enterprise Wellness & Employee Benefits</Link>
+                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Employee Benefits</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/products/partnerships" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Partnerships & APIs</Link>
@@ -158,6 +195,13 @@ export const NavigationHeader = () => {
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator className="bg-white/20 my-1" />
+
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Sales</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/contact" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Contact Sales</Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
 
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Company</DropdownMenuLabel>
@@ -198,31 +242,41 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-1.5">
             <img 
               src={neuralpositiveLogoObsidian} 
               alt="Neuralpositive" 
-              className="h-5 w-5 object-contain"
+              className="h-6 w-6 object-contain"
             />
             <span className="text-lg tracking-tight text-white uppercase">
-              +NeuroTunes
-            </span>
-            <span className="text-[9px] font-light tracking-wide text-white/40">
-              by Neuralpositive
+              NeuroTunes
             </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {isLandingPage && (
+            <button
+              onClick={handleSoundToggle}
+              className="p-1.5 rounded-full hover:bg-white/10 transition-all duration-200"
+              aria-label={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? (
+                <VolumeX className="w-4 h-4 text-[#e4e4e4]/70" />
+              ) : (
+                <Volume2 className="w-4 h-4 text-[#e4e4e4]" />
+              )}
+            </button>
+          )}
           <Link 
             to="/auth" 
-            className="px-4 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all duration-200 text-xs font-medium"
+            className="px-4 py-1.5 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-xs font-normal"
           >
             Login
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-5 py-2 rounded-full bg-white text-black hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-200 text-xs font-medium"
+            className="px-5 py-2 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-xs font-normal"
           >
             Free Trial
           </Link>

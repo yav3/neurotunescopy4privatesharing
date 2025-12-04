@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import { SupportChat } from '@/components/SupportChat';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
@@ -23,6 +22,20 @@ const Index = () => {
   const [showHero, setShowHero] = useState(true);
   const [overlayComplete, setOverlayComplete] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Sync mute state with header
+  useEffect(() => {
+    const handleHeaderMuteToggle = (e: CustomEvent) => {
+      setIsMuted(e.detail.muted);
+    };
+    window.addEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
+    return () => window.removeEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
+  }, []);
+
+  // Emit mute state changes to header
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('landingPlayerMuteChange', { detail: { muted: isMuted } }));
+  }, [isMuted]);
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) {
