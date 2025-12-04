@@ -22,16 +22,10 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Real Music  |  Real Science  |  Real Results", 
-    duration: 3200, 
+    main: "Begin the Experience", 
+    duration: 3000, 
     animation: 'fade',
     emphasis: false 
-  },
-  { 
-    main: "Enter the Experience", 
-    duration: 2500, 
-    animation: 'fade',
-    emphasis: true 
   },
 ]
 
@@ -187,13 +181,13 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           }}
         >
           <h2
-            className="text-5xl md:text-7xl"
+            className="text-4xl md:text-6xl"
             style={{
               color: '#e4e4e4',
-              letterSpacing: '0.02em',
+              letterSpacing: '0.05em',
               lineHeight: '1.1',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 400,
+              fontWeight: 200,
             }}
           >
             {current.main}
