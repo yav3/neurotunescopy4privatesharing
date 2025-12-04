@@ -28,12 +28,6 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Environmental  |  Clinical  |  Workplace", 
-    duration: 2800, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
     main: "Enter the Experience", 
     duration: 2500, 
     animation: 'fade',
