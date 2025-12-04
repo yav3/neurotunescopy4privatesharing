@@ -70,7 +70,7 @@ import Pricing from "./pages/Pricing";
 import Help from "./pages/Help";
 import ConsumerPricing from "./pages/ConsumerPricing";
 import Checkout from "./pages/Checkout";
-import AppDownload from "./pages/AppDownload";
+
 import EnterpriseWellnessPricing from "./pages/EnterpriseWellnessPricing";
 import ClinicalPricing from "./pages/ClinicalPricing";
 import HIPAA from "./pages/HIPAA";
@@ -203,7 +203,7 @@ const AppContent = () => {
         <Route path="/help/faq" element={<FAQ />} />
         <Route path="/consumer-pricing" element={<ConsumerPricing />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/app-download" element={<AppDownload />} />
+        
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancelled" element={<PaymentCancelled />} />
         <Route path="/black-friday" element={<BlackFriday />} />
