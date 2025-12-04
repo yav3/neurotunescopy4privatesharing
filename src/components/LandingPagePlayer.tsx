@@ -257,6 +257,7 @@ export const LandingPagePlayer = ({
   const [tracks, setTracks] = useState<AudioTrack[]>([]);
   const [videos, setVideos] = useState<VideoSource[]>([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const currentTrackIndexRef = useRef(0); // Ref for timer callbacks to access current value
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   
   const audioRef1 = useRef<HTMLAudioElement>(null);
@@ -332,8 +333,11 @@ export const LandingPagePlayer = ({
   };
 
   // Start next track - IMMEDIATELY stop previous to prevent overlap
+  // Use ref for track index to avoid stale closures in setTimeout
   const playNextTrack = useCallback(() => {
-    console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length);
+    // Use ref to get current value (avoids stale closure issue with setTimeout)
+    const currentIdx = currentTrackIndexRef.current;
+    console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length, '| currentIdx:', currentIdx);
     
     if (tracks.length === 0) {
       console.log('❌ Cannot play next track: no tracks loaded');
@@ -368,7 +372,7 @@ export const LandingPagePlayer = ({
       audioRef2.current.volume = 0;
     }
 
-    const nextIndex = (currentTrackIndex + 1) % tracks.length;
+    const nextIndex = (currentIdx + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
     const nextVideoIndex = nextIndex;
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
@@ -394,7 +398,8 @@ export const LandingPagePlayer = ({
       console.error('❌ Next track play failed:', err);
     });
 
-    // Update state
+    // Update state AND ref
+    currentTrackIndexRef.current = nextIndex;
     setCurrentTrackIndex(nextIndex);
     setActiveAudioRef(1); // Always use ref 1 now
     onCurrentTrackChange(nextTrack);
@@ -409,7 +414,7 @@ export const LandingPagePlayer = ({
       console.log('⏰ 35-second timer expired, advancing to next track');
       playNextTrack();
     }, TRACK_DURATION);
-  }, [isPlaying, tracks, videos, currentTrackIndex, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
+  }, [isPlaying, tracks, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
   // Track if we're currently initializing to prevent double-play
   const isInitializingRef = useRef(false);
@@ -492,7 +497,8 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          // Set the track index to startIndex
+          // Set the track index to startIndex (both state and ref)
+          currentTrackIndexRef.current = startIndex;
           setCurrentTrackIndex(startIndex);
           
           // Trigger video via callback
