@@ -22,20 +22,8 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Real Music", 
-    duration: 2200, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "Real Science", 
-    duration: 2200, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "Real Results", 
-    duration: 2200, 
+    main: "Real Music  |  Real Science  |  Real Results", 
+    duration: 3200, 
     animation: 'fade',
     emphasis: false 
   },
