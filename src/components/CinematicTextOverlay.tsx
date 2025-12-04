@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import neuralpositiveLogoImg from '@/assets/neuralpositive-logo.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -8,6 +9,7 @@ interface TextItem {
   duration: number
   animation: AnimationType
   emphasis?: boolean
+  isLogo?: boolean
 }
 
 interface CinematicTextOverlayProps {
@@ -46,10 +48,11 @@ const MESSAGES: TextItem[] = [
     emphasis: false 
   },
   { 
-    main: "Enter the Experience", 
-    duration: 2000, 
+    main: "", 
+    duration: 2500, 
     animation: 'fade',
-    emphasis: true 
+    emphasis: false,
+    isLogo: true
   },
 ]
 
@@ -204,18 +207,26 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             opacity: isEntering && !isExiting ? 1 : 0 
           }}
         >
-          <h2
-            className="text-4xl md:text-6xl"
-            style={{
-              color: '#e4e4e4',
-              letterSpacing: '0.05em',
-              lineHeight: '1.1',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 200,
-            }}
-          >
-            {current.main}
-          </h2>
+          {current.isLogo ? (
+            <img 
+              src={neuralpositiveLogoImg} 
+              alt="Neuralpositive"
+              className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain"
+            />
+          ) : (
+            <h2
+              className="text-4xl md:text-6xl"
+              style={{
+                color: '#e4e4e4',
+                letterSpacing: '0.05em',
+                lineHeight: '1.1',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 200,
+              }}
+            >
+              {current.main}
+            </h2>
+          )}
         </div>
       </div>
     </div>
