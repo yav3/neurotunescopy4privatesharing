@@ -58,6 +58,10 @@ import Cookies from "./pages/Cookies";
 import Payments from "./pages/Payments";
 import Experience from "./pages/Experience";
 import EnvironmentalBackground from "./pages/products/EnvironmentalBackground";
+import PopulationHealth from "./pages/products/PopulationHealth";
+import Partnerships from "./pages/products/Partnerships";
+import EnterpriseWellness from "./pages/products/EnterpriseWellness";
+import EnterpriseWellnessTrial from "./pages/products/EnterpriseWellnessTrial";
 import Story from "./pages/Story";
 import Team from "./pages/Team";
 import WhitePapers from "./pages/WhitePapers";
@@ -71,7 +75,6 @@ import Help from "./pages/Help";
 import ConsumerPricing from "./pages/ConsumerPricing";
 import Checkout from "./pages/Checkout";
 
-import EnterpriseWellnessPricing from "./pages/EnterpriseWellnessPricing";
 import ClinicalPricing from "./pages/ClinicalPricing";
 import HIPAA from "./pages/HIPAA";
 import Subscribe from "./pages/Subscribe";
@@ -157,11 +160,10 @@ const AppContent = () => {
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<EnvironmentalBackground />} />
-        <Route path="/products/senior-living" element={<ProductsOverview />} />
-        <Route path="/products/healthcare" element={<ProductsOverview />} />
-        <Route path="/products/enterprise-wellness" element={<EnterpriseWellnessPricing />} />
-        <Route path="/products/population-health" element={<ProductsOverview />} />
-        <Route path="/products/hospitality" element={<ProductsOverview />} />
+        <Route path="/products/enterprise-wellness" element={<EnterpriseWellness />} />
+        <Route path="/products/enterprise-wellness/trial" element={<EnterpriseWellnessTrial />} />
+        <Route path="/products/population-health" element={<PopulationHealth />} />
+        <Route path="/products/partnerships" element={<Partnerships />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/experience" element={<Experience />} />
