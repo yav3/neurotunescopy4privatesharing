@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Briefcase, Brain, TrendingUp, Users, Building2, GraduationCap, ArrowRight, ChevronLeft, ChevronRight, Target, Heart, Zap } from "lucide-react";
+import { Briefcase, Brain, TrendingUp, Users, Building2, GraduationCap, ArrowRight, ChevronLeft, ChevronRight, Target, Heart, Zap, Trophy, Wrench } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 import { Link } from "react-router-dom";
 
@@ -17,9 +17,14 @@ export default function EnterpriseWellness() {
       description: "Enterprises seeking employee wellness and focus solutions",
     },
     {
-      title: "Call Centers & Customer Service",
-      icon: Users,
-      description: "High-stress environments benefiting from focus and stress reduction",
+      title: "Sports Teams",
+      icon: Trophy,
+      description: "Pre-game focus, recovery sessions, and mental performance support",
+    },
+    {
+      title: "Engineering Teams",
+      icon: Wrench,
+      description: "Deep work support for complex problem-solving and sustained concentration",
     },
     {
       title: "Creative Agencies & Studios",
