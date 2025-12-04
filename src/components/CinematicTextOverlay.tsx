@@ -9,6 +9,7 @@ interface TextItem {
   duration: number
   animation: AnimationType
   emphasis?: boolean
+  isLogo?: boolean
 }
 
 interface CinematicTextOverlayProps {
@@ -45,6 +46,13 @@ const MESSAGES: TextItem[] = [
     duration: 2200, 
     animation: 'fade',
     emphasis: false 
+  },
+  { 
+    main: "", 
+    duration: 2800, 
+    animation: 'fade',
+    emphasis: false,
+    isLogo: true
   },
 ]
 
@@ -190,18 +198,21 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
-      {/* Faint pearl-on-obsidian lissajous background */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
-        style={{ opacity: 0.12 }}
-      >
-        <img 
-          src={neuralpositiveLogoObsidian} 
-          alt=""
-          className="w-[400px] h-[400px] md:w-[550px] md:h-[550px] lg:w-[700px] lg:h-[700px] object-contain"
-        />
-      </div>
-      {/* Text content - white on black, centered */}
+      {/* Faint pearl-on-obsidian lissajous background - hidden during logo phase */}
+      {!current.isLogo && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center transition-opacity duration-1000"
+          style={{ opacity: 0.12 }}
+        >
+          <img 
+            src={neuralpositiveLogoObsidian} 
+            alt=""
+            className="w-[400px] h-[400px] md:w-[550px] md:h-[550px] lg:w-[700px] lg:h-[700px] object-contain"
+          />
+        </div>
+      )}
+      
+      {/* Content - either text or full logo reveal */}
       <div className="px-6 text-center relative z-10">
         <div 
           className="transition-all ease-in-out"
@@ -211,18 +222,29 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             transform: isEntering && !isExiting ? 'scale(1)' : 'scale(0.95)'
           }}
         >
-          <h2
-            className="text-4xl md:text-6xl"
-            style={{
-              color: '#e4e4e4',
-              letterSpacing: '0.05em',
-              lineHeight: '1.1',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 200,
-            }}
-          >
-            {current.main}
-          </h2>
+          {current.isLogo ? (
+            <img 
+              src={neuralpositiveLogoObsidian} 
+              alt="Neuralpositive"
+              className="w-72 h-72 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] object-contain"
+              style={{
+                filter: 'drop-shadow(0 0 40px rgba(200,200,220,0.25))'
+              }}
+            />
+          ) : (
+            <h2
+              className="text-4xl md:text-6xl"
+              style={{
+                color: '#e4e4e4',
+                letterSpacing: '0.05em',
+                lineHeight: '1.1',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 200,
+              }}
+            >
+              {current.main}
+            </h2>
+          )}
         </div>
       </div>
     </div>
