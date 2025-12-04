@@ -381,6 +381,26 @@ const CURATED_PLAYLIST = [
   }
 ];
 
+// All 47 landing videos - cycle through these independently of audio tracks
+const ALL_LANDING_VIDEOS = [
+  '/videos/landing-01.mp4', '/videos/landing-02.mp4', '/videos/landing-03.mp4',
+  '/videos/landing-04.mp4', '/videos/landing-05.mp4', '/videos/landing-06.mp4',
+  '/videos/landing-07.mp4', '/videos/landing-08.mp4', '/videos/landing-09.mp4',
+  '/videos/landing-10.mp4', '/videos/landing-11.mp4', '/videos/landing-12.mp4',
+  '/videos/landing-13.mp4', '/videos/landing-14.mp4', '/videos/landing-15.mp4',
+  '/videos/landing-16.mp4', '/videos/landing-17.mp4', '/videos/landing-18.mp4',
+  '/videos/landing-19.mp4', '/videos/landing-20.mp4', '/videos/landing-21.mp4',
+  '/videos/landing-22.mp4', '/videos/landing-23.mp4', '/videos/landing-24.mp4',
+  '/videos/landing-25.mp4', '/videos/landing-26.mp4', '/videos/landing-27.mp4',
+  '/videos/landing-28.mp4', '/videos/landing-29.gif', '/videos/landing-30.gif',
+  '/videos/landing-31.gif', '/videos/landing-32.gif', '/videos/landing-33.gif',
+  '/videos/landing-34.gif', '/videos/landing-35.gif', '/videos/landing-36.gif',
+  '/videos/landing-37.gif', '/videos/landing-38.gif', '/videos/landing-39.gif',
+  '/videos/landing-40.gif', '/videos/landing-41.gif', '/videos/landing-42.gif',
+  '/videos/landing-43.gif', '/videos/landing-44.gif', '/videos/landing-45.gif',
+  '/videos/landing-46.mp4', '/videos/landing-47.mp4'
+];
+
 export const LandingPagePlayer = ({
   onPlaybackStateChange,
   onCurrentTrackChange,
@@ -394,6 +414,7 @@ export const LandingPagePlayer = ({
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const currentTrackIndexRef = useRef(0); // Ref for timer callbacks to access current value
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const currentVideoIndexRef = useRef(0); // Video cycles independently of audio
   
   const audioRef1 = useRef<HTMLAudioElement>(null);
   const audioRef2 = useRef<HTMLAudioElement>(null);
@@ -431,9 +452,9 @@ export const LandingPagePlayer = ({
   // Fetch media on mount
   useEffect(() => {
     const fetchMedia = async () => {
-      // Build curated tracks with direct video paths
+      // Build curated tracks (audio only)
       const audioTracks = CURATED_PLAYLIST.map(track => {
-        console.log(`🎵 Loading track: ${track.name} → 🎬 ${track.videoPath}`);
+        console.log(`🎵 Loading track: ${track.name}`);
         return {
           src: track.audioUrl,
           name: track.name,
@@ -444,10 +465,9 @@ export const LandingPagePlayer = ({
         };
       });
       
-      // Build video array matching the track order with local video paths
-      const videoFiles = CURATED_PLAYLIST.map(track => ({
-        src: track.videoPath
-      }));
+      // Build video array from ALL_LANDING_VIDEOS (cycles independently)
+      const videoFiles = ALL_LANDING_VIDEOS.map(src => ({ src }));
+      console.log(`🎬 Loaded ${videoFiles.length} videos for cycling`);
       
       setTracks(audioTracks);
       setVideos(videoFiles);
@@ -509,10 +529,12 @@ export const LandingPagePlayer = ({
 
     const nextIndex = (currentIdx + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
-    const nextVideoIndex = nextIndex;
+    // Video cycles independently through all 47 videos
+    const currentVidIdx = currentVideoIndexRef.current;
+    const nextVideoIndex = (currentVidIdx + 1) % ALL_LANDING_VIDEOS.length;
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     
-    console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name);
+    console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name, `| Video [${nextVideoIndex + 1}/${ALL_LANDING_VIDEOS.length}]`);
     
     // Always use audioRef1 for simplicity - we've stopped everything
     const nextAudio = audioRef1.current;
@@ -533,9 +555,11 @@ export const LandingPagePlayer = ({
       console.error('❌ Next track play failed:', err);
     });
 
-    // Update state AND ref
+    // Update state AND refs for both audio and video indices
     currentTrackIndexRef.current = nextIndex;
+    currentVideoIndexRef.current = nextVideoIndex;
     setCurrentTrackIndex(nextIndex);
+    setCurrentVideoIndex(nextVideoIndex);
     setActiveAudioRef(1); // Always use ref 1 now
     onCurrentTrackChange(nextTrack);
     onVideoPlaybackRateChange(playbackRate);
@@ -632,9 +656,11 @@ export const LandingPagePlayer = ({
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
           
-          // Set the track index to startIndex (both state and ref)
+          // Set the track and video indices to startIndex (both state and ref)
           currentTrackIndexRef.current = startIndex;
+          currentVideoIndexRef.current = startIndex;
           setCurrentTrackIndex(startIndex);
+          setCurrentVideoIndex(startIndex);
           
           // Trigger video via callback
           const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
