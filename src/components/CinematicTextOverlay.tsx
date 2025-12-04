@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import chromeRings from '@/assets/chrome-rings.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade'
 
@@ -179,7 +178,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black">
       {/* Text content - white on black, centered */}
-      <div className="px-6 text-center flex flex-col items-center">
+      <div className="px-6 text-center">
         <div 
           className="transition-opacity ease-in-out"
           style={{ 
@@ -187,14 +186,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             opacity: isEntering && !isExiting ? 1 : 0 
           }}
         >
-          {/* Chrome rings image - only on first slide */}
-          {currentIndex === 0 && (
-            <img 
-              src={chromeRings} 
-              alt="Three interconnected chrome rings"
-              className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mb-8 object-contain"
-            />
-          )}
           <h2
             className="text-5xl md:text-7xl"
             style={{
