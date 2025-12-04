@@ -1,13 +1,12 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { StoryIntro } from "@/components/StoryIntro";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Brain, Heart, Zap, Moon, Shield, Activity, Hospital, Plane, Building2 } from "lucide-react";
+import { Brain, Heart, Zap, Moon, Shield, Activity, Hospital, Plane, Building2 } from "lucide-react";
 
 export const Story = () => {
   const [showIntro, setShowIntro] = useState(true);
-  const benefitsRef = useRef<HTMLDivElement>(null);
 
   const benefits = [
     { icon: Brain, label: "Focus" },
@@ -45,14 +44,6 @@ export const Story = () => {
     },
   ];
 
-  const scrollBenefits = (direction: 'left' | 'right') => {
-    if (benefitsRef.current) {
-      benefitsRef.current.scrollBy({
-        left: direction === 'left' ? -200 : 200,
-        behavior: 'smooth'
-      });
-    }
-  };
 
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#050607' }}>
@@ -98,54 +89,31 @@ export const Story = () => {
             <h2 className="text-2xl font-light mb-6 text-center" style={{ color: '#e4e4e4' }}>
               Made For Real Benefits
             </h2>
-            <p className="text-sm text-center mb-6" style={{ color: 'rgba(228, 228, 228, 0.60)' }}>
+            <p className="text-sm text-center mb-8" style={{ color: 'rgba(228, 228, 228, 0.60)' }}>
               Our patented, closed loop personalization adapts playlists to each user's needs and preferences
             </p>
             
-            <div className="relative">
-              <button
-                onClick={() => scrollBenefits('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(192, 192, 192, 0.3)' }}
-              >
-                <ChevronLeft className="w-4 h-4" style={{ color: 'rgba(192, 192, 192, 0.9)' }} />
-              </button>
-              
-              <div
-                ref={benefitsRef}
-                className="flex gap-4 overflow-x-auto scrollbar-hide px-10"
-                style={{ scrollSnapType: 'x mandatory' }}
-              >
-                {benefits.map((benefit, index) => {
-                  const Icon = benefit.icon;
-                  return (
-                    <motion.div
-                      key={index}
-                      className="flex-shrink-0 w-24 text-center"
-                      style={{ scrollSnapAlign: 'start' }}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
+            <div className="flex flex-wrap justify-center gap-6">
+              {benefits.map((benefit, index) => {
+                const Icon = benefit.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    className="w-20 text-center"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <div 
+                      className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-2"
+                      style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
                     >
-                      <div 
-                        className="w-16 h-16 mx-auto rounded-xl flex items-center justify-center mb-2"
-                        style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
-                      >
-                        <Icon className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.8)' }} />
-                      </div>
-                      <span className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.7)' }}>{benefit.label}</span>
-                    </motion.div>
-                  );
-                })}
-              </div>
-              
-              <button
-                onClick={() => scrollBenefits('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(192, 192, 192, 0.3)' }}
-              >
-                <ChevronRight className="w-4 h-4" style={{ color: 'rgba(192, 192, 192, 0.9)' }} />
-              </button>
+                      <Icon className="w-7 h-7" style={{ color: 'rgba(255, 255, 255, 0.8)' }} />
+                    </div>
+                    <span className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.7)' }}>{benefit.label}</span>
+                  </motion.div>
+                );
+              })}
             </div>
           </section>
 
