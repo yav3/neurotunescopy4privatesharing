@@ -77,7 +77,7 @@ import Checkout from "./pages/Checkout";
 
 import ClinicalPricing from "./pages/ClinicalPricing";
 import HIPAA from "./pages/HIPAA";
-import Subscribe from "./pages/Subscribe";
+
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import BlackFriday from "./pages/BlackFriday";
@@ -156,7 +156,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
-        <Route path="/subscribe" element={<Subscribe />} />
+        
         <Route path="/business/:type" element={<BusinessType />} />
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<EnvironmentalBackground />} />
