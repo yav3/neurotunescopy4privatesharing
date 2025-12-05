@@ -242,19 +242,19 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-0.5">
+          <Link to="/" className="flex items-center gap-1">
             <img 
               src={neuralpositiveLogoHeader} 
               alt="Neuralpositive" 
-              className="h-6 w-6 object-contain"
+              className="h-5 w-5 object-contain"
             />
-            <span className="text-lg tracking-tight text-white uppercase">
+            <span className="text-sm tracking-normal text-white uppercase whitespace-nowrap">
               NeuroTunes
             </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {isLandingPage && (
             <button
               onClick={handleSoundToggle}
@@ -270,13 +270,13 @@ export const NavigationHeader = () => {
           )}
           <Link 
             to="/auth" 
-            className="px-4 py-1.5 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-xs font-normal"
+            className="px-3 py-1 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-[10px] font-normal"
           >
             Login
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-5 py-2 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-xs font-normal"
+            className="px-3 py-1.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-[10px] font-normal"
           >
             Contact
           </Link>
