@@ -49,7 +49,7 @@ import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
 import Support from "./pages/Support";
 import Demo from "./pages/Demo";
-import { BusinessType } from "./pages/BusinessType";
+
 import { ProductsOverview } from "./pages/ProductsOverview";
 import { ProductDetail } from "./pages/ProductDetail";
 import Legal from "./pages/Legal";
@@ -157,7 +157,7 @@ const AppContent = () => {
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
         
-        <Route path="/business/:type" element={<BusinessType />} />
+        
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<EnvironmentalBackground />} />
         <Route path="/products/enterprise-wellness" element={<EnterpriseWellness />} />
