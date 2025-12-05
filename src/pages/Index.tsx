@@ -149,8 +149,10 @@ const Index = () => {
         </div>
       )}
       
-      {/* Footer */}
-      <Footer />
+      {/* Footer - hidden on landing page for full-screen experience */}
+      <div className="hidden">
+        <Footer />
+      </div>
       
       {/* Hidden Sales Assistant (triggered from header) */}
       <SalesAssistant externalOpen={false} />
