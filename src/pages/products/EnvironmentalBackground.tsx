@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -11,6 +11,35 @@ export default function EnvironmentalBackground() {
   const background = usePageBackground();
   const [contactOpen, setContactOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Play audio when video plays
+  useEffect(() => {
+    const video = videoRef.current;
+    const audio = audioRef.current;
+    
+    if (video && audio) {
+      audio.loop = true;
+      audio.volume = 0.6;
+      
+      const playAudio = () => {
+        audio.play().catch(console.error);
+      };
+      
+      video.addEventListener('play', playAudio);
+      
+      // Auto-play audio on mount if video is already playing
+      if (!video.paused) {
+        playAudio();
+      }
+      
+      return () => {
+        video.removeEventListener('play', playAudio);
+        audio.pause();
+      };
+    }
+  }, []);
 
   const useCases = [
     {
@@ -121,6 +150,7 @@ export default function EnvironmentalBackground() {
             }}
           >
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted
@@ -129,6 +159,7 @@ export default function EnvironmentalBackground() {
             >
               <source src="/videos/environmental-commercial.mp4" type="video/mp4" />
             </video>
+            <audio ref={audioRef} src="/audio/oh-day-of-fire-and-sun.mp3" preload="auto" />
           </motion.div>
         </div>
       </section>
