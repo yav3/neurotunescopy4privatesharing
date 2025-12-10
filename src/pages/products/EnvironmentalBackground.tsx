@@ -302,12 +302,6 @@ export default function EnvironmentalBackground() {
                 Ready to transform your space?
               </h2>
 
-              <p 
-                className="text-base mb-8 max-w-2xl mx-auto"
-                style={{ color: 'rgba(255, 255, 255, 0.75)' }}
-              >
-                Join hundreds of facilities using NeuroTunes to enhance environments and support well-being
-              </p>
 
               <button
                 onClick={() => setContactOpen(true)}
