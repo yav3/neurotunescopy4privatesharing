@@ -29,8 +29,26 @@ const CROSSFADE_DURATION = 2000; // 2 seconds
 // Direct URLs for audio tracks - now with expanded video rotation
 const CURATED_PLAYLIST = [
   {
-    audioUrl: '/audio/the-spartan-age.mp3',
+    audioUrl: '/audio/hail-queen-astrid.mp3',
     videoPath: '/videos/landing-01.mp4',
+    therapeuticGoal: 'Focus Enhancement',
+    genre: 'New Age',
+    artist: 'The Scientists',
+    name: 'Hail Queen Astrid',
+    estimatedBPM: 75
+  },
+  {
+    audioUrl: '/audio/youre-so-lovable.mp3',
+    videoPath: '/videos/landing-02.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Acoustic Pop',
+    artist: 'Van Wild',
+    name: "You're So Lovable",
+    estimatedBPM: 90
+  },
+  {
+    audioUrl: '/audio/the-spartan-age.mp3',
+    videoPath: '/videos/landing-03.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
@@ -39,7 +57,7 @@ const CURATED_PLAYLIST = [
   },
   {
     audioUrl: '/audio/The_Seventh_Wonder_New_Age_Focus_2.mp3',
-    videoPath: '/videos/landing-02.mp4',
+    videoPath: '/videos/landing-04.mp4',
     therapeuticGoal: 'Focus Enhancement',
     genre: 'New Age',
     artist: 'The Scientists',
