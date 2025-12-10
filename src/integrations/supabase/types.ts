@@ -881,6 +881,42 @@ export type Database = {
         }
         Relationships: []
       }
+      enhanced_user_favorites: {
+        Row: {
+          added_at: string | null
+          id: string
+          track_id: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string | null
+          id?: string
+          track_id: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string | null
+          id?: string
+          track_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enhanced_user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enhanced_user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       esg_metrics: {
         Row: {
           carbon_footprint_tons: number | null
@@ -2208,6 +2244,13 @@ export type Database = {
             columns: ["playlist_id"]
             isOneToOne: false
             referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "playlist_tracks_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
             referencedColumns: ["id"]
           },
           {
@@ -3724,6 +3767,57 @@ export type Database = {
           },
         ]
       }
+      track_title_changes: {
+        Row: {
+          changed_at: string | null
+          changed_by: string | null
+          id: string
+          new_file_path: string | null
+          new_title: string
+          old_file_path: string | null
+          old_title: string
+          reason: string | null
+          track_id: string | null
+        }
+        Insert: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          new_file_path?: string | null
+          new_title: string
+          old_file_path?: string | null
+          old_title: string
+          reason?: string | null
+          track_id?: string | null
+        }
+        Update: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          new_file_path?: string | null
+          new_title?: string
+          old_file_path?: string | null
+          old_title?: string
+          reason?: string | null
+          track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_title_changes_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_title_changes_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tracks: {
         Row: {
           ai_score: number | null
@@ -4482,6 +4576,13 @@ export type Database = {
             foreignKeyName: "user_downloads_track_id_fkey"
             columns: ["track_id"]
             isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_downloads_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
             referencedRelation: "music_tracks"
             referencedColumns: ["id"]
           },
@@ -4538,6 +4639,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "user_favorites_track_id_fkey"
             columns: ["track_id"]
@@ -4621,6 +4729,13 @@ export type Database = {
             foreignKeyName: "user_listening_history_track_id_fkey"
             columns: ["track_id"]
             isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_listening_history_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
             referencedRelation: "music_tracks"
             referencedColumns: ["id"]
           },
@@ -4659,7 +4774,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string | null
           email: string | null
-          full_name: string
+          full_name: string | null
           id: string
           subscription_tier: string | null
           updated_at: string | null
@@ -4668,7 +4783,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string | null
           email?: string | null
-          full_name: string
+          full_name?: string | null
           id: string
           subscription_tier?: string | null
           updated_at?: string | null
@@ -4677,7 +4792,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string | null
           email?: string | null
-          full_name?: string
+          full_name?: string | null
           id?: string
           subscription_tier?: string | null
           updated_at?: string | null
@@ -4916,6 +5031,36 @@ export type Database = {
       }
     }
     Views: {
+      generic_titled_tracks: {
+        Row: {
+          artist: string | null
+          bucket_name: string | null
+          created_at: string | null
+          file_path: string | null
+          id: string | null
+          issue_type: string | null
+          title: string | null
+        }
+        Insert: {
+          artist?: string | null
+          bucket_name?: string | null
+          created_at?: string | null
+          file_path?: string | null
+          id?: string | null
+          issue_type?: never
+          title?: string | null
+        }
+        Update: {
+          artist?: string | null
+          bucket_name?: string | null
+          created_at?: string | null
+          file_path?: string | null
+          id?: string | null
+          issue_type?: never
+          title?: string | null
+        }
+        Relationships: []
+      }
       pg_stat_monitor: {
         Row: {
           application_name: string | null
@@ -4994,6 +5139,7 @@ export type Database = {
       }
     }
     Functions: {
+      add_to_favorites: { Args: { p_track_id: string }; Returns: boolean }
       add_to_working_collection: {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
@@ -5409,12 +5555,13 @@ export type Database = {
         Returns: undefined
       }
       is_blocked_company_email: { Args: { email: string }; Returns: boolean }
+      is_favorite: { Args: { p_track_id: string }; Returns: boolean }
       is_track_favorited_unified:
+        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
         | {
             Args: { p_track_identifier: string; p_user_id: string }
             Returns: boolean
           }
-        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
       is_valid_uuid: { Args: { input_text: string }; Returns: boolean }
       is_vip_member: { Args: { _user_id?: string }; Returns: boolean }
       mark_likely_missing_tracks: { Args: never; Returns: number }
@@ -5453,13 +5600,24 @@ export type Database = {
         }[]
       }
       range: { Args: never; Returns: string[] }
+      remove_from_favorites: { Args: { p_track_id: string }; Returns: boolean }
       remove_user_favorite_unified:
+        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
         | {
             Args: { p_track_identifier: string; p_user_id: string }
             Returns: boolean
           }
-        | { Args: { p_track_id: string; p_user_id: string }; Returns: boolean }
       resolve_track_info_unified:
+        | {
+            Args: { p_track_id: string }
+            Returns: {
+              artist: string
+              storage_bucket: string
+              storage_path: string
+              title: string
+              track_id: string
+            }[]
+          }
         | {
             Args: { p_track_identifier: string }
             Returns: {
@@ -5471,16 +5629,6 @@ export type Database = {
               storage_path: string
               track_id: string
               track_title: string
-            }[]
-          }
-        | {
-            Args: { p_track_id: string }
-            Returns: {
-              artist: string
-              storage_bucket: string
-              storage_path: string
-              title: string
-              track_id: string
             }[]
           }
       safe_cast_to_music_genre: {
@@ -5501,6 +5649,17 @@ export type Database = {
           total_sessions: number
         }[]
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
+      suggest_commercial_titles: {
+        Args: { p_bucket_name?: string; p_genre?: string }
+        Returns: {
+          current_title: string
+          reasoning: string
+          suggested_title: string
+          track_id: string
+        }[]
+      }
       sync_hiit_storage: { Args: never; Returns: undefined }
       update_session_activity: {
         Args: { session_id: string }
@@ -5509,6 +5668,20 @@ export type Database = {
       update_track_bucket: {
         Args: { new_bucket: string; track_id: string }
         Returns: boolean
+      }
+      update_track_title: {
+        Args: {
+          p_new_artist?: string
+          p_new_title: string
+          p_old_title: string
+        }
+        Returns: {
+          new_file_path: string
+          new_title: string
+          old_file_path: string
+          old_title: string
+          updated_id: string
+        }[]
       }
       update_user_genre_preference: {
         Args: {
