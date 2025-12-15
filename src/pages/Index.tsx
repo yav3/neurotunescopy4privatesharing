@@ -43,6 +43,11 @@ const Index = () => {
   };
 
   const handlePlaySession = () => {
+    // Stop intro audio when user clicks play
+    if ((window as any).__stopIntroAudio) {
+      (window as any).__stopIntroAudio();
+    }
+    
     // Start crossfade transition
     setIsTransitioning(true);
     setIsPlaying(true);
@@ -52,6 +57,14 @@ const Index = () => {
       setShowHero(false);
       setIsTransitioning(false);
     }, 1000);
+  };
+
+  // Stop intro audio when user mutes
+  const handleMuteToggle = () => {
+    if (!isMuted && (window as any).__stopIntroAudio) {
+      (window as any).__stopIntroAudio();
+    }
+    setIsMuted(!isMuted);
   };
 
   return (
@@ -143,7 +156,7 @@ const Index = () => {
             currentTrack={currentTrack}
             onPlayPause={() => setIsPlaying(!isPlaying)}
             onSkip={handleSkip}
-            onToggleMute={() => setIsMuted(!isMuted)}
+            onToggleMute={handleMuteToggle}
             onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
           />
         </div>
