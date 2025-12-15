@@ -17,8 +17,8 @@ interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro audio URL - The Spartan Age plays during cinematic intro (local file for reliability)
-const INTRO_AUDIO_URL = '/audio/the-spartan-age.mp3'
+// Intro audio URL - Hail Queen Astrid plays during cinematic intro (local file for reliability)
+const INTRO_AUDIO_URL = '/audio/hail-queen-astrid.mp3'
 
 // Intro videos in sequence
 const INTRO_VIDEOS = ['/videos/intro-2.mp4']
@@ -75,10 +75,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     const audio = new Audio(INTRO_AUDIO_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
+    audio.loop = true // Loop the intro song so it plays until user interaction
     introAudioRef.current = audio
     
     // Expose globally so main player can stop it
     ;(window as any).__introAudio = audio
+    
+    // Expose stop function globally for external triggers (play button, mute, navigation)
+    ;(window as any).__stopIntroAudio = () => fadeOutIntroAudio()
     
     // Try autoplay
     audio.play().then(() => {
@@ -104,11 +108,12 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
-      // Clean up on unmount
+      // Clean up on unmount (navigation away)
       audio.pause()
       audio.src = ''
       audio.volume = 0
       ;(window as any).__introAudio = null
+      ;(window as any).__stopIntroAudio = null
       document.removeEventListener('click', startOnInteraction)
       document.removeEventListener('touchstart', startOnInteraction)
     }
@@ -146,11 +151,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     })
   }
 
-  useEffect(() => {
-    if (hasCompleted) {
-      fadeOutIntroAudio()
-    }
-  }, [hasCompleted])
+  // Don't auto-fade audio when text sequence completes - let it play until user interaction
+  // The audio will be stopped by:
+  // 1. User clicking play button (via window.__stopIntroAudio)
+  // 2. User muting (via window.__stopIntroAudio)
+  // 3. User navigating away (component unmount)
 
   useEffect(() => {
     // Start with entering animation
