@@ -1,82 +1,44 @@
 import { useEffect, useState, useRef } from 'react'
 import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.png'
 
-type AnimationType = 'zoom-in' | 'zoom-out' | 'fade' | 'zoom-in-out'
-
-interface TextItem {
-  main: string
-  sub?: string
-  duration: number
-  animation: AnimationType
-  emphasis?: boolean
-  isLogo?: boolean
-  isFinal?: boolean
-}
-
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro audio URL - Hail Queen Astrid plays during cinematic intro (local file for reliability)
+// Intro audio URL - Hail Queen Astrid plays during cinematic intro
 const INTRO_AUDIO_URL = '/audio/hail-queen-astrid.mp3'
 
-// Intro videos in sequence
-const INTRO_VIDEOS = ['/videos/intro-2.mp4']
-
-const MESSAGES: TextItem[] = [
-  { 
-    main: "", 
-    duration: 100, 
-    animation: 'fade',
-    isFinal: true
-  },
-]
+// Commercial video (muted)
+const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
-  const [isEntering, setIsEntering] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [isExiting, setIsExiting] = useState(false)
-  const [hasCompleted, setHasCompleted] = useState(false)
   const [audioStarted, setAudioStarted] = useState(false)
-  const [zoomPhase, setZoomPhase] = useState<'in' | 'out'>('in')
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Handle video ended - advance to next video
-  const handleVideoEnded = () => {
-    if (currentVideoIndex < INTRO_VIDEOS.length - 1) {
-      setCurrentVideoIndex(prev => prev + 1)
-    }
-  }
-
-  // Start intro audio on mount - plays the ENTIRE song through until user interaction or navigation
+  // Start intro audio on mount
   useEffect(() => {
     const audio = new Audio(INTRO_AUDIO_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
-    audio.loop = false // Play the entire song through once - don't loop
+    audio.loop = false
     introAudioRef.current = audio
     
-    // Expose globally so main player can stop it
     ;(window as any).__introAudio = audio
-    
-    // Expose stop function globally for external triggers (play button, mute, navigation)
     ;(window as any).__stopIntroAudio = () => fadeOutIntroAudio()
     
-    // Try autoplay
     audio.play().then(() => {
-      console.log('✅ Intro audio autoplay succeeded - playing full song')
+      console.log('✅ Intro audio autoplay succeeded')
       setAudioStarted(true)
     }).catch(err => {
-      console.log('⚠️ Intro audio autoplay blocked, waiting for interaction:', err)
+      console.log('⚠️ Intro audio autoplay blocked:', err)
     })
     
-    // Fallback: start on any user interaction
     const startOnInteraction = () => {
       if (!audioStarted && introAudioRef.current) {
         introAudioRef.current.play().then(() => {
-          console.log('✅ Intro audio started on interaction - playing full song')
           setAudioStarted(true)
         }).catch(() => {})
       }
@@ -88,7 +50,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
-      // Clean up on unmount (navigation away)
       audio.pause()
       audio.src = ''
       audio.volume = 0
@@ -99,7 +60,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [])
 
-  // Fade out intro audio smoothly before stopping
   const fadeOutIntroAudio = (): Promise<void> => {
     return new Promise((resolve) => {
       const audio = introAudioRef.current
@@ -108,10 +68,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         return
       }
       
-      console.log('🔇 Fading out intro audio')
       const startVolume = audio.volume
       const fadeSteps = 20
-      const fadeInterval = 50 // 1 second total fade
+      const fadeInterval = 50
       let step = 0
       
       const fadeTimer = setInterval(() => {
@@ -124,144 +83,81 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           audio.src = ''
           introAudioRef.current = null
           ;(window as any).__introAudio = null
-          // NOTE: Don't kill ALL audio elements here - let the main player handle its own audio
           resolve()
         }
       }, fadeInterval)
     })
   }
 
-  // Don't auto-fade audio when text sequence completes - let it play until user interaction
-  // The audio will be stopped by:
-  // 1. User clicking play button (via window.__stopIntroAudio)
-  // 2. User muting (via window.__stopIntroAudio)
-  // 3. User navigating away (component unmount)
+  // Handle video ended - complete the overlay
+  const handleVideoEnded = () => {
+    setIsExiting(true)
+    setTimeout(() => {
+      setIsVisible(false)
+      onComplete?.()
+    }, 800)
+  }
 
-  useEffect(() => {
-    // Start with entering animation
-    setIsEntering(true)
-    setIsExiting(false)
-    setZoomPhase('in')
-    
-    const current = MESSAGES[currentIndex]
-    
-    // For zoom-in-out animation, trigger the zoom-out phase midway
-    let zoomOutTimer: NodeJS.Timeout | undefined
-    if (current.animation === 'zoom-in-out') {
-      zoomOutTimer = setTimeout(() => {
-        setZoomPhase('out')
-      }, current.duration * 0.4) // Start zoom-out at 40% of duration
-    }
-    
-    // After duration, start exit animation
-    const exitTimer = setTimeout(() => {
-      setIsExiting(true)
-      setIsEntering(false)
-      
-      // Move to next message or complete - faster for final item
-      const transitionDelay = current.isFinal ? 300 : 800
-      setTimeout(() => {
-        if (currentIndex < MESSAGES.length - 1) {
-          setCurrentIndex(prev => prev + 1)
-        } else {
-          // Text sequence complete - but DON'T stop the audio!
-          // Audio continues playing until user clicks play, mutes, or navigates away
-          setHasCompleted(true)
-          onComplete?.()
-        }
-      }, transitionDelay)
-    }, current.duration)
-
-    return () => {
-      clearTimeout(exitTimer)
-      if (zoomOutTimer) clearTimeout(zoomOutTimer)
-    }
-  }, [currentIndex])
-
-  const current = MESSAGES[currentIndex]
-
-  // If completed, don't render anything
-  if (hasCompleted) {
+  if (!isVisible) {
     return null
-  }
-
-  const getAnimationClass = () => {
-    if (isExiting) {
-      return 'scale-110 opacity-0'
-    }
-    if (isEntering) {
-      return 'scale-100 opacity-100'
-    }
-    return 'scale-75 opacity-0'
-  }
-
-  const getBackgroundOpacity = () => {
-    if (isExiting) return 'opacity-0'
-    if (isEntering) return 'opacity-100'
-    return 'opacity-0'
   }
 
   return (
     <div 
-      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none bg-black transition-opacity duration-1000"
-      style={{ opacity: isExiting && current.isFinal ? 0 : 1 }}
+      className="absolute inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-800"
+      style={{ opacity: isExiting ? 0 : 1 }}
     >
-      {/* Logo always visible - prominent when isLogo, subtle background otherwise */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out"
-        style={{ 
-          opacity: current.isLogo ? (isEntering && !isExiting ? 1 : 0.3) : 0.08,
-          transform: current.isLogo ? 'scale(1)' : 'scale(0.85)'
-        }}
+      {/* Commercial video background - muted */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        playsInline
+        onEnded={handleVideoEnded}
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.7 }}
       >
-        <img 
-          src={neuralpositiveLogoObsidian} 
-          alt=""
-          className="w-[350px] h-[350px] md:w-[450px] md:h-[450px] lg:w-[550px] lg:h-[550px] object-contain"
-        />
-      </div>
+        <source src={COMMERCIAL_VIDEO} type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-black/40" />
       
-      {/* Text content - shown over logo background */}
-      {!current.isLogo && (
-        <div className="px-6 text-center relative z-10 pointer-events-auto">
-          <div 
-            className="transition-all ease-in-out"
-            style={{ 
-              transitionDuration: '1000ms',
-              opacity: isEntering && !isExiting ? 1 : 0,
-              transform: isEntering && !isExiting ? 'scale(1) translateY(0)' : 'scale(0.98) translateY(10px)'
+      {/* Content overlay */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
+        {/* Focus made easy, */}
+        <h1
+          className="text-3xl md:text-5xl lg:text-6xl mb-8"
+          style={{
+            color: '#d4d4d4',
+            letterSpacing: '0.06em',
+            fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+            fontWeight: 300,
+          }}
+        >
+          Focus made easy,
+        </h1>
+
+        {/* Logo + Neurotunes */}
+        <div className="flex items-center gap-4">
+          <img 
+            src={neuralpositiveLogoObsidian} 
+            alt="Neurotunes"
+            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain"
+          />
+          <span
+            className="text-2xl md:text-4xl lg:text-5xl"
+            style={{
+              color: '#d4d4d4',
+              letterSpacing: '0.1em',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 200,
             }}
           >
-            <h2
-              className="text-2xl md:text-4xl lg:text-5xl mb-2"
-              style={{
-                color: '#e4e4e4',
-                letterSpacing: '0.08em',
-                lineHeight: '1.2',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              {current.main}
-            </h2>
-            {current.sub && (
-              <p
-                className="text-lg md:text-2xl lg:text-3xl mb-10"
-                style={{
-                  color: 'rgba(228, 228, 228, 0.6)',
-                  letterSpacing: '0.15em',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 200,
-                  textTransform: 'lowercase',
-                }}
-              >
-                {current.sub}
-              </p>
-            )}
-
-          </div>
+            Neurotunes
+          </span>
         </div>
-      )}
+      </div>
     </div>
   )
 }
