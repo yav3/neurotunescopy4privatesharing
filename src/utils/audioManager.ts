@@ -11,6 +11,7 @@ class AudioManager {
   private mainAudioElement: HTMLAudioElement | null = null;
   private currentType: AudioType | null = null;
   private introPlaying = false;
+  private introPlayPromise: Promise<boolean> | null = null;
   
   private constructor() {
     console.log('🎵 AudioManager initialized');
@@ -32,18 +33,29 @@ class AudioManager {
   
   /**
    * Play intro audio - uses singleton element to prevent duplicates
+   * Returns existing promise if already playing to handle StrictMode double-mount
    */
   async playIntro(src: string, volume: number = 0.5): Promise<boolean> {
     console.log('🎵 AudioManager.playIntro called');
     
-    // If intro is already playing, don't create another
+    // If intro is already playing or pending, return existing state
     if (this.introPlaying && this.introAudio && !this.introAudio.paused) {
       console.log('🎵 Intro already playing, skipping duplicate');
       return true;
     }
     
-    // Stop any existing intro audio first
-    this.stopIntroImmediate();
+    // If there's a pending play promise, wait for it instead of creating new
+    if (this.introPlayPromise) {
+      console.log('🎵 Intro play already pending, waiting...');
+      return this.introPlayPromise;
+    }
+    
+    // Stop any existing intro audio first (but don't set introPlaying to false yet)
+    if (this.introAudio) {
+      this.introAudio.pause();
+      this.introAudio.src = '';
+      this.introAudio = null;
+    }
     
     // Create new intro audio element
     this.introAudio = new Audio(src);
@@ -52,15 +64,28 @@ class AudioManager {
     this.introAudio.loop = false;
     this.currentType = 'intro';
     
-    try {
-      await this.introAudio.play();
-      this.introPlaying = true;
-      console.log('✅ AudioManager: intro audio playing');
-      return true;
-    } catch (err) {
-      console.log('⚠️ AudioManager: intro autoplay blocked', err);
-      return false;
-    }
+    // Create and store the play promise
+    this.introPlayPromise = (async () => {
+      try {
+        if (!this.introAudio) return false;
+        await this.introAudio.play();
+        this.introPlaying = true;
+        console.log('✅ AudioManager: intro audio playing');
+        return true;
+      } catch (err: any) {
+        // Ignore AbortError from StrictMode race condition
+        if (err?.name === 'AbortError') {
+          console.log('⚠️ AudioManager: intro play aborted (expected in StrictMode)');
+        } else {
+          console.log('⚠️ AudioManager: intro autoplay blocked', err);
+        }
+        return false;
+      } finally {
+        this.introPlayPromise = null;
+      }
+    })();
+    
+    return this.introPlayPromise;
   }
   
   /**
@@ -77,7 +102,7 @@ class AudioManager {
         return false;
       }
     }
-    return false;
+    return this.introPlaying;
   }
   
   /**
@@ -115,6 +140,7 @@ class AudioManager {
       this.introAudio = null;
     }
     this.introPlaying = false;
+    this.introPlayPromise = null;
     
     // Also kill any orphaned audio elements (except main)
     document.querySelectorAll('audio').forEach((audio) => {
