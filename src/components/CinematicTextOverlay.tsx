@@ -12,8 +12,9 @@ const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
-// Singleton to prevent duplicate audio from StrictMode
+// Module-level singleton to prevent duplicate audio from StrictMode
 let globalIntroAudio: HTMLAudioElement | null = null
+let hasInitializedIntro = false
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -21,18 +22,23 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [showVideo, setShowVideo] = useState(true)
   const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const hasInitializedRef = useRef(false)
 
   // Auto-start on mount - no click required
   useEffect(() => {
-    // Guard against double initialization (StrictMode, hot reload)
-    if (hasInitializedRef.current) return
-    if (globalIntroAudio && !globalIntroAudio.paused) {
-      console.log('🔒 Intro audio already playing, skipping initialization')
+    // Module-level guard prevents StrictMode double-init
+    if (hasInitializedIntro) {
+      console.log('🔒 Intro already initialized (module-level), skipping')
       return
     }
     
-    hasInitializedRef.current = true
+    // Also check if audio is already playing
+    if (globalIntroAudio && !globalIntroAudio.paused) {
+      console.log('🔒 Intro audio already playing, skipping')
+      return
+    }
+    
+    hasInitializedIntro = true
+    console.log('🎵 Initializing intro audio...')
 
     // Kill any existing intro audio first
     if (globalIntroAudio) {
@@ -49,17 +55,16 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     globalIntroAudio = audio
     ;(window as any).__introAudio = audio
     
-    // Attempt to play audio immediately
+    // Play immediately
     audio.play().then(() => {
-      console.log('✅ Intro song auto-playing')
+      console.log('✅ Intro song playing')
     }).catch((err) => {
-      console.log('⚠️ Autoplay blocked, will start on interaction:', err)
+      console.log('⚠️ Autoplay blocked:', err)
       setAudioBlocked(true)
     })
 
     return () => {
-      // Don't cleanup audio on unmount - let it keep playing
-      // It will be cleaned up by fadeOutIntroSong
+      // Don't cleanup - fadeOutIntroSong handles it
     }
   }, [])
 
