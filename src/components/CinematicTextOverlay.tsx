@@ -12,7 +12,7 @@ const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
 // Text sequence phases
-type Phase = 'focus' | 'usecases' | 'listen' | 'complete'
+type Phase = 'focus' | 'usecases' | 'listen' | 'experience' | 'complete'
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -85,17 +85,30 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       }, 500)
     }, 7500)
 
-    // Phase 3: "Listen Now" - 3 seconds, then hide video
+    // Phase 3: "Listen Now" - 3 seconds, then fade to black with "Experience Now"
     const phase3Timer = setTimeout(() => {
-      setShowVideo(false)
-      setPhase('complete')
-      onComplete?.()
+      setIsTextVisible(false)
+      setShowVideo(false) // Fade video to black
+      setTimeout(() => {
+        setPhase('experience')
+        setIsTextVisible(true)
+      }, 800)
     }, 11000)
+
+    // Phase 4: "Experience Now" - 3 seconds, then complete (show play button)
+    const phase4Timer = setTimeout(() => {
+      setIsTextVisible(false)
+      setTimeout(() => {
+        setPhase('complete')
+        onComplete?.()
+      }, 800)
+    }, 15000)
 
     return () => {
       clearTimeout(phase1Timer)
       clearTimeout(phase2Timer)
       clearTimeout(phase3Timer)
+      clearTimeout(phase4Timer)
     }
   }, [onComplete])
 
@@ -128,7 +141,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     })
   }
 
-  // After complete, just show Listen Now button (no video)
+  // After complete, return null to show the play button behind
   if (phase === 'complete') {
     return null
   }
@@ -136,7 +149,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   return (
     <div 
       className="absolute inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-800"
-      style={{ opacity: showVideo ? 1 : 0 }}
     >
       {/* Commercial video background - muted */}
       {showVideo && (
@@ -146,7 +158,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800"
           style={{ opacity: 0.7 }}
         >
           <source src={COMMERCIAL_VIDEO} type="video/mp4" />
@@ -224,6 +236,21 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               Listen Now
             </span>
           </div>
+        )}
+
+        {/* Phase 4: Experience Now - on black background */}
+        {phase === 'experience' && (
+          <h1
+            className="text-3xl md:text-5xl lg:text-6xl"
+            style={{
+              color: '#d4d4d4',
+              letterSpacing: '0.08em',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 300,
+            }}
+          >
+            Experience Now
+          </h1>
         )}
       </div>
     </div>
