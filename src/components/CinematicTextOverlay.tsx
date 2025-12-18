@@ -82,8 +82,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }, [phase])
 
   const handleVideoEnded = () => {
+    // Don't pause intro audio - let it keep playing until user clicks play button
+    // Loop the audio so it continues playing
     if (globalIntroAudio) {
-      globalIntroAudio.pause()
+      globalIntroAudio.loop = true
     }
     
     setIsTextVisible(false)
