@@ -37,15 +37,7 @@ const CURATED_PLAYLIST = [
     name: 'Hail Queen Astrid',
     estimatedBPM: 75
   },
-  {
-    audioUrl: '/audio/youre-so-lovable.mp3',
-    videoPath: '/videos/landing-02.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Acoustic Pop',
-    artist: 'Van Wild',
-    name: "You're So Lovable",
-    estimatedBPM: 90
-  },
+  // Note: "You're So Lovable" removed - file doesn't exist in public/audio
   {
     audioUrl: '/audio/the-spartan-age.mp3',
     videoPath: '/videos/landing-03.mp4',
