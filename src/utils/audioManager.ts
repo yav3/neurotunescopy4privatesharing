@@ -162,6 +162,37 @@ class AudioManager {
   }
   
   /**
+   * Fade out intro audio gradually
+   */
+  async fadeOutIntro(duration: number = 500): Promise<void> {
+    return new Promise((resolve) => {
+      if (!this.introAudio || this.introAudio.paused) {
+        this.stopIntro();
+        resolve();
+        return;
+      }
+
+      const startVolume = this.introAudio.volume;
+      const steps = 10;
+      const stepTime = duration / steps;
+      let step = 0;
+      const audioToFade = this.introAudio;
+
+      const fadeInterval = setInterval(() => {
+        step++;
+        if (audioToFade) {
+          audioToFade.volume = Math.max(0, startVolume * (1 - step / steps));
+        }
+        if (step >= steps) {
+          clearInterval(fadeInterval);
+          this.stopIntro();
+          resolve();
+        }
+      }, stepTime);
+    });
+  }
+  
+  /**
    * Check if intro is currently playing
    */
   isIntroPlaying(): boolean {

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { audioManager } from '@/utils/audioManager'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -12,104 +13,8 @@ const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
-// Singleton audio management - ensures only one intro audio ever exists
-class IntroAudioManager {
-  private static instance: IntroAudioManager
-  private audio: HTMLAudioElement | null = null
-  private isPlaying = false
-
-  static getInstance(): IntroAudioManager {
-    if (!IntroAudioManager.instance) {
-      IntroAudioManager.instance = new IntroAudioManager()
-    }
-    return IntroAudioManager.instance
-  }
-
-  async play(): Promise<boolean> {
-    // Already playing - don't start another
-    if (this.isPlaying && this.audio && !this.audio.paused) {
-      console.log('🔒 Intro audio already playing, skipping')
-      return true
-    }
-
-    // Kill any existing audio first
-    this.stop()
-
-    console.log('🎵 Starting intro audio...')
-    this.audio = new Audio(INTRO_SONG_URL)
-    this.audio.volume = 0.5
-    this.audio.crossOrigin = 'anonymous'
-    this.audio.loop = false // Play once only
-    ;(window as any).__introAudio = this.audio
-
-    try {
-      await this.audio.play()
-      this.isPlaying = true
-      console.log('✅ Intro song playing')
-      return true
-    } catch (err) {
-      console.log('⚠️ Autoplay blocked:', err)
-      return false
-    }
-  }
-
-  stop() {
-    if (this.audio) {
-      this.audio.pause()
-      this.audio.src = ''
-      this.audio = null
-    }
-    this.isPlaying = false
-    ;(window as any).__introAudio = null
-  }
-
-  getAudio(): HTMLAudioElement | null {
-    return this.audio
-  }
-
-  setMuted(muted: boolean) {
-    if (this.audio) {
-      this.audio.muted = muted
-    }
-  }
-
-  syncToVideo(videoTime: number) {
-    if (this.audio && Math.abs(this.audio.currentTime - videoTime) > 0.5) {
-      this.audio.currentTime = videoTime
-    }
-  }
-
-  async fadeOut(duration: number = 500): Promise<void> {
-    return new Promise((resolve) => {
-      if (!this.audio || this.audio.paused) {
-        this.stop()
-        resolve()
-        return
-      }
-
-      const startVolume = this.audio.volume
-      const steps = 10
-      const stepTime = duration / steps
-      let step = 0
-      const audioToFade = this.audio
-
-      const fadeInterval = setInterval(() => {
-        step++
-        if (audioToFade) {
-          audioToFade.volume = Math.max(0, startVolume * (1 - step / steps))
-        }
-        if (step >= steps) {
-          clearInterval(fadeInterval)
-          this.stop()
-          resolve()
-        }
-      }, stepTime)
-    })
-  }
-}
-
-// Export manager instance for external use
-export const introAudioManager = IntroAudioManager.getInstance()
+// Module-level guard to prevent double initialization
+let hasStartedIntro = false
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -119,10 +24,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const hasCompletedRef = useRef(false) // Prevent double completion
 
-  // Auto-start on mount
+  // Auto-start on mount - use centralized audioManager
   useEffect(() => {
+    // Guard against double initialization from StrictMode
+    if (hasStartedIntro) {
+      console.log('🔒 Intro already started, skipping')
+      return
+    }
+    hasStartedIntro = true
+
     const startAudio = async () => {
-      const success = await introAudioManager.play()
+      const success = await audioManager.playIntro(INTRO_SONG_URL, 0.5)
       if (!success) {
         setAudioBlocked(true)
       }
@@ -131,7 +43,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
     // Cleanup on unmount
     return () => {
-      // Don't stop audio here - let fadeOutIntroSong handle it
+      // Reset guard on unmount so it can play again on next mount
+      hasStartedIntro = false
     }
   }, [])
 
@@ -140,17 +53,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     if (!audioBlocked) return
 
     const unlockAudio = async () => {
-      const audio = introAudioManager.getAudio()
-      if (audio && audio.paused) {
-        // Sync audio to video time
-        if (videoRef.current) {
-          introAudioManager.syncToVideo(videoRef.current.currentTime)
-        }
-        try {
-          await audio.play()
-          console.log('✅ Audio unlocked on interaction')
-          setAudioBlocked(false)
-        } catch {}
+      const success = await audioManager.retryIntro()
+      if (success) {
+        console.log('✅ Audio unlocked on interaction')
+        setAudioBlocked(false)
       }
     }
 
@@ -164,20 +70,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       document.removeEventListener('keydown', unlockAudio)
     }
   }, [audioBlocked])
-
-  // Sync audio to video time
-  useEffect(() => {
-    if (phase === 'focus' || phase === 'watching') {
-      const video = videoRef.current
-      if (video) {
-        const handleTimeUpdate = () => {
-          introAudioManager.syncToVideo(video.currentTime)
-        }
-        video.addEventListener('timeupdate', handleTimeUpdate)
-        return () => video.removeEventListener('timeupdate', handleTimeUpdate)
-      }
-    }
-  }, [phase])
 
   const handleVideoEnded = () => {
     // Prevent double-firing
@@ -281,5 +173,5 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
 // Export fade function for use by parent
 export function fadeOutIntroSong(duration: number = 500): Promise<void> {
-  return introAudioManager.fadeOut(duration)
+  return audioManager.fadeOutIntro(duration)
 }
