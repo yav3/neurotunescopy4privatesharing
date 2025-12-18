@@ -41,11 +41,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       globalIntroAudio = null
     }
     
-    // Create audio
+    // Create audio - plays once with the video, no looping
     const audio = new Audio(INTRO_SONG_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
-    audio.loop = true // Loop until user starts experience
+    audio.loop = false // Play once only
     globalIntroAudio = audio
     ;(window as any).__introAudio = audio
     
