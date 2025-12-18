@@ -50,7 +50,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       const timer = setTimeout(() => {
         setIsTextVisible(false)
         setTimeout(() => setPhase('watching'), 500)
-      }, 2000)
+      }, 1000)
       return () => clearTimeout(timer)
     }
   }, [phase])
