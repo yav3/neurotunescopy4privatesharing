@@ -43,9 +43,25 @@ const Index = () => {
   };
 
   const handlePlaySession = () => {
-    // Stop intro audio when user clicks play
+    // CRITICAL: Stop ALL audio on the page before starting main playback
+    // First try the graceful stop
     if ((window as any).__stopIntroAudio) {
       (window as any).__stopIntroAudio();
+    }
+    
+    // Then kill any remaining audio elements
+    document.querySelectorAll('audio').forEach((audio) => {
+      audio.pause();
+      audio.src = '';
+      audio.volume = 0;
+    });
+    
+    // Clear the global reference
+    if ((window as any).__introAudio) {
+      const introAudio = (window as any).__introAudio;
+      introAudio.pause();
+      introAudio.src = '';
+      ;(window as any).__introAudio = null;
     }
     
     // Start crossfade transition
