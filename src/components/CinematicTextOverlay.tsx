@@ -57,12 +57,12 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }
 
-  // Start intro audio on mount - with fallback for autoplay blocked
+  // Start intro audio on mount - plays the ENTIRE song through until user interaction or navigation
   useEffect(() => {
     const audio = new Audio(INTRO_AUDIO_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
-    audio.loop = true // Loop the intro song so it plays until user interaction
+    audio.loop = false // Play the entire song through once - don't loop
     introAudioRef.current = audio
     
     // Expose globally so main player can stop it
@@ -73,7 +73,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     
     // Try autoplay
     audio.play().then(() => {
-      console.log('✅ Intro audio autoplay succeeded')
+      console.log('✅ Intro audio autoplay succeeded - playing full song')
       setAudioStarted(true)
     }).catch(err => {
       console.log('⚠️ Intro audio autoplay blocked, waiting for interaction:', err)
@@ -83,7 +83,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     const startOnInteraction = () => {
       if (!audioStarted && introAudioRef.current) {
         introAudioRef.current.play().then(() => {
-          console.log('✅ Intro audio started on interaction')
+          console.log('✅ Intro audio started on interaction - playing full song')
           setAudioStarted(true)
         }).catch(() => {})
       }
@@ -171,11 +171,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         if (currentIndex < MESSAGES.length - 1) {
           setCurrentIndex(prev => prev + 1)
         } else {
-          // Fade out audio smoothly, then complete
-          fadeOutIntroAudio().then(() => {
-            setHasCompleted(true)
-            onComplete?.()
-          })
+          // Text sequence complete - but DON'T stop the audio!
+          // Audio continues playing until user clicks play, mutes, or navigates away
+          setHasCompleted(true)
+          onComplete?.()
         }
       }, transitionDelay)
     }, current.duration)
