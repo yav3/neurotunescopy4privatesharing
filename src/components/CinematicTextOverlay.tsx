@@ -120,7 +120,13 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       {/* Video - MUTED (no voiceover) */}
       {showVideo && (
         <video
-          ref={videoRef}
+          ref={(el) => {
+            videoRef.current = el
+            if (el) {
+              el.muted = true // Programmatically set muted - more reliable than attribute
+              el.defaultMuted = true
+            }
+          }}
           muted
           playsInline
           onEnded={handleVideoEnded}
