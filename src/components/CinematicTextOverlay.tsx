@@ -4,106 +4,105 @@ interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro audio synced to video
-const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
+// Intro song - plays synced with video
+const INTRO_SONG_URL = '/audio/intro-focus.mp3'
 
-// Commercial video (video only, audio plays separately but synced)
+// Commercial video - MUTED (no voiceover)
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
-// Text sequence phases
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
+
+// Singleton to prevent duplicate audio from StrictMode
+let globalIntroAudio: HTMLAudioElement | null = null
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
   const [isTextVisible, setIsTextVisible] = useState(true)
   const [showVideo, setShowVideo] = useState(true)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
   const mountedRef = useRef(true)
-  const hasStartedRef = useRef(false)
 
-  // Create and sync audio to video on mount
+  // Create synced audio on mount - singleton pattern
   useEffect(() => {
     mountedRef.current = true
     
-    // Prevent duplicate initialization from StrictMode
-    if (hasStartedRef.current) {
-      console.log('🎵 CinematicTextOverlay: already initialized, skipping')
-      return
+    // Kill any existing intro audio first (prevents duplicates)
+    if (globalIntroAudio) {
+      globalIntroAudio.pause()
+      globalIntroAudio.src = ''
+      globalIntroAudio = null
     }
-    hasStartedRef.current = true
     
-    console.log('🎵 CinematicTextOverlay mount - creating synced audio')
-    
-    // Create audio element
-    const audio = new Audio(INTRO_AUDIO_URL)
+    // Create single audio instance
+    const audio = new Audio(INTRO_SONG_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
-    audioRef.current = audio
+    globalIntroAudio = audio
     
-    // Expose audio globally for parent to control (mute/fade)
+    // Expose for parent control
     ;(window as any).__introAudio = audio
     
-    // Start audio when video starts playing
+    // Try to play immediately
+    const tryPlay = () => {
+      if (globalIntroAudio) {
+        globalIntroAudio.play().then(() => {
+          console.log('✅ Intro song playing')
+        }).catch(() => {
+          console.log('⚠️ Intro song autoplay blocked')
+        })
+      }
+    }
+    
+    // Start playing when video starts (synced)
     const video = videoRef.current
     if (video) {
-      const handleVideoPlay = () => {
-        if (audioRef.current && audioRef.current.paused) {
-          audioRef.current.currentTime = video.currentTime
-          audioRef.current.play().catch(err => {
-            console.log('⚠️ Audio autoplay blocked, will retry on interaction')
-          })
-        }
-      }
-      
-      // Sync audio time to video time
-      const handleTimeUpdate = () => {
-        if (audioRef.current && Math.abs(audioRef.current.currentTime - video.currentTime) > 0.3) {
-          audioRef.current.currentTime = video.currentTime
-        }
-      }
-      
-      video.addEventListener('play', handleVideoPlay)
-      video.addEventListener('timeupdate', handleTimeUpdate)
-      
-      // Expose video for parent control
       ;(window as any).__introVideo = video
       
-      // If video is already playing (autoplay worked), start audio
-      if (!video.paused) {
-        handleVideoPlay()
-      }
-    }
-    
-    // Fallback: start audio on user interaction
-    const startOnInteraction = () => {
-      if (audioRef.current && audioRef.current.paused) {
-        const video = videoRef.current
-        if (video) {
-          audioRef.current.currentTime = video.currentTime
+      video.addEventListener('play', () => {
+        if (globalIntroAudio && globalIntroAudio.paused) {
+          globalIntroAudio.currentTime = video.currentTime
+          tryPlay()
         }
-        audioRef.current.play().catch(() => {})
-      }
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
+      })
+      
+      // Keep audio synced to video time
+      video.addEventListener('timeupdate', () => {
+        if (globalIntroAudio && Math.abs(globalIntroAudio.currentTime - video.currentTime) > 0.5) {
+          globalIntroAudio.currentTime = video.currentTime
+        }
+      })
     }
     
-    document.addEventListener('click', startOnInteraction)
-    document.addEventListener('touchstart', startOnInteraction)
+    // Also try playing immediately in case video already started
+    tryPlay()
+    
+    // Fallback: start on user interaction
+    const startOnClick = () => {
+      if (globalIntroAudio?.paused) {
+        const video = videoRef.current
+        if (video && !video.paused) {
+          globalIntroAudio.currentTime = video.currentTime
+        }
+        tryPlay()
+      }
+      document.removeEventListener('click', startOnClick)
+      document.removeEventListener('touchstart', startOnClick)
+    }
+    
+    document.addEventListener('click', startOnClick)
+    document.addEventListener('touchstart', startOnClick)
     
     return () => {
       mountedRef.current = false
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
-      // Don't clean up audio here - parent handles fade out
+      document.removeEventListener('click', startOnClick)
+      document.removeEventListener('touchstart', startOnClick)
     }
   }, [])
 
-  // Handle video end
   const handleVideoEnded = () => {
-    // Stop audio when video ends
-    if (audioRef.current) {
-      audioRef.current.pause()
+    // Pause audio when video ends
+    if (globalIntroAudio) {
+      globalIntroAudio.pause()
     }
     
     setIsTextVisible(false)
@@ -122,27 +121,19 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }, 800)
   }
 
-  // Text sequence timing
   useEffect(() => {
-    const phase1Timer = setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsTextVisible(false)
-      setTimeout(() => {
-        setPhase('watching')
-      }, 500)
+      setTimeout(() => setPhase('watching'), 500)
     }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
-    return () => {
-      clearTimeout(phase1Timer)
-    }
-  }, [onComplete])
-
-  if (phase === 'complete') {
-    return null
-  }
+  if (phase === 'complete') return null
 
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-800">
-      {/* Video - muted, audio plays separately but synced */}
+    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black">
+      {/* Video - MUTED (no voiceover heard) */}
       {showVideo && (
         <video
           ref={videoRef}
@@ -156,9 +147,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         </video>
       )}
       
-      {/* Content overlay */}
       <div 
-        className="relative z-10 flex flex-col items-center justify-center text-center px-6 transition-opacity duration-500"
+        className="relative z-10 text-center px-6 transition-opacity duration-500"
         style={{ opacity: isTextVisible ? 1 : 0 }}
       >
         {phase === 'focus' && (
@@ -174,8 +164,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             Focus made easy
           </h1>
         )}
-
-        {phase === 'watching' && null}
 
         {phase === 'experience' && (
           <h1
@@ -193,4 +181,36 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       </div>
     </div>
   )
+}
+
+// Export fade function for use by parent
+export function fadeOutIntroSong(duration: number = 500): Promise<void> {
+  return new Promise((resolve) => {
+    if (!globalIntroAudio || globalIntroAudio.paused) {
+      resolve()
+      return
+    }
+    
+    const startVolume = globalIntroAudio.volume
+    const steps = 10
+    const stepTime = duration / steps
+    let step = 0
+    
+    const fadeInterval = setInterval(() => {
+      step++
+      if (globalIntroAudio) {
+        globalIntroAudio.volume = Math.max(0, startVolume * (1 - step / steps))
+      }
+      if (step >= steps) {
+        clearInterval(fadeInterval)
+        if (globalIntroAudio) {
+          globalIntroAudio.pause()
+          globalIntroAudio.src = ''
+          globalIntroAudio = null
+        }
+        ;(window as any).__introAudio = null
+        resolve()
+      }
+    }, stepTime)
+  })
 }
