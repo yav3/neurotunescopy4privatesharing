@@ -1,6 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import { ArrowRight } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import neuralpositiveLogoObsidian from '@/assets/neuralpositive-pearl-obsidian.png'
 
 type AnimationType = 'zoom-in' | 'zoom-out' | 'fade' | 'zoom-in-out'
@@ -27,17 +25,14 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "Focus | Relax | Reset | Reduce Pain", 
-    sub: "on-demand",
-    duration: 3500, 
+    main: "", 
+    duration: 100, 
     animation: 'fade',
-    emphasis: false,
     isFinal: true
   },
 ]
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
-  const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
   const [isEntering, setIsEntering] = useState(false)
@@ -45,14 +40,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [hasCompleted, setHasCompleted] = useState(false)
   const [audioStarted, setAudioStarted] = useState(false)
   const [zoomPhase, setZoomPhase] = useState<'in' | 'out'>('in')
-  const [promoCode, setPromoCode] = useState('')
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-
-  const handleStartTrial = () => {
-    // Navigate to enterprise wellness with promo code
-    navigate(`/products/enterprise-wellness${promoCode ? `?code=${promoCode}` : ''}`)
-  }
 
   // Handle video ended - advance to next video
   const handleVideoEnded = () => {
@@ -270,59 +259,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               </p>
             )}
 
-            {/* Free Trial CTA */}
-            <div className="mt-8 flex flex-col items-center gap-4">
-              <button
-                onClick={handleStartTrial}
-                className="group px-10 py-4 rounded-full text-lg font-medium transition-all duration-300 flex items-center gap-3"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08))',
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.12))'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)'
-                  e.currentTarget.style.transform = 'scale(1.02)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08))'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)'
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
-              >
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <div className="flex flex-col items-center gap-2">
-                <input
-                  type="text"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  placeholder="Enter promo code"
-                  className="px-6 py-3 rounded-full text-center text-base bg-transparent focus:outline-none transition-all"
-                  style={{
-                    color: 'rgba(255, 255, 255, 0.9)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    width: '220px',
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)'
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'
-                  }}
-                />
-                <span 
-                  className="text-xs"
-                  style={{ color: 'rgba(255, 255, 255, 0.4)' }}
-                >
-                  for your free sub
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       )}
