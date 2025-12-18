@@ -47,8 +47,8 @@ const Index = () => {
 
   // Auto-start experience when intro completes
   const handleIntroComplete = () => {
-    // Fade out intro song smoothly
-    fadeOutIntroSong(500);
+    // Fade out intro song quickly (200ms)
+    fadeOutIntroSong(200);
     
     // Stop intro video
     const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
