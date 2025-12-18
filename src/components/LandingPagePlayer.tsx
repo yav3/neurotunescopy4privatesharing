@@ -591,7 +591,12 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // Stop intro video if still playing
+          // Stop intro audio and video if still playing
+          const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
+          if (introAudio) {
+            introAudio.pause();
+            introAudio.src = '';
+          }
           const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
           if (introVideo) {
             introVideo.pause();
