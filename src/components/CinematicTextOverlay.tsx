@@ -22,22 +22,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Start intro audio on mount - plays entire song until navigation
-  // Use a ref to track if we've already started to prevent double-play from StrictMode
-  const hasStartedRef = useRef(false)
-  
+  // Start intro audio immediately on mount
   useEffect(() => {
-    // Prevent double initialization from React StrictMode
-    if (hasStartedRef.current) {
-      return
-    }
-    hasStartedRef.current = true
-    
-    // Stop any existing intro audio first
+    // Stop any existing intro audio first to prevent overlap
     if ((window as any).__introAudio) {
       const existingAudio = (window as any).__introAudio
       existingAudio.pause()
       existingAudio.src = ''
+      ;(window as any).__introAudio = null
     }
     
     const audio = new Audio(INTRO_AUDIO_URL)
@@ -57,15 +49,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       ;(window as any).__stopIntroAudio = null
     }
     
+    // Start playback immediately
     audio.play().then(() => {
       console.log('✅ Intro audio started')
       setAudioStarted(true)
     }).catch(err => {
-      console.log('⚠️ Intro audio autoplay blocked:', err)
+      console.log('⚠️ Intro audio autoplay blocked, will start on interaction:', err)
     })
     
+    // Fallback: start on first user interaction if autoplay blocked
     const startOnInteraction = () => {
-      if (!audioStarted && introAudioRef.current) {
+      if (introAudioRef.current && introAudioRef.current.paused) {
         introAudioRef.current.play().then(() => {
           setAudioStarted(true)
         }).catch(() => {})
@@ -78,6 +72,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
+      // Clean up on unmount
+      if (introAudioRef.current) {
+        introAudioRef.current.pause()
+        introAudioRef.current.src = ''
+        introAudioRef.current = null
+      }
+      ;(window as any).__introAudio = null
+      ;(window as any).__stopIntroAudio = null
       document.removeEventListener('click', startOnInteraction)
       document.removeEventListener('touchstart', startOnInteraction)
     }
