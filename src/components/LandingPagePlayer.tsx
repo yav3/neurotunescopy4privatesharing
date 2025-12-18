@@ -413,6 +413,9 @@ const ALL_LANDING_VIDEOS = [
   '/videos/landing-46.mp4', '/videos/landing-47.mp4'
 ];
 
+// Module-level flag to prevent StrictMode double-play
+let hasStartedMainPlayback = false;
+
 export const LandingPagePlayer = ({
   onPlaybackStateChange,
   onCurrentTrackChange,
@@ -559,8 +562,6 @@ export const LandingPagePlayer = ({
 
   // Track if we're currently initializing to prevent double-play
   const isInitializingRef = useRef(false);
-  // Track if audio has been started (to prevent re-triggering on dependency changes)
-  const hasStartedPlaybackRef = useRef(false);
 
   // Handle play/pause - directly triggered from user interaction
   // CRITICAL: Only depend on isPlaying to prevent re-triggering on other state changes
@@ -575,17 +576,18 @@ export const LandingPagePlayer = ({
     }
     
     if (isPlaying) {
-      // CRITICAL: Only initialize once - prevent double playback when dependencies change
-      if (hasStartedPlaybackRef.current) {
-        console.log('🔒 Playback already started, skipping re-initialization');
+      // Module-level guard prevents StrictMode double-play
+      if (hasStartedMainPlayback) {
+        console.log('🔒 Main playback already started (module-level), skipping');
         return;
       }
       
       if (!isInitializingRef.current) {
         // First play - set up audio and video
         isInitializingRef.current = true;
-        hasStartedPlaybackRef.current = true;
-        // Start from track 0 (The Spartan Age) - the displayed track
+        hasStartedMainPlayback = true;
+        
+        // Start from track 0
         const startIndex = 0;
         const firstTrack = tracks[startIndex];
         const firstVideo = videos[startIndex];
@@ -689,7 +691,7 @@ export const LandingPagePlayer = ({
                   console.error('❌ Retry failed');
                   onPlaybackStateChange(false);
                   isInitializingRef.current = false;
-                  hasStartedPlaybackRef.current = false; // Allow retry
+                  hasStartedMainPlayback = false; // Allow retry
                 }
               }, 100);
             }
@@ -703,7 +705,7 @@ export const LandingPagePlayer = ({
       // Pause BOTH audio elements to be safe
       audioRef1.current?.pause();
       audioRef2.current?.pause();
-      hasStartedPlaybackRef.current = false; // Reset so next play can initialize
+      hasStartedMainPlayback = false; // Reset so next play can initialize
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
         trackTimerRef.current = undefined;
@@ -757,7 +759,7 @@ export const LandingPagePlayer = ({
       
       // Clear global references
       (window as any).__skipLandingTrack = null;
-      hasStartedPlaybackRef.current = false;
+      hasStartedMainPlayback = false;
     };
   }, []);
 
