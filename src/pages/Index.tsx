@@ -26,10 +26,10 @@ const Index = () => {
   useEffect(() => {
     const handleHeaderMuteToggle = (e: CustomEvent) => {
       setIsMuted(e.detail.muted);
-      // Also mute/unmute intro video if it exists
-      const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
-      if (introVideo) {
-        introVideo.muted = e.detail.muted;
+      // Also mute/unmute intro audio if it exists
+      const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
+      if (introAudio) {
+        introAudio.muted = e.detail.muted;
       }
     };
     window.addEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
@@ -47,28 +47,34 @@ const Index = () => {
     }
   };
 
-  // Fade out intro video audio and transition to main player
-  const fadeOutIntroVideo = () => {
-    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
-    if (introVideo && !introVideo.muted) {
-      // Fade out over 500ms
-      const startVolume = introVideo.volume;
+  // Fade out intro audio and transition to main player
+  const fadeOutIntroAudio = () => {
+    const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
+    if (introAudio && !introAudio.paused) {
+      const startVolume = introAudio.volume;
       const steps = 10;
       let step = 0;
       const fadeInterval = setInterval(() => {
         step++;
-        introVideo.volume = Math.max(0, startVolume * (1 - step / steps));
+        introAudio.volume = Math.max(0, startVolume * (1 - step / steps));
         if (step >= steps) {
           clearInterval(fadeInterval);
-          introVideo.pause();
+          introAudio.pause();
+          introAudio.src = '';
         }
       }, 50);
+    }
+    
+    // Also stop intro video
+    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+    if (introVideo) {
+      introVideo.pause();
     }
   };
 
   const handlePlaySession = () => {
-    // Fade out intro video audio
-    fadeOutIntroVideo();
+    // Fade out intro audio
+    fadeOutIntroAudio();
     
     // Start crossfade transition
     setIsTransitioning(true);
@@ -81,11 +87,11 @@ const Index = () => {
     }, 1000);
   };
 
-  // Mute/unmute intro video when user toggles mute
+  // Mute/unmute intro audio when user toggles mute
   const handleMuteToggle = () => {
-    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
-    if (introVideo) {
-      introVideo.muted = !isMuted;
+    const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
+    if (introAudio) {
+      introAudio.muted = !isMuted;
     }
     setIsMuted(!isMuted);
   };
