@@ -137,7 +137,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <div 
       className="absolute inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-800"
     >
-      {/* Commercial video background - muted */}
+      {/* Commercial video background - muted, full sharp focus */}
       {showVideo && (
         <video
           ref={videoRef}
@@ -145,15 +145,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           muted
           playsInline
           onEnded={handleVideoEnded}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800"
-          style={{ opacity: 0.7 }}
+          className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={COMMERCIAL_VIDEO} type="video/mp4" />
         </video>
       )}
-
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/40" />
       
       {/* Content overlay */}
       <div 
