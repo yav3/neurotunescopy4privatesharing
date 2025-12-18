@@ -5,16 +5,12 @@
 
 type AudioType = 'intro' | 'main';
 
-interface AudioInstance {
-  element: HTMLAudioElement;
-  type: AudioType;
-  id: string;
-}
-
 class AudioManager {
   private static instance: AudioManager;
-  private currentAudio: AudioInstance | null = null;
+  private introAudio: HTMLAudioElement | null = null;
   private mainAudioElement: HTMLAudioElement | null = null;
+  private currentType: AudioType | null = null;
+  private introPlaying = false;
   
   private constructor() {
     console.log('🎵 AudioManager initialized');
@@ -35,73 +31,94 @@ class AudioManager {
   }
   
   /**
-   * Play audio - stops any currently playing audio first
+   * Play intro audio - uses singleton element to prevent duplicates
    */
-  async play(element: HTMLAudioElement, type: AudioType): Promise<boolean> {
-    const id = Math.random().toString(36).substring(7);
-    console.log(`🎵 AudioManager.play called - type: ${type}, id: ${id}`);
+  async playIntro(src: string, volume: number = 0.5): Promise<boolean> {
+    console.log('🎵 AudioManager.playIntro called');
     
-    // Stop current audio if different type
-    if (this.currentAudio && this.currentAudio.type !== type) {
-      console.log(`🔇 Stopping ${this.currentAudio.type} audio to play ${type}`);
-      await this.stopCurrent();
+    // If intro is already playing, don't create another
+    if (this.introPlaying && this.introAudio && !this.introAudio.paused) {
+      console.log('🎵 Intro already playing, skipping duplicate');
+      return true;
     }
     
-    // If same type and different element, stop the old one
-    if (this.currentAudio && this.currentAudio.element !== element) {
-      console.log('🔇 Stopping previous audio element');
-      this.currentAudio.element.pause();
-      this.currentAudio.element.src = '';
-    }
+    // Stop any existing intro audio first
+    this.stopIntroImmediate();
     
-    this.currentAudio = { element, type, id };
+    // Create new intro audio element
+    this.introAudio = new Audio(src);
+    this.introAudio.volume = volume;
+    this.introAudio.crossOrigin = 'anonymous';
+    this.introAudio.loop = false;
+    this.currentType = 'intro';
     
     try {
-      await element.play();
-      console.log(`✅ AudioManager: ${type} audio playing (${id})`);
+      await this.introAudio.play();
+      this.introPlaying = true;
+      console.log('✅ AudioManager: intro audio playing');
       return true;
     } catch (err) {
-      console.log(`⚠️ AudioManager: ${type} autoplay blocked (${id})`, err);
+      console.log('⚠️ AudioManager: intro autoplay blocked', err);
       return false;
     }
   }
   
   /**
-   * Stop current audio gracefully
+   * Retry playing intro on user interaction
    */
-  async stopCurrent(): Promise<void> {
-    if (!this.currentAudio) return;
-    
-    const audio = this.currentAudio.element;
-    const type = this.currentAudio.type;
-    
-    console.log(`🔇 AudioManager: stopping ${type} audio`);
-    
-    // Fade out if it's intro audio
-    if (type === 'intro' && audio.volume > 0) {
-      await this.fadeOut(audio);
-    } else {
-      audio.pause();
+  async retryIntro(): Promise<boolean> {
+    if (this.introAudio && this.introAudio.paused) {
+      try {
+        await this.introAudio.play();
+        this.introPlaying = true;
+        console.log('✅ AudioManager: intro audio playing (retry)');
+        return true;
+      } catch (err) {
+        return false;
+      }
     }
-    
-    audio.src = '';
-    this.currentAudio = null;
+    return false;
   }
   
   /**
-   * Stop intro audio specifically (called when main playback starts)
+   * Play main audio element - stops intro first
+   * Used by LandingPagePlayer for main playback
    */
-  stopIntro(): void {
-    if (this.currentAudio?.type === 'intro') {
-      console.log('🔇 AudioManager: stopping intro audio');
-      this.currentAudio.element.pause();
-      this.currentAudio.element.src = '';
-      this.currentAudio = null;
+  async play(element: HTMLAudioElement, type: AudioType): Promise<boolean> {
+    console.log(`🎵 AudioManager.play called - type: ${type}`);
+    
+    // Always stop intro first when playing main audio
+    if (type === 'main') {
+      this.stopIntroImmediate();
     }
+    
+    this.currentType = type;
+    
+    try {
+      await element.play();
+      console.log(`✅ AudioManager: ${type} audio playing`);
+      return true;
+    } catch (err) {
+      console.log(`⚠️ AudioManager: ${type} autoplay blocked`, err);
+      return false;
+    }
+  }
+  
+  /**
+   * Stop intro audio immediately (no fade)
+   */
+  private stopIntroImmediate(): void {
+    if (this.introAudio) {
+      console.log('🔇 AudioManager: stopping intro audio');
+      this.introAudio.pause();
+      this.introAudio.src = '';
+      this.introAudio = null;
+    }
+    this.introPlaying = false;
     
     // Also kill any orphaned audio elements (except main)
     document.querySelectorAll('audio').forEach((audio) => {
-      if (audio !== this.mainAudioElement) {
+      if (audio !== this.mainAudioElement && !audio.id?.startsWith('main-')) {
         audio.pause();
         audio.src = '';
       }
@@ -109,41 +126,27 @@ class AudioManager {
   }
   
   /**
-   * Fade out audio smoothly
+   * Stop intro audio (public API) - called when main playback starts
    */
-  private fadeOut(audio: HTMLAudioElement, duration: number = 500): Promise<void> {
-    return new Promise((resolve) => {
-      const startVolume = audio.volume;
-      const steps = 10;
-      const stepTime = duration / steps;
-      let step = 0;
-      
-      const timer = setInterval(() => {
-        step++;
-        audio.volume = Math.max(0, startVolume * (1 - step / steps));
-        
-        if (step >= steps) {
-          clearInterval(timer);
-          audio.pause();
-          audio.volume = startVolume;
-          resolve();
-        }
-      }, stepTime);
-    });
+  stopIntro(): void {
+    this.stopIntroImmediate();
+    if (this.currentType === 'intro') {
+      this.currentType = null;
+    }
   }
   
   /**
    * Check if intro is currently playing
    */
   isIntroPlaying(): boolean {
-    return this.currentAudio?.type === 'intro' && !this.currentAudio.element.paused;
+    return this.introPlaying && this.introAudio !== null && !this.introAudio.paused;
   }
   
   /**
    * Get the current audio type
    */
   getCurrentType(): AudioType | null {
-    return this.currentAudio?.type || null;
+    return this.currentType;
   }
 }
 

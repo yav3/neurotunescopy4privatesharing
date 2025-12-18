@@ -19,36 +19,26 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [isTextVisible, setIsTextVisible] = useState(true)
   const [showVideo, setShowVideo] = useState(true)
   const [audioStarted, setAudioStarted] = useState(false)
-  const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const mountedRef = useRef(true)
 
-  // Start intro audio immediately on mount - using AudioManager for singleton control
+  // Start intro audio immediately on mount - using AudioManager's singleton intro audio
   useEffect(() => {
     mountedRef.current = true
     console.log('🎵 CinematicTextOverlay mount')
     
-    // Create audio element
-    const audio = new Audio(INTRO_AUDIO_URL)
-    audio.volume = 0.5
-    audio.crossOrigin = 'anonymous'
-    audio.loop = false
-    introAudioRef.current = audio
-    
-    // Play via AudioManager
-    audioManager.play(audio, 'intro').then((success) => {
+    // Play intro via AudioManager (singleton - prevents duplicates)
+    audioManager.playIntro(INTRO_AUDIO_URL, 0.5).then((success) => {
       if (mountedRef.current && success) {
         setAudioStarted(true)
       }
     })
     
-    // Fallback: start on first user interaction if autoplay blocked
+    // Fallback: retry on first user interaction if autoplay blocked
     const startOnInteraction = () => {
-      if (introAudioRef.current && introAudioRef.current.paused && mountedRef.current) {
-        audioManager.play(introAudioRef.current, 'intro').then((success) => {
-          if (success) setAudioStarted(true)
-        })
-      }
+      audioManager.retryIntro().then((success) => {
+        if (success && mountedRef.current) setAudioStarted(true)
+      })
       document.removeEventListener('click', startOnInteraction)
       document.removeEventListener('touchstart', startOnInteraction)
     }
@@ -61,7 +51,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       console.log('🔇 CinematicTextOverlay unmount')
       document.removeEventListener('click', startOnInteraction)
       document.removeEventListener('touchstart', startOnInteraction)
-      // Don't stop audio here - let AudioManager handle it when main playback starts
+      // AudioManager handles singleton intro - no cleanup needed here
     }
   }, [])
 
