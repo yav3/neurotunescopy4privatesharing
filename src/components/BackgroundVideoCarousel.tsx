@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 // Local video files matched to each track
 const CURATED_VIDEO_FILES = [
-  '/videos/landing-01.mp4', // Track 1
+  '/videos/intro-sharp.mp4', // Track 1 - Sharp intro video
   '/videos/landing-47.mp4', // Track 2 - Blue lagoon (swapped from dark video)
   '/videos/landing-03.mp4', // Track 3
   '/videos/landing-04.mp4', // Track 4
