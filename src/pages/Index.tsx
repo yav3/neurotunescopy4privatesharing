@@ -7,7 +7,7 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
-import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
+import { CinematicTextOverlay, fadeOutIntroSong } from '@/components/CinematicTextOverlay';
 
 const Index = () => {
   useWelcomeMessage();
@@ -47,34 +47,15 @@ const Index = () => {
     }
   };
 
-  // Fade out intro audio and transition to main player
-  const fadeOutIntroAudio = () => {
-    const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
-    if (introAudio && !introAudio.paused) {
-      const startVolume = introAudio.volume;
-      const steps = 10;
-      let step = 0;
-      const fadeInterval = setInterval(() => {
-        step++;
-        introAudio.volume = Math.max(0, startVolume * (1 - step / steps));
-        if (step >= steps) {
-          clearInterval(fadeInterval);
-          introAudio.pause();
-          introAudio.src = '';
-        }
-      }, 50);
-    }
+  const handlePlaySession = async () => {
+    // Fade out intro song smoothly
+    fadeOutIntroSong(500);
     
     // Also stop intro video
     const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
     if (introVideo) {
       introVideo.pause();
     }
-  };
-
-  const handlePlaySession = () => {
-    // Fade out intro audio
-    fadeOutIntroAudio();
     
     // Start crossfade transition
     setIsTransitioning(true);
