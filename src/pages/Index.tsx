@@ -69,8 +69,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
-      {/* Full-screen video background, synced to audio - only show after overlay completes */}
-      {overlayComplete && (
+      {/* Full-screen video background, synced to audio - only show AFTER user clicks play */}
+      {!showHero && (
         <BackgroundVideoCarousel
           playbackRate={videoPlaybackRate}
           currentVideoIndex={currentVideoIndex}
@@ -78,15 +78,17 @@ const Index = () => {
         />
       )}
 
-      {/* Landing Page Audio Player (drives audio + video state) */}
-      <LandingPagePlayer
-        onPlaybackStateChange={setIsPlaying}
-        onCurrentTrackChange={(track) => setCurrentTrack(track)}
-        onVideoPlaybackRateChange={setVideoPlaybackRate}
-        onVideoChange={setCurrentVideoIndex}
-        isPlaying={isPlaying}
-        isMuted={isMuted}
-      />
+      {/* Landing Page Audio Player - only mount after overlay completes to prevent audio overlap */}
+      {overlayComplete && (
+        <LandingPagePlayer
+          onPlaybackStateChange={setIsPlaying}
+          onCurrentTrackChange={(track) => setCurrentTrack(track)}
+          onVideoPlaybackRateChange={setVideoPlaybackRate}
+          onVideoChange={setCurrentVideoIndex}
+          isPlaying={isPlaying}
+          isMuted={isMuted}
+        />
+      )}
       
       {/* Header */}
       <NavigationHeader />
@@ -94,7 +96,7 @@ const Index = () => {
       {/* Cinematic Text Overlay - only show when hero is visible */}
       {showHero && !overlayComplete && <CinematicTextOverlay onComplete={() => setOverlayComplete(true)} />}
       
-      {/* Hero Section - Play Button with CTAs - with crossfade transition */}
+      {/* Hero Section - Play Button on pure black background */}
       {showHero && overlayComplete && (
         <div 
           className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
