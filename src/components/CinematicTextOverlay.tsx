@@ -25,14 +25,7 @@ const INTRO_VIDEOS = ['/videos/intro-2.mp4']
 
 const MESSAGES: TextItem[] = [
   { 
-    main: "", 
-    duration: 2500, 
-    animation: 'fade',
-    emphasis: false,
-    isLogo: true // Start with logo
-  },
-  { 
-    main: "JUST RIGHT", 
+    main: "FOCUS", 
     duration: 2000, 
     animation: 'fade',
     emphasis: false 
@@ -42,7 +35,7 @@ const MESSAGES: TextItem[] = [
     duration: 2000, 
     animation: 'fade',
     emphasis: false,
-    isFinal: true // End with this, smooth fade to play button
+    isFinal: true
   },
 ]
 
