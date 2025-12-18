@@ -14,7 +14,6 @@ type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 // Singleton to prevent duplicate audio from StrictMode
 let globalIntroAudio: HTMLAudioElement | null = null
-let hasInitialized = false
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -22,24 +21,31 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [showVideo, setShowVideo] = useState(true)
   const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const mountedRef = useRef(true)
+  const hasInitializedRef = useRef(false)
 
   // Auto-start on mount - no click required
   useEffect(() => {
-    if (hasInitialized) return
-    hasInitialized = true
-    mountedRef.current = true
+    // Guard against double initialization (StrictMode, hot reload)
+    if (hasInitializedRef.current) return
+    if (globalIntroAudio && !globalIntroAudio.paused) {
+      console.log('🔒 Intro audio already playing, skipping initialization')
+      return
+    }
+    
+    hasInitializedRef.current = true
 
     // Kill any existing intro audio first
     if (globalIntroAudio) {
       globalIntroAudio.pause()
       globalIntroAudio.src = ''
+      globalIntroAudio = null
     }
     
     // Create audio
     const audio = new Audio(INTRO_SONG_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
+    audio.loop = true // Loop until user starts experience
     globalIntroAudio = audio
     ;(window as any).__introAudio = audio
     
@@ -52,7 +58,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     })
 
     return () => {
-      mountedRef.current = false
+      // Don't cleanup audio on unmount - let it keep playing
+      // It will be cleaned up by fadeOutIntroSong
     }
   }, [])
 
@@ -101,10 +108,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }, [phase])
 
   const handleVideoEnded = () => {
-    // Loop the audio so it continues playing until user clicks play button
-    if (globalIntroAudio) {
-      globalIntroAudio.loop = true
-    }
+    // Audio already set to loop on creation - just hide video
     
     setIsTextVisible(false)
     setShowVideo(false)
