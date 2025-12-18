@@ -4,49 +4,20 @@ interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Single video file with audio baked in
-const INTRO_VIDEO_WITH_AUDIO = '/videos/landing-commercial.mp4'
+// Single video file - MUTED (no audio from this video)
+const INTRO_VIDEO = '/videos/landing-commercial.mp4'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 // Module-level guard to prevent double initialization
 let hasStartedIntro = false
 
-// Module-level reference for external fade control
-let introVideoElement: HTMLVideoElement | null = null
-
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
   const [isTextVisible, setIsTextVisible] = useState(true)
   const [showVideo, setShowVideo] = useState(true)
-  const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const hasCompletedRef = useRef(false)
-
-  // Handle first interaction to unlock audio if blocked
-  useEffect(() => {
-    if (!audioBlocked) return
-
-    const unlockAudio = async () => {
-      const video = videoRef.current
-      if (video && video.muted) {
-        video.muted = false
-        video.volume = 0.5
-        console.log('✅ Video audio unlocked on interaction')
-        setAudioBlocked(false)
-      }
-    }
-
-    document.addEventListener('click', unlockAudio, { once: true })
-    document.addEventListener('touchstart', unlockAudio, { once: true })
-    document.addEventListener('keydown', unlockAudio, { once: true })
-
-    return () => {
-      document.removeEventListener('click', unlockAudio)
-      document.removeEventListener('touchstart', unlockAudio)
-      document.removeEventListener('keydown', unlockAudio)
-    }
-  }, [audioBlocked])
 
   const handleVideoEnded = () => {
     if (hasCompletedRef.current) {
@@ -88,7 +59,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   useEffect(() => {
     return () => {
       hasStartedIntro = false
-      introVideoElement = null
     }
   }, [])
 
@@ -96,34 +66,29 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center bg-black">
-      {/* Single video element with audio baked in */}
+      {/* Video - always MUTED */}
       {showVideo && (
         <video
           ref={(el) => {
             videoRef.current = el
-            introVideoElement = el
             if (el && !hasStartedIntro) {
               hasStartedIntro = true
-              el.volume = 0.5
-              // Try with audio first
-              el.muted = false
+              el.muted = true
+              el.volume = 0
               el.play().then(() => {
-                console.log('✅ Intro video playing with audio')
+                console.log('✅ Intro video playing (muted)')
               }).catch(() => {
-                // Autoplay blocked - try muted
-                console.log('⚠️ Autoplay blocked, trying muted')
-                el.muted = true
-                setAudioBlocked(true)
-                el.play().catch(() => {})
+                console.log('⚠️ Autoplay blocked')
               })
               ;(window as any).__introVideo = el
             }
           }}
+          muted
           playsInline
           onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src={INTRO_VIDEO_WITH_AUDIO} type="video/mp4" />
+          <source src={INTRO_VIDEO} type="video/mp4" />
         </video>
       )}
       
@@ -163,32 +128,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function for use by parent - now fades video audio
-export function fadeOutIntroSong(duration: number = 500): Promise<void> {
-  return new Promise((resolve) => {
-    const video = introVideoElement
-    if (!video || video.muted || video.paused) {
-      if (video) {
-        video.muted = true
-        video.pause()
-      }
-      resolve()
-      return
-    }
-
-    const startVolume = video.volume
-    const steps = 10
-    const stepTime = duration / steps
-    let step = 0
-
-    const fadeInterval = setInterval(() => {
-      step++
-      video.volume = Math.max(0, startVolume * (1 - step / steps))
-      if (step >= steps) {
-        clearInterval(fadeInterval)
-        video.muted = true
-        resolve()
-      }
-    }, stepTime)
-  })
+// Export fade function - now a no-op since video is muted
+export function fadeOutIntroSong(_duration?: number): Promise<void> {
+  return Promise.resolve()
 }
