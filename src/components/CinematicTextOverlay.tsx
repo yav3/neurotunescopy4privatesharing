@@ -1,20 +1,19 @@
 import { useEffect, useState, useRef } from 'react'
-import { audioManager } from '@/utils/audioManager'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro song - plays until user starts the experience
-const INTRO_SONG_URL = '/audio/intro-relaxation.mp3'
-
-// Commercial video - MUTED (no voiceover)
-const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
+// Single video file with audio baked in
+const INTRO_VIDEO_WITH_AUDIO = '/videos/landing-commercial.mp4'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 // Module-level guard to prevent double initialization
 let hasStartedIntro = false
+
+// Module-level reference for external fade control
+let introVideoElement: HTMLVideoElement | null = null
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -22,40 +21,18 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [showVideo, setShowVideo] = useState(true)
   const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const hasCompletedRef = useRef(false) // Prevent double completion
-
-  // Auto-start on mount - use centralized audioManager
-  useEffect(() => {
-    // Guard against double initialization from StrictMode
-    if (hasStartedIntro) {
-      console.log('🔒 Intro already started, skipping')
-      return
-    }
-    hasStartedIntro = true
-
-    const startAudio = async () => {
-      const success = await audioManager.playIntro(INTRO_SONG_URL, 0.5)
-      if (!success) {
-        setAudioBlocked(true)
-      }
-    }
-    startAudio()
-
-    // Cleanup on unmount
-    return () => {
-      // Reset guard on unmount so it can play again on next mount
-      hasStartedIntro = false
-    }
-  }, [])
+  const hasCompletedRef = useRef(false)
 
   // Handle first interaction to unlock audio if blocked
   useEffect(() => {
     if (!audioBlocked) return
 
     const unlockAudio = async () => {
-      const success = await audioManager.retryIntro()
-      if (success) {
-        console.log('✅ Audio unlocked on interaction')
+      const video = videoRef.current
+      if (video && video.muted) {
+        video.muted = false
+        video.volume = 0.5
+        console.log('✅ Video audio unlocked on interaction')
         setAudioBlocked(false)
       }
     }
@@ -72,7 +49,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }, [audioBlocked])
 
   const handleVideoEnded = () => {
-    // Prevent double-firing
     if (hasCompletedRef.current) {
       console.log('🔒 Video ended already handled, skipping')
       return
@@ -108,30 +84,46 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [phase])
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      hasStartedIntro = false
+      introVideoElement = null
+    }
+  }, [])
+
   if (phase === 'complete') return null
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center bg-black">
-      {/* Video - MUTED (no voiceover) */}
+      {/* Single video element with audio baked in */}
       {showVideo && (
         <video
           ref={(el) => {
             videoRef.current = el
-            if (el) {
-              el.muted = true
-              el.defaultMuted = true
-              // Auto-play video on mount
-              el.play().catch(() => {})
+            introVideoElement = el
+            if (el && !hasStartedIntro) {
+              hasStartedIntro = true
+              el.volume = 0.5
+              // Try with audio first
+              el.muted = false
+              el.play().then(() => {
+                console.log('✅ Intro video playing with audio')
+              }).catch(() => {
+                // Autoplay blocked - try muted
+                console.log('⚠️ Autoplay blocked, trying muted')
+                el.muted = true
+                setAudioBlocked(true)
+                el.play().catch(() => {})
+              })
               ;(window as any).__introVideo = el
             }
           }}
-          autoPlay
-          muted
           playsInline
           onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src={COMMERCIAL_VIDEO} type="video/mp4" />
+          <source src={INTRO_VIDEO_WITH_AUDIO} type="video/mp4" />
         </video>
       )}
       
@@ -171,7 +163,32 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function for use by parent
+// Export fade function for use by parent - now fades video audio
 export function fadeOutIntroSong(duration: number = 500): Promise<void> {
-  return audioManager.fadeOutIntro(duration)
+  return new Promise((resolve) => {
+    const video = introVideoElement
+    if (!video || video.muted || video.paused) {
+      if (video) {
+        video.muted = true
+        video.pause()
+      }
+      resolve()
+      return
+    }
+
+    const startVolume = video.volume
+    const steps = 10
+    const stepTime = duration / steps
+    let step = 0
+
+    const fadeInterval = setInterval(() => {
+      step++
+      video.volume = Math.max(0, startVolume * (1 - step / steps))
+      if (step >= steps) {
+        clearInterval(fadeInterval)
+        video.muted = true
+        resolve()
+      }
+    }, stepTime)
+  })
 }
