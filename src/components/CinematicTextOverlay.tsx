@@ -65,14 +65,22 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [])
 
-  // Handle video end - transition to experience phase
+  // Handle video end - transition to experience phase, then show play button after 2 seconds
   const handleVideoEnded = () => {
     setIsTextVisible(false)
     setShowVideo(false)
     setTimeout(() => {
       setPhase('experience')
       setIsTextVisible(true)
-      // NOTE: Audio keeps playing until user clicks - it will be stopped by the parent via __stopIntroAudio
+      
+      // After 2 seconds of "Experience Now", complete and show the play button
+      setTimeout(() => {
+        setIsTextVisible(false)
+        setTimeout(() => {
+          setPhase('complete')
+          onComplete?.()
+        }, 500)
+      }, 2000)
     }, 800)
   }
 
