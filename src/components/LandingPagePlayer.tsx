@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { audioManager } from '@/utils/audioManager';
 
 interface AudioTrack {
   src: string;
@@ -431,25 +432,11 @@ export const LandingPagePlayer = ({
   const [activeAudioRef, setActiveAudioRef] = useState<1 | 2>(1);
   const trackTimerRef = useRef<NodeJS.Timeout>();
 
-  // CRITICAL: On mount, stop ALL existing audio elements to prevent double playback
+  // Register main audio element with AudioManager on mount
   useEffect(() => {
-    console.log('🧹 LandingPagePlayer mount: cleaning up any existing audio');
-    const allAudioElements = document.querySelectorAll('audio');
-    allAudioElements.forEach((audio) => {
-      if (audio !== audioRef1.current && audio !== audioRef2.current) {
-        audio.pause();
-        audio.src = '';
-        audio.volume = 0;
-      }
-    });
-    
-    // Also clear any window references
-    if ((window as any).__landingActiveAudio) {
-      const oldAudio = (window as any).__landingActiveAudio;
-      if (oldAudio && oldAudio !== audioRef1.current && oldAudio !== audioRef2.current) {
-        oldAudio.pause();
-        oldAudio.src = '';
-      }
+    console.log('🧹 LandingPagePlayer mount');
+    if (audioRef1.current) {
+      audioManager.registerMainAudio(audioRef1.current);
     }
   }, []);
 
@@ -514,27 +501,9 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // CRITICAL: Kill ALL audio on the page before playing next track
-    console.log('🔇 KILLING ALL AUDIO before next track');
-    document.querySelectorAll('audio').forEach((audio) => {
-      audio.pause();
-      audio.src = '';
-      audio.volume = 0;
-      audio.currentTime = 0;
-    });
-    
-    // Also reset both refs
+    // Stop current audio before playing next
     if (audioRef1.current) {
       audioRef1.current.pause();
-      audioRef1.current.src = '';
-      audioRef1.current.currentTime = 0;
-      audioRef1.current.volume = 0;
-    }
-    if (audioRef2.current) {
-      audioRef2.current.pause();
-      audioRef2.current.src = '';
-      audioRef2.current.currentTime = 0;
-      audioRef2.current.volume = 0;
     }
 
     const nextIndex = (currentIdx + 1) % tracks.length;
@@ -554,15 +523,17 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // Set up and play the next track
+    // Set up and play the next track via AudioManager
     nextAudio.src = nextTrack.src;
     nextAudio.volume = isMuted ? 0 : 0.6;
     nextAudio.currentTime = 0;
     
-    nextAudio.play().then(() => {
-      console.log('✅ Next track playing:', nextTrack.name);
-    }).catch(err => {
-      console.error('❌ Next track play failed:', err);
+    audioManager.play(nextAudio, 'main').then((success) => {
+      if (success) {
+        console.log('✅ Next track playing:', nextTrack.name);
+      } else {
+        console.error('❌ Next track play failed');
+      }
     });
 
     // Update state AND refs for both audio and video indices
@@ -620,42 +591,8 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // CRITICAL: Stop intro audio first using the proper fade-out function
-          if ((window as any).__stopIntroAudio) {
-            console.log('🔇 Fading out intro audio before main playback');
-            (window as any).__stopIntroAudio();
-          } else if ((window as any).__introAudio) {
-            // Fallback: directly stop if fade function not available
-            console.log('🔇 Stopping intro audio directly before main playback');
-            const introAudio = (window as any).__introAudio;
-            introAudio.pause();
-            introAudio.src = '';
-            introAudio.volume = 0;
-            (window as any).__introAudio = null;
-          }
-          
-          // CRITICAL: Kill ALL audio on the entire page first
-          console.log('🔇 KILLING ALL AUDIO on page before first play');
-          document.querySelectorAll('audio').forEach((audio) => {
-            audio.pause();
-            audio.src = '';
-            audio.volume = 0;
-            audio.currentTime = 0;
-          });
-          
-          // Also reset both refs explicitly
-          if (audioRef1.current) {
-            audioRef1.current.pause();
-            audioRef1.current.src = '';
-            audioRef1.current.currentTime = 0;
-            audioRef1.current.volume = 0;
-          }
-          if (audioRef2.current) {
-            audioRef2.current.pause();
-            audioRef2.current.src = '';
-            audioRef2.current.currentTime = 0;
-            audioRef2.current.volume = 0;
-          }
+          // Stop intro audio via AudioManager
+          audioManager.stopIntro();
           
           // Clear any existing timers
           if (trackTimerRef.current) {
@@ -681,10 +618,10 @@ export const LandingPagePlayer = ({
           onVideoPlaybackRateChange(playbackRate);
           onVideoChange(startIndex);
           
-          // Attempt to play audio
+          // Attempt to play audio via AudioManager
           const attemptPlay = async () => {
-            try {
-              await currentAudio.play();
+            const success = await audioManager.play(currentAudio, 'main');
+            if (success) {
               console.log('✅ Audio playing successfully');
               
               // Set 35-second timer for next track
@@ -701,12 +638,12 @@ export const LandingPagePlayer = ({
               onCurrentTrackChange(firstTrack);
               console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
               isInitializingRef.current = false;
-            } catch (err) {
-              console.error('❌ Play failed:', err);
+            } else {
+              console.error('❌ Play failed, retrying...');
               // Retry after a short delay
               setTimeout(async () => {
-                try {
-                  await currentAudio.play();
+                const retrySuccess = await audioManager.play(currentAudio, 'main');
+                if (retrySuccess) {
                   console.log('✅ Playing after retry');
                   
                   // Set 35-second timer for next track
@@ -721,8 +658,8 @@ export const LandingPagePlayer = ({
                   onPlaybackStateChange(true);
                   onCurrentTrackChange(firstTrack);
                   isInitializingRef.current = false;
-                } catch (e) {
-                  console.error('❌ Retry failed:', e);
+                } else {
+                  console.error('❌ Retry failed');
                   onPlaybackStateChange(false);
                   isInitializingRef.current = false;
                   hasStartedPlaybackRef.current = false; // Allow retry
@@ -766,51 +703,33 @@ export const LandingPagePlayer = ({
     };
   }, [playNextTrack]);
 
-  // Cleanup - CRITICAL: Fully stop and clear all audio to prevent double playback
+  // Cleanup
   useEffect(() => {
-    // Store refs locally so cleanup can access them even after unmount
     const audio1 = audioRef1.current;
     const audio2 = audioRef2.current;
     const timerRef = trackTimerRef;
     
     return () => {
-      console.log('🧹 LandingPagePlayer cleanup: AGGRESSIVELY stopping all audio');
+      console.log('🧹 LandingPagePlayer cleanup');
       
-      // Clear timer first
+      // Clear timer
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = undefined;
       }
       
-      // Stop audio using stored refs
+      // Stop audio
       if (audio1) {
         audio1.pause();
         audio1.src = '';
-        audio1.currentTime = 0;
-        audio1.volume = 0;
       }
-      
       if (audio2) {
         audio2.pause();
         audio2.src = '';
-        audio2.currentTime = 0;
-        audio2.volume = 0;
       }
       
-      // NUCLEAR OPTION: Find and stop ALL audio elements on the page
-      const allAudioElements = document.querySelectorAll('audio');
-      allAudioElements.forEach((audio) => {
-        console.log('🔇 Force stopping audio element');
-        audio.pause();
-        audio.src = '';
-        audio.volume = 0;
-      });
-      
       // Clear global references
-      (window as any).__landingActiveAudio = null;
       (window as any).__skipLandingTrack = null;
-      
-      // Reset the playback started flag
       hasStartedPlaybackRef.current = false;
     };
   }, []);
