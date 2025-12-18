@@ -32,19 +32,13 @@ const MESSAGES: TextItem[] = [
     isLogo: true // Start with logo
   },
   { 
-    main: "Engineered for Purpose", 
+    main: "JUST RIGHT", 
     duration: 2000, 
     animation: 'fade',
     emphasis: false 
   },
   { 
-    main: "Music by award-winners", 
-    duration: 2000, 
-    animation: 'fade',
-    emphasis: false 
-  },
-  { 
-    main: "KOL Physician Leadership", 
+    main: "ON-DEMAND", 
     duration: 2000, 
     animation: 'fade',
     emphasis: false,
