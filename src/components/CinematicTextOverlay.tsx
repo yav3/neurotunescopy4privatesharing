@@ -12,9 +12,104 @@ const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
-// Module-level singleton to prevent duplicate audio from StrictMode
-let globalIntroAudio: HTMLAudioElement | null = null
-let hasInitializedIntro = false
+// Singleton audio management - ensures only one intro audio ever exists
+class IntroAudioManager {
+  private static instance: IntroAudioManager
+  private audio: HTMLAudioElement | null = null
+  private isPlaying = false
+
+  static getInstance(): IntroAudioManager {
+    if (!IntroAudioManager.instance) {
+      IntroAudioManager.instance = new IntroAudioManager()
+    }
+    return IntroAudioManager.instance
+  }
+
+  async play(): Promise<boolean> {
+    // Already playing - don't start another
+    if (this.isPlaying && this.audio && !this.audio.paused) {
+      console.log('🔒 Intro audio already playing, skipping')
+      return true
+    }
+
+    // Kill any existing audio first
+    this.stop()
+
+    console.log('🎵 Starting intro audio...')
+    this.audio = new Audio(INTRO_SONG_URL)
+    this.audio.volume = 0.5
+    this.audio.crossOrigin = 'anonymous'
+    this.audio.loop = false // Play once only
+    ;(window as any).__introAudio = this.audio
+
+    try {
+      await this.audio.play()
+      this.isPlaying = true
+      console.log('✅ Intro song playing')
+      return true
+    } catch (err) {
+      console.log('⚠️ Autoplay blocked:', err)
+      return false
+    }
+  }
+
+  stop() {
+    if (this.audio) {
+      this.audio.pause()
+      this.audio.src = ''
+      this.audio = null
+    }
+    this.isPlaying = false
+    ;(window as any).__introAudio = null
+  }
+
+  getAudio(): HTMLAudioElement | null {
+    return this.audio
+  }
+
+  setMuted(muted: boolean) {
+    if (this.audio) {
+      this.audio.muted = muted
+    }
+  }
+
+  syncToVideo(videoTime: number) {
+    if (this.audio && Math.abs(this.audio.currentTime - videoTime) > 0.5) {
+      this.audio.currentTime = videoTime
+    }
+  }
+
+  async fadeOut(duration: number = 500): Promise<void> {
+    return new Promise((resolve) => {
+      if (!this.audio || this.audio.paused) {
+        this.stop()
+        resolve()
+        return
+      }
+
+      const startVolume = this.audio.volume
+      const steps = 10
+      const stepTime = duration / steps
+      let step = 0
+      const audioToFade = this.audio
+
+      const fadeInterval = setInterval(() => {
+        step++
+        if (audioToFade) {
+          audioToFade.volume = Math.max(0, startVolume * (1 - step / steps))
+        }
+        if (step >= steps) {
+          clearInterval(fadeInterval)
+          this.stop()
+          resolve()
+        }
+      }, stepTime)
+    })
+  }
+}
+
+// Export manager instance for external use
+export const introAudioManager = IntroAudioManager.getInstance()
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -22,49 +117,21 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [showVideo, setShowVideo] = useState(true)
   const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const hasCompletedRef = useRef(false) // Prevent double completion
 
-  // Auto-start on mount - no click required
+  // Auto-start on mount
   useEffect(() => {
-    // Module-level guard prevents StrictMode double-init
-    if (hasInitializedIntro) {
-      console.log('🔒 Intro already initialized (module-level), skipping')
-      return
+    const startAudio = async () => {
+      const success = await introAudioManager.play()
+      if (!success) {
+        setAudioBlocked(true)
+      }
     }
-    
-    // Also check if audio is already playing
-    if (globalIntroAudio && !globalIntroAudio.paused) {
-      console.log('🔒 Intro audio already playing, skipping')
-      return
-    }
-    
-    hasInitializedIntro = true
-    console.log('🎵 Initializing intro audio...')
+    startAudio()
 
-    // Kill any existing intro audio first
-    if (globalIntroAudio) {
-      globalIntroAudio.pause()
-      globalIntroAudio.src = ''
-      globalIntroAudio = null
-    }
-    
-    // Create audio - plays once with the video, no looping
-    const audio = new Audio(INTRO_SONG_URL)
-    audio.volume = 0.5
-    audio.crossOrigin = 'anonymous'
-    audio.loop = false // Play once only
-    globalIntroAudio = audio
-    ;(window as any).__introAudio = audio
-    
-    // Play immediately
-    audio.play().then(() => {
-      console.log('✅ Intro song playing')
-    }).catch((err) => {
-      console.log('⚠️ Autoplay blocked:', err)
-      setAudioBlocked(true)
-    })
-
+    // Cleanup on unmount
     return () => {
-      // Don't cleanup - fadeOutIntroSong handles it
+      // Don't stop audio here - let fadeOutIntroSong handle it
     }
   }, [])
 
@@ -72,16 +139,18 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   useEffect(() => {
     if (!audioBlocked) return
 
-    const unlockAudio = () => {
-      if (globalIntroAudio && globalIntroAudio.paused) {
+    const unlockAudio = async () => {
+      const audio = introAudioManager.getAudio()
+      if (audio && audio.paused) {
         // Sync audio to video time
         if (videoRef.current) {
-          globalIntroAudio.currentTime = videoRef.current.currentTime
+          introAudioManager.syncToVideo(videoRef.current.currentTime)
         }
-        globalIntroAudio.play().then(() => {
+        try {
+          await audio.play()
           console.log('✅ Audio unlocked on interaction')
           setAudioBlocked(false)
-        }).catch(() => {})
+        } catch {}
       }
     }
 
@@ -100,11 +169,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   useEffect(() => {
     if (phase === 'focus' || phase === 'watching') {
       const video = videoRef.current
-      if (video && globalIntroAudio) {
+      if (video) {
         const handleTimeUpdate = () => {
-          if (globalIntroAudio && Math.abs(globalIntroAudio.currentTime - video.currentTime) > 0.5) {
-            globalIntroAudio.currentTime = video.currentTime
-          }
+          introAudioManager.syncToVideo(video.currentTime)
         }
         video.addEventListener('timeupdate', handleTimeUpdate)
         return () => video.removeEventListener('timeupdate', handleTimeUpdate)
@@ -113,7 +180,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }, [phase])
 
   const handleVideoEnded = () => {
-    // Audio already set to loop on creation - just hide video
+    // Prevent double-firing
+    if (hasCompletedRef.current) {
+      console.log('🔒 Video ended already handled, skipping')
+      return
+    }
+    hasCompletedRef.current = true
+
+    console.log('🎬 Video ended, transitioning to experience')
     
     setIsTextVisible(false)
     setShowVideo(false)
@@ -207,32 +281,5 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
 // Export fade function for use by parent
 export function fadeOutIntroSong(duration: number = 500): Promise<void> {
-  return new Promise((resolve) => {
-    if (!globalIntroAudio || globalIntroAudio.paused) {
-      resolve()
-      return
-    }
-    
-    const startVolume = globalIntroAudio.volume
-    const steps = 10
-    const stepTime = duration / steps
-    let step = 0
-    
-    const fadeInterval = setInterval(() => {
-      step++
-      if (globalIntroAudio) {
-        globalIntroAudio.volume = Math.max(0, startVolume * (1 - step / steps))
-      }
-      if (step >= steps) {
-        clearInterval(fadeInterval)
-        if (globalIntroAudio) {
-          globalIntroAudio.pause()
-          globalIntroAudio.src = ''
-          globalIntroAudio = null
-        }
-        ;(window as any).__introAudio = null
-        resolve()
-      }
-    }, stepTime)
-  })
+  return introAudioManager.fadeOut(duration)
 }
