@@ -22,68 +22,95 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const introAudioRef = useRef<HTMLAudioElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Start intro audio immediately on mount
+  // Start intro audio immediately on mount - singleton pattern to prevent duplicates
   useEffect(() => {
-    // Stop any existing intro audio first to prevent overlap
+    console.log('🎵 CinematicTextOverlay mount - checking for existing audio');
+    
+    // CRITICAL: Kill ALL existing audio elements on the page first
+    document.querySelectorAll('audio').forEach((audio) => {
+      console.log('🔇 Killing existing audio element');
+      audio.pause();
+      audio.src = '';
+      audio.volume = 0;
+    });
+    
+    // Also clear any global reference
     if ((window as any).__introAudio) {
-      const existingAudio = (window as any).__introAudio
-      existingAudio.pause()
-      existingAudio.src = ''
-      ;(window as any).__introAudio = null
+      console.log('🔇 Clearing existing __introAudio reference');
+      const existingAudio = (window as any).__introAudio;
+      existingAudio.pause();
+      existingAudio.src = '';
+      ;(window as any).__introAudio = null;
     }
     
-    const audio = new Audio(INTRO_AUDIO_URL)
-    audio.volume = 0.5
-    audio.crossOrigin = 'anonymous'
-    audio.loop = false
-    introAudioRef.current = audio
+    // Create new audio with unique ID for tracking
+    const audio = new Audio(INTRO_AUDIO_URL);
+    const audioId = Math.random().toString(36).substring(7);
+    console.log('🎵 Creating new intro audio:', audioId);
     
-    ;(window as any).__introAudio = audio
+    audio.volume = 0.5;
+    audio.crossOrigin = 'anonymous';
+    audio.loop = false;
+    introAudioRef.current = audio;
+    
+    ;(window as any).__introAudio = audio;
+    ;(window as any).__introAudioId = audioId;
     ;(window as any).__stopIntroAudio = () => {
+      console.log('🔇 __stopIntroAudio called');
+      // Kill ALL audio on page
+      document.querySelectorAll('audio').forEach((a) => {
+        a.pause();
+        a.src = '';
+        a.volume = 0;
+      });
       if (introAudioRef.current) {
-        introAudioRef.current.pause()
-        introAudioRef.current.src = ''
-        introAudioRef.current = null
+        introAudioRef.current.pause();
+        introAudioRef.current.src = '';
+        introAudioRef.current = null;
       }
-      ;(window as any).__introAudio = null
-      ;(window as any).__stopIntroAudio = null
-    }
+      ;(window as any).__introAudio = null;
+      ;(window as any).__stopIntroAudio = null;
+    };
     
     // Start playback immediately
     audio.play().then(() => {
-      console.log('✅ Intro audio started')
-      setAudioStarted(true)
+      console.log('✅ Intro audio playing:', audioId);
+      setAudioStarted(true);
     }).catch(err => {
-      console.log('⚠️ Intro audio autoplay blocked, will start on interaction:', err)
-    })
+      console.log('⚠️ Intro audio autoplay blocked:', audioId, err);
+    });
     
     // Fallback: start on first user interaction if autoplay blocked
     const startOnInteraction = () => {
       if (introAudioRef.current && introAudioRef.current.paused) {
         introAudioRef.current.play().then(() => {
-          setAudioStarted(true)
-        }).catch(() => {})
+          setAudioStarted(true);
+        }).catch(() => {});
       }
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
-    }
+      document.removeEventListener('click', startOnInteraction);
+      document.removeEventListener('touchstart', startOnInteraction);
+    };
     
-    document.addEventListener('click', startOnInteraction)
-    document.addEventListener('touchstart', startOnInteraction)
+    document.addEventListener('click', startOnInteraction);
+    document.addEventListener('touchstart', startOnInteraction);
     
     return () => {
-      // Clean up on unmount
-      if (introAudioRef.current) {
-        introAudioRef.current.pause()
-        introAudioRef.current.src = ''
-        introAudioRef.current = null
+      console.log('🔇 CinematicTextOverlay unmount - cleaning up audio:', audioId);
+      // Only clean up if this is still our audio
+      if ((window as any).__introAudioId === audioId) {
+        if (introAudioRef.current) {
+          introAudioRef.current.pause();
+          introAudioRef.current.src = '';
+          introAudioRef.current = null;
+        }
+        ;(window as any).__introAudio = null;
+        ;(window as any).__stopIntroAudio = null;
+        ;(window as any).__introAudioId = null;
       }
-      ;(window as any).__introAudio = null
-      ;(window as any).__stopIntroAudio = null
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
-    }
-  }, [])
+      document.removeEventListener('click', startOnInteraction);
+      document.removeEventListener('touchstart', startOnInteraction);
+    };
+  }, []);
 
   // Handle video end - transition to experience phase, then show play button after 2 seconds
   const handleVideoEnded = () => {
