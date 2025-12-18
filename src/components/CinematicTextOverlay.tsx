@@ -240,7 +240,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             }}
           >
             <h2
-              className="text-4xl md:text-6xl"
+              className="text-[7rem] md:text-[11rem]"
               style={{
                 color: '#e4e4e4',
                 letterSpacing: '0.05em',
