@@ -10,60 +10,79 @@ const INTRO_SONG_URL = '/audio/intro-focus.mp3'
 // Commercial video - MUTED (no voiceover)
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
-type Phase = 'ready' | 'focus' | 'watching' | 'experience' | 'complete'
+type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 // Singleton to prevent duplicate audio from StrictMode
 let globalIntroAudio: HTMLAudioElement | null = null
+let hasInitialized = false
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
-  const [phase, setPhase] = useState<Phase>('ready') // Start with click-to-start
+  const [phase, setPhase] = useState<Phase>('focus')
   const [isTextVisible, setIsTextVisible] = useState(true)
-  const [showVideo, setShowVideo] = useState(false)
+  const [showVideo, setShowVideo] = useState(true)
+  const [audioBlocked, setAudioBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const mountedRef = useRef(true)
 
-  // Cleanup on unmount
+  // Auto-start on mount - no click required
   useEffect(() => {
+    if (hasInitialized) return
+    hasInitialized = true
     mountedRef.current = true
-    return () => {
-      mountedRef.current = false
-    }
-  }, [])
 
-  // Start everything on user click - this ensures audio plays immediately
-  const handleStart = () => {
     // Kill any existing intro audio first
     if (globalIntroAudio) {
       globalIntroAudio.pause()
       globalIntroAudio.src = ''
     }
     
-    // Create and play audio IMMEDIATELY on user interaction
+    // Create audio
     const audio = new Audio(INTRO_SONG_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
     globalIntroAudio = audio
     ;(window as any).__introAudio = audio
     
-    // Play audio immediately (user interaction allows this)
+    // Attempt to play audio immediately
     audio.play().then(() => {
-      console.log('✅ Intro song playing immediately')
+      console.log('✅ Intro song auto-playing')
     }).catch((err) => {
-      console.log('⚠️ Intro song play failed:', err)
+      console.log('⚠️ Autoplay blocked, will start on interaction:', err)
+      setAudioBlocked(true)
     })
-    
-    // Show video and start it
-    setShowVideo(true)
-    setPhase('focus')
-    
-    // After a tick, start the video (it will sync with audio)
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.play()
-        ;(window as any).__introVideo = videoRef.current
+
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
+
+  // Handle first interaction to unlock audio if blocked
+  useEffect(() => {
+    if (!audioBlocked) return
+
+    const unlockAudio = () => {
+      if (globalIntroAudio && globalIntroAudio.paused) {
+        // Sync audio to video time
+        if (videoRef.current) {
+          globalIntroAudio.currentTime = videoRef.current.currentTime
+        }
+        globalIntroAudio.play().then(() => {
+          console.log('✅ Audio unlocked on interaction')
+          setAudioBlocked(false)
+        }).catch(() => {})
       }
-    }, 50)
-  }
+    }
+
+    document.addEventListener('click', unlockAudio, { once: true })
+    document.addEventListener('touchstart', unlockAudio, { once: true })
+    document.addEventListener('keydown', unlockAudio, { once: true })
+
+    return () => {
+      document.removeEventListener('click', unlockAudio)
+      document.removeEventListener('touchstart', unlockAudio)
+      document.removeEventListener('keydown', unlockAudio)
+    }
+  }, [audioBlocked])
 
   // Sync audio to video time
   useEffect(() => {
@@ -82,8 +101,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   }, [phase])
 
   const handleVideoEnded = () => {
-    // Don't pause intro audio - let it keep playing until user clicks play button
-    // Loop the audio so it continues playing
+    // Loop the audio so it continues playing until user clicks play button
     if (globalIntroAudio) {
       globalIntroAudio.loop = true
     }
@@ -125,10 +143,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ref={(el) => {
             videoRef.current = el
             if (el) {
-              el.muted = true // Programmatically set muted - more reliable than attribute
+              el.muted = true
               el.defaultMuted = true
+              // Auto-play video on mount
+              el.play().catch(() => {})
+              ;(window as any).__introVideo = el
             }
           }}
+          autoPlay
           muted
           playsInline
           onEnded={handleVideoEnded}
@@ -142,37 +164,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         className="relative z-10 text-center px-6 transition-opacity duration-500"
         style={{ opacity: isTextVisible ? 1 : 0 }}
       >
-        {/* Initial state - click to start */}
-        {phase === 'ready' && (
-          <button
-            onClick={handleStart}
-            className="group flex flex-col items-center gap-6 cursor-pointer"
-          >
-            <h1
-              className="text-3xl md:text-5xl lg:text-6xl transition-opacity duration-300 group-hover:opacity-80"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.06em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              Focus made easy
-            </h1>
-            <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/40 transition-all">
-              <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
-                <path d="M8 5v14l11-7z" fill="rgba(212,212,212,0.8)" />
-              </svg>
-            </div>
-            <p 
-              className="text-sm tracking-widest uppercase opacity-50 group-hover:opacity-70 transition-opacity"
-              style={{ color: '#a3a3a3' }}
-            >
-              Click to begin
-            </p>
-          </button>
-        )}
-
         {phase === 'focus' && (
           <h1
             className="text-3xl md:text-5xl lg:text-6xl"
