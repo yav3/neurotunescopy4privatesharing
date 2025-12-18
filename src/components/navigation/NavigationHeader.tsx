@@ -165,7 +165,7 @@ export const NavigationHeader = () => {
             to="/products/enterprise-wellness" 
             className="px-7 py-2.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-sm font-normal"
           >
-            Contact
+            Free Trial
           </Link>
         </div>
       </header>
@@ -278,7 +278,7 @@ export const NavigationHeader = () => {
             to="/products/enterprise-wellness" 
             className="px-3 py-1.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-[10px] font-normal"
           >
-            Contact
+            Free Trial
           </Link>
         </div>
       </header>
