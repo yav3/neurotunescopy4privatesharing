@@ -8,12 +8,11 @@ import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
 import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
-import { audioManager } from '@/utils/audioManager';
 
 const Index = () => {
   useWelcomeMessage();
   
-  const [isPlaying, setIsPlaying] = useState(false); // Wait for cinematic intro to complete
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isSpatialAudio, setIsSpatialAudio] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string } | null>(null);
@@ -27,6 +26,11 @@ const Index = () => {
   useEffect(() => {
     const handleHeaderMuteToggle = (e: CustomEvent) => {
       setIsMuted(e.detail.muted);
+      // Also mute/unmute intro video if it exists
+      const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+      if (introVideo) {
+        introVideo.muted = e.detail.muted;
+      }
     };
     window.addEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
     return () => window.removeEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
@@ -43,9 +47,28 @@ const Index = () => {
     }
   };
 
+  // Fade out intro video audio and transition to main player
+  const fadeOutIntroVideo = () => {
+    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+    if (introVideo && !introVideo.muted) {
+      // Fade out over 500ms
+      const startVolume = introVideo.volume;
+      const steps = 10;
+      let step = 0;
+      const fadeInterval = setInterval(() => {
+        step++;
+        introVideo.volume = Math.max(0, startVolume * (1 - step / steps));
+        if (step >= steps) {
+          clearInterval(fadeInterval);
+          introVideo.pause();
+        }
+      }, 50);
+    }
+  };
+
   const handlePlaySession = () => {
-    // Stop intro audio via AudioManager
-    audioManager.stopIntro();
+    // Fade out intro video audio
+    fadeOutIntroVideo();
     
     // Start crossfade transition
     setIsTransitioning(true);
@@ -58,10 +81,11 @@ const Index = () => {
     }, 1000);
   };
 
-  // Stop intro audio when user mutes
+  // Mute/unmute intro video when user toggles mute
   const handleMuteToggle = () => {
-    if (!isMuted) {
-      audioManager.stopIntro();
+    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+    if (introVideo) {
+      introVideo.muted = !isMuted;
     }
     setIsMuted(!isMuted);
   };

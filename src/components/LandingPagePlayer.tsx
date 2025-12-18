@@ -591,8 +591,11 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // Stop intro audio via AudioManager
-          audioManager.stopIntro();
+          // Stop intro video if still playing
+          const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+          if (introVideo) {
+            introVideo.pause();
+          }
           
           // Clear any existing timers
           if (trackTimerRef.current) {

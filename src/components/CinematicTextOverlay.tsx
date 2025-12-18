@@ -1,61 +1,38 @@
 import { useEffect, useState, useRef } from 'react'
-import { audioManager } from '@/utils/audioManager'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro audio - plays entire song until user navigates away
-const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
-
-// Commercial video (muted)
+// Commercial video WITH AUDIO - single source of truth
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
-// Text sequence phases - simplified: focus text briefly, then watch video, then experience
+// Text sequence phases
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
   const [isTextVisible, setIsTextVisible] = useState(true)
   const [showVideo, setShowVideo] = useState(true)
-  const [audioStarted, setAudioStarted] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const mountedRef = useRef(true)
 
-  // Start intro audio immediately on mount - using AudioManager's singleton intro audio
+  // Expose video element globally for sync/control from parent
   useEffect(() => {
     mountedRef.current = true
-    console.log('🎵 CinematicTextOverlay mount')
     
-    // Play intro via AudioManager (singleton - prevents duplicates)
-    audioManager.playIntro(INTRO_AUDIO_URL, 0.5).then((success) => {
-      if (mountedRef.current && success) {
-        setAudioStarted(true)
-      }
-    })
-    
-    // Fallback: retry on first user interaction if autoplay blocked
-    const startOnInteraction = () => {
-      audioManager.retryIntro().then((success) => {
-        if (success && mountedRef.current) setAudioStarted(true)
-      })
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
+    // Register the video element globally so Index can control/fade it
+    if (videoRef.current) {
+      (window as any).__introVideo = videoRef.current
     }
-    
-    document.addEventListener('click', startOnInteraction)
-    document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
       mountedRef.current = false
-      console.log('🔇 CinematicTextOverlay unmount')
-      document.removeEventListener('click', startOnInteraction)
-      document.removeEventListener('touchstart', startOnInteraction)
-      // AudioManager handles singleton intro - no cleanup needed here
+      ;(window as any).__introVideo = null
     }
   }, [])
 
-  // Handle video end - transition to experience phase, then show play button after 2 seconds
+  // Handle video end - transition to experience phase, then show play button
   const handleVideoEnded = () => {
     setIsTextVisible(false)
     setShowVideo(false)
@@ -74,9 +51,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }, 800)
   }
 
-  // Text sequence timing - "Focus made easy" for 2 seconds, then fade out and let video play
+  // Text sequence timing - "Focus made easy" for 2 seconds, then fade out
   useEffect(() => {
-    // Phase 1: "Focus made easy" - 2 seconds, then fade out
     const phase1Timer = setTimeout(() => {
       setIsTextVisible(false)
       setTimeout(() => {
@@ -89,7 +65,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [onComplete])
 
-  // After complete, return null to show the play button behind
   if (phase === 'complete') {
     return null
   }
@@ -98,12 +73,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <div 
       className="absolute inset-0 z-10 flex items-center justify-center bg-black transition-opacity duration-800"
     >
-      {/* Commercial video background - muted, full sharp focus */}
+      {/* Commercial video WITH AUDIO - single synced source */}
       {showVideo && (
         <video
           ref={videoRef}
           autoPlay
-          muted
           playsInline
           onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-cover"
