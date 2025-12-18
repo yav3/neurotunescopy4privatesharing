@@ -76,16 +76,15 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }, 800)
   }
 
-  // Text sequence timing - only "Focus made easy" for first 4 seconds, then let video play
+  // Text sequence timing - "Focus made easy" for 2 seconds, then fade out and let video play
   useEffect(() => {
-    // Phase 1: "Focus made easy" - 4 seconds, then fade out and let user watch
+    // Phase 1: "Focus made easy" - 2 seconds, then fade out
     const phase1Timer = setTimeout(() => {
       setIsTextVisible(false)
       setTimeout(() => {
         setPhase('watching')
-        // No text during watching phase - just the video
       }, 500)
-    }, 4000)
+    }, 2000)
 
     return () => {
       clearTimeout(phase1Timer)
