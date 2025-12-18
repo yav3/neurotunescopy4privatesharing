@@ -11,8 +11,8 @@ const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
 // Commercial video (muted)
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
 
-// Text sequence phases
-type Phase = 'focus' | 'usecases' | 'listen' | 'experience' | 'complete'
+// Text sequence phases - simplified: focus text briefly, then watch video, then experience
+type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<Phase>('focus')
@@ -65,50 +65,29 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [])
 
-  // Text sequence timing
+  // Handle video end - transition to experience phase
+  const handleVideoEnded = () => {
+    setIsTextVisible(false)
+    setShowVideo(false)
+    setTimeout(() => {
+      setPhase('experience')
+      setIsTextVisible(true)
+    }, 800)
+  }
+
+  // Text sequence timing - only "Focus made easy" for first 4 seconds, then let video play
   useEffect(() => {
-    // Phase 1: "Focus made easy" - 3 seconds
+    // Phase 1: "Focus made easy" - 4 seconds, then fade out and let user watch
     const phase1Timer = setTimeout(() => {
       setIsTextVisible(false)
       setTimeout(() => {
-        setPhase('usecases')
-        setIsTextVisible(true)
+        setPhase('watching')
+        // No text during watching phase - just the video
       }, 500)
-    }, 3000)
-
-    // Phase 2: Use cases - 4 seconds
-    const phase2Timer = setTimeout(() => {
-      setIsTextVisible(false)
-      setTimeout(() => {
-        setPhase('listen')
-        setIsTextVisible(true)
-      }, 500)
-    }, 7500)
-
-    // Phase 3: "Listen Now" - 3 seconds, then fade to black with "Experience Now"
-    const phase3Timer = setTimeout(() => {
-      setIsTextVisible(false)
-      setShowVideo(false) // Fade video to black
-      setTimeout(() => {
-        setPhase('experience')
-        setIsTextVisible(true)
-      }, 800)
-    }, 11000)
-
-    // Phase 4: "Experience Now" - 3 seconds, then complete (show play button)
-    const phase4Timer = setTimeout(() => {
-      setIsTextVisible(false)
-      setTimeout(() => {
-        setPhase('complete')
-        onComplete?.()
-      }, 800)
-    }, 15000)
+    }, 4000)
 
     return () => {
       clearTimeout(phase1Timer)
-      clearTimeout(phase2Timer)
-      clearTimeout(phase3Timer)
-      clearTimeout(phase4Timer)
     }
   }, [onComplete])
 
@@ -156,8 +135,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ref={videoRef}
           autoPlay
           muted
-          loop
           playsInline
+          onEnded={handleVideoEnded}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-800"
           style={{ opacity: 0.7 }}
         >
@@ -188,57 +167,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           </h1>
         )}
 
-        {/* Phase 2: Use cases */}
-        {phase === 'usecases' && (
-          <div className="flex flex-col gap-3">
-            <h2
-              className="text-2xl md:text-4xl lg:text-5xl"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.08em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              Focus | Relax | Reset
-            </h2>
-            <p
-              className="text-lg md:text-2xl"
-              style={{
-                color: 'rgba(212, 212, 212, 0.6)',
-                letterSpacing: '0.12em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 200,
-              }}
-            >
-              on-demand
-            </p>
-          </div>
-        )}
+        {/* Watching phase - no text, just the video */}
+        {phase === 'watching' && null}
 
-        {/* Phase 3: Listen Now */}
-        {phase === 'listen' && (
-          <div className="flex items-center gap-4">
-            <img 
-              src={neuralpositiveLogoObsidian} 
-              alt="Neurotunes"
-              className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain"
-            />
-            <span
-              className="text-2xl md:text-4xl lg:text-5xl"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.1em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 200,
-              }}
-            >
-              Listen Now
-            </span>
-          </div>
-        )}
-
-        {/* Phase 4: Experience Now - on black background */}
+        {/* Experience Now - on black background after video ends */}
         {phase === 'experience' && (
           <h1
             className="text-3xl md:text-5xl lg:text-6xl"
