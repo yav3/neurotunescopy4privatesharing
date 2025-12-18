@@ -72,6 +72,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     setTimeout(() => {
       setPhase('experience')
       setIsTextVisible(true)
+      // NOTE: Audio keeps playing until user clicks - it will be stopped by the parent via __stopIntroAudio
     }, 800)
   }
 
