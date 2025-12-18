@@ -26,6 +26,7 @@ interface LandingPagePlayerProps {
 
 const TRACK_DURATION = 35000; // 35 seconds
 const CROSSFADE_DURATION = 2000; // 2 seconds
+const FADE_IN_DURATION = 1500; // 1.5 seconds fade-in for first track
 
 // Direct URLs for audio tracks - now with expanded video rotation
 const CURATED_PLAYLIST = [
@@ -611,9 +612,12 @@ export const LandingPagePlayer = ({
           // Now set up the first track on the active audio element
           currentAudio.muted = false;
           currentAudio.src = firstTrack.src;
-          currentAudio.volume = isMuted ? 0 : 0.6;
+          currentAudio.volume = 0; // Start at 0 for fade-in
           currentAudio.crossOrigin = 'anonymous';
           currentAudio.preload = 'auto';
+          
+          // Target volume for fade-in
+          const targetVolume = isMuted ? 0 : 0.6;
           
           // Set the track and video indices to startIndex (both state and ref)
           currentTrackIndexRef.current = startIndex;
@@ -626,11 +630,26 @@ export const LandingPagePlayer = ({
           onVideoPlaybackRateChange(playbackRate);
           onVideoChange(startIndex);
           
-          // Attempt to play audio via AudioManager
+          // Attempt to play audio via AudioManager with fade-in
           const attemptPlay = async () => {
             const success = await audioManager.play(currentAudio, 'main');
             if (success) {
-              console.log('✅ Audio playing successfully');
+              console.log('✅ Audio playing successfully, starting fade-in');
+              
+              // Fade in the audio
+              const fadeSteps = 15;
+              const fadeStepTime = FADE_IN_DURATION / fadeSteps;
+              let step = 0;
+              const fadeInInterval = setInterval(() => {
+                step++;
+                if (currentAudio) {
+                  currentAudio.volume = Math.min(targetVolume, (step / fadeSteps) * targetVolume);
+                }
+                if (step >= fadeSteps) {
+                  clearInterval(fadeInInterval);
+                  console.log('✅ Fade-in complete');
+                }
+              }, fadeStepTime);
               
               // Set 35-second timer for next track
               if (trackTimerRef.current) {

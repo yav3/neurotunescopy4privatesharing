@@ -4,8 +4,8 @@ interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Intro song - plays synced with video
-const INTRO_SONG_URL = '/audio/intro-focus.mp3'
+// Intro song - plays until user starts the experience
+const INTRO_SONG_URL = '/audio/intro-relaxation.mp3'
 
 // Commercial video - MUTED (no voiceover)
 const COMMERCIAL_VIDEO = '/videos/landing-commercial.mp4'
