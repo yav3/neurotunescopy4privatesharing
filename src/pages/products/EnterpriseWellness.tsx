@@ -130,6 +130,95 @@ export default function EnterpriseWellness() {
           </div>
         </section>
 
+        {/* Free Trial CTA - Moved to top */}
+        <section className="relative py-8 px-6">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              className="relative rounded-3xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06))',
+                border: '2px solid rgba(255, 255, 255, 0.25)',
+                boxShadow: '0 0 60px rgba(255, 255, 255, 0.15), inset 0 0 40px rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <div className="relative z-10 p-10 text-center">
+                <h2 
+                  className="text-3xl lg:text-4xl font-light mb-4"
+                  style={{ color: 'rgba(255, 255, 255, 0.98)' }}
+                >
+                  Ready to transform your workplace?
+                </h2>
+
+                <p 
+                  className="text-base mb-8 max-w-2xl mx-auto"
+                  style={{ color: 'rgba(255, 255, 255, 0.75)' }}
+                >
+                  Reach out to discuss pricing and see the impact on your team's wellness
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    to="/products/enterprise-wellness/trial"
+                    className="group relative px-10 py-4 rounded-full text-lg transition-all duration-300"
+                    style={{
+                      background: '#000000',
+                      color: '#c0c0c0',
+                      border: '1px solid rgba(192, 192, 192, 0.3)',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
+                      fontWeight: 400,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                      e.currentTarget.style.background = '#0a0a0a';
+                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.background = '#000000';
+                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.3)';
+                    }}
+                  >
+                    <span className="flex items-center gap-2 justify-center">
+                      Start Free Trial
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                  
+                  <button
+                    onClick={() => setContactOpen(true)}
+                    className="px-10 py-4 rounded-full text-lg transition-all duration-300"
+                    style={{
+                      background: 'transparent',
+                      color: '#c0c0c0',
+                      border: '1px solid rgba(192, 192, 192, 0.2)',
+                      fontWeight: 400,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.2)';
+                    }}
+                  >
+                    Contact Sales
+                  </button>
+                </div>
+              </div>
+
+              <div 
+                className="absolute inset-0 opacity-30"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), transparent 70%)',
+                  animation: 'pulse-soft 3s ease-in-out infinite',
+                }}
+              />
+            </motion.div>
+          </div>
+        </section>
+
         {/* About NeuroTunes */}
         <section className="relative py-6 px-6">
           <div className="max-w-5xl mx-auto">
@@ -313,95 +402,6 @@ export default function EnterpriseWellness() {
                 );
               })}
             </div>
-          </div>
-        </section>
-
-        {/* Free Trial CTA */}
-        <section className="relative py-8 px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              className="relative rounded-3xl overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06))',
-                border: '2px solid rgba(255, 255, 255, 0.25)',
-                boxShadow: '0 0 60px rgba(255, 255, 255, 0.15), inset 0 0 40px rgba(255, 255, 255, 0.05)',
-              }}
-            >
-              <div className="relative z-10 p-10 text-center">
-                <h2 
-                  className="text-3xl lg:text-4xl font-light mb-4"
-                  style={{ color: 'rgba(255, 255, 255, 0.98)' }}
-                >
-                  Ready to transform your workplace?
-                </h2>
-
-                <p 
-                  className="text-base mb-8 max-w-2xl mx-auto"
-                  style={{ color: 'rgba(255, 255, 255, 0.75)' }}
-                >
-                  Reach out to discuss pricing and see the impact on your team's wellness
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/products/enterprise-wellness/trial"
-                    className="group relative px-10 py-4 rounded-full text-lg transition-all duration-300"
-                    style={{
-                      background: '#000000',
-                      color: '#c0c0c0',
-                      border: '1px solid rgba(192, 192, 192, 0.3)',
-                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
-                      fontWeight: 400,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                      e.currentTarget.style.background = '#0a0a0a';
-                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.5)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.background = '#000000';
-                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.3)';
-                    }}
-                  >
-                    <span className="flex items-center gap-2 justify-center">
-                      Start Free Trial
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </Link>
-                  
-                  <button
-                    onClick={() => setContactOpen(true)}
-                    className="px-10 py-4 rounded-full text-lg transition-all duration-300"
-                    style={{
-                      background: 'transparent',
-                      color: '#c0c0c0',
-                      border: '1px solid rgba(192, 192, 192, 0.2)',
-                      fontWeight: 400,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.4)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'rgba(192, 192, 192, 0.2)';
-                    }}
-                  >
-                    Contact Sales
-                  </button>
-                </div>
-              </div>
-
-              <div 
-                className="absolute inset-0 opacity-30"
-                style={{
-                  background: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15), transparent 70%)',
-                  animation: 'pulse-soft 3s ease-in-out infinite',
-                }}
-              />
-            </motion.div>
           </div>
         </section>
 
