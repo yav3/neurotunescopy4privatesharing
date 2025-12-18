@@ -8,6 +8,7 @@ import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
 import { CinematicTextOverlay } from '@/components/CinematicTextOverlay';
+import { audioManager } from '@/utils/audioManager';
 
 const Index = () => {
   useWelcomeMessage();
@@ -43,26 +44,8 @@ const Index = () => {
   };
 
   const handlePlaySession = () => {
-    // CRITICAL: Stop ALL audio on the page before starting main playback
-    // First try the graceful stop
-    if ((window as any).__stopIntroAudio) {
-      (window as any).__stopIntroAudio();
-    }
-    
-    // Then kill any remaining audio elements
-    document.querySelectorAll('audio').forEach((audio) => {
-      audio.pause();
-      audio.src = '';
-      audio.volume = 0;
-    });
-    
-    // Clear the global reference
-    if ((window as any).__introAudio) {
-      const introAudio = (window as any).__introAudio;
-      introAudio.pause();
-      introAudio.src = '';
-      ;(window as any).__introAudio = null;
-    }
+    // Stop intro audio via AudioManager
+    audioManager.stopIntro();
     
     // Start crossfade transition
     setIsTransitioning(true);
@@ -77,8 +60,8 @@ const Index = () => {
 
   // Stop intro audio when user mutes
   const handleMuteToggle = () => {
-    if (!isMuted && (window as any).__stopIntroAudio) {
-      (window as any).__stopIntroAudio();
+    if (!isMuted) {
+      audioManager.stopIntro();
     }
     setIsMuted(!isMuted);
   };
