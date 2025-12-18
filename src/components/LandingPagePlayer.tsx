@@ -628,9 +628,13 @@ export const LandingPagePlayer = ({
         if (currentAudio && firstVideo) {
           console.log('🎵 Starting first playback:', firstTrack.name);
           
-          // CRITICAL: Stop intro audio first
-          if ((window as any).__introAudio) {
-            console.log('🔇 Stopping intro audio before main playback');
+          // CRITICAL: Stop intro audio first using the proper fade-out function
+          if ((window as any).__stopIntroAudio) {
+            console.log('🔇 Fading out intro audio before main playback');
+            (window as any).__stopIntroAudio();
+          } else if ((window as any).__introAudio) {
+            // Fallback: directly stop if fade function not available
+            console.log('🔇 Stopping intro audio directly before main playback');
             const introAudio = (window as any).__introAudio;
             introAudio.pause();
             introAudio.src = '';
