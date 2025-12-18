@@ -560,14 +560,10 @@ export const LandingPagePlayer = ({
     }, TRACK_DURATION);
   }, [isPlaying, tracks, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
-  // Track if we're currently initializing to prevent double-play
-  const isInitializingRef = useRef(false);
-
   // Handle play/pause - directly triggered from user interaction
   // CRITICAL: Only depend on isPlaying to prevent re-triggering on other state changes
   useEffect(() => {
     const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    const otherAudio = activeAudioRef === 1 ? audioRef2.current : audioRef1.current;
     
     // Guard: Don't attempt playback if tracks not loaded yet
     if (tracks.length === 0 || videos.length === 0) {
@@ -581,124 +577,111 @@ export const LandingPagePlayer = ({
         console.log('🔒 Main playback already started (module-level), skipping');
         return;
       }
+      hasStartedMainPlayback = true;
       
-      if (!isInitializingRef.current) {
-        // First play - set up audio and video
-        isInitializingRef.current = true;
-        hasStartedMainPlayback = true;
+      // Start from track 0
+      const startIndex = 0;
+      const firstTrack = tracks[startIndex];
+      const firstVideo = videos[startIndex];
+      if (currentAudio && firstVideo) {
+        console.log('🎵 Starting first playback:', firstTrack.name);
         
-        // Start from track 0
-        const startIndex = 0;
-        const firstTrack = tracks[startIndex];
-        const firstVideo = videos[startIndex];
-        if (currentAudio && firstVideo) {
-          console.log('🎵 Starting first playback:', firstTrack.name);
-          
-          // Stop intro audio and video if still playing
-          const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
-          if (introAudio) {
-            introAudio.pause();
-            introAudio.src = '';
-          }
-          const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
-          if (introVideo) {
-            introVideo.pause();
-          }
-          
-          // Clear any existing timers
-          if (trackTimerRef.current) {
-            clearTimeout(trackTimerRef.current);
-            trackTimerRef.current = undefined;
-          }
-          
-          // Now set up the first track on the active audio element
-          currentAudio.muted = false;
-          currentAudio.src = firstTrack.src;
-          currentAudio.volume = 0; // Start at 0 for fade-in
-          currentAudio.crossOrigin = 'anonymous';
-          currentAudio.preload = 'auto';
-          
-          // Target volume for fade-in
-          const targetVolume = isMuted ? 0 : 0.6;
-          
-          // Set the track and video indices to startIndex (both state and ref)
-          currentTrackIndexRef.current = startIndex;
-          currentVideoIndexRef.current = startIndex;
-          setCurrentTrackIndex(startIndex);
-          setCurrentVideoIndex(startIndex);
-          
-          // Trigger video via callback
-          const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
-          onVideoPlaybackRateChange(playbackRate);
-          onVideoChange(startIndex);
-          
-          // Attempt to play audio via AudioManager with fade-in
-          const attemptPlay = async () => {
-            const success = await audioManager.play(currentAudio, 'main');
-            if (success) {
-              console.log('✅ Audio playing successfully, starting fade-in');
-              
-              // Fade in the audio
-              const fadeSteps = 15;
-              const fadeStepTime = FADE_IN_DURATION / fadeSteps;
-              let step = 0;
-              const fadeInInterval = setInterval(() => {
-                step++;
-                if (currentAudio) {
-                  currentAudio.volume = Math.min(targetVolume, (step / fadeSteps) * targetVolume);
-                }
-                if (step >= fadeSteps) {
-                  clearInterval(fadeInInterval);
-                  console.log('✅ Fade-in complete');
-                }
-              }, fadeStepTime);
-              
-              // Set 35-second timer for next track
-              if (trackTimerRef.current) {
-                clearTimeout(trackTimerRef.current);
-              }
-              trackTimerRef.current = setTimeout(() => {
-                console.log('⏰ 35-second timer expired, advancing to next track');
-                playNextTrack();
-              }, TRACK_DURATION);
-              console.log('⏰ 35-second timer set');
-              
-              onPlaybackStateChange(true);
-              onCurrentTrackChange(firstTrack);
-              console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
-              isInitializingRef.current = false;
-            } else {
-              console.error('❌ Play failed, retrying...');
-              // Retry after a short delay
-              setTimeout(async () => {
-                const retrySuccess = await audioManager.play(currentAudio, 'main');
-                if (retrySuccess) {
-                  console.log('✅ Playing after retry');
-                  
-                  // Set 35-second timer for next track
-                  if (trackTimerRef.current) {
-                    clearTimeout(trackTimerRef.current);
-                  }
-                  trackTimerRef.current = setTimeout(() => {
-                    console.log('⏰ 35-second timer expired, advancing to next track');
-                    playNextTrack();
-                  }, TRACK_DURATION);
-                  
-                  onPlaybackStateChange(true);
-                  onCurrentTrackChange(firstTrack);
-                  isInitializingRef.current = false;
-                } else {
-                  console.error('❌ Retry failed');
-                  onPlaybackStateChange(false);
-                  isInitializingRef.current = false;
-                  hasStartedMainPlayback = false; // Allow retry
-                }
-              }, 100);
-            }
-          };
-          
-          attemptPlay();
+        // Stop intro video if still playing
+        const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
+        if (introVideo) {
+          introVideo.pause();
         }
+        
+        // Clear any existing timers
+        if (trackTimerRef.current) {
+          clearTimeout(trackTimerRef.current);
+          trackTimerRef.current = undefined;
+        }
+        
+        // Now set up the first track on the active audio element
+        currentAudio.muted = false;
+        currentAudio.src = firstTrack.src;
+        currentAudio.volume = 0; // Start at 0 for fade-in
+        currentAudio.crossOrigin = 'anonymous';
+        currentAudio.preload = 'auto';
+        
+        // Target volume for fade-in
+        const targetVolume = isMuted ? 0 : 0.6;
+        
+        // Set the track and video indices to startIndex (both state and ref)
+        currentTrackIndexRef.current = startIndex;
+        currentVideoIndexRef.current = startIndex;
+        setCurrentTrackIndex(startIndex);
+        setCurrentVideoIndex(startIndex);
+        
+        // Trigger video via callback
+        const playbackRate = getPlaybackRate(firstTrack.estimatedBPM);
+        onVideoPlaybackRateChange(playbackRate);
+        onVideoChange(startIndex);
+        
+        // Attempt to play audio via AudioManager with fade-in
+        const attemptPlay = async () => {
+          const success = await audioManager.play(currentAudio, 'main');
+          if (success) {
+            console.log('✅ Audio playing successfully, starting fade-in');
+            
+            // Fade in the audio
+            const fadeSteps = 15;
+            const fadeStepTime = FADE_IN_DURATION / fadeSteps;
+            let step = 0;
+            const fadeInInterval = setInterval(() => {
+              step++;
+              if (currentAudio) {
+                currentAudio.volume = Math.min(targetVolume, (step / fadeSteps) * targetVolume);
+              }
+              if (step >= fadeSteps) {
+                clearInterval(fadeInInterval);
+                console.log('✅ Fade-in complete');
+              }
+            }, fadeStepTime);
+            
+            // Set 35-second timer for next track
+            if (trackTimerRef.current) {
+              clearTimeout(trackTimerRef.current);
+            }
+            trackTimerRef.current = setTimeout(() => {
+              console.log('⏰ 35-second timer expired, advancing to next track');
+              playNextTrack();
+            }, TRACK_DURATION);
+            console.log('⏰ 35-second timer set');
+            
+            onPlaybackStateChange(true);
+            onCurrentTrackChange(firstTrack);
+            console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
+          } else {
+            console.error('❌ Play failed, retrying...');
+            // Retry after a short delay
+            setTimeout(async () => {
+              const retrySuccess = await audioManager.play(currentAudio, 'main');
+              if (retrySuccess) {
+                console.log('✅ Playing after retry');
+                
+                // Set 35-second timer for next track
+                if (trackTimerRef.current) {
+                  clearTimeout(trackTimerRef.current);
+                }
+                trackTimerRef.current = setTimeout(() => {
+                  console.log('⏰ 35-second timer expired, advancing to next track');
+                  playNextTrack();
+                }, TRACK_DURATION);
+                
+                onPlaybackStateChange(true);
+                onCurrentTrackChange(firstTrack);
+              } else {
+                console.error('❌ Retry failed');
+                onPlaybackStateChange(false);
+                hasStartedMainPlayback = false; // Allow retry
+              }
+            }, 100);
+          }
+        };
+        
+        attemptPlay();
       }
     } else {
       console.log('⏸️ Pausing playback...');
