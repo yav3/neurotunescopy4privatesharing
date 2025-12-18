@@ -23,18 +23,42 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
   // Start intro audio on mount - plays entire song until navigation
+  // Use a ref to track if we've already started to prevent double-play from StrictMode
+  const hasStartedRef = useRef(false)
+  
   useEffect(() => {
+    // Prevent double initialization from React StrictMode
+    if (hasStartedRef.current) {
+      return
+    }
+    hasStartedRef.current = true
+    
+    // Stop any existing intro audio first
+    if ((window as any).__introAudio) {
+      const existingAudio = (window as any).__introAudio
+      existingAudio.pause()
+      existingAudio.src = ''
+    }
+    
     const audio = new Audio(INTRO_AUDIO_URL)
     audio.volume = 0.5
     audio.crossOrigin = 'anonymous'
-    audio.loop = false // Play entire song once
+    audio.loop = false
     introAudioRef.current = audio
     
     ;(window as any).__introAudio = audio
-    ;(window as any).__stopIntroAudio = () => fadeOutIntroAudio()
+    ;(window as any).__stopIntroAudio = () => {
+      if (introAudioRef.current) {
+        introAudioRef.current.pause()
+        introAudioRef.current.src = ''
+        introAudioRef.current = null
+      }
+      ;(window as any).__introAudio = null
+      ;(window as any).__stopIntroAudio = null
+    }
     
     audio.play().then(() => {
-      console.log('✅ Intro audio autoplay succeeded')
+      console.log('✅ Intro audio started')
       setAudioStarted(true)
     }).catch(err => {
       console.log('⚠️ Intro audio autoplay blocked:', err)
@@ -54,12 +78,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     document.addEventListener('touchstart', startOnInteraction)
     
     return () => {
-      // Only stop audio when navigating away
-      audio.pause()
-      audio.src = ''
-      audio.volume = 0
-      ;(window as any).__introAudio = null
-      ;(window as any).__stopIntroAudio = null
       document.removeEventListener('click', startOnInteraction)
       document.removeEventListener('touchstart', startOnInteraction)
     }
