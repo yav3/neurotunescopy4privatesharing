@@ -59,75 +59,35 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Line 1: Feel BETTER */}
+          {/* Line 1: Feel BETTER + on demand */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="mb-4"
+            className="mb-3"
           >
             <h1
-              className="text-4xl md:text-6xl lg:text-7xl"
+              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
               style={{
-                color: '#e5e5e5',
-                letterSpacing: '-0.02em',
+                color: '#d4d4d4',
+                letterSpacing: '0.02em',
                 fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                 fontWeight: 300,
               }}
             >
-              Feel BETTER
+              Feel BETTER,
             </h1>
-          </motion.div>
-
-          {/* Line 2: Infinity logo + on demand */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center gap-4 mb-16"
-          >
-            <img
-              src={focusLogo}
-              alt="Focus"
-              className="h-8 md:h-10 lg:h-12"
-            />
-            <span
-              className="text-3xl md:text-5xl lg:text-6xl"
+            <h1
+              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
               style={{
-                color: '#e5e5e5',
-                letterSpacing: '-0.02em',
+                color: '#d4d4d4',
+                letterSpacing: '0.02em',
                 fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                 fontWeight: 300,
               }}
             >
               on demand
-            </span>
-          </motion.div>
-
-          {/* Institution logos - stacked vertically */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="flex flex-col gap-6"
-          >
-            <div className="flex items-center gap-6">
-              <img
-                src={jacobsTechnion}
-                alt="Jacobs Technion-Cornell Institute"
-                className="h-10 md:h-12 lg:h-14 brightness-0 invert opacity-70"
-              />
-              <img
-                src={stanfordMedicine}
-                alt="Stanford Medicine"
-                className="h-10 md:h-12 lg:h-14 opacity-90"
-              />
-            </div>
-            <img
-              src={weillCornell}
-              alt="Weill Cornell Medicine"
-              className="h-10 md:h-12 lg:h-14 brightness-0 invert opacity-70"
-            />
+            </h1>
           </motion.div>
         </motion.div>
 
@@ -148,6 +108,50 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           />
         </motion.div>
 
+        {/* Bottom: Logo + supported by + Institution logos */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: phase === 'intro' ? 1 : 0, 
+            y: phase === 'intro' ? 0 : 20 
+          }}
+          transition={{ delay: 0.9, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-6 md:gap-8"
+        >
+          <img
+            src={focusLogo}
+            alt="Neurotunes"
+            className="h-6 md:h-8"
+          />
+          <span
+            className="text-sm opacity-50"
+            style={{
+              color: '#d4d4d4',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 300,
+            }}
+          >
+            supported by
+          </span>
+          <div className="flex items-center gap-6 md:gap-8 opacity-50">
+            <img
+              src={jacobsTechnion}
+              alt="Jacobs Technion-Cornell Institute"
+              className="h-6 md:h-8 brightness-0 invert"
+            />
+            <img
+              src={stanfordMedicine}
+              alt="Stanford Medicine"
+              className="h-6 md:h-8 brightness-0 invert"
+              style={{ transform: 'scale(1.4)' }}
+            />
+            <img
+              src={weillCornell}
+              alt="Weill Cornell Medicine"
+              className="h-6 md:h-8 brightness-0 invert"
+            />
+          </div>
+        </motion.div>
 
         {/* Particle swirl effect */}
         {phase === 'fading' && (

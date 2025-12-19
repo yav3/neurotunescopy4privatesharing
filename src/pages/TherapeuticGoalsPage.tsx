@@ -11,7 +11,7 @@ import { WelcomeBox } from '@/components/WelcomeBox';
 
 import { cn } from '@/lib/utils';
 import { useDarkMode } from '@/hooks/useDarkMode';
-
+import { useWelcomeMessage } from '@/hooks/useWelcomeMessage';
 import { usePostSessionSurvey } from '@/hooks/usePostSessionSurvey';
 import { PostSessionSurvey } from '@/components/surveys/PostSessionSurvey';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
@@ -128,6 +128,8 @@ const TherapeuticGoalsPage = () => {
   const [showNatureCards, setShowNatureCards] = useState(false);
   
   
+  // Welcome returning users
+  useWelcomeMessage();
   
   // Post-session survey
   const { showSurvey, closeSurvey } = usePostSessionSurvey();
