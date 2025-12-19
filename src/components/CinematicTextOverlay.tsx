@@ -142,7 +142,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 Feel BETTER,
               </h1>
               {/* "on demand" with play button inline */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 mt-2 md:mt-3">
                 <h1
                   className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
                   style={{
