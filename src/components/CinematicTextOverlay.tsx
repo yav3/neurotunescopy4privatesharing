@@ -77,58 +77,51 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             Feel BETTER, on demand
           </motion.h1>
 
-          {/* Line 2: Logo + Neurotunes music engine - aligned to start of line 1 */}
-          {/* Line 2: Logo + music engine text */}
+          {/* Line 2: Logo + music engine + institution logos */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center"
+            className="flex items-center justify-between w-full"
           >
-            <img
-              src={focusLogo}
-              alt="Focus"
-              className="h-7 md:h-10 lg:h-11"
-            />
-            <span
-              className="text-xl md:text-3xl lg:text-4xl"
-              style={{
-                background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                letterSpacing: '0.02em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              music engine
-            </span>
-          </motion.div>
-
-          {/* Line 3: Institution logos */}
-          {/* Line 3: Institution logos */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center gap-6 md:gap-8 mt-8 opacity-50"
-          >
-            <img
-              src={jacobsTechnion}
-              alt="Jacobs Technion-Cornell Institute"
-              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
-            />
-            <img
-              src={stanfordMedicine}
-              alt="Stanford Medicine"
-              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
-            />
-            <img
-              src={weillCornell}
-              alt="Weill Cornell Medicine"
-              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
-            />
+            <div className="flex items-center">
+              <img
+                src={focusLogo}
+                alt="Focus"
+                className="h-7 md:h-10 lg:h-11"
+              />
+              <span
+                className="text-xl md:text-3xl lg:text-4xl"
+                style={{
+                  background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  letterSpacing: '0.02em',
+                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                  fontWeight: 300,
+                }}
+              >
+                music engine
+              </span>
+            </div>
+            <div className="flex items-center gap-4 md:gap-5 opacity-50">
+              <img
+                src={jacobsTechnion}
+                alt="Jacobs Technion-Cornell Institute"
+                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+              />
+              <img
+                src={stanfordMedicine}
+                alt="Stanford Medicine"
+                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+              />
+              <img
+                src={weillCornell}
+                alt="Weill Cornell Medicine"
+                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+              />
+            </div>
           </motion.div>
         </motion.div>
 
