@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Code, Smartphone, Car, Plane, Home, Watch, ArrowRight, ChevronLeft, ChevronRight, Layers, Database, Palette, Handshake } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 import restOnDemandImage from "@/assets/rest-on-demand-in-flight.png";
+import pedestalPhonesImage from "@/assets/pedestal-phones.jpeg";
 export default function Partnerships() {
   const [contactOpen, setContactOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -93,28 +94,18 @@ export default function Partnerships() {
               White-label, OEM, and API solutions for wellness platforms and tech companies
             </motion.p>
 
-            {/* In-Flight Example Image */}
+            {/* Pedestal Phones Hero Image */}
             <motion.div
-              className="max-w-md mx-auto mb-4"
+              className="max-w-2xl mx-auto mb-6"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
             >
               <img 
-                src={restOnDemandImage} 
-                alt="Rest on demand - In-flight passenger wellness experience" 
-                className="w-full h-auto rounded-xl"
-                style={{ 
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
-                }}
+                src={pedestalPhonesImage} 
+                alt="NeuroTunes app showcasing wellness features on mobile devices" 
+                className="w-full h-auto"
               />
-              <p 
-                className="text-xs mt-2 text-center"
-                style={{ color: 'rgba(255, 255, 255, 0.40)' }}
-              >
-                In-flight wellness integration example
-              </p>
             </motion.div>
           </div>
         </section>
