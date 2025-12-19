@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
 import { toast } from "sonner";
-import freeSubPromo from "@/assets/free-sub-promo.png";
+
 
 export default function EnterpriseWellness() {
   const [searchParams] = useSearchParams();
@@ -179,19 +179,6 @@ export default function EnterpriseWellness() {
               </motion.div>
             )}
 
-            {/* Promo Image */}
-            <motion.div
-              className="mt-12"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <img 
-                src={freeSubPromo} 
-                alt="First 500 Lovable users get a free sub - Use code LOVABLE at checkout" 
-                className="max-w-full md:max-w-2xl mx-auto rounded-2xl"
-              />
-            </motion.div>
 
             <motion.button
               onClick={() => setContactOpen(true)}
