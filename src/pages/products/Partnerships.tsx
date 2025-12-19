@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Code, Smartphone, Car, Plane, Home, Watch, ArrowRight, ChevronLeft, ChevronRight, Layers, Database, Palette, Handshake } from "lucide-react";
 import { FooterContactHandler } from "@/components/FooterContactHandler";
-
+import restOnDemandImage from "@/assets/rest-on-demand-in-flight.png";
 export default function Partnerships() {
   const [contactOpen, setContactOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -69,6 +69,23 @@ export default function Partnerships() {
     <div className="min-h-screen bg-[#050607] text-white overflow-hidden relative">
       <div className="relative z-10">
         <NavigationHeader />
+
+        {/* In-Flight Experience Hero Image */}
+        <section className="relative w-full">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="relative w-full"
+          >
+            <img 
+              src={restOnDemandImage} 
+              alt="Rest on demand - In-flight passenger wellness experience at 40,000 feet" 
+              className="w-full h-auto object-cover"
+              style={{ maxHeight: '70vh' }}
+            />
+          </motion.div>
+        </section>
 
         {/* Hero */}
         <section className="relative pt-16 pb-2 px-6">
