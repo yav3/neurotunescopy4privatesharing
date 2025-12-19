@@ -77,7 +77,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             Feel BETTER, on demand
           </motion.h1>
 
-          {/* Line 2: Logo + music engine */}
+          {/* Line 2: Logo + Neurotunes music & AI Engine */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           >
             <img
               src={focusLogo}
-              alt="Focus"
+              alt="Neurotunes"
               className="h-7 md:h-10 lg:h-11"
             />
             <span
@@ -101,7 +101,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 fontWeight: 300,
               }}
             >
-              music engine
+              Neurotunes music & AI Engine
             </span>
           </motion.div>
 
