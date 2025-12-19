@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Play } from 'lucide-react'
 import focusLogo from '@/assets/focus-logo-chrome.png'
+import jacobsTechnion from '@/assets/jacobs-technion.png'
+import stanfordMedicine from '@/assets/stanford-medicine.svg'
+import weillCornell from '@/assets/weill-cornell-medicine.png'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -10,7 +14,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   const [phase, setPhase] = useState<'intro' | 'fading' | 'complete'>('intro')
 
   useEffect(() => {
-    // Auto-fade after 1.5 seconds
+    // Auto-fade after 3 seconds
     const timer = setTimeout(() => {
       setPhase('fading')
       // Complete after fade animation
@@ -18,7 +22,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
         setPhase('complete')
         onComplete?.()
       }, 1000)
-    }, 1500)
+    }, 3000)
 
     return () => clearTimeout(timer)
   }, [onComplete])
@@ -29,7 +33,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
         initial={{ opacity: 1 }}
         animate={{ 
           opacity: phase === 'fading' ? 0 : 1,
@@ -42,7 +46,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       >
         {/* Content */}
         <motion.div
-          className="relative z-10 px-6 flex flex-col items-start"
+          className="relative z-10 px-6 flex flex-col"
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
             opacity: phase === 'intro' ? 1 : 0, 
@@ -59,13 +63,13 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-4 whitespace-nowrap"
+            className="text-3xl md:text-5xl lg:text-6xl mb-3 whitespace-nowrap"
             style={{
-              background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
+              background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              letterSpacing: '0.04em',
+              letterSpacing: '0.02em',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
               fontWeight: 300,
             }}
@@ -73,7 +77,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             Feel BETTER, on demand
           </motion.h1>
 
-          {/* Line 2: Logo + Neurotunes music engine */}
+          {/* Line 2: Logo + Neurotunes music engine - aligned to start of line 1 */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,22 +87,46 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <img
               src={focusLogo}
               alt="Neurotunes"
-              className="h-8 md:h-11 lg:h-12"
+              className="h-7 md:h-10 lg:h-11"
             />
             <span
-              className="text-2xl md:text-4xl lg:text-5xl"
+              className="text-xl md:text-3xl lg:text-4xl"
               style={{
-                background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
+                background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                letterSpacing: '0.04em',
+                letterSpacing: '0.02em',
                 fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                 fontWeight: 300,
               }}
             >
               Neurotunes music engine
             </span>
+          </motion.div>
+
+          {/* Line 3: Institution logos */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="flex items-center gap-8 md:gap-12 mt-10 opacity-60"
+          >
+            <img
+              src={jacobsTechnion}
+              alt="Jacobs Technion-Cornell Institute"
+              className="h-10 md:h-14 lg:h-16 brightness-0 invert opacity-70"
+            />
+            <img
+              src={stanfordMedicine}
+              alt="Stanford Medicine"
+              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
+            />
+            <img
+              src={weillCornell}
+              alt="Weill Cornell Medicine"
+              className="h-10 md:h-14 lg:h-16 brightness-0 invert opacity-70"
+            />
           </motion.div>
         </motion.div>
 
