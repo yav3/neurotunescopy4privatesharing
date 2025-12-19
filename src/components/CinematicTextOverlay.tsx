@@ -25,8 +25,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center"
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black"
         initial={{ opacity: 1 }}
         animate={{ 
           opacity: phase === 'fading' ? 0 : 1,
@@ -37,20 +36,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ease: [0.4, 0, 0.2, 1]
         }}
       >
-        {/* Swirl/diffuse pattern overlay for fade effect */}
-        {phase === 'fading' && (
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-            animate={{ opacity: 1, scale: 1.5, rotate: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            style={{
-              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.75) 100%)',
-              filter: 'blur(40px)',
-            }}
-          />
-        )}
-
         {/* Content */}
         <motion.div
           className="relative z-10 text-center px-6 flex flex-col items-center"
@@ -65,26 +50,12 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="mb-8"
-          >
-            <img
-              src={neuralpositiveLogo}
-              alt="NeuralPositive"
-              className="h-24 md:h-32 lg:h-40 mx-auto"
-            />
-          </motion.div>
-
           {/* Tagline */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-12"
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-3xl md:text-5xl lg:text-6xl mb-6"
             style={{
               color: '#e5e5e5',
               letterSpacing: '0.04em',
@@ -94,6 +65,20 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           >
             Feel the music
           </motion.h1>
+
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="mb-10"
+          >
+            <img
+              src={neuralpositiveLogo}
+              alt="NeuralPositive"
+              className="h-16 md:h-20 mx-auto"
+            />
+          </motion.div>
 
           {/* Play Button */}
           <motion.button
