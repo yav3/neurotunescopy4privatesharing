@@ -1,5 +1,9 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+import { serve } from 'https://deno.land/std@0.190.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { Resend } from 'npm:resend@4.0.0'
+import { renderAsync } from 'npm:@react-email/components@0.0.22'
+import React from 'npm:react@18.3.1'
+import { TrialConfirmationEmail } from './_templates/trial-confirmation.tsx'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,6 +21,8 @@ interface ValidationResponse {
   isValid: boolean
   errors: string[]
 }
+
+const resend = new Resend(Deno.env.get('RESEND_API_KEY') as string)
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -112,25 +118,29 @@ serve(async (req) => {
     // If validation passed, send confirmation email and create trial record
     if (errors.length === 0) {
       try {
-        // Send confirmation email using Supabase client invoke
-        const { data: emailData, error: emailError } = await supabase.functions.invoke('send-auth-email', {
-          body: {
-            type: 'trial-confirmation',
-            to: email,
-            data: {
-              displayName: nameToValidate,
-              email: email,
-            }
-          }
-        });
+        // Render the email template
+        const html = await renderAsync(
+          React.createElement(TrialConfirmationEmail, {
+            displayName: nameToValidate,
+            email: email,
+          })
+        )
+
+        // Send confirmation email directly using Resend
+        const { error: emailError } = await resend.emails.send({
+          from: 'NeuroTunes <updates@updates.neurotunes.app>',
+          to: [email],
+          subject: 'Your NeuroTunes Free Business Trial is Confirmed',
+          html,
+        })
 
         if (emailError) {
-          console.error('Failed to send confirmation email:', emailError);
+          console.error('❌ Failed to send confirmation email:', emailError)
         } else {
-          console.log('✅ Confirmation email sent to', email, emailData);
+          console.log('✅ Confirmation email sent successfully to', email)
         }
 
-        // Store trial request in database (you may need to create this table)
+        // Store trial request in database
         const { error: insertError } = await supabase
           .from('trial_requests')
           .insert({
@@ -138,16 +148,16 @@ serve(async (req) => {
             full_name: nameToValidate,
             status: 'pending',
             created_at: new Date().toISOString()
-          });
+          })
 
         if (insertError) {
-          console.error('Failed to create trial record:', insertError);
+          console.error('Failed to create trial record:', insertError)
         } else {
-          console.log('✅ Trial request record created for', email);
+          console.log('✅ Trial request record created for', email)
         }
 
       } catch (emailError) {
-        console.error('Error in post-validation steps:', emailError);
+        console.error('Error in post-validation steps:', emailError)
         // Don't fail the validation if email/db operations fail
       }
     }
