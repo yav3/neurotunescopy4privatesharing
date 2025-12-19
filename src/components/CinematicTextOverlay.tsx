@@ -55,10 +55,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex items-center gap-3 md:gap-4 mb-10"
+            className="flex items-center gap-4 md:gap-6 mb-10"
           >
             <h1
-              className="text-3xl md:text-5xl lg:text-6xl"
+              className="text-5xl md:text-7xl lg:text-8xl"
               style={{
                 background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
                 WebkitBackgroundClip: 'text',
@@ -74,7 +74,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <img
               src={focusLogo}
               alt="Focus"
-              className="h-8 md:h-12 lg:h-14"
+              className="h-12 md:h-16 lg:h-20"
             />
           </motion.div>
 
