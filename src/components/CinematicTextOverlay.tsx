@@ -5,6 +5,7 @@ import focusLogo from '@/assets/focus-logo-chrome.png'
 import jacobsTechnion from '@/assets/jacobs-technion.png'
 import stanfordMedicine from '@/assets/stanford-medicine.svg'
 import weillCornell from '@/assets/weill-cornell-medicine.png'
+import pedestalPhones from '@/assets/pedestal-phones.jpeg'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -33,7 +34,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+        className="fixed inset-0 z-50 flex items-center bg-black/80"
         initial={{ opacity: 1 }}
         animate={{ 
           opacity: phase === 'fading' ? 0 : 1,
@@ -44,9 +45,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ease: [0.4, 0, 0.2, 1]
         }}
       >
-        {/* Content */}
+        {/* Left side - Text content */}
         <motion.div
-          className="relative z-10 px-6 flex flex-col items-center"
+          className="relative z-10 px-8 md:px-16 lg:px-24 flex flex-col w-1/2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
             opacity: phase === 'intro' ? 1 : 0, 
@@ -63,7 +64,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-3 whitespace-nowrap text-center"
+            className="text-3xl md:text-5xl lg:text-6xl mb-3 whitespace-nowrap"
             style={{
               color: '#d4d4d4',
               letterSpacing: '0.02em',
@@ -74,12 +75,12 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             Feel BETTER, on demand
           </motion.h1>
 
-          {/* Line 2: Logo + Neurotunes music & AI Engine */}
+          {/* Line 2: Logo + Neurotunes & AI */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center justify-center"
+            className="flex items-center"
           >
             <img
               src={focusLogo}
@@ -95,7 +96,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 fontWeight: 300,
               }}
             >
-              Neurotunes music & AI Engine
+              Neurotunes & AI
             </span>
           </motion.div>
 
@@ -104,7 +105,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center justify-center gap-8 md:gap-10 mt-8 opacity-50"
+            className="flex items-center gap-8 md:gap-10 mt-8 opacity-50"
           >
             <img
               src={jacobsTechnion}
@@ -123,6 +124,23 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               className="h-8 md:h-10 lg:h-12 brightness-0 invert"
             />
           </motion.div>
+        </motion.div>
+
+        {/* Right side - Phone image */}
+        <motion.div
+          className="w-1/2 flex items-center justify-center"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ 
+            opacity: phase === 'intro' ? 1 : 0, 
+            x: phase === 'intro' ? 0 : 50 
+          }}
+          transition={{ delay: 0.5, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <img
+            src={pedestalPhones}
+            alt="Neurotunes App"
+            className="max-h-[70vh] w-auto object-contain"
+          />
         </motion.div>
 
         {/* Particle swirl effect */}
