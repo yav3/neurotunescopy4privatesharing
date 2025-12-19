@@ -78,6 +78,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           </motion.h1>
 
           {/* Line 2: Logo + Neurotunes music engine - aligned to start of line 1 */}
+          {/* Line 2: Logo + music engine text */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,7 +87,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           >
             <img
               src={focusLogo}
-              alt="Neurotunes"
+              alt="Focus"
               className="h-7 md:h-10 lg:h-11"
             />
             <span
@@ -101,31 +102,32 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 fontWeight: 300,
               }}
             >
-              Neurotunes music engine
+              music engine
             </span>
           </motion.div>
 
+          {/* Line 3: Institution logos */}
           {/* Line 3: Institution logos */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center gap-8 md:gap-12 mt-10 opacity-60"
+            className="flex items-center gap-6 md:gap-8 mt-8 opacity-50"
           >
             <img
               src={jacobsTechnion}
               alt="Jacobs Technion-Cornell Institute"
-              className="h-10 md:h-14 lg:h-16 brightness-0 invert opacity-70"
+              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
             />
             <img
               src={stanfordMedicine}
               alt="Stanford Medicine"
-              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
+              className="h-4 md:h-5 lg:h-6 brightness-0 invert opacity-70"
             />
             <img
               src={weillCornell}
               alt="Weill Cornell Medicine"
-              className="h-10 md:h-14 lg:h-16 brightness-0 invert opacity-70"
+              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
             />
           </motion.div>
         </motion.div>
