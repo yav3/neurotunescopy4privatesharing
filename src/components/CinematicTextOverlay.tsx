@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Play } from 'lucide-react'
 import focusLogo from '@/assets/focus-logo-chrome.png'
 
 interface CinematicTextOverlayProps {
@@ -10,14 +9,19 @@ interface CinematicTextOverlayProps {
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'intro' | 'fading' | 'complete'>('intro')
 
-  const handlePlay = () => {
-    setPhase('fading')
-    // Complete after fade animation
-    setTimeout(() => {
-      setPhase('complete')
-      onComplete?.()
-    }, 1000)
-  }
+  useEffect(() => {
+    // Auto-fade after 1.5 seconds
+    const timer = setTimeout(() => {
+      setPhase('fading')
+      // Complete after fade animation
+      setTimeout(() => {
+        setPhase('complete')
+        onComplete?.()
+      }, 1000)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [onComplete])
 
   if (phase === 'complete') return null
 
@@ -50,15 +54,39 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Tagline with Logo */}
-          <motion.div
+          {/* Line 1: Feel BETTER, on demand */}
+          <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex items-center gap-4 md:gap-6 mb-10"
+            className="text-5xl md:text-7xl lg:text-8xl mb-6"
+            style={{
+              background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '0.04em',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 300,
+            }}
           >
-            <h1
-              className="text-5xl md:text-7xl lg:text-8xl"
+            Feel BETTER, on demand
+          </motion.h1>
+
+          {/* Line 2: Logo + Neurotunes music engine */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="flex items-center gap-4 md:gap-6"
+          >
+            <img
+              src={focusLogo}
+              alt="Neurotunes"
+              className="h-10 md:h-14 lg:h-16"
+            />
+            <span
+              className="text-3xl md:text-5xl lg:text-6xl"
               style={{
                 background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
                 WebkitBackgroundClip: 'text',
@@ -69,41 +97,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 fontWeight: 300,
               }}
             >
-              Feel the music
-            </h1>
-            <img
-              src={focusLogo}
-              alt="Focus"
-              className="h-12 md:h-16 lg:h-20"
-            />
+              Neurotunes music engine
+            </span>
           </motion.div>
-
-          {/* Play Button */}
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            onClick={handlePlay}
-            className="group relative flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300"
-          >
-            <Play 
-              className="w-8 h-8 md:w-10 md:h-10 text-white/90 ml-1 group-hover:text-white transition-colors" 
-              fill="currentColor"
-            />
-            {/* Pulsing ring effect */}
-            <motion.div
-              className="absolute inset-0 rounded-full border border-white/20"
-              animate={{ 
-                scale: [1, 1.3, 1.3],
-                opacity: [0.5, 0, 0]
-              }}
-              transition={{ 
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeOut'
-              }}
-            />
-          </motion.button>
         </motion.div>
 
         {/* Particle swirl effect */}
