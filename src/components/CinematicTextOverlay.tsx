@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play } from 'lucide-react'
-import focusLogo from '@/assets/focus-logo.png'
+import focusLogo from '@/assets/focus-logo-chrome.png'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
