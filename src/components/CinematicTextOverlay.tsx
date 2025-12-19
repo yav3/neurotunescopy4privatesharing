@@ -96,7 +96,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center gap-6 md:gap-8 mt-8"
+            className="flex items-center gap-6 md:gap-8 mt-12"
           >
             <img
               src={focusLogo}
