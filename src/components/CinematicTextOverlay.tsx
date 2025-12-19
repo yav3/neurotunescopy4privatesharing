@@ -91,34 +91,46 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           </motion.div>
 
 
-          {/* Line 3: Institution logos */}
+          {/* Line 3: Logo + supported by + Institution logos */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center gap-8 md:gap-10 mt-8 opacity-50"
+            className="flex items-center gap-6 md:gap-8 mt-8"
           >
             <img
               src={focusLogo}
               alt="Neurotunes"
               className="h-8 md:h-10 lg:h-12"
             />
-            <img
-              src={jacobsTechnion}
-              alt="Jacobs Technion-Cornell Institute"
-              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-            />
-            <img
-              src={stanfordMedicine}
-              alt="Stanford Medicine"
-              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-              style={{ transform: 'scale(1.4)' }}
-            />
-            <img
-              src={weillCornell}
-              alt="Weill Cornell Medicine"
-              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-            />
+            <span
+              className="text-sm md:text-base opacity-50"
+              style={{
+                color: '#d4d4d4',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 300,
+              }}
+            >
+              supported by
+            </span>
+            <div className="flex items-center gap-6 md:gap-8 opacity-50">
+              <img
+                src={jacobsTechnion}
+                alt="Jacobs Technion-Cornell Institute"
+                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
+              />
+              <img
+                src={stanfordMedicine}
+                alt="Stanford Medicine"
+                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
+                style={{ transform: 'scale(1.4)' }}
+              />
+              <img
+                src={weillCornell}
+                alt="Weill Cornell Medicine"
+                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
+              />
+            </div>
           </motion.div>
         </motion.div>
 
