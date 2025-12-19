@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useWelcomeMessage } from '../hooks/useWelcomeMessage';
+
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
@@ -10,7 +10,7 @@ import { LandingPageControls } from '@/components/LandingPageControls';
 import { CinematicTextOverlay, fadeOutIntroSong } from '@/components/CinematicTextOverlay';
 
 const Index = () => {
-  useWelcomeMessage();
+  
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
