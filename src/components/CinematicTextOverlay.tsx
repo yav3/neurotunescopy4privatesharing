@@ -59,7 +59,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-5xl md:text-7xl lg:text-8xl mb-6"
+            className="text-3xl md:text-5xl lg:text-6xl mb-6 whitespace-nowrap"
             style={{
               background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
               WebkitBackgroundClip: 'text',
