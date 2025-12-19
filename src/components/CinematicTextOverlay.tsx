@@ -65,10 +65,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             transition={{ delay: 0.2, duration: 0.6 }}
             className="text-3xl md:text-5xl lg:text-6xl mb-3 whitespace-nowrap text-center"
             style={{
-              background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: '#d4d4d4',
               letterSpacing: '0.02em',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
               fontWeight: 300,
@@ -92,10 +89,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <span
               className="text-xl md:text-3xl lg:text-4xl"
               style={{
-                background: 'linear-gradient(180deg, #e8e8e8 0%, #b0b0b0 50%, #c8c8c8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#d4d4d4',
                 letterSpacing: '0.02em',
                 fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                 fontWeight: 300,
