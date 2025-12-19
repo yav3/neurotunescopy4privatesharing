@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import neurotunesLogo from '@/assets/neurotunes-logo.png'
+import { Play } from 'lucide-react'
+import neuralpositiveLogo from '@/assets/neuralpositive-logo.png'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -9,23 +10,14 @@ interface CinematicTextOverlayProps {
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'intro' | 'fading' | 'complete'>('intro')
 
-  useEffect(() => {
-    // Show tagline for 2.5 seconds, then start fade
-    const introTimer = setTimeout(() => {
-      setPhase('fading')
-    }, 2500)
-
+  const handlePlay = () => {
+    setPhase('fading')
     // Complete after fade animation
-    const completeTimer = setTimeout(() => {
+    setTimeout(() => {
       setPhase('complete')
       onComplete?.()
-    }, 3500)
-
-    return () => {
-      clearTimeout(introTimer)
-      clearTimeout(completeTimer)
-    }
-  }, [onComplete])
+    }, 1000)
+  }
 
   if (phase === 'complete') return null
 
@@ -33,107 +25,139 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
         initial={{ opacity: 1 }}
+        animate={{ 
+          opacity: phase === 'fading' ? 0 : 1,
+        }}
+        exit={{ opacity: 0 }}
+        transition={{ 
+          duration: 1,
+          ease: [0.4, 0, 0.2, 1]
+        }}
+      >
+        {/* Swirl/diffuse pattern overlay for fade effect */}
+        {phase === 'fading' && (
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1.5, rotate: 0 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.75) 100%)',
+              filter: 'blur(40px)',
+            }}
+          />
+        )}
+
+        {/* Content */}
+        <motion.div
+          className="relative z-10 text-center px-6 flex flex-col items-center"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ 
-            opacity: phase === 'fading' ? 0 : 1,
+            opacity: phase === 'intro' ? 1 : 0, 
+            y: phase === 'intro' ? 0 : -20,
+            scale: phase === 'fading' ? 0.95 : 1
           }}
-          exit={{ opacity: 0 }}
           transition={{ 
-            duration: 1,
+            duration: phase === 'intro' ? 0.8 : 0.6,
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Swirl/diffuse pattern overlay for fade effect */}
-          {phase === 'fading' && (
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-              animate={{ opacity: 1, scale: 1.5, rotate: 0 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.8) 70%, black 100%)',
-                filter: 'blur(40px)',
-              }}
-            />
-          )}
-
-          {/* Content */}
+          {/* Logo */}
           <motion.div
-            className="relative z-10 text-center px-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ 
-              opacity: phase === 'intro' ? 1 : 0, 
-              y: phase === 'intro' ? 0 : -20,
-              scale: phase === 'fading' ? 0.95 : 1
-            }}
-            transition={{ 
-              duration: phase === 'intro' ? 0.8 : 0.6,
-              ease: [0.4, 0, 0.2, 1]
-            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="mb-8"
           >
-            {/* Tagline */}
-            <h1
-              className="text-4xl md:text-6xl lg:text-7xl mb-8"
-              style={{
-                color: '#e5e5e5',
-                letterSpacing: '0.04em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              Feel the music
-            </h1>
-
-            {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <img
-                src={neurotunesLogo}
-                alt="NeuroTunes"
-                className="h-12 md:h-14 mx-auto"
-              />
-            </motion.div>
+            <img
+              src={neuralpositiveLogo}
+              alt="NeuralPositive"
+              className="h-24 md:h-32 lg:h-40 mx-auto"
+            />
           </motion.div>
 
-          {/* Particle swirl effect */}
-          {phase === 'fading' && (
-            <>
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute rounded-full"
-                  style={{
-                    width: `${20 + i * 15}px`,
-                    height: `${20 + i * 15}px`,
-                    background: `radial-gradient(circle, rgba(255,255,255,${0.1 - i * 0.01}) 0%, transparent 70%)`,
-                  }}
-                  initial={{ 
-                    x: 0, 
-                    y: 0, 
-                    opacity: 0.3,
-                    scale: 1
-                  }}
-                  animate={{ 
-                    x: Math.cos(i * 0.8) * (150 + i * 50),
-                    y: Math.sin(i * 0.8) * (150 + i * 50),
-                    opacity: 0,
-                    scale: 2,
-                    rotate: 360
-                  }}
-                  transition={{ 
-                    duration: 1,
-                    ease: 'easeOut',
-                    delay: i * 0.05
-                  }}
-                />
-              ))}
-            </>
-          )}
+          {/* Tagline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="text-3xl md:text-5xl lg:text-6xl mb-12"
+            style={{
+              color: '#e5e5e5',
+              letterSpacing: '0.04em',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 300,
+            }}
+          >
+            Feel the music
+          </motion.h1>
+
+          {/* Play Button */}
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            onClick={handlePlay}
+            className="group relative flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 transition-all duration-300"
+          >
+            <Play 
+              className="w-8 h-8 md:w-10 md:h-10 text-white/90 ml-1 group-hover:text-white transition-colors" 
+              fill="currentColor"
+            />
+            {/* Pulsing ring effect */}
+            <motion.div
+              className="absolute inset-0 rounded-full border border-white/20"
+              animate={{ 
+                scale: [1, 1.3, 1.3],
+                opacity: [0.5, 0, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeOut'
+              }}
+            />
+          </motion.button>
         </motion.div>
+
+        {/* Particle swirl effect */}
+        {phase === 'fading' && (
+          <>
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: `${20 + i * 15}px`,
+                  height: `${20 + i * 15}px`,
+                  background: `radial-gradient(circle, rgba(255,255,255,${0.1 - i * 0.01}) 0%, transparent 70%)`,
+                }}
+                initial={{ 
+                  x: 0, 
+                  y: 0, 
+                  opacity: 0.3,
+                  scale: 1
+                }}
+                animate={{ 
+                  x: Math.cos(i * 0.8) * (150 + i * 50),
+                  y: Math.sin(i * 0.8) * (150 + i * 50),
+                  opacity: 0,
+                  scale: 2,
+                  rotate: 360
+                }}
+                transition={{ 
+                  duration: 1,
+                  ease: 'easeOut',
+                  delay: i * 0.05
+                }}
+              />
+            ))}
+          </>
+        )}
+      </motion.div>
     </AnimatePresence>
   )
 }
