@@ -89,49 +89,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               on demand
             </h1>
           </motion.div>
-
-
-          {/* Line 3: Logo + supported by + Institution logos */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center gap-6 md:gap-8 mt-12"
-          >
-            <img
-              src={focusLogo}
-              alt="Neurotunes"
-              className="h-8 md:h-10 lg:h-12"
-            />
-            <span
-              className="text-sm md:text-base opacity-50"
-              style={{
-                color: '#d4d4d4',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              supported by
-            </span>
-            <div className="flex items-center gap-6 md:gap-8 opacity-50">
-              <img
-                src={jacobsTechnion}
-                alt="Jacobs Technion-Cornell Institute"
-                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-              />
-              <img
-                src={stanfordMedicine}
-                alt="Stanford Medicine"
-                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-                style={{ transform: 'scale(1.4)' }}
-              />
-              <img
-                src={weillCornell}
-                alt="Weill Cornell Medicine"
-                className="h-8 md:h-10 lg:h-12 brightness-0 invert"
-              />
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Right side - Phone image */}
@@ -149,6 +106,51 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             alt="Neurotunes App"
             className="max-h-[70vh] w-auto object-contain"
           />
+        </motion.div>
+
+        {/* Bottom: Logo + supported by + Institution logos */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: phase === 'intro' ? 1 : 0, 
+            y: phase === 'intro' ? 0 : 20 
+          }}
+          transition={{ delay: 0.9, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-6 md:gap-8"
+        >
+          <img
+            src={focusLogo}
+            alt="Neurotunes"
+            className="h-6 md:h-8"
+          />
+          <span
+            className="text-sm opacity-50"
+            style={{
+              color: '#d4d4d4',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 300,
+            }}
+          >
+            supported by
+          </span>
+          <div className="flex items-center gap-6 md:gap-8 opacity-50">
+            <img
+              src={jacobsTechnion}
+              alt="Jacobs Technion-Cornell Institute"
+              className="h-6 md:h-8 brightness-0 invert"
+            />
+            <img
+              src={stanfordMedicine}
+              alt="Stanford Medicine"
+              className="h-6 md:h-8 brightness-0 invert"
+              style={{ transform: 'scale(1.4)' }}
+            />
+            <img
+              src={weillCornell}
+              alt="Weill Cornell Medicine"
+              className="h-6 md:h-8 brightness-0 invert"
+            />
+          </div>
         </motion.div>
 
         {/* Particle swirl effect */}
