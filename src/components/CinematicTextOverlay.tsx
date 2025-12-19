@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play } from 'lucide-react'
 import focusLogo from '@/assets/focus-logo-chrome.png'
@@ -7,14 +7,63 @@ import stanfordMedicine from '@/assets/stanford-medicine.svg'
 import weillCornell from '@/assets/weill-cornell-medicine.png'
 import pedestalPhones from '@/assets/pedestal-phones.jpeg'
 
+const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
+
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
+// Singleton reference to prevent duplicate audio in StrictMode
+let introAudioInstance: HTMLAudioElement | null = null
+
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'intro' | 'fading' | 'complete'>('intro')
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Initialize intro audio on mount
+  useEffect(() => {
+    // Use singleton to prevent duplicate audio in StrictMode
+    if (!introAudioInstance) {
+      introAudioInstance = new Audio(INTRO_AUDIO_URL)
+      introAudioInstance.volume = 0.6
+      introAudioInstance.loop = true
+      introAudioInstance.crossOrigin = 'anonymous'
+    }
+    
+    audioRef.current = introAudioInstance
+    
+    // Store reference for mute toggle from header
+    ;(window as any).__introAudio = introAudioInstance
+    
+    // Try to autoplay (may be blocked by browser)
+    introAudioInstance.play().catch(() => {
+      console.log('⚠️ Intro audio autoplay blocked - will play on user interaction')
+    })
+
+    return () => {
+      // Don't cleanup on unmount in StrictMode - let it play
+      // Cleanup happens in handlePlay when user starts experience
+    }
+  }, [])
 
   const handlePlay = () => {
+    // Fade out intro audio
+    if (audioRef.current) {
+      const audio = audioRef.current
+      const fadeOut = () => {
+        if (audio.volume > 0.1) {
+          audio.volume = Math.max(0, audio.volume - 0.1)
+          setTimeout(fadeOut, 50)
+        } else {
+          audio.pause()
+          audio.currentTime = 0
+          introAudioInstance = null
+          ;(window as any).__introAudio = null
+        }
+      }
+      fadeOut()
+    }
+    
     setPhase('fading')
     // Complete after fade animation
     setTimeout(() => {
@@ -208,7 +257,31 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function - no-op since we removed audio
-export function fadeOutIntroSong(_duration?: number): Promise<void> {
-  return Promise.resolve()
+// Export fade function for external control
+export function fadeOutIntroSong(duration: number = 500): Promise<void> {
+  return new Promise((resolve) => {
+    const audio = (window as any).__introAudio as HTMLAudioElement | null
+    if (!audio || audio.paused) {
+      resolve()
+      return
+    }
+    
+    const steps = 10
+    const stepTime = duration / steps
+    let step = 0
+    const startVolume = audio.volume
+    
+    const fadeInterval = setInterval(() => {
+      step++
+      audio.volume = Math.max(0, startVolume * (1 - step / steps))
+      if (step >= steps) {
+        clearInterval(fadeInterval)
+        audio.pause()
+        audio.currentTime = 0
+        introAudioInstance = null
+        ;(window as any).__introAudio = null
+        resolve()
+      }
+    }, stepTime)
+  })
 }
