@@ -42,7 +42,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       >
         {/* Content */}
         <motion.div
-          className="relative z-10 text-center px-6 flex flex-col items-center"
+          className="relative z-10 px-6 flex flex-col items-start"
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
             opacity: phase === 'intro' ? 1 : 0, 
@@ -59,7 +59,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-6 whitespace-nowrap"
+            className="text-3xl md:text-5xl lg:text-6xl mb-4 whitespace-nowrap"
             style={{
               background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
               WebkitBackgroundClip: 'text',
@@ -78,15 +78,15 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center gap-0"
+            className="flex items-center"
           >
             <img
               src={focusLogo}
               alt="Neurotunes"
-              className="h-10 md:h-14 lg:h-16 -mr-1"
+              className="h-8 md:h-11 lg:h-12"
             />
             <span
-              className="text-3xl md:text-5xl lg:text-6xl"
+              className="text-2xl md:text-4xl lg:text-5xl"
               style={{
                 background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
                 WebkitBackgroundClip: 'text',
