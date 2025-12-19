@@ -70,23 +70,6 @@ export default function Partnerships() {
       <div className="relative z-10">
         <NavigationHeader />
 
-        {/* In-Flight Experience Hero Image */}
-        <section className="relative w-full">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative w-full"
-          >
-            <img 
-              src={restOnDemandImage} 
-              alt="Rest on demand - In-flight passenger wellness experience at 40,000 feet" 
-              className="w-full h-auto object-cover"
-              style={{ maxHeight: '70vh' }}
-            />
-          </motion.div>
-        </section>
-
         {/* Hero */}
         <section className="relative pt-16 pb-2 px-6">
           <div className="max-w-7xl mx-auto text-center">
@@ -101,7 +84,7 @@ export default function Partnerships() {
             </motion.h1>
 
             <motion.p 
-              className="text-sm lg:text-base mb-4"
+              className="text-sm lg:text-base mb-6"
               style={{ color: 'rgba(255, 255, 255, 0.60)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -109,6 +92,30 @@ export default function Partnerships() {
             >
               White-label, OEM, and API solutions for wellness platforms and tech companies
             </motion.p>
+
+            {/* In-Flight Example Image */}
+            <motion.div
+              className="max-w-md mx-auto mb-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+            >
+              <img 
+                src={restOnDemandImage} 
+                alt="Rest on demand - In-flight passenger wellness experience" 
+                className="w-full h-auto rounded-xl"
+                style={{ 
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+                }}
+              />
+              <p 
+                className="text-xs mt-2 text-center"
+                style={{ color: 'rgba(255, 255, 255, 0.40)' }}
+              >
+                In-flight wellness integration example
+              </p>
+            </motion.div>
           </div>
         </section>
 
