@@ -50,33 +50,31 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Tagline */}
-          <motion.h1
+          {/* Tagline with Logo */}
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-6"
-            style={{
-              color: '#e5e5e5',
-              letterSpacing: '0.04em',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 300,
-            }}
+            className="flex items-center gap-3 md:gap-4 mb-10"
           >
-            Feel the music
-          </motion.h1>
-
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mb-10"
-          >
+            <h1
+              className="text-3xl md:text-5xl lg:text-6xl"
+              style={{
+                background: 'linear-gradient(180deg, #f5f5f5 0%, #a8a8a8 50%, #d4d4d4 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                letterSpacing: '0.04em',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 300,
+              }}
+            >
+              Feel the music
+            </h1>
             <img
               src={focusLogo}
               alt="Focus"
-              className="h-20 md:h-24 mx-auto"
+              className="h-8 md:h-12 lg:h-14"
             />
           </motion.div>
 
