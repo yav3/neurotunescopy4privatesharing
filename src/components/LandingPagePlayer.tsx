@@ -505,9 +505,14 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // Stop current audio before playing next
+    // CRITICAL: Stop BOTH audio elements before playing next to prevent ANY overlap
     if (audioRef1.current) {
       audioRef1.current.pause();
+      audioRef1.current.currentTime = 0;
+    }
+    if (audioRef2.current) {
+      audioRef2.current.pause();
+      audioRef2.current.currentTime = 0;
     }
 
     const nextIndex = (currentIdx + 1) % tracks.length;
