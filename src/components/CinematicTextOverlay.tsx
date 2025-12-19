@@ -123,6 +123,11 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             className="flex items-center gap-8 md:gap-10 mt-8 opacity-50"
           >
             <img
+              src={focusLogo}
+              alt="Neurotunes"
+              className="h-8 md:h-10 lg:h-12"
+            />
+            <img
               src={jacobsTechnion}
               alt="Jacobs Technion-Cornell Institute"
               className="h-8 md:h-10 lg:h-12 brightness-0 invert"
