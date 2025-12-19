@@ -122,7 +122,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <img
               src={stanfordMedicine}
               alt="Stanford Medicine"
-              className="h-4 md:h-5 lg:h-6 brightness-0 invert opacity-70"
+              className="h-6 md:h-8 lg:h-10 brightness-0 invert opacity-70"
             />
             <img
               src={weillCornell}
