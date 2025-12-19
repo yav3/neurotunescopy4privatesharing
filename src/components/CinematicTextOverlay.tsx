@@ -110,22 +110,23 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center justify-center gap-6 md:gap-8 mt-8 opacity-50"
+            className="flex items-center justify-center gap-8 md:gap-10 mt-8 opacity-50"
           >
             <img
               src={jacobsTechnion}
               alt="Jacobs Technion-Cornell Institute"
-              className="h-5 md:h-7 lg:h-8 brightness-0 invert"
+              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
             />
             <img
               src={stanfordMedicine}
               alt="Stanford Medicine"
-              className="h-5 md:h-7 lg:h-8 brightness-0 invert"
+              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
+              style={{ transform: 'scale(1.4)' }}
             />
             <img
               src={weillCornell}
               alt="Weill Cornell Medicine"
-              className="h-5 md:h-7 lg:h-8 brightness-0 invert"
+              className="h-8 md:h-10 lg:h-12 brightness-0 invert"
             />
           </motion.div>
         </motion.div>
