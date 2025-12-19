@@ -45,68 +45,71 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ease: [0.4, 0, 0.2, 1]
         }}
       >
-        {/* Left side - Text content */}
-        <motion.div
-          className="relative z-10 px-8 md:px-16 lg:px-24 flex flex-col w-1/2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: phase === 'intro' ? 1 : 0, 
-            y: phase === 'intro' ? 0 : -20,
-            scale: phase === 'fading' ? 0.95 : 1
-          }}
-          transition={{ 
-            duration: phase === 'intro' ? 0.8 : 0.6,
-            ease: [0.4, 0, 0.2, 1]
-          }}
-        >
-          {/* Line 1: Feel BETTER + on demand */}
+        {/* Content wrapper - centers both elements closer together */}
+        <div className="flex items-center justify-center w-full gap-4 lg:gap-8 px-8 md:px-16">
+          {/* Left side - Text content */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="mb-3"
+            className="relative z-10 flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: phase === 'intro' ? 1 : 0, 
+              y: phase === 'intro' ? 0 : -20,
+              scale: phase === 'fading' ? 0.95 : 1
+            }}
+            transition={{ 
+              duration: phase === 'intro' ? 0.8 : 0.6,
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
-            <h1
-              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.02em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
+            {/* Line 1: Feel BETTER + on demand */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="mb-3"
             >
-              Feel BETTER,
-            </h1>
-            <h1
-              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.02em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              on demand
-            </h1>
+              <h1
+                className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
+                style={{
+                  color: '#d4d4d4',
+                  letterSpacing: '0.02em',
+                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                  fontWeight: 300,
+                }}
+              >
+                Feel BETTER,
+              </h1>
+              <h1
+                className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
+                style={{
+                  color: '#d4d4d4',
+                  letterSpacing: '0.02em',
+                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                  fontWeight: 300,
+                }}
+              >
+                on demand
+              </h1>
+            </motion.div>
           </motion.div>
-        </motion.div>
 
-        {/* Right side - Phone image */}
-        <motion.div
-          className="w-1/2 flex items-center justify-center"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ 
-            opacity: phase === 'intro' ? 1 : 0, 
-            x: phase === 'intro' ? 0 : 50 
-          }}
-          transition={{ delay: 0.5, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <img
-            src={pedestalPhones}
-            alt="Neurotunes App"
-            className="max-h-[70vh] w-auto object-contain"
-          />
-        </motion.div>
+          {/* Right side - Phone image */}
+          <motion.div
+            className="flex items-center justify-center"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ 
+              opacity: phase === 'intro' ? 1 : 0, 
+              x: phase === 'intro' ? 0 : 50 
+            }}
+            transition={{ delay: 0.5, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <img
+              src={pedestalPhones}
+              alt="Neurotunes App"
+              className="max-h-[60vh] w-auto object-contain"
+            />
+          </motion.div>
+        </div>
 
         {/* Bottom: Logo + supported by + Institution logos */}
         <motion.div
