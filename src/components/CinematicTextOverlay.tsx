@@ -59,21 +59,36 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             ease: [0.4, 0, 0.2, 1]
           }}
         >
-          {/* Line 1: Feel BETTER, on demand */}
-          <motion.h1
+          {/* Line 1: Feel BETTER + on demand */}
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-3xl md:text-5xl lg:text-6xl mb-3 whitespace-nowrap"
-            style={{
-              color: '#d4d4d4',
-              letterSpacing: '0.02em',
-              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-              fontWeight: 300,
-            }}
+            className="mb-3"
           >
-            Feel BETTER, on demand
-          </motion.h1>
+            <h1
+              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
+              style={{
+                color: '#d4d4d4',
+                letterSpacing: '0.02em',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 300,
+              }}
+            >
+              Feel BETTER,
+            </h1>
+            <h1
+              className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
+              style={{
+                color: '#d4d4d4',
+                letterSpacing: '0.02em',
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 300,
+              }}
+            >
+              on demand
+            </h1>
+          </motion.div>
 
           {/* Line 2: Logo + Neurotunes & AI */}
           <motion.div
