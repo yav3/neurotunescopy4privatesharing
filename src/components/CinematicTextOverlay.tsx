@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import neurotunesLogo from '@/assets/neurotunes-logo.png'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -91,10 +92,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               transition={{ delay: 0.4, duration: 0.6 }}
             >
               <img
-                src="/lovable-uploads/59e41f73-7cbb-471a-9a0b-0f596e1ea90e.png"
+                src={neurotunesLogo}
                 alt="NeuroTunes"
-                className="h-10 md:h-12 mx-auto opacity-80"
-                style={{ filter: 'brightness(0.9)' }}
+                className="h-12 md:h-14 mx-auto"
               />
             </motion.div>
           </motion.div>
