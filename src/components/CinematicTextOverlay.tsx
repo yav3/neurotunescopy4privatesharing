@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play } from 'lucide-react'
-import neurotunesLogo from '@/assets/neurotunes-logo.png'
+import focusLogo from '@/assets/focus-logo.png'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -74,9 +74,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             className="mb-10"
           >
             <img
-              src={neurotunesLogo}
-              alt="NeuroTunes"
-              className="h-12 md:h-14 mx-auto"
+              src={focusLogo}
+              alt="Focus"
+              className="h-20 md:h-24 mx-auto"
             />
           </motion.div>
 
