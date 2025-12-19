@@ -78,12 +78,12 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center gap-4 md:gap-6"
+            className="flex items-center gap-0"
           >
             <img
               src={focusLogo}
               alt="Neurotunes"
-              className="h-10 md:h-14 lg:h-16"
+              className="h-10 md:h-14 lg:h-16 -mr-1"
             />
             <span
               className="text-3xl md:text-5xl lg:text-6xl"
