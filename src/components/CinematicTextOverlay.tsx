@@ -82,7 +82,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center justify-between w-full"
+            className="flex items-center"
           >
             <div className="flex items-center">
               <img
@@ -105,21 +105,21 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 music engine
               </span>
             </div>
-            <div className="flex items-center gap-4 md:gap-5 opacity-50">
+            <div className="flex items-center gap-3 md:gap-4 ml-auto pl-6 md:pl-10 opacity-50">
               <img
                 src={jacobsTechnion}
                 alt="Jacobs Technion-Cornell Institute"
-                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+                className="h-4 md:h-5 lg:h-6 brightness-0 invert"
               />
               <img
                 src={stanfordMedicine}
                 alt="Stanford Medicine"
-                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+                className="h-4 md:h-5 lg:h-6 brightness-0 invert"
               />
               <img
                 src={weillCornell}
                 alt="Weill Cornell Medicine"
-                className="h-5 md:h-6 lg:h-7 brightness-0 invert"
+                className="h-4 md:h-5 lg:h-6 brightness-0 invert"
               />
             </div>
           </motion.div>
