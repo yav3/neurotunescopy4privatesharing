@@ -141,44 +141,48 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               >
                 Feel BETTER,
               </h1>
-              <h1
-                className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
-                style={{
-                  color: '#c0c0c0',
-                  letterSpacing: '0.02em',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 300,
-                }}
-              >
-                on demand
-              </h1>
-            </motion.div>
-
-            {/* Play button - circle with demo label inline */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex items-center gap-4"
-            >
-              <motion.button
-                onClick={handlePlay}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-14 h-14 rounded-full border border-silver/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors flex items-center justify-center"
-              >
-                <Play className="w-6 h-6 text-silver fill-silver ml-1" style={{ color: '#c0c0c0' }} />
-              </motion.button>
-              <span
-                className="text-xs tracking-widest uppercase"
-                style={{
-                  color: '#a0a0a0',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 400,
-                }}
-              >
-                demo
-              </span>
+              {/* "on demand" with play button inline */}
+              <div className="flex items-center gap-4">
+                <h1
+                  className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
+                  style={{
+                    color: '#c0c0c0',
+                    letterSpacing: '0.02em',
+                    fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                    fontWeight: 300,
+                  }}
+                >
+                  on demand
+                </h1>
+                
+                {/* Frosted play button */}
+                <motion.button
+                  onClick={handlePlay}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255,255,255,0.15)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <Play className="w-5 h-5 md:w-6 md:h-6 ml-0.5" style={{ color: '#d0d0d0', fill: '#d0d0d0' }} />
+                </motion.button>
+                
+                <span
+                  className="text-xs tracking-widest uppercase"
+                  style={{
+                    color: '#808080',
+                    fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                    fontWeight: 400,
+                  }}
+                >
+                  demo
+                </span>
+              </div>
             </motion.div>
           </motion.div>
 
