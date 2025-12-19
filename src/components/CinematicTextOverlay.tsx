@@ -34,7 +34,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center bg-black/80"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
         initial={{ opacity: 1 }}
         animate={{ 
           opacity: phase === 'fading' ? 0 : 1,
@@ -45,8 +45,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ease: [0.4, 0, 0.2, 1]
         }}
       >
-        {/* Content wrapper - centers both elements closer together */}
-        <div className="flex items-center justify-center w-full gap-4 lg:gap-8 px-8 md:px-16">
+        {/* Content wrapper - centers both elements in the viewport */}
+        <div className="flex items-center justify-center gap-8 lg:gap-16">
           {/* Left side - Text content */}
           <motion.div
             className="relative z-10 flex flex-col"
