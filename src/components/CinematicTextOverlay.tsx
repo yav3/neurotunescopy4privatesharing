@@ -136,23 +136,31 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               </h1>
             </motion.div>
 
-            {/* Play button */}
-            <motion.button
-              onClick={handlePlay}
+            {/* Play button - circle with icon and demo label */}
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors"
-              style={{
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 400,
-              }}
+              className="flex flex-col items-start gap-2"
             >
-              <Play className="w-5 h-5 text-white fill-white" />
-              <span className="text-white text-sm tracking-wide">Start Experience</span>
-            </motion.button>
+              <motion.button
+                onClick={handlePlay}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors flex items-center justify-center"
+              >
+                <Play className="w-6 h-6 text-white fill-white ml-1" />
+              </motion.button>
+              <span
+                className="text-white/60 text-xs tracking-widest uppercase ml-1"
+                style={{
+                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                  fontWeight: 400,
+                }}
+              >
+                demo
+              </span>
+            </motion.div>
           </motion.div>
 
           {/* Right side - Phone image */}
@@ -208,7 +216,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               src={stanfordMedicine}
               alt="Stanford Medicine"
               className="h-6 md:h-8 brightness-0 invert"
-              style={{ transform: 'scale(1.4)' }}
+              style={{ transform: 'scale(1.8)' }}
             />
             <img
               src={weillCornell}
