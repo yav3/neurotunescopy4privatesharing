@@ -22,13 +22,26 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
 
   // Initialize intro audio on mount
   useEffect(() => {
-    // Use singleton to prevent duplicate audio in StrictMode
-    if (!introAudioInstance) {
-      introAudioInstance = new Audio(INTRO_AUDIO_URL)
-      introAudioInstance.volume = 0.6
-      introAudioInstance.loop = true
-      introAudioInstance.crossOrigin = 'anonymous'
+    // Stop any existing audio first to prevent duplicates
+    if (introAudioInstance) {
+      introAudioInstance.pause()
+      introAudioInstance.src = ''
+      introAudioInstance = null
     }
+    
+    // Also stop any orphaned audio elements
+    document.querySelectorAll('audio').forEach(audio => {
+      if (!audio.id || !audio.id.startsWith('main-')) {
+        audio.pause()
+        audio.src = ''
+      }
+    })
+    
+    // Create fresh intro audio
+    introAudioInstance = new Audio(INTRO_AUDIO_URL)
+    introAudioInstance.volume = 0.6
+    introAudioInstance.loop = true
+    introAudioInstance.crossOrigin = 'anonymous'
     
     audioRef.current = introAudioInstance
     
@@ -37,12 +50,17 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     
     // Try to autoplay (may be blocked by browser)
     introAudioInstance.play().catch(() => {
-      console.log('⚠️ Intro audio autoplay blocked - will play on user interaction')
+      console.log('Intro audio autoplay blocked - will play on user interaction')
     })
 
     return () => {
-      // Don't cleanup on unmount in StrictMode - let it play
-      // Cleanup happens in handlePlay when user starts experience
+      // Cleanup on unmount
+      if (introAudioInstance) {
+        introAudioInstance.pause()
+        introAudioInstance.src = ''
+        introAudioInstance = null
+        ;(window as any).__introAudio = null
+      }
     }
   }, [])
 
@@ -115,7 +133,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               <h1
                 className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
                 style={{
-                  color: '#d4d4d4',
+                  color: '#c0c0c0',
                   letterSpacing: '0.02em',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                   fontWeight: 300,
@@ -126,7 +144,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               <h1
                 className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
                 style={{
-                  color: '#d4d4d4',
+                  color: '#c0c0c0',
                   letterSpacing: '0.02em',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                   fontWeight: 300,
@@ -136,24 +154,25 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               </h1>
             </motion.div>
 
-            {/* Play button - circle with icon and demo label */}
+            {/* Play button - circle with demo label inline */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="flex flex-col items-start gap-2"
+              className="flex items-center gap-4"
             >
               <motion.button
                 onClick={handlePlay}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors flex items-center justify-center"
+                className="w-14 h-14 rounded-full border border-silver/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors flex items-center justify-center"
               >
-                <Play className="w-6 h-6 text-white fill-white ml-1" />
+                <Play className="w-6 h-6 text-silver fill-silver ml-1" style={{ color: '#c0c0c0' }} />
               </motion.button>
               <span
-                className="text-white/60 text-xs tracking-widest uppercase ml-1"
+                className="text-xs tracking-widest uppercase"
                 style={{
+                  color: '#a0a0a0',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                   fontWeight: 400,
                 }}
@@ -197,9 +216,9 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             className="h-6 md:h-8"
           />
           <span
-            className="text-sm opacity-50"
+            className="text-sm"
             style={{
-              color: '#d4d4d4',
+              color: '#a0a0a0',
               fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
               fontWeight: 300,
             }}
@@ -215,8 +234,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <img
               src={stanfordMedicine}
               alt="Stanford Medicine"
-              className="h-6 md:h-8 brightness-0 invert"
-              style={{ transform: 'scale(1.8)' }}
+              className="h-8 md:h-10 brightness-0 invert"
             />
             <img
               src={weillCornell}
