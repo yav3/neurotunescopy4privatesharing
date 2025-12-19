@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { audioManager } from '@/utils/audioManager'
 
 interface CinematicTextOverlayProps {
   onComplete?: () => void
@@ -6,6 +7,7 @@ interface CinematicTextOverlayProps {
 
 // Single video file - MUTED (no audio from this video)
 const INTRO_VIDEO = '/videos/landing-commercial.mp4'
+const INTRO_AUDIO = '/audio/story-intro.mp3'
 
 type Phase = 'focus' | 'watching' | 'experience' | 'complete'
 
@@ -80,6 +82,8 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               }).catch(() => {
                 console.log('⚠️ Autoplay blocked')
               })
+              // Play intro audio separately
+              audioManager.playIntro(INTRO_AUDIO, 0.5)
               ;(window as any).__introVideo = el
             }
           }}
@@ -128,7 +132,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function - now a no-op since video is muted
-export function fadeOutIntroSong(_duration?: number): Promise<void> {
-  return Promise.resolve()
+// Export fade function to fade out intro audio
+export function fadeOutIntroSong(duration: number = 500): Promise<void> {
+  return audioManager.fadeOutIntro(duration)
 }
