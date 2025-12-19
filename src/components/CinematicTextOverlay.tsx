@@ -90,30 +90,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             </h1>
           </motion.div>
 
-          {/* Line 2: Logo + Neurotunes & AI */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center"
-          >
-            <img
-              src={focusLogo}
-              alt="Neurotunes"
-              className="h-7 md:h-10 lg:h-11"
-            />
-            <span
-              className="text-xl md:text-3xl lg:text-4xl"
-              style={{
-                color: '#d4d4d4',
-                letterSpacing: '0.02em',
-                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                fontWeight: 300,
-              }}
-            >
-              Neurotunes & AI
-            </span>
-          </motion.div>
 
           {/* Line 3: Institution logos */}
           <motion.div
