@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play } from 'lucide-react'
 import focusLogo from '@/assets/focus-logo-chrome.png'
@@ -14,19 +14,14 @@ interface CinematicTextOverlayProps {
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'intro' | 'fading' | 'complete'>('intro')
 
-  useEffect(() => {
-    // Auto-fade after 3 seconds
-    const timer = setTimeout(() => {
-      setPhase('fading')
-      // Complete after fade animation
-      setTimeout(() => {
-        setPhase('complete')
-        onComplete?.()
-      }, 1000)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [onComplete])
+  const handlePlay = () => {
+    setPhase('fading')
+    // Complete after fade animation
+    setTimeout(() => {
+      setPhase('complete')
+      onComplete?.()
+    }, 1000)
+  }
 
   if (phase === 'complete') return null
 
@@ -66,7 +61,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="mb-3"
+              className="mb-8"
             >
               <h1
                 className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
@@ -91,6 +86,24 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 on demand
               </h1>
             </motion.div>
+
+            {/* Play button */}
+            <motion.button
+              onClick={handlePlay}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors"
+              style={{
+                fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+                fontWeight: 400,
+              }}
+            >
+              <Play className="w-5 h-5 text-white fill-white" />
+              <span className="text-white text-sm tracking-wide">Start Experience</span>
+            </motion.button>
           </motion.div>
 
           {/* Right side - Phone image */}
