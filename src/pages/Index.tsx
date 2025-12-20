@@ -72,14 +72,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
-      {/* Full-screen video background - show after intro completes */}
-      {!showIntro && (
-        <BackgroundVideoCarousel
-          playbackRate={videoPlaybackRate}
-          currentVideoIndex={currentVideoIndex}
-          isPlaying={isPlaying}
-        />
-      )}
+      {/* Full-screen video background - always visible */}
+      <BackgroundVideoCarousel
+        playbackRate={videoPlaybackRate}
+        currentVideoIndex={currentVideoIndex}
+        isPlaying={!showIntro && isPlaying}
+      />
 
       {/* Landing Page Audio Player - mount after intro completes */}
       {!showIntro && (

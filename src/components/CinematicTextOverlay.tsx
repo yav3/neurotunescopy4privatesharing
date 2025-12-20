@@ -96,7 +96,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     <AnimatePresence>
       <motion.div
         key="intro-overlay"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
         initial={{ opacity: 1 }}
         animate={{ 
           opacity: phase === 'fading' ? 0 : 1,
