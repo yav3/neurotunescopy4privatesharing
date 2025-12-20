@@ -123,26 +123,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               ease: [0.4, 0, 0.2, 1]
             }}
           >
-            {/* Line 1: Feel BETTER + on demand */}
+            {/* Feel BETTER, with play button inline */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
               className="mb-8"
             >
-              <h1
-                className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
-                style={{
-                  color: '#c0c0c0',
-                  letterSpacing: '0.02em',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 300,
-                }}
-              >
-                Feel BETTER,
-              </h1>
-              {/* "on demand" with play button inline */}
-              <div className="flex items-center gap-4 mt-2 md:mt-3">
+              <div className="flex items-center gap-5">
                 <h1
                   className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
                   style={{
@@ -152,7 +140,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                     fontWeight: 300,
                   }}
                 >
-                  on demand
+                  Feel BETTER
                 </h1>
                 
                 {/* Frosted play button */}
