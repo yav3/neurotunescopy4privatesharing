@@ -107,90 +107,48 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
           ease: [0.4, 0, 0.2, 1]
         }}
       >
-        {/* Content wrapper - centers both elements in the viewport */}
-        <div className="flex items-center justify-center gap-8 lg:gap-16">
-          {/* Left side - Text content */}
-          <motion.div
-            className="relative z-10 flex flex-col"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ 
-              opacity: phase === 'intro' ? 1 : 0, 
-              y: phase === 'intro' ? 0 : -20,
-              scale: phase === 'fading' ? 0.95 : 1
-            }}
-            transition={{ 
-              duration: phase === 'intro' ? 0.8 : 0.6,
-              ease: [0.4, 0, 0.2, 1]
+        {/* Centered play button with Demo label */}
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ 
+            opacity: phase === 'intro' ? 1 : 0, 
+            scale: phase === 'intro' ? 1 : 0.9
+          }}
+          transition={{ 
+            duration: 0.8,
+            ease: [0.4, 0, 0.2, 1]
+          }}
+        >
+          {/* Frosted play button */}
+          <motion.button
+            onClick={handlePlay}
+            whileHover={{ scale: 1.08, boxShadow: '0 0 40px rgba(255,255,255,0.2)' }}
+            whileTap={{ scale: 0.95 }}
+            className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255,255,255,0.18)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
             }}
           >
-            {/* Feel BETTER, with play button inline */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="mb-8"
-            >
-              <div className="flex items-center gap-5">
-                <h1
-                  className="text-3xl md:text-5xl lg:text-6xl whitespace-nowrap"
-                  style={{
-                    color: '#c0c0c0',
-                    letterSpacing: '0.02em',
-                    fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                    fontWeight: 300,
-                  }}
-                >
-                  Feel BETTER
-                </h1>
-                
-                {/* Frosted play button */}
-                <motion.button
-                  onClick={handlePlay}
-                  whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255,255,255,0.15)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-                  }}
-                >
-                  <Play className="w-5 h-5 md:w-6 md:h-6 ml-0.5" style={{ color: '#d0d0d0', fill: '#d0d0d0' }} />
-                </motion.button>
-                
-                <span
-                  className="text-xs tracking-widest uppercase"
-                  style={{
-                    color: '#808080',
-                    fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                    fontWeight: 400,
-                  }}
-                >
-                  demo
-                </span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right side - Phone image */}
-          <motion.div
-            className="flex items-center justify-center"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ 
-              opacity: phase === 'intro' ? 1 : 0, 
-              x: phase === 'intro' ? 0 : 50 
+            <Play className="w-8 h-8 md:w-10 md:h-10 ml-1" style={{ color: '#d0d0d0', fill: '#d0d0d0' }} />
+          </motion.button>
+          
+          {/* Demo label */}
+          <span
+            className="text-sm md:text-base tracking-[0.3em] uppercase"
+            style={{
+              color: '#808080',
+              fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
+              fontWeight: 400,
             }}
-            transition={{ delay: 0.5, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
           >
-            <img
-              src={pedestalPhones}
-              alt="Neurotunes App"
-              className="max-h-[60vh] w-auto object-contain"
-            />
-          </motion.div>
-        </div>
+            Demo
+          </span>
+        </motion.div>
 
         {/* Bottom: Logo + supported by + Institution logos */}
         <motion.div
