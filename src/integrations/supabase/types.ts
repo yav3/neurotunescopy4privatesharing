@@ -2083,6 +2083,38 @@ export type Database = {
         }
         Relationships: []
       }
+      patient_assignments: {
+        Row: {
+          assigned_at: string | null
+          assigned_user_id: string
+          assignment_type: string
+          id: string
+          patient_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_user_id: string
+          assignment_type?: string
+          id?: string
+          patient_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_user_id?: string
+          assignment_type?: string
+          id?: string
+          patient_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_assignments_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       patients: {
         Row: {
           age: number | null
@@ -5538,6 +5570,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_patient_access: { Args: { _patient_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
