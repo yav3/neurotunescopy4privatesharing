@@ -162,16 +162,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                 Adaptive music for different states.
               </p>
               <p
-                className="text-lg md:text-xl lg:text-2xl leading-relaxed mt-2"
-                style={{
-                  color: '#c0c0c0',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 400,
-                }}
-              >
-                On-demand listening for what you need.
-              </p>
-              <p
                 className="text-lg md:text-xl lg:text-2xl leading-relaxed mt-6"
                 style={{
                   color: '#e4e4e4',
@@ -179,7 +169,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
                   fontWeight: 500,
                 }}
               >
-                Press play. Notice the calm.
+                Press play to explore.
               </p>
             </motion.div>
           )}
