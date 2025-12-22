@@ -20,6 +20,15 @@ const Index = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
 
+  // Kill ALL orphaned audio elements on mount to prevent overlaps
+  useEffect(() => {
+    console.log('🧹 Index mount - killing orphaned audio');
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.pause();
+      audio.src = '';
+    });
+  }, []);
+
   // Sync mute state with header
   useEffect(() => {
     const handleHeaderMuteToggle = (e: CustomEvent) => {

@@ -413,8 +413,9 @@ const ALL_LANDING_VIDEOS = [
   '/videos/landing-46.mp4', '/videos/landing-47.mp4'
 ];
 
-// Module-level flag to prevent StrictMode double-play
-let hasStartedMainPlayback = false;
+// Module-level singleton audio element to absolutely prevent duplicates
+let singletonAudio: HTMLAudioElement | null = null;
+let isPlaybackActive = false;
 
 export const LandingPagePlayer = ({
   onPlaybackStateChange,
@@ -427,28 +428,25 @@ export const LandingPagePlayer = ({
   const [tracks, setTracks] = useState<AudioTrack[]>([]);
   const [videos, setVideos] = useState<VideoSource[]>([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const currentTrackIndexRef = useRef(0); // Ref for timer callbacks to access current value
+  const currentTrackIndexRef = useRef(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const currentVideoIndexRef = useRef(0); // Video cycles independently of audio
-  
-  const audioRef1 = useRef<HTMLAudioElement>(null);
-  const audioRef2 = useRef<HTMLAudioElement>(null);
-  const [activeAudioRef, setActiveAudioRef] = useState<1 | 2>(1);
+  const currentVideoIndexRef = useRef(0);
   const trackTimerRef = useRef<NodeJS.Timeout>();
 
-  // Register main audio element with AudioManager on mount
+  // Use singleton audio element
   useEffect(() => {
     console.log('🧹 LandingPagePlayer mount');
-    if (audioRef1.current) {
-      audioManager.registerMainAudio(audioRef1.current);
+    // Create singleton audio if it doesn't exist
+    if (!singletonAudio) {
+      singletonAudio = new Audio();
+      singletonAudio.crossOrigin = 'anonymous';
+      singletonAudio.preload = 'auto';
     }
+    audioManager.registerMainAudio(singletonAudio);
+    
+    // Expose globally for video sync
+    (window as any).__landingActiveAudio = singletonAudio;
   }, []);
-
-  // Expose the currently active audio element globally so the video layer can sync to it
-  useEffect(() => {
-    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    (window as any).__landingActiveAudio = currentAudio || null;
-  }, [activeAudioRef]);
 
   // Fetch media on mount
   useEffect(() => {
@@ -491,7 +489,6 @@ export const LandingPagePlayer = ({
   // Start next track - IMMEDIATELY stop previous to prevent overlap
   // Use ref for track index to avoid stale closures in setTimeout
   const playNextTrack = useCallback(() => {
-    // Use ref to get current value (avoids stale closure issue with setTimeout)
     const currentIdx = currentTrackIndexRef.current;
     console.log('🎯 playNextTrack called - isPlaying:', isPlaying, '| tracks.length:', tracks.length, '| currentIdx:', currentIdx);
     
@@ -505,39 +502,31 @@ export const LandingPagePlayer = ({
       return;
     }
 
-    // CRITICAL: Stop BOTH audio elements before playing next to prevent ANY overlap
-    if (audioRef1.current) {
-      audioRef1.current.pause();
-      audioRef1.current.currentTime = 0;
-    }
-    if (audioRef2.current) {
-      audioRef2.current.pause();
-      audioRef2.current.currentTime = 0;
+    // CRITICAL: Stop singleton audio before playing next
+    if (singletonAudio) {
+      singletonAudio.pause();
+      singletonAudio.currentTime = 0;
     }
 
     const nextIndex = (currentIdx + 1) % tracks.length;
     const nextTrack = tracks[nextIndex];
-    // Video cycles independently through all 47 videos
     const currentVidIdx = currentVideoIndexRef.current;
     const nextVideoIndex = (currentVidIdx + 1) % ALL_LANDING_VIDEOS.length;
     const playbackRate = getPlaybackRate(nextTrack.estimatedBPM);
     
     console.log(`🔄 Advancing to track [${nextIndex + 1}/${tracks.length}]:`, nextTrack.name, `| Video [${nextVideoIndex + 1}/${ALL_LANDING_VIDEOS.length}]`);
     
-    // Always use audioRef1 for simplicity - we've stopped everything
-    const nextAudio = audioRef1.current;
-
-    if (!nextAudio) {
-      console.error('❌ Audio ref is null');
+    if (!singletonAudio) {
+      console.error('❌ Singleton audio is null');
       return;
     }
 
-    // Set up and play the next track via AudioManager
-    nextAudio.src = nextTrack.src;
-    nextAudio.volume = isMuted ? 0 : 0.6;
-    nextAudio.currentTime = 0;
+    // Set up and play the next track
+    singletonAudio.src = nextTrack.src;
+    singletonAudio.volume = isMuted ? 0 : 0.6;
+    singletonAudio.currentTime = 0;
     
-    audioManager.play(nextAudio, 'main').then((success) => {
+    audioManager.play(singletonAudio, 'main').then((success) => {
       if (success) {
         console.log('✅ Next track playing:', nextTrack.name);
       } else {
@@ -545,12 +534,11 @@ export const LandingPagePlayer = ({
       }
     });
 
-    // Update state AND refs for both audio and video indices
+    // Update state AND refs
     currentTrackIndexRef.current = nextIndex;
     currentVideoIndexRef.current = nextVideoIndex;
     setCurrentTrackIndex(nextIndex);
     setCurrentVideoIndex(nextVideoIndex);
-    setActiveAudioRef(1); // Always use ref 1 now
     onCurrentTrackChange(nextTrack);
     onVideoPlaybackRateChange(playbackRate);
     onVideoChange(nextVideoIndex);
@@ -566,10 +554,7 @@ export const LandingPagePlayer = ({
   }, [isPlaying, tracks, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
   // Handle play/pause - directly triggered from user interaction
-  // CRITICAL: Only depend on isPlaying to prevent re-triggering on other state changes
   useEffect(() => {
-    const currentAudio = activeAudioRef === 1 ? audioRef1.current : audioRef2.current;
-    
     // Guard: Don't attempt playback if tracks not loaded yet
     if (tracks.length === 0 || videos.length === 0) {
       console.log('⏳ Waiting for media to load...');
@@ -578,17 +563,24 @@ export const LandingPagePlayer = ({
     
     if (isPlaying) {
       // Module-level guard prevents StrictMode double-play
-      if (hasStartedMainPlayback) {
-        console.log('🔒 Main playback already started (module-level), skipping');
+      if (isPlaybackActive) {
+        console.log('🔒 Main playback already started, skipping');
         return;
       }
-      hasStartedMainPlayback = true;
+      isPlaybackActive = true;
       
       // Start from track 0
       const startIndex = 0;
       const firstTrack = tracks[startIndex];
       const firstVideo = videos[startIndex];
-      if (currentAudio && firstVideo) {
+      
+      if (!singletonAudio) {
+        singletonAudio = new Audio();
+        singletonAudio.crossOrigin = 'anonymous';
+        singletonAudio.preload = 'auto';
+      }
+      
+      if (firstVideo) {
         console.log('🎵 Starting first playback:', firstTrack.name);
         
         // Stop intro video if still playing
@@ -603,17 +595,15 @@ export const LandingPagePlayer = ({
           trackTimerRef.current = undefined;
         }
         
-        // Now set up the first track on the active audio element
-        currentAudio.muted = false;
-        currentAudio.src = firstTrack.src;
-        currentAudio.volume = isMuted ? 0 : 0.4; // Start at audible volume immediately
-        currentAudio.crossOrigin = 'anonymous';
-        currentAudio.preload = 'auto';
+        // Set up the first track
+        singletonAudio.muted = false;
+        singletonAudio.src = firstTrack.src;
+        singletonAudio.volume = isMuted ? 0 : 0.4;
         
         // Target volume for quick fade-in
         const targetVolume = isMuted ? 0 : 0.6;
         
-        // Set the track and video indices to startIndex (both state and ref)
+        // Set indices
         currentTrackIndexRef.current = startIndex;
         currentVideoIndexRef.current = startIndex;
         setCurrentTrackIndex(startIndex);
@@ -624,20 +614,20 @@ export const LandingPagePlayer = ({
         onVideoPlaybackRateChange(playbackRate);
         onVideoChange(startIndex);
         
-        // Attempt to play audio via AudioManager with fade-in
+        // Attempt to play audio
         const attemptPlay = async () => {
-          const success = await audioManager.play(currentAudio, 'main');
+          const success = await audioManager.play(singletonAudio!, 'main');
           if (success) {
             console.log('✅ Audio playing successfully, starting fade-in');
             
-            // Fade in the audio
+            // Fade in
             const fadeSteps = 15;
             const fadeStepTime = FADE_IN_DURATION / fadeSteps;
             let step = 0;
             const fadeInInterval = setInterval(() => {
               step++;
-              if (currentAudio) {
-                currentAudio.volume = Math.min(targetVolume, (step / fadeSteps) * targetVolume);
+              if (singletonAudio) {
+                singletonAudio.volume = Math.min(targetVolume, (step / fadeSteps) * targetVolume);
               }
               if (step >= fadeSteps) {
                 clearInterval(fadeInInterval);
@@ -660,13 +650,11 @@ export const LandingPagePlayer = ({
             console.log('🎬 Video playback rate:', playbackRate, 'BPM:', firstTrack.estimatedBPM);
           } else {
             console.error('❌ Play failed, retrying...');
-            // Retry after a short delay
             setTimeout(async () => {
-              const retrySuccess = await audioManager.play(currentAudio, 'main');
+              const retrySuccess = await audioManager.play(singletonAudio!, 'main');
               if (retrySuccess) {
                 console.log('✅ Playing after retry');
                 
-                // Set 35-second timer for next track
                 if (trackTimerRef.current) {
                   clearTimeout(trackTimerRef.current);
                 }
@@ -680,7 +668,7 @@ export const LandingPagePlayer = ({
               } else {
                 console.error('❌ Retry failed');
                 onPlaybackStateChange(false);
-                hasStartedMainPlayback = false; // Allow retry
+                isPlaybackActive = false;
               }
             }, 100);
           }
@@ -690,22 +678,22 @@ export const LandingPagePlayer = ({
       }
     } else {
       console.log('⏸️ Pausing playback...');
-      // Pause BOTH audio elements to be safe
-      audioRef1.current?.pause();
-      audioRef2.current?.pause();
-      hasStartedMainPlayback = false; // Reset so next play can initialize
+      if (singletonAudio) {
+        singletonAudio.pause();
+      }
+      isPlaybackActive = false;
       if (trackTimerRef.current) {
         clearTimeout(trackTimerRef.current);
         trackTimerRef.current = undefined;
       }
     }
-  // CRITICAL: Only depend on isPlaying - other changes should NOT re-trigger playback
   }, [isPlaying, tracks.length, videos.length]);
 
   // Handle mute
   useEffect(() => {
-    if (audioRef1.current) audioRef1.current.volume = isMuted ? 0 : 0.6;
-    if (audioRef2.current) audioRef2.current.volume = isMuted ? 0 : 0.6;
+    if (singletonAudio) {
+      singletonAudio.volume = isMuted ? 0 : 0.6;
+    }
   }, [isMuted]);
 
   // Skip to next track
@@ -722,8 +710,6 @@ export const LandingPagePlayer = ({
 
   // Cleanup
   useEffect(() => {
-    const audio1 = audioRef1.current;
-    const audio2 = audioRef2.current;
     const timerRef = trackTimerRef;
     
     return () => {
@@ -735,26 +721,18 @@ export const LandingPagePlayer = ({
         timerRef.current = undefined;
       }
       
-      // Stop audio
-      if (audio1) {
-        audio1.pause();
-        audio1.src = '';
-      }
-      if (audio2) {
-        audio2.pause();
-        audio2.src = '';
+      // Stop singleton audio
+      if (singletonAudio) {
+        singletonAudio.pause();
+        singletonAudio.src = '';
       }
       
       // Clear global references
       (window as any).__skipLandingTrack = null;
-      hasStartedMainPlayback = false;
+      isPlaybackActive = false;
     };
   }, []);
 
-  return (
-    <>
-      <audio ref={audioRef1} crossOrigin="anonymous" preload="auto" />
-      <audio ref={audioRef2} crossOrigin="anonymous" preload="auto" />
-    </>
-  );
+  // No JSX audio elements needed - using singleton
+  return null;
 };
