@@ -15,10 +15,12 @@ interface CinematicTextOverlayProps {
 
 // Singleton reference to prevent duplicate audio in StrictMode
 let introAudioInstance: HTMLAudioElement | null = null
+let initializationPending = false
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'text' | 'intro' | 'fading' | 'complete'>('text')
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const mountedRef = useRef(false)
 
   // Auto-transition from text to intro after 3 seconds
   useEffect(() => {
@@ -30,8 +32,22 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [phase])
 
-  // Initialize intro audio on mount
+  // Initialize intro audio on mount - with StrictMode protection
   useEffect(() => {
+    // Skip if already mounted (StrictMode double-mount protection)
+    if (mountedRef.current) {
+      // Just reconnect to existing audio if it exists
+      if (introAudioInstance) {
+        audioRef.current = introAudioInstance
+      }
+      return
+    }
+    mountedRef.current = true
+    
+    // Prevent concurrent initialization
+    if (initializationPending) return
+    initializationPending = true
+    
     // Stop any existing audio first to prevent duplicates
     if (introAudioInstance) {
       introAudioInstance.pause()
@@ -47,30 +63,37 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
       }
     })
     
-    // Create fresh intro audio
-    introAudioInstance = new Audio(INTRO_AUDIO_URL)
-    introAudioInstance.volume = 0.6
-    introAudioInstance.loop = true
-    introAudioInstance.crossOrigin = 'anonymous'
-    
-    audioRef.current = introAudioInstance
-    
-    // Store reference for mute toggle from header
-    ;(window as any).__introAudio = introAudioInstance
-    
-    // Try to autoplay (may be blocked by browser)
-    introAudioInstance.play().catch(() => {
-      console.log('Intro audio autoplay blocked - will play on user interaction')
-    })
+    // Delay audio creation slightly to let StrictMode cleanup finish
+    const initTimer = setTimeout(() => {
+      // Double-check we're still supposed to create audio
+      if (introAudioInstance) {
+        initializationPending = false
+        return
+      }
+      
+      // Create fresh intro audio
+      introAudioInstance = new Audio(INTRO_AUDIO_URL)
+      introAudioInstance.volume = 0.6
+      introAudioInstance.loop = true
+      introAudioInstance.crossOrigin = 'anonymous'
+      
+      audioRef.current = introAudioInstance
+      
+      // Store reference for mute toggle from header
+      ;(window as any).__introAudio = introAudioInstance
+      
+      // Try to autoplay (may be blocked by browser)
+      introAudioInstance.play().catch(() => {
+        console.log('Intro audio autoplay blocked - will play on user interaction')
+      })
+      
+      initializationPending = false
+    }, 50)
 
     return () => {
-      // Cleanup on unmount
-      if (introAudioInstance) {
-        introAudioInstance.pause()
-        introAudioInstance.src = ''
-        introAudioInstance = null
-        ;(window as any).__introAudio = null
-      }
+      clearTimeout(initTimer)
+      // Don't cleanup audio on StrictMode unmount - let it persist
+      // Only cleanup when component is truly removed
     }
   }, [])
 
