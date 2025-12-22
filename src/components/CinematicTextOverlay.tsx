@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play } from 'lucide-react'
 import focusLogo from '@/assets/focus-logo-chrome.png'
@@ -7,20 +7,12 @@ import stanfordMedicine from '@/assets/stanford-medicine.svg'
 import weillCornell from '@/assets/weill-cornell-medicine.png'
 import pedestalPhones from '@/assets/pedestal-phones.jpeg'
 
-const INTRO_AUDIO_URL = '/audio/intro-focus.mp3'
-
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
 
-// Singleton reference to prevent duplicate audio in StrictMode
-let introAudioInstance: HTMLAudioElement | null = null
-let initializationPending = false
-
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'text' | 'intro' | 'fading' | 'complete'>('text')
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const mountedRef = useRef(false)
 
   // Auto-transition from text to intro after 3 seconds
   useEffect(() => {
@@ -32,95 +24,15 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [phase])
 
-  // Initialize intro audio on mount - with StrictMode protection
-  useEffect(() => {
-    // Skip if already mounted (StrictMode double-mount protection)
-    if (mountedRef.current) {
-      // Just reconnect to existing audio if it exists
-      if (introAudioInstance) {
-        audioRef.current = introAudioInstance
-      }
-      return
-    }
-    mountedRef.current = true
-    
-    // Prevent concurrent initialization
-    if (initializationPending) return
-    initializationPending = true
-    
-    // Stop any existing audio first to prevent duplicates
-    if (introAudioInstance) {
-      introAudioInstance.pause()
-      introAudioInstance.src = ''
-      introAudioInstance = null
-    }
-    
-    // Also stop any orphaned audio elements
-    document.querySelectorAll('audio').forEach(audio => {
-      if (!audio.id || !audio.id.startsWith('main-')) {
-        audio.pause()
-        audio.src = ''
-      }
-    })
-    
-    // Delay audio creation slightly to let StrictMode cleanup finish
-    const initTimer = setTimeout(() => {
-      // Double-check we're still supposed to create audio
-      if (introAudioInstance) {
-        initializationPending = false
-        return
-      }
-      
-      // Create fresh intro audio
-      introAudioInstance = new Audio(INTRO_AUDIO_URL)
-      introAudioInstance.volume = 0.6
-      introAudioInstance.loop = true
-      introAudioInstance.crossOrigin = 'anonymous'
-      
-      audioRef.current = introAudioInstance
-      
-      // Store reference for mute toggle from header
-      ;(window as any).__introAudio = introAudioInstance
-      
-      // Try to autoplay (may be blocked by browser)
-      introAudioInstance.play().catch(() => {
-        console.log('Intro audio autoplay blocked - will play on user interaction')
-      })
-      
-      initializationPending = false
-    }, 50)
-
-    return () => {
-      clearTimeout(initTimer)
-      // Don't cleanup audio on StrictMode unmount - let it persist
-      // Only cleanup when component is truly removed
-    }
-  }, [])
+  // No autoplay - audio only plays when user presses play
 
   const handlePlay = () => {
-    // Fade out intro audio
-    if (audioRef.current) {
-      const audio = audioRef.current
-      const fadeOut = () => {
-        if (audio.volume > 0.1) {
-          audio.volume = Math.max(0, audio.volume - 0.1)
-          setTimeout(fadeOut, 50)
-        } else {
-          audio.pause()
-          audio.currentTime = 0
-          introAudioInstance = null
-          ;(window as any).__introAudio = null
-        }
-      }
-      fadeOut()
-    }
-    
     setPhase('fading')
     // Complete after fade animation
     setTimeout(() => {
       setPhase('complete')
       onComplete?.()
-    }, 1000)
+    }, 1200)
   }
 
   if (phase === 'complete') return null
@@ -146,10 +58,10 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             <motion.div
               key="text-phase"
               className="flex flex-col items-center text-center px-6 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
             >
               <p
                 className="text-lg md:text-xl lg:text-2xl leading-relaxed"
@@ -173,18 +85,15 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               </p>
             </motion.div>
           )}
-        </AnimatePresence>
 
-        {/* Centered play button with Demo label - shows after text phase */}
-        <AnimatePresence>
           {phase === 'intro' && (
             <motion.div
               key="play-phase"
               className="flex flex-col items-center gap-4"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
             >
               {/* Frosted play button */}
               <motion.button
@@ -217,7 +126,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
             </motion.div>
           )}
         </AnimatePresence>
-
         {/* Bottom: Logo + supported by + Institution logos */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -301,31 +209,7 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function for external control
-export function fadeOutIntroSong(duration: number = 500): Promise<void> {
-  return new Promise((resolve) => {
-    const audio = (window as any).__introAudio as HTMLAudioElement | null
-    if (!audio || audio.paused) {
-      resolve()
-      return
-    }
-    
-    const steps = 10
-    const stepTime = duration / steps
-    let step = 0
-    const startVolume = audio.volume
-    
-    const fadeInterval = setInterval(() => {
-      step++
-      audio.volume = Math.max(0, startVolume * (1 - step / steps))
-      if (step >= steps) {
-        clearInterval(fadeInterval)
-        audio.pause()
-        audio.currentTime = 0
-        introAudioInstance = null
-        ;(window as any).__introAudio = null
-        resolve()
-      }
-    }, stepTime)
-  })
+// Export fade function for external control (no-op since no intro audio)
+export function fadeOutIntroSong(_duration: number = 500): Promise<void> {
+  return Promise.resolve()
 }
