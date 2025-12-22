@@ -2083,6 +2083,42 @@ export type Database = {
         }
         Relationships: []
       }
+      patient_access_audit_log: {
+        Row: {
+          access_granted: boolean
+          access_type: string
+          accessed_at: string | null
+          accessed_by: string
+          id: string
+          ip_address: string | null
+          patient_id: string
+          table_accessed: string
+          user_agent: string | null
+        }
+        Insert: {
+          access_granted?: boolean
+          access_type: string
+          accessed_at?: string | null
+          accessed_by: string
+          id?: string
+          ip_address?: string | null
+          patient_id: string
+          table_accessed: string
+          user_agent?: string | null
+        }
+        Update: {
+          access_granted?: boolean
+          access_type?: string
+          accessed_at?: string | null
+          accessed_by?: string
+          id?: string
+          ip_address?: string | null
+          patient_id?: string
+          table_accessed?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       patient_assignments: {
         Row: {
           assigned_at: string | null
