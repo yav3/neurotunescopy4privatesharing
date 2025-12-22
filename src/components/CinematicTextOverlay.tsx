@@ -64,21 +64,23 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
             >
               <p
-                className="text-lg md:text-xl lg:text-2xl leading-relaxed"
+                className="leading-relaxed"
                 style={{
                   color: '#c0c0c0',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
                   fontWeight: 400,
+                  fontSize: '32px',
                 }}
               >
                 Adaptive music for different states.
               </p>
               <p
-                className="text-lg md:text-xl lg:text-2xl leading-relaxed mt-6"
+                className="leading-relaxed mt-2"
                 style={{
                   color: '#e4e4e4',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 500,
+                  fontWeight: 400,
+                  fontSize: '32px',
                 }}
               >
                 Press play to explore.
@@ -111,18 +113,6 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               >
                 <Play className="w-8 h-8 md:w-10 md:h-10 ml-1" style={{ color: '#d0d0d0', fill: '#d0d0d0' }} />
               </motion.button>
-              
-              {/* Demo label */}
-              <span
-                className="text-sm md:text-base tracking-[0.3em] uppercase"
-                style={{
-                  color: '#808080',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 400,
-                }}
-              >
-                Demo
-              </span>
             </motion.div>
           )}
         </AnimatePresence>
