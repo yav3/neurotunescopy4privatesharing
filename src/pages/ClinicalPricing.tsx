@@ -60,21 +60,21 @@ export const ClinicalPricing = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
       <NavigationHeader />
       
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="pt-32 pb-24">
+        <div className="max-w-7xl mx-auto px-8 lg:px-12">
           
           {/* Back Button */}
           <Link 
             to="/products"
-            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8 group"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-12 group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span className="text-sm">Back to Products</span>
           </Link>
           
           {/* Hero */}
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-light tracking-tight text-white mb-4">
+          <div className="text-center mb-20">
+            <h1 className="text-5xl md:text-6xl font-light tracking-tight text-white mb-6">
               Clinical & Population Health Pricing
             </h1>
             <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto">
@@ -82,9 +82,8 @@ export const ClinicalPricing = () => {
             </p>
           </div>
 
-          {/* Pricing Cards - Horizontal Scroll */}
-          <div className="overflow-x-auto pb-8 -mx-6 px-6">
-            <div className="flex gap-8 min-w-max">
+          {/* Pricing Cards */}
+          <div className="flex flex-wrap justify-center gap-10 lg:gap-12">
               {plans.map((plan, index) => (
                 <div 
                   key={index}
@@ -149,7 +148,6 @@ export const ClinicalPricing = () => {
                 </button>
               </div>
             ))}
-            </div>
           </div>
         </div>
       </main>
