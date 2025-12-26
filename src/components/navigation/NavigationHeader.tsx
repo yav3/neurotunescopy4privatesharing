@@ -163,7 +163,11 @@ export const NavigationHeader = () => {
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-7 py-2.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-sm font-normal"
+            className="px-7 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-sm font-normal"
+            style={{
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+              boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
+            }}
           >
             Free Trial
           </Link>
@@ -276,7 +280,11 @@ export const NavigationHeader = () => {
           </Link>
           <Link 
             to="/products/enterprise-wellness" 
-            className="px-3 py-1.5 rounded-full bg-[#c0c0c0] text-black hover:bg-[#d4d4d4] transition-all duration-200 text-[10px] font-normal"
+            className="px-3 py-1.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[10px] font-normal"
+            style={{
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+              boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)'
+            }}
           >
             Free Trial
           </Link>
