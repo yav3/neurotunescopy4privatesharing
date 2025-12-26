@@ -83,25 +83,24 @@ export const ClinicalPricing = () => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="flex flex-wrap justify-center gap-10 lg:gap-12">
-              {plans.map((plan, index) => (
-                <div 
-                  key={index}
-                  className="rounded-3xl p-8 relative w-[360px] min-h-[520px] flex-shrink-0 flex flex-col"
-                  style={{
-                    background: plan.highlighted 
-                      ? 'rgba(6, 182, 212, 0.08)' 
-                      : 'rgba(255, 255, 255, 0.05)',
-                    backdropFilter: 'blur(24px)',
-                    border: plan.highlighted
-                      ? '1px solid rgba(6, 182, 212, 0.30)'
-                      : '1px solid rgba(255, 255, 255, 0.10)',
-                    boxShadow: plan.highlighted
-                      ? '0 0 60px rgba(6, 182, 212, 0.20)'
-                      : '0 0 40px rgba(0, 0, 0, 0.8)',
-                    transform: plan.highlighted ? 'scale(1.05)' : 'scale(1)'
-                  }}
-                >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {plans.map((plan, index) => (
+              <div 
+                key={index}
+                className="rounded-3xl p-8 relative min-h-[520px] flex flex-col"
+                style={{
+                  background: plan.highlighted 
+                    ? 'rgba(6, 182, 212, 0.08)' 
+                    : 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(24px)',
+                  border: plan.highlighted
+                    ? '1px solid rgba(6, 182, 212, 0.30)'
+                    : '1px solid rgba(255, 255, 255, 0.10)',
+                  boxShadow: plan.highlighted
+                    ? '0 0 60px rgba(6, 182, 212, 0.20)'
+                    : '0 0 40px rgba(0, 0, 0, 0.8)'
+                }}
+              >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-medium"
                     style={{
