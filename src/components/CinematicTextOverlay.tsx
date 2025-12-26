@@ -101,24 +101,14 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               <p
                 className="leading-relaxed"
                 style={{
-                  color: '#c0c0c0',
+                  color: '#e8e8e8',
                   fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '32px',
+                  fontWeight: 300,
+                  fontSize: '36px',
+                  letterSpacing: '-0.02em',
                 }}
               >
-                Adaptive music for different states.
-              </p>
-              <p
-                className="leading-relaxed mt-2"
-                style={{
-                  color: '#e4e4e4',
-                  fontFamily: 'SF Pro Display, system-ui, -apple-system, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '32px',
-                }}
-              >
-                Press play to explore.
+                Feel better, on-demand.
               </p>
             </motion.div>
           )}
@@ -132,21 +122,28 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
               exit={{ opacity: 0 }}
               transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
             >
-              {/* Frosted play button */}
+              {/* Prominent play button with glow */}
               <motion.button
                 onClick={handlePlay}
-                whileHover={{ scale: 1.08, boxShadow: '0 0 40px rgba(255,255,255,0.2)' }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300"
+                className="w-28 h-28 md:w-36 md:h-36 rounded-full flex items-center justify-center transition-all duration-300 relative"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.08) 100%)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '2px solid rgba(255,255,255,0.3)',
+                  boxShadow: '0 0 60px rgba(255,255,255,0.15), 0 0 120px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.2)',
                 }}
               >
-                <Play className="w-8 h-8 md:w-10 md:h-10 ml-1" style={{ color: '#d0d0d0', fill: '#d0d0d0' }} />
+                {/* Pulsing ring animation */}
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  style={{ border: '2px solid rgba(255,255,255,0.2)' }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <Play className="w-12 h-12 md:w-16 md:h-16 ml-2" style={{ color: '#ffffff', fill: '#ffffff' }} />
               </motion.button>
             </motion.div>
           )}
