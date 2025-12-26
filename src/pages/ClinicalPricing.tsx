@@ -10,6 +10,20 @@ export const ClinicalPricing = () => {
   const [interestType, setInterestType] = useState("");
   const plans = [
     {
+      name: "Free Trial",
+      price: "$0",
+      period: "/14 days",
+      description: "Try the platform risk-free",
+      features: [
+        "Full library access",
+        "Up to 5 patient accounts",
+        "Basic dashboards",
+        "Email support"
+      ],
+      cta: "Start Free Trial",
+      highlighted: false
+    },
+    {
       name: "Clinical",
       price: "$299",
       period: "/month",
@@ -80,7 +94,7 @@ export const ClinicalPricing = () => {
               {plans.map((plan, index) => (
                 <div 
                   key={index}
-                  className="rounded-3xl p-8 relative w-[400px] flex-shrink-0"
+                  className="rounded-3xl p-8 relative w-[360px] min-h-[520px] flex-shrink-0 flex flex-col"
                   style={{
                     background: plan.highlighted 
                       ? 'rgba(6, 182, 212, 0.08)' 
@@ -115,7 +129,7 @@ export const ClinicalPricing = () => {
                   <p className="text-sm text-neutral-400">{plan.description}</p>
                 </div>
 
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-4 mb-8 flex-1">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
