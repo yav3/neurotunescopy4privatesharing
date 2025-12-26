@@ -32,7 +32,6 @@ export const ClinicalPricing = () => {
         "Full library access (8,500+ tracks)",
         "Up to 50 patient accounts",
         "Clinical dashboards",
-        "Session notes integration",
         "Outcome tracking",
         "HIPAA compliance",
         "Dedicated support"
@@ -44,20 +43,16 @@ export const ClinicalPricing = () => {
       name: "Population Health",
       price: "Custom",
       period: "",
-      description: "For health systems and large provider networks (5,000+ patients)",
+      description: "For health systems and large networks",
       features: [
         "Everything in Clinical",
         "Unlimited patient accounts",
-        "HIPAA-compliant biomarker collection",
-        "RTM/RPM system integration",
         "EMR/EHR integration",
         "Population-scale analytics",
         "Clinical outcomes tracking",
-        "No disruption to workflow",
-        "Patient CCM support",
         "Dedicated success manager"
       ],
-      cta: "Schedule Clinical Consultation",
+      cta: "Schedule Consultation",
       highlighted: false
     }
   ];
