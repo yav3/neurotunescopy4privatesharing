@@ -7,9 +7,15 @@ import stanfordMedicine from '@/assets/stanford-medicine.svg'
 import weillCornell from '@/assets/weill-cornell-medicine.png'
 import pedestalPhones from '@/assets/pedestal-phones.jpeg'
 
+const INTRO_SONG_URL = '/audio/The_Seventh_Wonder_new_age_focus_soprano_1.mp3'
+const FADE_DURATION = 1500
+
 interface CinematicTextOverlayProps {
   onComplete?: () => void
 }
+
+// Global reference for the intro audio so we can fade it out externally
+let globalIntroAudio: HTMLAudioElement | null = null
 
 export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) {
   const [phase, setPhase] = useState<'text' | 'intro' | 'fading' | 'complete'>('text')
@@ -24,9 +30,38 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
     }
   }, [phase])
 
-  // No autoplay - audio only plays when user presses play
+  // Autoplay intro music on mount
+  useEffect(() => {
+    const audio = new Audio(INTRO_SONG_URL)
+    audio.loop = true
+    audio.volume = 0.5
+    globalIntroAudio = audio
+    ;(window as any).__introAudio = audio
+
+    // Attempt to play (may be blocked by browser autoplay policy)
+    audio.play().catch(() => {
+      // If autoplay blocked, play on first user interaction
+      const playOnInteraction = () => {
+        audio.play().catch(() => {})
+        document.removeEventListener('click', playOnInteraction)
+        document.removeEventListener('touchstart', playOnInteraction)
+      }
+      document.addEventListener('click', playOnInteraction)
+      document.addEventListener('touchstart', playOnInteraction)
+    })
+
+    return () => {
+      audio.pause()
+      audio.src = ''
+      globalIntroAudio = null
+      ;(window as any).__introAudio = null
+    }
+  }, [])
 
   const handlePlay = () => {
+    // Fade out intro music
+    fadeOutIntroSong(FADE_DURATION)
+    
     setPhase('fading')
     // Complete after fade animation
     setTimeout(() => {
@@ -199,7 +234,33 @@ export function CinematicTextOverlay({ onComplete }: CinematicTextOverlayProps) 
   )
 }
 
-// Export fade function for external control (no-op since no intro audio)
-export function fadeOutIntroSong(_duration: number = 500): Promise<void> {
-  return Promise.resolve()
+// Export fade function for external control
+export function fadeOutIntroSong(duration: number = 500): Promise<void> {
+  return new Promise((resolve) => {
+    const audio = globalIntroAudio
+    if (!audio) {
+      resolve()
+      return
+    }
+
+    const startVolume = audio.volume
+    const steps = 20
+    const stepTime = duration / steps
+    const volumeStep = startVolume / steps
+    let currentStep = 0
+
+    const fadeInterval = setInterval(() => {
+      currentStep++
+      audio.volume = Math.max(0, startVolume - volumeStep * currentStep)
+      
+      if (currentStep >= steps) {
+        clearInterval(fadeInterval)
+        audio.pause()
+        audio.src = ''
+        globalIntroAudio = null
+        ;(window as any).__introAudio = null
+        resolve()
+      }
+    }, stepTime)
+  })
 }
