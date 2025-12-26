@@ -162,7 +162,7 @@ export const NavigationHeader = () => {
             Login
           </Link>
           <Link 
-            to="/products/enterprise-wellness" 
+            to="/clinical-pricing"
             className="px-7 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-sm font-normal"
             style={{
               background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
@@ -279,7 +279,7 @@ export const NavigationHeader = () => {
             Login
           </Link>
           <Link 
-            to="/products/enterprise-wellness" 
+            to="/clinical-pricing"
             className="px-3 py-1.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[10px] font-normal"
             style={{
               background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
