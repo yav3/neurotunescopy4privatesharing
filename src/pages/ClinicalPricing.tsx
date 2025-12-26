@@ -145,12 +145,10 @@ export const ClinicalPricing = () => {
                   }}
                   className="w-full px-6 py-3 rounded-full text-sm font-medium transition-all cursor-pointer"
                   style={{
-                    background: plan.highlighted
-                      ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                      : 'rgba(255, 255, 255, 0.05)',
-                    border: plan.highlighted ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
+                    background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                    border: 'none',
                     color: 'white',
-                    boxShadow: plan.highlighted ? '0 0 30px rgba(6, 182, 212, 0.3)' : 'none'
+                    boxShadow: '0 0 30px rgba(6, 182, 212, 0.3)'
                   }}
                 >
                   {plan.cta}
