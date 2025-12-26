@@ -46,7 +46,6 @@ export const ClinicalPricing = () => {
       description: "For health systems and large networks",
       features: [
         "Everything in Clinical",
-        "Unlimited patient accounts",
         "EMR/EHR integration",
         "Population-scale analytics",
         "Clinical outcomes tracking",
