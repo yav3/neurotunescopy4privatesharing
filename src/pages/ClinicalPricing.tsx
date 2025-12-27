@@ -24,10 +24,10 @@ export const ClinicalPricing = () => {
       highlighted: false
     },
     {
-      name: "Clinical",
+      name: "SME",
       price: "$299",
       period: "/month",
-      description: "For therapists and healthcare providers",
+      description: "For environmental accounts",
       features: [
         "Full library access (8,500+ tracks)",
         "Up to 50 patient accounts",
