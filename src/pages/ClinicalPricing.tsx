@@ -77,7 +77,7 @@ export const ClinicalPricing = () => {
               Enterprise Pricing
             </h1>
             <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto">
-              Evidence-based therapeutic music for healthcare providers
+              Neuroscience-backed premium music to elevate mood and improve customer and employee experiences.
             </p>
           </div>
 
