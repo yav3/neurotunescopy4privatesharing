@@ -29,27 +29,26 @@ export const ClinicalPricing = () => {
       period: "/month",
       description: "For environmental accounts",
       features: [
-        "Full library access (8,500+ tracks)",
-        "Up to 50 patient accounts",
-        "Clinical dashboards",
-        "Outcome tracking",
-        "HIPAA compliance",
-        "Dedicated support"
+        "Up to 5 admin logins",
+        "3K sqft of space",
+        "Up to 5 rooms",
+        "Pre-Programming",
+        "Room Functions"
       ],
       cta: "Request Demo",
       highlighted: true
     },
     {
-      name: "Population Health",
+      name: "Enterprise",
       price: "Custom",
       period: "",
-      description: "For health systems and large networks",
+      description: "For large-scale deployments",
       features: [
-        "Everything in Clinical",
-        "EMR/EHR integration",
-        "Population-scale analytics",
-        "Clinical outcomes tracking",
-        "Dedicated success manager"
+        "Time-of-Day programming",
+        "Advanced AI Room-Specific Planning",
+        "Branded Personalization",
+        "Analytics",
+        "Scalable Admin Account Logins"
       ],
       cta: "Schedule Consultation",
       highlighted: false
