@@ -75,7 +75,7 @@ export const ClinicalPricing = () => {
           {/* Hero */}
           <div className="text-center mb-20">
             <h1 className="text-5xl md:text-6xl font-light tracking-tight text-white mb-6">
-              Clinical & Population Health Pricing
+              Enterprise Pricing
             </h1>
             <p className="text-xl font-light text-neutral-300 max-w-3xl mx-auto">
               Evidence-based therapeutic music for healthcare providers
