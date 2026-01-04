@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { NeuralSignalGraphic } from './NeuralSignalGraphic';
 
 interface LovableLandingPageProps {
   onExplore?: () => void;
@@ -21,7 +22,6 @@ const VARIANTS = {
 };
 
 export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplore }) => {
-  // For now, default to Variant A. Can be controlled via props or localStorage for A/B testing
   const [variant] = useState<Variant>('A');
   const content = VARIANTS[variant];
 
@@ -31,62 +31,92 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
     <div 
       className="min-h-screen w-full"
       style={{ 
-        backgroundColor: 'hsl(240 8% 4%)', // True obsidian
+        backgroundColor: 'hsl(240 8% 4%)',
         fontFamily: sfPro 
       }}
     >
-      {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 relative">
-        <motion.h1
-          className="text-white font-semibold text-center"
-          style={{ 
-            fontSize: 'clamp(40px, 8vw, 72px)',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.1,
-          }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          {content.headline}
-        </motion.h1>
+      {/* HERO SECTION - Split Layout */}
+      <section className="min-h-screen flex items-center justify-center px-6 lg:px-16 xl:px-24 relative">
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          
+          {/* LEFT - Typography */}
+          <div className="space-y-8">
+            {/* Overline */}
+            <motion.p
+              className="text-white/40 text-xs tracking-[0.2em] uppercase font-light"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              Clinically Informed • Adaptive Music
+            </motion.p>
 
-        <motion.p
-          className="text-white/70 font-light text-center mt-8 max-w-2xl"
-          style={{ 
-            fontSize: 'clamp(18px, 2.5vw, 24px)',
-            letterSpacing: '-0.01em',
-            lineHeight: 1.5,
-          }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-        >
-          {content.subheadline}
-        </motion.p>
+            {/* Headline */}
+            <motion.h1
+              className="text-white font-semibold"
+              style={{ 
+                fontSize: 'clamp(36px, 5vw, 56px)',
+                letterSpacing: '-0.03em',
+                lineHeight: 1.05,
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+            >
+              Music, Precisely Tuned<br />
+              to the Nervous System
+            </motion.h1>
 
-        {/* CTA Button */}
-        <motion.div
-          className="mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
-        >
-          <Button
-            onClick={onExplore}
-            className="bg-white text-black hover:bg-white/90 px-8 py-6 text-lg font-medium rounded-none"
-            style={{ fontFamily: sfPro }}
+            {/* Subhead */}
+            <motion.p
+              className="text-white/50 font-light max-w-md"
+              style={{ 
+                fontSize: 'clamp(16px, 1.5vw, 20px)',
+                letterSpacing: '-0.01em',
+                lineHeight: 1.6,
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+            >
+              Adaptive compositions engineered to regulate
+              attention and stress in real time.
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.div
+              className="pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
+            >
+              <Button
+                onClick={onExplore}
+                className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-medium rounded-none"
+                style={{ fontFamily: sfPro }}
+              >
+                Start a Focus Session
+              </Button>
+            </motion.div>
+          </div>
+
+          {/* RIGHT - Signal Graphic */}
+          <motion.div
+            className="h-80 lg:h-96 flex items-center justify-center"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
           >
-            Explore NeuroTunes AI
-          </Button>
-        </motion.div>
+            <NeuralSignalGraphic />
+          </motion.div>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-12 text-white/30 text-sm font-light tracking-widest uppercase"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/20 text-xs font-light tracking-[0.3em] uppercase"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2 }}
+          transition={{ duration: 1, delay: 1.5 }}
         >
           Scroll
         </motion.div>
