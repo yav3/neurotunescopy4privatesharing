@@ -7,7 +7,8 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
-import { CinematicTextOverlay, fadeOutIntroSong } from '@/components/CinematicTextOverlay';
+import { fadeOutIntroSong } from '@/components/CinematicTextOverlay';
+import { PremiumHero } from '@/components/landing/PremiumHero';
 
 const Index = () => {
   useWelcomeMessage();
@@ -103,8 +104,8 @@ const Index = () => {
       {/* Header */}
       <NavigationHeader />
       
-      {/* Cinematic Text Overlay - auto-transitions to experience */}
-      {showIntro && <CinematicTextOverlay onComplete={handleIntroComplete} />}
+      {/* Premium Hero - clean, focused messaging */}
+      {showIntro && <PremiumHero onComplete={handleIntroComplete} />}
       
       {/* Spacer for layout */}
       <div className="flex-1" />
