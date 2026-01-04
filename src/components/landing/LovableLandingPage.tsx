@@ -40,7 +40,7 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           
           {/* LEFT - Typography */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Overline */}
             <motion.p
               className="text-white/40 text-xs tracking-[0.2em] uppercase font-light"
@@ -85,7 +85,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
 
             {/* CTA Button */}
             <motion.div
-              className="pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
@@ -245,23 +244,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         </motion.div>
       </section>
 
-      {/* FINAL CTA */}
-      <section className="min-h-[50vh] flex flex-col items-center justify-center px-6 py-32">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8 }}
-        >
-          <Button
-            onClick={onExplore}
-            className="bg-white text-black hover:bg-white/90 px-10 py-7 text-xl font-medium rounded-none"
-            style={{ fontFamily: sfPro }}
-          >
-            Explore NeuroTunes AI
-          </Button>
-        </motion.div>
-      </section>
 
       {/* TRUST SIGNAL FOOTER */}
       <footer className="py-16 px-6 border-t border-white/5">
