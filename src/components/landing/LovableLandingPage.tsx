@@ -83,20 +83,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
               attention and stress in real time.
             </motion.p>
 
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
-            >
-              <Button
-                onClick={onExplore}
-                className="bg-white text-black hover:bg-white/90 px-8 py-6 text-base font-medium rounded-none"
-                style={{ fontFamily: sfPro }}
-              >
-                Start a Focus Session
-              </Button>
-            </motion.div>
           </div>
 
           {/* RIGHT - Signal Graphic */}
@@ -244,19 +230,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         </motion.div>
       </section>
 
-
-      {/* TRUST SIGNAL FOOTER */}
-      <footer className="py-16 px-6 border-t border-white/5">
-        <motion.p
-          className="text-white/30 text-center font-light text-sm tracking-wide"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          Designed with neuroscientists and clinicians. Used in research-informed environments.
-        </motion.p>
-      </footer>
     </div>
   );
 };
