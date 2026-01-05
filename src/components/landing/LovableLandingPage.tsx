@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, X } from 'lucide-react';
 import atmosphereImage from '@/assets/atmosphere-engineered.jpeg';
 
 interface LovableLandingPageProps {
@@ -9,6 +9,61 @@ interface LovableLandingPageProps {
 
 export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplore }) => {
   const sfPro = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif';
+  
+  const [isDemoPlaying, setIsDemoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const startDemo = () => {
+    setIsDemoPlaying(true);
+  };
+
+  const stopDemo = () => {
+    // Fade out audio
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      const fadeOut = setInterval(() => {
+        if (audio.volume > 0.1) {
+          audio.volume -= 0.1;
+        } else {
+          clearInterval(fadeOut);
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      }, 100);
+    }
+    
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+    
+    setIsDemoPlaying(false);
+  };
+
+  useEffect(() => {
+    if (isDemoPlaying) {
+      // Start video and audio
+      if (videoRef.current) {
+        videoRef.current.play().catch(console.log);
+      }
+      if (audioRef.current) {
+        audioRef.current.volume = 0.6;
+        audioRef.current.play().catch(console.log);
+      }
+    }
+  }, [isDemoPlaying]);
+
+  // Auto-stop when video ends
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.onended = stopDemo;
+    }
+    return () => {
+      if (video) video.onended = null;
+    };
+  }, []);
 
   return (
     <div 
@@ -18,6 +73,53 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         fontFamily: sfPro 
       }}
     >
+      {/* Demo Video Overlay */}
+      <AnimatePresence>
+        {isDemoPlaying && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/videos/intro-2.mp4"
+              muted
+              playsInline
+            />
+            
+            <audio
+              ref={audioRef}
+              src="/audio/story-intro.mp3"
+              preload="auto"
+            />
+            
+            {/* Close button */}
+            <button
+              onClick={stopDemo}
+              className="absolute top-6 right-6 z-10 p-3 rounded-full transition-all duration-300 hover:bg-white/10"
+              style={{ 
+                color: 'rgba(228, 228, 228, 0.8)',
+                background: 'rgba(0, 0, 0, 0.4)',
+                border: '1px solid rgba(228, 228, 228, 0.2)'
+              }}
+              aria-label="Close demo"
+            >
+              <X size={24} strokeWidth={1.5} />
+            </button>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
+              <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>
+                Press X to close
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* HERO SECTION - Full bleed image with play button */}
       <section className="min-h-screen relative flex items-center justify-center">
         {/* Background image */}
@@ -33,13 +135,14 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         
         {/* Play button */}
         <motion.button
+          onClick={startDemo}
           className="relative z-10 w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group cursor-pointer"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
           whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' }}
           whileTap={{ scale: 0.95 }}
-          aria-label="Play"
+          aria-label="Play demo"
         >
           <Play className="w-8 h-8 text-white ml-1" fill="white" fillOpacity={0.9} />
         </motion.button>
