@@ -152,52 +152,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         </motion.div>
       </section>
 
-      {/* THIRD SECTION - Outcomes */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 py-32">
-        <motion.h2
-          className="text-white font-medium text-center mb-16"
-          style={{ 
-            fontSize: 'clamp(28px, 5vw, 44px)',
-            letterSpacing: '-0.02em',
-          }}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8 }}
-        >
-          What NeuroTunes AI Supports
-        </motion.h2>
-
-        <motion.ul
-          className="max-w-2xl space-y-8 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          {[
-            'Sustained focus without overstimulation',
-            'Reduced cognitive and emotional load',
-            'A calmer baseline nervous system state',
-            'Better task engagement over time',
-          ].map((outcome, index) => (
-            <motion.li
-              key={index}
-              className="text-white/60 font-light"
-              style={{ 
-                fontSize: 'clamp(18px, 2vw, 22px)',
-                lineHeight: 1.6,
-              }}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 * index }}
-            >
-              {outcome}
-            </motion.li>
-          ))}
-        </motion.ul>
-      </section>
 
       {/* DIFFERENTIATION SECTION */}
       <section className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-32">
