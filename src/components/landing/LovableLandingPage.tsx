@@ -63,8 +63,7 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
             >
-              Music, Precisely Tuned<br />
-              to the Nervous System
+              Focus. Engineered.
             </motion.h1>
 
             {/* Subhead */}
