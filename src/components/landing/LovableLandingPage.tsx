@@ -1,31 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { NeuralSignalGraphic } from './NeuralSignalGraphic';
+import { Play } from 'lucide-react';
 import atmosphereImage from '@/assets/atmosphere-engineered.jpeg';
 
 interface LovableLandingPageProps {
   onExplore?: () => void;
 }
 
-// A/B Test Variants
-type Variant = 'A' | 'B';
-
-const VARIANTS = {
-  A: {
-    headline: 'FOCUS. ENGINEERED.',
-    subheadline: 'Clinically informed music designed to regulate attention and stress.',
-  },
-  B: {
-    headline: 'REGULATE YOUR BRAIN.',
-    subheadline: 'Adaptive music designed with neuroscience.',
-  },
-};
-
 export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplore }) => {
-  const [variant] = useState<Variant>('A');
-  const content = VARIANTS[variant];
-
   const sfPro = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif';
 
   return (
@@ -36,65 +18,31 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         fontFamily: sfPro 
       }}
     >
-      {/* HERO SECTION - Split Layout */}
-      <section className="min-h-screen flex items-center justify-center px-6 lg:px-16 xl:px-24 relative">
-        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          
-          {/* LEFT - Typography */}
-          <div className="space-y-6">
-            {/* Overline */}
-            <motion.p
-              className="text-white/40 text-xs tracking-[0.2em] uppercase font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-              Clinically Informed • Adaptive Music
-            </motion.p>
-
-            {/* Headline */}
-            <motion.h1
-              className="text-white font-semibold"
-              style={{ 
-                fontSize: 'clamp(36px, 5vw, 56px)',
-                letterSpacing: '-0.03em',
-                lineHeight: 1.05,
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
-            >
-              Focus. Engineered.
-            </motion.h1>
-
-            {/* Subhead */}
-            <motion.p
-              className="text-white/50 font-light max-w-md"
-              style={{ 
-                fontSize: 'clamp(16px, 1.5vw, 20px)',
-                letterSpacing: '-0.01em',
-                lineHeight: 1.6,
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-            >
-              Adaptive compositions engineered to regulate
-              attention and stress in real time.
-            </motion.p>
-
-          </div>
-
-          {/* RIGHT - Signal Graphic */}
-          <motion.div
-            className="h-80 lg:h-96 flex items-center justify-center"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
-          >
-            <NeuralSignalGraphic />
-          </motion.div>
-        </div>
+      {/* HERO SECTION - Full bleed image with play button */}
+      <section className="min-h-screen relative flex items-center justify-center">
+        {/* Background image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${atmosphereImage})`,
+          }}
+        />
+        
+        {/* Subtle gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(240_8%_4%)] via-transparent to-transparent opacity-60" />
+        
+        {/* Play button */}
+        <motion.button
+          className="relative z-10 w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group cursor-pointer"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' }}
+          whileTap={{ scale: 0.95 }}
+          aria-label="Play"
+        >
+          <Play className="w-8 h-8 text-white ml-1" fill="white" fillOpacity={0.9} />
+        </motion.button>
 
         {/* Scroll indicator */}
         <motion.div
@@ -107,7 +55,38 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         </motion.div>
       </section>
 
-      {/* SECOND SECTION - Not a playlist */}
+      {/* DIFFERENTIATION SECTION */}
+      <section className="py-32 flex flex-col items-center justify-center px-6">
+        <motion.div
+          className="max-w-3xl text-center space-y-6"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8 }}
+        >
+          <p
+            className="text-white/50 font-light"
+            style={{ 
+              fontSize: 'clamp(18px, 2vw, 22px)',
+              lineHeight: 1.7,
+            }}
+          >
+            Most music platforms optimize for preference and engagement.
+          </p>
+          <p
+            className="text-white/70 font-light"
+            style={{ 
+              fontSize: 'clamp(18px, 2vw, 22px)',
+              lineHeight: 1.7,
+            }}
+          >
+            NeuroTunes AI optimizes for regulation — using structured musical parameters 
+            informed by neuroscience research to support how the brain actually functions under load.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* NOT A PLAYLIST SECTION */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 py-32">
         <motion.h2
           className="text-white font-medium text-center mb-12"
@@ -148,58 +127,6 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
             }}
           >
             It is built for environments where regulation matters — not distraction.
-          </p>
-        </motion.div>
-      </section>
-
-
-      {/* ATMOSPHERE ENGINEERED SECTION */}
-      <section className="min-h-screen flex items-center justify-center px-6 lg:px-16 xl:px-24 py-32">
-        <motion.div
-          className="w-full max-w-6xl"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-          <img 
-            src={atmosphereImage} 
-            alt="Atmosphere. Engineered. - Music that adapts. Tablet interface showing adaptive music controls for different spaces and moods."
-            className="w-full h-auto rounded-lg"
-            style={{
-              boxShadow: '0 40px 80px -20px rgba(0, 0, 0, 0.5)',
-            }}
-          />
-        </motion.div>
-      </section>
-
-      {/* DIFFERENTIATION SECTION */}
-      <section className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-32">
-        <motion.div
-          className="max-w-3xl text-center space-y-6"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8 }}
-        >
-          <p
-            className="text-white/50 font-light"
-            style={{ 
-              fontSize: 'clamp(18px, 2vw, 22px)',
-              lineHeight: 1.7,
-            }}
-          >
-            Most music platforms optimize for preference and engagement.
-          </p>
-          <p
-            className="text-white/70 font-light"
-            style={{ 
-              fontSize: 'clamp(18px, 2vw, 22px)',
-              lineHeight: 1.7,
-            }}
-          >
-            NeuroTunes AI optimizes for regulation — using structured musical parameters 
-            informed by neuroscience research to support how the brain actually functions under load.
           </p>
         </motion.div>
       </section>
