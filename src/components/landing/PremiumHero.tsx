@@ -97,14 +97,11 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
         </motion.div>
         
         {/* 3D Lissajous Logo - draws progressively */}
-        <AnimatePresence mode="wait">
-          {(phase === 'drawing' || phase === 'complete' || phase === 'transitioning') && (
+        <div className="w-80 h-80 md:w-[420px] md:h-[420px] flex items-center justify-center">
+          {phase !== 'play' ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-80 h-80 md:w-[420px] md:h-[420px]"
+              animate={{ opacity: logoOpacity }}
+              className="w-full h-full"
             >
               <Canvas 
                 camera={{ position: [0, 0, 5], fov: 40 }}
@@ -116,7 +113,7 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
                 <spotLight position={[0, 5, 3]} intensity={1} angle={0.4} penumbra={0.5} color="#ffffff" />
                 <Suspense fallback={null}>
                   <LissajousLogo 
-                    opacity={logoOpacity} 
+                    opacity={1} 
                     scale={1.6}
                     onDrawComplete={handleDrawComplete}
                   />
@@ -124,16 +121,11 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
                 </Suspense>
               </Canvas>
             </motion.div>
-          )}
-        </AnimatePresence>
-        
-        {/* Play Button - replaces Möbius */}
-        <AnimatePresence>
-          {phase === 'play' && (
+          ) : (
             <motion.button
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
               onClick={(e) => {
                 e.stopPropagation();
                 handlePlay();
@@ -145,12 +137,10 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
                 fill="white" 
                 strokeWidth={0}
               />
-              
-              {/* Glow ring */}
               <div className="absolute inset-[-2px] rounded-full border border-white/10 group-hover:border-white/20 transition-colors duration-500" />
             </motion.button>
           )}
-        </AnimatePresence>
+        </div>
       </div>
       
       {/* Bottom hint */}
