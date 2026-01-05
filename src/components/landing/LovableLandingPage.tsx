@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X } from 'lucide-react';
 import atmosphereImage from '@/assets/atmosphere-engineered.jpeg';
@@ -8,6 +9,7 @@ interface LovableLandingPageProps {
 }
 
 export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplore }) => {
+  const navigate = useNavigate();
   const sfPro = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif';
   
   const [isDemoPlaying, setIsDemoPlaying] = useState(false);
@@ -18,7 +20,7 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
     setIsDemoPlaying(true);
   };
 
-  const stopDemo = () => {
+  const stopDemo = (navigateToApp: boolean = false) => {
     // Fade out audio
     if (audioRef.current) {
       const audio = audioRef.current;
@@ -39,6 +41,11 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
     }
     
     setIsDemoPlaying(false);
+    
+    // Navigate to the goals/demo experience after intro
+    if (navigateToApp) {
+      navigate('/goals');
+    }
   };
 
   useEffect(() => {
@@ -54,11 +61,11 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
     }
   }, [isDemoPlaying]);
 
-  // Auto-stop when video ends
+  // Navigate to app when video ends
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.onended = stopDemo;
+      video.onended = () => stopDemo(true);
     }
     return () => {
       if (video) video.onended = null;
@@ -99,7 +106,7 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
             
             {/* Close button */}
             <button
-              onClick={stopDemo}
+              onClick={() => stopDemo(true)}
               className="absolute top-6 right-6 z-10 p-3 rounded-full transition-all duration-300 hover:bg-white/10"
               style={{ 
                 color: 'rgba(228, 228, 228, 0.8)',
