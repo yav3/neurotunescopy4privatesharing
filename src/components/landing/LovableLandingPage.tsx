@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { NeuralSignalGraphic } from './NeuralSignalGraphic';
+import atmosphereImage from '@/assets/atmosphere-engineered.jpeg';
 
 interface LovableLandingPageProps {
   onExplore?: () => void;
@@ -151,6 +152,26 @@ export const LovableLandingPage: React.FC<LovableLandingPageProps> = ({ onExplor
         </motion.div>
       </section>
 
+
+      {/* ATMOSPHERE ENGINEERED SECTION */}
+      <section className="min-h-screen flex items-center justify-center px-6 lg:px-16 xl:px-24 py-32">
+        <motion.div
+          className="w-full max-w-6xl"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+        >
+          <img 
+            src={atmosphereImage} 
+            alt="Atmosphere. Engineered. - Music that adapts. Tablet interface showing adaptive music controls for different spaces and moods."
+            className="w-full h-auto rounded-lg"
+            style={{
+              boxShadow: '0 40px 80px -20px rgba(0, 0, 0, 0.5)',
+            }}
+          />
+        </motion.div>
+      </section>
 
       {/* DIFFERENTIATION SECTION */}
       <section className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-32">
