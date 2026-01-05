@@ -1,39 +1,39 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
 import { Play } from 'lucide-react';
-import { MobiusStrip } from './MobiusStrip';
+import { LissajousLogo } from './LissajousLogo';
 
 interface PremiumHeroProps {
   onComplete?: () => void;
 }
 
 export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
-  const [phase, setPhase] = useState<'mobius' | 'transitioning' | 'play'>('mobius');
-  const [mobiusOpacity, setMobiusOpacity] = useState(1);
+  const [phase, setPhase] = useState<'drawing' | 'complete' | 'transitioning' | 'play'>('drawing');
+  const [logoOpacity, setLogoOpacity] = useState(1);
   
-  // Auto-transition after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  const handleDrawComplete = () => {
+    setPhase('complete');
+    // Hold for 2 seconds after draw completes, then transition
+    setTimeout(() => {
       setPhase('transitioning');
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, []);
+    }, 2000);
+  };
   
   // Handle transition phases
   useEffect(() => {
     if (phase === 'transitioning') {
       const fadeInterval = setInterval(() => {
-        setMobiusOpacity((prev) => {
+        setLogoOpacity((prev) => {
           if (prev <= 0) {
             clearInterval(fadeInterval);
             setPhase('play');
             return 0;
           }
-          return prev - 0.04;
+          return prev - 0.05;
         });
-      }, 40);
+      }, 30);
       
       return () => clearInterval(fadeInterval);
     }
@@ -44,7 +44,7 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
   };
   
   const handleSkipToPlay = () => {
-    if (phase === 'mobius') {
+    if (phase === 'drawing' || phase === 'complete') {
       setPhase('transitioning');
     } else if (phase === 'play') {
       handlePlay();
@@ -96,26 +96,31 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
           </motion.p>
         </motion.div>
         
-        {/* 3D Möbius Strip - centered */}
+        {/* 3D Lissajous Logo - draws progressively */}
         <AnimatePresence mode="wait">
-          {(phase === 'mobius' || phase === 'transitioning') && (
+          {(phase === 'drawing' || phase === 'complete' || phase === 'transitioning') && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-72 h-72 md:w-96 md:h-96"
+              className="w-80 h-80 md:w-[420px] md:h-[420px]"
             >
               <Canvas 
-                camera={{ position: [0, 0, 4], fov: 45 }}
+                camera={{ position: [0, 0, 5], fov: 40 }}
                 style={{ background: 'transparent' }}
               >
-                <ambientLight intensity={0.5} />
-                <directionalLight position={[5, 5, 5]} intensity={1.2} />
-                <directionalLight position={[-3, -3, -3]} intensity={0.4} />
-                <pointLight position={[0, 0, 4]} intensity={0.8} color="#ffffff" />
+                <ambientLight intensity={0.4} />
+                <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
+                <directionalLight position={[-5, -2, -5]} intensity={0.6} color="#e0e0ff" />
+                <spotLight position={[0, 5, 3]} intensity={1} angle={0.4} penumbra={0.5} color="#ffffff" />
                 <Suspense fallback={null}>
-                  <MobiusStrip opacity={mobiusOpacity} scale={1.4} />
+                  <LissajousLogo 
+                    opacity={logoOpacity} 
+                    scale={1.6}
+                    onDrawComplete={handleDrawComplete}
+                  />
+                  <Environment preset="studio" />
                 </Suspense>
               </Canvas>
             </motion.div>
