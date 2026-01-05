@@ -20,7 +20,7 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   
   // Create the intertwined infinity curve (Lissajous-style figure-8 knot)
-  const { geometry1, geometry2, totalVertices1, totalVertices2 } = useMemo(() => {
+  const { geometry1, geometry2, indexCount1, indexCount2 } = useMemo(() => {
     const points1: THREE.Vector3[] = [];
     const points2: THREE.Vector3[] = [];
     const segments = 200;
@@ -34,7 +34,7 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
       const denom = 1 + Math.sin(t) * Math.sin(t);
       const x = (a * Math.cos(t)) / denom;
       const y = (a * Math.sin(t) * Math.cos(t)) / denom;
-      const z = Math.sin(t * 2) * 0.3; // Slight z variation for 3D effect
+      const z = Math.sin(t * 2) * 0.3;
       
       points1.push(new THREE.Vector3(x, y * 0.6 + 0.3, z));
     }
@@ -49,7 +49,6 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
       const y = (a * Math.sin(t) * Math.cos(t)) / denom;
       const z = Math.sin(t * 2 + Math.PI) * 0.3;
       
-      // Rotate 90 degrees and offset
       points2.push(new THREE.Vector3(x, y * 0.6 - 0.3, z + 0.15));
     }
     
@@ -65,11 +64,15 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
     const geo1 = new THREE.TubeGeometry(curve1, tubularSegments, tubeRadius, radialSegments, true);
     const geo2 = new THREE.TubeGeometry(curve2, tubularSegments, tubeRadius, radialSegments, true);
     
+    // Get index counts for draw range (index buffer, not vertices)
+    const idxCount1 = geo1.index ? geo1.index.count : geo1.attributes.position.count;
+    const idxCount2 = geo2.index ? geo2.index.count : geo2.attributes.position.count;
+    
     return { 
       geometry1: geo1, 
       geometry2: geo2,
-      totalVertices1: geo1.attributes.position.count,
-      totalVertices2: geo2.attributes.position.count
+      indexCount1: idxCount1,
+      indexCount2: idxCount2
     };
   }, []);
   
@@ -110,7 +113,7 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
     // Update draw ranges for progressive reveal
     if (tube1Ref.current && tube1Ref.current.geometry) {
       const geo = tube1Ref.current.geometry as THREE.BufferGeometry;
-      const drawCount = Math.floor(totalVertices1 * drawProgress);
+      const drawCount = Math.floor(indexCount1 * drawProgress);
       geo.setDrawRange(0, drawCount);
     }
     
@@ -118,7 +121,7 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
       const geo = tube2Ref.current.geometry as THREE.BufferGeometry;
       // Second loop starts drawing slightly after the first
       const delayedProgress = Math.max(0, (drawProgress - 0.15) / 0.85);
-      const drawCount = Math.floor(totalVertices2 * delayedProgress);
+      const drawCount = Math.floor(indexCount2 * delayedProgress);
       geo.setDrawRange(0, drawCount);
     }
   });
