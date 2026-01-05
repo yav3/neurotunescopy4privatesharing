@@ -53,7 +53,7 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
   
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black cursor-pointer overflow-hidden"
+      className="fixed inset-0 z-40 bg-black cursor-pointer overflow-hidden"
       onClick={handleSkipToPlay}
     >
       {/* Centered content container */}
@@ -76,23 +76,23 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
               lineHeight: 1.1
             }}
           >
-            Focus. Engineered.
+            Atmosphere. Engineered.
           </h1>
           
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 1.2 }}
-            className="mt-8"
+            className="mt-6"
             style={{ 
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-              fontSize: '28px',
+              fontSize: '24px',
               fontWeight: 300,
-              letterSpacing: '-0.015em',
-              color: 'rgba(255, 255, 255, 0.6)'
+              letterSpacing: '-0.01em',
+              color: 'rgba(255, 255, 255, 0.5)'
             }}
           >
-            Music as neural infrastructure.
+            Adaptive state music engine.
           </motion.p>
         </motion.div>
         
@@ -130,14 +130,15 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
                 e.stopPropagation();
                 handlePlay();
               }}
-              className="group relative flex items-center justify-center w-28 h-28 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/50 transition-all duration-500"
+              className="group relative flex items-center justify-center w-40 h-40 rounded-full border-2 border-white/40 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/60 transition-all duration-500"
             >
               <Play 
-                className="w-12 h-12 text-white ml-1.5 group-hover:scale-110 transition-transform duration-500" 
+                className="w-16 h-16 text-white ml-2 group-hover:scale-110 transition-transform duration-500" 
                 fill="white" 
                 strokeWidth={0}
               />
-              <div className="absolute inset-[-2px] rounded-full border border-white/10 group-hover:border-white/20 transition-colors duration-500" />
+              <div className="absolute inset-[-4px] rounded-full border border-white/20 group-hover:border-white/30 transition-colors duration-500" />
+              <div className="absolute inset-[-8px] rounded-full border border-white/10 group-hover:border-white/15 transition-colors duration-500" />
             </motion.button>
           )}
         </div>
