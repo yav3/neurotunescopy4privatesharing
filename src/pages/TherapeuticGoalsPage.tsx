@@ -48,7 +48,7 @@ import restCard from '@/assets/rest-card.png';
 import exerciseCard from '@/assets/exercise-card.png';
 import boostCard from '@/assets/boost-button-bg.png';
 import genreChillTropicalHouse from '@/assets/genre-chill-tropical-house-new.png';
-import genreHiitEnergy from '@/assets/hiit-energy-card.jpg';
+import genreHiitEnergy from '@/assets/genre-hiit-energy-new.png';
 import genreClassicalCalm from '@/assets/genre-classical-calm.png';
 import genreChillSamba from '@/assets/genre-chill-samba-new.png';
 import genreRelaxation from '@/assets/genre-relaxation.png';
