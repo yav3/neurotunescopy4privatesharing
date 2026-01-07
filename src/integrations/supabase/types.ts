@@ -1906,16 +1906,16 @@ export type Database = {
       music_tracks: {
         Row: {
           album: string | null
-          artist: string
+          artist: string | null
           artwork_semantic_label: string | null
           artwork_url: string | null
           bucket_name: string
           created_at: string | null
           duration: number | null
-          duration_display: string
-          duration_seconds: number
+          duration_display: string | null
+          duration_seconds: number | null
           file_path: string
-          genre: Database["public"]["Enums"]["music_genre"]
+          genre: Database["public"]["Enums"]["music_genre"] | null
           has_spatial_audio: boolean | null
           id: string
           is_new: boolean | null
@@ -1930,16 +1930,16 @@ export type Database = {
         }
         Insert: {
           album?: string | null
-          artist: string
+          artist?: string | null
           artwork_semantic_label?: string | null
           artwork_url?: string | null
           bucket_name: string
           created_at?: string | null
           duration?: number | null
-          duration_display: string
-          duration_seconds: number
+          duration_display?: string | null
+          duration_seconds?: number | null
           file_path: string
-          genre: Database["public"]["Enums"]["music_genre"]
+          genre?: Database["public"]["Enums"]["music_genre"] | null
           has_spatial_audio?: boolean | null
           id?: string
           is_new?: boolean | null
@@ -1954,16 +1954,16 @@ export type Database = {
         }
         Update: {
           album?: string | null
-          artist?: string
+          artist?: string | null
           artwork_semantic_label?: string | null
           artwork_url?: string | null
           bucket_name?: string
           created_at?: string | null
           duration?: number | null
-          duration_display?: string
-          duration_seconds?: number
+          duration_display?: string | null
+          duration_seconds?: number | null
           file_path?: string
-          genre?: Database["public"]["Enums"]["music_genre"]
+          genre?: Database["public"]["Enums"]["music_genre"] | null
           has_spatial_audio?: boolean | null
           id?: string
           is_new?: boolean | null
@@ -4789,6 +4789,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_playback_state: {
+        Row: {
+          bucket_name: string | null
+          id: string
+          playlist_index: number | null
+          playlist_name: string | null
+          playlist_tracks: Json | null
+          position_seconds: number | null
+          track_file_path: string | null
+          track_title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          bucket_name?: string | null
+          id?: string
+          playlist_index?: number | null
+          playlist_name?: string | null
+          playlist_tracks?: Json | null
+          position_seconds?: number | null
+          track_file_path?: string | null
+          track_title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          bucket_name?: string | null
+          id?: string
+          playlist_index?: number | null
+          playlist_name?: string | null
+          playlist_tracks?: Json | null
+          position_seconds?: number | null
+          track_file_path?: string | null
+          track_title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           avatar_url: string | null
@@ -5051,6 +5090,47 @@ export type Database = {
       }
     }
     Views: {
+      enhanced_user_favorites: {
+        Row: {
+          added_at: string | null
+          album: string | null
+          artist: string | null
+          artwork_url: string | null
+          display_title: string | null
+          genre: Database["public"]["Enums"]["music_genre"] | null
+          id: string | null
+          mood: string | null
+          playlist_id: string | null
+          storage_bucket: string | null
+          storage_path: string | null
+          track_id: string | null
+          track_name: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "generic_titled_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "music_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_favorites_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       generic_titled_tracks: {
         Row: {
           artist: string | null
@@ -5202,6 +5282,15 @@ export type Database = {
     Functions: {
       add_favorite: {
         Args: { p_track_id: string; p_user_id: string }
+        Returns: string
+      }
+      add_favorite_by_file: {
+        Args: {
+          p_bucket_name?: string
+          p_file_path: string
+          p_title?: string
+          p_user_id: string
+        }
         Returns: string
       }
       add_to_favorites: { Args: { p_track_id: string }; Returns: boolean }
@@ -5636,6 +5725,10 @@ export type Database = {
         Args: { p_track_id: string; p_user_id: string }
         Returns: boolean
       }
+      is_favorited_by_file: {
+        Args: { p_file_path: string; p_user_id: string }
+        Returns: boolean
+      }
       is_track_favorited_unified: {
         Args: { p_track_id: string; p_user_id: string }
         Returns: boolean
@@ -5682,6 +5775,10 @@ export type Database = {
         Args: { p_track_id: string; p_user_id: string }
         Returns: boolean
       }
+      remove_favorite_by_file: {
+        Args: { p_file_path: string; p_user_id: string }
+        Returns: boolean
+      }
       remove_from_favorites: { Args: { p_track_id: string }; Returns: boolean }
       remove_user_favorite_unified: {
         Args: { p_track_id: string; p_user_id: string }
@@ -5702,6 +5799,19 @@ export type Database = {
         Returns: Database["public"]["Enums"]["music_genre"]
       }
       safe_key: { Args: { raw: string }; Returns: string }
+      save_playback_state: {
+        Args: {
+          p_bucket_name: string
+          p_playlist_index?: number
+          p_playlist_name?: string
+          p_playlist_tracks?: Json
+          p_position_seconds?: number
+          p_track_file_path: string
+          p_track_title: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       seed_sambajazznocturnes_tracks: { Args: never; Returns: undefined }
       session_data_quality_check: {
         Args: never

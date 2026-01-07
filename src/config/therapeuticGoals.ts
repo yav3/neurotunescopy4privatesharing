@@ -2,7 +2,7 @@ import { LucideIcon, Brain, Sparkles, Plus, Waves, Flower, Shield, Moon } from '
 
 // Import the new therapeutic goal card images
 import focusEnhancementCard from '@/assets/focus-enhancement-dewdrop.png';
-import energyBoostCardNew from '@/assets/fitness-animation.gif';
+import energyBoostCardNew from '@/assets/exercise-card.png';
 import moodBoostCard from '@/assets/therapeutic-card-3.png';
 import painCard from '@/assets/therapeutic-card-4.png';
 import energyBoostCard from '@/assets/energy-motivation-updated.png';
