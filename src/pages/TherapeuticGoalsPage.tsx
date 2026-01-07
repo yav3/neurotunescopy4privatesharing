@@ -45,7 +45,7 @@ import relaxationCardDark from '@/assets/relaxation-blue-swirls.png';
 import recoveryCard from '@/assets/recovery-teal-bubbles.png';
 import focusCard from '@/assets/focus-card.png';
 import restCard from '@/assets/rest-card.png';
-import exerciseCard from '@/assets/exercise-button-bg.png';
+import exerciseCard from '@/assets/exercise-card.png';
 import boostCard from '@/assets/boost-button-bg.png';
 import genreChillTropicalHouse from '@/assets/genre-chill-tropical-house-new.png';
 import genreHiitEnergy from '@/assets/genre-hiit-energy-new.png';
