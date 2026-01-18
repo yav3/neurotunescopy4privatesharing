@@ -13,9 +13,17 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-40 bg-black overflow-hidden"
+      className="fixed inset-0 z-40 overflow-hidden"
+      style={{
+        backgroundImage: `
+          linear-gradient(145deg, hsla(182, 55%, 5%, 0.85), hsla(180, 50%, 8%, 0.8), hsla(176, 45%, 10%, 0.85)),
+          url('/images/landing-bg.png')
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
     >
-      {/* Centered content container */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         
         {/* Hero Text */}

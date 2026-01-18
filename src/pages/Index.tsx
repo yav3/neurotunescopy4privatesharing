@@ -81,7 +81,19 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden flex flex-col">
+    <div 
+      className="min-h-screen relative overflow-hidden flex flex-col"
+      style={{
+        backgroundImage: `
+          linear-gradient(145deg, hsla(182, 55%, 5%, 0.9), hsla(180, 50%, 8%, 0.85), hsla(176, 45%, 10%, 0.9)),
+          url('/images/landing-bg.png')
+        `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       {/* Full-screen video background - always visible */}
       <BackgroundVideoCarousel
         playbackRate={videoPlaybackRate}
