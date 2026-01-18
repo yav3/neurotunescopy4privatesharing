@@ -5,7 +5,7 @@ import type { Track } from '@/types'
 import { SmartTitle } from '@/components/ui/SmartTitle'
 import { ArtworkService } from '@/services/artworkService'
 import { useAudioStore } from '@/stores'
-import { getAlbumArtworkUrl, handleImageError } from '@/utils/imageUtils'
+import { handleImageError } from '@/utils/imageUtils'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
   therapeutic_applications?: Array<{
@@ -46,56 +46,8 @@ const resolveTrackUrl = async (track: MusicTrack, type: 'audio' | 'artwork'): Pr
   }
 }
 
-// Enhanced artwork selection with better distribution for each track
-const getTherapeuticArtwork = (frequencyBand: string, trackId: string): { url: string; position: string; gradient: string } => {
-  // Album art collection using actual image files from albumart bucket
-  const albumArtwork = [
-    '0376232F-FE92-48B6-A567-7C41465B4FC9.jpeg',
-    '0567F220-7680-45A5-8A8F-2FBECEB7897A.png',
-    '0567F220-7680-45A5-8A8F-2FBECEB7897A (1).png',
-    '060CF7F4-0364-413A-B67C-918425A65E00.png',
-    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C.png',
-    '0952E3E2-B28A-40C3-A8FC-8DF06B1FEE8C (1).png',
-    '1C6EE324-F72C-4A71-B3FF-D95CAA0213AA.png',
-    '20250923_1807_Raindrops on Flowers_remix_01k5w9sreqfr09xb2z6weqharz.png',
-    '20250914_1347_Fluid Organic Elegance_remix_01k54ncw8senyrnxakwmt7rpjv-2.gif'
-  ]
-  
-  // Enhanced seed generation for better distribution
-  const createEnhancedSeed = (str: string): number => {
-    let hash = 5381
-    let hash2 = 5381
-    
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i)
-      hash = ((hash << 5) + hash) + char // hash * 33 + char
-      hash2 = ((hash2 << 5) + hash2) + char * 17 // Different multiplier for variation
-    }
-    
-    // Combine both hashes for better distribution
-    return Math.abs(hash ^ hash2)
-  }
-  
-  // Use enhanced seeding with track ID and frequency band for more variety
-  const combinedSeed = trackId + frequencyBand
-  const seed = createEnhancedSeed(combinedSeed)
-  const artworkIndex = seed % albumArtwork.length
-  
-  // Gradient based on frequency band for therapeutic visual cues
-  const gradientMap = {
-    delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70', // Deep sleep & healing
-    theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70', // Meditation
-    alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70', // Focus
-    beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70', // Concentration
-    gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70' // Peak performance
-  }
-  
-  return {
-    url: getAlbumArtworkUrl(albumArtwork[artworkIndex]),
-    position: 'object-cover',
-    gradient: gradientMap[frequencyBand as keyof typeof gradientMap] || gradientMap.alpha
-  }
-}
+// Artwork is now handled centrally by ArtworkService
+// No hardcoded artwork filenames - pulls dynamically from albumart bucket
 
 export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
   console.log('🎵 TrackCard rendered for:', track.title)
