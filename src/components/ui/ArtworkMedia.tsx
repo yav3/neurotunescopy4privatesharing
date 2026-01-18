@@ -117,7 +117,7 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
   };
 
   const baseClasses = cn(
-    "w-full h-full object-cover",
+    "w-full h-full object-cover absolute inset-0",
     !isLoaded && "opacity-0",
     isLoaded && "opacity-100 transition-opacity duration-300",
     className
@@ -125,10 +125,10 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
 
   if (mediaType === 'video') {
     return (
-      <div className={cn("relative overflow-hidden", containerClassName)}>
-        {/* Loading placeholder */}
+      <div className={cn("relative overflow-hidden w-full h-full", containerClassName)}>
+        {/* Loading placeholder - only show when not loaded */}
         {!isLoaded && !hasError && (
-          <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-card/50 flex items-center justify-center z-10">
             <div className="w-6 h-6 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
           </div>
         )}
@@ -151,10 +151,10 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
 
   // Image/GIF rendering
   return (
-    <div className={cn("relative overflow-hidden", containerClassName)}>
-      {/* Loading placeholder */}
+    <div className={cn("relative overflow-hidden w-full h-full", containerClassName)}>
+      {/* Loading placeholder - only show when not loaded */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-card/50 flex items-center justify-center z-10">
           <div className="w-4 h-4 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
         </div>
       )}
