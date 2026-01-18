@@ -8,38 +8,59 @@ export class ArtworkService {
   private static cache = new Map<string, string>();
   private static loadingPromises = new Map<string, Promise<string>>();
   
-  // Therapeutic artwork mapping with GIF files from Supabase albumart bucket
-  private static therapeuticArtwork = {
-    delta: [
-      'Fluid_Abstract_Slowed.gif',
-      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q.gif'
-    ],
-    theta: [
-      '20251001_1251_New Video_simple_compose_01k6gayr31fn8t7h8g322kf79q (2).gif',
-      '20251002_1414_New Video_simple_compose_01k6k239sbf0nsqdrhaq80hm8s.gif'
-    ],
-    alpha: [
-      '20251002_1413_Remix Video_remix_01k6k21x3aedwscmtkkjp6h0mw (1).gif',
-      '20251002_1413_Remix Video_remix_01k6k21rn8f0vsngkhek65sawk (1).gif'
-    ],
-    beta: [
-      '20251002_1414_New Video_simple_compose_01k6k23x45efrv5azcjsyxws71.gif',
-      '20251002_1408_New Video_simple_compose_01k6k1rk2hfkass71h90rb48n9 (1).gif'
-    ],
-    gamma: [
-      '20250914_1227_Serene Coastal Beauty_simple_compose_01k54gv56revhs6btr2h7abneb.gif',
-      '20251003_1533_New Video_simple_compose_01k6ns06m4eh0apvaqarecnjn9.gif'
-    ],
-    default: [
-      'Fluid_Abstract_Slowed.gif',
-      '20251002_1413_Remix Video_remix_01k6k2110eee7bvrh2r0nz06pq (1).gif'
-    ]
-  };
+  // Cached list of available artwork files from the bucket
+  private static availableArtwork: string[] = [];
+  private static artworkListLoaded = false;
+  private static artworkListLoading: Promise<void> | null = null;
+
+  // Initialize artwork list from Supabase albumart bucket
+  private static async loadAvailableArtwork(): Promise<void> {
+    if (this.artworkListLoaded) return;
+    
+    if (this.artworkListLoading) {
+      await this.artworkListLoading;
+      return;
+    }
+
+    this.artworkListLoading = (async () => {
+      try {
+        console.log('🎨 ArtworkService: Loading available artwork from bucket...');
+        
+        // List all files in the albumart bucket
+        const { data: files, error } = await supabase.storage
+          .from('albumart')
+          .list('', { limit: 500, sortBy: { column: 'name', order: 'asc' } });
+
+        if (error) {
+          console.warn('❌ Failed to list albumart bucket:', error);
+          return;
+        }
+
+        if (files && files.length > 0) {
+          // Filter to only image files (jpg, jpeg, png, gif, webp)
+          this.availableArtwork = files
+            .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name))
+            .map(f => f.name);
+          
+          console.log(`✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from bucket`);
+        } else {
+          console.log('📂 ArtworkService: No files found in albumart bucket');
+        }
+        
+        this.artworkListLoaded = true;
+      } catch (error) {
+        console.error('❌ ArtworkService: Error loading artwork list:', error);
+      }
+    })();
+
+    await this.artworkListLoading;
+    this.artworkListLoading = null;
+  }
 
   // Get consistent artwork for a track (prevents race conditions)
   static async getTrackArtwork(track: any): Promise<string> {
-    // Skip database-stored artwork URLs since they might point to deleted files
-    // Always use consistent fallback system instead
+    // Ensure artwork list is loaded
+    await this.loadAvailableArtwork();
     
     const cacheKey = `track:${track.id}`;
     
@@ -71,17 +92,30 @@ export class ArtworkService {
     try {
       console.log('🎨 Loading artwork for track:', track.id);
       
-      // Clear storage cache to force fresh request
-      storageRequestManager.clearCache('albumart');
+      // Use pre-loaded artwork list if available
+      if (this.availableArtwork.length > 0) {
+        // Use track ID for consistent selection
+        const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
+        const chosen = this.availableArtwork[hash % this.availableArtwork.length];
+        
+        console.log('✅ Selected artwork file:', chosen, 'for track', track.id);
+        
+        const artworkUrl = getAlbumArtworkUrl(chosen);
+        
+        console.log('🔗 Generated artwork URL:', artworkUrl);
+        
+        this.cache.set(cacheKey, artworkUrl);
+        return artworkUrl;
+      }
       
-      // Try to load from Supabase albumart bucket (only once per track)
+      // Fallback: try to load from bucket directly
       const artFiles = await storageRequestManager.listStorage('albumart');
       
       console.log('🖼️ Found albumart files:', artFiles?.length || 0, artFiles);
       
       if (artFiles && artFiles.length > 0) {
         // Use track ID for consistent selection
-        const hash = Math.abs(track.id.split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
+        const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
         const chosen = artFiles[hash % artFiles.length];
         
         console.log('✅ Selected artwork file:', chosen.name, 'for track', track.id);
@@ -108,19 +142,45 @@ export class ArtworkService {
   }
 
   // Get therapeutic artwork based on frequency band (consistent algorithm)
+  // This method dynamically uses whatever artwork is available in the bucket
   static getTherapeuticArtwork(frequencyBand: string, trackId: string): { url: string; gradient: string } {
     console.log('🎨 ArtworkService.getTherapeuticArtwork called:', { frequencyBand, trackId });
     
-    const artworks = this.therapeuticArtwork[frequencyBand as keyof typeof this.therapeuticArtwork] 
-      || this.therapeuticArtwork.default;
+    // Trigger async loading of artwork list (won't block)
+    this.loadAvailableArtwork().catch(console.error);
     
-    console.log('🖼️ Available artworks for', frequencyBand, ':', artworks);
+    let selectedFilename: string;
     
-    // Consistent selection based on track ID
-    const hash = Math.abs(trackId.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-    const selectedFilename = artworks[hash % artworks.length];
-
-    console.log('🎯 Selected filename:', selectedFilename, 'for trackId:', trackId);
+    // Use dynamically loaded artwork if available
+    if (this.availableArtwork.length > 0) {
+      // Create a deterministic hash from trackId + frequencyBand for consistent selection
+      const combinedKey = `${trackId}:${frequencyBand}`;
+      const hash = Math.abs(combinedKey.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
+      selectedFilename = this.availableArtwork[hash % this.availableArtwork.length];
+      
+      console.log('🖼️ Using dynamic artwork from bucket:', selectedFilename, `(${this.availableArtwork.length} available)`);
+    } else {
+      // Fallback to local album art pool if bucket hasn't loaded yet
+      const hash = Math.abs(`${trackId}:${frequencyBand}`.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
+      const fallbackUrl = albumArtPool[hash % albumArtPool.length];
+      
+      console.log('🎭 Using local fallback art (bucket not loaded yet):', fallbackUrl);
+      
+      // Return local fallback directly
+      const gradients = {
+        delta: 'linear-gradient(135deg, hsl(240 100% 20% / 0.9), hsl(240 100% 10% / 0.8))',
+        theta: 'linear-gradient(135deg, hsl(280 60% 40% / 0.9), hsl(280 60% 20% / 0.8))',
+        alpha: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))',
+        beta: 'linear-gradient(135deg, hsl(45 100% 60% / 0.9), hsl(45 100% 35% / 0.8))',
+        gamma: 'linear-gradient(135deg, hsl(0 84% 60% / 0.9), hsl(0 84% 35% / 0.8))',
+        default: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))'
+      };
+      
+      return {
+        url: fallbackUrl,
+        gradient: gradients[frequencyBand as keyof typeof gradients] || gradients.default
+      };
+    }
 
     const url = getAlbumArtworkUrl(selectedFilename);
     console.log('🔗 Final artwork URL:', url);
@@ -143,7 +203,7 @@ export class ArtworkService {
 
   private static _getLocalFallbackArt(track: any): string {
     // Use album art pool with consistent selection
-    const hash = Math.abs(track.id.split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
+    const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
     return albumArtPool[hash % albumArtPool.length];
   }
 
@@ -152,11 +212,25 @@ export class ArtworkService {
     this.cache.clear();
     this.loadingPromises.clear();
   }
+  
+  // Force reload artwork list from bucket
+  static async reloadArtworkList(): Promise<void> {
+    this.artworkListLoaded = false;
+    this.availableArtwork = [];
+    await this.loadAvailableArtwork();
+  }
+
+  // Preload artwork list (call early in app lifecycle)
+  static preloadArtwork(): void {
+    this.loadAvailableArtwork().catch(console.error);
+  }
 
   // Force cache refresh on page load
   static {
     if (typeof window !== 'undefined') {
       this.clearCache();
+      // Preload artwork list on initialization
+      this.preloadArtwork();
     }
   }
 
@@ -164,7 +238,9 @@ export class ArtworkService {
   static getCacheStats() {
     return {
       cacheSize: this.cache.size,
-      loadingRequests: this.loadingPromises.size
+      loadingRequests: this.loadingPromises.size,
+      availableArtwork: this.availableArtwork.length,
+      artworkListLoaded: this.artworkListLoaded
     };
   }
 }
