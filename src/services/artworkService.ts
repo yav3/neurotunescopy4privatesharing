@@ -1,21 +1,17 @@
 import { supabase } from '@/integrations/supabase/client';
 import { albumArtPool } from '@/utils/albumArtPool';
-import { getAlbumArtworkUrl } from '@/utils/imageUtils';
 
 // Centralized artwork service to prevent race conditions
 export class ArtworkService {
   private static cache = new Map<string, string>();
   private static loadingPromises = new Map<string, Promise<string>>();
   
-  // Cached list of available artwork files from the bucket
+  // Cached list of available artwork URLs from the animated_artworks table
   private static availableArtwork: string[] = [];
   private static artworkListLoaded = false;
   private static artworkListLoading: Promise<void> | null = null;
 
-  // Supported artwork file extensions (including animated formats)
-  private static readonly ARTWORK_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|mp4|mov|webm)$/i;
-
-  // Initialize artwork list from Supabase albumart bucket using direct storage API
+  // Initialize artwork list from animated_artworks table (no edge function needed)
   private static async loadAvailableArtwork(): Promise<void> {
     if (this.artworkListLoaded) return;
     
@@ -26,38 +22,33 @@ export class ArtworkService {
 
     this.artworkListLoading = (async () => {
       try {
-        console.log('🎨 ArtworkService: Loading available artwork from albumart bucket...');
+        console.log('🎨 ArtworkService: Loading available artwork from animated_artworks table...');
 
-        // Use Edge Function (service role) to bypass Storage listing RLS
-        const { data, error } = await supabase.functions.invoke('storage-access', {
-          body: {
-            bucket: 'albumart',
-            mode: 'artwork',
-            recursive: true,
-            limit: 2000,
-          },
-        });
+        // Query the animated_artworks table directly - no edge function needed
+        const { data: artworks, error } = await supabase
+          .from('animated_artworks')
+          .select('artwork_url, artwork_type, artwork_semantic_label')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
 
         if (error) {
-          console.warn('❌ ArtworkService: Failed to load artwork via edge function:', error.message);
+          console.warn('❌ ArtworkService: Failed to load artwork from table:', error.message);
           this.availableArtwork = [];
           this.artworkListLoaded = true;
           return;
         }
 
-        const names: string[] = (data?.files || []).map((f: any) => f.name).filter(Boolean);
-
-        if (names.length > 0) {
-          this.availableArtwork = names
-            .filter((name: string) => this.ARTWORK_EXTENSIONS.test(name))
-            .filter((name: string) => !name.startsWith('.') && name !== '.emptyFolderPlaceholder');
+        if (artworks && artworks.length > 0) {
+          this.availableArtwork = artworks
+            .map(a => a.artwork_url)
+            .filter((url): url is string => !!url);
 
           console.log(
-            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from albumart bucket (edge function)`,
-            this.availableArtwork.slice(0, 5)
+            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork URLs from animated_artworks table`,
+            this.availableArtwork.slice(0, 3)
           );
         } else {
-          console.log('📂 ArtworkService: No files found in albumart bucket (edge function)');
+          console.log('📂 ArtworkService: No active artworks found in animated_artworks table');
           this.availableArtwork = [];
         }
 
@@ -114,14 +105,11 @@ export class ArtworkService {
         const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
         const chosen = this.availableArtwork[hash % this.availableArtwork.length];
         
-        console.log('✅ Selected artwork file:', chosen, 'for track', track.id);
+        console.log('✅ Selected artwork URL:', chosen, 'for track', track.id);
         
-        const artworkUrl = getAlbumArtworkUrl(chosen);
-        
-        console.log('🔗 Generated artwork URL:', artworkUrl);
-        
-        this.cache.set(cacheKey, artworkUrl);
-        return artworkUrl;
+        // availableArtwork now contains full URLs from animated_artworks table
+        this.cache.set(cacheKey, chosen);
+        return chosen;
       }
       
       // Fallback: try to load artwork list now
@@ -131,14 +119,11 @@ export class ArtworkService {
         const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
         const chosen = this.availableArtwork[hash % this.availableArtwork.length];
         
-        console.log('✅ Selected artwork file (fallback path):', chosen, 'for track', track.id);
+        console.log('✅ Selected artwork URL (fallback path):', chosen, 'for track', track.id);
         
-        const artworkUrl = getAlbumArtworkUrl(chosen);
-        
-        console.log('🔗 Generated artwork URL:', artworkUrl);
-        
-        this.cache.set(cacheKey, artworkUrl);
-        return artworkUrl;
+        // availableArtwork now contains full URLs from animated_artworks table
+        this.cache.set(cacheKey, chosen);
+        return chosen;
       } else {
         console.log('📂 No files in albumart bucket, using local fallback');
       }
@@ -161,16 +146,16 @@ export class ArtworkService {
     // Trigger async loading of artwork list (won't block)
     this.loadAvailableArtwork().catch(console.error);
     
-    let selectedFilename: string;
+    let selectedUrl: string;
     
-    // Use dynamically loaded artwork if available
+    // Use dynamically loaded artwork if available (full URLs from animated_artworks table)
     if (this.availableArtwork.length > 0) {
       // Create a deterministic hash from trackId + frequencyBand for consistent selection
       const combinedKey = `${trackId}:${frequencyBand}`;
       const hash = Math.abs(combinedKey.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
-      selectedFilename = this.availableArtwork[hash % this.availableArtwork.length];
+      selectedUrl = this.availableArtwork[hash % this.availableArtwork.length];
       
-      console.log('🖼️ Using dynamic artwork from bucket:', selectedFilename, `(${this.availableArtwork.length} available)`);
+      console.log('🖼️ Using dynamic artwork from table:', selectedUrl.substring(0, 60) + '...', `(${this.availableArtwork.length} available)`);
     } else {
       // Fallback to local album art pool if bucket hasn't loaded yet
       const hash = Math.abs(`${trackId}:${frequencyBand}`.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
@@ -194,8 +179,7 @@ export class ArtworkService {
       };
     }
 
-    const url = getAlbumArtworkUrl(selectedFilename);
-    console.log('🔗 Final artwork URL:', url);
+    console.log('🔗 Final artwork URL:', selectedUrl);
 
     // Tailwind gradient classes based on frequency band for therapeutic visual cues
     const gradients = {
@@ -208,7 +192,7 @@ export class ArtworkService {
     };
 
     return {
-      url,
+      url: selectedUrl,
       gradient: gradients[frequencyBand as keyof typeof gradients] || gradients.default
     };
   }
