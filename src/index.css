@@ -59,9 +59,9 @@ All colors MUST be HSL.
     /* Glass borders: Platinum */
     --glass-border: 0 0% 89%; /* Platinum at 12% opacity */
 
-    /* SEMANTIC TOKENS - Obsidian-Chrome Theme */
-    --background: 240 8% 4%; /* Deep obsidian black #0A0A0C */
-    --foreground: 0 0% 75%; /* Pearl grey #c0c0c0 */
+    /* SEMANTIC TOKENS - Gradient Teal Theme */
+    --background: 182 50% 6%; /* Deep teal base */
+    --foreground: 0 0% 85%; /* Light grey for readability */
 
     --card: 240 7% 10%; /* Graphite */
     --card-foreground: 0 0% 75%; /* Pearl grey */
@@ -108,9 +108,9 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Obsidian-Chrome Dark Mode - High-Gloss Liquid Glass */
-    --background: 240 8% 4%; /* Deep obsidian black */
-    --foreground: 0 0% 75%; /* Pearl grey */
+    /* Gradient Teal Dark Mode */
+    --background: 182 50% 6%; /* Deep teal base */
+    --foreground: 0 0% 85%; /* Light grey */
 
     --card: 240 7% 10%; /* Graphite */
     --card-foreground: 0 0% 75%; /* Pearl grey */
@@ -409,7 +409,8 @@ All colors MUST be HSL.
   }
 
   html, body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: linear-gradient(145deg, hsl(182 55% 5%), hsl(180 50% 8%), hsl(176 45% 10%));
     font-family: var(--font-body) !important;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -417,6 +418,7 @@ All colors MUST be HSL.
     margin: 0;
     padding: 0;
     width: 100%;
+    min-height: 100vh;
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     font-size: 16px;
