@@ -1,0 +1,175 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+
+interface ArtworkMediaProps {
+  src: string;
+  alt: string;
+  className?: string;
+  containerClassName?: string;
+  onLoad?: () => void;
+  onError?: (e: React.SyntheticEvent<HTMLImageElement | HTMLVideoElement, Event>) => void;
+  loading?: 'lazy' | 'eager';
+  autoPlay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  fallbackSrc?: string;
+}
+
+/**
+ * Unified media component that intelligently renders images, GIFs, or videos
+ * based on the file extension of the source URL.
+ */
+export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
+  src,
+  alt,
+  className,
+  containerClassName,
+  onLoad,
+  onError,
+  loading = 'lazy',
+  autoPlay = true,
+  loop = true,
+  muted = true,
+  fallbackSrc
+}) => {
+  const [hasError, setHasError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentSrc, setCurrentSrc] = useState(src);
+
+  // Detect media type from URL
+  const getMediaType = (url: string): 'video' | 'image' => {
+    if (!url) return 'image';
+    
+    const lowercaseUrl = url.toLowerCase();
+    
+    // Check for video extensions
+    if (lowercaseUrl.includes('.mp4') || 
+        lowercaseUrl.includes('.webm') || 
+        lowercaseUrl.includes('.mov') ||
+        lowercaseUrl.includes('.ogg') ||
+        lowercaseUrl.endsWith('mp4') ||
+        lowercaseUrl.endsWith('webm') ||
+        lowercaseUrl.endsWith('mov')) {
+      return 'video';
+    }
+    
+    // Default to image (includes .jpg, .png, .gif, .webp, etc.)
+    return 'image';
+  };
+
+  const mediaType = getMediaType(currentSrc);
+
+  // Reset state when src changes
+  useEffect(() => {
+    setCurrentSrc(src);
+    setHasError(false);
+    setIsLoaded(false);
+  }, [src]);
+
+  // Handle video playback when it comes into view
+  useEffect(() => {
+    if (mediaType !== 'video' || !videoRef.current) return;
+
+    const video = videoRef.current;
+    
+    // Use Intersection Observer to play/pause based on visibility
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && autoPlay) {
+            video.play().catch(() => {
+              // Silent fail - autoplay might be blocked
+            });
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [mediaType, autoPlay, currentSrc]);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+    onLoad?.();
+  };
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement | HTMLVideoElement, Event>) => {
+    console.warn(`❌ ArtworkMedia: Failed to load ${mediaType}:`, currentSrc);
+    
+    // Try fallback if available and not already using it
+    if (fallbackSrc && currentSrc !== fallbackSrc && !hasError) {
+      console.log('🔄 ArtworkMedia: Trying fallback:', fallbackSrc);
+      setCurrentSrc(fallbackSrc);
+      setHasError(true);
+      return;
+    }
+    
+    setHasError(true);
+    onError?.(e);
+  };
+
+  const baseClasses = cn(
+    "w-full h-full object-cover",
+    !isLoaded && "opacity-0",
+    isLoaded && "opacity-100 transition-opacity duration-300",
+    className
+  );
+
+  if (mediaType === 'video') {
+    return (
+      <div className={cn("relative overflow-hidden", containerClassName)}>
+        {/* Loading placeholder */}
+        {!isLoaded && !hasError && (
+          <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
+            <div className="w-6 h-6 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
+          </div>
+        )}
+        
+        <video
+          ref={videoRef}
+          src={currentSrc}
+          className={baseClasses}
+          autoPlay={autoPlay}
+          loop={loop}
+          muted={muted}
+          playsInline
+          onLoadedData={handleLoad}
+          onError={handleError}
+          aria-label={alt}
+        />
+      </div>
+    );
+  }
+
+  // Image/GIF rendering
+  return (
+    <div className={cn("relative overflow-hidden", containerClassName)}>
+      {/* Loading placeholder */}
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
+          <div className="w-4 h-4 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
+        </div>
+      )}
+      
+      <img
+        src={currentSrc}
+        alt={alt}
+        className={baseClasses}
+        loading={loading}
+        decoding="async"
+        onLoad={handleLoad}
+        onError={handleError}
+      />
+    </div>
+  );
+};
+
+export default ArtworkMedia;

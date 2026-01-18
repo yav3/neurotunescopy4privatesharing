@@ -9,6 +9,7 @@ import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { blockTrack } from '@/services/blockedTracks';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 interface Track {
   id: string;
@@ -218,12 +219,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 {/* Album Art with Glass Effect */}
                 <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
                   {track.artwork_url ? (
-                    <img 
+                    <ArtworkMedia 
                       src={track.artwork_url} 
                       alt={TitleFormatter.formatTrackTitle(track.title)}
-                      className="w-full h-full object-cover"
                       loading="lazy"
-                      decoding="async"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">♪</div>

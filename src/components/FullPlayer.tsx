@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { Analytics } from '@/utils/analytics';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 // Therapeutic artwork selection (same as TrackCard)
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
@@ -224,21 +225,18 @@ export default function FullPlayer() {
           
           {/* Loading State */}
           {isImageLoading && (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center z-10">
               <div className="w-8 h-8 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
             </div>
           )}
           
           {trackArtwork?.url && (
-            <img
+            <ArtworkMedia
               src={trackArtwork.url}
               alt="Album artwork"
-              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80"
+              className="mix-blend-overlay opacity-80"
               onLoad={() => setIsImageLoading(false)}
-              onError={(e) => {
-                setIsImageLoading(false);
-                e.currentTarget.style.display = 'none';
-              }}
+              onError={() => setIsImageLoading(false)}
             />
           )}
         </div>

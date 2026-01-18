@@ -13,6 +13,7 @@ import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { ArtworkService } from '@/services/artworkService';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 // Helper function to determine frequency band from BPM
 const getFrequencyBandFromBPM = (bpm?: number): string => {
@@ -208,10 +209,10 @@ export const NowPlaying: React.FC = () => {
           <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
             {/* Album artwork - responsive sizing */}
             <div className="aspect-square relative mb-6 sm:mb-8 rounded-2xl overflow-hidden shadow-2xl mx-auto max-w-[280px] sm:max-w-[320px] md:max-w-[400px]">
-              <img 
+              <ArtworkMedia 
                 src={artworkUrl} 
                 alt={track.title}
-                className="w-full h-full object-cover"
+                fallbackSrc={artworkFallbackSrc}
                 onError={() => {
                   // If a DB-stored URL is broken, fall back to our local artwork pool
                   if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
@@ -219,7 +220,7 @@ export const NowPlaying: React.FC = () => {
                   }
                 }}
               />
-              <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient}`} />
+              <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient} pointer-events-none`} />
             </div>
 
             {/* Track info */}
@@ -364,32 +365,22 @@ export const NowPlaying: React.FC = () => {
                 <Pin className="w-6 h-6" />
               ) : (
                 <>
-                   <img 
+                   <ArtworkMedia 
                      src={artworkUrl} 
                      alt={track.title}
-                     className="w-full h-full object-cover"
+                     fallbackSrc={artworkFallbackSrc}
                      onLoad={() => {
                        console.log('🖼️ Album artwork loaded successfully:', artworkUrl);
                      }}
-                      onError={(e) => {
-                        console.warn('❌ Failed to load album artwork:', artworkUrl);
-
-                        // First try our known-good fallback artwork
-                        if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
-                          setArtworkSrc(artworkFallbackSrc);
-                          return;
-                        }
-
-                        // If even fallback fails, show the placeholder
-                        e.currentTarget.style.display = 'none';
-                        const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
-                        if (fallback) fallback.style.display = 'flex';
-                      }}
+                     onError={() => {
+                       console.warn('❌ Failed to load album artwork:', artworkUrl);
+                       // Try fallback if available
+                       if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
+                         setArtworkSrc(artworkFallbackSrc);
+                       }
+                     }}
                    />
-                   <div className="hidden w-full h-full items-center justify-center text-xl bg-card/50 rounded-lg border border-border/20">
-                     <div className="text-muted-foreground">No Image</div>
-                   </div>
-                  <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light pointer-events-none`} />
                 </>
               )}
             </div>

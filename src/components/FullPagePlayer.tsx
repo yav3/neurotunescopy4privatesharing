@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-// Artwork is handled locally via therapeutic goal-based selection
+import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
 import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { Analytics } from '@/utils/analytics';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 // Import artwork for different therapeutic goals
 import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
@@ -112,27 +113,19 @@ export const FullPagePlayer = () => {
     return bands[hash % bands.length];
   };
 
-  // Use local therapeutic artwork directly (animated_artworks table contains videos, not images)
+  // Use ArtworkService for dynamic artwork (supports images, GIFs, and videos)
   const artwork = React.useMemo(() => {
     if (!track) return { url: focusArtwork, gradient: '' };
     
-    // Use the therapeutic goal-based artwork for consistent, reliable image display
-    const artworkUrl = getTherapeuticArtwork();
-    
-    // Generate gradient based on frequency band
+    // Generate frequency band from track properties
     const frequencyBand = getFrequencyBand(track);
-    const gradients = {
-      delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70',
-      theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70',
-      alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70',
-      beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70',
-      gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70',
-      default: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70'
-    };
+    
+    // Use ArtworkService which can return video URLs from animated_artworks table
+    const artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
     
     return {
-      url: artworkUrl,
-      gradient: gradients[frequencyBand as keyof typeof gradients] || gradients.default
+      url: artworkResult.url,
+      gradient: artworkResult.gradient
     };
   }, [track?.id, lastGoal]);
 
@@ -279,20 +272,14 @@ export const FullPagePlayer = () => {
         className="relative z-10 w-full max-w-md mx-auto px-6 py-20 min-h-full flex flex-col justify-center"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Album artwork with Glass Morphism - optimized size */}
+        {/* Album artwork with Glass Morphism - supports images, GIFs, and videos */}
         <div className="aspect-square relative mb-6 rounded-2xl overflow-hidden backdrop-blur-lg bg-card/30 border border-white/10 shadow-glass-lg max-w-[240px] mx-auto">
-          <img 
+          <ArtworkMedia 
             src={artwork.url}
             alt={TitleFormatter.formatTrackTitle(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-            onError={(e) => {
-              console.error('❌ Image failed to load:', artwork.url);
-              console.error('❌ Error event:', e);
-            }}
+            fallbackSrc={focusArtwork}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
         </div>
 
         {/* Track info - compact */}

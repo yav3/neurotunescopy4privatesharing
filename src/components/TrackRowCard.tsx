@@ -5,7 +5,7 @@ import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SmartTitleParser } from '@/utils/smartTitleParser';
 import { ArtworkService } from '@/services/artworkService';
-import { handleImageError, getAlbumArtworkUrl } from '@/utils/imageUtils';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 interface TrackRowCardProps {
   track: {
@@ -47,15 +47,12 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
       )}
       onClick={onPlay}
     >
-      {/* Background image with gradient overlay */}
-      <img 
+      {/* Background media with gradient overlay (supports images, GIFs, and videos) */}
+      <ArtworkMedia 
         src={artwork.url}
         alt={formattedTitle}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-        onError={(e) => {
-          console.warn('❌ Failed to load track card artwork:', artwork.url);
-          handleImageError(e);
-        }}
+        className="transition-transform duration-300 group-hover:scale-110"
+        containerClassName="absolute inset-0 w-full h-full"
       />
       
       {/* Gradient overlay */}
