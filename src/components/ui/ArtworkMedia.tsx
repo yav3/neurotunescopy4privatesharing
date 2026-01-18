@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Music } from 'lucide-react';
 
 interface ArtworkMediaProps {
-  src: string;
+  src: string | null | undefined;
   alt: string;
   className?: string;
   containerClassName?: string;
@@ -18,6 +19,7 @@ interface ArtworkMediaProps {
 /**
  * Unified media component that intelligently renders images, GIFs, or videos
  * based on the file extension of the source URL.
+ * Handles null/undefined sources with a placeholder.
  */
 export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
   src,
@@ -35,7 +37,7 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [currentSrc, setCurrentSrc] = useState(src);
+  const [currentSrc, setCurrentSrc] = useState(src || '');
 
   // Detect media type from URL
   const getMediaType = (url: string): 'video' | 'image' => {
@@ -62,14 +64,14 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
 
   // Reset state when src changes
   useEffect(() => {
-    setCurrentSrc(src);
+    setCurrentSrc(src || '');
     setHasError(false);
     setIsLoaded(false);
   }, [src]);
 
   // Handle video playback when it comes into view
   useEffect(() => {
-    if (mediaType !== 'video' || !videoRef.current) return;
+    if (mediaType !== 'video' || !videoRef.current || !currentSrc) return;
 
     const video = videoRef.current;
     
@@ -122,6 +124,17 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
     isLoaded && "opacity-100 transition-opacity duration-300",
     className
   );
+
+  // No source - show placeholder
+  if (!currentSrc) {
+    return (
+      <div className={cn("relative overflow-hidden w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20", containerClassName)}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Music className="w-8 h-8 text-muted-foreground/50" />
+        </div>
+      </div>
+    );
+  }
 
   if (mediaType === 'video') {
     return (

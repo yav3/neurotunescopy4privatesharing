@@ -56,7 +56,7 @@ export const TrackRowCard: React.FC<TrackRowCardProps> = ({
       />
       
       {/* Gradient overlay */}
-      <div className={cn("absolute inset-0 bg-gradient-to-t", artwork.gradient)} />
+      {artwork.url && <div className={cn("absolute inset-0 bg-gradient-to-t", artwork.gradient)} />}
       
       {/* Content */}
       <div className="relative h-full flex flex-col justify-between p-4 text-white">
