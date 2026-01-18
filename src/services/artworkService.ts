@@ -166,14 +166,14 @@ export class ArtworkService {
       
       console.log('🎭 Using local fallback art (bucket not loaded yet):', fallbackUrl);
       
-      // Return local fallback directly
+      // Return local fallback directly with Tailwind gradient classes
       const gradients = {
-        delta: 'linear-gradient(135deg, hsl(240 100% 20% / 0.9), hsl(240 100% 10% / 0.8))',
-        theta: 'linear-gradient(135deg, hsl(280 60% 40% / 0.9), hsl(280 60% 20% / 0.8))',
-        alpha: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))',
-        beta: 'linear-gradient(135deg, hsl(45 100% 60% / 0.9), hsl(45 100% 35% / 0.8))',
-        gamma: 'linear-gradient(135deg, hsl(0 84% 60% / 0.9), hsl(0 84% 35% / 0.8))',
-        default: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))'
+        delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70',
+        theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70',
+        alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70',
+        beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70',
+        gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70',
+        default: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70'
       };
       
       return {
@@ -185,14 +185,14 @@ export class ArtworkService {
     const url = getAlbumArtworkUrl(selectedFilename);
     console.log('🔗 Final artwork URL:', url);
 
-    // Consistent gradient based on frequency band
+    // Tailwind gradient classes based on frequency band for therapeutic visual cues
     const gradients = {
-      delta: 'linear-gradient(135deg, hsl(240 100% 20% / 0.9), hsl(240 100% 10% / 0.8))',
-      theta: 'linear-gradient(135deg, hsl(280 60% 40% / 0.9), hsl(280 60% 20% / 0.8))',
-      alpha: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))',
-      beta: 'linear-gradient(135deg, hsl(45 100% 60% / 0.9), hsl(45 100% 35% / 0.8))',
-      gamma: 'linear-gradient(135deg, hsl(0 84% 60% / 0.9), hsl(0 84% 35% / 0.8))',
-      default: 'linear-gradient(135deg, hsl(217 91% 60% / 0.9), hsl(217 91% 25% / 0.8))'
+      delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70',
+      theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70',
+      alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70',
+      beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70',
+      gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70',
+      default: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70'
     };
 
     return {

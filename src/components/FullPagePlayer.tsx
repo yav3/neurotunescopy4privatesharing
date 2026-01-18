@@ -58,16 +58,7 @@ export const FullPagePlayer = () => {
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
 
-  // Local fallback art (user-provided examples)
-  const localArtPool = [
-    '/lovable-uploads/568fe397-023c-4d61-816d-837de0948919.png',
-    '/lovable-uploads/1da41b51-e4bb-41a7-9015-6e45aebb523c.png',
-    '/lovable-uploads/54738be0-6688-4c13-b54a-05591ce054f7.png',
-    '/lovable-uploads/68343a15-d97c-4dd6-a85f-a0806d963bb7.png',
-    '/lovable-uploads/a59ca21a-a07c-448b-bc2f-b1470dc870db.png',
-    '/lovable-uploads/1c80f044-2499-45b2-9ed4-69da791f15e4.png',
-    '/lovable-uploads/0032890f-a22d-4907-8823-9b8b6c2f8221.png'
-  ];
+  // Artwork is now handled by ArtworkService - no hardcoded fallbacks needed
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
