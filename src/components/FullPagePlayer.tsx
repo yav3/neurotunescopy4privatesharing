@@ -13,16 +13,6 @@ import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { Analytics } from '@/utils/analytics';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
-// Import artwork for different therapeutic goals
-import moodBoostArtwork from "@/assets/mood-boost-artwork.jpg";
-import focusArtwork from "@/assets/focus-enhancement-artwork.jpg";
-import stressAnxietyArtwork from "@/assets/stress-anxiety-artwork.jpg";
-import sleepArtwork from "@/assets/sleep-artwork.jpg";
-import painSupportArtwork from "@/assets/pain-support-artwork.jpg";
-import crossoverClassicalArt from '@/assets/crossover-classical-artwork.jpg';
-import acousticArtwork from "@/assets/acoustic-artwork.jpg";
-import energyBoostArtwork from "@/assets/energy-boost-artwork.jpg";
-
 export const FullPagePlayer = () => {
   const { 
     play, 
@@ -68,35 +58,7 @@ export const FullPagePlayer = () => {
     return goal ? goal.name : 'Therapeutic Music';
   };
 
-  // Get artwork based on therapeutic goal  
-  const getTherapeuticArtwork = () => {
-    if (!lastGoal) return focusArtwork; // Default fallback
-    
-    const goalMappings = {
-      'mood-boost': moodBoostArtwork,
-      'focus-enhancement': focusArtwork, 
-      'stress-anxiety-support': stressAnxietyArtwork,
-      'sleep-support': sleepArtwork,
-      'pain-relief': painSupportArtwork,
-      'energy-boost': energyBoostArtwork,
-      'classical': crossoverClassicalArt,
-      'acoustic': acousticArtwork
-    };
-    
-    // Try direct goal match first
-    if (goalMappings[lastGoal as keyof typeof goalMappings]) {
-      return goalMappings[lastGoal as keyof typeof goalMappings];
-    }
-    
-    // Try finding goal by therapeutic goals config
-    const goal = THERAPEUTIC_GOALS.find(g => g.id === lastGoal || g.slug === lastGoal || g.backendKey === lastGoal);
-    if (goal && goalMappings[goal.id as keyof typeof goalMappings]) {
-      return goalMappings[goal.id as keyof typeof goalMappings];
-    }
-    
-    return focusArtwork; // Default fallback
-  };
-
+  // Format time helper
   const formatTime = (time: number) => {
     if (!time || isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
@@ -115,7 +77,7 @@ export const FullPagePlayer = () => {
 
   // Use ArtworkService for dynamic artwork (supports images, GIFs, and videos)
   const artwork = React.useMemo(() => {
-    if (!track) return { url: focusArtwork, gradient: '' };
+    if (!track) return { url: null, gradient: '' };
     
     // Generate frequency band from track properties
     const frequencyBand = getFrequencyBand(track);
@@ -277,9 +239,8 @@ export const FullPagePlayer = () => {
           <ArtworkMedia 
             src={artwork.url}
             alt={TitleFormatter.formatTrackTitle(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
-            fallbackSrc={focusArtwork}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+          {artwork.url && <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />}
         </div>
 
         {/* Track info - compact */}

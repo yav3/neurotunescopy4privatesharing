@@ -53,9 +53,8 @@ export const NowPlaying: React.FC = () => {
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
-  // Artwork URL state with safe fallback (prevents broken-image icon on iOS Safari)
-  const [artworkSrc, setArtworkSrc] = useState<string>('');
-  const [artworkFallbackSrc, setArtworkFallbackSrc] = useState<string>('');
+  // Artwork URL state
+  const [artworkSrc, setArtworkSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (!track) return;
@@ -63,7 +62,7 @@ export const NowPlaying: React.FC = () => {
     const frequencyBand = getFrequencyBandFromBPM(track.bpm);
     const art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
 
-    setArtworkFallbackSrc(art.url);
+    // Prefer track's own artwork, then fall back to ArtworkService
     setArtworkSrc(track.album_art_url || (track as any).artwork_url || art.url);
   }, [track?.id, track?.bpm, (track as any)?.artwork_url, (track as any)?.album_art_url]);
 
@@ -212,15 +211,8 @@ export const NowPlaying: React.FC = () => {
               <ArtworkMedia 
                 src={artworkUrl} 
                 alt={track.title}
-                fallbackSrc={artworkFallbackSrc}
-                onError={() => {
-                  // If a DB-stored URL is broken, fall back to our local artwork pool
-                  if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
-                    setArtworkSrc(artworkFallbackSrc);
-                  }
-                }}
               />
-              <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient} pointer-events-none`} />
+              {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient} pointer-events-none`} />}
             </div>
 
             {/* Track info */}
@@ -368,19 +360,8 @@ export const NowPlaying: React.FC = () => {
                    <ArtworkMedia 
                      src={artworkUrl} 
                      alt={track.title}
-                     fallbackSrc={artworkFallbackSrc}
-                     onLoad={() => {
-                       console.log('🖼️ Album artwork loaded successfully:', artworkUrl);
-                     }}
-                     onError={() => {
-                       console.warn('❌ Failed to load album artwork:', artworkUrl);
-                       // Try fallback if available
-                       if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
-                         setArtworkSrc(artworkFallbackSrc);
-                       }
-                     }}
                    />
-                  <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light pointer-events-none`} />
+                  {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light pointer-events-none`} />}
                 </>
               )}
             </div>

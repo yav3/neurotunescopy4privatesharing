@@ -92,7 +92,7 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
               onLoad={() => setIsImageLoading(false)}
             />
             {/* Therapeutic Gradient Overlay */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
+            {artwork.url && <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />}
           </div>
           
           {/* Play button overlay */}
