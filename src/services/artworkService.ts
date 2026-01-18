@@ -26,25 +26,20 @@ export class ArtworkService {
       try {
         console.log('🎨 ArtworkService: Loading available artwork from bucket...');
         
-        // List all files in the albumart bucket
-        const { data: files, error } = await supabase.storage
-          .from('albumart')
-          .list('', { limit: 500, sortBy: { column: 'name', order: 'asc' } });
+        // List all files in the albumart bucket via StorageRequestManager (works even when direct list is restricted)
+        const storageFiles = await storageRequestManager.listStorage('albumart');
 
-        if (error) {
-          console.warn('❌ Failed to list albumart bucket:', error);
-          return;
-        }
+        if (storageFiles && storageFiles.length > 0) {
+          this.availableArtwork = storageFiles
+            .map((f: any) => f.name)
+            .filter((name: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(name));
 
-        if (files && files.length > 0) {
-          // Filter to only image files (jpg, jpeg, png, gif, webp)
-          this.availableArtwork = files
-            .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name))
-            .map(f => f.name);
-          
-          console.log(`✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from bucket`);
+          console.log(
+            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from bucket (via storageRequestManager)`
+          );
         } else {
-          console.log('📂 ArtworkService: No files found in albumart bucket');
+          console.log('📂 ArtworkService: No listable image files found in albumart bucket');
+          this.availableArtwork = [];
         }
         
         this.artworkListLoaded = true;
