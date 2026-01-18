@@ -1,5 +1,4 @@
 import { supabase } from '@/integrations/supabase/client';
-import { storageRequestManager } from '@/services/storageRequestManager';
 import { albumArtPool } from '@/utils/albumArtPool';
 import { getAlbumArtworkUrl } from '@/utils/imageUtils';
 
@@ -13,7 +12,10 @@ export class ArtworkService {
   private static artworkListLoaded = false;
   private static artworkListLoading: Promise<void> | null = null;
 
-  // Initialize artwork list from Supabase albumart bucket
+  // Supported artwork file extensions (including animated formats)
+  private static readonly ARTWORK_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|mp4|mov|webm)$/i;
+
+  // Initialize artwork list from Supabase albumart bucket using direct storage API
   private static async loadAvailableArtwork(): Promise<void> {
     if (this.artworkListLoaded) return;
     
@@ -24,27 +26,44 @@ export class ArtworkService {
 
     this.artworkListLoading = (async () => {
       try {
-        console.log('🎨 ArtworkService: Loading available artwork from bucket...');
+        console.log('🎨 ArtworkService: Loading available artwork from albumart bucket...');
         
-        // List all files in the albumart bucket via StorageRequestManager (works even when direct list is restricted)
-        const storageFiles = await storageRequestManager.listStorage('albumart');
+        // Use direct Supabase storage list call for albumart bucket
+        const { data: files, error } = await supabase.storage
+          .from('albumart')
+          .list('', { 
+            limit: 500, 
+            sortBy: { column: 'name', order: 'asc' } 
+          });
 
-        if (storageFiles && storageFiles.length > 0) {
-          this.availableArtwork = storageFiles
-            .map((f: any) => f.name)
-            .filter((name: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(name));
+        if (error) {
+          console.warn('❌ ArtworkService: Failed to list albumart bucket:', error.message);
+          this.availableArtwork = [];
+          this.artworkListLoaded = true;
+          return;
+        }
+
+        if (files && files.length > 0) {
+          // Filter to only artwork files (images, gifs, and videos)
+          this.availableArtwork = files
+            .map(f => f.name)
+            .filter(name => this.ARTWORK_EXTENSIONS.test(name))
+            .filter(name => !name.startsWith('.') && name !== '.emptyFolderPlaceholder');
 
           console.log(
-            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from bucket (via storageRequestManager)`
+            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from albumart bucket`,
+            this.availableArtwork.slice(0, 5)
           );
         } else {
-          console.log('📂 ArtworkService: No listable image files found in albumart bucket');
+          console.log('📂 ArtworkService: No files found in albumart bucket');
           this.availableArtwork = [];
         }
         
         this.artworkListLoaded = true;
       } catch (error) {
         console.error('❌ ArtworkService: Error loading artwork list:', error);
+        this.availableArtwork = [];
+        this.artworkListLoaded = true;
       }
     })();
 
@@ -103,27 +122,23 @@ export class ArtworkService {
         return artworkUrl;
       }
       
-      // Fallback: try to load from bucket directly
-      const artFiles = await storageRequestManager.listStorage('albumart');
+      // Fallback: try to load artwork list now
+      await this.loadAvailableArtwork();
       
-      console.log('🖼️ Found albumart files:', artFiles?.length || 0, artFiles);
-      
-      if (artFiles && artFiles.length > 0) {
-        // Use track ID for consistent selection
+      if (this.availableArtwork.length > 0) {
         const hash = Math.abs(track.id.toString().split('').reduce((a: number, b: string) => a + b.charCodeAt(0), 0));
-        const chosen = artFiles[hash % artFiles.length];
+        const chosen = this.availableArtwork[hash % this.availableArtwork.length];
         
-        console.log('✅ Selected artwork file:', chosen.name, 'for track', track.id);
+        console.log('✅ Selected artwork file (fallback path):', chosen, 'for track', track.id);
         
-        const { data: urlData } = supabase.storage.from('albumart').getPublicUrl(chosen.name);
-        const artworkUrl = urlData.publicUrl;
+        const artworkUrl = getAlbumArtworkUrl(chosen);
         
         console.log('🔗 Generated artwork URL:', artworkUrl);
         
         this.cache.set(cacheKey, artworkUrl);
         return artworkUrl;
       } else {
-        console.log('📂 No files in albumart bucket, using fallback');
+        console.log('📂 No files in albumart bucket, using local fallback');
       }
     } catch (error) {
       console.warn('❌ Failed to load artwork from bucket:', error);
