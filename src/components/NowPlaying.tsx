@@ -126,6 +126,20 @@ export const NowPlaying: React.FC = () => {
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
+  // Artwork URL state with safe fallback (prevents broken-image icon on iOS Safari)
+  const [artworkSrc, setArtworkSrc] = useState<string>('');
+  const [artworkFallbackSrc, setArtworkFallbackSrc] = useState<string>('');
+
+  useEffect(() => {
+    if (!track) return;
+
+    const frequencyBand = getFrequencyBandFromBPM(track.bpm);
+    const art = getTherapeuticArtwork(frequencyBand, track.id);
+
+    setArtworkFallbackSrc(art.url);
+    setArtworkSrc(track.album_art_url || (track as any).artwork_url || art.url);
+  }, [track?.id, track?.bpm, (track as any)?.artwork_url, (track as any)?.album_art_url]);
+
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
     if (!lastGoal) return 'THERAPEUTIC MUSIC';
@@ -244,7 +258,7 @@ export const NowPlaying: React.FC = () => {
   // Get therapeutic artwork for current track
   const frequencyBand = getFrequencyBandFromBPM(track.bpm);
   const artwork = getTherapeuticArtwork(frequencyBand, track.id);
-  const artworkUrl = track.album_art_url || (track as any).artwork_url || artwork.url;
+  const artworkUrl = artworkSrc || track.album_art_url || (track as any).artwork_url || artwork.url;
 
   // Show full player when playerMode is 'full'
   if (playerMode === 'full') {
@@ -272,6 +286,12 @@ export const NowPlaying: React.FC = () => {
                 src={artworkUrl} 
                 alt={track.title}
                 className="w-full h-full object-cover"
+                onError={() => {
+                  // If a DB-stored URL is broken, fall back to our local artwork pool
+                  if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
+                    setArtworkSrc(artworkFallbackSrc);
+                  }
+                }}
               />
               <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient}`} />
             </div>
@@ -425,13 +445,20 @@ export const NowPlaying: React.FC = () => {
                      onLoad={() => {
                        console.log('🖼️ Album artwork loaded successfully:', artworkUrl);
                      }}
-                     onError={(e) => {
-                       console.warn('❌ Failed to load album artwork:', artworkUrl);
-                       // Fallback to brain emoji if image fails to load
-                       e.currentTarget.style.display = 'none';
-                       const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
-                       if (fallback) fallback.style.display = 'flex';
-                     }}
+                      onError={(e) => {
+                        console.warn('❌ Failed to load album artwork:', artworkUrl);
+
+                        // First try our known-good fallback artwork
+                        if (artworkFallbackSrc && artworkSrc && artworkSrc !== artworkFallbackSrc) {
+                          setArtworkSrc(artworkFallbackSrc);
+                          return;
+                        }
+
+                        // If even fallback fails, show the placeholder
+                        e.currentTarget.style.display = 'none';
+                        const fallback = e.currentTarget.nextElementSibling as HTMLDivElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
                    />
                    <div className="hidden w-full h-full items-center justify-center text-xl bg-card/50 rounded-lg border border-border/20">
                      <div className="text-muted-foreground">No Image</div>
