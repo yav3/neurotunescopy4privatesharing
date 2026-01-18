@@ -5,7 +5,7 @@ import type { Track } from '@/types'
 import { SmartTitle } from '@/components/ui/SmartTitle'
 import { ArtworkService } from '@/services/artworkService'
 import { useAudioStore } from '@/stores'
-import { handleImageError } from '@/utils/imageUtils'
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia'
 // For backward compatibility with MusicTrack
 type MusicTrack = Track & {
   therapeutic_applications?: Array<{
@@ -85,23 +85,11 @@ export const TrackCard: React.FC<TrackCardProps> = ({ track }) => {
         {/* Album Artwork */}
         <div className="relative flex-shrink-0">
           <div className="w-20 h-20 rounded-lg overflow-hidden relative">
-            {/* Loading State */}
-            {isImageLoading && (
-              <div className="absolute inset-0 bg-card/50 flex items-center justify-center">
-                <div className="w-4 h-4 border-2 border-primary/60 border-t-primary rounded-full animate-spin" />
-              </div>
-            )}
-            
-            {/* Therapeutic Nature Background */}
-            <img 
+            {/* Therapeutic Media Background (supports images, GIFs, and videos) */}
+            <ArtworkMedia 
               src={artwork.url}
               alt={`${frequencyBand} band therapeutic artwork`}
-              className="w-full h-full object-cover"
               onLoad={() => setIsImageLoading(false)}
-              onError={(e) => {
-                setIsImageLoading(false);
-                handleImageError(e);
-              }}
             />
             {/* Therapeutic Gradient Overlay */}
             <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient}`} />
