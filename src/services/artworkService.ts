@@ -27,38 +27,40 @@ export class ArtworkService {
     this.artworkListLoading = (async () => {
       try {
         console.log('🎨 ArtworkService: Loading available artwork from albumart bucket...');
-        
-        // Use direct Supabase storage list call for albumart bucket
-        const { data: files, error } = await supabase.storage
-          .from('albumart')
-          .list('', { 
-            limit: 500, 
-            sortBy: { column: 'name', order: 'asc' } 
-          });
+
+        // Use Edge Function (service role) to bypass Storage listing RLS
+        const { data, error } = await supabase.functions.invoke('storage-access', {
+          body: {
+            bucket: 'albumart',
+            mode: 'artwork',
+            recursive: true,
+            limit: 2000,
+          },
+        });
 
         if (error) {
-          console.warn('❌ ArtworkService: Failed to list albumart bucket:', error.message);
+          console.warn('❌ ArtworkService: Failed to load artwork via edge function:', error.message);
           this.availableArtwork = [];
           this.artworkListLoaded = true;
           return;
         }
 
-        if (files && files.length > 0) {
-          // Filter to only artwork files (images, gifs, and videos)
-          this.availableArtwork = files
-            .map(f => f.name)
-            .filter(name => this.ARTWORK_EXTENSIONS.test(name))
-            .filter(name => !name.startsWith('.') && name !== '.emptyFolderPlaceholder');
+        const names: string[] = (data?.files || []).map((f: any) => f.name).filter(Boolean);
+
+        if (names.length > 0) {
+          this.availableArtwork = names
+            .filter((name: string) => this.ARTWORK_EXTENSIONS.test(name))
+            .filter((name: string) => !name.startsWith('.') && name !== '.emptyFolderPlaceholder');
 
           console.log(
-            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from albumart bucket`,
+            `✅ ArtworkService: Loaded ${this.availableArtwork.length} artwork files from albumart bucket (edge function)`,
             this.availableArtwork.slice(0, 5)
           );
         } else {
-          console.log('📂 ArtworkService: No files found in albumart bucket');
+          console.log('📂 ArtworkService: No files found in albumart bucket (edge function)');
           this.availableArtwork = [];
         }
-        
+
         this.artworkListLoaded = true;
       } catch (error) {
         console.error('❌ ArtworkService: Error loading artwork list:', error);

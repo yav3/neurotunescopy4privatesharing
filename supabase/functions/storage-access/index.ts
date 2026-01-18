@@ -5,111 +5,185 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+type ListItem = {
+  name: string;
+  id?: string | null;
+  updated_at?: string | null;
+  created_at?: string | null;
+  metadata?: { size?: number } | null;
+};
+
+const AUDIO_EXT = [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a"];
+const ARTWORK_EXT = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".webp",
+  ".svg",
+  ".mp4",
+  ".mov",
+  ".webm",
+];
+
+function hasExt(name: string, exts: string[]) {
+  const lower = name.toLowerCase();
+  return exts.some((ext) => lower.endsWith(ext));
+}
+
+function cleanTitle(filename: string): string {
+  let title = filename.replace(/\.[^/.]+$/, "");
+  title = title.replace(/[_-]/g, " ");
+  title = title.replace(/\s+/g, " ");
+  title = title
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+  return title.trim();
+}
+
+async function listRecursive(params: {
+  supabase: ReturnType<typeof createClient>;
+  bucket: string;
+  prefix: string;
+  limit: number;
+  maxDepth: number;
+  depth?: number;
+}): Promise<string[]> {
+  const { supabase, bucket, prefix, limit, maxDepth } = params;
+  const depth = params.depth ?? 0;
+
+  const { data, error } = await supabase.storage.from(bucket).list(prefix, {
+    limit,
+    sortBy: { column: "name", order: "asc" },
+  });
+
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  // Supabase returns “folders” (id null) and “files” (id string)
+  const files: string[] = [];
+  const folders: string[] = [];
+
+  for (const item of data as ListItem[]) {
+    if (!item?.name) continue;
+    if (item.name.startsWith(".") || item.name === ".emptyFolderPlaceholder") continue;
+
+    const fullPath = prefix ? `${prefix}/${item.name}` : item.name;
+
+    if (item.id) {
+      files.push(fullPath);
+    } else {
+      // folder
+      folders.push(fullPath);
+    }
+  }
+
+  if (depth >= maxDepth || folders.length === 0) return files;
+
+  const nested = await Promise.all(
+    folders.map((folderPrefix) =>
+      listRecursive({ supabase, bucket, prefix: folderPrefix, limit, maxDepth, depth: depth + 1 }),
+    ),
+  );
+
+  return [...files, ...nested.flat()];
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    // Initialize Supabase client with service role key
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
     });
 
     const url = new URL(req.url);
-    const bucket = url.searchParams.get("bucket") || "classicalfocus";
-    const limit = parseInt(url.searchParams.get("limit") || "100");
 
-    console.log(`📂 Accessing bucket: ${bucket} with service key`);
+    // Support both GET query params and POST JSON body
+    let body: any = null;
+    if (req.method !== "GET") {
+      try {
+        body = await req.json();
+      } catch {
+        body = null;
+      }
+    }
 
-    // List files in the bucket using service role
-    const { data: files, error: listError } = await supabase.storage.from(bucket).list("", {
-      limit: limit,
-      sortBy: { column: "name", order: "asc" },
-    });
+    const bucket = (body?.bucket ?? url.searchParams.get("bucket") ?? "classicalfocus") as string;
+    const limit = parseInt(String(body?.limit ?? url.searchParams.get("limit") ?? "100"), 10);
+    const mode = (body?.mode ?? url.searchParams.get("mode") ?? "audio") as "audio" | "artwork" | "all";
+    const recursive = String(body?.recursive ?? url.searchParams.get("recursive") ?? "false") === "true";
 
-    if (listError) {
-      console.error(`❌ Error listing files in bucket ${bucket}:`, listError);
-      return new Response(JSON.stringify({ error: listError.message }), {
-        status: 400,
+    console.log(`📂 storage-access: bucket=${bucket} mode=${mode} recursive=${recursive} limit=${limit}`);
+
+    const maxDepth = 3;
+    const names = recursive
+      ? await listRecursive({ supabase, bucket, prefix: "", limit, maxDepth })
+      : (await supabase.storage.from(bucket).list("", { limit, sortBy: { column: "name", order: "asc" } }))
+          .data?.map((f) => f.name) ?? [];
+
+    if (names.length === 0) {
+      return new Response(JSON.stringify({ files: [], bucket, mode, recursive }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    if (!files || files.length === 0) {
-      return new Response(JSON.stringify({ files: [], message: `No files found in bucket ${bucket}` }), {
+    if (mode === "artwork" || (mode === "all" && bucket === "albumart")) {
+      const files = names.filter((n) => hasExt(n, ARTWORK_EXT));
+      return new Response(JSON.stringify({
+        files: files.map((name) => ({ name })),
+        total: files.length,
+        bucket,
+        mode,
+        recursive,
+      }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Filter for audio files
-    const audioExtensions = [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a"];
-    const audioFiles = files.filter((file) => audioExtensions.some((ext) => file.name.toLowerCase().endsWith(ext)));
+    // Default: audio behavior (backwards compatible)
+    const audioFiles = names.filter((n) => hasExt(n, AUDIO_EXT));
 
-    console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}`);
-
-    // Create track objects with URLs (prioritize signed URLs for reliability)
     const tracks = await Promise.all(
-      audioFiles.map(async (file) => {
+      audioFiles.map(async (name) => {
         let streamUrl: string | undefined;
 
-        // Always use signed URLs for private buckets (more reliable)
         try {
           const { data: signedUrlData, error: signedError } = await supabase.storage
             .from(bucket)
-            .createSignedUrl(file.name, 3600); // 1 hour expiry
+            .createSignedUrl(name, 3600);
 
-          if (signedError) {
-            console.log(`❌ Signed URL failed for ${file.name}:`, signedError);
-          } else if (signedUrlData?.signedUrl) {
+          if (!signedError && signedUrlData?.signedUrl) {
             streamUrl = signedUrlData.signedUrl;
-            console.log(`✅ Created signed URL for ${file.name}`);
           }
-        } catch (error) {
-          console.log(`❌ Error creating signed URL for ${file.name}:`, error);
+        } catch {
+          // ignore
         }
 
-        // Fallback to public URL only if signed URL failed
         if (!streamUrl) {
-          try {
-            const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(file.name);
-
-            if (publicUrlData.publicUrl) {
-              streamUrl = publicUrlData.publicUrl;
-              console.log(`🔄 Using public URL fallback for ${file.name}`);
-            }
-          } catch (error) {
-            console.log(`⚠️ Public URL fallback also failed for ${file.name}:`, error);
-          }
+          const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(name);
+          streamUrl = publicUrlData.publicUrl;
         }
 
         return {
-          id: `${bucket}-${file.name}`,
-          title: cleanTitle(file.name),
+          id: `${bucket}-${name}`,
+          title: cleanTitle(name.split("/").pop() ?? name),
           storage_bucket: bucket,
-          storage_key: file.name,
+          storage_key: name,
           stream_url: streamUrl,
-          file_size: file.metadata?.size,
-          last_modified: file.updated_at || file.created_at,
         };
       }),
     );
 
     return new Response(
-      JSON.stringify({
-        tracks: tracks,
-        total: tracks.length,
-        bucket: bucket,
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
+      JSON.stringify({ tracks, total: tracks.length, bucket, mode: "audio", recursive }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (error) {
     console.error("❌ Error in storage-access function:", error);
@@ -119,22 +193,3 @@ Deno.serve(async (req) => {
     });
   }
 });
-
-function cleanTitle(filename: string): string {
-  // Remove file extension
-  let title = filename.replace(/\.[^/.]+$/, "");
-
-  // Replace underscores and hyphens with spaces
-  title = title.replace(/[_-]/g, " ");
-
-  // Clean up multiple spaces
-  title = title.replace(/\s+/g, " ");
-
-  // Capitalize first letter of each word
-  title = title
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-
-  return title.trim();
-}
