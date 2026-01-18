@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-import { ArtworkService } from '@/services/artworkService';
+// Artwork is handled locally via therapeutic goal-based selection
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
 import { useUserFavorites } from '@/hooks/useUserFavorites';
@@ -112,18 +112,29 @@ export const FullPagePlayer = () => {
     return bands[hash % bands.length];
   };
 
-  // Use therapeutic artwork system (same as TrackCard)
+  // Use local therapeutic artwork directly (animated_artworks table contains videos, not images)
   const artwork = React.useMemo(() => {
     if (!track) return { url: focusArtwork, gradient: '' };
     
-    console.log('🎨 FullPagePlayer: Getting artwork for track:', track.id);
+    // Use the therapeutic goal-based artwork for consistent, reliable image display
+    const artworkUrl = getTherapeuticArtwork();
+    
+    // Generate gradient based on frequency band
     const frequencyBand = getFrequencyBand(track);
-    console.log('🎵 Frequency band:', frequencyBand);
-    const result = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-    console.log('🖼️ FullPagePlayer: Artwork result:', result);
-    console.log('🔗 Artwork URL:', result.url);
-    return result;
-  }, [track?.id]);
+    const gradients = {
+      delta: 'from-blue-900/70 via-slate-800/50 to-blue-800/70',
+      theta: 'from-amber-700/70 via-yellow-600/50 to-orange-700/70',
+      alpha: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70',
+      beta: 'from-green-700/70 via-emerald-600/50 to-teal-700/70',
+      gamma: 'from-yellow-600/70 via-orange-500/50 to-red-600/70',
+      default: 'from-blue-800/70 via-cyan-600/50 to-teal-700/70'
+    };
+    
+    return {
+      url: artworkUrl,
+      gradient: gradients[frequencyBand as keyof typeof gradients] || gradients.default
+    };
+  }, [track?.id, lastGoal]);
 
   // Enhanced control handlers
   const handleFavorite = async () => {
