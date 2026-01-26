@@ -157,13 +157,74 @@ export class SimpleStorageService {
       }
     }
 
-    // Shuffle and limit
+    // Shuffle and limit BEFORE fetching artwork (for performance)
     const shuffled = allTracks.sort(() => Math.random() - 0.5);
     const finalTracks = shuffled.slice(0, maxTracks);
 
-    console.log(`✅ Returning ${finalTracks.length} tracks from ${bucketNames.length} original buckets (${expandedBuckets.length} with fallbacks)`);
+    // Fetch artwork URLs from database for the selected tracks
+    const tracksWithArtwork = await this.enrichTracksWithArtwork(finalTracks);
+
+    console.log(`✅ Returning ${tracksWithArtwork.length} tracks from ${bucketNames.length} original buckets (${expandedBuckets.length} with fallbacks)`);
     
-    return finalTracks;
+    return tracksWithArtwork;
+  }
+
+  // Fetch artwork URLs from music_tracks table and enrich tracks
+  private static async enrichTracksWithArtwork(tracks: Track[]): Promise<Track[]> {
+    if (tracks.length === 0) return tracks;
+
+    try {
+      // Get all unique titles for matching
+      const titles = tracks.map(t => t.title);
+      
+      // Query database for matching tracks with artwork
+      const { data: dbTracks, error } = await supabase
+        .from('music_tracks')
+        .select('title, artwork_url')
+        .not('artwork_url', 'is', null);
+
+      if (error) {
+        console.warn('⚠️ Failed to fetch artwork from database:', error.message);
+        return tracks;
+      }
+
+      if (!dbTracks || dbTracks.length === 0) {
+        console.log('ℹ️ No artwork found in database');
+        return tracks;
+      }
+
+      // Create a map for fast lookup (normalize titles for matching)
+      const artworkMap = new Map<string, string>();
+      for (const dbTrack of dbTracks) {
+        if (dbTrack.artwork_url) {
+          // Normalize title for matching (lowercase, remove extra spaces)
+          const normalizedTitle = dbTrack.title.toLowerCase().trim();
+          artworkMap.set(normalizedTitle, dbTrack.artwork_url);
+        }
+      }
+
+      console.log(`🎨 Loaded ${artworkMap.size} artwork URLs from database`);
+
+      // Enrich tracks with artwork
+      let matchCount = 0;
+      const enrichedTracks = tracks.map(track => {
+        const normalizedTitle = track.title.toLowerCase().trim();
+        const artwork_url = artworkMap.get(normalizedTitle);
+        
+        if (artwork_url) {
+          matchCount++;
+          return { ...track, artwork_url };
+        }
+        return track;
+      });
+
+      console.log(`🎨 Matched ${matchCount}/${tracks.length} tracks with artwork`);
+      return enrichedTracks;
+
+    } catch (error) {
+      console.error('❌ Error enriching tracks with artwork:', error);
+      return tracks;
+    }
   }
 
   static async getTracksFromCategory(categoryId: string, maxTracks: number = 100): Promise<Track[]> {

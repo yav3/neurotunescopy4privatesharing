@@ -10,8 +10,9 @@ import { SimpleStorageService } from '@/services/simpleStorageService';
 import { useAsyncEffect } from '@/hooks/useAsyncEffect';
 import { useAuthContext } from '@/components/auth/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import { ArtworkService } from '@/services/artworkService';
 import { TitleFormatter } from '@/utils/titleFormatter';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
+import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
 export default function GenreView() {
   const { goalId, genreId } = useParams();
@@ -340,12 +341,6 @@ export default function GenreView() {
       {tracks.length > 0 && (
         <div className="space-y-4">
           {tracks.map((track) => {
-            // Generate frequency band from track ID for consistent artwork
-            const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
-            const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            const frequencyBand = bands[hash % bands.length];
-            const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-            
             // Format the title properly
             const formattedTitle = TitleFormatter.formatTitle(track.title);
             
@@ -357,10 +352,10 @@ export default function GenreView() {
               >
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                    <img 
-                      src={artwork.url} 
+                    <ArtworkMedia 
+                      src={track.artwork_url} 
                       alt={formattedTitle}
-                      className="w-full h-full object-cover"
+                      fallbackSrc={getAlbumArtForTrack(track.id)}
                     />
                   </div>
                   <div>
