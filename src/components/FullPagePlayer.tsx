@@ -6,12 +6,12 @@ import { cn } from "@/lib/utils";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-import { ArtworkService } from '@/services/artworkService';
 import { toast } from "@/hooks/use-toast";
 import { blockTrack } from "@/services/blockedTracks";
 import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { Analytics } from '@/utils/analytics';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
+import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
 export const FullPagePlayer = () => {
   const { 
@@ -68,65 +68,36 @@ export const FullPagePlayer = () => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Generate frequency band from track properties for artwork selection
-  const getFrequencyBand = (track: any): string => {
-    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
-    const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return bands[hash % bands.length];
-  };
-
-  // Artwork state - needs to be reactive because ArtworkService loads async
+  // Artwork state - prioritizes track.artwork_url from database
   const [artwork, setArtwork] = useState<{ url: string | null; gradient: string }>({ url: null, gradient: '' });
 
-  // Load artwork when track changes - handles async loading of ArtworkService
+  // Load artwork when track changes - prioritize database artwork_url
   useEffect(() => {
     if (!track) {
       setArtwork({ url: null, gradient: '' });
       return;
     }
 
-    let cancelled = false;
-    const frequencyBand = getFrequencyBand(track);
+    // Use track.artwork_url directly from database if available
+    const artworkUrl = (track as any).artwork_url || null;
     
-    // Function to get artwork (may need to retry if not loaded yet)
-    const loadArtwork = async () => {
-      // First attempt
-      let artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      
-      // If no artwork yet, wait for service to load and retry up to 3 times
-      let attempts = 0;
-      while (!artworkResult.url && attempts < 3) {
-        attempts++;
-        if (!ArtworkService.isLoaded()) {
-          console.log(`🎨 FullPagePlayer: Waiting for artwork service (attempt ${attempts})...`);
-          await new Promise(resolve => setTimeout(resolve, 500));
-          artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-        } else {
-          break;
-        }
-      }
-      
-      // Force reload if still not loaded
-      if (!artworkResult.url) {
-        console.log('🎨 FullPagePlayer: Force reloading artwork service...');
-        await ArtworkService.reloadArtwork();
-        artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      }
-      
-      if (!cancelled) {
-        console.log(`🎨 FullPagePlayer: Setting artwork URL:`, artworkResult.url ? 'loaded' : 'null');
-        setArtwork({
-          url: artworkResult.url,
-          gradient: artworkResult.gradient
-        });
-      }
-    };
-
-    loadArtwork();
-
-    return () => {
-      cancelled = true;
-    };
+    // Generate a consistent gradient based on track ID
+    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+    const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const bandIndex = hash % bands.length;
+    const gradients = [
+      'from-blue-900/60 via-transparent to-transparent',
+      'from-purple-900/60 via-transparent to-transparent',
+      'from-green-900/60 via-transparent to-transparent',
+      'from-amber-900/60 via-transparent to-transparent',
+      'from-rose-900/60 via-transparent to-transparent'
+    ];
+    
+    console.log(`🎨 FullPagePlayer: Using artwork_url from track:`, artworkUrl ? 'found' : 'not found');
+    setArtwork({
+      url: artworkUrl,
+      gradient: gradients[bandIndex]
+    });
   }, [track?.id]);
 
   // Enhanced control handlers
@@ -277,6 +248,7 @@ export const FullPagePlayer = () => {
           <ArtworkMedia 
             src={artwork.url}
             alt={TitleFormatter.formatTrackTitle(track.title) || `${getTherapeuticGoalName()} - Therapeutic Music`}
+            fallbackSrc={getAlbumArtForTrack(track.id)}
           />
           {artwork.url && <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />}
         </div>
