@@ -75,21 +75,43 @@ export const FullPagePlayer = () => {
     return bands[hash % bands.length];
   };
 
-  // Use ArtworkService for dynamic artwork (supports images, GIFs, and videos)
-  const artwork = React.useMemo(() => {
-    if (!track) return { url: null, gradient: '' };
-    
-    // Generate frequency band from track properties
+  // Artwork state - needs to be reactive because ArtworkService loads async
+  const [artwork, setArtwork] = useState<{ url: string | null; gradient: string }>({ url: null, gradient: '' });
+
+  // Load artwork when track changes - handles async loading of ArtworkService
+  useEffect(() => {
+    if (!track) {
+      setArtwork({ url: null, gradient: '' });
+      return;
+    }
+
     const frequencyBand = getFrequencyBand(track);
     
-    // Use ArtworkService which can return video URLs from animated_artworks table
-    const artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-    
-    return {
-      url: artworkResult.url,
-      gradient: artworkResult.gradient
+    // Function to get artwork (may need to retry if not loaded yet)
+    const loadArtwork = async () => {
+      // First attempt
+      let artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      
+      // If no artwork yet, wait for service to load and retry
+      if (!artworkResult.url && !ArtworkService.isLoaded()) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      }
+      
+      // Second retry if still not loaded
+      if (!artworkResult.url && !ArtworkService.isLoaded()) {
+        await ArtworkService.reloadArtwork();
+        artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      }
+      
+      setArtwork({
+        url: artworkResult.url,
+        gradient: artworkResult.gradient
+      });
     };
-  }, [track?.id, lastGoal]);
+
+    loadArtwork();
+  }, [track?.id]);
 
   // Enhanced control handlers
   const handleFavorite = async () => {
