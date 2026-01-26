@@ -53,8 +53,9 @@ export const NowPlaying: React.FC = () => {
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
-  // Artwork URL state - handles async loading from ArtworkService
+  // Artwork state - handles async loading from ArtworkService
   const [artworkSrc, setArtworkSrc] = useState<string | null>(null);
+  const [artworkGradient, setArtworkGradient] = useState<string>('');
 
   useEffect(() => {
     if (!track) {
@@ -93,6 +94,7 @@ export const NowPlaying: React.FC = () => {
       if (!cancelled) {
         console.log(`🎨 NowPlaying: Setting artwork URL:`, art.url ? 'loaded' : 'null');
         setArtworkSrc(art.url);
+        setArtworkGradient(art.gradient || '');
       }
     };
 
@@ -218,11 +220,7 @@ export const NowPlaying: React.FC = () => {
 
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
   
-  // Get therapeutic artwork gradient for current track
-  const frequencyBand = getFrequencyBandFromBPM(track.bpm);
-  const artworkGradient = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id).gradient;
-  
-  // artworkSrc is already set by the useEffect above with proper async handling
+  // artworkSrc and artworkGradient are set by the useEffect above with proper async handling
   const artworkUrl = artworkSrc;
 
   // Show full player when playerMode is 'full'
