@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipForward, X, Heart, Plus, User } from "lucide-react";
+import { Play, Pause, SkipForward, X, Heart, Plus, User, Music } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from "@/utils/titleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 export const MinimizedPlayer = () => {
   const navigate = useNavigate();
@@ -31,12 +32,55 @@ export const MinimizedPlayer = () => {
     return bands[hash % bands.length];
   };
 
-  // Use therapeutic artwork system (same as FullPagePlayer and TrackCard)
-  const artwork = React.useMemo(() => {
-    if (!track) return { url: '/src/assets/album-art-leaf-droplets.png', gradient: '' };
+  // Artwork URL state - handles async loading from ArtworkService
+  const [artworkUrl, setArtworkUrl] = useState<string | null>(null);
+  
+  // Load artwork asynchronously when track changes
+  useEffect(() => {
+    if (!track) {
+      setArtworkUrl(null);
+      return;
+    }
+
+    let cancelled = false;
     
-    const frequencyBand = getFrequencyBand(track);
-    return ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+    const loadArtwork = async () => {
+      const frequencyBand = getFrequencyBand(track);
+      
+      // First try sync call
+      let art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      
+      // If no artwork yet, wait and retry up to 3 times
+      let attempts = 0;
+      while (!art.url && attempts < 3) {
+        attempts++;
+        if (!ArtworkService.isLoaded()) {
+          console.log(`🎨 MinimizedPlayer: Waiting for artwork service (attempt ${attempts})...`);
+          await new Promise(resolve => setTimeout(resolve, 500));
+          art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+        } else {
+          break;
+        }
+      }
+      
+      // Force reload if still not available
+      if (!art.url) {
+        console.log('🎨 MinimizedPlayer: Force reloading artwork service...');
+        await ArtworkService.reloadArtwork();
+        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      }
+      
+      if (!cancelled) {
+        console.log(`🎨 MinimizedPlayer: Setting artwork URL:`, art.url ? 'loaded' : 'null');
+        setArtworkUrl(art.url);
+      }
+    };
+    
+    loadArtwork();
+    
+    return () => {
+      cancelled = true;
+    };
   }, [track?.id]);
 
   // Get therapeutic goal display name
@@ -123,12 +167,9 @@ export const MinimizedPlayer = () => {
           >
             {/* Album art */}
             <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
-              <img
-                src={artwork.url}
+              <ArtworkMedia
+                src={artworkUrl}
                 alt="Playing"
-                className="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
               />
             </div>
             
@@ -254,12 +295,9 @@ export const MinimizedPlayer = () => {
       >
         {/* Album art with Glass Effect */}
         <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-border/50 flex-shrink-0 shadow-glass-inset">
-          <img
-            src={artwork.url}
+          <ArtworkMedia
+            src={artworkUrl}
             alt={TitleFormatter.formatTrackTitle(track.title)}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
           />
         </div>
         

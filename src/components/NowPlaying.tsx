@@ -62,28 +62,45 @@ export const NowPlaying: React.FC = () => {
       return;
     }
 
+    let cancelled = false;
+
     const loadArtwork = async () => {
       const frequencyBand = getFrequencyBandFromBPM(track.bpm);
       
       // First try sync call
       let art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
       
-      // If not loaded yet, wait and retry
-      if (!art.url && !ArtworkService.isLoaded()) {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      // If no artwork yet, wait and retry up to 3 times
+      let attempts = 0;
+      while (!art.url && attempts < 3) {
+        attempts++;
+        if (!ArtworkService.isLoaded()) {
+          console.log(`🎨 NowPlaying: Waiting for artwork service (attempt ${attempts})...`);
+          await new Promise(resolve => setTimeout(resolve, 500));
+          art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+        } else {
+          break;
+        }
       }
       
       // Force reload if still not available
-      if (!art.url && !ArtworkService.isLoaded()) {
+      if (!art.url) {
+        console.log('🎨 NowPlaying: Force reloading artwork service...');
         await ArtworkService.reloadArtwork();
         art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
       }
 
-      setArtworkSrc(art.url);
+      if (!cancelled) {
+        console.log(`🎨 NowPlaying: Setting artwork URL:`, art.url ? 'loaded' : 'null');
+        setArtworkSrc(art.url);
+      }
     };
 
     loadArtwork();
+
+    return () => {
+      cancelled = true;
+    };
   }, [track?.id, track?.bpm]);
 
   // Get therapeutic goal display name
