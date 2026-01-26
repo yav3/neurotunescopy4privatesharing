@@ -29,6 +29,9 @@ const CROSSFADE_DURATION = 2000; // 2 seconds
 const FADE_IN_DURATION = 300; // 300ms quick fade-in for immediate start
 
 // Direct URLs for audio tracks - now with expanded video rotation
+// Artwork base URL for consistent access
+const ARTWORK_BASE = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart';
+
 const CURATED_PLAYLIST = [
   {
     audioUrl: '/audio/hail-queen-astrid.mp3',
@@ -37,9 +40,9 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'Hail Queen Astrid',
-    estimatedBPM: 75
+    estimatedBPM: 75,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-1-1024px.png`
   },
-  // Note: "You're So Lovable" removed - file doesn't exist in public/audio
   {
     audioUrl: '/audio/the-spartan-age.mp3',
     videoPath: '/videos/landing-03.mp4',
@@ -47,7 +50,8 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Spartan Age',
-    estimatedBPM: 75
+    estimatedBPM: 75,
+    artworkUrl: `${ARTWORK_BASE}/abstract-world-nsdr-en-3-1024px.png`
   },
   {
     audioUrl: '/audio/The_Seventh_Wonder_New_Age_Focus_2.mp3',
@@ -56,7 +60,8 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Seventh Wonder',
-    estimatedBPM: 72
+    estimatedBPM: 72,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-amber-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
@@ -65,7 +70,8 @@ const CURATED_PLAYLIST = [
     genre: 'Country Pop',
     artist: 'Van Wild',
     name: 'Just How You Like It',
-    estimatedBPM: 95
+    estimatedBPM: 95,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-amber-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
@@ -74,7 +80,8 @@ const CURATED_PLAYLIST = [
     genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Venha ao Meu Jardim',
-    estimatedBPM: 90
+    estimatedBPM: 90,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-1-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/malaga-classical-focus-part-four-(remastered).mp3',
@@ -83,7 +90,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'The Scientists',
     name: 'Malaga Classical Focus Part Four',
-    estimatedBPM: 70
+    estimatedBPM: 70,
+    artworkUrl: `${ARTWORK_BASE}/abstract-chopin-en-1-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/quietude-nocturne-(remastered).mp3',
@@ -92,7 +100,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'Yasmine',
     name: 'Quietude Nocturne',
-    estimatedBPM: 60
+    estimatedBPM: 60,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-2-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/adonis--bossa-nova-samba.mp3',
@@ -101,7 +110,8 @@ const CURATED_PLAYLIST = [
     genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Adonis',
-    estimatedBPM: 85
+    estimatedBPM: 85,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-2-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/tropicana-chill-bossa-nova-big-band-radio-mix.mp3',
@@ -110,7 +120,8 @@ const CURATED_PLAYLIST = [
     genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Tropicana Chill',
-    estimatedBPM: 88
+    estimatedBPM: 88,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-3-1024px.png`
   },
   {
     audioUrl: '/audio/the-prayer-of-the-oud.mp3',
@@ -119,7 +130,8 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Prayer of the Oud',
-    estimatedBPM: 68
+    estimatedBPM: 68,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-3-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Im%20on%20your%20team%20INDIE%20POP%20VERSION%203.mp3',
@@ -128,7 +140,8 @@ const CURATED_PLAYLIST = [
     genre: 'Indie Pop',
     artist: 'Van Wild',
     name: 'I\'m on Your Team',
-    estimatedBPM: 115
+    estimatedBPM: 115,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-lavender-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/All%20I_ve%20ever%20wanted%20country%20Radio%20Mix%20for%20ML.mp3',
@@ -137,7 +150,8 @@ const CURATED_PLAYLIST = [
     genre: 'Country',
     artist: 'Van Wild',
     name: 'All I\'ve Ever Wanted',
-    estimatedBPM: 100
+    estimatedBPM: 100,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-rose-1024px.png`
   },
   {
     audioUrl: '/audio/blanca-blanqueando.mp3',
@@ -146,7 +160,8 @@ const CURATED_PLAYLIST = [
     genre: 'Bossa Nova',
     artist: 'Yasmine',
     name: 'Blanca Blanqueando',
-    estimatedBPM: 90
+    estimatedBPM: 90,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-4-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/Como%20con%20tu%20sombra%20samba%20bossa%20nova.mp3',
@@ -155,7 +170,8 @@ const CURATED_PLAYLIST = [
     genre: 'Serene Samba',
     artist: 'Yasmine',
     name: 'Como con Tu Sombra',
-    estimatedBPM: 87
+    estimatedBPM: 87,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-5-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/hold%20on%20child%20EDM%20HIIT.mp3',
@@ -164,7 +180,8 @@ const CURATED_PLAYLIST = [
     genre: 'EDM',
     artist: 'Yasmine',
     name: 'Hold on Child',
-    estimatedBPM: 135
+    estimatedBPM: 135,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-teal-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
@@ -173,7 +190,8 @@ const CURATED_PLAYLIST = [
     genre: 'Pop',
     artist: 'Van Wild',
     name: 'We Were Born to Come Alive',
-    estimatedBPM: 124
+    estimatedBPM: 124,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-lavender-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
@@ -182,7 +200,8 @@ const CURATED_PLAYLIST = [
     genre: 'Pop',
     artist: 'Van Wild',
     name: 'Deja Vu',
-    estimatedBPM: 112
+    estimatedBPM: 112,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-rose-1024px.png`
   },
   {
     audioUrl: '/audio/nocturnes-chamber-orchestra.mp3',
@@ -191,7 +210,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'The Scientists',
     name: 'Nocturnes for Chamber Orchestra',
-    estimatedBPM: 65
+    estimatedBPM: 65,
+    artworkUrl: `${ARTWORK_BASE}/abstract-chopin-en-2-1024px.png`
   },
   {
     audioUrl: '/audio/your-love-big-band.mp3',
@@ -200,7 +220,8 @@ const CURATED_PLAYLIST = [
     genre: 'Big Band',
     artist: 'The Scientists',
     name: 'Your Love',
-    estimatedBPM: 95
+    estimatedBPM: 95,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-navy-1024px.png`
   },
   {
     audioUrl: '/audio/barcelona-classical-focus.mp3',
@@ -209,7 +230,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'The Scientists',
     name: 'Barcelona Classical Focus',
-    estimatedBPM: 72
+    estimatedBPM: 72,
+    artworkUrl: `${ARTWORK_BASE}/abstract-chopin-en-3-1024px.png`
   },
   {
     audioUrl: '/audio/baroque-sonata-a-major.mp3',
@@ -218,7 +240,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'The Scientists',
     name: 'Baroque Sonata in A Major',
-    estimatedBPM: 68
+    estimatedBPM: 68,
+    artworkUrl: `${ARTWORK_BASE}/abstract-chopin-en-4-1024px.png`
   },
   {
     audioUrl: '/audio/to-what-shall-i-compare-thee.mp3',
@@ -227,7 +250,8 @@ const CURATED_PLAYLIST = [
     genre: 'French Folk',
     artist: 'Yasmine',
     name: 'To What Shall I Compare Thee',
-    estimatedBPM: 85
+    estimatedBPM: 85,
+    artworkUrl: `${ARTWORK_BASE}/abstract-liquid-lavender-1024px.png`
   },
   {
     audioUrl: '/audio/the-age-of-wonder.mp3',
@@ -236,7 +260,8 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Age of Wonder',
-    estimatedBPM: 70
+    estimatedBPM: 70,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-4-1024px.png`
   },
   {
     audioUrl: '/audio/the-lover-movement-1.mp3',
@@ -245,7 +270,8 @@ const CURATED_PLAYLIST = [
     genre: 'Classical',
     artist: 'The Scientists',
     name: 'The Lover Movement 1',
-    estimatedBPM: 65
+    estimatedBPM: 65,
+    artworkUrl: `${ARTWORK_BASE}/abstract-chopin-en-5-1024px.png`
   },
   {
     audioUrl: '/audio/the-wonder-of-reverie.mp3',
@@ -254,7 +280,8 @@ const CURATED_PLAYLIST = [
     genre: 'New Age',
     artist: 'The Scientists',
     name: 'The Wonder of Reverie',
-    estimatedBPM: 60
+    estimatedBPM: 60,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-5-1024px.png`
   },
   {
     audioUrl: '/audio/focus-on-air-focus-world.mp3',
@@ -263,7 +290,8 @@ const CURATED_PLAYLIST = [
     genre: 'Ambient',
     artist: 'The Scientists',
     name: 'Focus on Air',
-    estimatedBPM: 72
+    estimatedBPM: 72,
+    artworkUrl: `${ARTWORK_BASE}/abstract-world-nsdr-en-1-1024px.png`
   },
   {
     audioUrl: '/audio/solfeggio-frequencies.mp3',
@@ -272,7 +300,8 @@ const CURATED_PLAYLIST = [
     genre: 'Sound Healing',
     artist: 'The Scientists',
     name: 'Solfeggio Frequencies',
-    estimatedBPM: 60
+    estimatedBPM: 60,
+    artworkUrl: `${ARTWORK_BASE}/abstract-crystal-teal-1024px.png`
   },
   {
     audioUrl: '/audio/cinematic-hz.mp3',
@@ -281,7 +310,8 @@ const CURATED_PLAYLIST = [
     genre: 'Cinematic',
     artist: 'The Scientists',
     name: 'Cinematic Hz',
-    estimatedBPM: 75
+    estimatedBPM: 75,
+    artworkUrl: `${ARTWORK_BASE}/abstract-crystal-navy-1024px.png`
   },
   {
     audioUrl: '/audio/maltese-acoustics-spatial-expansion.mp3',
@@ -290,7 +320,8 @@ const CURATED_PLAYLIST = [
     genre: 'Spatial Audio',
     artist: 'The Scientists',
     name: 'Maltese Acoustics',
-    estimatedBPM: 68
+    estimatedBPM: 68,
+    artworkUrl: `${ARTWORK_BASE}/abstract-crystal-lavender-1024px.png`
   },
   {
     audioUrl: '/audio/o-vis-aeternitatis.mp3',
@@ -299,7 +330,8 @@ const CURATED_PLAYLIST = [
     genre: 'Choral',
     artist: 'The Scientists',
     name: 'O Vis Aeternitatis',
-    estimatedBPM: 58
+    estimatedBPM: 58,
+    artworkUrl: `${ARTWORK_BASE}/abstract-crystal-rose-1024px.png`
   },
   {
     audioUrl: '/audio/resonance-in-altered-frequencies.mp3',
@@ -308,7 +340,8 @@ const CURATED_PLAYLIST = [
     genre: 'Experimental',
     artist: 'The Scientists',
     name: 'Resonance in Altered Frequencies',
-    estimatedBPM: 65
+    estimatedBPM: 65,
+    artworkUrl: `${ARTWORK_BASE}/abstract-liquid-rose-1024px.png`
   },
   {
     audioUrl: '/audio/i-run-to-you-club-mix.mp3',
@@ -317,7 +350,8 @@ const CURATED_PLAYLIST = [
     genre: 'Club',
     artist: 'Van Wild',
     name: 'I Run to You',
-    estimatedBPM: 128
+    estimatedBPM: 128,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-teal-1024px.png`
   },
   {
     audioUrl: '/audio/a-summer-day-acoustic-pop.mp3',
@@ -326,7 +360,8 @@ const CURATED_PLAYLIST = [
     genre: 'Acoustic Pop',
     artist: 'Van Wild',
     name: 'A Summer Day',
-    estimatedBPM: 95
+    estimatedBPM: 95,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-navy-1024px.png`
   },
   {
     audioUrl: '/audio/es-una-necesidad-bachata.mp3',
@@ -335,7 +370,8 @@ const CURATED_PLAYLIST = [
     genre: 'Bachata',
     artist: 'Yasmine',
     name: 'Es Una Necesidad',
-    estimatedBPM: 120
+    estimatedBPM: 120,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-1-1024px.png`
   },
   {
     audioUrl: '/audio/te-comparare-verano-remix.mp3',
@@ -344,7 +380,8 @@ const CURATED_PLAYLIST = [
     genre: 'Latin Pop',
     artist: 'Yasmine',
     name: 'Te Compararé con un Día de Verano',
-    estimatedBPM: 110
+    estimatedBPM: 110,
+    artworkUrl: `${ARTWORK_BASE}/abstract-samba-relaxation-pl-2-1024px.png`
   },
   {
     audioUrl: '/audio/spinosa-dreams-remix.mp3',
@@ -353,7 +390,8 @@ const CURATED_PLAYLIST = [
     genre: 'Electronic',
     artist: 'The Scientists',
     name: 'Spinosa Dreams',
-    estimatedBPM: 90
+    estimatedBPM: 90,
+    artworkUrl: `${ARTWORK_BASE}/abstract-world-nsdr-en-2-1024px.png`
   },
   {
     audioUrl: '/audio/architect-of-my-strength.mp3',
@@ -362,7 +400,8 @@ const CURATED_PLAYLIST = [
     genre: 'Affirmation',
     artist: 'The Scientists',
     name: 'The Architect of My Strength',
-    estimatedBPM: 70
+    estimatedBPM: 70,
+    artworkUrl: `${ARTWORK_BASE}/abstract-meditation-en-1-1024px.png`
   },
   {
     audioUrl: '/audio/elysian-fields-house.mp3',
@@ -371,7 +410,8 @@ const CURATED_PLAYLIST = [
     genre: 'House',
     artist: 'The Scientists',
     name: 'Elysian Fields',
-    estimatedBPM: 125
+    estimatedBPM: 125,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-teal-1024px.png`
   },
   {
     audioUrl: '/audio/i-love-you-remix.mp3',
@@ -380,7 +420,8 @@ const CURATED_PLAYLIST = [
     genre: 'Pop Remix',
     artist: 'Van Wild',
     name: 'I Love You',
-    estimatedBPM: 118
+    estimatedBPM: 118,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-rose-1024px.png`
   },
   {
     audioUrl: '/audio/the-mystery-swells-radio-mix.mp3',
@@ -389,7 +430,8 @@ const CURATED_PLAYLIST = [
     genre: 'Indie',
     artist: 'Van Wild',
     name: 'The Mystery Swells',
-    estimatedBPM: 85
+    estimatedBPM: 85,
+    artworkUrl: `${ARTWORK_BASE}/abstract-liquid-lavender-1024px.png`
   }
 ];
 
@@ -460,7 +502,8 @@ export const LandingPagePlayer = ({
           genre: track.genre,
           artist: track.artist,
           therapeuticGoal: track.therapeuticGoal,
-          estimatedBPM: track.estimatedBPM
+          estimatedBPM: track.estimatedBPM,
+          artworkUrl: track.artworkUrl
         };
       });
       

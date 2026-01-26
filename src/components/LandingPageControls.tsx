@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Play, Pause, SkipForward, Volume2, VolumeX, Waves, ChevronUp, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 
 type PlayerState = 'minimized' | 'standard' | 'expanded';
 
@@ -13,6 +14,7 @@ interface LandingPageControlsProps {
     genre: string;
     artist?: string;
     therapeuticGoal?: string;
+    artworkUrl?: string;
   } | null;
   onPlayPause: () => void;
   onSkip: () => void;
@@ -100,6 +102,15 @@ export const LandingPageControls = ({
                     <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
                   )}
                 </button>
+                {/* Album art thumbnail */}
+                {currentTrack?.artworkUrl && (
+                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-white/10">
+                    <ArtworkMedia
+                      src={currentTrack.artworkUrl}
+                      alt={currentTrack.name}
+                    />
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <div className="text-xs text-white font-normal truncate">{currentTrack?.name}</div>
                   <div className="text-[10px] text-white/60 truncate">

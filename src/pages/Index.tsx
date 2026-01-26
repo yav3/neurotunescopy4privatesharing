@@ -16,7 +16,7 @@ const Index = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isSpatialAudio, setIsSpatialAudio] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string } | null>(null);
+  const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string; artworkUrl?: string } | null>(null);
   const [videoPlaybackRate, setVideoPlaybackRate] = useState(1.0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
