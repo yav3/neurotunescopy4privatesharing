@@ -177,7 +177,7 @@ export class SimpleStorageService {
       // Query database for all tracks with artwork (we'll match by file_path)
       const { data: dbTracks, error } = await supabase
         .from('music_tracks')
-        .select('file_path, artwork_url')
+        .select('file_path, title, artwork_url')
         .not('artwork_url', 'is', null);
 
       if (error) {
@@ -190,19 +190,30 @@ export class SimpleStorageService {
         return tracks;
       }
 
-      // Create maps for fast lookup - by file_path (normalized)
+      // Create maps for fast lookup using multiple normalization strategies
       const artworkByPath = new Map<string, string>();
-      const artworkByName = new Map<string, string>();
+      const artworkByTitle = new Map<string, string>();
+      const artworkBySimplified = new Map<string, string>();
       
       for (const dbTrack of dbTracks) {
         if (dbTrack.artwork_url && dbTrack.file_path) {
-          // Normalize: lowercase, no extension
+          // Strategy 1: Normalize file_path - lowercase, no extension
           const normalizedPath = dbTrack.file_path.toLowerCase().replace(/\.[^/.]+$/, '').trim();
           artworkByPath.set(normalizedPath, dbTrack.artwork_url);
           
-          // Also create a simplified name key (remove hyphens, underscores, spaces)
-          const simplifiedName = normalizedPath.replace(/[-_\s]/g, '');
-          artworkByName.set(simplifiedName, dbTrack.artwork_url);
+          // Strategy 2: Simplified name (remove ALL special chars, spaces, etc.)
+          const simplifiedName = normalizedPath.replace(/[-_\s,()]/g, '');
+          artworkBySimplified.set(simplifiedName, dbTrack.artwork_url);
+          
+          // Strategy 3: Use database title as-is (lowercase)
+          if (dbTrack.title) {
+            const normalizedTitle = dbTrack.title.toLowerCase().trim();
+            artworkByTitle.set(normalizedTitle, dbTrack.artwork_url);
+            
+            // Also simplified version of title
+            const simplifiedTitle = normalizedTitle.replace(/[-_\s,()]/g, '');
+            artworkBySimplified.set(simplifiedTitle, dbTrack.artwork_url);
+          }
         }
       }
 
@@ -211,27 +222,41 @@ export class SimpleStorageService {
       // Enrich tracks with artwork - match by multiple strategies
       let matchCount = 0;
       const enrichedTracks = tracks.map(track => {
-        // Strategy 1: Extract filename from track ID (format: bucket-root-filename.ext-seq)
+        // Extract filename from track ID (format: bucket-root-filename.ext-seq)
         // e.g. "sambajazznocturnes-root-the-spartan-age.mp3-123"
         const idParts = track.id.split('-root-');
         let filename = idParts.length > 1 
           ? idParts[1].replace(/-\d+$/, '').replace(/\.[^/.]+$/, '') // Remove sequence and extension
           : track.title;
         
-        const normalizedFilename = filename.toLowerCase().replace(/[-_\s]/g, '').trim();
-        const normalizedTitle = track.title.toLowerCase().replace(/[-_\s]/g, '').trim();
+        // Normalize for matching
+        const normalizedFilename = filename.toLowerCase().replace(/[-_\s,()]/g, '').trim();
+        const normalizedTitle = track.title.toLowerCase().replace(/[-_\s,()]/g, '').trim();
         
-        // Try matching by simplified filename first
-        let artwork_url = artworkByName.get(normalizedFilename);
+        let artwork_url: string | undefined;
         
-        // Try matching by title if filename didn't work
+        // Strategy 1: Try exact path match with file_path
+        const pathKey = filename.toLowerCase().trim();
+        artwork_url = artworkByPath.get(pathKey);
+        
+        // Strategy 2: Try simplified filename match
         if (!artwork_url) {
-          artwork_url = artworkByName.get(normalizedTitle);
+          artwork_url = artworkBySimplified.get(normalizedFilename);
         }
         
-        // Try partial match - look for database entries that contain our title
+        // Strategy 3: Try simplified title match
         if (!artwork_url) {
-          for (const [key, url] of artworkByName) {
+          artwork_url = artworkBySimplified.get(normalizedTitle);
+        }
+        
+        // Strategy 4: Try database title match (exact)
+        if (!artwork_url) {
+          artwork_url = artworkByTitle.get(track.title.toLowerCase().trim());
+        }
+        
+        // Strategy 5: Fuzzy - look for database entries that contain our title or vice versa
+        if (!artwork_url) {
+          for (const [key, url] of artworkBySimplified) {
             if (key.includes(normalizedTitle) || normalizedTitle.includes(key)) {
               artwork_url = url;
               break;
