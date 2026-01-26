@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores";
 import { TitleFormatter } from "@/utils/titleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
-import { ArtworkService } from '@/services/artworkService';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
@@ -26,62 +25,21 @@ export const MinimizedPlayer = () => {
   } = useAudioStore();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
-  // Generate frequency band from track properties for artwork selection  
-  const getFrequencyBand = (track: any): string => {
-    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
-    const hash = track.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return bands[hash % bands.length];
-  };
-
-  // Artwork URL state - handles async loading from ArtworkService
+  
+  // Artwork URL state - prioritizes track.artwork_url from database
   const [artworkUrl, setArtworkUrl] = useState<string | null>(null);
   
-  // Load artwork asynchronously when track changes
+  // Load artwork when track changes - use database artwork_url directly
   useEffect(() => {
     if (!track) {
       setArtworkUrl(null);
       return;
     }
-
-    let cancelled = false;
     
-    const loadArtwork = async () => {
-      const frequencyBand = getFrequencyBand(track);
-      
-      // First try sync call
-      let art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      
-      // If no artwork yet, wait and retry up to 3 times
-      let attempts = 0;
-      while (!art.url && attempts < 3) {
-        attempts++;
-        if (!ArtworkService.isLoaded()) {
-          console.log(`🎨 MinimizedPlayer: Waiting for artwork service (attempt ${attempts})...`);
-          await new Promise(resolve => setTimeout(resolve, 500));
-          art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-        } else {
-          break;
-        }
-      }
-      
-      // Force reload if still not available
-      if (!art.url) {
-        console.log('🎨 MinimizedPlayer: Force reloading artwork service...');
-        await ArtworkService.reloadArtwork();
-        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      }
-      
-      if (!cancelled) {
-        console.log(`🎨 MinimizedPlayer: Setting artwork URL:`, art.url ? 'loaded' : 'null');
-        setArtworkUrl(art.url);
-      }
-    };
-    
-    loadArtwork();
-    
-    return () => {
-      cancelled = true;
-    };
+    // Use track.artwork_url directly from database if available
+    const dbArtworkUrl = (track as any).artwork_url || null;
+    console.log(`🎨 MinimizedPlayer: Using artwork_url from track:`, dbArtworkUrl ? 'found' : 'not found');
+    setArtworkUrl(dbArtworkUrl);
   }, [track?.id]);
 
   // Get therapeutic goal display name

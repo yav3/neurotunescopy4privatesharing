@@ -12,20 +12,8 @@ import { TitleFormatter } from '@/utils/titleFormatter';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
-import { ArtworkService } from '@/services/artworkService';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 import { getAlbumArtForTrack } from '@/utils/albumArtPool';
-
-// Helper function to determine frequency band from BPM
-const getFrequencyBandFromBPM = (bpm?: number): string => {
-  if (!bpm) return 'alpha'; // Default to alpha band
-  
-  if (bpm < 60) return 'delta';
-  if (bpm < 90) return 'theta';  
-  if (bpm < 120) return 'alpha';
-  if (bpm < 150) return 'beta';
-  return 'gamma';
-};
 
 export const NowPlaying: React.FC = () => {
   const navigate = useNavigate();
@@ -54,57 +42,37 @@ export const NowPlaying: React.FC = () => {
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
-  // Artwork state - handles async loading from ArtworkService
+  // Artwork state - prioritizes track.artwork_url from database
   const [artworkSrc, setArtworkSrc] = useState<string | null>(null);
   const [artworkGradient, setArtworkGradient] = useState<string>('');
 
+  // Load artwork when track changes - use database artwork_url directly
   useEffect(() => {
     if (!track) {
       setArtworkSrc(null);
+      setArtworkGradient('');
       return;
     }
 
-    let cancelled = false;
-
-    const loadArtwork = async () => {
-      const frequencyBand = getFrequencyBandFromBPM(track.bpm);
-      
-      // First try sync call
-      let art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      
-      // If no artwork yet, wait and retry up to 3 times
-      let attempts = 0;
-      while (!art.url && attempts < 3) {
-        attempts++;
-        if (!ArtworkService.isLoaded()) {
-          console.log(`🎨 NowPlaying: Waiting for artwork service (attempt ${attempts})...`);
-          await new Promise(resolve => setTimeout(resolve, 500));
-          art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-        } else {
-          break;
-        }
-      }
-      
-      // Force reload if still not available
-      if (!art.url) {
-        console.log('🎨 NowPlaying: Force reloading artwork service...');
-        await ArtworkService.reloadArtwork();
-        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-      }
-
-      if (!cancelled) {
-        console.log(`🎨 NowPlaying: Setting artwork URL:`, art.url ? 'loaded' : 'null');
-        setArtworkSrc(art.url);
-        setArtworkGradient(art.gradient || '');
-      }
-    };
-
-    loadArtwork();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [track?.id, track?.bpm]);
+    // Use track.artwork_url directly from database if available
+    const dbArtworkUrl = (track as any).artwork_url || null;
+    
+    // Generate a consistent gradient based on track ID
+    const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+    const hash = track.id.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+    const bandIndex = hash % bands.length;
+    const gradients = [
+      'from-blue-900/60 via-transparent to-transparent',
+      'from-purple-900/60 via-transparent to-transparent',
+      'from-green-900/60 via-transparent to-transparent',
+      'from-amber-900/60 via-transparent to-transparent',
+      'from-rose-900/60 via-transparent to-transparent'
+    ];
+    
+    console.log(`🎨 NowPlaying: Using artwork_url from track:`, dbArtworkUrl ? 'found' : 'not found');
+    setArtworkSrc(dbArtworkUrl);
+    setArtworkGradient(gradients[bandIndex]);
+  }, [track?.id]);
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {

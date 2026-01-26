@@ -10,15 +10,16 @@ import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { blockTrack } from '@/services/blockedTracks';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
-import { ArtworkService } from '@/services/artworkService';
+import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
-// Helper to get artwork for a track using ArtworkService
-const getTrackArtwork = (trackId: string): string | null => {
-  const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
-  const hash = trackId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const frequencyBand = bands[hash % bands.length];
-  const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, trackId);
-  return artwork.url;
+// Helper to get artwork for a track - prioritizes track.artwork_url from database
+const getTrackArtwork = (track: { id: string; artwork_url?: string }): string | null => {
+  // Use database artwork_url if available
+  if (track.artwork_url) {
+    return track.artwork_url;
+  }
+  // No database artwork - return null (fallback will be used)
+  return null;
 };
 
 interface Track {
@@ -229,9 +230,10 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
                 {/* Album Art with Glass Effect */}
                 <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
                   <ArtworkMedia 
-                    src={getTrackArtwork(track.id)} 
+                    src={getTrackArtwork(track)} 
                     alt={TitleFormatter.formatTrackTitle(track.title)}
                     loading="lazy"
+                    fallbackSrc={getAlbumArtForTrack(track.id)}
                   />
                 </div>
                 
