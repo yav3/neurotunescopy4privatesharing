@@ -4195,17 +4195,22 @@ export type Database = {
         Args: { _reliability_score?: number; _track_id: string }
         Returns: boolean
       }
-      add_user_favorite_unified: {
-        Args: {
-          p_artist?: string
-          p_storage_bucket?: string
-          p_storage_path?: string
-          p_track_id: string
-          p_track_name?: string
-          p_user_id: string
-        }
-        Returns: string
-      }
+      add_user_favorite_unified:
+        | {
+            Args: {
+              p_artist?: string
+              p_storage_bucket?: string
+              p_storage_path?: string
+              p_track_id: string
+              p_track_name?: string
+              p_user_id: string
+            }
+            Returns: string
+          }
+        | {
+            Args: { p_track_identifier: string; p_user_id: string }
+            Returns: string
+          }
       analyze_session_coverage: {
         Args: never
         Returns: {
