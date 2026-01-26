@@ -36,9 +36,9 @@ export const MinimizedPlayer = () => {
       return;
     }
     
-    // Use track.artwork_url (database) or track.artworkUrl (landing page) if available
-    const dbArtworkUrl = (track as any).artwork_url || (track as any).artworkUrl || null;
-    console.log(`🎨 MinimizedPlayer: Using artwork from track:`, dbArtworkUrl ? 'found' : 'not found');
+    // Use track.album_art_url (standard Track type) or artwork_url/artworkUrl variants
+    const dbArtworkUrl = track.album_art_url || (track as any).artwork_url || (track as any).artworkUrl || null;
+    console.log(`🎨 MinimizedPlayer: Using artwork from track:`, dbArtworkUrl ? 'found' : 'not found', dbArtworkUrl);
     setArtworkUrl(dbArtworkUrl);
   }, [track?.id]);
 

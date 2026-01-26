@@ -54,8 +54,8 @@ export const NowPlaying: React.FC = () => {
       return;
     }
 
-    // Use track.artwork_url (database) or track.artworkUrl (landing page) if available
-    const dbArtworkUrl = (track as any).artwork_url || (track as any).artworkUrl || null;
+    // Use track.album_art_url (standard Track type) or artwork_url/artworkUrl variants
+    const dbArtworkUrl = track.album_art_url || (track as any).artwork_url || (track as any).artworkUrl || null;
     
     // Generate a consistent gradient based on track ID
     const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
