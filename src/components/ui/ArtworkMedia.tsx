@@ -16,6 +16,9 @@ interface ArtworkMediaProps {
   fallbackSrc?: string;
 }
 
+// Default fallback artwork from albumart bucket
+const DEFAULT_FALLBACK = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/albumart/abstract-meditation-en-1-1024px.png';
+
 /**
  * Unified media component that intelligently renders images, GIFs, or videos
  * based on the file extension of the source URL.
@@ -32,7 +35,7 @@ export const ArtworkMedia: React.FC<ArtworkMediaProps> = ({
   autoPlay = true,
   loop = true,
   muted = true,
-  fallbackSrc
+  fallbackSrc = DEFAULT_FALLBACK
 }) => {
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
