@@ -1428,6 +1428,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           storage_bucket: track.bucket,
           storage_key: track.id,
           stream_url: track.url,
+          album_art_url: track.artwork_url,
+          artwork_url: track.artwork_url,
           audio_status: 'working' as const,
         }));
         
