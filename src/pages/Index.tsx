@@ -84,14 +84,11 @@ const Index = () => {
     <div 
       className="min-h-screen relative overflow-hidden flex flex-col"
       style={{
-        backgroundImage: `
-          linear-gradient(145deg, hsla(182, 55%, 5%, 0.9), hsla(180, 50%, 8%, 0.85), hsla(176, 45%, 10%, 0.9)),
-          url('/images/landing-bg.png')
-        `,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed'
+        background: `linear-gradient(145deg, 
+          hsl(200, 15%, 4%) 0%, 
+          hsl(210, 12%, 6%) 40%,
+          hsl(200, 10%, 5%) 100%
+        )`
       }}
     >
       {/* Full-screen video background - always visible */}
