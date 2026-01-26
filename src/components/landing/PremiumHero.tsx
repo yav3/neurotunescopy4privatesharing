@@ -15,29 +15,20 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
     <div 
       className="fixed inset-0 z-40 overflow-hidden"
       style={{
-        backgroundColor: 'hsl(182, 55%, 5%)'
+        background: `linear-gradient(145deg, 
+          hsl(200, 15%, 4%) 0%, 
+          hsl(210, 12%, 6%) 40%,
+          hsl(200, 10%, 5%) 100%
+        )`
       }}
     >
-      {/* Background image layer */}
+      {/* Subtle ambient glow */}
       <div 
         className="absolute inset-0"
         style={{
-          backgroundImage: `url('/images/landing-bg.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          filter: 'hue-rotate(-10deg) saturate(1.2)',
-          opacity: 0.6
-        }}
-      />
-      {/* Teal gradient overlay */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: `linear-gradient(145deg, 
-            hsla(182, 60%, 8%, 0.7) 0%, 
-            hsla(180, 55%, 10%, 0.5) 50%, 
-            hsla(176, 50%, 12%, 0.6) 100%
+          background: `radial-gradient(ellipse 80% 60% at 50% 50%, 
+            hsla(200, 30%, 12%, 0.15) 0%, 
+            transparent 70%
           )`
         }}
       />
