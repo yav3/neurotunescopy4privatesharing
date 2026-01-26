@@ -85,6 +85,7 @@ export const FullPagePlayer = () => {
       return;
     }
 
+    let cancelled = false;
     const frequencyBand = getFrequencyBand(track);
     
     // Function to get artwork (may need to retry if not loaded yet)
@@ -92,25 +93,40 @@ export const FullPagePlayer = () => {
       // First attempt
       let artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
       
-      // If no artwork yet, wait for service to load and retry
-      if (!artworkResult.url && !ArtworkService.isLoaded()) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      // If no artwork yet, wait for service to load and retry up to 3 times
+      let attempts = 0;
+      while (!artworkResult.url && attempts < 3) {
+        attempts++;
+        if (!ArtworkService.isLoaded()) {
+          console.log(`🎨 FullPagePlayer: Waiting for artwork service (attempt ${attempts})...`);
+          await new Promise(resolve => setTimeout(resolve, 500));
+          artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+        } else {
+          break;
+        }
       }
       
-      // Second retry if still not loaded
-      if (!artworkResult.url && !ArtworkService.isLoaded()) {
+      // Force reload if still not loaded
+      if (!artworkResult.url) {
+        console.log('🎨 FullPagePlayer: Force reloading artwork service...');
         await ArtworkService.reloadArtwork();
         artworkResult = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
       }
       
-      setArtwork({
-        url: artworkResult.url,
-        gradient: artworkResult.gradient
-      });
+      if (!cancelled) {
+        console.log(`🎨 FullPagePlayer: Setting artwork URL:`, artworkResult.url ? 'loaded' : 'null');
+        setArtwork({
+          url: artworkResult.url,
+          gradient: artworkResult.gradient
+        });
+      }
     };
 
     loadArtwork();
+
+    return () => {
+      cancelled = true;
+    };
   }, [track?.id]);
 
   // Enhanced control handlers

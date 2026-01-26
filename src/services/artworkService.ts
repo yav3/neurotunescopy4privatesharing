@@ -15,7 +15,7 @@ export class ArtworkService {
 
   // Load artwork list from animated_artworks table
   private static async loadAvailableArtwork(): Promise<void> {
-    if (this.artworkListLoaded) return;
+    if (this.artworkListLoaded && this.availableArtwork.length > 0) return;
     
     if (this.artworkListLoading) {
       await this.artworkListLoading;
@@ -34,7 +34,7 @@ export class ArtworkService {
 
         if (error) {
           console.warn('❌ ArtworkService: Failed to load artwork:', error.message);
-          this.artworkListLoaded = true;
+          // Don't mark as loaded on error - allow retry
           return;
         }
 
@@ -47,15 +47,14 @@ export class ArtworkService {
               label: a.artwork_semantic_label || 'Artwork'
             }));
 
-          console.log(`✅ ArtworkService: Loaded ${this.availableArtwork.length} artworks`);
+          console.log(`✅ ArtworkService: Loaded ${this.availableArtwork.length} artworks from database`);
+          this.artworkListLoaded = true;
         } else {
-          console.log('📂 ArtworkService: No active artworks found');
+          console.log('📂 ArtworkService: No active artworks found in database');
         }
-
-        this.artworkListLoaded = true;
       } catch (error) {
         console.error('❌ ArtworkService: Error loading artwork:', error);
-        this.artworkListLoaded = true;
+        // Don't mark as loaded on error - allow retry
       }
     })();
 

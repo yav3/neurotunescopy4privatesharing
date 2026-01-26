@@ -23,6 +23,10 @@ import { useComprehensiveTracking } from "@/hooks/useComprehensiveTracking";
 // Import test utilities for global access
 import "@/utils/testPlaybackInvariants";
 import "@/utils/fixApiConfig";
+// Preload artwork service early for faster rendering
+import { ArtworkService } from "@/services/artworkService";
+ArtworkService.preloadArtwork();
+
 import Index from "./pages/Index";
 import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
