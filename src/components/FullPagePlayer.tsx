@@ -78,8 +78,8 @@ export const FullPagePlayer = () => {
       return;
     }
 
-    // Use track.artwork_url directly from database if available
-    const artworkUrl = (track as any).artwork_url || null;
+    // Use track.artwork_url (database) or track.artworkUrl (landing page) if available
+    const artworkUrl = (track as any).artwork_url || (track as any).artworkUrl || null;
     
     // Generate a consistent gradient based on track ID
     const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
