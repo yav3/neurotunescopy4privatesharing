@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, Pause, Heart, ThumbsDown, Pin, Radio } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -10,6 +10,16 @@ import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { blockTrack } from '@/services/blockedTracks';
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
+import { ArtworkService } from '@/services/artworkService';
+
+// Helper to get artwork for a track using ArtworkService
+const getTrackArtwork = (trackId: string): string | null => {
+  const bands = ['delta', 'theta', 'alpha', 'beta', 'gamma'];
+  const hash = trackId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const frequencyBand = bands[hash % bands.length];
+  const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, trackId);
+  return artwork.url;
+};
 
 interface Track {
   id: string;
@@ -218,15 +228,11 @@ export const VerticalTrackList: React.FC<VerticalTrackListProps> = ({
 
                 {/* Album Art with Glass Effect */}
                 <div className="w-12 h-12 rounded-lg overflow-hidden backdrop-blur-sm bg-card/30 border border-white/10 flex-shrink-0">
-                  {track.artwork_url ? (
-                    <ArtworkMedia 
-                      src={track.artwork_url} 
-                      alt={TitleFormatter.formatTrackTitle(track.title)}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">♪</div>
-                  )}
+                  <ArtworkMedia 
+                    src={getTrackArtwork(track.id)} 
+                    alt={TitleFormatter.formatTrackTitle(track.title)}
+                    loading="lazy"
+                  />
                 </div>
                 
                 {/* Track Info with Vertical Scrolling Title */}
