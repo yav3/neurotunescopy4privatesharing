@@ -53,18 +53,38 @@ export const NowPlaying: React.FC = () => {
   const { addFavorite, removeFavorite, isFavorite } = useUserFavorites();
   const { togglePinGoal, isGoalPinned } = usePinnedFavorites();
 
-  // Artwork URL state
+  // Artwork URL state - handles async loading from ArtworkService
   const [artworkSrc, setArtworkSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!track) return;
+    if (!track) {
+      setArtworkSrc(null);
+      return;
+    }
 
-    const frequencyBand = getFrequencyBandFromBPM(track.bpm);
-    const art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+    const loadArtwork = async () => {
+      const frequencyBand = getFrequencyBandFromBPM(track.bpm);
+      
+      // First try sync call
+      let art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      
+      // If not loaded yet, wait and retry
+      if (!art.url && !ArtworkService.isLoaded()) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      }
+      
+      // Force reload if still not available
+      if (!art.url && !ArtworkService.isLoaded()) {
+        await ArtworkService.reloadArtwork();
+        art = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
+      }
 
-    // Prefer track's own artwork, then fall back to ArtworkService
-    setArtworkSrc(track.album_art_url || (track as any).artwork_url || art.url);
-  }, [track?.id, track?.bpm, (track as any)?.artwork_url, (track as any)?.album_art_url]);
+      setArtworkSrc(art.url);
+    };
+
+    loadArtwork();
+  }, [track?.id, track?.bpm]);
 
   // Get therapeutic goal display name
   const getTherapeuticGoalName = () => {
@@ -181,10 +201,12 @@ export const NowPlaying: React.FC = () => {
 
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
   
-  // Get therapeutic artwork for current track using centralized service
+  // Get therapeutic artwork gradient for current track
   const frequencyBand = getFrequencyBandFromBPM(track.bpm);
-  const artwork = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id);
-  const artworkUrl = artworkSrc || track.album_art_url || (track as any).artwork_url || artwork.url;
+  const artworkGradient = ArtworkService.getTherapeuticArtwork(frequencyBand, track.id).gradient;
+  
+  // artworkSrc is already set by the useEffect above with proper async handling
+  const artworkUrl = artworkSrc;
 
   // Show full player when playerMode is 'full'
   if (playerMode === 'full') {
@@ -212,7 +234,7 @@ export const NowPlaying: React.FC = () => {
                 src={artworkUrl} 
                 alt={track.title}
               />
-              {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-t ${artwork.gradient} pointer-events-none`} />}
+              {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-t ${artworkGradient} pointer-events-none`} />}
             </div>
 
             {/* Track info */}
@@ -361,7 +383,7 @@ export const NowPlaying: React.FC = () => {
                      src={artworkUrl} 
                      alt={track.title}
                    />
-                  {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-br ${artwork.gradient} mix-blend-soft-light pointer-events-none`} />}
+                  {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-br ${artworkGradient} mix-blend-soft-light pointer-events-none`} />}
                 </>
               )}
             </div>
