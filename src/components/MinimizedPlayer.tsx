@@ -7,6 +7,7 @@ import { TitleFormatter } from "@/utils/titleFormatter";
 import { THERAPEUTIC_GOALS } from '@/config/therapeuticGoals';
 import { ArtworkService } from '@/services/artworkService';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
+import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
 export const MinimizedPlayer = () => {
   const navigate = useNavigate();
@@ -170,6 +171,7 @@ export const MinimizedPlayer = () => {
               <ArtworkMedia
                 src={artworkUrl}
                 alt="Playing"
+                fallbackSrc={getAlbumArtForTrack('fallback')}
               />
             </div>
             
@@ -298,6 +300,7 @@ export const MinimizedPlayer = () => {
           <ArtworkMedia
             src={artworkUrl}
             alt={TitleFormatter.formatTrackTitle(track.title)}
+            fallbackSrc={getAlbumArtForTrack(track.id)}
           />
         </div>
         

@@ -14,6 +14,7 @@ import { useUserFavorites } from '@/hooks/useUserFavorites';
 import { usePinnedFavorites } from '@/hooks/usePinnedFavorites';
 import { ArtworkService } from '@/services/artworkService';
 import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
+import { getAlbumArtForTrack } from '@/utils/albumArtPool';
 
 // Helper function to determine frequency band from BPM
 const getFrequencyBandFromBPM = (bpm?: number): string => {
@@ -248,6 +249,7 @@ export const NowPlaying: React.FC = () => {
               <ArtworkMedia 
                 src={artworkUrl} 
                 alt={track.title}
+                fallbackSrc={getAlbumArtForTrack(track.id)}
               />
               {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-t ${artworkGradient} pointer-events-none`} />}
             </div>
@@ -397,6 +399,7 @@ export const NowPlaying: React.FC = () => {
                    <ArtworkMedia 
                      src={artworkUrl} 
                      alt={track.title}
+                     fallbackSrc={getAlbumArtForTrack(track.id)}
                    />
                   {artworkUrl && <div className={`absolute inset-0 bg-gradient-to-br ${artworkGradient} mix-blend-soft-light pointer-events-none`} />}
                 </>
