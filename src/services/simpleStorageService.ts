@@ -174,13 +174,10 @@ export class SimpleStorageService {
     if (tracks.length === 0) return tracks;
 
     try {
-      // Get all unique titles for matching
-      const titles = tracks.map(t => t.title);
-      
-      // Query database for matching tracks with artwork
+      // Query database for all tracks with artwork (we'll match by file_path)
       const { data: dbTracks, error } = await supabase
         .from('music_tracks')
-        .select('title, artwork_url')
+        .select('file_path, artwork_url')
         .not('artwork_url', 'is', null);
 
       if (error) {
@@ -193,23 +190,54 @@ export class SimpleStorageService {
         return tracks;
       }
 
-      // Create a map for fast lookup (normalize titles for matching)
-      const artworkMap = new Map<string, string>();
+      // Create maps for fast lookup - by file_path (normalized)
+      const artworkByPath = new Map<string, string>();
+      const artworkByName = new Map<string, string>();
+      
       for (const dbTrack of dbTracks) {
-        if (dbTrack.artwork_url) {
-          // Normalize title for matching (lowercase, remove extra spaces)
-          const normalizedTitle = dbTrack.title.toLowerCase().trim();
-          artworkMap.set(normalizedTitle, dbTrack.artwork_url);
+        if (dbTrack.artwork_url && dbTrack.file_path) {
+          // Normalize: lowercase, no extension
+          const normalizedPath = dbTrack.file_path.toLowerCase().replace(/\.[^/.]+$/, '').trim();
+          artworkByPath.set(normalizedPath, dbTrack.artwork_url);
+          
+          // Also create a simplified name key (remove hyphens, underscores, spaces)
+          const simplifiedName = normalizedPath.replace(/[-_\s]/g, '');
+          artworkByName.set(simplifiedName, dbTrack.artwork_url);
         }
       }
 
-      console.log(`🎨 Loaded ${artworkMap.size} artwork URLs from database`);
+      console.log(`🎨 Loaded ${artworkByPath.size} artwork URLs from database`);
 
-      // Enrich tracks with artwork
+      // Enrich tracks with artwork - match by multiple strategies
       let matchCount = 0;
       const enrichedTracks = tracks.map(track => {
-        const normalizedTitle = track.title.toLowerCase().trim();
-        const artwork_url = artworkMap.get(normalizedTitle);
+        // Strategy 1: Extract filename from track ID (format: bucket-root-filename.ext-seq)
+        // e.g. "sambajazznocturnes-root-the-spartan-age.mp3-123"
+        const idParts = track.id.split('-root-');
+        let filename = idParts.length > 1 
+          ? idParts[1].replace(/-\d+$/, '').replace(/\.[^/.]+$/, '') // Remove sequence and extension
+          : track.title;
+        
+        const normalizedFilename = filename.toLowerCase().replace(/[-_\s]/g, '').trim();
+        const normalizedTitle = track.title.toLowerCase().replace(/[-_\s]/g, '').trim();
+        
+        // Try matching by simplified filename first
+        let artwork_url = artworkByName.get(normalizedFilename);
+        
+        // Try matching by title if filename didn't work
+        if (!artwork_url) {
+          artwork_url = artworkByName.get(normalizedTitle);
+        }
+        
+        // Try partial match - look for database entries that contain our title
+        if (!artwork_url) {
+          for (const [key, url] of artworkByName) {
+            if (key.includes(normalizedTitle) || normalizedTitle.includes(key)) {
+              artwork_url = url;
+              break;
+            }
+          }
+        }
         
         if (artwork_url) {
           matchCount++;
