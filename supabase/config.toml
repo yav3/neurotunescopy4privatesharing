@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.send-auth-email]
 verify_jwt = false
+
+[functions.consumer-trial-chat]
+verify_jwt = false
