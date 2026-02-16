@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      albumart_rename_map: {
+        Row: {
+          genre: string | null
+          new_name: string | null
+          old_name: string
+          processed: boolean | null
+          therapeutic_modality: string | null
+        }
+        Insert: {
+          genre?: string | null
+          new_name?: string | null
+          old_name: string
+          processed?: boolean | null
+          therapeutic_modality?: string | null
+        }
+        Update: {
+          genre?: string | null
+          new_name?: string | null
+          old_name?: string
+          processed?: boolean | null
+          therapeutic_modality?: string | null
+        }
+        Relationships: []
+      }
       animated_artworks: {
         Row: {
           artwork_semantic_label: string
@@ -366,6 +390,51 @@ export type Database = {
           records_processed?: number | null
           start_time?: string | null
           status?: string
+        }
+        Relationships: []
+      }
+      dataset_worker_jobs: {
+        Row: {
+          args: Json | null
+          completed_at: string | null
+          created_at: string | null
+          dataset_id: string
+          error_message: string | null
+          id: string
+          job_type: string
+          priority: number | null
+          results: Json | null
+          started_at: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          args?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          dataset_id: string
+          error_message?: string | null
+          id?: string
+          job_type?: string
+          priority?: number | null
+          results?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          args?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          dataset_id?: string
+          error_message?: string | null
+          id?: string
+          job_type?: string
+          priority?: number | null
+          results?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
