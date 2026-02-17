@@ -4,10 +4,10 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.15, intensity: 0.35, pulseRate: 0.3, spread: 0.25, harmonicShift: 1.0, brightness: 0.5 },
-  { name: 'Theta', hue: 260, speed: 0.1, intensity: 0.4, pulseRate: 0.2, spread: 0.18, harmonicShift: 0.6, brightness: 0.4 },
-  { name: 'Beta', hue: 190, speed: 0.25, intensity: 0.55, pulseRate: 0.5, spread: 0.4, harmonicShift: 1.8, brightness: 0.65 },
-  { name: 'Gamma', hue: 30, speed: 0.4, intensity: 0.7, pulseRate: 0.8, spread: 0.65, harmonicShift: 3.2, brightness: 0.85 },
+  { name: 'Alpha', hue: 210, speed: 0.06, intensity: 0.18, pulseRate: 0.12, spread: 0.25, harmonicShift: 1.0, brightness: 0.5 },
+  { name: 'Theta', hue: 260, speed: 0.04, intensity: 0.22, pulseRate: 0.08, spread: 0.18, harmonicShift: 0.6, brightness: 0.4 },
+  { name: 'Beta', hue: 190, speed: 0.1, intensity: 0.3, pulseRate: 0.2, spread: 0.4, harmonicShift: 1.8, brightness: 0.65 },
+  { name: 'Gamma', hue: 30, speed: 0.15, intensity: 0.4, pulseRate: 0.3, spread: 0.65, harmonicShift: 3.2, brightness: 0.85 },
 ];
 
 const CYCLE = 6000;
