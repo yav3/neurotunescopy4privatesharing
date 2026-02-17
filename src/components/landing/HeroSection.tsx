@@ -35,9 +35,9 @@ export const HeroSection: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 py-24 sm:py-32 md:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Left: Glass card */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 pt-28 sm:pt-32 md:pt-36 pb-16 sm:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left: Copy */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export const HeroSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right: Animated orb with scrolling text */}
+          {/* Right: Crystal sphere */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -121,7 +121,7 @@ export const HeroSection: React.FC = () => {
             className="hidden lg:flex items-center justify-center"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              <div className="w-72 h-72 xl:w-80 xl:h-80 relative group-hover:scale-105 transition-transform duration-700">
+              <div className="w-80 h-80 xl:w-96 xl:h-96 relative group-hover:scale-105 transition-transform duration-700">
                 <WaveletSphere />
               </div>
             </Link>
