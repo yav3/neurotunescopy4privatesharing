@@ -126,12 +126,80 @@ const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodR
   );
 };
 
+/* ── Waveform Ring — wraps the cloud surface ── */
+const WaveformRing: React.FC<{
+  moodRef: React.MutableRefObject<number>;
+  tilt: number;
+  radius: number;
+  harmonics: number;
+  phaseOffset: number;
+}> = ({ moodRef, tilt, radius, harmonics, phaseOffset }) => {
+  const segments = 64;
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const cur = useRef({ hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3 });
+
+  useFrame(({ clock }) => {
+    if (!meshRef.current || !groupRef.current) return;
+    const t = clock.getElapsedTime();
+    const mood = MOODS[moodRef.current];
+    const c = cur.current;
+    c.hue += (mood.hue - c.hue) * 0.015;
+    c.speed += (mood.speed - c.speed) * 0.025;
+    c.intensity += (mood.intensity - c.intensity) * 0.025;
+    c.pulseRate += (mood.pulseRate - c.pulseRate) * 0.025;
+    c.spread += (mood.spread - c.spread) * 0.02;
+
+    groupRef.current.rotation.x = tilt;
+    groupRef.current.rotation.z = t * c.speed * 0.12;
+    groupRef.current.rotation.y = t * c.speed * 0.06;
+
+    const dispersal = 0.6 + c.spread * 1.4;
+    const baseR = radius * dispersal;
+
+    for (let i = 0; i < segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      // Multi-harmonic waveform — simulates audio frequency content
+      const wave1 = Math.sin(angle * harmonics + t * c.pulseRate * 4 + phaseOffset) * 0.06;
+      const wave2 = Math.sin(angle * (harmonics * 2.3) + t * c.pulseRate * 6.5 + phaseOffset * 1.7) * 0.025;
+      const wave3 = Math.sin(angle * (harmonics * 0.5) + t * c.pulseRate * 2 + phaseOffset * 0.4) * 0.035;
+      const wave = (wave1 + wave2 + wave3) * c.intensity;
+      const r = baseR + wave;
+
+      dummy.position.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+      // Particle size spikes at waveform peaks
+      const s = 0.005 + Math.abs(wave) * 1.8 + 0.002 * c.intensity;
+      dummy.scale.setScalar(s);
+      dummy.updateMatrix();
+      meshRef.current!.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+
+    const mat = meshRef.current.material as THREE.MeshBasicMaterial;
+    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.45, 0.6), 0.03);
+    mat.opacity = 0.25 + c.intensity * 0.35;
+  });
+
+  return (
+    <group ref={groupRef}>
+      <instancedMesh ref={meshRef} args={[undefined, undefined, segments]}>
+        <sphereGeometry args={[1, 4, 4]} />
+        <meshBasicMaterial color="#88bbdd" transparent opacity={0.3} depthWrite={false} />
+      </instancedMesh>
+    </group>
+  );
+};
+
 /* ── Scene ── */
 const Scene: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodRef }) => (
   <>
     <ambientLight intensity={0.2} color="#c0d8ee" />
     <GlowCore moodRef={moodRef} />
     <ParticleCloud moodRef={moodRef} />
+    <WaveformRing moodRef={moodRef} tilt={0.4} radius={0.55} harmonics={5} phaseOffset={0} />
+    <WaveformRing moodRef={moodRef} tilt={-0.6} radius={0.65} harmonics={7} phaseOffset={2.1} />
+    <WaveformRing moodRef={moodRef} tilt={1.2} radius={0.48} harmonics={4} phaseOffset={4.3} />
   </>
 );
 
