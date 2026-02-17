@@ -133,6 +133,7 @@ export const NavigationHeader = () => {
               src={neuralpositiveLogoHeader} 
               alt="Neuralpositive" 
               className="h-9 w-9 object-contain"
+              style={{ mixBlendMode: 'screen' }}
             />
             <span className="text-[22px] tracking-tight text-white uppercase">
               NeuroTunes
@@ -251,6 +252,7 @@ export const NavigationHeader = () => {
               src={neuralpositiveLogoHeader} 
               alt="Neuralpositive" 
               className="h-5 w-5 object-contain"
+              style={{ mixBlendMode: 'screen' }}
             />
             <span className="text-sm tracking-normal text-white uppercase whitespace-nowrap">
               NeuroTunes
