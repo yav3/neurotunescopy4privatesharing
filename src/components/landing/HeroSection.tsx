@@ -113,15 +113,15 @@ export const HeroSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right: Crystal sphere */}
+          {/* Right: Crystal sphere — always visible */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden lg:flex items-center justify-center"
+            className="flex items-center justify-center"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              <div className="w-80 h-80 xl:w-96 xl:h-96 relative group-hover:scale-105 transition-transform duration-700">
+              <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 xl:w-96 xl:h-96 relative group-hover:scale-105 transition-transform duration-700">
                 <WaveletSphere />
               </div>
             </Link>
