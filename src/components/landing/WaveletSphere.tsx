@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Environment } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ── Keyword labels with semantic roles ── */
@@ -356,7 +356,7 @@ const Scene: React.FC<{ dark?: boolean }> = ({ dark }) => {
       <PlayButton visible={phase === 'pressplay'} phaseTime={phaseTime} />
       <ExperienceText visible={phase === 'pressplay'} phaseTime={phaseTime} />
 
-      <Environment preset="studio" />
+      {/* Manual environment lighting - no HDR dependency */}
     </>
   );
 };
