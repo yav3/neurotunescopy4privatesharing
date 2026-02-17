@@ -56,9 +56,9 @@ const Demo = () => {
     setIsMuted(!isMuted);
   };
 
-  return (
+    return (
     <div
-      className="min-h-screen relative overflow-hidden flex flex-col"
+      className="min-h-screen min-h-[100dvh] relative overflow-hidden flex flex-col"
       style={{
         background: `linear-gradient(145deg, 
           hsl(200, 15%, 4%) 0%, 
