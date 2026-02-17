@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { WaveletSphere } from './WaveletSphere';
 
 export const HeroSection: React.FC = () => {
+  const [pulseKey, setPulseKey] = useState(0);
+
+  // Re-trigger the "musical" pulse cycle every 8s
+  useEffect(() => {
+    const interval = setInterval(() => setPulseKey((k) => k + 1), 8000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
@@ -65,10 +73,17 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             <motion.p
+              key={pulseKey}
               className="mt-4 sm:mt-5"
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 1, 1, 0] }}
-              transition={{ duration: 6, times: [0, 0.15, 0.75, 1], repeat: Infinity, repeatDelay: 1 }}
+              animate={{
+                opacity: [0, 0.85, 0.5, 0.9, 0.6, 1, 0.7, 0.95, 0.4, 0],
+              }}
+              transition={{
+                duration: 8,
+                times: [0, 0.08, 0.15, 0.25, 0.35, 0.5, 0.65, 0.75, 0.88, 1],
+                ease: 'easeInOut',
+              }}
               style={{
                 fontSize: 'clamp(14px, 2vw, 16px)',
                 fontWeight: 400,

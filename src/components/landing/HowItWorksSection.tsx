@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 const steps = [
   {
     number: '01',
-    title: 'Feature Extraction',
-    description: 'Tempo, key, harmony, timbre, and spectral analysis.',
+    title: 'Feature Annotation',
+    description: 'Music composed to spec — tempo, key, harmony, and spectral parameters defined upfront.',
   },
   {
     number: '02',
