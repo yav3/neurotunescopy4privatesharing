@@ -59,8 +59,8 @@ All colors MUST be HSL.
     /* Glass borders: Platinum */
     --glass-border: 0 0% 89%; /* Platinum at 12% opacity */
 
-    /* SEMANTIC TOKENS - Gradient Teal Theme */
-    --background: 182 50% 6%; /* Deep teal base */
+    /* SEMANTIC TOKENS - Obsidian Theme */
+    --background: 220 15% 3%; /* Obsidian black */
     --foreground: 0 0% 85%; /* Light grey for readability */
 
     --card: 240 7% 10%; /* Graphite */
@@ -108,8 +108,8 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Gradient Teal Dark Mode */
-    --background: 182 50% 6%; /* Deep teal base */
+    /* Obsidian Dark Mode */
+    --background: 220 15% 3%; /* Obsidian black */
     --foreground: 0 0% 85%; /* Light grey */
 
     --card: 240 7% 10%; /* Graphite */
@@ -581,7 +581,7 @@ All colors MUST be HSL.
   /* Dark mode body and text fixes */
   .dark body,
   .dark html {
-    background-color: hsl(240 100% 1%) !important; /* Ultra deep black with blue tint */
+    background-color: #050607 !important; /* Obsidian black */
     color: hsl(0 0% 98%) !important;
   }
   
