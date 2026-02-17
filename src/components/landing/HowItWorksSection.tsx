@@ -193,9 +193,7 @@ export const HowItWorksSection: React.FC = () => {
                       letterSpacing: '0.05em',
                       color: isActive
                         ? 'hsl(210, 80%, 35%)'
-                        : isPast
-                        ? 'hsl(0, 0%, 25%)'
-                        : 'hsl(0, 0%, 40%)',
+                        : 'hsl(0, 0%, 10%)',
                       marginBottom: '6px',
                     }}
                   >
@@ -206,12 +204,7 @@ export const HowItWorksSection: React.FC = () => {
                     style={{
                       fontSize: 'clamp(13px, 1.3vw, 16px)',
                       fontWeight: 400,
-                      color: isActive
-                        ? 'hsl(0, 0%, 5%)'
-                        : isPast
-                        ? 'hsl(0, 0%, 15%)'
-                        : 'hsl(0, 0%, 30%)',
-                      lineHeight: 1.3,
+                      color: 'hsl(0, 0%, 5%)',
                     }}
                   >
                     {step.title}
