@@ -1,93 +1,57 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, MeshTransmissionMaterial } from '@react-three/drei';
+import { Environment, MeshTransmissionMaterial, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
 const WaveletRing: React.FC<{ radius: number; speed: number; phase: number; color: string; yOffset: number }> = ({
   radius, speed, phase, color, yOffset
 }) => {
-  const ref = useRef<THREE.Line>(null);
-  const points = useMemo(() => {
-    const pts: THREE.Vector3[] = [];
-    const segments = 128;
+  const segments = 128;
+  const positions = useMemo(() => {
+    const pts: [number, number, number][] = [];
     for (let i = 0; i <= segments; i++) {
       const angle = (i / segments) * Math.PI * 2;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-      pts.push(new THREE.Vector3(x, yOffset, z));
+      pts.push([Math.cos(angle) * radius, yOffset, Math.sin(angle) * radius]);
     }
     return pts;
   }, [radius, yOffset]);
 
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry().setFromPoints(points);
-    return geo;
-  }, [points]);
+  const ref = useRef<[number, number, number][]>(positions);
 
   useFrame(({ clock }) => {
-    if (!ref.current) return;
-    const positions = ref.current.geometry.attributes.position;
     const time = clock.getElapsedTime() * speed + phase;
-    const segments = 128;
     for (let i = 0; i <= segments; i++) {
       const angle = (i / segments) * Math.PI * 2;
       const wave = Math.sin(angle * 6 + time) * 0.04 + Math.sin(angle * 10 + time * 1.5) * 0.02;
       const r = radius + wave;
-      positions.setXYZ(
-        i,
+      ref.current[i] = [
         Math.cos(angle) * r,
         yOffset + Math.sin(angle * 8 + time * 0.7) * 0.03,
         Math.sin(angle) * r
-      );
+      ];
     }
-    positions.needsUpdate = true;
   });
 
   return (
-    <line ref={ref as any}>
-      <bufferGeometry attach="geometry" {...geometry} />
-      <lineBasicMaterial attach="material" color={color} transparent opacity={0.4} linewidth={1} />
-    </line>
+    <Line points={positions} color={color} transparent opacity={0.4} lineWidth={1} />
   );
 };
 
 const SignalTrace: React.FC<{ rotationY: number; speed: number; color: string }> = ({ rotationY, speed, color }) => {
-  const ref = useRef<THREE.Line>(null);
   const segments = 100;
 
-  const geometry = useMemo(() => {
-    const pts: THREE.Vector3[] = [];
+  const positions = useMemo(() => {
+    const pts: [number, number, number][] = [];
     for (let i = 0; i <= segments; i++) {
       const t = (i / segments) * Math.PI;
-      pts.push(new THREE.Vector3(
-        Math.sin(t) * 1.15,
-        Math.cos(t) * 1.15,
-        0
-      ));
+      pts.push([Math.sin(t) * 1.15, Math.cos(t) * 1.15, 0]);
     }
-    return new THREE.BufferGeometry().setFromPoints(pts);
+    return pts;
   }, []);
-
-  useFrame(({ clock }) => {
-    if (!ref.current) return;
-    const positions = ref.current.geometry.attributes.position;
-    const time = clock.getElapsedTime() * speed;
-    for (let i = 0; i <= segments; i++) {
-      const t = (i / segments) * Math.PI;
-      const baseR = 1.15;
-      const wave = Math.sin(t * 12 + time) * 0.03 + Math.sin(t * 20 + time * 2) * 0.015;
-      const r = baseR + wave;
-      positions.setXYZ(i, Math.sin(t) * r, Math.cos(t) * r, 0);
-    }
-    positions.needsUpdate = true;
-  });
 
   return (
     <group rotation={[0, rotationY, 0]}>
-      <line ref={ref as any}>
-        <bufferGeometry attach="geometry" {...geometry} />
-        <lineBasicMaterial attach="material" color={color} transparent opacity={0.3} />
-      </line>
+      <Line points={positions} color={color} transparent opacity={0.3} lineWidth={1} />
     </group>
   );
 };
