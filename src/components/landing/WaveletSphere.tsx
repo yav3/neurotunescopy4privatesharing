@@ -93,7 +93,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial color="#88bbdd" transparent opacity={0.4} depthWrite={false} />
+      <meshBasicMaterial color="#aaddff" transparent opacity={0.7} depthWrite={false} />
     </instancedMesh>
   );
 };
@@ -126,7 +126,7 @@ const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodR
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[1, 24, 24]} />
-      <meshBasicMaterial color="#88bbdd" transparent opacity={0.1} depthWrite={false} />
+      <meshBasicMaterial color="#aaddff" transparent opacity={0.15} depthWrite={false} />
     </mesh>
   );
 };
@@ -176,7 +176,7 @@ const WaveformRing: React.FC<{
 
       dummy.position.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
       // Particle size spikes at waveform peaks
-      const s = 0.005 + Math.abs(wave) * 1.8 + 0.002 * c.intensity;
+      const s = 0.008 + Math.abs(wave) * 2.5 + 0.004 * c.intensity;
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
       meshRef.current!.setMatrixAt(i, dummy.matrix);
@@ -192,7 +192,7 @@ const WaveformRing: React.FC<{
     <group ref={groupRef}>
       <instancedMesh ref={meshRef} args={[undefined, undefined, segments]}>
         <sphereGeometry args={[1, 4, 4]} />
-        <meshBasicMaterial color="#88bbdd" transparent opacity={0.3} depthWrite={false} />
+        <meshBasicMaterial color="#aaddff" transparent opacity={0.5} depthWrite={false} />
       </instancedMesh>
     </group>
   );
