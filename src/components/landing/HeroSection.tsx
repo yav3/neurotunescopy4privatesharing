@@ -49,7 +49,7 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 100%, 0.5)',
               }}
             >
-              Patented music technology
+              2 patents granted
             </p>
 
             <h1
