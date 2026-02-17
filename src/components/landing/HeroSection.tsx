@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
                   letterSpacing: '0.01em',
                 }}
               >
-                Experience the platform
+                Demo
                 <span style={{ fontSize: '16px' }}>→</span>
               </Link>
               <Link
