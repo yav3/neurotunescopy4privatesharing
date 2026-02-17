@@ -54,7 +54,7 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 92%, 0.95)',
               }}
             >
-              Music that heals.{' '}
+              Music that moves you.{' '}
               <span style={{ color: 'hsla(0, 0%, 100%, 0.45)' }}>Data that proves it.</span>
             </h1>
 
