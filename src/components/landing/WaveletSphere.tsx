@@ -84,10 +84,10 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
 
     // Dark→bright state transition driven by brightness
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const lightness = 0.35 + c.brightness * 0.4 + globalPulse * 0.08 * c.intensity;
-    const saturation = 0.4 + c.brightness * 0.2;
+    const lightness = 0.45 + c.brightness * 0.35 + globalPulse * 0.06 * c.intensity;
+    const saturation = 0.5 + c.brightness * 0.2;
     mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, saturation, lightness), 0.025);
-    mat.opacity = 0.45 + c.brightness * 0.3 + globalPulse * 0.15 * c.intensity;
+    mat.opacity = 0.6 + c.brightness * 0.25 + globalPulse * 0.1 * c.intensity;
   });
 
   return (
@@ -118,9 +118,9 @@ const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodR
     ref.current.scale.setScalar(scale);
 
     const mat = ref.current.material as THREE.MeshBasicMaterial;
-    const coreLightness = 0.3 + c.brightness * 0.45 + pulse * 0.15 * c.intensity;
-    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.55, coreLightness), 0.03);
-    mat.opacity = 0.05 + c.brightness * 0.2 + pulse * 0.25 * c.intensity;
+    const coreLightness = 0.4 + c.brightness * 0.4 + pulse * 0.12 * c.intensity;
+    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.6, coreLightness), 0.03);
+    mat.opacity = 0.1 + c.brightness * 0.3 + pulse * 0.3 * c.intensity;
   });
 
   return (
@@ -184,8 +184,8 @@ const WaveformRing: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.45, 0.6), 0.03);
-    mat.opacity = 0.25 + c.intensity * 0.35;
+    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.55, 0.7), 0.03);
+    mat.opacity = 0.4 + c.intensity * 0.4;
   });
 
   return (
