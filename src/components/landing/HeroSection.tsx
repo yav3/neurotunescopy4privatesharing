@@ -124,14 +124,14 @@ export const HeroSection: React.FC = () => {
             fontSize: '11px',
             fontWeight: 400,
             letterSpacing: '0.15em',
-            color: 'hsl(220, 15%, 35%)',
+            color: 'hsl(0, 0%, 20%)',
             fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
           }}
         >
           Scroll to explore
         </p>
-        <div className="w-6 h-10 mx-auto rounded-full border-2 border-current opacity-30 flex items-start justify-center pt-2"
-          style={{ color: 'hsl(220, 15%, 35%)' }}
+        <div className="w-6 h-10 mx-auto rounded-full border-2 border-current flex items-start justify-center pt-2"
+          style={{ color: 'hsl(0, 0%, 20%)', opacity: 0.5 }}
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
