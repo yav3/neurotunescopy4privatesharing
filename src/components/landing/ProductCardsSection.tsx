@@ -35,10 +35,7 @@ export const ProductCardsSection: React.FC = () => {
     <section
       className="relative py-20 md:py-24 overflow-hidden"
       style={{
-        background: `linear-gradient(180deg, 
-          hsl(220, 15%, 8%) 0%, 
-          hsl(220, 12%, 6%) 100%
-        )`,
+        background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
