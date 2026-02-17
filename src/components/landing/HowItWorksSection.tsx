@@ -43,11 +43,8 @@ export const HowItWorksSection: React.FC = () => {
     <section
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: `linear-gradient(180deg, 
-          hsl(0, 0%, 3%) 0%, 
-          hsl(220, 15%, 6%) 50%,
-          hsl(0, 0%, 3%) 100%
-        )`,
+        backgroundColor: '#050607',
+        background: 'radial-gradient(ellipse at 30% 20%, rgba(30, 30, 35, 0.8) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(20, 20, 25, 0.6) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(15, 15, 20, 0.4) 0%, transparent 70%), linear-gradient(180deg, #050607 0%, #0a0a0c 50%, #050607 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
