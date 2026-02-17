@@ -231,7 +231,7 @@ const AppContent = () => {
       </Routes>
       
       {/* Global Music Players - COMPLETELY HIDE on landing page to prevent conflicts with LandingPagePlayer */}
-      {location.pathname !== '/' && location.pathname !== '/landing' && (
+      {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
         playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />
       )}
     </div>
