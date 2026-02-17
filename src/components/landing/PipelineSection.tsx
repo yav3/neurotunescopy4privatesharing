@@ -14,7 +14,7 @@ export const PipelineSection: React.FC = () => {
     <section
       className="relative py-20 md:py-24 overflow-hidden"
       style={{
-        background: `linear-gradient(180deg, hsl(0, 0%, 4%) 0%, hsl(0, 0%, 6%) 100%)`,
+        background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >

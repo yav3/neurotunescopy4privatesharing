@@ -16,12 +16,7 @@ export const DataFlowSection: React.FC = () => {
     <section
       className="relative py-16 md:py-20 overflow-hidden"
       style={{
-        background: `linear-gradient(155deg, 
-          hsl(210, 100%, 25%) 0%, 
-          hsl(200, 95%, 35%) 35%,
-          hsl(190, 90%, 40%) 65%,
-          hsl(195, 85%, 45%) 100%
-        )`,
+        background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
