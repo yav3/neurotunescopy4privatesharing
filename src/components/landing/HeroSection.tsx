@@ -84,7 +84,7 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 100%, 0.6)',
               }}
             >
-              Algorithmic compositions for anxiety relief and focus enhancement.
+              A patented, closed-loop system designed to deliver music patients love — alongside continuous aggregation of personalized information that drives longitudinal insights.
             </motion.p>
 
             {/* Stats row — glass strip */}
