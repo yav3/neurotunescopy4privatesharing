@@ -4,13 +4,13 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, harmonicShift: 1.0, brightness: 0.35 },
-  { name: 'Theta', hue: 260, speed: 0.2, intensity: 0.35, pulseRate: 0.4, spread: 0.2, harmonicShift: 0.6, brightness: 0.25 },
-  { name: 'Beta', hue: 190, speed: 0.55, intensity: 0.55, pulseRate: 1.2, spread: 0.55, harmonicShift: 1.8, brightness: 0.6 },
-  { name: 'Gamma', hue: 30, speed: 1.0, intensity: 1.0, pulseRate: 2.4, spread: 1.0, harmonicShift: 3.2, brightness: 0.85 },
+  { name: 'Alpha', hue: 210, speed: 0.15, intensity: 0.12, pulseRate: 0.3, spread: 0.25, harmonicShift: 1.0, brightness: 0.35 },
+  { name: 'Theta', hue: 260, speed: 0.1, intensity: 0.18, pulseRate: 0.2, spread: 0.18, harmonicShift: 0.6, brightness: 0.25 },
+  { name: 'Beta', hue: 190, speed: 0.25, intensity: 0.3, pulseRate: 0.5, spread: 0.4, harmonicShift: 1.8, brightness: 0.6 },
+  { name: 'Gamma', hue: 30, speed: 0.4, intensity: 0.5, pulseRate: 0.8, spread: 0.65, harmonicShift: 3.2, brightness: 0.85 },
 ];
 
-const CYCLE = 5000;
+const CYCLE = 6000;
 
 /* ── Particle Cloud ── */
 const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodRef }) => {
@@ -59,23 +59,23 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
 
     for (let i = 0; i < count; i++) {
       const p = particles[i];
-      const particlePulse = Math.sin(t * c.pulseRate * Math.PI * 2 + p.phase) * 0.5 + 0.5;
+      const particlePulse = Math.sin(t * c.pulseRate * Math.PI + p.phase) * 0.5 + 0.5;
 
-      // Radius oscillates with music energy
+      // Radius oscillates gently with music energy
       const r = p.restRadius * dispersal
-        + particlePulse * 0.3 * c.intensity
-        + breathe * 0.05
-        + Math.sin(t * p.speed + p.phase) * 0.08 * c.intensity;
+        + particlePulse * 0.12 * c.intensity
+        + breathe * 0.03
+        + Math.sin(t * p.speed * 0.3 + p.phase) * 0.04 * c.intensity;
 
-      // Orbital drift
-      const drift = t * p.speed * c.speed * 0.15;
+      // Slow orbital drift
+      const drift = t * p.speed * c.speed * 0.08;
       const dx = p.dir.x * Math.cos(drift) - p.dir.z * Math.sin(drift);
       const dz = p.dir.x * Math.sin(drift) + p.dir.z * Math.cos(drift);
 
       dummy.position.set(dx * r, p.dir.y * r, dz * r);
 
-      // Particles grow on beat peaks
-      const s = p.baseSize * (0.5 + particlePulse * c.intensity * 2.0 + globalPulse * 0.3);
+      // Gentle size variation
+      const s = p.baseSize * (0.7 + particlePulse * c.intensity * 1.0 + globalPulse * 0.15);
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
       meshRef.current!.setMatrixAt(i, dummy.matrix);
