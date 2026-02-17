@@ -26,16 +26,16 @@ export const HeroSection: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 container mx-auto px-6 md:px-12 py-32 md:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 py-24 sm:py-32 md:py-40">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left: Glass card */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl p-8 md:p-10 max-w-md"
+            className="rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 max-w-md"
             style={{
-              background: 'rgba(255, 255, 255, 0.75)',
+              background: 'rgba(255, 255, 255, 0.82)',
               backdropFilter: 'blur(40px)',
               border: '1px solid rgba(255, 255, 255, 0.6)',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
@@ -43,12 +43,12 @@ export const HeroSection: React.FC = () => {
             }}
           >
             <p
-              className="uppercase tracking-widest mb-4"
+              className="uppercase tracking-widest mb-3 sm:mb-4"
               style={{
-                fontSize: '11px',
+                fontSize: '10px',
                 fontWeight: 400,
                 letterSpacing: '0.15em',
-                color: 'hsl(210, 70%, 45%)',
+                color: 'hsl(210, 70%, 40%)',
               }}
             >
               Patented therapeutic music technology
@@ -56,24 +56,24 @@ export const HeroSection: React.FC = () => {
 
             <h1
               style={{
-                fontSize: 'clamp(28px, 4vw, 38px)',
+                fontSize: 'clamp(24px, 5vw, 38px)',
                 fontWeight: 400,
                 letterSpacing: '-0.02em',
-                lineHeight: 1.15,
-                color: 'hsl(220, 25%, 15%)',
+                lineHeight: 1.2,
+                color: 'hsl(220, 30%, 12%)',
               }}
             >
               Medical-grade music,{' '}
-              <span style={{ color: 'hsl(220, 20%, 30%)' }}>on demand</span>
+              <span style={{ color: 'hsl(220, 25%, 25%)' }}>on demand</span>
             </h1>
 
             <p
-              className="mt-5"
+              className="mt-3 sm:mt-5"
               style={{
-                fontSize: '15px',
+                fontSize: 'clamp(13px, 2vw, 15px)',
                 fontWeight: 400,
                 lineHeight: 1.7,
-                color: 'hsl(220, 12%, 40%)',
+                color: 'hsl(220, 15%, 35%)',
               }}
             >
               Purpose-composed music developed using patented algorithmic methods.
@@ -82,20 +82,20 @@ export const HeroSection: React.FC = () => {
             </p>
 
             {/* Divider */}
-            <div className="my-6" style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)' }} />
+            <div className="my-4 sm:my-6" style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)' }} />
 
             {/* Stats row */}
-            <div className="flex gap-8">
+            <div className="flex gap-5 sm:gap-8">
               {[
                 { value: '7,000+', label: 'TRACKS' },
                 { value: '8+', label: 'YEARS R&D' },
                 { value: '15,000+', label: 'STUDIES' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p style={{ fontSize: '24px', fontWeight: 400, color: 'hsl(220, 25%, 15%)' }}>
+                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(220, 30%, 12%)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 10%, 50%)' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 12%, 45%)' }}>
                     {stat.label}
                   </p>
                 </div>
