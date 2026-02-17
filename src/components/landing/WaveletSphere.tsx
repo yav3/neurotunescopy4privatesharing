@@ -297,34 +297,37 @@ const Scene: React.FC<{ dark?: boolean }> = ({ dark }) => {
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
-    const elapsed = t - phaseStartRef.current;
-    setPhaseTime(elapsed);
+    // Loop every 18 seconds
+    const cycleT = t % 18;
+    const elapsed = cycleT - phaseStartRef.current;
+    setPhaseTime(Math.max(0, elapsed));
 
-    // Phase transitions
-    if (t > 3 && phase === 'orbit') {
-      setPhase('perturb');
-      phaseStartRef.current = t;
-    }
-    if (t > 8 && phase === 'perturb') {
-      setPhase('dissolve');
-      phaseStartRef.current = t;
-    }
-    if (t > 10.5 && phase === 'dissolve') {
-      setPhase('pressplay');
-      phaseStartRef.current = t;
+    // Phase transitions within each cycle
+    if (cycleT < 3) {
+      if (phase !== 'orbit') { setPhase('orbit'); phaseStartRef.current = cycleT; }
+    } else if (cycleT < 8) {
+      if (phase !== 'perturb') { setPhase('perturb'); phaseStartRef.current = cycleT; }
+    } else if (cycleT < 12) {
+      if (phase !== 'dissolve') { setPhase('dissolve'); phaseStartRef.current = cycleT; }
+    } else if (cycleT < 16) {
+      if (phase !== 'pressplay') { setPhase('pressplay'); phaseStartRef.current = cycleT; }
+    } else {
+      // Reset for next cycle
+      if (phase !== 'orbit') { setPhase('orbit'); phaseStartRef.current = cycleT; }
     }
 
-    // Color shift: upregulate (intense ice-blue) then downregulate (warm settle)
+    // Color shift
     if (phase === 'perturb') {
-      // First half: upregulating keywords cause ice-blue intensification
-      if (elapsed < 2.5) {
-        setColorShift(Math.sin(elapsed * 1.2) * 1);
+      const pElapsed = cycleT - 3;
+      if (pElapsed < 2.5) {
+        setColorShift(Math.sin(pElapsed * 1.2) * 1);
       } else {
-        // Second half: Therapeutic Sonatas causes warm downregulation
-        setColorShift(-0.3 - Math.sin((elapsed - 2.5) * 0.8) * 0.3);
+        setColorShift(-0.3 - Math.sin((pElapsed - 2.5) * 0.8) * 0.3);
       }
     } else if (phase === 'dissolve' || phase === 'pressplay') {
-      setColorShift(colorShift * 0.95); // Decay to neutral
+      setColorShift(colorShift * 0.95);
+    } else {
+      setColorShift(colorShift * 0.9);
     }
   });
 
