@@ -55,11 +55,12 @@ export const DataFlowSection: React.FC = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-xl p-4 md:p-5 mb-5"
+          className="rounded-2xl p-5 md:p-6 mb-5"
           style={{
-            background: 'rgba(255,255,255,0.07)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            backdropFilter: 'blur(20px)',
+            background: 'hsla(220, 20%, 10%, 0.55)',
+            border: '1px solid hsla(0, 0%, 100%, 0.08)',
+            backdropFilter: 'blur(24px)',
+            boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.4), inset 0 1px 0 hsla(0, 0%, 100%, 0.04)',
           }}
         >
           {/* Column headers */}
@@ -115,9 +116,10 @@ export const DataFlowSection: React.FC = () => {
                 style={{
                   fontSize: '11px',
                   fontWeight: 400,
-                  color: 'rgba(255,255,255,0.6)',
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'hsla(0, 0%, 100%, 0.6)',
+                  background: 'hsla(220, 20%, 12%, 0.5)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.08)',
+                  backdropFilter: 'blur(12px)',
                 }}
               >
                 {step}
