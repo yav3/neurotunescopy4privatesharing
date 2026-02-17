@@ -99,30 +99,35 @@ export const HeroSection: React.FC = () => {
               </Link>
             </div>
 
-            {/* Stats row — glass strip */}
-            <div
-              className="flex gap-6 sm:gap-10 mt-8 px-5 py-4 rounded-xl"
-              style={{
-                background: 'hsla(220, 20%, 12%, 0.5)',
-                border: '1px solid hsla(0, 0%, 100%, 0.08)',
-                backdropFilter: 'blur(16px)',
-              }}
-            >
+            {/* Stats row — minimal dividers */}
+            <div className="flex gap-8 sm:gap-12 mt-8">
               {[
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
                 { value: '14K+', label: 'SUBJECTS ANALYZED' },
-                { value: 'Columbia · Cornell · Stanford', label: '8+ YEARS R&D' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsla(0, 0%, 92%, 0.9)' }}>
+              ].map((stat, i) => (
+                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(0, 0%, 100%, 0.1)' : 'none', paddingLeft: i > 0 ? '24px' : '0' }}>
+                  <p style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 400, color: 'hsla(0, 0%, 92%, 0.9)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsla(0, 0%, 100%, 0.4)' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsla(0, 0%, 100%, 0.4)', marginTop: '2px' }}>
                     {stat.label}
                   </p>
                 </div>
               ))}
             </div>
+
+            {/* Evidence line */}
+            <p
+              className="mt-6"
+              style={{
+                fontSize: '13px',
+                fontWeight: 400,
+                lineHeight: 1.6,
+                color: 'hsla(0, 0%, 100%, 0.4)',
+              }}
+            >
+              Music features grounded in principles of music therapy · evidence-based from a 15,000+ study meta-analysis · 8+ years R&D at Columbia, Cornell&nbsp;Tech&nbsp;&&nbsp;Stanford
+            </p>
           </motion.div>
 
           {/* Right: Crystal sphere — always visible */}
