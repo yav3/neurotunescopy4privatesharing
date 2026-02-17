@@ -6,29 +6,26 @@ import { Link } from 'react-router-dom';
 const products = [
   {
     icon: Heart,
-    title: 'Clinical Applications',
+    title: 'Clinical',
     tag: 'Anxiety & pain relief',
-    description:
-      'Therapeutic music sessions for oncology, emergency departments, and post-operative care. Validated symptom reduction protocols with structured outcome reporting.',
-    badges: ['Oncology support', 'ED triage', 'Pain management'],
+    description: 'Validated protocols for oncology, ED, and post-op care.',
+    badges: ['Oncology', 'ED triage', 'Pain'],
     link: '/products/population-health',
   },
   {
     icon: Building2,
-    title: 'Enterprise Wellness',
+    title: 'Enterprise',
     tag: 'Focus & productivity',
-    description:
-      'On-demand focus and stress reduction for the workplace. Adaptive music that responds to team needs with population-level analytics and ROI dashboards.',
-    badges: ['Focus sessions', 'Stress reduction', 'Analytics'],
+    description: 'Adaptive music with population analytics and ROI dashboards.',
+    badges: ['Focus', 'Stress', 'Analytics'],
     link: '/products/enterprise-wellness',
   },
   {
     icon: Users,
-    title: 'Environmental & Background',
+    title: 'Environmental',
     tag: 'Ambient experiences',
-    description:
-      'Purpose-composed ambient music for hospitality, retail, and healthcare environments. No royalties, fully licensed, continuously refreshed catalog.',
-    badges: ['Zero royalties', 'Continuous refresh', 'Multi-venue'],
+    description: 'Royalty-free, continuously refreshed catalog for any venue.',
+    badges: ['Zero royalties', 'Multi-venue'],
     link: '/products/environmental',
   },
 ];
@@ -36,7 +33,7 @@ const products = [
 export const ProductCardsSection: React.FC = () => {
   return (
     <section
-      className="relative py-28 md:py-36 overflow-hidden"
+      className="relative py-20 md:py-24 overflow-hidden"
       style={{
         background: `linear-gradient(180deg, 
           hsl(220, 15%, 8%) 0%, 
@@ -52,7 +49,7 @@ export const ProductCardsSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-4"
           style={{
-            fontSize: 'clamp(32px, 5vw, 48px)',
+            fontSize: 'clamp(26px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.025em',
             color: 'rgba(255, 255, 255, 0.95)',
@@ -65,11 +62,10 @@ export const ProductCardsSection: React.FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-20 max-w-2xl mx-auto"
-          style={{ fontSize: '17px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)' }}
+          className="text-center mb-14 max-w-xl mx-auto"
+          style={{ fontSize: '15px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)' }}
         >
-          From therapeutic sessions to enterprise deployment. The complete stack for
-          evidence-based music delivery.
+          The complete stack for evidence-based music delivery.
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
@@ -82,11 +78,11 @@ export const ProductCardsSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-2xl p-8 flex flex-col justify-between group"
+                className="rounded-2xl p-6 flex flex-col justify-between group"
                 style={{
                   background: 'rgba(255, 255, 255, 0.03)',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
-                  minHeight: '380px',
+                  minHeight: '280px',
                 }}
               >
                 <div>
@@ -95,23 +91,23 @@ export const ProductCardsSection: React.FC = () => {
                     whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 + 0.15, type: 'spring', stiffness: 200 }}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-8"
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-5"
                     style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
                   >
                     <Icon className="w-5 h-5" strokeWidth={1.5} style={{ color: 'hsl(210, 80%, 60%)' }} />
                   </motion.div>
 
-                  <h3 style={{ fontSize: '20px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.95)', marginBottom: '6px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.95)', marginBottom: '4px' }}>
                     {product.title}
                   </h3>
-                  <p style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(210, 80%, 60%)', marginBottom: '16px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 60%)', marginBottom: '12px' }}>
                     {product.tag}
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.45)' }}>
                     {product.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-6">
+                  <div className="flex flex-wrap gap-1.5 mt-4">
                     {product.badges.map((badge, bi) => (
                       <motion.span
                         key={badge}
@@ -150,7 +146,7 @@ export const ProductCardsSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex justify-center mt-16"
+          className="flex justify-center mt-12"
         >
           <Link
             to="/demo"
