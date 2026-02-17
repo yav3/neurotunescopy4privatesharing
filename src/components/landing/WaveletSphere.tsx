@@ -73,16 +73,16 @@ const GlassSphere: React.FC = () => {
         <MeshTransmissionMaterial
           backside
           samples={6}
-          thickness={0.4}
-          chromaticAberration={0.15}
-          anisotropy={0.2}
-          distortion={0.1}
-          distortionScale={0.2}
-          temporalDistortion={0.1}
-          ior={1.25}
-          color="hsl(200, 30%, 90%)"
-          roughness={0.05}
-          transmission={0.98}
+          thickness={0.2}
+          chromaticAberration={0.08}
+          anisotropy={0.1}
+          distortion={0.05}
+          distortionScale={0.1}
+          temporalDistortion={0.05}
+          ior={1.15}
+          color="hsl(210, 25%, 92%)"
+          roughness={0.15}
+          transmission={0.95}
         />
       </mesh>
 
@@ -114,11 +114,11 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '', da
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} />
-        <directionalLight position={[-3, 2, -5]} intensity={0.3} color="hsl(200, 50%, 80%)" />
+        <ambientLight intensity={0.8} color="hsl(210, 30%, 95%)" />
+        <directionalLight position={[5, 5, 5]} intensity={1.0} color="hsl(210, 20%, 98%)" />
+        <directionalLight position={[-3, 2, -5]} intensity={0.5} color="hsl(210, 40%, 90%)" />
         <GlassSphere />
-        <Environment preset={dark ? 'night' : 'city'} />
+        <Environment preset="studio" />
       </Canvas>
     </div>
   );
