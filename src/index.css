@@ -410,7 +410,7 @@ All colors MUST be HSL.
 
   html, body {
     @apply text-foreground;
-    background: linear-gradient(145deg, hsl(182 55% 5%), hsl(180 50% 8%), hsl(176 45% 10%));
+    background: #050607;
     font-family: var(--font-body) !important;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;

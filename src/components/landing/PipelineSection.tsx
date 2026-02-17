@@ -61,8 +61,9 @@ export const PipelineSection: React.FC = () => {
                 transition={{ delay: i * 0.08 }}
                 className="relative rounded-xl p-5"
                 style={{
-                  background: step.active ? 'rgba(56, 152, 236, 0.06)' : 'rgba(228, 228, 228, 0.02)',
-                  border: step.active ? '1px solid rgba(56, 152, 236, 0.2)' : '1px solid rgba(228, 228, 228, 0.06)',
+                  background: step.active ? 'hsla(210, 60%, 45%, 0.08)' : 'hsla(220, 20%, 12%, 0.4)',
+                  border: step.active ? '1px solid hsla(210, 60%, 50%, 0.15)' : '1px solid hsla(0, 0%, 100%, 0.06)',
+                  backdropFilter: 'blur(12px)',
                 }}
               >
                 <Icon
@@ -91,7 +92,7 @@ export const PipelineSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="rounded-xl p-5"
-            style={{ background: 'rgba(228, 228, 228, 0.02)', border: '1px solid rgba(228, 228, 228, 0.06)' }}
+            style={{ background: 'hsla(220, 20%, 12%, 0.4)', border: '1px solid hsla(0, 0%, 100%, 0.06)', backdropFilter: 'blur(12px)' }}
           >
             <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)', marginBottom: '10px' }}>
               Why algorithmic composition
@@ -103,8 +104,8 @@ export const PipelineSection: React.FC = () => {
                   className="px-2.5 py-1 rounded-full"
                   style={{
                     fontSize: '11px',
-                    background: 'rgba(228, 228, 228, 0.04)',
-                    border: '1px solid rgba(228, 228, 228, 0.08)',
+                    background: 'hsla(220, 20%, 14%, 0.5)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.06)',
                     color: 'hsl(0, 0%, 65%)',
                     fontWeight: 400,
                   }}
@@ -121,7 +122,7 @@ export const PipelineSection: React.FC = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
             className="rounded-xl p-5"
-            style={{ background: 'rgba(228, 228, 228, 0.02)', border: '1px solid rgba(228, 228, 228, 0.06)' }}
+            style={{ background: 'hsla(220, 20%, 12%, 0.4)', border: '1px solid hsla(0, 0%, 100%, 0.06)', backdropFilter: 'blur(12px)' }}
           >
             <div className="flex items-center gap-2 mb-3">
               <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)' }}>
@@ -140,8 +141,8 @@ export const PipelineSection: React.FC = () => {
                   className="px-2.5 py-1 rounded-full flex items-center gap-1.5"
                   style={{
                     fontSize: '11px',
-                    background: 'rgba(228, 228, 228, 0.04)',
-                    border: '1px solid rgba(228, 228, 228, 0.08)',
+                    background: 'hsla(220, 20%, 14%, 0.5)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.06)',
                     color: 'hsl(0, 0%, 65%)',
                     fontWeight: 400,
                   }}
