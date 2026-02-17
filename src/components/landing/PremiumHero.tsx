@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { WaveletSphere } from './WaveletSphere';
 
 interface PremiumHeroProps {
   onComplete?: () => void;
@@ -41,6 +42,19 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
           )`
         }}
       />
+
+      {/* Background wavelet sphere */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.5, scale: 1 }}
+          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+          style={{ width: isMobile ? '300px' : '500px', height: isMobile ? '300px' : '500px' }}
+        >
+          <WaveletSphere dark />
+        </motion.div>
+      </div>
+
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
         
         {/* "demo" word — fades in then out */}
