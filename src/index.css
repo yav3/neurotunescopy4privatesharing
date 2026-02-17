@@ -585,17 +585,17 @@ All colors MUST be HSL.
     color: hsl(0 0% 98%) !important;
   }
   
-  .dark h1,
-  .dark h2, 
-  .dark h3,
-  .dark h4,
-  .dark h5,
-  .dark h6 {
+  .dark h1:not([style*="color"]),
+  .dark h2:not([style*="color"]), 
+  .dark h3:not([style*="color"]),
+  .dark h4:not([style*="color"]),
+  .dark h5:not([style*="color"]),
+  .dark h6:not([style*="color"]) {
     color: hsl(0 0% 98%) !important;
   }
   
-  .dark p,
-  .dark span,
+  .dark p:not([style*="color"]),
+  .dark span:not([style*="color"]),
   .dark div:not([style*="color"]) {
     color: hsl(0 0% 85%) !important;
   }
