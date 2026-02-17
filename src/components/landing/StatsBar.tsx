@@ -5,7 +5,7 @@ const stats = [
   { value: '7,000+', label: 'purpose-composed tracks' },
   { value: '50+', label: 'genres covered' },
   { value: '8', label: 'languages supported' },
-  { value: '92%', label: 'symptom response rate' },
+  { value: '15,000+', label: 'studies informing our music' },
   { value: '6', label: 'patents (2 granted · 4 pending)' },
 ];
 
