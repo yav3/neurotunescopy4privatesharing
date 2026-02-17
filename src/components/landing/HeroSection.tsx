@@ -97,9 +97,9 @@ export const HeroSection: React.FC = () => {
               }}
             >
               {[
-                { value: '7,000+', label: 'TRACKS' },
-                { value: '8+', label: 'YEARS R&D' },
-                { value: '15,000+', label: 'STUDIES' },
+                { value: '8,000+', label: 'TRACKS' },
+                { value: '15K+', label: 'STUDIES IN META-ANALYSIS' },
+                { value: 'Weill Cornell', label: 'EARLY TRIALS' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsla(0, 0%, 92%, 0.9)' }}>
