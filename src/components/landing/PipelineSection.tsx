@@ -3,264 +3,133 @@ import { motion } from 'framer-motion';
 import { Music, Zap, Target, BarChart3 } from 'lucide-react';
 
 const steps = [
-  {
-    number: 1,
-    icon: Music,
-    title: 'Compose',
-    description: 'Algorithmic composition',
-    detail: 'Tempo, Key, Harmony, Timbre',
-    active: true,
-  },
-  {
-    number: 2,
-    icon: Zap,
-    title: 'Annotate',
-    description: 'Automated feature extraction',
-    detail: '',
-  },
-  {
-    number: 3,
-    icon: Target,
-    title: 'Classify',
-    description: 'Therapeutic mapping',
-    detail: '',
-  },
-  {
-    number: 4,
-    icon: BarChart3,
-    title: 'Deliver',
-    description: 'Adaptive playback',
-    detail: '',
-  },
+  { number: 1, icon: Music, title: 'Compose', description: 'Algorithmic composition', active: true },
+  { number: 2, icon: Zap, title: 'Annotate', description: 'Feature extraction' },
+  { number: 3, icon: Target, title: 'Classify', description: 'Therapeutic mapping' },
+  { number: 4, icon: BarChart3, title: 'Deliver', description: 'Adaptive playback' },
 ];
 
 export const PipelineSection: React.FC = () => {
   return (
     <section
-      className="relative py-28 md:py-36 overflow-hidden"
+      className="relative py-20 md:py-24 overflow-hidden"
       style={{
-        background: `linear-gradient(180deg, 
-          hsl(220, 15%, 8%) 0%, 
-          hsl(220, 12%, 10%) 100%
-        )`,
+        background: `linear-gradient(180deg, hsl(220, 15%, 8%) 0%, hsl(220, 12%, 10%) 100%)`,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      <div className="container mx-auto px-6 md:px-12">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center mb-8"
-        >
-          <div
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full"
-            style={{
-              background: 'rgba(255, 255, 255, 0.06)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-            }}
-          >
-            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'rgba(255, 255, 255, 0.7)' }}>
-              COMPOSITION ENGINE
-            </span>
-            <span className="flex gap-1">
-              {[0, 1, 2].map((i) => (
-                <span key={i} className="w-1.5 h-1.5 rounded-full" style={{ background: 'hsl(210, 80%, 60%)' }} />
-              ))}
-            </span>
-          </div>
-        </motion.div>
-
+      <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         {/* Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-4"
-          style={{
-            fontSize: 'clamp(32px, 5vw, 52px)',
-            fontWeight: 300,
-            letterSpacing: '-0.025em',
-            color: 'rgba(255, 255, 255, 0.95)',
-          }}
-        >
-          Algorithmic music pipeline
-        </motion.h2>
-
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-20 max-w-2xl mx-auto"
-          style={{
-            fontSize: '17px',
-            fontWeight: 300,
-            color: 'rgba(255, 255, 255, 0.45)',
-          }}
+          className="text-center mb-2"
+          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(0, 0%, 50%)' }}
         >
-          From patented composition methods to adaptive therapeutic delivery
+          COMPOSITION ENGINE
         </motion.p>
-
-        {/* Pipeline steps */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+        <motion.h2
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-8 md:p-10"
-          style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
+          className="text-center mb-2"
+          style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(0, 0%, 89%)' }}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <motion.div
-                  key={step.number}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.12, duration: 0.5 }}
-                  className="relative rounded-xl p-6 flex flex-col"
-                  style={{
-                    background: step.active ? 'rgba(56, 152, 236, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                    border: step.active ? '1px solid rgba(56, 152, 236, 0.25)' : '1px solid rgba(255, 255, 255, 0.06)',
-                  }}
-                >
-                  {/* Step number */}
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.12 + 0.2, type: 'spring', stiffness: 300 }}
-                    className="absolute -top-3 -left-1 w-6 h-6 rounded-full flex items-center justify-center text-xs"
-                    style={{
-                      background: step.active ? 'hsl(210, 80%, 55%)' : 'rgba(255, 255, 255, 0.1)',
-                      color: step.active ? 'white' : 'rgba(255, 255, 255, 0.5)',
-                      fontSize: '11px',
-                      fontWeight: 400,
-                    }}
-                  >
-                    {step.number}
-                  </motion.span>
+          Algorithmic music pipeline
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 55%)' }}
+        >
+          From patented composition to adaptive therapeutic delivery
+        </motion.p>
 
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.12 + 0.15 }}
-                  >
-                    <Icon
-                      className="w-8 h-8 mb-5"
-                      strokeWidth={1.2}
-                      style={{ color: step.active ? 'hsl(210, 80%, 60%)' : 'rgba(255, 255, 255, 0.3)' }}
-                    />
-                  </motion.div>
+        {/* Pipeline steps — inline row */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          {steps.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="relative rounded-xl p-5"
+                style={{
+                  background: step.active ? 'rgba(56, 152, 236, 0.06)' : 'rgba(228, 228, 228, 0.02)',
+                  border: step.active ? '1px solid rgba(56, 152, 236, 0.2)' : '1px solid rgba(228, 228, 228, 0.06)',
+                }}
+              >
+                <Icon
+                  className="w-6 h-6 mb-3"
+                  strokeWidth={1.2}
+                  style={{ color: step.active ? 'hsl(210, 80%, 60%)' : 'hsl(0, 0%, 55%)' }}
+                />
+                <h3 style={{ fontSize: '15px', fontWeight: 400, color: 'hsl(0, 0%, 89%)', marginBottom: '2px' }}>
+                  {step.title}
+                </h3>
+                <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(0, 0%, 55%)' }}>
+                  {step.description}
+                </p>
+                {i < steps.length - 1 && (
+                  <span className="hidden lg:block absolute top-1/2 -right-2.5" style={{ color: 'hsl(0, 0%, 30%)', fontSize: '12px' }}>→</span>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
 
-                  <h3 style={{ fontSize: '16px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.9)', marginBottom: '4px' }}>
-                    {step.title}
-                  </h3>
-                  <p style={{ fontSize: '13px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)' }}>
-                    {step.description}
-                  </p>
-                  {step.detail && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.12 + 0.3 }}
-                      className="mt-3"
-                      style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 60%)' }}
-                    >
-                      {step.detail}
-                    </motion.p>
-                  )}
-
-                  {/* Arrow connector */}
-                  {i < steps.length - 1 && (
-                    <motion.span
-                      initial={{ opacity: 0, x: -5 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.12 + 0.4 }}
-                      className="hidden lg:block absolute top-1/2 -right-3 text-white/15"
-                    >→</motion.span>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Progress bar */}
-          <div className="mt-8 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255, 255, 255, 0.06)' }}>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: '25%' }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-              className="h-full rounded-full"
-              style={{ background: 'hsl(210, 80%, 55%)' }}
-            />
-          </div>
-        </motion.div>
-
-        {/* Two info cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        {/* Two compact info rows */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl p-8"
-            style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-            }}
+            className="rounded-xl p-5"
+            style={{ background: 'rgba(228, 228, 228, 0.02)', border: '1px solid rgba(228, 228, 228, 0.06)' }}
           >
-            <h3 style={{ fontSize: '18px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.9)', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)', marginBottom: '10px' }}>
               Why algorithmic composition
             </h3>
-            <div className="flex flex-wrap gap-3">
-              {['Precision dosing', 'Reproducible', 'Scalable', 'Evidence-based'].map((tag, i) => (
-                <motion.span
+            <div className="flex flex-wrap gap-2">
+              {['Precision dosing', 'Reproducible', 'Scalable', 'Evidence-based'].map((tag) => (
+                <span
                   key={tag}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="px-3 py-1.5 rounded-full text-xs"
+                  className="px-2.5 py-1 rounded-full"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '11px',
+                    background: 'rgba(228, 228, 228, 0.04)',
+                    border: '1px solid rgba(228, 228, 228, 0.08)',
+                    color: 'hsl(0, 0%, 65%)',
                     fontWeight: 400,
                   }}
                 >
                   {tag}
-                </motion.span>
+                </span>
               ))}
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="rounded-2xl p-8"
-            style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-            }}
+            transition={{ delay: 0.08 }}
+            className="rounded-xl p-5"
+            style={{ background: 'rgba(228, 228, 228, 0.02)', border: '1px solid rgba(228, 228, 228, 0.06)' }}
           >
-            <div className="flex items-center gap-2 mb-4">
-              <h3 style={{ fontSize: '18px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.9)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)' }}>
                 Feature annotation
               </h3>
-              <span className="px-2 py-0.5 rounded text-[10px]" style={{ background: 'hsl(150, 60%, 40%)', color: 'white' }}>LIVE</span>
+              <span className="px-2 py-0.5 rounded text-[9px]" style={{ background: 'hsl(150, 60%, 40%)', color: 'hsl(0, 0%, 96%)' }}>LIVE</span>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {[
                 { label: 'Signal Processing', count: 24 },
                 { label: 'Neural Networks', count: 18 },
@@ -268,11 +137,12 @@ export const PipelineSection: React.FC = () => {
               ].map((method) => (
                 <span
                   key={method.label}
-                  className="px-3 py-1.5 rounded-full text-xs flex items-center gap-2"
+                  className="px-2.5 py-1 rounded-full flex items-center gap-1.5"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '11px',
+                    background: 'rgba(228, 228, 228, 0.04)',
+                    border: '1px solid rgba(228, 228, 228, 0.08)',
+                    color: 'hsl(0, 0%, 65%)',
                     fontWeight: 400,
                   }}
                 >
