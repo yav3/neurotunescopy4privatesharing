@@ -64,8 +64,11 @@ export const HeroSection: React.FC = () => {
               <span style={{ color: 'hsla(0, 0%, 100%, 0.7)' }}>on demand</span>
             </h1>
 
-            <p
+            <motion.p
               className="mt-4 sm:mt-5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 6, times: [0, 0.15, 0.75, 1], repeat: Infinity, repeatDelay: 1 }}
               style={{
                 fontSize: 'clamp(14px, 2vw, 16px)',
                 fontWeight: 400,
@@ -74,7 +77,7 @@ export const HeroSection: React.FC = () => {
               }}
             >
               Algorithmic compositions for anxiety relief and focus enhancement.
-            </p>
+            </motion.p>
 
             {/* Stats row */}
             <div className="flex gap-6 sm:gap-10 mt-8">
