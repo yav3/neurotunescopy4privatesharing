@@ -50,8 +50,8 @@ export const HowItWorksSection: React.FC = () => {
       className="relative py-28 md:py-36 overflow-hidden"
       style={{
         background: `linear-gradient(180deg, 
-          hsl(220, 5%, 95%) 0%, 
-          hsl(220, 8%, 92%) 100%
+          hsl(220, 8%, 96%) 0%, 
+          hsl(220, 10%, 93%) 100%
         )`,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
@@ -67,16 +67,16 @@ export const HowItWorksSection: React.FC = () => {
           <div
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full"
             style={{
-              background: 'rgba(0, 0, 0, 0.04)',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
+              background: 'rgba(0, 0, 0, 0.06)',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(220, 10%, 40%)' }}>
+            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(220, 15%, 30%)' }}>
               HOW IT WORKS
             </span>
             <span className="flex gap-1">
               {[0, 1, 2].map((i) => (
-                <span key={i} className="w-1.5 h-1.5 rounded-full" style={{ background: 'hsl(210, 80%, 55%)' }} />
+                <span key={i} className="w-1.5 h-1.5 rounded-full" style={{ background: 'hsl(210, 80%, 50%)' }} />
               ))}
             </span>
           </div>
@@ -89,9 +89,9 @@ export const HowItWorksSection: React.FC = () => {
           className="text-center mb-16"
           style={{
             fontSize: 'clamp(32px, 5vw, 48px)',
-            fontWeight: 300,
+            fontWeight: 400,
             letterSpacing: '-0.025em',
-            color: 'hsl(220, 20%, 12%)',
+            color: 'hsl(220, 25%, 8%)',
           }}
         >
           From composition to clinical outcomes
@@ -103,12 +103,12 @@ export const HowItWorksSection: React.FC = () => {
           whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mx-auto mb-16 h-1 rounded-full overflow-hidden origin-left"
-          style={{ background: 'rgba(0, 0, 0, 0.06)' }}
+          className="max-w-3xl mx-auto mb-16 h-1.5 rounded-full overflow-hidden origin-left"
+          style={{ background: 'rgba(0, 0, 0, 0.1)' }}
         >
           <motion.div
             className="h-full rounded-full"
-            style={{ background: 'hsl(210, 80%, 55%)' }}
+            style={{ background: 'hsl(210, 80%, 50%)' }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.5 }}
           />
@@ -137,11 +137,11 @@ export const HowItWorksSection: React.FC = () => {
                       className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-300"
                       style={{
                         background: isDone
-                          ? 'hsl(210, 70%, 85%)'
+                          ? 'hsl(210, 60%, 75%)'
                           : isActive
-                          ? 'hsl(210, 80%, 55%)'
-                          : 'rgba(0, 0, 0, 0.05)',
-                        color: isDone || isActive ? 'white' : 'hsl(220, 10%, 50%)',
+                          ? 'hsl(210, 80%, 50%)'
+                          : 'rgba(0, 0, 0, 0.08)',
+                        color: isDone || isActive ? '#e4e4e4' : 'hsl(220, 15%, 35%)',
                       }}
                     >
                       {isDone ? (
@@ -151,7 +151,7 @@ export const HowItWorksSection: React.FC = () => {
                       )}
                     </div>
                     {i < steps.length - 1 && (
-                      <div className="w-px h-full min-h-[32px]" style={{ background: 'rgba(0, 0, 0, 0.08)' }} />
+                      <div className="w-px h-full min-h-[32px]" style={{ background: 'rgba(0, 0, 0, 0.12)' }} />
                     )}
                   </div>
 
@@ -161,8 +161,8 @@ export const HowItWorksSection: React.FC = () => {
                       className="transition-colors duration-300"
                       style={{
                         fontSize: '17px',
-                        fontWeight: isActive ? 400 : 300,
-                        color: isActive ? 'hsl(220, 20%, 12%)' : 'hsl(220, 10%, 45%)',
+                        fontWeight: 400,
+                        color: isActive ? 'hsl(220, 25%, 8%)' : 'hsl(220, 15%, 28%)',
                       }}
                     >
                       {step.title}
@@ -175,11 +175,11 @@ export const HowItWorksSection: React.FC = () => {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <p className="mt-2" style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.6, color: 'hsl(220, 10%, 40%)' }}>
+                          <p className="mt-2" style={{ fontSize: '14px', fontWeight: 400, lineHeight: 1.6, color: 'hsl(220, 12%, 30%)' }}>
                             {step.description}
                           </p>
                           {step.detail && (
-                            <p className="mt-2" style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 50%)' }}>
+                            <p className="mt-2" style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 70%, 40%)' }}>
                               {step.detail}
                             </p>
                           )}
@@ -207,11 +207,11 @@ export const HowItWorksSection: React.FC = () => {
                 className="w-72 h-72 rounded-full"
                 style={{
                   background: `radial-gradient(circle at 40% 40%, 
-                    hsl(210, 80%, 92%) 0%, 
-                    hsl(210, 60%, 82%) 50%,
-                    hsl(210, 40%, 75%) 100%
+                    hsl(210, 50%, 88%) 0%, 
+                    hsl(210, 45%, 78%) 50%,
+                    hsl(210, 35%, 70%) 100%
                   )`,
-                  boxShadow: '0 20px 60px rgba(100, 150, 220, 0.15)',
+                  boxShadow: '0 20px 60px rgba(80, 120, 180, 0.2)',
                 }}
               />
               {/* Orbit ring */}
@@ -220,7 +220,7 @@ export const HowItWorksSection: React.FC = () => {
                 transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
                 className="absolute inset-[-16px] rounded-full"
                 style={{
-                  border: '2px solid hsl(210, 80%, 55%)',
+                  border: '2px solid hsl(210, 70%, 50%)',
                   clipPath: `polygon(${50 + 50 * Math.cos(-Math.PI / 4)}% ${50 + 50 * Math.sin(-Math.PI / 4)}%, 100% 0%, 100% 100%, 0% 100%, 0% 0%)`,
                 }}
               />
@@ -230,11 +230,11 @@ export const HowItWorksSection: React.FC = () => {
                   key={activeStep}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  style={{ fontSize: '48px', fontWeight: 300, color: 'hsl(220, 20%, 25%)' }}
+                  style={{ fontSize: '48px', fontWeight: 400, color: 'hsl(220, 20%, 20%)' }}
                 >
                   {String(activeStep + 1).padStart(2, '0')}
                 </motion.span>
-                <span style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(220, 10%, 50%)', letterSpacing: '0.1em' }}>
+                <span style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(220, 15%, 35%)', letterSpacing: '0.1em' }}>
                   OF {String(steps.length).padStart(2, '0')}
                 </span>
               </div>
