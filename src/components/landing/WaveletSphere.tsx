@@ -4,10 +4,10 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Calm', hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3 },
-  { name: 'Focus', hue: 190, speed: 0.5, intensity: 0.5, pulseRate: 1.0, spread: 0.5 },
-  { name: 'Energy', hue: 30, speed: 1.0, intensity: 1.0, pulseRate: 2.2, spread: 1.0 },
-  { name: 'Relief', hue: 150, speed: 0.35, intensity: 0.3, pulseRate: 0.5, spread: 0.25 },
+  { name: 'Alpha', hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, harmonicShift: 1.0 },
+  { name: 'Theta', hue: 260, speed: 0.2, intensity: 0.35, pulseRate: 0.4, spread: 0.2, harmonicShift: 0.6 },
+  { name: 'Beta', hue: 190, speed: 0.55, intensity: 0.55, pulseRate: 1.2, spread: 0.55, harmonicShift: 1.8 },
+  { name: 'Gamma', hue: 30, speed: 1.0, intensity: 1.0, pulseRate: 2.4, spread: 1.0, harmonicShift: 3.2 },
 ];
 
 const CYCLE = 5000;
@@ -138,7 +138,7 @@ const WaveformRing: React.FC<{
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
-  const cur = useRef({ hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3 });
+  const cur = useRef({ hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, harmonicShift: 1.0 });
 
   useFrame(({ clock }) => {
     if (!meshRef.current || !groupRef.current) return;
@@ -150,6 +150,7 @@ const WaveformRing: React.FC<{
     c.intensity += (mood.intensity - c.intensity) * 0.025;
     c.pulseRate += (mood.pulseRate - c.pulseRate) * 0.025;
     c.spread += (mood.spread - c.spread) * 0.02;
+    c.harmonicShift += (mood.harmonicShift - c.harmonicShift) * 0.02;
 
     groupRef.current.rotation.x = tilt;
     groupRef.current.rotation.z = t * c.speed * 0.12;
@@ -160,10 +161,11 @@ const WaveformRing: React.FC<{
 
     for (let i = 0; i < segments; i++) {
       const angle = (i / segments) * Math.PI * 2;
-      // Multi-harmonic waveform — simulates audio frequency content
-      const wave1 = Math.sin(angle * harmonics + t * c.pulseRate * 4 + phaseOffset) * 0.06;
-      const wave2 = Math.sin(angle * (harmonics * 2.3) + t * c.pulseRate * 6.5 + phaseOffset * 1.7) * 0.025;
-      const wave3 = Math.sin(angle * (harmonics * 0.5) + t * c.pulseRate * 2 + phaseOffset * 0.4) * 0.035;
+      // Distinct signal pattern per brainwave state via harmonicShift
+      const h = c.harmonicShift;
+      const wave1 = Math.sin(angle * harmonics * h + t * c.pulseRate * 4 + phaseOffset) * 0.06;
+      const wave2 = Math.sin(angle * (harmonics * h * 2.3) + t * c.pulseRate * 6.5 + phaseOffset * 1.7) * 0.025;
+      const wave3 = Math.sin(angle * (harmonics * h * 0.5) + t * c.pulseRate * 2 + phaseOffset * 0.4) * 0.035;
       const wave = (wave1 + wave2 + wave3) * c.intensity;
       const r = baseR + wave;
 
