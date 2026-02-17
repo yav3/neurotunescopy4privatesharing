@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import neuralpositiveLogoHeader from '@/assets/neuralpositive-logo-header.png';
+import { LissajousLogo } from '@/components/brand/LissajousLogo';
 
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -129,7 +130,7 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-white/80 text-2xl leading-none" style={{ fontFamily: 'serif' }}>∞</span>
+            <LissajousLogo size={26} color="hsla(0, 0%, 100%, 0.8)" />
             <span className="text-[22px] tracking-tight text-white uppercase">
               NeuroTunes
             </span>
@@ -243,7 +244,7 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-1.5">
-            <span className="text-white/80 text-lg leading-none" style={{ fontFamily: 'serif' }}>∞</span>
+            <LissajousLogo size={20} color="hsla(0, 0%, 100%, 0.8)" />
             <span className="text-sm tracking-normal text-white uppercase whitespace-nowrap">
               NeuroTunes
             </span>
