@@ -34,12 +34,8 @@ export const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 max-w-md"
+            className="max-w-lg"
             style={{
-              background: 'rgba(255, 255, 255, 0.82)',
-              backdropFilter: 'blur(40px)',
-              border: '1px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
             }}
           >
@@ -49,7 +45,7 @@ export const HeroSection: React.FC = () => {
                 fontSize: '10px',
                 fontWeight: 400,
                 letterSpacing: '0.15em',
-                color: 'hsl(210, 45%, 25%)',
+                color: 'hsl(0, 0%, 0%)',
               }}
             >
               Patented music technology
@@ -57,44 +53,41 @@ export const HeroSection: React.FC = () => {
 
             <h1
               style={{
-                fontSize: 'clamp(24px, 5vw, 36px)',
+                fontSize: 'clamp(32px, 6vw, 48px)',
                 fontWeight: 400,
                 letterSpacing: '-0.02em',
-                lineHeight: 1.2,
-                color: 'hsl(220, 40%, 6%)',
+                lineHeight: 1.15,
+                color: 'hsl(0, 0%, 0%)',
               }}
             >
-              Medical-grade music,{' '}
-              <span style={{ color: 'hsl(220, 30%, 15%)' }}>on demand</span>
+              Feel better,{' '}
+              <span style={{ color: 'hsl(0, 0%, 15%)' }}>on demand</span>
             </h1>
 
             <p
-              className="mt-3 sm:mt-4"
+              className="mt-4 sm:mt-5"
               style={{
-                fontSize: 'clamp(13px, 2vw, 15px)',
+                fontSize: 'clamp(14px, 2vw, 16px)',
                 fontWeight: 400,
                 lineHeight: 1.65,
-                color: 'hsl(220, 25%, 20%)',
+                color: 'hsl(0, 0%, 15%)',
               }}
             >
               Algorithmic compositions for anxiety relief and focus enhancement.
             </p>
 
-            {/* Divider */}
-            <div className="my-4 sm:my-5" style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)' }} />
-
             {/* Stats row */}
-            <div className="flex gap-5 sm:gap-8">
+            <div className="flex gap-6 sm:gap-10 mt-8">
               {[
                 { value: '7,000+', label: 'TRACKS' },
                 { value: '8+', label: 'YEARS R&D' },
                 { value: '15,000+', label: 'STUDIES' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(220, 40%, 6%)' }}>
+                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(0, 0%, 0%)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 20%, 30%)' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(0, 0%, 30%)' }}>
                     {stat.label}
                   </p>
                 </div>
