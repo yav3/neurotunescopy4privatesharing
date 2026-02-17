@@ -7,10 +7,11 @@ export const HeroSection: React.FC = () => {
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{
-        background: `linear-gradient(180deg, 
-          hsl(210, 60%, 92%) 0%, 
-          hsl(210, 65%, 85%) 50%,
-          hsl(210, 70%, 78%) 100%
+        background: `linear-gradient(160deg, 
+          hsl(195, 60%, 88%) 0%, 
+          hsl(200, 55%, 82%) 30%,
+          hsl(210, 50%, 78%) 60%,
+          hsl(185, 45%, 70%) 100%
         )`
       }}
     >
@@ -19,7 +20,7 @@ export const HeroSection: React.FC = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `radial-gradient(ellipse 60% 50% at 70% 50%, 
-            hsla(210, 80%, 90%, 0.5) 0%, 
+            hsla(180, 50%, 80%, 0.4) 0%, 
             transparent 70%
           )`
         }}
@@ -47,7 +48,7 @@ export const HeroSection: React.FC = () => {
                 fontSize: '10px',
                 fontWeight: 400,
                 letterSpacing: '0.15em',
-                color: 'hsl(210, 50%, 35%)',
+                color: 'hsl(210, 45%, 25%)',
               }}
             >
               Patented music technology
@@ -59,11 +60,11 @@ export const HeroSection: React.FC = () => {
                 fontWeight: 400,
                 letterSpacing: '-0.02em',
                 lineHeight: 1.2,
-                color: 'hsl(220, 35%, 10%)',
+                color: 'hsl(220, 40%, 6%)',
               }}
             >
               Medical-grade music,{' '}
-              <span style={{ color: 'hsl(220, 20%, 25%)' }}>on demand</span>
+              <span style={{ color: 'hsl(220, 30%, 15%)' }}>on demand</span>
             </h1>
 
             <p
@@ -72,7 +73,7 @@ export const HeroSection: React.FC = () => {
                 fontSize: 'clamp(13px, 2vw, 15px)',
                 fontWeight: 400,
                 lineHeight: 1.65,
-                color: 'hsl(220, 20%, 30%)',
+                color: 'hsl(220, 25%, 20%)',
               }}
             >
               Algorithmic compositions for anxiety relief and focus enhancement.
@@ -89,10 +90,10 @@ export const HeroSection: React.FC = () => {
                 { value: '15,000+', label: 'STUDIES' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(220, 35%, 10%)' }}>
+                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(220, 40%, 6%)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 15%, 40%)' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 20%, 30%)' }}>
                     {stat.label}
                   </p>
                 </div>
