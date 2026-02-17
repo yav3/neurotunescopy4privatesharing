@@ -131,7 +131,7 @@ export const NavigationHeader = () => {
 
           <Link to="/" className="flex items-center gap-2">
             <LissajousLogo size={26} color="hsla(0, 0%, 100%, 0.8)" />
-            <span className="text-[22px] tracking-tight text-white uppercase">
+            <span className="text-[22px] tracking-tight uppercase" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
@@ -245,7 +245,7 @@ export const NavigationHeader = () => {
 
           <Link to="/" className="flex items-center gap-1.5">
             <LissajousLogo size={20} color="hsla(0, 0%, 100%, 0.8)" />
-            <span className="text-sm tracking-normal text-white uppercase whitespace-nowrap">
+            <span className="text-sm tracking-normal uppercase whitespace-nowrap" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
