@@ -4,10 +4,10 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, harmonicShift: 1.0 },
-  { name: 'Theta', hue: 260, speed: 0.2, intensity: 0.35, pulseRate: 0.4, spread: 0.2, harmonicShift: 0.6 },
-  { name: 'Beta', hue: 190, speed: 0.55, intensity: 0.55, pulseRate: 1.2, spread: 0.55, harmonicShift: 1.8 },
-  { name: 'Gamma', hue: 30, speed: 1.0, intensity: 1.0, pulseRate: 2.4, spread: 1.0, harmonicShift: 3.2 },
+  { name: 'Alpha', hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, harmonicShift: 1.0, brightness: 0.35 },
+  { name: 'Theta', hue: 260, speed: 0.2, intensity: 0.35, pulseRate: 0.4, spread: 0.2, harmonicShift: 0.6, brightness: 0.25 },
+  { name: 'Beta', hue: 190, speed: 0.55, intensity: 0.55, pulseRate: 1.2, spread: 0.55, harmonicShift: 1.8, brightness: 0.6 },
+  { name: 'Gamma', hue: 30, speed: 1.0, intensity: 1.0, pulseRate: 2.4, spread: 1.0, harmonicShift: 3.2, brightness: 0.85 },
 ];
 
 const CYCLE = 5000;
@@ -35,7 +35,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
     }),
   []);
 
-  const cur = useRef({ hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3 });
+  const cur = useRef({ hue: 210, speed: 0.3, intensity: 0.2, pulseRate: 0.6, spread: 0.3, brightness: 0.35 });
 
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
@@ -49,6 +49,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
     c.intensity += (mood.intensity - c.intensity) * 0.025;
     c.pulseRate += (mood.pulseRate - c.pulseRate) * 0.025;
     c.spread += (mood.spread - c.spread) * 0.02;
+    c.brightness += (mood.brightness - c.brightness) * 0.015;
 
     const globalPulse = Math.sin(t * c.pulseRate * Math.PI * 2) * 0.5 + 0.5;
     const breathe = Math.sin(t * c.speed * 0.4) * 0.5 + 0.5;
@@ -81,10 +82,12 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
     }
     meshRef.current.instanceMatrix.needsUpdate = true;
 
-    // Color shift
+    // Dark→bright state transition driven by brightness
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.5, 0.65), 0.025);
-    mat.opacity = 0.35 + globalPulse * 0.25 * c.intensity;
+    const lightness = 0.2 + c.brightness * 0.55 + globalPulse * 0.1 * c.intensity;
+    const saturation = 0.35 + c.brightness * 0.25;
+    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, saturation, lightness), 0.025);
+    mat.opacity = 0.2 + c.brightness * 0.35 + globalPulse * 0.2 * c.intensity;
   });
 
   return (
@@ -98,7 +101,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
 /* ── Inner Glow Core ── */
 const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodRef }) => {
   const ref = useRef<THREE.Mesh>(null);
-  const cur = useRef({ hue: 210, intensity: 0.2, pulseRate: 0.6 });
+  const cur = useRef({ hue: 210, intensity: 0.2, pulseRate: 0.6, brightness: 0.35 });
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
@@ -108,14 +111,16 @@ const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodR
     c.hue += (mood.hue - c.hue) * 0.015;
     c.intensity += (mood.intensity - c.intensity) * 0.025;
     c.pulseRate += (mood.pulseRate - c.pulseRate) * 0.025;
+    c.brightness += (mood.brightness - c.brightness) * 0.015;
 
     const pulse = Math.sin(t * c.pulseRate * Math.PI * 2) * 0.5 + 0.5;
-    const scale = 0.18 + pulse * 0.12 * c.intensity;
+    const scale = 0.18 + pulse * 0.12 * c.intensity + c.brightness * 0.1;
     ref.current.scale.setScalar(scale);
 
     const mat = ref.current.material as THREE.MeshBasicMaterial;
-    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.55, 0.7), 0.03);
-    mat.opacity = 0.08 + pulse * 0.2 * c.intensity;
+    const coreLightness = 0.3 + c.brightness * 0.45 + pulse * 0.15 * c.intensity;
+    mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, 0.55, coreLightness), 0.03);
+    mat.opacity = 0.05 + c.brightness * 0.2 + pulse * 0.25 * c.intensity;
   });
 
   return (
