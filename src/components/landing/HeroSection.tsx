@@ -8,20 +8,19 @@ export const HeroSection: React.FC = () => {
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{
-        background: `linear-gradient(160deg, 
-          hsl(195, 60%, 88%) 0%, 
-          hsl(200, 55%, 82%) 30%,
-          hsl(210, 50%, 78%) 60%,
-          hsl(185, 45%, 70%) 100%
+        background: `linear-gradient(145deg, 
+          hsl(200, 15%, 4%) 0%, 
+          hsl(210, 12%, 6%) 40%,
+          hsl(200, 10%, 5%) 100%
         )`
       }}
     >
-      {/* Subtle radial glow */}
+      {/* Subtle ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 60% 50% at 70% 50%, 
-            hsla(180, 50%, 80%, 0.4) 0%, 
+          background: `radial-gradient(ellipse 60% 50% at 30% 50%, 
+            hsla(200, 30%, 12%, 0.3) 0%, 
             transparent 70%
           )`
         }}
@@ -45,7 +44,7 @@ export const HeroSection: React.FC = () => {
                 fontSize: '10px',
                 fontWeight: 400,
                 letterSpacing: '0.15em',
-                color: 'hsl(0, 0%, 0%)',
+                color: 'hsla(0, 0%, 89%, 0.5)',
               }}
             >
               Patented music technology
@@ -57,11 +56,11 @@ export const HeroSection: React.FC = () => {
                 fontWeight: 400,
                 letterSpacing: '-0.02em',
                 lineHeight: 1.15,
-                color: 'hsl(0, 0%, 0%)',
+                color: 'hsl(0, 0%, 89%)',
               }}
             >
               Feel better,{' '}
-              <span style={{ color: 'hsl(0, 0%, 15%)' }}>on demand</span>
+              <span style={{ color: 'hsl(0, 0%, 55%)' }}>on demand</span>
             </h1>
 
             <p
@@ -70,7 +69,7 @@ export const HeroSection: React.FC = () => {
                 fontSize: 'clamp(14px, 2vw, 16px)',
                 fontWeight: 400,
                 lineHeight: 1.65,
-                color: 'hsl(0, 0%, 15%)',
+                color: 'hsl(0, 0%, 55%)',
               }}
             >
               Algorithmic compositions for anxiety relief and focus enhancement.
@@ -84,10 +83,10 @@ export const HeroSection: React.FC = () => {
                 { value: '15,000+', label: 'STUDIES' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(0, 0%, 0%)' }}>
+                  <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsl(0, 0%, 89%)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(0, 0%, 30%)' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(0, 0%, 45%)' }}>
                     {stat.label}
                   </p>
                 </div>
@@ -124,14 +123,14 @@ export const HeroSection: React.FC = () => {
             fontSize: '11px',
             fontWeight: 400,
             letterSpacing: '0.15em',
-            color: 'hsl(0, 0%, 20%)',
+            color: 'hsl(0, 0%, 45%)',
             fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
           }}
         >
           Scroll to explore
         </p>
         <div className="w-6 h-10 mx-auto rounded-full border-2 border-current flex items-start justify-center pt-2"
-          style={{ color: 'hsl(0, 0%, 20%)', opacity: 0.5 }}
+          style={{ color: 'hsl(0, 0%, 45%)', opacity: 0.5 }}
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
