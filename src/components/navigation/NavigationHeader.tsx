@@ -128,13 +128,8 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-1">
-            <img 
-              src={neuralpositiveLogoHeader} 
-              alt="Neuralpositive" 
-              className="h-9 w-9 object-contain rounded-lg"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }}
-            />
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-white/80 text-2xl leading-none" style={{ fontFamily: 'serif' }}>∞</span>
             <span className="text-[22px] tracking-tight text-white uppercase">
               NeuroTunes
             </span>
@@ -247,13 +242,8 @@ export const NavigationHeader = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-1">
-            <img 
-              src={neuralpositiveLogoHeader} 
-              alt="Neuralpositive" 
-              className="h-5 w-5 object-contain rounded"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }}
-            />
+          <Link to="/" className="flex items-center gap-1.5">
+            <span className="text-white/80 text-lg leading-none" style={{ fontFamily: 'serif' }}>∞</span>
             <span className="text-sm tracking-normal text-white uppercase whitespace-nowrap">
               NeuroTunes
             </span>
