@@ -12,33 +12,59 @@ const stats = [
 export const StatsBar: React.FC = () => {
   return (
     <section
-      className="relative py-16 md:py-20"
+      className="relative py-16 md:py-20 overflow-hidden"
       style={{
         background: 'hsl(220, 15%, 6%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      <div className="container mx-auto px-6 md:px-12">
+      {/* Animated background glow */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.5 }}
+        style={{
+          background: `radial-gradient(ellipse 80% 100% at 50% 50%, 
+            hsla(210, 60%, 20%, 0.15) 0%, 
+            transparent 70%
+          )`
+        }}
+      />
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-wrap justify-between gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 min-w-[140px]"
               style={{
                 borderLeft: i > 0 ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
                 paddingLeft: i > 0 ? '24px' : '0',
               }}
             >
-              <p style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, color: 'rgba(255, 255, 255, 0.95)' }}>
+              <motion.p
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 + 0.2, duration: 0.5, type: 'spring' }}
+                style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, color: 'rgba(255, 255, 255, 0.95)' }}
+              >
                 {stat.value}
-              </p>
-              <p style={{ fontSize: '13px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}>
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 + 0.35 }}
+                style={{ fontSize: '13px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}
+              >
                 {stat.label}
-              </p>
+              </motion.p>
             </motion.div>
           ))}
         </div>

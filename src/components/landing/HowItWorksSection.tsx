@@ -98,14 +98,21 @@ export const HowItWorksSection: React.FC = () => {
         </motion.h2>
 
         {/* Progress bar */}
-        <div className="max-w-3xl mx-auto mb-16 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(0, 0, 0, 0.06)' }}>
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mx-auto mb-16 h-1 rounded-full overflow-hidden origin-left"
+          style={{ background: 'rgba(0, 0, 0, 0.06)' }}
+        >
           <motion.div
             className="h-full rounded-full"
             style={{ background: 'hsl(210, 80%, 55%)' }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.5 }}
           />
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-5xl mx-auto">
           {/* Left: Steps */}
@@ -187,13 +194,16 @@ export const HowItWorksSection: React.FC = () => {
 
           {/* Right: Visual sphere */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="hidden lg:flex items-center justify-center"
           >
             <div className="relative">
-              <div
+              <motion.div
+                animate={{ scale: [1, 1.03, 1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="w-72 h-72 rounded-full"
                 style={{
                   background: `radial-gradient(circle at 40% 40%, 
@@ -205,7 +215,9 @@ export const HowItWorksSection: React.FC = () => {
                 }}
               />
               {/* Orbit ring */}
-              <div
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
                 className="absolute inset-[-16px] rounded-full"
                 style={{
                   border: '2px solid hsl(210, 80%, 55%)',
