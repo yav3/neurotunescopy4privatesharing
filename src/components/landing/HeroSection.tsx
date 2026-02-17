@@ -33,7 +33,7 @@ export const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl p-10 md:p-14"
+            className="rounded-3xl p-8 md:p-10 max-w-md"
             style={{
               background: 'rgba(255, 255, 255, 0.75)',
               backdropFilter: 'blur(40px)',
@@ -43,12 +43,12 @@ export const HeroSection: React.FC = () => {
             }}
           >
             <p
-              className="uppercase tracking-widest mb-6"
+              className="uppercase tracking-widest mb-4"
               style={{
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: 400,
                 letterSpacing: '0.15em',
-                color: 'hsl(210, 70%, 50%)',
+                color: 'hsl(210, 70%, 45%)',
               }}
             >
               Patented therapeutic music technology
@@ -56,24 +56,24 @@ export const HeroSection: React.FC = () => {
 
             <h1
               style={{
-                fontSize: 'clamp(32px, 5vw, 48px)',
-                fontWeight: 300,
-                letterSpacing: '-0.025em',
-                lineHeight: 1.1,
-                color: 'hsl(220, 20%, 12%)',
+                fontSize: 'clamp(28px, 4vw, 38px)',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.15,
+                color: 'hsl(220, 25%, 15%)',
               }}
             >
               Medical-grade music,{' '}
-              <span style={{ fontWeight: 400 }}>on demand</span>
+              <span style={{ color: 'hsl(220, 20%, 30%)' }}>on demand</span>
             </h1>
 
             <p
-              className="mt-6"
+              className="mt-5"
               style={{
-                fontSize: '17px',
-                fontWeight: 300,
+                fontSize: '15px',
+                fontWeight: 400,
                 lineHeight: 1.7,
-                color: 'hsl(220, 10%, 35%)',
+                color: 'hsl(220, 12%, 40%)',
               }}
             >
               Purpose-composed music developed using patented algorithmic methods.
@@ -82,20 +82,20 @@ export const HeroSection: React.FC = () => {
             </p>
 
             {/* Divider */}
-            <div className="my-8" style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)' }} />
+            <div className="my-6" style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)' }} />
 
             {/* Stats row */}
-            <div className="flex gap-10">
+            <div className="flex gap-8">
               {[
                 { value: '7,000+', label: 'TRACKS' },
                 { value: '8+', label: 'YEARS R&D' },
                 { value: '15,000+', label: 'STUDIES' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p style={{ fontSize: '28px', fontWeight: 300, color: 'hsl(220, 20%, 12%)' }}>
+                  <p style={{ fontSize: '24px', fontWeight: 400, color: 'hsl(220, 25%, 15%)' }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 10%, 50%)' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsl(220, 10%, 50%)' }}>
                     {stat.label}
                   </p>
                 </div>
