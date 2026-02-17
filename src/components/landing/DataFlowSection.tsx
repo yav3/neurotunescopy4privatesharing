@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const pairings = [
-  { genre: 'Ambient', goal: 'Anxiety Relief', match: '94%' },
-  { genre: 'Classical', goal: 'Focus Enhancement', match: '89%' },
-  { genre: 'Lo-Fi', goal: 'Sleep Induction', match: '91%' },
-  { genre: 'Nature', goal: 'Pain Management', match: '86%' },
-  { genre: 'Binaural', goal: 'Deep Work', match: '92%' },
+  { genre: 'New Age & World', goal: 'Stress & Anxiety Reduction', match: '94%' },
+  { genre: 'Classical', goal: 'Focus & Concentration', match: '89%' },
+  { genre: 'Chopin', goal: 'Pain Relief', match: '91%' },
+  { genre: 'Pop', goal: 'Energy & Mood Boost', match: '86%' },
+  { genre: 'Electronic', goal: 'HIIT & Cardio', match: '92%' },
 ];
 
 const steps = ['Ingest', 'Map', 'Personalize', 'Deliver'];
