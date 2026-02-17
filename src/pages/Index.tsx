@@ -11,7 +11,7 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#050607', background: 'radial-gradient(ellipse at 30% 20%, rgba(30, 30, 35, 0.8) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(20, 20, 25, 0.6) 0%, transparent 50%), linear-gradient(180deg, #050607 0%, #0a0a0c 50%, #050607 100%)' }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#050607', background: 'radial-gradient(ellipse at 30% 20%, hsla(220, 20%, 10%, 0.8) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, hsla(210, 15%, 8%, 0.6) 0%, transparent 50%), linear-gradient(180deg, #050607 0%, #08090b 50%, #050607 100%)' }}>
       <NavigationHeader />
       
       <HeroSection />

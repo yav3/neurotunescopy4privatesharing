@@ -54,7 +54,7 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]" style={{ background: 'rgba(5, 6, 7, 0.85)', backdropFilter: 'blur(20px)' }}>
+      <header className="hidden md:flex items-center justify-between px-8 py-2.5 border-b border-white/[0.06] fixed top-0 left-0 right-0 z-50" style={{ background: 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', boxShadow: '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
@@ -171,7 +171,7 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-2 border-b border-white/10 fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_0_rgba(255,255,255,0.05)]" style={{ background: 'rgba(5, 6, 7, 0.85)', backdropFilter: 'blur(20px)' }}>
+      <header className="md:hidden flex items-center justify-between px-5 py-2 border-b border-white/[0.06] fixed top-0 left-0 right-0 z-50" style={{ background: 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', boxShadow: '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">
