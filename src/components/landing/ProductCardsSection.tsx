@@ -75,10 +75,12 @@ export const ProductCardsSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-2xl p-6 flex flex-col justify-between group"
+                className="rounded-2xl p-6 flex flex-col justify-between group hover:border-white/12 transition-all duration-500"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  background: 'hsla(220, 20%, 10%, 0.5)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.08)',
+                  backdropFilter: 'blur(20px)',
+                  boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.3), inset 0 1px 0 hsla(0, 0%, 100%, 0.03)',
                   minHeight: '280px',
                 }}
               >
@@ -89,7 +91,7 @@ export const ProductCardsSection: React.FC = () => {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 + 0.15, type: 'spring', stiffness: 200 }}
                     className="w-10 h-10 rounded-lg flex items-center justify-center mb-5"
-                    style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    style={{ background: 'hsla(210, 80%, 55%, 0.1)', border: '1px solid hsla(210, 80%, 55%, 0.15)' }}
                   >
                     <Icon className="w-5 h-5" strokeWidth={1.5} style={{ color: 'hsl(210, 80%, 60%)' }} />
                   </motion.div>
@@ -114,9 +116,9 @@ export const ProductCardsSection: React.FC = () => {
                         transition={{ delay: i * 0.1 + bi * 0.06 + 0.3 }}
                         className="px-3 py-1 rounded-full text-xs"
                         style={{
-                          background: 'rgba(255, 255, 255, 0.04)',
-                          border: '1px solid rgba(255, 255, 255, 0.08)',
-                          color: 'rgba(255, 255, 255, 0.5)',
+                          background: 'hsla(220, 20%, 12%, 0.4)',
+                          border: '1px solid hsla(0, 0%, 100%, 0.06)',
+                          color: 'hsla(0, 0%, 100%, 0.5)',
                           fontWeight: 400,
                         }}
                       >
@@ -149,10 +151,11 @@ export const ProductCardsSection: React.FC = () => {
             to="/demo"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full transition-all hover:gap-3"
             style={{
-              background: 'hsl(210, 80%, 55%)',
+              background: 'linear-gradient(135deg, hsl(210, 80%, 50%), hsl(220, 85%, 55%))',
               color: 'white',
               fontSize: '14px',
               fontWeight: 400,
+              boxShadow: '0 0 24px hsla(210, 80%, 55%, 0.3)',
             }}
           >
             Experience the demo <ArrowRight className="w-4 h-4" />

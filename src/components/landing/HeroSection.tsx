@@ -15,19 +15,15 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
-      style={{
-        background: 'transparent',
-      }}
+      style={{ background: 'transparent' }}
     >
-      {/* Subtle ambient glow */}
+      {/* Ambient glass glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 60% 50% at 65% 45%, 
-              hsla(200, 60%, 30%, 0.12) 0%, 
-              transparent 60%
-            )
+            radial-gradient(ellipse 50% 40% at 60% 40%, hsla(210, 50%, 25%, 0.15) 0%, transparent 70%),
+            radial-gradient(ellipse 40% 50% at 30% 60%, hsla(220, 40%, 15%, 0.1) 0%, transparent 60%)
           `
         }}
       />
@@ -91,8 +87,15 @@ export const HeroSection: React.FC = () => {
               Algorithmic compositions for anxiety relief and focus enhancement.
             </motion.p>
 
-            {/* Stats row */}
-            <div className="flex gap-6 sm:gap-10 mt-8">
+            {/* Stats row — glass strip */}
+            <div
+              className="flex gap-6 sm:gap-10 mt-8 px-5 py-4 rounded-xl"
+              style={{
+                background: 'hsla(220, 20%, 12%, 0.5)',
+                border: '1px solid hsla(0, 0%, 100%, 0.08)',
+                backdropFilter: 'blur(16px)',
+              }}
+            >
               {[
                 { value: '7,000+', label: 'TRACKS' },
                 { value: '8+', label: 'YEARS R&D' },
