@@ -47,8 +47,8 @@ export const HowItWorksSection: React.FC = () => {
       className="relative py-24 md:py-32 overflow-hidden"
       style={{
         background: `linear-gradient(180deg, 
-          hsl(220, 8%, 96%) 0%, 
-          hsl(220, 10%, 93%) 100%
+          hsl(0, 0%, 100%) 0%, 
+          hsl(220, 12%, 96%) 100%
         )`,
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
@@ -68,7 +68,7 @@ export const HowItWorksSection: React.FC = () => {
               border: '1px solid rgba(0, 0, 0, 0.1)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(220, 20%, 25%)' }}>
+            <span style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(220, 30%, 12%)' }}>
               HOW IT WORKS
             </span>
           </div>
@@ -81,9 +81,9 @@ export const HowItWorksSection: React.FC = () => {
           className="text-center mb-20"
           style={{
             fontSize: 'clamp(28px, 4vw, 44px)',
-            fontWeight: 400,
+            fontWeight: 500,
             letterSpacing: '-0.02em',
-            color: 'hsl(220, 30%, 8%)',
+            color: 'hsl(220, 40%, 5%)',
           }}
         >
           Composition to clinical outcomes
@@ -188,14 +188,14 @@ export const HowItWorksSection: React.FC = () => {
                   <p
                     className="transition-colors duration-300"
                     style={{
-                      fontSize: '12px',
-                      fontWeight: 400,
+                      fontSize: '13px',
+                      fontWeight: 600,
                       letterSpacing: '0.05em',
                       color: isActive
-                        ? 'hsl(210, 70%, 45%)'
+                        ? 'hsl(210, 80%, 40%)'
                         : isPast
-                        ? 'hsl(220, 15%, 50%)'
-                        : 'hsl(220, 10%, 60%)',
+                        ? 'hsl(220, 20%, 35%)'
+                        : 'hsl(220, 10%, 50%)',
                       marginBottom: '6px',
                     }}
                   >
@@ -204,13 +204,13 @@ export const HowItWorksSection: React.FC = () => {
                   <h3
                     className="transition-colors duration-300"
                     style={{
-                      fontSize: 'clamp(12px, 1.2vw, 15px)',
-                      fontWeight: 400,
+                      fontSize: 'clamp(13px, 1.3vw, 16px)',
+                      fontWeight: 500,
                       color: isActive
-                        ? 'hsl(220, 30%, 8%)'
+                        ? 'hsl(220, 40%, 5%)'
                         : isPast
-                        ? 'hsl(220, 15%, 30%)'
-                        : 'hsl(220, 10%, 45%)',
+                        ? 'hsl(220, 20%, 20%)'
+                        : 'hsl(220, 10%, 38%)',
                       lineHeight: 1.3,
                     }}
                   >
@@ -225,10 +225,10 @@ export const HowItWorksSection: React.FC = () => {
                         transition={{ duration: 0.3 }}
                         className="mt-2 overflow-hidden"
                         style={{
-                          fontSize: '12px',
+                          fontSize: '13px',
                           fontWeight: 400,
                           lineHeight: 1.5,
-                          color: 'hsl(220, 15%, 28%)',
+                          color: 'hsl(220, 20%, 18%)',
                         }}
                       >
                         {step.description}
