@@ -4,10 +4,10 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.15, intensity: 0.12, pulseRate: 0.3, spread: 0.25, harmonicShift: 1.0, brightness: 0.35 },
-  { name: 'Theta', hue: 260, speed: 0.1, intensity: 0.18, pulseRate: 0.2, spread: 0.18, harmonicShift: 0.6, brightness: 0.25 },
-  { name: 'Beta', hue: 190, speed: 0.25, intensity: 0.3, pulseRate: 0.5, spread: 0.4, harmonicShift: 1.8, brightness: 0.6 },
-  { name: 'Gamma', hue: 30, speed: 0.4, intensity: 0.5, pulseRate: 0.8, spread: 0.65, harmonicShift: 3.2, brightness: 0.85 },
+  { name: 'Alpha', hue: 210, speed: 0.15, intensity: 0.35, pulseRate: 0.3, spread: 0.25, harmonicShift: 1.0, brightness: 0.5 },
+  { name: 'Theta', hue: 260, speed: 0.1, intensity: 0.4, pulseRate: 0.2, spread: 0.18, harmonicShift: 0.6, brightness: 0.4 },
+  { name: 'Beta', hue: 190, speed: 0.25, intensity: 0.55, pulseRate: 0.5, spread: 0.4, harmonicShift: 1.8, brightness: 0.65 },
+  { name: 'Gamma', hue: 30, speed: 0.4, intensity: 0.7, pulseRate: 0.8, spread: 0.65, harmonicShift: 3.2, brightness: 0.85 },
 ];
 
 const CYCLE = 6000;
@@ -30,7 +30,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
         restRadius: 0.15 + Math.random() * 0.55,
         phase: Math.random() * Math.PI * 2,
         speed: 0.3 + Math.random() * 0.7,
-        baseSize: 0.004 + Math.random() * 0.006,
+        baseSize: 0.008 + Math.random() * 0.01,
       };
     }),
   []);
@@ -84,10 +84,10 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
 
     // Dark→bright state transition driven by brightness
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const lightness = 0.2 + c.brightness * 0.55 + globalPulse * 0.1 * c.intensity;
-    const saturation = 0.35 + c.brightness * 0.25;
+    const lightness = 0.35 + c.brightness * 0.4 + globalPulse * 0.08 * c.intensity;
+    const saturation = 0.4 + c.brightness * 0.2;
     mat.color.lerp(new THREE.Color().setHSL(c.hue / 360, saturation, lightness), 0.025);
-    mat.opacity = 0.2 + c.brightness * 0.35 + globalPulse * 0.2 * c.intensity;
+    mat.opacity = 0.45 + c.brightness * 0.3 + globalPulse * 0.15 * c.intensity;
   });
 
   return (
