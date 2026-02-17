@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 100%, 0.55)',
               }}
             >
-              A patented, closed-loop platform that delivers therapeutic music patients love — and continuously learns from every session to drive personalized, longitudinal insights.
+              A patented closed-loop engine that adapts therapeutic music in real time — then aggregates every session into longitudinal biomarker insights clinicians can act on.
             </p>
 
             {/* CTA */}
@@ -109,9 +109,9 @@ export const HeroSection: React.FC = () => {
               }}
             >
               {[
-                { value: '8,000+', label: 'TRACKS' },
-                { value: '15K+', label: 'STUDIES IN META-ANALYSIS' },
-                { value: 'Weill Cornell', label: 'EARLY TRIALS' },
+                { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
+                { value: '14K+', label: 'SUBJECTS ANALYZED' },
+                { value: 'Columbia · Cornell', label: '8+ YEARS R&D' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <p style={{ fontSize: 'clamp(18px, 3vw, 24px)', fontWeight: 400, color: 'hsla(0, 0%, 92%, 0.9)' }}>
