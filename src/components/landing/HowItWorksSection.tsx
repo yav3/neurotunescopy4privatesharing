@@ -68,7 +68,7 @@ export const HowItWorksSection: React.FC = () => {
               border: '1px solid rgba(0, 0, 0, 0.1)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(220, 30%, 12%)' }}>
+            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(220, 20%, 10%)' }}>
               HOW IT WORKS
             </span>
           </div>
@@ -81,9 +81,9 @@ export const HowItWorksSection: React.FC = () => {
           className="text-center mb-20"
           style={{
             fontSize: 'clamp(28px, 4vw, 44px)',
-            fontWeight: 500,
+            fontWeight: 400,
             letterSpacing: '-0.02em',
-            color: 'hsl(220, 40%, 5%)',
+            color: 'hsl(0, 0%, 5%)',
           }}
         >
           Composition to clinical outcomes
@@ -93,12 +93,12 @@ export const HowItWorksSection: React.FC = () => {
         <div className="relative max-w-5xl mx-auto mb-12">
           {/* Horizontal track line */}
           <div
-            className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
-            style={{ background: 'rgba(0, 0, 0, 0.1)' }}
+            className="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2"
+            style={{ background: 'rgba(0, 0, 0, 0.15)' }}
           />
           {/* Progress fill */}
           <motion.div
-            className="absolute top-1/2 left-0 h-px -translate-y-1/2 origin-left"
+            className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 origin-left"
             style={{ background: 'hsl(210, 70%, 50%)' }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -189,13 +189,13 @@ export const HowItWorksSection: React.FC = () => {
                     className="transition-colors duration-300"
                     style={{
                       fontSize: '13px',
-                      fontWeight: 600,
+                      fontWeight: 400,
                       letterSpacing: '0.05em',
                       color: isActive
-                        ? 'hsl(210, 80%, 40%)'
+                        ? 'hsl(210, 80%, 35%)'
                         : isPast
-                        ? 'hsl(220, 20%, 35%)'
-                        : 'hsl(220, 10%, 50%)',
+                        ? 'hsl(0, 0%, 25%)'
+                        : 'hsl(0, 0%, 40%)',
                       marginBottom: '6px',
                     }}
                   >
@@ -205,12 +205,12 @@ export const HowItWorksSection: React.FC = () => {
                     className="transition-colors duration-300"
                     style={{
                       fontSize: 'clamp(13px, 1.3vw, 16px)',
-                      fontWeight: 500,
+                      fontWeight: 400,
                       color: isActive
-                        ? 'hsl(220, 40%, 5%)'
+                        ? 'hsl(0, 0%, 5%)'
                         : isPast
-                        ? 'hsl(220, 20%, 20%)'
-                        : 'hsl(220, 10%, 38%)',
+                        ? 'hsl(0, 0%, 15%)'
+                        : 'hsl(0, 0%, 30%)',
                       lineHeight: 1.3,
                     }}
                   >
@@ -228,7 +228,7 @@ export const HowItWorksSection: React.FC = () => {
                           fontSize: '13px',
                           fontWeight: 400,
                           lineHeight: 1.5,
-                          color: 'hsl(220, 20%, 18%)',
+                          color: 'hsl(0, 0%, 10%)',
                         }}
                       >
                         {step.description}
