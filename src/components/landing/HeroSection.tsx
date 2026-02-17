@@ -42,7 +42,7 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 100%, 0.5)',
               }}
             >
-              2 patents granted
+              2 patents granted · 4 pending
             </p>
 
             <h1
