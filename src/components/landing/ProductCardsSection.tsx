@@ -90,12 +90,16 @@ export const ProductCardsSection: React.FC = () => {
                 }}
               >
                 <div>
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+                    whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 + 0.15, type: 'spring', stiffness: 200 }}
                     className="w-12 h-12 rounded-xl flex items-center justify-center mb-8"
                     style={{ background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.1)' }}
                   >
                     <Icon className="w-5 h-5" strokeWidth={1.5} style={{ color: 'hsl(210, 80%, 60%)' }} />
-                  </div>
+                  </motion.div>
 
                   <h3 style={{ fontSize: '20px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.95)', marginBottom: '6px' }}>
                     {product.title}
@@ -108,9 +112,13 @@ export const ProductCardsSection: React.FC = () => {
                   </p>
 
                   <div className="flex flex-wrap gap-2 mt-6">
-                    {product.badges.map((badge) => (
-                      <span
+                    {product.badges.map((badge, bi) => (
+                      <motion.span
                         key={badge}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 + bi * 0.06 + 0.3 }}
                         className="px-3 py-1 rounded-full text-xs"
                         style={{
                           background: 'rgba(255, 255, 255, 0.04)',
@@ -120,7 +128,7 @@ export const ProductCardsSection: React.FC = () => {
                         }}
                       >
                         {badge}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>

@@ -117,8 +117,12 @@ export const PipelineSection: React.FC = () => {
             {steps.map((step, i) => {
               const Icon = step.icon;
               return (
-                <div
+                <motion.div
                   key={step.number}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.12, duration: 0.5 }}
                   className="relative rounded-xl p-6 flex flex-col"
                   style={{
                     background: step.active ? 'rgba(56, 152, 236, 0.08)' : 'rgba(255, 255, 255, 0.02)',
@@ -126,7 +130,11 @@ export const PipelineSection: React.FC = () => {
                   }}
                 >
                   {/* Step number */}
-                  <span
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 + 0.2, type: 'spring', stiffness: 300 }}
                     className="absolute -top-3 -left-1 w-6 h-6 rounded-full flex items-center justify-center text-xs"
                     style={{
                       background: step.active ? 'hsl(210, 80%, 55%)' : 'rgba(255, 255, 255, 0.1)',
@@ -136,13 +144,20 @@ export const PipelineSection: React.FC = () => {
                     }}
                   >
                     {step.number}
-                  </span>
+                  </motion.span>
 
-                  <Icon
-                    className="w-8 h-8 mb-5"
-                    strokeWidth={1.2}
-                    style={{ color: step.active ? 'hsl(210, 80%, 60%)' : 'rgba(255, 255, 255, 0.3)' }}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 + 0.15 }}
+                  >
+                    <Icon
+                      className="w-8 h-8 mb-5"
+                      strokeWidth={1.2}
+                      style={{ color: step.active ? 'hsl(210, 80%, 60%)' : 'rgba(255, 255, 255, 0.3)' }}
+                    />
+                  </motion.div>
 
                   <h3 style={{ fontSize: '16px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.9)', marginBottom: '4px' }}>
                     {step.title}
@@ -151,16 +166,29 @@ export const PipelineSection: React.FC = () => {
                     {step.description}
                   </p>
                   {step.detail && (
-                    <p className="mt-3" style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 60%)' }}>
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.12 + 0.3 }}
+                      className="mt-3"
+                      style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 60%)' }}
+                    >
                       {step.detail}
-                    </p>
+                    </motion.p>
                   )}
 
                   {/* Arrow connector */}
                   {i < steps.length - 1 && (
-                    <span className="hidden lg:block absolute top-1/2 -right-3 text-white/15">→</span>
+                    <motion.span
+                      initial={{ opacity: 0, x: -5 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.12 + 0.4 }}
+                      className="hidden lg:block absolute top-1/2 -right-3 text-white/15"
+                    >→</motion.span>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -194,9 +222,13 @@ export const PipelineSection: React.FC = () => {
               Why algorithmic composition
             </h3>
             <div className="flex flex-wrap gap-3">
-              {['Precision dosing', 'Reproducible', 'Scalable', 'Evidence-based'].map((tag) => (
-                <span
+              {['Precision dosing', 'Reproducible', 'Scalable', 'Evidence-based'].map((tag, i) => (
+                <motion.span
                   key={tag}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
                   className="px-3 py-1.5 rounded-full text-xs"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
@@ -206,7 +238,7 @@ export const PipelineSection: React.FC = () => {
                   }}
                 >
                   {tag}
-                </span>
+                </motion.span>
               ))}
             </div>
           </motion.div>

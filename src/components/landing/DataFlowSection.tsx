@@ -96,9 +96,13 @@ export const DataFlowSection: React.FC = () => {
             DATA INPUTS
           </p>
           <div className="flex flex-wrap gap-3">
-            {inputs.map(({ icon: Icon, label }) => (
-              <span
+            {inputs.map(({ icon: Icon, label }, i) => (
+              <motion.span
                 key={label}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.4 }}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full"
                 style={{
                   background: 'rgba(255, 255, 255, 0.12)',
@@ -110,7 +114,7 @@ export const DataFlowSection: React.FC = () => {
               >
                 <Icon className="w-4 h-4" strokeWidth={1.5} />
                 {label}
-              </span>
+              </motion.span>
             ))}
           </div>
         </motion.div>
@@ -137,20 +141,28 @@ export const DataFlowSection: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {pipeline.map((step, i) => (
-              <div
+              <motion.div
                 key={step.number}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.5 }}
                 className="relative rounded-xl p-6"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
                 }}
               >
-                <span
+                <motion.span
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.12 + 0.2, type: 'spring', stiffness: 300 }}
                   className="absolute -top-3 -left-1 w-6 h-6 rounded-full flex items-center justify-center text-xs"
                   style={{ background: 'rgba(255, 255, 255, 0.2)', color: 'white', fontSize: '11px' }}
                 >
                   {step.number}
-                </span>
+                </motion.span>
                 <h3 className="mt-2" style={{ fontSize: '15px', fontWeight: 400, color: 'white', marginBottom: '4px' }}>
                   {step.title}
                 </h3>
@@ -158,9 +170,15 @@ export const DataFlowSection: React.FC = () => {
                   {step.description}
                 </p>
                 {i < pipeline.length - 1 && (
-                  <span className="hidden lg:block absolute top-1/2 -right-3 text-white/30">→</span>
+                  <motion.span
+                    initial={{ opacity: 0, x: -5 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 + 0.3 }}
+                    className="hidden lg:block absolute top-1/2 -right-3 text-white/30"
+                  >→</motion.span>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
