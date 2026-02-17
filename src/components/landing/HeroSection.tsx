@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { WaveletSphere } from './WaveletSphere';
 
 export const HeroSection: React.FC = () => {
   return (
@@ -109,71 +110,8 @@ export const HeroSection: React.FC = () => {
             className="hidden lg:flex items-center justify-center"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              {/* Outer glass sphere */}
-              <div
-                className="w-72 h-72 xl:w-80 xl:h-80 rounded-full relative flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-700"
-                style={{
-                  background: `radial-gradient(circle at 40% 40%, 
-                    hsla(210, 80%, 95%, 0.9) 0%, 
-                    hsla(210, 60%, 80%, 0.4) 50%,
-                    hsla(210, 40%, 70%, 0.1) 100%
-                  )`,
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                  boxShadow: '0 30px 80px rgba(100, 150, 220, 0.2), inset 0 -20px 40px rgba(255, 255, 255, 0.3)',
-                }}
-              >
-                {/* Highlight */}
-                <div
-                  className="absolute inset-4 rounded-full pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 35% 35%, 
-                      hsla(210, 90%, 98%, 0.8) 0%, 
-                      transparent 60%
-                    )`,
-                  }}
-                />
-
-                {/* Scrolling text ring */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <svg viewBox="0 0 200 200" className="w-48 h-48 xl:w-56 xl:h-56">
-                    <defs>
-                      <path
-                        id="textCircle"
-                        d="M 100,100 m -65,0 a 65,65 0 1,1 130,0 a 65,65 0 1,1 -130,0"
-                        fill="none"
-                      />
-                    </defs>
-                    <motion.g
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                    >
-                      <text
-                        fill="hsl(220, 20%, 40%)"
-                        style={{
-                          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-                          fontSize: '11px',
-                          fontWeight: 400,
-                          letterSpacing: '0.2em',
-                        }}
-                      >
-                        <textPath href="#textCircle">
-                          ENTER · EXPERIENCE NOW · ENTER · EXPERIENCE NOW ·{' '}
-                        </textPath>
-                      </text>
-                    </motion.g>
-                  </svg>
-                </div>
-
-                {/* Center arrow */}
-                <motion.div
-                  className="relative z-10"
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M5 12h14M13 6l6 6-6 6" stroke="hsl(220, 20%, 35%)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </motion.div>
+              <div className="w-72 h-72 xl:w-80 xl:h-80 relative group-hover:scale-105 transition-transform duration-700">
+                <WaveletSphere />
               </div>
             </Link>
           </motion.div>
