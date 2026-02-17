@@ -4,13 +4,13 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.06, intensity: 0.3, pulseRate: 0.12, spread: 0.25, harmonicShift: 1.0, brightness: 0.6 },
-  { name: 'Theta', hue: 260, speed: 0.04, intensity: 0.35, pulseRate: 0.08, spread: 0.18, harmonicShift: 0.6, brightness: 0.5 },
-  { name: 'Beta', hue: 190, speed: 0.1, intensity: 0.45, pulseRate: 0.2, spread: 0.4, harmonicShift: 1.8, brightness: 0.75 },
-  { name: 'Gamma', hue: 30, speed: 0.15, intensity: 0.55, pulseRate: 0.3, spread: 0.65, harmonicShift: 3.2, brightness: 0.9 },
+  { name: 'Alpha', hue: 210, speed: 0.03, intensity: 0.15, pulseRate: 0.06, spread: 0.2, harmonicShift: 1.0, brightness: 0.55 },
+  { name: 'Theta', hue: 260, speed: 0.02, intensity: 0.12, pulseRate: 0.04, spread: 0.15, harmonicShift: 0.5, brightness: 0.45 },
+  { name: 'Beta', hue: 190, speed: 0.04, intensity: 0.2, pulseRate: 0.08, spread: 0.25, harmonicShift: 1.2, brightness: 0.6 },
+  { name: 'Gamma', hue: 30, speed: 0.05, intensity: 0.25, pulseRate: 0.1, spread: 0.3, harmonicShift: 1.5, brightness: 0.65 },
 ];
 
-const CYCLE = 6000;
+const CYCLE = 8000;
 
 /* ── Particle Cloud ── */
 const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodRef }) => {
