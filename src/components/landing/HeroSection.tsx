@@ -17,25 +17,39 @@ export const HeroSection: React.FC = () => {
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{
         background: `linear-gradient(160deg, 
-          hsl(195, 75%, 45%) 0%, 
-          hsl(205, 65%, 50%) 30%,
-          hsl(215, 60%, 52%) 60%,
-          hsl(225, 55%, 48%) 100%
+          hsl(200, 85%, 20%) 0%, 
+          hsl(210, 80%, 30%) 25%,
+          hsl(200, 75%, 40%) 50%,
+          hsl(190, 70%, 45%) 75%,
+          hsl(195, 65%, 50%) 100%
         )`
       }}
     >
-      {/* Subtle radial glow */}
+      {/* Glassmorphism radial overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 60% 50% at 70% 50%, 
-            hsla(195, 80%, 65%, 0.25) 0%, 
-            transparent 70%
-          )`
+          background: `
+            radial-gradient(ellipse 80% 60% at 65% 45%, 
+              hsla(195, 90%, 60%, 0.2) 0%, 
+              transparent 60%
+            ),
+            radial-gradient(ellipse 40% 40% at 30% 70%, 
+              hsla(220, 80%, 40%, 0.15) 0%, 
+              transparent 50%
+            )
+          `
+        }}
+      />
+      {/* Frosted glass noise texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
       />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 pt-28 sm:pt-32 md:pt-36 pb-16 sm:pb-20">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left: Copy */}
           <motion.div
