@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { WaveletSphere } from './WaveletSphere';
 
 export const HeroSection: React.FC = () => {
-  const [pulseKey, setPulseKey] = useState(0);
-
-  // Re-trigger the "musical" pulse cycle every 8s
-  useEffect(() => {
-    const interval = setInterval(() => setPulseKey((k) => k + 1), 8000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <section
@@ -61,31 +54,50 @@ export const HeroSection: React.FC = () => {
                 color: 'hsla(0, 0%, 92%, 0.95)',
               }}
             >
-              Feel better,{' '}
-              <span style={{ color: 'hsla(0, 0%, 100%, 0.45)' }}>on demand</span>
+              Music that heals.{' '}
+              <span style={{ color: 'hsla(0, 0%, 100%, 0.45)' }}>Data that proves it.</span>
             </h1>
 
-            <motion.p
-              key={pulseKey}
+            <p
               className="mt-4 sm:mt-5"
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: [0, 0.85, 0.5, 0.9, 0.6, 1, 0.7, 0.95, 0.4, 0],
-              }}
-              transition={{
-                duration: 8,
-                times: [0, 0.08, 0.15, 0.25, 0.35, 0.5, 0.65, 0.75, 0.88, 1],
-                ease: 'easeInOut',
-              }}
               style={{
                 fontSize: 'clamp(14px, 2vw, 16px)',
                 fontWeight: 400,
                 lineHeight: 1.65,
-                color: 'hsla(0, 0%, 100%, 0.6)',
+                color: 'hsla(0, 0%, 100%, 0.55)',
               }}
             >
-              A patented, closed-loop system designed to deliver music patients love — alongside continuous aggregation of personalized information that drives longitudinal insights.
-            </motion.p>
+              A patented, closed-loop platform that delivers therapeutic music patients love — and continuously learns from every session to drive personalized, longitudinal insights.
+            </p>
+
+            {/* CTA */}
+            <div className="mt-7 flex gap-4 items-center">
+              <Link
+                to="/demo"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105"
+                style={{
+                  background: 'hsla(200, 80%, 55%, 0.9)',
+                  color: 'hsla(0, 0%, 100%, 0.95)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  letterSpacing: '0.01em',
+                }}
+              >
+                Experience the platform
+                <span style={{ fontSize: '16px' }}>→</span>
+              </Link>
+              <Link
+                to="/story"
+                className="inline-flex items-center gap-1 px-4 py-3 rounded-full transition-colors duration-300"
+                style={{
+                  color: 'hsla(0, 0%, 100%, 0.45)',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                }}
+              >
+                Our science
+              </Link>
+            </div>
 
             {/* Stats row — glass strip */}
             <div
