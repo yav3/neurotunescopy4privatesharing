@@ -29,7 +29,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
         dir,
         restRadius: 0.15 + Math.random() * 0.55,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.3 + Math.random() * 0.7,
+        speed: 0.1 + Math.random() * 0.25,
         baseSize: 0.012 + Math.random() * 0.014,
       };
     }),
@@ -51,8 +51,8 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
     c.spread += (mood.spread - c.spread) * 0.02;
     c.brightness += (mood.brightness - c.brightness) * 0.015;
 
-    const globalPulse = Math.sin(t * c.pulseRate * Math.PI * 2) * 0.5 + 0.5;
-    const breathe = Math.sin(t * c.speed * 0.4) * 0.5 + 0.5;
+    const globalPulse = Math.sin(t * c.pulseRate * Math.PI) * 0.5 + 0.5;
+    const breathe = Math.sin(t * c.speed * 0.15) * 0.5 + 0.5;
 
     // Coalesce (low spread) vs disperse (high spread)
     const dispersal = 0.6 + c.spread * 1.4; // 0.6 tight → 2.0 wide
@@ -65,10 +65,10 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
       const r = p.restRadius * dispersal
         + particlePulse * 0.12 * c.intensity
         + breathe * 0.03
-        + Math.sin(t * p.speed * 0.3 + p.phase) * 0.04 * c.intensity;
+        + Math.sin(t * p.speed * 0.1 + p.phase) * 0.04 * c.intensity;
 
       // Slow orbital drift
-      const drift = t * p.speed * c.speed * 0.08;
+      const drift = t * p.speed * c.speed * 0.025;
       const dx = p.dir.x * Math.cos(drift) - p.dir.z * Math.sin(drift);
       const dz = p.dir.x * Math.sin(drift) + p.dir.z * Math.cos(drift);
 
@@ -113,8 +113,8 @@ const GlowCore: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodR
     c.pulseRate += (mood.pulseRate - c.pulseRate) * 0.025;
     c.brightness += (mood.brightness - c.brightness) * 0.015;
 
-    const pulse = Math.sin(t * c.pulseRate * Math.PI * 2) * 0.5 + 0.5;
-    const scale = 0.18 + pulse * 0.12 * c.intensity + c.brightness * 0.1;
+    const pulse = Math.sin(t * c.pulseRate * Math.PI) * 0.5 + 0.5;
+    const scale = 0.18 + pulse * 0.06 * c.intensity + c.brightness * 0.08;
     ref.current.scale.setScalar(scale);
 
     const mat = ref.current.material as THREE.MeshBasicMaterial;
