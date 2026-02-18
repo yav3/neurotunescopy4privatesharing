@@ -4,13 +4,13 @@ import * as THREE from 'three';
 
 /* ── Mood States ── */
 const MOODS = [
-  { name: 'Alpha', hue: 210, speed: 0.03, intensity: 0.15, pulseRate: 0.06, spread: 0.2, harmonicShift: 1.0, brightness: 0.55 },
-  { name: 'Theta', hue: 260, speed: 0.02, intensity: 0.12, pulseRate: 0.04, spread: 0.15, harmonicShift: 0.5, brightness: 0.45 },
-  { name: 'Beta', hue: 190, speed: 0.04, intensity: 0.2, pulseRate: 0.08, spread: 0.25, harmonicShift: 1.2, brightness: 0.6 },
-  { name: 'Gamma', hue: 30, speed: 0.05, intensity: 0.25, pulseRate: 0.1, spread: 0.3, harmonicShift: 1.5, brightness: 0.65 },
+  { name: 'Alpha', hue: 210, speed: 0.012, intensity: 0.08, pulseRate: 0.02, spread: 0.2, harmonicShift: 0.6, brightness: 0.55 },
+  { name: 'Theta', hue: 260, speed: 0.008, intensity: 0.06, pulseRate: 0.015, spread: 0.15, harmonicShift: 0.3, brightness: 0.45 },
+  { name: 'Beta', hue: 190, speed: 0.015, intensity: 0.1, pulseRate: 0.025, spread: 0.25, harmonicShift: 0.7, brightness: 0.6 },
+  { name: 'Gamma', hue: 30, speed: 0.02, intensity: 0.12, pulseRate: 0.03, spread: 0.3, harmonicShift: 0.8, brightness: 0.65 },
 ];
 
-const CYCLE = 8000;
+const CYCLE = 12000;
 
 /* ── Particle Cloud ── */
 const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ moodRef }) => {
@@ -68,7 +68,7 @@ const ParticleCloud: React.FC<{ moodRef: React.MutableRefObject<number> }> = ({ 
         + Math.sin(t * p.speed * 0.1 + p.phase) * 0.04 * c.intensity;
 
       // Slow orbital drift
-      const drift = t * p.speed * c.speed * 0.025;
+      const drift = t * p.speed * c.speed * 0.01;
       const dx = p.dir.x * Math.cos(drift) - p.dir.z * Math.sin(drift);
       const dz = p.dir.x * Math.sin(drift) + p.dir.z * Math.cos(drift);
 
@@ -158,8 +158,8 @@ const WaveformRing: React.FC<{
     c.harmonicShift += (mood.harmonicShift - c.harmonicShift) * 0.02;
 
     groupRef.current.rotation.x = tilt;
-    groupRef.current.rotation.z = t * c.speed * 0.12;
-    groupRef.current.rotation.y = t * c.speed * 0.06;
+    groupRef.current.rotation.z = t * c.speed * 0.04;
+    groupRef.current.rotation.y = t * c.speed * 0.02;
 
     const dispersal = 0.6 + c.spread * 1.4;
     const baseR = radius * dispersal;
