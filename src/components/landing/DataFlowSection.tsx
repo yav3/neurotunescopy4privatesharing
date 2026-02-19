@@ -44,6 +44,7 @@ export const DataFlowSection: React.FC = () => {
 
   return (
     <section
+      id="science"
       className="relative py-16 md:py-20 overflow-hidden"
       style={{
         background: 'transparent',

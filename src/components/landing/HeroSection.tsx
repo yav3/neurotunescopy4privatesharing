@@ -7,6 +7,7 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section
+      id="hero"
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
