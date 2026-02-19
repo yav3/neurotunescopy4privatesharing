@@ -64,6 +64,27 @@ export const NavigationHeader = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
+                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Explore</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/demo" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Demo</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#technology" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Technology</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#science" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Science</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#how-it-works" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">How It Works</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/research" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Research</Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator className="bg-white/20 my-1" />
+
+              <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
                   <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
@@ -179,6 +200,27 @@ export const NavigationHeader = () => {
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Explore</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/demo" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Demo</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#technology" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Technology</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#science" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Science</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/#how-it-works" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">How It Works</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/research" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Research</Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator className="bg-white/20 my-1" />
+
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
                 <DropdownMenuItem asChild>

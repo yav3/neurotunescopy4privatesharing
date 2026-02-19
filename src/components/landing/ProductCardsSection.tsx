@@ -33,6 +33,7 @@ const products = [
 export const ProductCardsSection: React.FC = () => {
   return (
     <section
+      id="products"
       className="relative py-20 md:py-24 overflow-hidden"
       style={{
         background: 'transparent',

@@ -72,6 +72,7 @@ export const PipelineSection: React.FC = () => {
 
   return (
     <section
+      id="technology"
       className="relative py-20 md:py-24 overflow-hidden"
       style={{
         background: 'transparent',

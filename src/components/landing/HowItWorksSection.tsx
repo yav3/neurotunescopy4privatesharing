@@ -41,6 +41,7 @@ export const HowItWorksSection: React.FC = () => {
 
   return (
     <section
+      id="how-it-works"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
         background: 'transparent',
