@@ -53,7 +53,7 @@ export const ProductCardsSection: React.FC = () => {
             color: 'rgba(255, 255, 255, 0.95)',
           }}
         >
-          Beyond music—<span style={{ color: 'hsl(210, 80%, 60%)' }}>infrastructure</span>
+          Beyond music—<span style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>infrastructure</span>
         </motion.h2>
 
         <motion.p
@@ -94,13 +94,13 @@ export const ProductCardsSection: React.FC = () => {
                     className="w-10 h-10 rounded-lg flex items-center justify-center mb-5"
                     style={{ background: 'hsla(210, 80%, 55%, 0.1)', border: '1px solid hsla(210, 80%, 55%, 0.15)' }}
                   >
-                    <Icon className="w-5 h-5" strokeWidth={1.5} style={{ color: 'hsl(210, 80%, 60%)' }} />
+                    <Icon className="w-5 h-5" strokeWidth={1.5} style={{ color: '#06b6d4' }} />
                   </motion.div>
 
                   <h3 style={{ fontSize: '18px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.95)', marginBottom: '4px' }}>
                     {product.title}
                   </h3>
-                  <p style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(210, 80%, 60%)', marginBottom: '12px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 400, background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '12px' }}>
                     {product.tag}
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: 300, lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.45)' }}>
@@ -132,7 +132,7 @@ export const ProductCardsSection: React.FC = () => {
                 <Link
                   to={product.link}
                   className="inline-flex items-center gap-2 mt-8 group-hover:gap-3 transition-all"
-                  style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(210, 80%, 60%)' }}
+                  style={{ fontSize: '14px', fontWeight: 400, background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                 >
                   Explore <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -152,11 +152,11 @@ export const ProductCardsSection: React.FC = () => {
             to="/demo"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full transition-all hover:gap-3"
             style={{
-              background: 'linear-gradient(135deg, hsl(210, 80%, 50%), hsl(220, 85%, 55%))',
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
               color: 'white',
               fontSize: '14px',
               fontWeight: 400,
-              boxShadow: '0 0 24px hsla(210, 80%, 55%, 0.3)',
+              boxShadow: '0 0 24px rgba(6, 182, 212, 0.3)',
             }}
           >
             Experience the demo <ArrowRight className="w-4 h-4" />

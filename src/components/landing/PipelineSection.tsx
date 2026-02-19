@@ -143,7 +143,7 @@ export const PipelineSection: React.FC = () => {
                   <Icon
                     className="w-6 h-6 mb-3"
                     strokeWidth={1.2}
-                    style={{ color: isActive ? 'hsl(210, 80%, 60%)' : isPast ? 'hsl(210, 40%, 55%)' : 'hsl(0, 0%, 50%)' }}
+                    style={{ color: isActive ? '#06b6d4' : isPast ? 'hsl(210, 40%, 55%)' : 'hsl(0, 0%, 50%)' }}
                   />
                 </motion.div>
                 <h3 style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(0, 0%, 95%)' : 'hsl(0, 0%, 72%)', marginBottom: '2px', transition: 'color 0.4s' }}>

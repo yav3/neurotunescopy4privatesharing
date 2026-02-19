@@ -70,11 +70,11 @@ export const HowItWorksSection: React.FC = () => {
           <div
             className="inline-flex items-center gap-2 px-5 py-2 rounded-full"
             style={{
-              background: 'hsla(200, 80%, 50%, 0.08)',
-              border: '1px solid hsla(200, 80%, 50%, 0.15)',
+              background: 'hsla(190, 80%, 50%, 0.08)',
+              border: '1px solid hsla(190, 80%, 50%, 0.15)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsla(200, 60%, 70%, 0.8)' }}>
+            <span style={{ fontSize: '11px', fontWeight: 400, letterSpacing: '0.15em', background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               HOW IT WORKS
             </span>
           </div>
@@ -106,7 +106,7 @@ export const HowItWorksSection: React.FC = () => {
           <motion.div
             className="absolute top-1/2 left-0 h-px -translate-y-1/2 origin-left"
             style={{ 
-              background: 'linear-gradient(90deg, hsl(200, 100%, 50%), hsl(180, 80%, 55%))',
+              background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
               boxShadow: '0 0 12px hsla(200, 100%, 50%, 0.4)',
             }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}

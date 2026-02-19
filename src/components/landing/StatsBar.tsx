@@ -52,7 +52,7 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.2, duration: 0.5, type: 'spring' }}
-                style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, color: 'rgba(255, 255, 255, 0.95)' }}
+                style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
               >
                 {stat.value}
               </motion.p>
