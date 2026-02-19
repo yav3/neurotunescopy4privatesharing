@@ -47,7 +47,7 @@ export const HeroSection: React.FC = () => {
             <div className="flex gap-8 sm:gap-12 mt-8">
               {[
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
-                { value: '14K+', label: 'SUBJECTS ANALYZED' },
+                { value: '52 Genres', label: '8 LANGUAGES' },
               ].map((stat, i) => (
                 <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(0, 0%, 100%, 0.1)' : 'none', paddingLeft: i > 0 ? '24px' : '0' }}>
                   <p style={{
