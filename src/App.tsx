@@ -176,7 +176,7 @@ const AppContent = () => {
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
         <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
-        <Route path="/landing" element={<AdvancedAuthGuard><Index /></AdvancedAuthGuard>} />
+        <Route path="/landing" element={<Index />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordForm />} />
         <Route path="/verify" element={<ResetPasswordForm />} />
