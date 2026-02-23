@@ -209,7 +209,7 @@ export const NavigationHeader = () => {
       <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">
+            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 35%)' : 'hsla(0,0%,100%,0.7)' }}>
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
@@ -299,30 +299,35 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-1.5">
-            <LissajousLogo size={20} color="hsla(0, 0%, 100%, 0.8)" />
+            <LissajousLogo size={20} color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
             <span className="text-sm tracking-normal uppercase whitespace-nowrap" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {isLandingPage && (
             <button
               onClick={handleSoundToggle}
-              className="p-1.5 rounded-full hover:bg-white/10 transition-all duration-200"
+              className="p-1.5 rounded-full transition-all duration-200"
+              style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 45%)' : undefined }}
               aria-label={isMuted ? "Unmute" : "Mute"}
             >
               {isMuted ? (
-                <VolumeX className="w-4 h-4 text-[#e4e4e4]/70" />
+                <VolumeX className="w-4 h-4" style={{ color: 'inherit' }} />
               ) : (
-                <Volume2 className="w-4 h-4 text-[#e4e4e4]" />
+                <Volume2 className="w-4 h-4" style={{ color: 'inherit' }} />
               )}
             </button>
           )}
           <Link 
             to="/auth" 
-            className="px-3 py-1 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-[10px] font-normal"
+            className="px-3 py-1 rounded-full transition-all duration-500 text-[10px] font-normal"
+            style={{
+              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
+              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+            }}
           >
             Login
           </Link>
