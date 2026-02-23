@@ -71,6 +71,113 @@ export type Database = {
         }
         Relationships: []
       }
+      api_key_usage: {
+        Row: {
+          api_key_id: string
+          created_at: string
+          endpoint: string
+          error_message: string | null
+          id: string
+          ip_address: string | null
+          latency_ms: number | null
+          method: string
+          request_size: number | null
+          response_size: number | null
+          status_code: number
+          user_agent: string | null
+        }
+        Insert: {
+          api_key_id: string
+          created_at?: string
+          endpoint: string
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          latency_ms?: number | null
+          method?: string
+          request_size?: number | null
+          response_size?: number | null
+          status_code: number
+          user_agent?: string | null
+        }
+        Update: {
+          api_key_id?: string
+          created_at?: string
+          endpoint?: string
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          latency_ms?: number | null
+          method?: string
+          request_size?: number | null
+          response_size?: number | null
+          status_code?: number
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_key_usage_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_keys: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          environment: string
+          expires_at: string | null
+          id: string
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string
+          rate_limit_rpm: number
+          scopes: string[]
+          status: string
+          total_requests: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          environment?: string
+          expires_at?: string | null
+          id?: string
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name: string
+          rate_limit_rpm?: number
+          scopes?: string[]
+          status?: string
+          total_requests?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          environment?: string
+          expires_at?: string | null
+          id?: string
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string
+          rate_limit_rpm?: number
+          scopes?: string[]
+          status?: string
+          total_requests?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       biomarker_discoveries: {
         Row: {
           authors: string[] | null
@@ -4720,6 +4827,10 @@ export type Database = {
       histogram: {
         Args: { _bucket: number; _quryid: number }
         Returns: Record<string, unknown>[]
+      }
+      increment_api_key_requests: {
+        Args: { key_id: string }
+        Returns: undefined
       }
       increment_play_count: { Args: { track_id: string }; Returns: undefined }
       increment_track_play_count: {

@@ -9,31 +9,32 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12 pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 container mx-auto px-6 sm:px-10 md:px-16 lg:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-center">
           {/* Left: Copy */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-lg"
+            className="max-w-xl"
             style={{
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
             }}
           >
             <h1
               style={{
-                fontSize: 'clamp(32px, 6vw, 48px)',
+                fontSize: 'clamp(36px, 5.5vw, 56px)',
                 fontWeight: 400,
-                letterSpacing: '-0.02em',
-                lineHeight: 1.15,
+                letterSpacing: '-0.025em',
+                lineHeight: 1.1,
                 color: 'hsla(0, 0%, 92%, 0.95)',
               }}
             >
-              Music that moves you.{' '}
+              Music that moves you.
+              <br />
               <span style={{
                 background: GRADIENT,
                 WebkitBackgroundClip: 'text',
@@ -44,14 +45,14 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             {/* Stats row */}
-            <div className="flex gap-8 sm:gap-12 mt-8">
+            <div className="flex gap-10 sm:gap-14 mt-10">
               {[
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
                 { value: '52 Genres', label: '8 LANGUAGES' },
               ].map((stat, i) => (
-                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(0, 0%, 100%, 0.1)' : 'none', paddingLeft: i > 0 ? '24px' : '0' }}>
+                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(0, 0%, 100%, 0.08)' : 'none', paddingLeft: i > 0 ? '28px' : '0' }}>
                   <p style={{
-                    fontSize: 'clamp(20px, 3vw, 28px)',
+                    fontSize: 'clamp(22px, 3vw, 32px)',
                     fontWeight: 400,
                     background: GRADIENT,
                     WebkitBackgroundClip: 'text',
@@ -59,7 +60,7 @@ export const HeroSection: React.FC = () => {
                   }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.1em', color: 'hsla(0, 0%, 100%, 0.4)', marginTop: '2px' }}>
+                  <p style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsla(0, 0%, 100%, 0.35)', marginTop: '4px' }}>
                     {stat.label}
                   </p>
                 </div>
@@ -67,21 +68,21 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* CTA */}
-            <div className="mt-7">
+            <div className="mt-10">
               <Link
                 to="/demo"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full transition-all duration-500 hover:scale-105"
                 style={{
                   background: GRADIENT,
                   color: 'hsla(0, 0%, 100%, 0.95)',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   fontWeight: 500,
                   letterSpacing: '0.01em',
-                  boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)',
+                  boxShadow: '0 0 24px rgba(6, 182, 212, 0.25)',
                 }}
               >
                 Demo
-                <span style={{ fontSize: '16px' }}>→</span>
+                <span style={{ fontSize: '17px' }}>→</span>
               </Link>
             </div>
           </motion.div>
@@ -94,7 +95,7 @@ export const HeroSection: React.FC = () => {
             className="flex items-center justify-center"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 xl:w-96 xl:h-96 relative group-hover:scale-105 transition-transform duration-700">
+              <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-[360px] md:h-[360px] xl:w-[420px] xl:h-[420px] relative group-hover:scale-105 transition-transform duration-700">
                 <WaveletSphere />
               </div>
             </Link>
