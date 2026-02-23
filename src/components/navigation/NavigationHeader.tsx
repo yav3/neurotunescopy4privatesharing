@@ -17,8 +17,17 @@ export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+
+  // Track scroll for nav background transition on landing page
+  useEffect(() => {
+    if (!isLandingPage) return;
+    const onScroll = () => setScrolled(window.scrollY > 200);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isLandingPage]);
 
   // Listen for mute state changes from player
   useEffect(() => {
@@ -55,12 +64,12 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 border-b border-white/[0.06] fixed top-0 left-0 right-0 z-50" style={{ background: 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', boxShadow: '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
+      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5" style={{ color: isLandingPage && !scrolled ? 'hsl(220, 20%, 30%)' : undefined }} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
@@ -151,7 +160,7 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-2">
-            <LissajousLogo size={26} color="hsla(0, 0%, 100%, 0.8)" />
+            <LissajousLogo size={26} color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
             <span className="text-[22px] tracking-tight uppercase" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
@@ -175,7 +184,11 @@ export const NavigationHeader = () => {
           )}
           <Link 
             to="/auth" 
-            className="px-6 py-2 rounded-full border border-white/30 text-[#e4e4e4] hover:bg-white/10 transition-all duration-200 text-sm font-normal"
+            className="px-6 py-2 rounded-full transition-all duration-500 text-sm font-normal"
+            style={{
+              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
+              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+            }}
           >
             Login
           </Link>
@@ -193,7 +206,7 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-2 border-b border-white/[0.06] fixed top-0 left-0 right-0 z-50" style={{ background: 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', boxShadow: '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
+      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-1.5 hover:bg-white/5 rounded">

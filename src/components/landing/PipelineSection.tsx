@@ -87,7 +87,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-2"
-          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(0, 0%, 50%)' }}
+          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(0, 0%, 65%)' }}
         >
           COMPOSITION ENGINE
         </motion.p>
