@@ -29,8 +29,8 @@ export const HeroSection: React.FC = () => {
         }}
       />
 
-      <div className="relative z-10 container mx-auto px-6 sm:px-10 md:px-16 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-center">
+      <div className="relative z-10 container mx-auto px-5 sm:px-8 md:px-12 lg:px-20 pt-20 sm:pt-16 md:pt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 sm:gap-10 lg:gap-16 xl:gap-20 items-center">
           {/* Left: Copy */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -43,7 +43,7 @@ export const HeroSection: React.FC = () => {
           >
             <h1
               style={{
-                fontSize: 'clamp(36px, 5.5vw, 56px)',
+                fontSize: 'clamp(28px, 5vw, 56px)',
                 fontWeight: 400,
                 letterSpacing: '-0.025em',
                 lineHeight: 1.1,
@@ -62,14 +62,14 @@ export const HeroSection: React.FC = () => {
             </h1>
 
             {/* Stats row */}
-            <div className="flex gap-10 sm:gap-14 mt-10">
+            <div className="flex gap-6 sm:gap-10 md:gap-14 mt-6 sm:mt-8 md:mt-10">
               {[
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
                 { value: '52 Genres', label: '8 LANGUAGES' },
               ].map((stat, i) => (
-                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(215, 30%, 60%, 0.25)' : 'none', paddingLeft: i > 0 ? '28px' : '0' }}>
+                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(215, 30%, 60%, 0.25)' : 'none', paddingLeft: i > 0 ? '20px' : '0' }}>
                   <p style={{
-                    fontSize: 'clamp(22px, 3vw, 32px)',
+                    fontSize: 'clamp(20px, 3vw, 32px)',
                     fontWeight: 400,
                     background: GRADIENT,
                     WebkitBackgroundClip: 'text',
@@ -77,7 +77,7 @@ export const HeroSection: React.FC = () => {
                   }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsla(215, 20%, 40%, 0.7)', marginTop: '4px' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsla(215, 20%, 40%, 0.7)', marginTop: '3px' }}>
                     {stat.label}
                   </p>
                 </div>
@@ -85,21 +85,21 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* CTA */}
-            <div className="mt-10">
+            <div className="mt-7 sm:mt-8 md:mt-10">
               <Link
                 to="/demo"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full transition-all duration-500 hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full transition-all duration-500 hover:scale-105"
                 style={{
                   background: GRADIENT,
                   color: 'hsl(0, 0%, 100%)',
-                  fontSize: '15px',
+                  fontSize: '14px',
                   fontWeight: 500,
                   letterSpacing: '0.01em',
                   boxShadow: '0 4px 24px hsla(210, 80%, 50%, 0.3), 0 1px 3px hsla(210, 80%, 50%, 0.15)',
                 }}
               >
                 Demo
-                <span style={{ fontSize: '17px' }}>→</span>
+                <span style={{ fontSize: '16px' }}>→</span>
               </Link>
             </div>
           </motion.div>
@@ -109,10 +109,10 @@ export const HeroSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center -mt-4 sm:mt-0"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-[360px] md:h-[360px] xl:w-[420px] xl:h-[420px] relative group-hover:scale-105 transition-transform duration-700">
+              <div className="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[340px] lg:h-[340px] xl:w-[400px] xl:h-[400px] relative group-hover:scale-105 transition-transform duration-700">
                 <WaveletSphere />
               </div>
             </Link>
@@ -120,12 +120,12 @@ export const HeroSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — hidden on very small screens */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-0 right-0 text-center"
+        className="absolute bottom-6 sm:bottom-10 left-0 right-0 text-center hidden sm:block"
       >
         <div className="w-6 h-10 mx-auto rounded-full border-2 flex items-start justify-center pt-2"
           style={{ borderColor: 'hsla(215, 30%, 50%, 0.2)' }}
