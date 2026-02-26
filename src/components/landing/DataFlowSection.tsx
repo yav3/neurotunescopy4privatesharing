@@ -5,7 +5,7 @@ import { User, Brain, Music2, ArrowRight, Sparkles } from 'lucide-react';
 const pairings = [
   { genre: 'New Age & World', goal: 'Stress & Anxiety Reduction', match: 94 },
   { genre: 'Classical', goal: 'Focus & Concentration', match: 89 },
-  { genre: 'Chopin', goal: 'Pain Relief', match: 91 },
+  { genre: 'Chopin', goal: 'Pain Management', match: 91 },
   { genre: 'Pop', goal: 'Energy & Mood Boost', match: 86 },
   { genre: 'Electronic', goal: 'HIIT & Cardio', match: 92 },
 ];

@@ -89,7 +89,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     bpmRange: { min: 40, max: 70, optimal: 55 },
     vadProfile: { valence: 0.7, arousal: 0.1, dominance: 0.4 },
     musicBuckets: ['gentleclassicalforpain', 'Nocturnes'],
-    synonyms: ['anxiety', 'anxiety_relief', 'anxiety-down', 'classical']
+    synonyms: ['anxiety', 'anxiety_support', 'anxiety-down', 'classical']
   },
   {
     id: 'sleep-preparation',
@@ -145,7 +145,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     backendKey: 'pain-support',
     name: 'Recovery',
     shortName: 'Recovery',
-    description: 'Provide comfort and pain relief support',
+    description: 'Provide comfort and pain management support',
     icon: Flower,
     artwork: painSupportCard,
     color: 'gray',
@@ -153,7 +153,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     bpmRange: { min: 50, max: 70, optimal: 60 },
     vadProfile: { valence: 0.6, arousal: 0.2, dominance: 0.3 },
     musicBuckets: ['gentleclassicalforpain', 'Chopin'],
-    synonyms: ['pain', 'relief', 'comfort', 'pain_management', 'healing']
+    synonyms: ['pain', 'comfort', 'support', 'pain_management', 'restoration']
   }
 ];
 

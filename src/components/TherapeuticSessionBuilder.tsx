@@ -21,7 +21,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
   className = ''
 }) => {
   const { goals, mapper } = useTherapeuticGoals();
-  const [selectedGoalId, setSelectedGoalId] = useState('anxiety-relief') // Use kebab-case ID
+  const [selectedGoalId, setSelectedGoalId] = useState('anxiety-support') // Use kebab-case ID
   const [duration, setDuration] = useState([15])
   const [intensity, setIntensity] = useState([3])
   const [isBuilding, setIsBuilding] = useState(false)

@@ -16,7 +16,7 @@ const deploymentCategories = [
     icon: Plane,
     title: "Enterprise & Performance",
     description: "Airlines, hotels, spas, peak performance programs, and employee benefit offerings.",
-    subtext: "On-demand stress relief, focus support, and recovery as a premium service — no medication and no extra hardware.",
+    subtext: "On-demand stress support, focus enhancement, and recovery as a premium service — no medication and no extra hardware.",
     image: enterpriseImg,
   },
   {

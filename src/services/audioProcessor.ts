@@ -244,7 +244,7 @@ export class AudioProcessor {
     
     // Generate conditions based on primary band
     const conditionMap = {
-      delta: ['sleep', 'pain_relief', 'healing', 'deep_relaxation'],
+      delta: ['sleep', 'pain_management', 'restoration', 'deep_relaxation'],
       theta: ['meditation', 'creativity', 'emotional_processing', 'memory'],
       alpha: ['focus', 'calm_alertness', 'stress_reduction', 'learning'],
       beta: ['concentration', 'problem_solving', 'active_thinking', 'alertness'],

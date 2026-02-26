@@ -16,7 +16,7 @@ export interface ParsedTitle {
 
 export class SmartTitleParser {
   private static patterns = {
-    purpose: /\b(Focus|Relaxation|Sleep|Stress Relief|Meditation|Anxiety|Depression|ADHD)\b/gi,
+    purpose: /\b(Focus|Relaxation|Sleep|Stress Management|Meditation|Anxiety|Depression|ADHD)\b/gi,
     movement: /\b(Movement \d+|Allegro|Adagio|Andante|Presto|Largo)\b/gi,
     duration: /\b\d+\s?(min|minutes?|hr|hours?|sec|seconds?)\b/gi,
     genre: /\b(Classical|Ambient|Nature|Binaural|Pink Noise|White Noise)\b/gi,

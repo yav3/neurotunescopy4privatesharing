@@ -253,7 +253,7 @@ export default function PopulationHealth() {
                   10–20 min sessions while awaiting labs/re-evaluation. Typical ESI 3–5 patients.
                 </p>
                 <p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                  Goal: Fast relief during the wait; ease anxiety &amp; pain.
+                  Goal: Fast comfort during the wait; ease anxiety &amp; pain.
                 </p>
               </div>
 

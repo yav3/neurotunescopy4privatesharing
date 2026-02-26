@@ -288,12 +288,12 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={therapyStonesWater} 
-                  alt="Anxiety relief therapy - smooth stones by peaceful water" 
-                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                   alt="Anxiety support therapy - smooth stones by peaceful water" 
+                   className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-teal-500/20 backdrop-blur-sm text-teal-700 px-3 py-1 rounded-full text-sm font-medium border border-teal-300/50">
-                    Anxiety Relief
+                    Anxiety Support
                   </span>
                 </div>
               </div>

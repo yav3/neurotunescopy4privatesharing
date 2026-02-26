@@ -156,7 +156,7 @@ export const THERAPEUTIC_USE_CASES: TherapeuticUseCase[] = [
       }
     },
     progressionPath: [
-      { step: 1, milestone: 'Immediate anxiety relief', expectedChange: '30% reduction in subjective anxiety', timeframe: 'within session', nextAction: 'practice daily for 1 week' },
+      { step: 1, milestone: 'Immediate anxiety reduction', expectedChange: '30% reduction in subjective anxiety', timeframe: 'within session', nextAction: 'practice daily for 1 week' },
       { step: 2, milestone: 'Sustained calm', expectedChange: 'maintain reduced anxiety 2+ hours post-session', timeframe: '3-5 sessions', nextAction: 'extend session duration' },
       { step: 3, milestone: 'Anticipatory regulation', expectedChange: 'proactive use before anxiety triggers', timeframe: '2 weeks', nextAction: 'integrate with CBT techniques' },
       { step: 4, milestone: 'Autonomous coping', expectedChange: 'reduced frequency of acute anxiety episodes', timeframe: '4-6 weeks', nextAction: 'maintenance protocol' }
@@ -341,7 +341,7 @@ export const THERAPEUTIC_USE_CASES: TherapeuticUseCase[] = [
         {
           name: 'Endorphin Release Phase',
           duration: 15,
-          purpose: 'Stimulate natural pain relief mechanisms',
+          purpose: 'Stimulate natural pain management mechanisms',
           vadTargets: {
             valence: { min: 0.6, max: 0.8, target: 0.7 },
             arousal: { min: 0.2, max: 0.4, target: 0.3 },
@@ -360,8 +360,8 @@ export const THERAPEUTIC_USE_CASES: TherapeuticUseCase[] = [
       }
     },
     progressionPath: [
-      { step: 1, milestone: 'Acute pain relief', expectedChange: '2-3 point reduction on pain scale', timeframe: 'during session', nextAction: 'track pain patterns' },
-      { step: 2, milestone: 'Extended relief duration', expectedChange: 'pain relief lasts 2+ hours', timeframe: '3-5 sessions', nextAction: 'increase session frequency' },
+      { step: 1, milestone: 'Acute pain reduction', expectedChange: '2-3 point reduction on pain scale', timeframe: 'during session', nextAction: 'track pain patterns' },
+      { step: 2, milestone: 'Extended comfort duration', expectedChange: 'pain comfort lasts 2+ hours', timeframe: '3-5 sessions', nextAction: 'increase session frequency' },
       { step: 3, milestone: 'Improved pain coping', expectedChange: 'better emotional response to pain', timeframe: '2 weeks', nextAction: 'integrate with physical therapy' },
       { step: 4, milestone: 'Reduced pain medication', expectedChange: '20-30% reduction in pain medication', timeframe: '4-6 weeks', nextAction: 'consult with physician' }
     ],

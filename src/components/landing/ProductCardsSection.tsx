@@ -7,7 +7,7 @@ const products = [
   {
     icon: Heart,
     title: 'Clinical',
-    tag: 'Anxiety & pain relief',
+    tag: 'Anxiety & pain support',
     description: 'Validated protocols for oncology, ED, and post-op care.',
     badges: ['Oncology', 'ED triage', 'Pain'],
     link: '/products/population-health',
