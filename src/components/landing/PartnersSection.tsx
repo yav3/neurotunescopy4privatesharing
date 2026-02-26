@@ -61,7 +61,7 @@ export const PartnersSection = () => {
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
-                  className="w-full h-16 object-contain brightness-0 invert opacity-75 hover:opacity-95 transition-all duration-300"
+                  className="h-10 max-w-[200px] object-contain opacity-75 hover:opacity-95 transition-all duration-300"
                   style={{
                     filter: 'brightness(0) invert(1) drop-shadow(0 0 8px rgba(255,255,255,0.1))',
                   }}
