@@ -145,7 +145,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     backendKey: 'pain-support',
     name: 'Recovery',
     shortName: 'Recovery',
-    description: 'Provide comfort and pain management support',
+    description: 'Provide comfort and pain distraction support',
     icon: Flower,
     artwork: painSupportCard,
     color: 'gray',

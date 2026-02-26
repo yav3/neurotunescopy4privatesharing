@@ -29,7 +29,7 @@ export const Library = () => {
       image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=400&fit=crop"
     },
     {
-      name: "Pain Management",
+      name: "Pain Distraction",
       count: "650+ tracks",
       color: "#f59e0b",
       image: "https://images.unsplash.com/photo-1559511260-66a654ae982a?w=400&h=400&fit=crop"

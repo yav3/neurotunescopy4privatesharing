@@ -30,7 +30,7 @@ export class TherapeuticMusicDebugger {
       'newageworldstressanxietyreduction': 'New Age & World Stress Support',
       'painreducingworld': 'Stress & Anxiety Support',
       'sonatasforstress': 'Stress & Anxiety Support',
-      'gentleclassicalforpain': 'Pain Support',
+      'gentleclassicalforpain': 'Pain Distraction',
       'focus-music': 'Focus & Concentration',
       'classicalfocus': 'Focus & Concentration',
       'NewAgeandWorldFocus': 'Focus & Concentration',
