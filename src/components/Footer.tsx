@@ -26,12 +26,12 @@ export const Footer = () => {
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
-                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-8 sm:h-10 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
-                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-6 sm:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
               />
               <img 
                 src={weillCornellLogo} 
