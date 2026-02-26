@@ -91,7 +91,7 @@ export class QAAutomation {
       }
 
       // Test therapeutic goals integration
-      const goals = ['anxiety-relief', 'focus-enhancement', 'energy-boost', 'sleep-improvement', 'emotional-regulation'];
+      const goals = ['anxiety-support', 'focus-enhancement', 'energy-boost', 'sleep-improvement', 'emotional-regulation'];
       for (const goal of goals) {
         try {
           const result = await audioState.playFromGoal(goal);

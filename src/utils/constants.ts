@@ -44,7 +44,7 @@ export const FREQUENCY_BANDS = {
 export const THERAPEUTIC_CONDITIONS = [
   'anxiety',
   'depression',
-  'pain_relief',
+  'pain_management',
   'focus_enhancement',
   'sleep_improvement',
   'stress_reduction',

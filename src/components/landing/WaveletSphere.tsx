@@ -6,7 +6,7 @@ import * as THREE from 'three';
 const STATES = [
   {
     name: 'Theta',
-    label: 'Pain Relief',
+    label: 'Calm',
     hue: 174,        // Teal #2DD4BF
     saturation: 0.64,
     lightness: 0.57,
@@ -20,28 +20,28 @@ const STATES = [
   {
     name: 'Alpha',
     label: 'Relax',
-    hue: 43,          // Gold #F59E0B
-    saturation: 0.92,
-    lightness: 0.50,
+    hue: 43,
+    saturation: 0.95,
+    lightness: 0.55,
     speed: 0.8,
     amplitude: 0.09,
     pulseRate: 0.018,
     spread: 0.2,
     harmonicShift: 0.5,
-    brightness: 0.55,
+    brightness: 0.7,
   },
   {
     name: 'Low Beta',
     label: 'Focus',
-    hue: 217,         // Blue #3B82F6
-    saturation: 0.91,
-    lightness: 0.60,
-    speed: 0.4,        // crisp, faster pulses
-    amplitude: 0.06,   // tight, controlled
+    hue: 217,
+    saturation: 0.95,
+    lightness: 0.65,
+    speed: 0.4,
+    amplitude: 0.06,
     pulseRate: 0.025,
     spread: 0.15,
     harmonicShift: 0.7,
-    brightness: 0.6,
+    brightness: 0.75,
   },
 ];
 
@@ -146,8 +146,8 @@ const ParticleCloud: React.FC<{
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     const lightness = 0.45 + introLight * 0.35 + globalPulse * 0.06 * c.amplitude;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.025);
-    mat.opacity = 0.6 + c.brightness * 0.25 + globalPulse * 0.1 * c.amplitude;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.035);
+    mat.opacity = 0.75 + c.brightness * 0.2 + globalPulse * 0.1 * c.amplitude;
   });
 
   return (
@@ -187,8 +187,8 @@ const GlowCore: React.FC<{
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
     const coreLightness = 0.4 + c.brightness * 0.4 + pulse * 0.12 * c.amplitude;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.03);
-    mat.opacity = 0.1 + c.brightness * 0.3 + pulse * 0.3 * c.amplitude;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.04);
+    mat.opacity = 0.2 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
   });
 
   return (
@@ -274,8 +274,8 @@ const WaveformRing: React.FC<{
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.1, c.saturation, intro) : c.saturation;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.7), 0.03);
-    mat.opacity = 0.4 + c.amplitude * 0.4;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.75), 0.04);
+    mat.opacity = 0.55 + c.amplitude * 0.4;
   });
 
   return (

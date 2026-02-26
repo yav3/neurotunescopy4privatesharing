@@ -27,10 +27,10 @@ export class TherapeuticMusicDebugger {
     
     // Likely display name mappings (inferred from your screenshot)
     this.displayNameMappings = {
-      'newageworldstressanxietyreduction': 'New Age & World Stress Relief',
+      'newageworldstressanxietyreduction': 'New Age & World Stress Support',
       'painreducingworld': 'Stress & Anxiety Support',
       'sonatasforstress': 'Stress & Anxiety Support',
-      'gentleclassicalforpain': 'Pain Relief',
+      'gentleclassicalforpain': 'Pain Support',
       'focus-music': 'Focus & Concentration',
       'classicalfocus': 'Focus & Concentration',
       'NewAgeandWorldFocus': 'Focus & Concentration',

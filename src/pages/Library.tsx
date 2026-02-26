@@ -11,7 +11,7 @@ export const Library = () => {
       image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=400&fit=crop"
     },
     {
-      name: "Anxiety & Stress Relief",
+      name: "Anxiety & Stress Management",
       count: "980+ tracks",
       color: "#8b5cf6",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"

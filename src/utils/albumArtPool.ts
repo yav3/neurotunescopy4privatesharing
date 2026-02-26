@@ -63,7 +63,7 @@ export const getAlbumArtByGoal = (goalId: string): string => {
     'focus-enhancement': zenStonesArt,        // Balance and concentration
     'stress-anxiety': mountainLakeArt,        // Calm serenity
     'mood-boost': goldenSplashArt,           // Energy and vitality
-    'pain-relief': dewdropArt,               // Gentle healing
+    'pain-support': dewdropArt,               // Gentle comfort
     'energy-boost': energyMotivationArt,     // Dynamic energy with ocean wave
     'sleep-support': sunsetLakeArt,          // Peaceful rest
     'meditation': waterDropArt,              // Mindful focus

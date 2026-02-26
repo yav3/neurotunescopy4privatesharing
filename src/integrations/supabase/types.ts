@@ -375,6 +375,62 @@ export type Database = {
         }
         Relationships: []
       }
+      checklist_items: {
+        Row: {
+          assigned_to: string | null
+          category: string
+          checklist_id: string
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string
+          due_date: string | null
+          id: string
+          is_completed: boolean | null
+          item_text: string
+          notes: string | null
+          priority: string | null
+          sort_order: number | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          category: string
+          checklist_id: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean | null
+          item_text: string
+          notes?: string | null
+          priority?: string | null
+          sort_order?: number | null
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string
+          checklist_id?: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean | null
+          item_text?: string
+          notes?: string | null
+          priority?: string | null
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_items_checklist_id_fkey"
+            columns: ["checklist_id"]
+            isOneToOne: false
+            referencedRelation: "diligence_checklists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cognitive_biomarkers: {
         Row: {
           baseline_value: number | null
@@ -424,6 +480,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      convertible_notes: {
+        Row: {
+          accrued_interest: number | null
+          ai_analysis: Json | null
+          amendment_threshold: number | null
+          conversion_cap: number | null
+          conversion_discount: number | null
+          conversion_trigger: string | null
+          created_at: string
+          created_by: string | null
+          deal_name: string
+          id: string
+          interest_rate: number | null
+          interest_type: string | null
+          investor_name: string | null
+          issue_date: string | null
+          maturity_date: string | null
+          mfn_clause: boolean | null
+          notes: string | null
+          principal_amount: number | null
+          raw_terms: Json | null
+          status: string | null
+          updated_at: string
+          valuation_cap: number | null
+        }
+        Insert: {
+          accrued_interest?: number | null
+          ai_analysis?: Json | null
+          amendment_threshold?: number | null
+          conversion_cap?: number | null
+          conversion_discount?: number | null
+          conversion_trigger?: string | null
+          created_at?: string
+          created_by?: string | null
+          deal_name: string
+          id?: string
+          interest_rate?: number | null
+          interest_type?: string | null
+          investor_name?: string | null
+          issue_date?: string | null
+          maturity_date?: string | null
+          mfn_clause?: boolean | null
+          notes?: string | null
+          principal_amount?: number | null
+          raw_terms?: Json | null
+          status?: string | null
+          updated_at?: string
+          valuation_cap?: number | null
+        }
+        Update: {
+          accrued_interest?: number | null
+          ai_analysis?: Json | null
+          amendment_threshold?: number | null
+          conversion_cap?: number | null
+          conversion_discount?: number | null
+          conversion_trigger?: string | null
+          created_at?: string
+          created_by?: string | null
+          deal_name?: string
+          id?: string
+          interest_rate?: number | null
+          interest_type?: string | null
+          investor_name?: string | null
+          issue_date?: string | null
+          maturity_date?: string | null
+          mfn_clause?: boolean | null
+          notes?: string | null
+          principal_amount?: number | null
+          raw_terms?: Json | null
+          status?: string | null
+          updated_at?: string
+          valuation_cap?: number | null
+        }
+        Relationships: []
       }
       curated_tracks: {
         Row: {
@@ -595,6 +726,606 @@ export type Database = {
           },
         ]
       }
+      diagnostic_devices: {
+        Row: {
+          advantages: string[] | null
+          ai_enrichment_status: string | null
+          automation_level: string | null
+          ce_mark: boolean | null
+          clinical_evidence: Json | null
+          competitors: string[] | null
+          connectivity: string[] | null
+          cost_device_usd: number | null
+          cost_maintenance_annual_usd: number | null
+          cost_per_test_usd: number | null
+          cost_reagents_annual_usd: number | null
+          cpt_codes: string[] | null
+          created_at: string
+          device_category: string | null
+          device_name: string
+          device_type: string
+          dimensions: string | null
+          disadvantages: string[] | null
+          fda_clearance_date: string | null
+          fda_clearance_number: string | null
+          fda_clearance_type: string | null
+          id: string
+          installed_base_global: number | null
+          installed_base_us: number | null
+          intended_use: string | null
+          lifespan_years: number | null
+          maintenance_schedule: string | null
+          manufacturer: string | null
+          market_growth_rate: number | null
+          market_share_pct: number | null
+          methodology: string | null
+          model_number: string | null
+          operating_conditions: string | null
+          power_requirements: string | null
+          raw_data: Json | null
+          recalls: Json | null
+          regulatory_class: string | null
+          reimbursement_coverage: string | null
+          sam_usd: number | null
+          sample_types: string[] | null
+          som_usd: number | null
+          source_urls: string[] | null
+          species_applicability: string[] | null
+          tam_usd: number | null
+          tests_performed: string[] | null
+          therapeutic_area: string | null
+          throughput: string | null
+          updated_at: string
+          veterinary_specific: boolean | null
+          weight: string | null
+        }
+        Insert: {
+          advantages?: string[] | null
+          ai_enrichment_status?: string | null
+          automation_level?: string | null
+          ce_mark?: boolean | null
+          clinical_evidence?: Json | null
+          competitors?: string[] | null
+          connectivity?: string[] | null
+          cost_device_usd?: number | null
+          cost_maintenance_annual_usd?: number | null
+          cost_per_test_usd?: number | null
+          cost_reagents_annual_usd?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          device_category?: string | null
+          device_name: string
+          device_type: string
+          dimensions?: string | null
+          disadvantages?: string[] | null
+          fda_clearance_date?: string | null
+          fda_clearance_number?: string | null
+          fda_clearance_type?: string | null
+          id?: string
+          installed_base_global?: number | null
+          installed_base_us?: number | null
+          intended_use?: string | null
+          lifespan_years?: number | null
+          maintenance_schedule?: string | null
+          manufacturer?: string | null
+          market_growth_rate?: number | null
+          market_share_pct?: number | null
+          methodology?: string | null
+          model_number?: string | null
+          operating_conditions?: string | null
+          power_requirements?: string | null
+          raw_data?: Json | null
+          recalls?: Json | null
+          regulatory_class?: string | null
+          reimbursement_coverage?: string | null
+          sam_usd?: number | null
+          sample_types?: string[] | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species_applicability?: string[] | null
+          tam_usd?: number | null
+          tests_performed?: string[] | null
+          therapeutic_area?: string | null
+          throughput?: string | null
+          updated_at?: string
+          veterinary_specific?: boolean | null
+          weight?: string | null
+        }
+        Update: {
+          advantages?: string[] | null
+          ai_enrichment_status?: string | null
+          automation_level?: string | null
+          ce_mark?: boolean | null
+          clinical_evidence?: Json | null
+          competitors?: string[] | null
+          connectivity?: string[] | null
+          cost_device_usd?: number | null
+          cost_maintenance_annual_usd?: number | null
+          cost_per_test_usd?: number | null
+          cost_reagents_annual_usd?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          device_category?: string | null
+          device_name?: string
+          device_type?: string
+          dimensions?: string | null
+          disadvantages?: string[] | null
+          fda_clearance_date?: string | null
+          fda_clearance_number?: string | null
+          fda_clearance_type?: string | null
+          id?: string
+          installed_base_global?: number | null
+          installed_base_us?: number | null
+          intended_use?: string | null
+          lifespan_years?: number | null
+          maintenance_schedule?: string | null
+          manufacturer?: string | null
+          market_growth_rate?: number | null
+          market_share_pct?: number | null
+          methodology?: string | null
+          model_number?: string | null
+          operating_conditions?: string | null
+          power_requirements?: string | null
+          raw_data?: Json | null
+          recalls?: Json | null
+          regulatory_class?: string | null
+          reimbursement_coverage?: string | null
+          sam_usd?: number | null
+          sample_types?: string[] | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species_applicability?: string[] | null
+          tam_usd?: number | null
+          tests_performed?: string[] | null
+          therapeutic_area?: string | null
+          throughput?: string | null
+          updated_at?: string
+          veterinary_specific?: boolean | null
+          weight?: string | null
+        }
+        Relationships: []
+      }
+      diagnostic_market_segments: {
+        Row: {
+          ai_enrichment_status: string | null
+          cagr_pct: number | null
+          created_at: string
+          description: string | null
+          emerging_technologies: string[] | null
+          geographic_breakdown: Json | null
+          id: string
+          key_barriers: string[] | null
+          key_drivers: string[] | null
+          major_players: string[] | null
+          market_share_breakdown: Json | null
+          parent_segment: string | null
+          patient_volume_annual: number | null
+          regulatory_landscape: string | null
+          reimbursement_trends: string | null
+          sam_2024_usd: number | null
+          segment_name: string
+          segment_type: string
+          som_2024_usd: number | null
+          tam_2024_usd: number | null
+          tam_2030_projected_usd: number | null
+          technology_trends: string[] | null
+          tests_volume_annual: number | null
+          unmet_needs: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          ai_enrichment_status?: string | null
+          cagr_pct?: number | null
+          created_at?: string
+          description?: string | null
+          emerging_technologies?: string[] | null
+          geographic_breakdown?: Json | null
+          id?: string
+          key_barriers?: string[] | null
+          key_drivers?: string[] | null
+          major_players?: string[] | null
+          market_share_breakdown?: Json | null
+          parent_segment?: string | null
+          patient_volume_annual?: number | null
+          regulatory_landscape?: string | null
+          reimbursement_trends?: string | null
+          sam_2024_usd?: number | null
+          segment_name: string
+          segment_type: string
+          som_2024_usd?: number | null
+          tam_2024_usd?: number | null
+          tam_2030_projected_usd?: number | null
+          technology_trends?: string[] | null
+          tests_volume_annual?: number | null
+          unmet_needs?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          ai_enrichment_status?: string | null
+          cagr_pct?: number | null
+          created_at?: string
+          description?: string | null
+          emerging_technologies?: string[] | null
+          geographic_breakdown?: Json | null
+          id?: string
+          key_barriers?: string[] | null
+          key_drivers?: string[] | null
+          major_players?: string[] | null
+          market_share_breakdown?: Json | null
+          parent_segment?: string | null
+          patient_volume_annual?: number | null
+          regulatory_landscape?: string | null
+          reimbursement_trends?: string | null
+          sam_2024_usd?: number | null
+          segment_name?: string
+          segment_type?: string
+          som_2024_usd?: number | null
+          tam_2024_usd?: number | null
+          tam_2030_projected_usd?: number | null
+          technology_trends?: string[] | null
+          tests_volume_annual?: number | null
+          unmet_needs?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      diagnostic_protocols: {
+        Row: {
+          age_range: string | null
+          ai_enrichment_status: string | null
+          cost_pathway_usd: number | null
+          created_at: string
+          decision_tree: Json | null
+          diagnostic_criteria: Json | null
+          differential_diagnoses: string[] | null
+          disease_condition: string
+          evidence_level: string | null
+          follow_up_protocol: string | null
+          gold_standard: string | null
+          guideline_url: string | null
+          guideline_version: string | null
+          guideline_year: number | null
+          icd_codes: string[] | null
+          id: string
+          issuing_body: string | null
+          optional_tests: string[] | null
+          population_target: string | null
+          prevalence_in_target_pop: number | null
+          protocol_name: string
+          recommendation_grade: string | null
+          red_flags: string[] | null
+          referral_criteria: string | null
+          required_tests: string[] | null
+          risk_factors: string[] | null
+          sam_usd: number | null
+          screening_vs_diagnostic: string | null
+          sensitivity_combined: number | null
+          som_usd: number | null
+          species: string | null
+          specificity_combined: number | null
+          tam_usd: number | null
+          test_sequence: Json | null
+          therapeutic_area: string | null
+          time_to_diagnosis: string | null
+          updated_at: string
+        }
+        Insert: {
+          age_range?: string | null
+          ai_enrichment_status?: string | null
+          cost_pathway_usd?: number | null
+          created_at?: string
+          decision_tree?: Json | null
+          diagnostic_criteria?: Json | null
+          differential_diagnoses?: string[] | null
+          disease_condition: string
+          evidence_level?: string | null
+          follow_up_protocol?: string | null
+          gold_standard?: string | null
+          guideline_url?: string | null
+          guideline_version?: string | null
+          guideline_year?: number | null
+          icd_codes?: string[] | null
+          id?: string
+          issuing_body?: string | null
+          optional_tests?: string[] | null
+          population_target?: string | null
+          prevalence_in_target_pop?: number | null
+          protocol_name: string
+          recommendation_grade?: string | null
+          red_flags?: string[] | null
+          referral_criteria?: string | null
+          required_tests?: string[] | null
+          risk_factors?: string[] | null
+          sam_usd?: number | null
+          screening_vs_diagnostic?: string | null
+          sensitivity_combined?: number | null
+          som_usd?: number | null
+          species?: string | null
+          specificity_combined?: number | null
+          tam_usd?: number | null
+          test_sequence?: Json | null
+          therapeutic_area?: string | null
+          time_to_diagnosis?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age_range?: string | null
+          ai_enrichment_status?: string | null
+          cost_pathway_usd?: number | null
+          created_at?: string
+          decision_tree?: Json | null
+          diagnostic_criteria?: Json | null
+          differential_diagnoses?: string[] | null
+          disease_condition?: string
+          evidence_level?: string | null
+          follow_up_protocol?: string | null
+          gold_standard?: string | null
+          guideline_url?: string | null
+          guideline_version?: string | null
+          guideline_year?: number | null
+          icd_codes?: string[] | null
+          id?: string
+          issuing_body?: string | null
+          optional_tests?: string[] | null
+          population_target?: string | null
+          prevalence_in_target_pop?: number | null
+          protocol_name?: string
+          recommendation_grade?: string | null
+          red_flags?: string[] | null
+          referral_criteria?: string | null
+          required_tests?: string[] | null
+          risk_factors?: string[] | null
+          sam_usd?: number | null
+          screening_vs_diagnostic?: string | null
+          sensitivity_combined?: number | null
+          som_usd?: number | null
+          species?: string | null
+          specificity_combined?: number | null
+          tam_usd?: number | null
+          test_sequence?: Json | null
+          therapeutic_area?: string | null
+          time_to_diagnosis?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      diagnostic_test_disease_mapping: {
+        Row: {
+          clinical_utility: string | null
+          created_at: string
+          disease_id: string | null
+          evidence_level: string | null
+          id: string
+          is_gold_standard: boolean | null
+          is_monitoring: boolean | null
+          is_screening: boolean | null
+          test_id: string | null
+        }
+        Insert: {
+          clinical_utility?: string | null
+          created_at?: string
+          disease_id?: string | null
+          evidence_level?: string | null
+          id?: string
+          is_gold_standard?: boolean | null
+          is_monitoring?: boolean | null
+          is_screening?: boolean | null
+          test_id?: string | null
+        }
+        Update: {
+          clinical_utility?: string | null
+          created_at?: string
+          disease_id?: string | null
+          evidence_level?: string | null
+          id?: string
+          is_gold_standard?: boolean | null
+          is_monitoring?: boolean | null
+          is_screening?: boolean | null
+          test_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diagnostic_test_disease_mapping_disease_id_fkey"
+            columns: ["disease_id"]
+            isOneToOne: false
+            referencedRelation: "disease_ontology"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "diagnostic_test_disease_mapping_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      diagnostic_tests: {
+        Row: {
+          accuracy: number | null
+          advantages: string[] | null
+          ai_enrichment_status: string | null
+          annual_volume_global: number | null
+          annual_volume_us: number | null
+          biomarkers_measured: string[] | null
+          ce_mark_status: string | null
+          clia_complexity: string | null
+          competing_tests: string[] | null
+          contraindications: string[] | null
+          cost_usd_avg: number | null
+          cost_usd_high: number | null
+          cost_usd_low: number | null
+          cpt_codes: string[] | null
+          created_at: string
+          description: string | null
+          disadvantages: string[] | null
+          diseases_detected: string[] | null
+          fda_clearance_number: string | null
+          fda_clearance_status: string | null
+          icd_codes: string[] | null
+          id: string
+          interferences: string[] | null
+          interpretation_guidelines: string | null
+          invasiveness: string | null
+          limitations: string[] | null
+          loinc_codes: string[] | null
+          manufacturer: string | null
+          market_growth_rate: number | null
+          market_size_2024_usd: number | null
+          market_size_2030_projected_usd: number | null
+          methodology: string | null
+          npv: number | null
+          operator_requirements: string | null
+          ppv: number | null
+          preparation_required: string | null
+          radiation_exposure: string | null
+          raw_data: Json | null
+          reference_ranges: Json | null
+          regulatory_class: string | null
+          reimbursement_rate_medicare: number | null
+          reimbursement_rate_private_avg: number | null
+          risk_level: string | null
+          sam_usd: number | null
+          sample_type: string[] | null
+          sensitivity: number | null
+          setting: string[] | null
+          som_usd: number | null
+          source_urls: string[] | null
+          species_applicability: string[] | null
+          specificity: number | null
+          tam_usd: number | null
+          test_category: string
+          test_name: string
+          test_subcategory: string | null
+          therapeutic_area: string | null
+          turnaround_time: string | null
+          updated_at: string
+          veterinary_specific: boolean | null
+        }
+        Insert: {
+          accuracy?: number | null
+          advantages?: string[] | null
+          ai_enrichment_status?: string | null
+          annual_volume_global?: number | null
+          annual_volume_us?: number | null
+          biomarkers_measured?: string[] | null
+          ce_mark_status?: string | null
+          clia_complexity?: string | null
+          competing_tests?: string[] | null
+          contraindications?: string[] | null
+          cost_usd_avg?: number | null
+          cost_usd_high?: number | null
+          cost_usd_low?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          description?: string | null
+          disadvantages?: string[] | null
+          diseases_detected?: string[] | null
+          fda_clearance_number?: string | null
+          fda_clearance_status?: string | null
+          icd_codes?: string[] | null
+          id?: string
+          interferences?: string[] | null
+          interpretation_guidelines?: string | null
+          invasiveness?: string | null
+          limitations?: string[] | null
+          loinc_codes?: string[] | null
+          manufacturer?: string | null
+          market_growth_rate?: number | null
+          market_size_2024_usd?: number | null
+          market_size_2030_projected_usd?: number | null
+          methodology?: string | null
+          npv?: number | null
+          operator_requirements?: string | null
+          ppv?: number | null
+          preparation_required?: string | null
+          radiation_exposure?: string | null
+          raw_data?: Json | null
+          reference_ranges?: Json | null
+          regulatory_class?: string | null
+          reimbursement_rate_medicare?: number | null
+          reimbursement_rate_private_avg?: number | null
+          risk_level?: string | null
+          sam_usd?: number | null
+          sample_type?: string[] | null
+          sensitivity?: number | null
+          setting?: string[] | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species_applicability?: string[] | null
+          specificity?: number | null
+          tam_usd?: number | null
+          test_category: string
+          test_name: string
+          test_subcategory?: string | null
+          therapeutic_area?: string | null
+          turnaround_time?: string | null
+          updated_at?: string
+          veterinary_specific?: boolean | null
+        }
+        Update: {
+          accuracy?: number | null
+          advantages?: string[] | null
+          ai_enrichment_status?: string | null
+          annual_volume_global?: number | null
+          annual_volume_us?: number | null
+          biomarkers_measured?: string[] | null
+          ce_mark_status?: string | null
+          clia_complexity?: string | null
+          competing_tests?: string[] | null
+          contraindications?: string[] | null
+          cost_usd_avg?: number | null
+          cost_usd_high?: number | null
+          cost_usd_low?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          description?: string | null
+          disadvantages?: string[] | null
+          diseases_detected?: string[] | null
+          fda_clearance_number?: string | null
+          fda_clearance_status?: string | null
+          icd_codes?: string[] | null
+          id?: string
+          interferences?: string[] | null
+          interpretation_guidelines?: string | null
+          invasiveness?: string | null
+          limitations?: string[] | null
+          loinc_codes?: string[] | null
+          manufacturer?: string | null
+          market_growth_rate?: number | null
+          market_size_2024_usd?: number | null
+          market_size_2030_projected_usd?: number | null
+          methodology?: string | null
+          npv?: number | null
+          operator_requirements?: string | null
+          ppv?: number | null
+          preparation_required?: string | null
+          radiation_exposure?: string | null
+          raw_data?: Json | null
+          reference_ranges?: Json | null
+          regulatory_class?: string | null
+          reimbursement_rate_medicare?: number | null
+          reimbursement_rate_private_avg?: number | null
+          risk_level?: string | null
+          sam_usd?: number | null
+          sample_type?: string[] | null
+          sensitivity?: number | null
+          setting?: string[] | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species_applicability?: string[] | null
+          specificity?: number | null
+          tam_usd?: number | null
+          test_category?: string
+          test_name?: string
+          test_subcategory?: string | null
+          therapeutic_area?: string | null
+          turnaround_time?: string | null
+          updated_at?: string
+          veterinary_specific?: boolean | null
+        }
+        Relationships: []
+      }
       diagrams: {
         Row: {
           created_at: string
@@ -630,6 +1361,536 @@ export type Database = {
           viewport?: Json | null
         }
         Relationships: []
+      }
+      diligence_checklists: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          deal_name: string
+          id: string
+          metadata: Json | null
+          progress_pct: number | null
+          status: string | null
+          template_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          deal_name: string
+          id?: string
+          metadata?: Json | null
+          progress_pct?: number | null
+          status?: string | null
+          template_type?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          deal_name?: string
+          id?: string
+          metadata?: Json | null
+          progress_pct?: number | null
+          status?: string | null
+          template_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      diligence_materials: {
+        Row: {
+          content: string | null
+          created_at: string
+          export_formats: string[] | null
+          generated_by: string | null
+          id: string
+          material_type: string
+          project_id: string
+          status: string | null
+          structured_data: Json | null
+          title: string
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          export_formats?: string[] | null
+          generated_by?: string | null
+          id?: string
+          material_type: string
+          project_id: string
+          status?: string | null
+          structured_data?: Json | null
+          title: string
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          export_formats?: string[] | null
+          generated_by?: string | null
+          id?: string
+          material_type?: string
+          project_id?: string
+          status?: string | null
+          structured_data?: Json | null
+          title?: string
+          updated_at?: string
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diligence_materials_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "diligence_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      diligence_projects: {
+        Row: {
+          company_name: string
+          company_summary: string | null
+          competitive_position: string | null
+          created_at: string
+          created_by: string | null
+          deal_type: string | null
+          description: string | null
+          id: string
+          investment_amount: number | null
+          key_risks: string[] | null
+          lead_asset: string | null
+          mechanism_of_action: string | null
+          ownership_pct: number | null
+          project_name: string
+          proposed_valuation: number | null
+          stage: string | null
+          status: string | null
+          target_indication: string | null
+          therapeutic_area: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_name: string
+          company_summary?: string | null
+          competitive_position?: string | null
+          created_at?: string
+          created_by?: string | null
+          deal_type?: string | null
+          description?: string | null
+          id?: string
+          investment_amount?: number | null
+          key_risks?: string[] | null
+          lead_asset?: string | null
+          mechanism_of_action?: string | null
+          ownership_pct?: number | null
+          project_name: string
+          proposed_valuation?: number | null
+          stage?: string | null
+          status?: string | null
+          target_indication?: string | null
+          therapeutic_area?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_name?: string
+          company_summary?: string | null
+          competitive_position?: string | null
+          created_at?: string
+          created_by?: string | null
+          deal_type?: string | null
+          description?: string | null
+          id?: string
+          investment_amount?: number | null
+          key_risks?: string[] | null
+          lead_asset?: string | null
+          mechanism_of_action?: string | null
+          ownership_pct?: number | null
+          project_name?: string
+          proposed_valuation?: number | null
+          stage?: string | null
+          status?: string | null
+          target_indication?: string | null
+          therapeutic_area?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      diligence_tasks: {
+        Row: {
+          assigned_to: string | null
+          category: string
+          completed_at: string | null
+          created_at: string
+          dependencies: string[] | null
+          due_date: string | null
+          findings: string | null
+          id: string
+          priority: string | null
+          project_id: string
+          risk_flag: string | null
+          sort_order: number | null
+          status: string | null
+          subcategory: string | null
+          task_description: string | null
+          task_title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          category: string
+          completed_at?: string | null
+          created_at?: string
+          dependencies?: string[] | null
+          due_date?: string | null
+          findings?: string | null
+          id?: string
+          priority?: string | null
+          project_id: string
+          risk_flag?: string | null
+          sort_order?: number | null
+          status?: string | null
+          subcategory?: string | null
+          task_description?: string | null
+          task_title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          category?: string
+          completed_at?: string | null
+          created_at?: string
+          dependencies?: string[] | null
+          due_date?: string | null
+          findings?: string | null
+          id?: string
+          priority?: string | null
+          project_id?: string
+          risk_flag?: string | null
+          sort_order?: number | null
+          status?: string | null
+          subcategory?: string | null
+          task_description?: string | null
+          task_title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diligence_tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "diligence_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disease_biomarker_endpoints: {
+        Row: {
+          ai_enrichment_status: string | null
+          aliases: string[] | null
+          annual_test_volume_global: number | null
+          annual_test_volume_us: number | null
+          auc_roc: number | null
+          clia_waived: boolean | null
+          clinical_utility: string[] | null
+          cost_per_test_usd: number | null
+          cpt_codes: string[] | null
+          created_at: string
+          cutoff_values: Json | null
+          description: string | null
+          disease_id: string | null
+          disease_name: string
+          ema_qualification_status: string | null
+          endpoint_category: string | null
+          entry_subtype: string | null
+          entry_type: string
+          evidence_level: string | null
+          fda_qualification_status: string | null
+          guideline_references: string[] | null
+          id: string
+          key_publications: string[] | null
+          loinc_codes: string[] | null
+          measurement_method: string[] | null
+          measurement_units: string | null
+          name: string
+          npv: number | null
+          ppv: number | null
+          raw_data: Json | null
+          reference_range_high: number | null
+          reference_range_low: number | null
+          reference_range_notes: string | null
+          regulatory_acceptance: string | null
+          sam_usd: number | null
+          sensitivity: number | null
+          som_usd: number | null
+          source_urls: string[] | null
+          species: string[] | null
+          specificity: number | null
+          specimen_type: string[] | null
+          surrogate_for: string | null
+          tam_usd: number | null
+          therapeutic_area: string | null
+          time_to_endpoint: string | null
+          updated_at: string
+          validation_cohort_size: number | null
+          veterinary_specific: boolean | null
+        }
+        Insert: {
+          ai_enrichment_status?: string | null
+          aliases?: string[] | null
+          annual_test_volume_global?: number | null
+          annual_test_volume_us?: number | null
+          auc_roc?: number | null
+          clia_waived?: boolean | null
+          clinical_utility?: string[] | null
+          cost_per_test_usd?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          cutoff_values?: Json | null
+          description?: string | null
+          disease_id?: string | null
+          disease_name: string
+          ema_qualification_status?: string | null
+          endpoint_category?: string | null
+          entry_subtype?: string | null
+          entry_type?: string
+          evidence_level?: string | null
+          fda_qualification_status?: string | null
+          guideline_references?: string[] | null
+          id?: string
+          key_publications?: string[] | null
+          loinc_codes?: string[] | null
+          measurement_method?: string[] | null
+          measurement_units?: string | null
+          name: string
+          npv?: number | null
+          ppv?: number | null
+          raw_data?: Json | null
+          reference_range_high?: number | null
+          reference_range_low?: number | null
+          reference_range_notes?: string | null
+          regulatory_acceptance?: string | null
+          sam_usd?: number | null
+          sensitivity?: number | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species?: string[] | null
+          specificity?: number | null
+          specimen_type?: string[] | null
+          surrogate_for?: string | null
+          tam_usd?: number | null
+          therapeutic_area?: string | null
+          time_to_endpoint?: string | null
+          updated_at?: string
+          validation_cohort_size?: number | null
+          veterinary_specific?: boolean | null
+        }
+        Update: {
+          ai_enrichment_status?: string | null
+          aliases?: string[] | null
+          annual_test_volume_global?: number | null
+          annual_test_volume_us?: number | null
+          auc_roc?: number | null
+          clia_waived?: boolean | null
+          clinical_utility?: string[] | null
+          cost_per_test_usd?: number | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          cutoff_values?: Json | null
+          description?: string | null
+          disease_id?: string | null
+          disease_name?: string
+          ema_qualification_status?: string | null
+          endpoint_category?: string | null
+          entry_subtype?: string | null
+          entry_type?: string
+          evidence_level?: string | null
+          fda_qualification_status?: string | null
+          guideline_references?: string[] | null
+          id?: string
+          key_publications?: string[] | null
+          loinc_codes?: string[] | null
+          measurement_method?: string[] | null
+          measurement_units?: string | null
+          name?: string
+          npv?: number | null
+          ppv?: number | null
+          raw_data?: Json | null
+          reference_range_high?: number | null
+          reference_range_low?: number | null
+          reference_range_notes?: string | null
+          regulatory_acceptance?: string | null
+          sam_usd?: number | null
+          sensitivity?: number | null
+          som_usd?: number | null
+          source_urls?: string[] | null
+          species?: string[] | null
+          specificity?: number | null
+          specimen_type?: string[] | null
+          surrogate_for?: string | null
+          tam_usd?: number | null
+          therapeutic_area?: string | null
+          time_to_endpoint?: string | null
+          updated_at?: string
+          validation_cohort_size?: number | null
+          veterinary_specific?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disease_biomarker_endpoints_disease_id_fkey"
+            columns: ["disease_id"]
+            isOneToOne: false
+            referencedRelation: "disease_ontology"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disease_ontology: {
+        Row: {
+          biomarkers: string[] | null
+          created_at: string
+          description: string | null
+          diagnostic_criteria: string | null
+          disease_category: string | null
+          disease_name: string
+          icd10_code: string | null
+          id: string
+          incidence_annual_global: number | null
+          mortality_rate: number | null
+          orphan_disease: boolean | null
+          parent_disease_id: string | null
+          prevalence_eu: number | null
+          prevalence_global: number | null
+          prevalence_us: number | null
+          related_icd_codes: string[] | null
+          standard_of_care: string | null
+          therapeutic_area: string | null
+          updated_at: string
+        }
+        Insert: {
+          biomarkers?: string[] | null
+          created_at?: string
+          description?: string | null
+          diagnostic_criteria?: string | null
+          disease_category?: string | null
+          disease_name: string
+          icd10_code?: string | null
+          id?: string
+          incidence_annual_global?: number | null
+          mortality_rate?: number | null
+          orphan_disease?: boolean | null
+          parent_disease_id?: string | null
+          prevalence_eu?: number | null
+          prevalence_global?: number | null
+          prevalence_us?: number | null
+          related_icd_codes?: string[] | null
+          standard_of_care?: string | null
+          therapeutic_area?: string | null
+          updated_at?: string
+        }
+        Update: {
+          biomarkers?: string[] | null
+          created_at?: string
+          description?: string | null
+          diagnostic_criteria?: string | null
+          disease_category?: string | null
+          disease_name?: string
+          icd10_code?: string | null
+          id?: string
+          incidence_annual_global?: number | null
+          mortality_rate?: number | null
+          orphan_disease?: boolean | null
+          parent_disease_id?: string | null
+          prevalence_eu?: number | null
+          prevalence_global?: number | null
+          prevalence_us?: number | null
+          related_icd_codes?: string[] | null
+          standard_of_care?: string | null
+          therapeutic_area?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disease_ontology_parent_disease_id_fkey"
+            columns: ["parent_disease_id"]
+            isOneToOne: false
+            referencedRelation: "disease_ontology"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      drug_disease_mapping: {
+        Row: {
+          approval_date: string | null
+          approval_status: string
+          clinical_trial_id: string | null
+          created_at: string
+          disease_id: string
+          drug_id: string
+          efficacy_data: Json | null
+          id: string
+          is_primary_indication: boolean | null
+          label_supplement: string | null
+          notes: string | null
+          patient_population: string | null
+          regulatory_body: string | null
+          treatment_line: string | null
+        }
+        Insert: {
+          approval_date?: string | null
+          approval_status?: string
+          clinical_trial_id?: string | null
+          created_at?: string
+          disease_id: string
+          drug_id: string
+          efficacy_data?: Json | null
+          id?: string
+          is_primary_indication?: boolean | null
+          label_supplement?: string | null
+          notes?: string | null
+          patient_population?: string | null
+          regulatory_body?: string | null
+          treatment_line?: string | null
+        }
+        Update: {
+          approval_date?: string | null
+          approval_status?: string
+          clinical_trial_id?: string | null
+          created_at?: string
+          disease_id?: string
+          drug_id?: string
+          efficacy_data?: Json | null
+          id?: string
+          is_primary_indication?: boolean | null
+          label_supplement?: string | null
+          notes?: string | null
+          patient_population?: string | null
+          regulatory_body?: string | null
+          treatment_line?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drug_disease_mapping_disease_id_fkey"
+            columns: ["disease_id"]
+            isOneToOne: false
+            referencedRelation: "disease_ontology"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drug_disease_mapping_drug_id_fkey"
+            columns: ["drug_id"]
+            isOneToOne: false
+            referencedRelation: "fda_approved_drugs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       eeg_recordings: {
         Row: {
@@ -786,6 +2047,201 @@ export type Database = {
           id?: string
           track_id?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      fda_approved_drugs: {
+        Row: {
+          accelerated_approval: boolean | null
+          active_ingredients: Json | null
+          adjuvants: string[] | null
+          ai_enrichment_status: string | null
+          alternatives: string[] | null
+          approval_pathway: string | null
+          biosimilars: string[] | null
+          black_box_text: string | null
+          black_box_warning: boolean | null
+          brand_name: string
+          breakthrough_therapy: boolean | null
+          chemical_formula: string | null
+          combination_therapies: string[] | null
+          contraindications: string[] | null
+          cpt_codes: string[] | null
+          created_at: string
+          data_quality_score: number | null
+          dosage_forms: string[] | null
+          drug_class: string | null
+          drug_interactions: Json | null
+          ema_approval_date: string | null
+          exclusivity_expiry: string | null
+          fast_track: boolean | null
+          fda_application_number: string | null
+          fda_approval_date: string | null
+          generic_name: string | null
+          generic_versions: string[] | null
+          geographic_distribution: Json | null
+          icd_codes: string[] | null
+          id: string
+          indications: string[] | null
+          inventors: string[] | null
+          manufacturer: string | null
+          market_size_2024_usd: number | null
+          market_size_projected_2030_usd: number | null
+          mechanism_of_action: string | null
+          molecular_structure: string | null
+          orphan_drug: boolean | null
+          patent_expiry: string | null
+          patent_holder: string | null
+          patient_journey: Json | null
+          patients_2024_asia: number | null
+          patients_2024_eu: number | null
+          patients_2024_global: number | null
+          patients_2024_row: number | null
+          patients_2024_us: number | null
+          patients_2026_projected_global: number | null
+          patients_2030_projected_global: number | null
+          pregnancy_category: string | null
+          priority_review: boolean | null
+          raw_ema_data: Json | null
+          raw_fda_data: Json | null
+          recommended_dosage: string | null
+          regulatory_status: string | null
+          route_of_administration: string[] | null
+          side_effects: Json | null
+          source_urls: string[] | null
+          therapeutic_area: string | null
+          treatment_line: string | null
+          treatment_protocol: Json | null
+          updated_at: string
+          validated_endpoints: Json | null
+        }
+        Insert: {
+          accelerated_approval?: boolean | null
+          active_ingredients?: Json | null
+          adjuvants?: string[] | null
+          ai_enrichment_status?: string | null
+          alternatives?: string[] | null
+          approval_pathway?: string | null
+          biosimilars?: string[] | null
+          black_box_text?: string | null
+          black_box_warning?: boolean | null
+          brand_name: string
+          breakthrough_therapy?: boolean | null
+          chemical_formula?: string | null
+          combination_therapies?: string[] | null
+          contraindications?: string[] | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          data_quality_score?: number | null
+          dosage_forms?: string[] | null
+          drug_class?: string | null
+          drug_interactions?: Json | null
+          ema_approval_date?: string | null
+          exclusivity_expiry?: string | null
+          fast_track?: boolean | null
+          fda_application_number?: string | null
+          fda_approval_date?: string | null
+          generic_name?: string | null
+          generic_versions?: string[] | null
+          geographic_distribution?: Json | null
+          icd_codes?: string[] | null
+          id?: string
+          indications?: string[] | null
+          inventors?: string[] | null
+          manufacturer?: string | null
+          market_size_2024_usd?: number | null
+          market_size_projected_2030_usd?: number | null
+          mechanism_of_action?: string | null
+          molecular_structure?: string | null
+          orphan_drug?: boolean | null
+          patent_expiry?: string | null
+          patent_holder?: string | null
+          patient_journey?: Json | null
+          patients_2024_asia?: number | null
+          patients_2024_eu?: number | null
+          patients_2024_global?: number | null
+          patients_2024_row?: number | null
+          patients_2024_us?: number | null
+          patients_2026_projected_global?: number | null
+          patients_2030_projected_global?: number | null
+          pregnancy_category?: string | null
+          priority_review?: boolean | null
+          raw_ema_data?: Json | null
+          raw_fda_data?: Json | null
+          recommended_dosage?: string | null
+          regulatory_status?: string | null
+          route_of_administration?: string[] | null
+          side_effects?: Json | null
+          source_urls?: string[] | null
+          therapeutic_area?: string | null
+          treatment_line?: string | null
+          treatment_protocol?: Json | null
+          updated_at?: string
+          validated_endpoints?: Json | null
+        }
+        Update: {
+          accelerated_approval?: boolean | null
+          active_ingredients?: Json | null
+          adjuvants?: string[] | null
+          ai_enrichment_status?: string | null
+          alternatives?: string[] | null
+          approval_pathway?: string | null
+          biosimilars?: string[] | null
+          black_box_text?: string | null
+          black_box_warning?: boolean | null
+          brand_name?: string
+          breakthrough_therapy?: boolean | null
+          chemical_formula?: string | null
+          combination_therapies?: string[] | null
+          contraindications?: string[] | null
+          cpt_codes?: string[] | null
+          created_at?: string
+          data_quality_score?: number | null
+          dosage_forms?: string[] | null
+          drug_class?: string | null
+          drug_interactions?: Json | null
+          ema_approval_date?: string | null
+          exclusivity_expiry?: string | null
+          fast_track?: boolean | null
+          fda_application_number?: string | null
+          fda_approval_date?: string | null
+          generic_name?: string | null
+          generic_versions?: string[] | null
+          geographic_distribution?: Json | null
+          icd_codes?: string[] | null
+          id?: string
+          indications?: string[] | null
+          inventors?: string[] | null
+          manufacturer?: string | null
+          market_size_2024_usd?: number | null
+          market_size_projected_2030_usd?: number | null
+          mechanism_of_action?: string | null
+          molecular_structure?: string | null
+          orphan_drug?: boolean | null
+          patent_expiry?: string | null
+          patent_holder?: string | null
+          patient_journey?: Json | null
+          patients_2024_asia?: number | null
+          patients_2024_eu?: number | null
+          patients_2024_global?: number | null
+          patients_2024_row?: number | null
+          patients_2024_us?: number | null
+          patients_2026_projected_global?: number | null
+          patients_2030_projected_global?: number | null
+          pregnancy_category?: string | null
+          priority_review?: boolean | null
+          raw_ema_data?: Json | null
+          raw_fda_data?: Json | null
+          recommended_dosage?: string | null
+          regulatory_status?: string | null
+          route_of_administration?: string[] | null
+          side_effects?: Json | null
+          source_urls?: string[] | null
+          therapeutic_area?: string | null
+          treatment_line?: string | null
+          treatment_protocol?: Json | null
+          updated_at?: string
+          validated_endpoints?: Json | null
         }
         Relationships: []
       }
@@ -1160,6 +2616,166 @@ export type Database = {
         }
         Relationships: []
       }
+      kanban_board_members: {
+        Row: {
+          board_id: string
+          can_edit: boolean | null
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          board_id: string
+          can_edit?: boolean | null
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          board_id?: string
+          can_edit?: boolean | null
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kanban_board_members_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "kanban_boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kanban_boards: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          program_name: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          program_name?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          program_name?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      kanban_cards: {
+        Row: {
+          assignee_email: string | null
+          board_id: string
+          column_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          position: number
+          priority: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assignee_email?: string | null
+          board_id: string
+          column_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          position?: number
+          priority?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assignee_email?: string | null
+          board_id?: string
+          column_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          position?: number
+          priority?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kanban_cards_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "kanban_boards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kanban_cards_column_id_fkey"
+            columns: ["column_id"]
+            isOneToOne: false
+            referencedRelation: "kanban_columns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kanban_columns: {
+        Row: {
+          board_id: string
+          color: string | null
+          created_at: string
+          id: string
+          position: number
+          title: string
+        }
+        Insert: {
+          board_id: string
+          color?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          title: string
+        }
+        Update: {
+          board_id?: string
+          color?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kanban_columns_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "kanban_boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       listening_sessions: {
         Row: {
           average_complexity_score: number | null
@@ -1410,6 +3026,129 @@ export type Database = {
           storage_path?: string | null
           title?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          customer_progress: boolean
+          daily_priorities: boolean
+          display_name: string | null
+          email: string
+          frequency: string
+          id: string
+          preferred_time: string | null
+          reports_progress: boolean
+          team_program_progress: boolean
+          timezone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_progress?: boolean
+          daily_priorities?: boolean
+          display_name?: string | null
+          email: string
+          frequency?: string
+          id?: string
+          preferred_time?: string | null
+          reports_progress?: boolean
+          team_program_progress?: boolean
+          timezone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_progress?: boolean
+          daily_priorities?: boolean
+          display_name?: string | null
+          email?: string
+          frequency?: string
+          id?: string
+          preferred_time?: string | null
+          reports_progress?: boolean
+          team_program_progress?: boolean
+          timezone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      npiq_conversations: {
+        Row: {
+          assistant_message: string | null
+          context: string
+          created_at: string
+          id: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          session_id: string
+          tokens_used: number | null
+          user_id: string | null
+          user_message: string
+        }
+        Insert: {
+          assistant_message?: string | null
+          context?: string
+          created_at?: string
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          session_id: string
+          tokens_used?: number | null
+          user_id?: string | null
+          user_message: string
+        }
+        Update: {
+          assistant_message?: string | null
+          context?: string
+          created_at?: string
+          id?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          session_id?: string
+          tokens_used?: number | null
+          user_id?: string | null
+          user_message?: string
+        }
+        Relationships: []
+      }
+      npiq_documents: {
+        Row: {
+          content: string
+          context: string
+          created_at: string
+          embedding_status: string
+          id: string
+          metadata: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          context?: string
+          created_at?: string
+          embedding_status?: string
+          id?: string
+          metadata?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          context?: string
+          created_at?: string
+          embedding_status?: string
+          id?: string
+          metadata?: Json | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1680,6 +3419,117 @@ export type Database = {
           goal_id?: string
           id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      pipeline_drugs: {
+        Row: {
+          advisory_committee_date: string | null
+          advisory_committee_vote: string | null
+          ai_analysis: Json | null
+          comparator: string | null
+          competitive_landscape: string[] | null
+          created_at: string
+          development_phase: string
+          drug_class: string | null
+          drug_name: string
+          ema_opinion_date: string | null
+          ema_submission_date: string | null
+          estimated_launch_date: string | null
+          fda_application_number: string | null
+          fda_submission_date: string | null
+          generic_name: string | null
+          id: string
+          last_updated: string | null
+          mechanism_of_action: string | null
+          modality: string | null
+          patient_enrollment: number | null
+          pdufa_date: string | null
+          peak_sales_estimate_usd: number | null
+          pivotal_trial_id: string | null
+          pivotal_trial_name: string | null
+          primary_endpoint: string | null
+          primary_endpoint_result: string | null
+          secondary_endpoints: Json | null
+          source_urls: string[] | null
+          sponsor: string | null
+          target_diseases: string[] | null
+          target_indications: string[] | null
+          target_patient_population: number | null
+          therapeutic_area: string | null
+          updated_at: string
+        }
+        Insert: {
+          advisory_committee_date?: string | null
+          advisory_committee_vote?: string | null
+          ai_analysis?: Json | null
+          comparator?: string | null
+          competitive_landscape?: string[] | null
+          created_at?: string
+          development_phase: string
+          drug_class?: string | null
+          drug_name: string
+          ema_opinion_date?: string | null
+          ema_submission_date?: string | null
+          estimated_launch_date?: string | null
+          fda_application_number?: string | null
+          fda_submission_date?: string | null
+          generic_name?: string | null
+          id?: string
+          last_updated?: string | null
+          mechanism_of_action?: string | null
+          modality?: string | null
+          patient_enrollment?: number | null
+          pdufa_date?: string | null
+          peak_sales_estimate_usd?: number | null
+          pivotal_trial_id?: string | null
+          pivotal_trial_name?: string | null
+          primary_endpoint?: string | null
+          primary_endpoint_result?: string | null
+          secondary_endpoints?: Json | null
+          source_urls?: string[] | null
+          sponsor?: string | null
+          target_diseases?: string[] | null
+          target_indications?: string[] | null
+          target_patient_population?: number | null
+          therapeutic_area?: string | null
+          updated_at?: string
+        }
+        Update: {
+          advisory_committee_date?: string | null
+          advisory_committee_vote?: string | null
+          ai_analysis?: Json | null
+          comparator?: string | null
+          competitive_landscape?: string[] | null
+          created_at?: string
+          development_phase?: string
+          drug_class?: string | null
+          drug_name?: string
+          ema_opinion_date?: string | null
+          ema_submission_date?: string | null
+          estimated_launch_date?: string | null
+          fda_application_number?: string | null
+          fda_submission_date?: string | null
+          generic_name?: string | null
+          id?: string
+          last_updated?: string | null
+          mechanism_of_action?: string | null
+          modality?: string | null
+          patient_enrollment?: number | null
+          pdufa_date?: string | null
+          peak_sales_estimate_usd?: number | null
+          pivotal_trial_id?: string | null
+          pivotal_trial_name?: string | null
+          primary_endpoint?: string | null
+          primary_endpoint_result?: string | null
+          secondary_endpoints?: Json | null
+          source_urls?: string[] | null
+          sponsor?: string | null
+          target_diseases?: string[] | null
+          target_indications?: string[] | null
+          target_patient_population?: number | null
+          therapeutic_area?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1981,6 +3831,45 @@ export type Database = {
           status?: string | null
           storage_bucket?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      roi_tracking: {
+        Row: {
+          automated_time_minutes: number
+          created_at: string
+          deal_name: string | null
+          id: string
+          manual_time_minutes: number
+          metadata: Json | null
+          task_category: string
+          task_name: string
+          time_saved_minutes: number | null
+          user_id: string | null
+        }
+        Insert: {
+          automated_time_minutes?: number
+          created_at?: string
+          deal_name?: string | null
+          id?: string
+          manual_time_minutes: number
+          metadata?: Json | null
+          task_category: string
+          task_name: string
+          time_saved_minutes?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          automated_time_minutes?: number
+          created_at?: string
+          deal_name?: string | null
+          id?: string
+          manual_time_minutes?: number
+          metadata?: Json | null
+          task_category?: string
+          task_name?: string
+          time_saved_minutes?: number | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -4138,6 +6027,127 @@ export type Database = {
         }
         Relationships: []
       }
+      vault_document_chunks: {
+        Row: {
+          chunk_index: number
+          content: string
+          created_at: string
+          document_id: string
+          id: string
+          page_number: number | null
+          section_title: string | null
+          token_count: number | null
+        }
+        Insert: {
+          chunk_index: number
+          content: string
+          created_at?: string
+          document_id: string
+          id?: string
+          page_number?: number | null
+          section_title?: string | null
+          token_count?: number | null
+        }
+        Update: {
+          chunk_index?: number
+          content?: string
+          created_at?: string
+          document_id?: string
+          id?: string
+          page_number?: number | null
+          section_title?: string | null
+          token_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vault_document_chunks_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "vault_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vault_documents: {
+        Row: {
+          category: string
+          chunk_count: number | null
+          company_name: string | null
+          confidentiality: string | null
+          created_at: string
+          deal_name: string | null
+          description: string | null
+          diligence_project_id: string | null
+          document_date: string | null
+          file_name: string
+          file_size_bytes: number | null
+          file_type: string | null
+          id: string
+          parse_for_rag: boolean | null
+          rag_status: string | null
+          storage_path: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+          version: number | null
+        }
+        Insert: {
+          category?: string
+          chunk_count?: number | null
+          company_name?: string | null
+          confidentiality?: string | null
+          created_at?: string
+          deal_name?: string | null
+          description?: string | null
+          diligence_project_id?: string | null
+          document_date?: string | null
+          file_name: string
+          file_size_bytes?: number | null
+          file_type?: string | null
+          id?: string
+          parse_for_rag?: boolean | null
+          rag_status?: string | null
+          storage_path: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number | null
+        }
+        Update: {
+          category?: string
+          chunk_count?: number | null
+          company_name?: string | null
+          confidentiality?: string | null
+          created_at?: string
+          deal_name?: string | null
+          description?: string | null
+          diligence_project_id?: string | null
+          document_date?: string | null
+          file_name?: string
+          file_size_bytes?: number | null
+          file_type?: string | null
+          id?: string
+          parse_for_rag?: boolean | null
+          rag_status?: string | null
+          storage_path?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vault_documents_diligence_project_id_fkey"
+            columns: ["diligence_project_id"]
+            isOneToOne: false
+            referencedRelation: "diligence_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       working_edge_collection: {
         Row: {
           bpm: number | null
@@ -4838,6 +6848,10 @@ export type Database = {
         Returns: undefined
       }
       is_blocked_company_email: { Args: { email: string }; Returns: boolean }
+      is_board_member: {
+        Args: { _board_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_favorite: { Args: { p_track_id: string }; Returns: boolean }
       is_favorited: {
         Args: { p_track_id: string; p_user_id: string }

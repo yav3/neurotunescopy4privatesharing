@@ -60,8 +60,8 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
   },
   {
     id: 'pain-support',
-    name: 'Pain Relief',
-    description: 'Gentle music for pain management and relief',
+    name: 'Pain Support',
+    description: 'Gentle music for pain management and comfort',
     buckets: ['gentleclassicalforpain', 'painreducingworld', 'Chopin'],
     image: painCard
   }

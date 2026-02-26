@@ -97,7 +97,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
       {
         id: 'classical-crossover',
         name: 'Classical Crossover',
-        description: 'Gentle classical crossover music for anxiety relief',
+        description: 'Gentle classical crossover music for anxiety support',
         buckets: ['gentleclassicalforpain'],
         image: genreCardDark1
       },

@@ -51,7 +51,7 @@ export const ConsumerPricing = () => {
       description: "Web app access + mobile apps with special pricing for first responders",
       features: [
         "Full access to 8,500+ therapeutic tracks",
-        "Specialized stress relief content",
+        "Specialized stress management content",
         "PTSD support playlists",
         "Sleep restoration protocols",
         "Priority customer support",
