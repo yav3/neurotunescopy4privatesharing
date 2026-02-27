@@ -11,14 +11,8 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
   const [showText, setShowText] = useState(true);
 
   useEffect(() => {
-    // "demo" fades in over ~1s, stays briefly, then fades out
-    const hideText = setTimeout(() => setShowText(false), 1800);
-    // Auto-start the experience after text exits
-    const autoStart = setTimeout(() => onComplete?.(), 2800);
-    return () => {
-      clearTimeout(hideText);
-      clearTimeout(autoStart);
-    };
+    const autoStart = setTimeout(() => onComplete?.(), 1800);
+    return () => clearTimeout(autoStart);
   }, [onComplete]);
 
   return (
@@ -61,23 +55,6 @@ export const PremiumHero: React.FC<PremiumHeroProps> = ({ onComplete }) => {
       <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
         {/* "demo" word — fades in then out, experience auto-starts after */}
         <AnimatePresence>
-          {showText && (
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
-              style={{ 
-                fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-                fontSize: isMobile ? '36px' : '56px',
-                fontWeight: 300,
-                letterSpacing: '-0.025em',
-                color: 'rgba(255, 255, 255, 0.9)',
-              }}
-            >
-              demo
-            </motion.h1>
-          )}
         </AnimatePresence>
       </div>
     </div>
