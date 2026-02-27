@@ -39,11 +39,11 @@ export class TherapeuticEngine {
   }
 
   private static readonly ENERGY_PROGRESSIONS: Record<string, number[]> = {
-    stress_anxiety_support: [4, 3, 2, 2, 1], // High to low energy for stress & anxiety relief
+    stress_anxiety_support: [4, 3, 2, 2, 1], // High to low energy for stress & anxiety support
     focus_enhancement: [2, 3, 4, 4, 3], // Build to peak focus
     sleep_preparation: [3, 2, 1, 1, 1], // Gradual wind down
     mood_boost: [2, 3, 4, 5, 4], // Build energy and mood
-    pain_support: [3, 2, 2, 1, 1] // Deep relaxation for pain relief
+    pain_support: [3, 2, 2, 1, 1] // Deep relaxation for pain support
   }
 
   /**

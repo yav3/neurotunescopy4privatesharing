@@ -16,8 +16,8 @@ interface SessionData {
 // Session data with playlistcards bucket images
 const SESSION_CONFIG = [
   {
-    id: "stress-relief",
-    title: "Stress Relief",
+    id: "stress-support",
+    title: "Stress Support",
     description: "Scientifically designed to lower cortisol levels and support parasympathetic recovery through theta-wave frequencies.",
     bucketName: "meditation",
     benefits: ["Reduced stress and anxiety", "Easier emotional regulation", "More stable mood"],
