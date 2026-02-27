@@ -6,7 +6,7 @@ const stats = [
   { value: '50+', label: 'genres covered' },
   { value: '8', label: 'languages supported' },
   { value: '15,000+', label: 'studies informing our music' },
-  { value: '6', label: 'patents (2 granted · 4 pending)' },
+  { value: '2', label: 'granted patents' },
 ];
 
 export const StatsBar: React.FC = () => {
