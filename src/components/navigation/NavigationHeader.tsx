@@ -166,15 +166,15 @@ export const NavigationHeader = () => {
               NeuroTunes
             </span>
           </Link>
-          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(0, 0%, 100%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
-            <span className="text-[11px] tracking-wide" style={{ color: 'hsla(0, 0%, 100%, 0.7)' }}>Distributed by</span>
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
+            <span className="text-[11px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.5)' }}>Distributed by</span>
             <img 
               src={welconyLogo} 
               alt="Welcony" 
               className="h-6" 
               style={{ 
-                filter: 'brightness(0) invert(1)',
-                opacity: 0.85
+                filter: isLandingPage && !scrolled ? 'brightness(0)' : 'brightness(0) invert(1)',
+                opacity: isLandingPage && !scrolled ? 0.45 : 0.7
               }} 
             />
           </div>
