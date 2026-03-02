@@ -72,7 +72,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 65%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(210, 40%, 65%)' }}
         >
           Each genre matched to therapeutic outcomes via clinical mapping
         </motion.p>
@@ -121,10 +121,10 @@ export const DataFlowSection: React.FC = () => {
               style={{
                 background: phase === 'scanning'
                   ? 'linear-gradient(135deg, hsla(210, 60%, 50%, 0.15), hsla(200, 50%, 40%, 0.08))'
-                  : 'hsla(210, 30%, 15%, 0.3)',
+                  : 'linear-gradient(135deg, hsla(215, 50%, 25%, 0.35), hsla(220, 45%, 18%, 0.25))',
                 border: phase === 'scanning'
                   ? '1px solid hsla(210, 70%, 60%, 0.3)'
-                  : '1px solid hsla(0, 0%, 100%, 0.06)',
+                  : '1px solid hsla(215, 50%, 45%, 0.12)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
@@ -139,7 +139,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 95%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(210, 30%, 92%)' }}
                 >
                   {active.goal}
                 </motion.p>
@@ -153,7 +153,7 @@ export const DataFlowSection: React.FC = () => {
                 style={{
                   background: phase === 'matched'
                     ? 'linear-gradient(135deg, hsla(210, 80%, 55%, 0.25), hsla(200, 70%, 50%, 0.15))'
-                    : 'hsla(210, 40%, 20%, 0.3)',
+                    : 'hsla(215, 50%, 22%, 0.4)',
                   border: '1px solid hsla(210, 60%, 55%, 0.2)',
                   backdropFilter: 'blur(12px)',
                   transition: 'all 0.5s',
@@ -190,10 +190,10 @@ export const DataFlowSection: React.FC = () => {
               style={{
                 background: phase === 'matched'
                   ? 'linear-gradient(135deg, hsla(210, 60%, 50%, 0.15), hsla(220, 50%, 40%, 0.08))'
-                  : 'hsla(210, 30%, 15%, 0.3)',
+                  : 'linear-gradient(135deg, hsla(215, 50%, 25%, 0.35), hsla(220, 45%, 18%, 0.25))',
                 border: phase === 'matched'
                   ? '1px solid hsla(210, 70%, 60%, 0.3)'
-                  : '1px solid hsla(0, 0%, 100%, 0.06)',
+                  : '1px solid hsla(215, 50%, 45%, 0.12)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
@@ -220,7 +220,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0, filter: phase === 'matched' ? 'blur(0px)' : 'blur(2px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 95%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(210, 30%, 92%)' }}
                 >
                   {active.genre}
                 </motion.p>
@@ -245,11 +245,11 @@ export const DataFlowSection: React.FC = () => {
                 className="relative rounded-2xl p-4 cursor-pointer overflow-hidden group"
                 style={{
                   background: isActive
-                    ? 'linear-gradient(135deg, hsla(210, 60%, 45%, 0.18), hsla(200, 50%, 35%, 0.1))'
-                    : 'hsla(210, 20%, 12%, 0.3)',
+                    ? 'linear-gradient(135deg, hsla(210, 60%, 45%, 0.22), hsla(200, 50%, 35%, 0.12))'
+                    : 'linear-gradient(135deg, hsla(215, 50%, 25%, 0.35), hsla(220, 45%, 18%, 0.25))',
                   border: isActive
-                    ? '1px solid hsla(210, 70%, 55%, 0.3)'
-                    : '1px solid hsla(0, 0%, 100%, 0.06)',
+                    ? '1px solid hsla(210, 70%, 55%, 0.35)'
+                    : '1px solid hsla(215, 50%, 45%, 0.12)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
                   transition: 'all 0.4s ease',
@@ -261,14 +261,14 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     background: isActive
                       ? 'linear-gradient(180deg, hsla(210, 70%, 70%, 0.08) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.03) 0%, transparent 100%)',
+                      : 'linear-gradient(180deg, hsla(215, 50%, 50%, 0.05) 0%, transparent 100%)',
                   }}
                 />
 
                 {/* Match score ring */}
                 <div className="relative flex justify-center mb-3">
                   <svg width="44" height="44" viewBox="0 0 44 44">
-                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(0, 0%, 100%, 0.06)" strokeWidth="2" />
+                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(215, 50%, 45%, 0.15)" strokeWidth="2" />
                     <motion.circle
                       cx="22" cy="22" r="18"
                       fill="none"
@@ -294,7 +294,7 @@ export const DataFlowSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 400,
-                      color: isActive ? 'hsl(210, 80%, 75%)' : 'hsl(0, 0%, 55%)',
+                      color: isActive ? 'hsl(210, 80%, 75%)' : 'hsl(215, 50%, 60%)',
                       transition: 'color 0.4s',
                     }}
                   >
@@ -307,7 +307,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: isActive ? 'hsl(0, 0%, 100%)' : 'hsl(0, 0%, 80%)',
+                    color: isActive ? 'hsl(200, 90%, 92%)' : 'hsl(210, 40%, 78%)',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -318,7 +318,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '11px',
                     fontWeight: 300,
-                    color: isActive ? 'hsl(210, 50%, 70%)' : 'hsl(0, 0%, 45%)',
+                    color: isActive ? 'hsl(210, 50%, 70%)' : 'hsl(215, 35%, 55%)',
                     transition: 'color 0.4s',
                   }}
                 >
