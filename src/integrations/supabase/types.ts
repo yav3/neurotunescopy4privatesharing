@@ -1996,6 +1996,30 @@ export type Database = {
         }
         Relationships: []
       }
+      email_rate_limits: {
+        Row: {
+          email_type: string
+          id: string
+          ip_address: string | null
+          recipient_email: string
+          sent_at: string
+        }
+        Insert: {
+          email_type: string
+          id?: string
+          ip_address?: string | null
+          recipient_email: string
+          sent_at?: string
+        }
+        Update: {
+          email_type?: string
+          id?: string
+          ip_address?: string | null
+          recipient_email?: string
+          sent_at?: string
+        }
+        Relationships: []
+      }
       faqs: {
         Row: {
           answer: string
@@ -6481,6 +6505,16 @@ export type Database = {
         }
         Returns: number
       }
+      check_email_rate_limit: {
+        Args: {
+          p_email: string
+          p_ip?: string
+          p_max_per_ip?: number
+          p_max_per_recipient?: number
+          p_window_hours?: number
+        }
+        Returns: boolean
+      }
       clean_track_title_from_filename: {
         Args: { storage_key: string }
         Returns: string
@@ -6903,6 +6937,10 @@ export type Database = {
         }[]
       }
       range: { Args: never; Returns: string[] }
+      record_email_send: {
+        Args: { p_email: string; p_ip?: string; p_type: string }
+        Returns: undefined
+      }
       remove_favorite: {
         Args: { p_track_id: string; p_user_id: string }
         Returns: boolean

@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from 'npm:resend@4.0.0';
 import { renderAsync } from 'npm:@react-email/components@0.0.22';
 import React from 'npm:react@18.3.1';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 import { WelcomeEmail } from './_templates/welcome.tsx';
 import { PasswordResetEmail } from './_templates/password-reset.tsx';
 import { MagicLinkEmail } from './_templates/magic-link.tsx';
@@ -33,6 +34,45 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const { type, to, data }: EmailRequest = await req.json();
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!to || !emailRegex.test(to)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
+    // Rate limiting check using Supabase service role
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                     req.headers.get('cf-connecting-ip') || 'unknown';
+
+    // Check rate limit
+    const { data: allowed, error: rlError } = await supabase
+      .rpc('check_email_rate_limit', { 
+        p_email: to, 
+        p_ip: clientIp,
+        p_max_per_recipient: 3,
+        p_max_per_ip: 5,
+        p_window_hours: 1
+      });
+
+    if (rlError) {
+      console.error('Rate limit check error:', rlError);
+    }
+
+    if (allowed === false) {
+      console.warn(`Rate limited email request: ${type} to ${to} from ${clientIp}`);
+      return new Response(JSON.stringify({ success: false, error: 'Too many requests. Please try again later.' }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
 
     let html: string;
     let subject: string;
@@ -99,14 +139,14 @@ const handler = async (req: Request): Promise<Response> => {
       throw error;
     }
 
+    // Record the send for rate limiting
+    await supabase.rpc('record_email_send', { p_email: to, p_type: type, p_ip: clientIp });
+
     console.log(`Successfully sent ${type} email to ${to}`);
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
 
   } catch (error: any) {
@@ -117,10 +157,7 @@ const handler = async (req: Request): Promise<Response> => {
       error: error.message
     }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
   }
 };
