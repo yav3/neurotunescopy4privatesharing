@@ -8,7 +8,6 @@ import { PipelineSection } from '@/components/landing/PipelineSection';
 import { DataFlowSection } from '@/components/landing/DataFlowSection';
 import { StatsBar } from '@/components/landing/StatsBar';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
-import { ProductCardsSection } from '@/components/landing/ProductCardsSection';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 
 const Index = () => {
@@ -89,7 +88,7 @@ const Index = () => {
         <DataFlowSection />
         <StatsBar />
         <HowItWorksSection />
-        <ProductCardsSection />
+        
         
         <Footer />
         
