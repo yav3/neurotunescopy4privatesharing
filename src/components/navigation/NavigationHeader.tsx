@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import neuralpositiveLogoHeader from '@/assets/neuralpositive-logo-header.png';
 import { LissajousLogo } from '@/components/brand/LissajousLogo';
-import { WelconyBanner } from '@/components/WelconyBanner';
+import welconyLogo from '@/assets/welcony-logo.png';
 
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
@@ -53,11 +53,6 @@ export const NavigationHeader = () => {
   };
   return (
     <>
-      {/* Welcony Distribution Banner - Top */}
-      <div className="fixed top-0 left-0 right-0 z-[60]">
-        <WelconyBanner />
-      </div>
-
       {/* Backdrop Overlay - dims background when menu is open */}
       {(desktopMenuOpen || mobileMenuOpen) && (
         <div 
@@ -70,7 +65,7 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-[28px] left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
+      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
@@ -171,6 +166,10 @@ export const NavigationHeader = () => {
               NeuroTunes
             </span>
           </Link>
+          <div className="flex items-center gap-1.5 ml-3 pl-3 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
+            <span className="text-[10px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+            <img src={welconyLogo} alt="Welcony" className="h-3.5 brightness-0 invert" style={{ opacity: isLandingPage && !scrolled ? 0.5 : 0.5, filter: isLandingPage && !scrolled ? 'brightness(0)' : 'brightness(0) invert(1)' }} />
+          </div>
         </div>
 
         {/* Right: CTAs */}
@@ -212,7 +211,7 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-[28px] left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
+      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(220, 15%, 6%, 0.75)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(0, 0%, 100%, 0.04), 0 4px 24px hsla(0, 0%, 0%, 0.5)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 35%)' : 'hsla(0,0%,100%,0.7)' }}>
@@ -310,6 +309,10 @@ export const NavigationHeader = () => {
               NeuroTunes
             </span>
           </Link>
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
+            <span className="text-[8px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+            <img src={welconyLogo} alt="Welcony" className="h-3 brightness-0 invert" style={{ opacity: isLandingPage && !scrolled ? 0.5 : 0.5, filter: isLandingPage && !scrolled ? 'brightness(0)' : 'brightness(0) invert(1)' }} />
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
