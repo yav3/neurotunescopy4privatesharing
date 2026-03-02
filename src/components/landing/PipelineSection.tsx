@@ -127,15 +127,50 @@ export const PipelineSection: React.FC = () => {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 whileHover={{ scale: 1.04, y: -2 }}
                 onHoverStart={() => setActiveStep(i)}
-                className="relative rounded-xl p-5 cursor-pointer"
+                className="relative rounded-xl p-5 cursor-pointer overflow-hidden"
                 style={{
-                  background: isActive ? 'hsla(210, 60%, 45%, 0.1)' : 'hsla(220, 20%, 12%, 0.4)',
-                  border: isActive ? '1px solid hsla(210, 60%, 50%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)',
-                  backdropFilter: 'blur(12px)',
-                  boxShadow: isActive ? '0 0 24px hsla(210, 70%, 50%, 0.08), inset 0 1px 0 hsla(210, 60%, 70%, 0.06)' : 'none',
-                  transition: 'background 0.5s, border 0.5s, box-shadow 0.5s',
+                  background: isActive
+                    ? 'linear-gradient(135deg, hsla(210, 70%, 30%, 0.35) 0%, hsla(220, 60%, 20%, 0.45) 100%)'
+                    : isPast
+                    ? 'linear-gradient(135deg, hsla(210, 50%, 25%, 0.2) 0%, hsla(220, 40%, 15%, 0.3) 100%)'
+                    : 'hsla(220, 20%, 12%, 0.5)',
+                  border: isActive
+                    ? '1px solid hsla(210, 70%, 55%, 0.35)'
+                    : isPast
+                    ? '1px solid hsla(210, 50%, 50%, 0.15)'
+                    : '1px solid hsla(0, 0%, 100%, 0.08)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  boxShadow: isActive
+                    ? '0 8px 32px hsla(210, 70%, 40%, 0.15), inset 0 1px 0 hsla(210, 70%, 80%, 0.12), inset 0 -1px 0 hsla(210, 50%, 30%, 0.1)'
+                    : isPast
+                    ? 'inset 0 1px 0 hsla(210, 50%, 70%, 0.06)'
+                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.04)',
+                  transition: 'background 0.6s, border 0.6s, box-shadow 0.6s',
                 }}
               >
+                {/* Liquid glass highlight — top-left sheen */}
+                <motion.div
+                  className="absolute top-0 left-0 w-full h-full rounded-xl pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, hsla(210, 80%, 70%, 0.12) 0%, transparent 40%, transparent 60%, hsla(210, 60%, 50%, 0.04) 100%)',
+                  }}
+                  animate={{ opacity: isActive ? 1 : isPast ? 0.4 : 0 }}
+                  transition={{ duration: 0.6 }}
+                />
+
+                {/* Sweeping glow animation for active card */}
+                {isActive && (
+                  <motion.div
+                    className="absolute top-0 left-0 w-full h-full rounded-xl pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(105deg, transparent 30%, hsla(210, 80%, 60%, 0.08) 45%, hsla(200, 70%, 55%, 0.12) 50%, hsla(210, 80%, 60%, 0.08) 55%, transparent 70%)',
+                    }}
+                    animate={{ x: ['-100%', '200%'] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
+                  />
+                )}
+
                 <motion.div
                   animate={isActive ? { scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] } : { scale: 1, opacity: isPast ? 0.8 : 0.5 }}
                   transition={isActive ? { duration: 2, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
@@ -143,22 +178,26 @@ export const PipelineSection: React.FC = () => {
                   <Icon
                     className="w-6 h-6 mb-3"
                     strokeWidth={1.2}
-                    style={{ color: isActive ? '#06b6d4' : isPast ? 'hsl(210, 40%, 55%)' : 'hsl(0, 0%, 50%)' }}
+                    style={{
+                      color: isActive ? 'hsl(200, 90%, 65%)' : isPast ? 'hsl(210, 50%, 55%)' : 'hsl(0, 0%, 45%)',
+                      filter: isActive ? 'drop-shadow(0 0 6px hsla(200, 90%, 65%, 0.4))' : 'none',
+                      transition: 'color 0.4s, filter 0.4s',
+                    }}
                   />
                 </motion.div>
-                <h3 style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(0, 0%, 95%)' : 'hsl(0, 0%, 72%)', marginBottom: '2px', transition: 'color 0.4s' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(0, 0%, 97%)' : isPast ? 'hsl(0, 0%, 80%)' : 'hsl(0, 0%, 65%)', marginBottom: '2px', transition: 'color 0.4s' }}>
                   {step.title}
                 </h3>
-                <p style={{ fontSize: '12px', fontWeight: 300, color: isActive ? 'hsl(0, 0%, 60%)' : 'hsl(0, 0%, 42%)', transition: 'color 0.4s' }}>
+                <p style={{ fontSize: '12px', fontWeight: 300, color: isActive ? 'hsl(210, 30%, 70%)' : isPast ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 38%)', transition: 'color 0.4s' }}>
                   {step.description}
                 </p>
 
                 {i < steps.length - 1 && (
                   <motion.span
-                    className="hidden lg:block absolute top-1/2 -right-2.5"
+                    className="hidden lg:block absolute top-1/2 -right-2.5 z-10"
                     style={{ fontSize: '12px' }}
                     animate={{
-                      color: isActive ? 'hsl(210, 60%, 55%)' : 'hsl(0, 0%, 28%)',
+                      color: isActive ? 'hsl(210, 70%, 60%)' : isPast ? 'hsl(210, 40%, 45%)' : 'hsl(0, 0%, 25%)',
                       x: isActive ? [0, 3, 0] : 0,
                     }}
                     transition={isActive ? { duration: 1.2, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
@@ -167,11 +206,12 @@ export const PipelineSection: React.FC = () => {
                   </motion.span>
                 )}
 
+                {/* Bottom progress bar with gradient */}
                 <motion.div
-                  className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full"
-                  style={{ background: 'hsl(210, 80%, 55%)' }}
+                  className="absolute bottom-0 left-0 right-0 h-[2px]"
+                  style={{ background: 'linear-gradient(90deg, hsl(210, 80%, 55%), hsl(200, 85%, 60%))' }}
                   initial={{ scaleX: 0 }}
-                  animate={{ scaleX: isActive ? 1 : 0 }}
+                  animate={{ scaleX: isActive ? 1 : isPast ? 1 : 0, opacity: isActive ? 1 : isPast ? 0.4 : 0 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 />
               </motion.div>
