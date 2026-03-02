@@ -10,10 +10,10 @@ const STATES = [
     hue: 174,        // Teal #2DD4BF
     saturation: 0.64,
     lightness: 0.57,
-    speed: 1.5,       // 1.5s per cycle → freq multiplier
-    amplitude: 0.12,  // large, deep waves
+    speed: 1.5,
+    amplitude: 0.18,  // more pronounced waves
     pulseRate: 0.012,
-    spread: 0.18,
+    spread: 0.22,
     harmonicShift: 0.35,
     brightness: 0.5,
   },
@@ -24,9 +24,9 @@ const STATES = [
     saturation: 0.95,
     lightness: 0.55,
     speed: 0.8,
-    amplitude: 0.09,
+    amplitude: 0.12,
     pulseRate: 0.018,
-    spread: 0.2,
+    spread: 0.24,
     harmonicShift: 0.5,
     brightness: 0.7,
   },
@@ -37,15 +37,15 @@ const STATES = [
     saturation: 0.95,
     lightness: 0.65,
     speed: 0.4,
-    amplitude: 0.06,
+    amplitude: 0.08,
     pulseRate: 0.025,
-    spread: 0.15,
+    spread: 0.16,
     harmonicShift: 0.7,
     brightness: 0.75,
   },
 ];
 
-const CYCLE = 10000; // 10s per state
+const CYCLE = 12000; // 12s per state (matches spec)
 const INTRO_DURATION = 3.0; // seconds for chaotic → smooth
 
 /* ── Particle Cloud ── */
@@ -90,15 +90,15 @@ const ParticleCloud: React.FC<{
     const c = cur.current;
     const intro = introProgress.current; // 0 = chaotic, 1 = smooth
 
-    // Smooth lerp toward current state
-    c.hue += (st.hue - c.hue) * 0.015;
-    c.saturation += (st.saturation - c.saturation) * 0.02;
-    c.lightness += (st.lightness - c.lightness) * 0.02;
-    c.speed += (st.speed - c.speed) * 0.025;
-    c.amplitude += (st.amplitude - c.amplitude) * 0.025;
-    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.025;
-    c.spread += (st.spread - c.spread) * 0.02;
-    c.brightness += (st.brightness - c.brightness) * 0.015;
+    // Faster lerp so visuals match the label within ~2s
+    c.hue += (st.hue - c.hue) * 0.04;
+    c.saturation += (st.saturation - c.saturation) * 0.05;
+    c.lightness += (st.lightness - c.lightness) * 0.05;
+    c.speed += (st.speed - c.speed) * 0.06;
+    c.amplitude += (st.amplitude - c.amplitude) * 0.06;
+    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.06;
+    c.spread += (st.spread - c.spread) * 0.05;
+    c.brightness += (st.brightness - c.brightness) * 0.04;
 
     // During intro: lerp from gray toward state color
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
@@ -146,7 +146,7 @@ const ParticleCloud: React.FC<{
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     const lightness = 0.45 + introLight * 0.35 + globalPulse * 0.06 * c.amplitude;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.035);
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.07);
     mat.opacity = 0.75 + c.brightness * 0.2 + globalPulse * 0.1 * c.amplitude;
   });
 
@@ -173,11 +173,11 @@ const GlowCore: React.FC<{
     const c = cur.current;
     const intro = introProgress.current;
 
-    c.hue += (st.hue - c.hue) * 0.015;
-    c.saturation += (st.saturation - c.saturation) * 0.02;
-    c.amplitude += (st.amplitude - c.amplitude) * 0.025;
-    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.025;
-    c.brightness += (st.brightness - c.brightness) * 0.015;
+    c.hue += (st.hue - c.hue) * 0.04;
+    c.saturation += (st.saturation - c.saturation) * 0.05;
+    c.amplitude += (st.amplitude - c.amplitude) * 0.06;
+    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.06;
+    c.brightness += (st.brightness - c.brightness) * 0.04;
 
     const pulse = Math.sin(t * c.pulseRate * Math.PI) * 0.5 + 0.5;
     const scale = 0.18 + pulse * 0.06 * c.amplitude + c.brightness * 0.08;
@@ -187,7 +187,7 @@ const GlowCore: React.FC<{
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
     const coreLightness = 0.4 + c.brightness * 0.4 + pulse * 0.12 * c.amplitude;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.04);
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.07);
     mat.opacity = 0.2 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
   });
 
@@ -234,13 +234,13 @@ const WaveformRing: React.FC<{
     const intro = introProgress.current;
     const chaosWeight = Math.max(0, 1 - intro);
 
-    c.hue += (st.hue - c.hue) * 0.015;
-    c.saturation += (st.saturation - c.saturation) * 0.02;
-    c.speed += (st.speed - c.speed) * 0.025;
-    c.amplitude += (st.amplitude - c.amplitude) * 0.025;
-    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.025;
-    c.spread += (st.spread - c.spread) * 0.02;
-    c.harmonicShift += (st.harmonicShift - c.harmonicShift) * 0.02;
+    c.hue += (st.hue - c.hue) * 0.04;
+    c.saturation += (st.saturation - c.saturation) * 0.05;
+    c.speed += (st.speed - c.speed) * 0.06;
+    c.amplitude += (st.amplitude - c.amplitude) * 0.06;
+    c.pulseRate += (st.pulseRate - c.pulseRate) * 0.06;
+    c.spread += (st.spread - c.spread) * 0.05;
+    c.harmonicShift += (st.harmonicShift - c.harmonicShift) * 0.05;
 
     groupRef.current.rotation.x = tilt;
     groupRef.current.rotation.z = t * c.speed * 0.04;
@@ -274,7 +274,7 @@ const WaveformRing: React.FC<{
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.1, c.saturation, intro) : c.saturation;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.75), 0.04);
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.75), 0.07);
     mat.opacity = 0.55 + c.amplitude * 0.4;
   });
 
