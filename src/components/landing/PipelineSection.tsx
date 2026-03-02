@@ -66,7 +66,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-2"
-          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(210, 30%, 55%)' }}
+          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(210, 60%, 65%)' }}
         >
           COMPOSITION ENGINE
         </motion.p>
@@ -76,7 +76,14 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center mb-2"
-          style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(0, 0%, 92%)' }}
+          style={{
+            fontSize: 'clamp(24px, 4vw, 36px)',
+            fontWeight: 300,
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
         >
           Algorithmic music pipeline
         </motion.h2>
@@ -86,7 +93,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 50%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 70%)' }}
         >
           From patented composition to adaptive therapeutic delivery
         </motion.p>
@@ -150,7 +157,7 @@ export const PipelineSection: React.FC = () => {
                       className="w-5 h-5"
                       strokeWidth={1.5}
                       style={{
-                        color: isActive ? 'hsl(210, 80%, 65%)' : isPast ? 'hsl(0, 0%, 55%)' : 'hsl(0, 0%, 35%)',
+                        color: isActive ? 'hsl(210, 80%, 65%)' : isPast ? 'hsl(0, 0%, 60%)' : 'hsl(0, 0%, 45%)',
                         filter: isActive ? 'drop-shadow(0 0 8px hsla(210, 80%, 65%, 0.5))' : 'none',
                         transition: 'color 0.4s, filter 0.4s',
                       }}
@@ -160,7 +167,7 @@ export const PipelineSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 400,
-                      color: isActive ? 'hsl(210, 60%, 65%)' : 'hsl(0, 0%, 30%)',
+                      color: isActive ? 'hsl(210, 60%, 65%)' : 'hsl(0, 0%, 40%)',
                       fontVariantNumeric: 'tabular-nums',
                       transition: 'color 0.4s',
                     }}
@@ -174,7 +181,7 @@ export const PipelineSection: React.FC = () => {
                   style={{
                     fontSize: '16px',
                     fontWeight: 400,
-                    color: isActive ? 'hsl(0, 0%, 100%)' : isPast ? 'hsl(0, 0%, 75%)' : 'hsl(0, 0%, 55%)',
+                    color: isActive ? 'hsl(0, 0%, 100%)' : isPast ? 'hsl(0, 0%, 80%)' : 'hsl(0, 0%, 65%)',
                     marginBottom: '4px',
                     transition: 'color 0.4s',
                   }}
@@ -186,7 +193,7 @@ export const PipelineSection: React.FC = () => {
                   style={{
                     fontSize: '12px',
                     fontWeight: 300,
-                    color: isActive ? 'hsl(0, 0%, 60%)' : isPast ? 'hsl(0, 0%, 42%)' : 'hsl(0, 0%, 32%)',
+                    color: isActive ? 'hsl(0, 0%, 70%)' : isPast ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 42%)',
                     transition: 'color 0.4s',
                   }}
                 >
