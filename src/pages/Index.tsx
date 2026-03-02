@@ -14,8 +14,6 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [dissolving, setDissolving] = useState(false);
-  const interactedRef = useRef(false);
 
   // Hash scroll handling
   useEffect(() => {
@@ -27,28 +25,7 @@ const Index = () => {
     }
   }, [location.hash]);
 
-  // Auto-dissolve after 5s of no interaction → navigate to /demo
-  useEffect(() => {
-    const markInteracted = () => { interactedRef.current = true; };
-    window.addEventListener('scroll', markInteracted, { once: true });
-    window.addEventListener('click', markInteracted, { once: true });
-    window.addEventListener('touchstart', markInteracted, { once: true });
-
-    const timer = setTimeout(() => {
-      if (!interactedRef.current) {
-        setDissolving(true);
-        // Navigate after fade-out completes
-        setTimeout(() => navigate('/demo'), 1200);
-      }
-    }, 5000);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', markInteracted);
-      window.removeEventListener('click', markInteracted);
-      window.removeEventListener('touchstart', markInteracted);
-    };
-  }, [navigate]);
+  // Auto-dissolve removed — landing page stays visible
 
   return (
     <AnimatePresence>
@@ -69,7 +46,7 @@ const Index = () => {
             )
           `,
         }}
-        animate={{ opacity: dissolving ? 0 : 1 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
         <NavigationHeader />
