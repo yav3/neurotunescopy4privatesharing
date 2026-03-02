@@ -93,7 +93,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 70%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(215, 25%, 50%)' }}
         >
           From patented composition to adaptive therapeutic delivery
         </motion.p>
@@ -157,7 +157,7 @@ export const PipelineSection: React.FC = () => {
                       className="w-5 h-5"
                       strokeWidth={1.5}
                       style={{
-                        color: isActive ? 'hsl(210, 80%, 65%)' : isPast ? 'hsl(0, 0%, 60%)' : 'hsl(0, 0%, 45%)',
+                        color: isActive ? 'hsl(205, 85%, 55%)' : 'hsl(215, 40%, 55%)',
                         filter: isActive ? 'drop-shadow(0 0 8px hsla(210, 80%, 65%, 0.5))' : 'none',
                         transition: 'color 0.4s, filter 0.4s',
                       }}
@@ -167,7 +167,7 @@ export const PipelineSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 400,
-                      color: isActive ? 'hsl(210, 60%, 65%)' : 'hsl(0, 0%, 40%)',
+                      color: isActive ? 'hsl(210, 60%, 50%)' : 'hsl(215, 25%, 55%)',
                       fontVariantNumeric: 'tabular-nums',
                       transition: 'color 0.4s',
                     }}
@@ -181,9 +181,11 @@ export const PipelineSection: React.FC = () => {
                   style={{
                     fontSize: '16px',
                     fontWeight: 400,
-                    color: isActive ? 'hsl(0, 0%, 100%)' : isPast ? 'hsl(0, 0%, 80%)' : 'hsl(0, 0%, 65%)',
                     marginBottom: '4px',
                     transition: 'color 0.4s',
+                    ...(isActive
+                      ? { background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+                      : { color: 'hsl(215, 30%, 40%)' }),
                   }}
                 >
                   {step.title}
@@ -193,7 +195,7 @@ export const PipelineSection: React.FC = () => {
                   style={{
                     fontSize: '12px',
                     fontWeight: 300,
-                    color: isActive ? 'hsl(0, 0%, 70%)' : isPast ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 42%)',
+                    color: isActive ? 'hsl(215, 25%, 45%)' : 'hsl(215, 15%, 55%)',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -292,11 +294,11 @@ export const PipelineSection: React.FC = () => {
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.2, repeat: Infinity }}
                     />
-                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', fontWeight: 500, color: 'hsl(210, 50%, 60%)' }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', fontWeight: 500, color: 'hsl(205, 65%, 50%)' }}>
                       {stageOutputs[activeStep].label.toUpperCase()}
                     </span>
                   </div>
-                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 80%)' }}>
+                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(215, 25%, 40%)' }}>
                     {stageOutputs[activeStep].detail}
                   </p>
                 </motion.div>
@@ -304,10 +306,10 @@ export const PipelineSection: React.FC = () => {
             </div>
 
             <div className="text-right">
-              <span style={{ fontSize: '24px', fontWeight: 300, color: 'hsl(0, 0%, 85%)', fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: '24px', fontWeight: 300, fontVariantNumeric: 'tabular-nums', background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 0{activeStep + 1}
               </span>
-              <span style={{ fontSize: '13px', color: 'hsl(0, 0%, 35%)' }}> / 04</span>
+              <span style={{ fontSize: '13px', color: 'hsl(215, 20%, 55%)' }}> / 04</span>
             </div>
           </div>
         </motion.div>
@@ -326,7 +328,7 @@ export const PipelineSection: React.FC = () => {
               backdropFilter: 'blur(12px)',
             }}
           >
-            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 85%)', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(215, 30%, 35%)', marginBottom: '12px' }}>
               Why algorithmic composition
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -342,7 +344,7 @@ export const PipelineSection: React.FC = () => {
                     fontSize: '12px',
                     background: 'hsla(0, 0%, 100%, 0.05)',
                     border: '1px solid hsla(0, 0%, 100%, 0.08)',
-                    color: 'hsl(0, 0%, 70%)',
+                    color: 'hsl(215, 25%, 45%)',
                     fontWeight: 400,
                   }}
                 >
@@ -365,7 +367,7 @@ export const PipelineSection: React.FC = () => {
             }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 85%)' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(215, 30%, 35%)' }}>
                 Feature annotation
               </h3>
               <motion.span
@@ -394,7 +396,7 @@ export const PipelineSection: React.FC = () => {
                     fontSize: '12px',
                     background: 'hsla(0, 0%, 100%, 0.05)',
                     border: '1px solid hsla(0, 0%, 100%, 0.08)',
-                    color: 'hsl(0, 0%, 70%)',
+                    color: 'hsl(215, 25%, 45%)',
                     fontWeight: 400,
                   }}
                 >
