@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import neuralpositiveLogoHeader from '@/assets/neuralpositive-logo-header.png';
 import { LissajousLogo } from '@/components/brand/LissajousLogo';
+import welconyLogo from '@/assets/welcony-logo.png';
 
 
 export const NavigationHeader = () => {
@@ -168,14 +169,11 @@ export const NavigationHeader = () => {
           </Link>
           <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
             <span className="text-[11px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.5)' }}>Distributed by</span>
-            <span
-              className="text-[22px] tracking-tight"
-              style={{
-                color: isLandingPage && !scrolled ? 'hsla(220, 20%, 28%, 0.95)' : 'hsla(0, 0%, 100%, 0.9)'
-              }}
-            >
-              Welcony
-            </span>
+            {isLandingPage && !scrolled ? (
+              <span className="text-[22px] tracking-tight" style={{ color: 'hsla(220, 20%, 15%, 0.85)' }}>Welcony</span>
+            ) : (
+              <img src={welconyLogo} alt="Welcony" className="h-6" style={{ filter: 'brightness(0) invert(1)', opacity: 0.85 }} />
+            )}
           </div>
         </div>
 
@@ -318,7 +316,11 @@ export const NavigationHeader = () => {
           </Link>
           <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
             <span className="text-[8px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
-            <span className="text-sm tracking-tight whitespace-nowrap" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 20%, 28%, 0.95)' : 'hsla(0, 0%, 100%, 0.9)' }}>Welcony</span>
+            {isLandingPage && !scrolled ? (
+              <span className="text-sm tracking-tight whitespace-nowrap" style={{ color: 'hsla(220, 20%, 15%, 0.85)' }}>Welcony</span>
+            ) : (
+              <img src={welconyLogo} alt="Welcony" className="h-3.5" style={{ filter: 'brightness(0) invert(1)', opacity: 0.85 }} />
+            )}
           </div>
         </div>
 
