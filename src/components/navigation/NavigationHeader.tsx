@@ -14,7 +14,6 @@ import neuralpositiveLogoHeader from '@/assets/neuralpositive-logo-header.png';
 import { LissajousLogo } from '@/components/brand/LissajousLogo';
 
 
-
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -170,10 +169,10 @@ export const NavigationHeader = () => {
           <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
             <span className="text-[11px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.5)' }}>Distributed by</span>
             <span
-              className="text-[22px] tracking-tight transition-colors duration-500"
-              style={{ color: isLandingPage && !scrolled ? 'hsla(220, 20%, 15%, 0.85)' : 'hsla(0, 0%, 100%, 0.9)' }}
+              className="text-[22px] tracking-tight lowercase transition-colors duration-500"
+              style={{ color: isLandingPage && !scrolled ? 'hsla(220, 20%, 15%, 0.85)' : 'hsla(0, 0%, 88%, 0.92)', fontWeight: 400 }}
             >
-              Welcony
+              welcony
             </span>
           </div>
         </div>
@@ -318,10 +317,10 @@ export const NavigationHeader = () => {
           <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
             <span className="text-[8px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
             <span
-              className="text-sm tracking-tight whitespace-nowrap transition-colors duration-500"
-              style={{ color: isLandingPage && !scrolled ? 'hsla(220, 20%, 15%, 0.85)' : 'hsla(0, 0%, 100%, 0.9)' }}
+              className="text-sm tracking-tight whitespace-nowrap lowercase transition-colors duration-500"
+              style={{ color: isLandingPage && !scrolled ? 'hsla(220, 20%, 15%, 0.85)' : 'hsla(0, 0%, 88%, 0.92)', fontWeight: 400 }}
             >
-              Welcony
+              welcony
             </span>
           </div>
         </div>
