@@ -3,6 +3,7 @@ import { FooterContactHandler } from "./FooterContactHandler";
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
+import { WelconyBanner } from '@/components/WelconyBanner';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
@@ -49,6 +50,9 @@ export const Footer = () => {
           </div>
         </div>
       </footer>
+
+      {/* Welcony Distribution Banner - Bottom */}
+      <WelconyBanner />
     
       <FooterContactHandler
         isOpen={contactOpen}
