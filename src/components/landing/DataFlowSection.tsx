@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Brain, Music2, ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 const pairings = [
   { genre: 'New Age & World', goal: 'Stress & Anxiety Reduction', match: 94 },
@@ -10,64 +10,60 @@ const pairings = [
   { genre: 'Electronic', goal: 'HIIT & Cardio', match: 92 },
 ];
 
-const steps = ['Ingest', 'Map', 'Personalize', 'Deliver'];
-
 export const DataFlowSection: React.FC = () => {
   const [activeRow, setActiveRow] = useState(0);
-  const [matchPhase, setMatchPhase] = useState<'select' | 'match' | 'done'>('done');
+  const [phase, setPhase] = useState<'scanning' | 'matched'>('matched');
 
-  // Auto-cycle through rows
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveRow((prev) => {
         const next = (prev + 1) % pairings.length;
-        setMatchPhase('select');
+        setPhase('scanning');
         return next;
       });
     }, 4000);
     return () => clearInterval(interval);
   }, []);
 
-  // Animate through phases: select → match → done
   useEffect(() => {
-    if (matchPhase === 'select') {
-      const t1 = setTimeout(() => setMatchPhase('match'), 800);
-      return () => clearTimeout(t1);
+    if (phase === 'scanning') {
+      const t = setTimeout(() => setPhase('matched'), 1200);
+      return () => clearTimeout(t);
     }
-    if (matchPhase === 'match') {
-      const t2 = setTimeout(() => setMatchPhase('done'), 1000);
-      return () => clearTimeout(t2);
-    }
-  }, [matchPhase]);
+  }, [phase, activeRow]);
 
-  const activePairing = pairings[activeRow];
+  const active = pairings[activeRow];
 
   return (
     <section
       id="science"
-      className="relative py-16 md:py-20 overflow-hidden"
-      style={{
-        background: 'transparent',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-      }}
+      className="relative py-20 md:py-28 overflow-hidden"
+      style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+      <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         {/* Header */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-2"
-          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(0, 0%, 50%)' }}
+          className="text-center mb-3"
+          style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(210, 60%, 65%)' }}
         >
-          DATA ARCHITECTURE
+          CLINICAL MATCHING
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-2"
-          style={{ fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(0, 0%, 96%)' }}
+          className="text-center mb-3"
+          style={{
+            fontSize: 'clamp(24px, 4vw, 38px)',
+            fontWeight: 300,
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
         >
           Genre–goal pairings
         </motion.h2>
@@ -75,243 +71,277 @@ export const DataFlowSection: React.FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
-          style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(0, 0%, 45%)' }}
+          className="text-center mb-14"
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 65%)' }}
         >
           Each genre matched to therapeutic outcomes via clinical mapping
         </motion.p>
 
-        {/* Preference → Matching flow */}
+        {/* ── Active matching showcase ── */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-center justify-center gap-3 md:gap-5 mb-8 flex-wrap"
+          className="relative rounded-3xl p-6 md:p-8 mb-6 overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, hsla(210, 50%, 20%, 0.25), hsla(220, 40%, 12%, 0.4))',
+            border: '1px solid hsla(210, 60%, 50%, 0.15)',
+            backdropFilter: 'blur(40px)',
+            WebkitBackdropFilter: 'blur(40px)',
+            boxShadow: '0 24px 80px -12px hsla(210, 60%, 30%, 0.25), inset 0 1px 0 hsla(210, 60%, 80%, 0.08)',
+          }}
         >
-          {/* User preference */}
+          {/* Liquid glass sheen */}
           <div
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
+            className="absolute top-0 left-0 w-full h-1/2 rounded-t-3xl pointer-events-none"
             style={{
-              background: matchPhase === 'select' ? 'hsla(210, 60%, 45%, 0.12)' : 'hsla(220, 20%, 12%, 0.5)',
-              border: matchPhase === 'select' ? '1px solid hsla(210, 60%, 50%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)',
-              backdropFilter: 'blur(12px)',
-              transition: 'all 0.5s ease',
+              background: 'linear-gradient(180deg, hsla(210, 70%, 70%, 0.06) 0%, transparent 100%)',
             }}
-          >
-            <User className="w-4 h-4" style={{ color: 'hsl(210, 60%, 60%)' }} />
-            <div>
-              <p style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'hsl(0, 0%, 45%)', fontWeight: 400 }}>USER GOAL</p>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={activePairing.goal}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(0, 0%, 90%)' }}
-                >
-                  {activePairing.goal}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Animated arrow with pulse */}
+          />
+          {/* Animated glow orb */}
           <motion.div
-            animate={{
-              x: matchPhase === 'match' ? [0, 6, 0] : 0,
-              opacity: matchPhase === 'match' ? [0.4, 1, 0.4] : 0.3,
-            }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-          >
-            <ArrowRight className="w-4 h-4" style={{ color: 'hsl(210, 60%, 55%)' }} />
-          </motion.div>
-
-          {/* Matching engine */}
-          <div
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
+            className="absolute pointer-events-none rounded-full"
             style={{
-              background: matchPhase === 'match' ? 'hsla(180, 40%, 35%, 0.12)' : 'hsla(220, 20%, 12%, 0.5)',
-              border: matchPhase === 'match' ? '1px solid hsla(180, 50%, 50%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)',
-              backdropFilter: 'blur(12px)',
-              transition: 'all 0.5s ease',
+              width: 200,
+              height: 200,
+              background: 'radial-gradient(circle, hsla(210, 80%, 60%, 0.12), transparent 70%)',
+              filter: 'blur(40px)',
             }}
-          >
+            animate={{
+              x: phase === 'scanning' ? ['-20%', '80%'] : '80%',
+              y: ['-10%', '20%'],
+            }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+          />
+
+          <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-8">
+            {/* Goal card */}
             <motion.div
-              animate={matchPhase === 'match' ? { rotate: 360 } : { rotate: 0 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
+              style={{
+                background: phase === 'scanning'
+                  ? 'linear-gradient(135deg, hsla(210, 60%, 50%, 0.15), hsla(200, 50%, 40%, 0.08))'
+                  : 'hsla(210, 30%, 15%, 0.3)',
+                border: phase === 'scanning'
+                  ? '1px solid hsla(210, 70%, 60%, 0.3)'
+                  : '1px solid hsla(0, 0%, 100%, 0.06)',
+                backdropFilter: 'blur(16px)',
+                transition: 'all 0.6s ease',
+              }}
             >
-              <Brain className="w-4 h-4" style={{ color: 'hsl(180, 50%, 55%)' }} />
-            </motion.div>
-            <div>
-              <p style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'hsl(0, 0%, 45%)', fontWeight: 400 }}>MATCHING</p>
-              <p style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(0, 0%, 70%)' }}>
-                {matchPhase === 'match' ? 'Analyzing...' : 'Clinical engine'}
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(210, 60%, 65%)', marginBottom: 8, fontWeight: 500 }}>
+                THERAPEUTIC GOAL
               </p>
-            </div>
-          </div>
-
-          {/* Arrow */}
-          <motion.div
-            animate={{
-              x: matchPhase === 'done' ? [0, 6, 0] : 0,
-              opacity: matchPhase === 'done' ? [0.4, 1, 0.4] : 0.3,
-            }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-          >
-            <ArrowRight className="w-4 h-4" style={{ color: 'hsl(210, 60%, 55%)' }} />
-          </motion.div>
-
-          {/* Result */}
-          <div
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
-            style={{
-              background: matchPhase === 'done' ? 'hsla(210, 60%, 45%, 0.12)' : 'hsla(220, 20%, 12%, 0.5)',
-              border: matchPhase === 'done' ? '1px solid hsla(210, 60%, 50%, 0.2)' : '1px solid hsla(0, 0%, 100%, 0.06)',
-              backdropFilter: 'blur(12px)',
-              transition: 'all 0.5s ease',
-            }}
-          >
-            <Music2 className="w-4 h-4" style={{ color: 'hsl(210, 80%, 60%)' }} />
-            <div>
-              <p style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'hsl(0, 0%, 45%)', fontWeight: 400 }}>MATCHED GENRE</p>
               <AnimatePresence mode="wait">
                 <motion.p
-                  key={activePairing.genre}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: matchPhase === 'done' ? 1 : 0.3, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(0, 0%, 90%)' }}
+                  key={active.goal}
+                  initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.4 }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 95%)' }}
                 >
-                  {activePairing.genre}
+                  {active.goal}
                 </motion.p>
               </AnimatePresence>
-            </div>
-            {matchPhase === 'done' && (
+            </motion.div>
+
+            {/* Animated connection */}
+            <div className="flex flex-col items-center gap-1 shrink-0">
               <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="ml-1"
+                className="w-12 h-12 rounded-full flex items-center justify-center relative"
+                style={{
+                  background: phase === 'matched'
+                    ? 'linear-gradient(135deg, hsla(210, 80%, 55%, 0.25), hsla(200, 70%, 50%, 0.15))'
+                    : 'hsla(210, 40%, 20%, 0.3)',
+                  border: '1px solid hsla(210, 60%, 55%, 0.2)',
+                  backdropFilter: 'blur(12px)',
+                  transition: 'all 0.5s',
+                }}
               >
-                <Sparkles className="w-3 h-3" style={{ color: 'hsl(45, 80%, 60%)' }} />
+                {phase === 'scanning' ? (
+                  <motion.div
+                    className="w-5 h-5 rounded-full border-2 border-t-transparent"
+                    style={{ borderColor: 'hsla(210, 70%, 65%, 0.6)', borderTopColor: 'transparent' }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                  />
+                ) : (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    <Sparkles className="w-5 h-5" style={{ color: 'hsl(210, 80%, 70%)' }} />
+                  </motion.div>
+                )}
               </motion.div>
-            )}
+              <motion.span
+                style={{ fontSize: '9px', letterSpacing: '0.1em', fontWeight: 500 }}
+                animate={{ color: phase === 'scanning' ? 'hsl(210, 60%, 60%)' : 'hsl(150, 50%, 55%)' }}
+              >
+                {phase === 'scanning' ? 'MATCHING' : `${active.match}% MATCH`}
+              </motion.span>
+            </div>
+
+            {/* Genre result card */}
+            <motion.div
+              className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
+              style={{
+                background: phase === 'matched'
+                  ? 'linear-gradient(135deg, hsla(210, 60%, 50%, 0.15), hsla(220, 50%, 40%, 0.08))'
+                  : 'hsla(210, 30%, 15%, 0.3)',
+                border: phase === 'matched'
+                  ? '1px solid hsla(210, 70%, 60%, 0.3)'
+                  : '1px solid hsla(0, 0%, 100%, 0.06)',
+                backdropFilter: 'blur(16px)',
+                transition: 'all 0.6s ease',
+              }}
+            >
+              {/* Glass sheen on match */}
+              {phase === 'matched' && (
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(105deg, transparent 40%, hsla(210, 80%, 70%, 0.08) 50%, transparent 60%)',
+                  }}
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '200%' }}
+                  transition={{ duration: 1.5, ease: 'easeInOut' }}
+                />
+              )}
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(210, 60%, 65%)', marginBottom: 8, fontWeight: 500 }}>
+                MATCHED GENRE
+              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={active.genre}
+                  initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                  animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0, filter: phase === 'matched' ? 'blur(0px)' : 'blur(2px)' }}
+                  exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.4 }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 95%)' }}
+                >
+                  {active.genre}
+                </motion.p>
+              </AnimatePresence>
+            </motion.div>
           </div>
         </motion.div>
 
-        {/* Pairings table */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="rounded-2xl p-5 md:p-6 mb-5"
-          style={{
-            background: 'hsla(220, 20%, 10%, 0.55)',
-            border: '1px solid hsla(0, 0%, 100%, 0.08)',
-            backdropFilter: 'blur(24px)',
-            boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.4), inset 0 1px 0 hsla(0, 0%, 100%, 0.04)',
-          }}
-        >
-          {/* Column headers */}
-          <div className="grid grid-cols-3 mb-2 px-1">
-            {['GENRE', 'THERAPEUTIC GOAL', 'MATCH'].map((h) => (
-              <p key={h} style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsl(0, 0%, 35%)' }}>
-                {h}
-              </p>
-            ))}
-          </div>
-          {/* Rows */}
+        {/* ── Pairing cards grid ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {pairings.map((p, i) => {
             const isActive = i === activeRow;
             return (
               <motion.div
                 key={p.genre}
-                initial={{ opacity: 0, x: -8 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                onClick={() => { setActiveRow(i); setMatchPhase('select'); }}
-                className="grid grid-cols-3 items-center py-2.5 px-1 rounded-lg cursor-pointer"
+                transition={{ delay: i * 0.06 }}
+                onClick={() => { setActiveRow(i); setPhase('scanning'); }}
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="relative rounded-2xl p-4 cursor-pointer overflow-hidden group"
                 style={{
-                  borderTop: i > 0 ? '1px solid hsla(0, 0%, 100%, 0.06)' : 'none',
-                  background: isActive ? 'hsla(210, 60%, 45%, 0.06)' : 'transparent',
-                  transition: 'background 0.4s',
+                  background: isActive
+                    ? 'linear-gradient(135deg, hsla(210, 60%, 45%, 0.18), hsla(200, 50%, 35%, 0.1))'
+                    : 'hsla(210, 20%, 12%, 0.3)',
+                  border: isActive
+                    ? '1px solid hsla(210, 70%, 55%, 0.3)'
+                    : '1px solid hsla(0, 0%, 100%, 0.06)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  transition: 'all 0.4s ease',
                 }}
               >
-                <span style={{
-                  fontSize: '13px', fontWeight: 400,
-                  color: isActive ? 'hsl(210, 80%, 70%)' : 'hsl(0, 0%, 92%)',
-                  transition: 'color 0.4s',
-                }}>
-                  {p.genre}
-                </span>
-                <span style={{
-                  fontSize: '13px', fontWeight: 400,
-                  color: isActive ? 'hsl(0, 0%, 80%)' : 'hsl(0, 0%, 60%)',
-                  transition: 'color 0.4s',
-                }}>
-                  {p.goal}
-                </span>
-                <div className="flex items-center gap-2">
-                  <div className="w-14 h-1 rounded-full overflow-hidden" style={{ background: 'hsla(0, 0%, 100%, 0.1)' }}>
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${p.match}%` }}
+                {/* Glass top sheen */}
+                <div
+                  className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
+                  style={{
+                    background: isActive
+                      ? 'linear-gradient(180deg, hsla(210, 70%, 70%, 0.08) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.03) 0%, transparent 100%)',
+                  }}
+                />
+
+                {/* Match score ring */}
+                <div className="relative flex justify-center mb-3">
+                  <svg width="44" height="44" viewBox="0 0 44 44">
+                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(0, 0%, 100%, 0.06)" strokeWidth="2" />
+                    <motion.circle
+                      cx="22" cy="22" r="18"
+                      fill="none"
+                      stroke="url(#matchGrad)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 18}`}
+                      initial={{ strokeDashoffset: 2 * Math.PI * 18 }}
+                      whileInView={{ strokeDashoffset: 2 * Math.PI * 18 * (1 - p.match / 100) }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.07 + 0.15, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                      className="h-full rounded-full"
-                      style={{
-                        background: isActive
-                          ? 'linear-gradient(90deg, hsl(180, 60%, 55%), hsl(210, 80%, 60%))'
-                          : 'linear-gradient(90deg, hsl(180, 50%, 55%), hsl(200, 60%, 60%))',
-                        boxShadow: isActive ? '0 0 8px hsla(200, 70%, 55%, 0.4)' : 'none',
-                        transition: 'box-shadow 0.4s',
-                      }}
+                      transition={{ delay: i * 0.1 + 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                      transform="rotate(-90 22 22)"
                     />
-                  </div>
-                  <span style={{
-                    fontSize: '11px', fontWeight: 400,
-                    color: isActive ? 'hsl(0, 0%, 70%)' : 'hsl(0, 0%, 45%)',
-                    transition: 'color 0.4s',
-                  }}>
+                    <defs>
+                      <linearGradient id="matchGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="hsl(190, 80%, 55%)" />
+                        <stop offset="100%" stopColor="hsl(220, 80%, 60%)" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <span
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: 400,
+                      color: isActive ? 'hsl(210, 80%, 75%)' : 'hsl(0, 0%, 55%)',
+                      transition: 'color 0.4s',
+                    }}
+                  >
                     {p.match}%
                   </span>
                 </div>
+
+                <p
+                  className="relative text-center mb-1"
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 400,
+                    color: isActive ? 'hsl(0, 0%, 100%)' : 'hsl(0, 0%, 80%)',
+                    transition: 'color 0.4s',
+                  }}
+                >
+                  {p.genre}
+                </p>
+                <p
+                  className="relative text-center"
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 300,
+                    color: isActive ? 'hsl(210, 50%, 70%)' : 'hsl(0, 0%, 45%)',
+                    transition: 'color 0.4s',
+                  }}
+                >
+                  {p.goal}
+                </p>
+
+                {/* Bottom accent */}
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-[2px]"
+                  style={{
+                    background: 'linear-gradient(90deg, hsl(190, 80%, 55%), hsl(220, 80%, 60%))',
+                    transformOrigin: 'left',
+                  }}
+                  animate={{
+                    scaleX: isActive ? 1 : 0,
+                    opacity: isActive ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
               </motion.div>
             );
           })}
-        </motion.div>
-
-        {/* Pipeline */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="flex items-center justify-center gap-1.5 flex-wrap"
-        >
-          {steps.map((step, i) => (
-            <React.Fragment key={step}>
-              <span
-                className="px-2.5 py-1 rounded-full"
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 400,
-                  color: 'hsl(0, 0%, 60%)',
-                  background: 'hsla(220, 20%, 12%, 0.5)',
-                  border: '1px solid hsla(0, 0%, 100%, 0.08)',
-                  backdropFilter: 'blur(12px)',
-                }}
-              >
-                {step}
-              </span>
-              {i < steps.length - 1 && (
-                <span style={{ color: 'hsl(0, 0%, 20%)', fontSize: '10px' }}>→</span>
-              )}
-            </React.Fragment>
-          ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
