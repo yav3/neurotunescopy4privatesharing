@@ -3,7 +3,7 @@ import { FooterContactHandler } from "./FooterContactHandler";
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
-import { WelconyBanner } from '@/components/WelconyBanner';
+import welconyLogo from '@/assets/welcony-logo.png';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
@@ -41,16 +41,23 @@ export const Footer = () => {
               />
             </div>
 
-            {/* Right: Copyright */}
-            <p className="text-[10px] text-white/25 text-center sm:text-right whitespace-nowrap shrink-0">
-              © 2025 Neuralpositive, all rights reserved
-            </p>
+            {/* Right: Copyright + Welcony */}
+            <div className="flex items-center gap-4 shrink-0">
+              <div className="h-5 overflow-hidden" style={{ width: '78px' }}>
+                <img 
+                  src={welconyLogo} 
+                  alt="Welcony" 
+                  className="h-5"
+                  style={{ filter: 'brightness(0) invert(0.45)', opacity: 0.5, objectFit: 'cover', objectPosition: 'right center' }}
+                />
+              </div>
+              <p className="text-[10px] text-white/25 text-center sm:text-right whitespace-nowrap">
+                © 2025 Neuralpositive, all rights reserved
+              </p>
+            </div>
           </div>
         </div>
       </footer>
-
-      {/* Welcony Distribution Banner - Bottom */}
-      <WelconyBanner />
     
       <FooterContactHandler
         isOpen={contactOpen}
