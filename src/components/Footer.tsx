@@ -22,22 +22,22 @@ export const Footer = () => {
           {/* Single Row - Logos and Copyright Together */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Left: Supported By + Logos */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6 sm:gap-8">
+            <div className="flex flex-nowrap items-center justify-center sm:justify-start gap-4 sm:gap-8 overflow-x-auto">
               <span className="text-[10px] text-white/30 uppercase tracking-widest">Supported by</span>
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
-                className="h-8 sm:h-10 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-8 sm:h-10 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert shrink-0"
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
-                className="h-6 sm:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-6 sm:h-8 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert shrink-0"
               />
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell Medicine" 
-                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert"
+                className="h-7 sm:h-9 opacity-50 hover:opacity-100 transition-all duration-300 brightness-0 invert shrink-0"
               />
             </div>
 
