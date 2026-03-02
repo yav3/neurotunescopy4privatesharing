@@ -167,8 +167,16 @@ export const NavigationHeader = () => {
             </span>
           </Link>
           <div className="flex items-center gap-1.5 ml-3 pl-3 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
-            <span className="text-[10px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
-            <img src={welconyLogo} alt="Welcony" className="h-3.5 brightness-0 invert" style={{ opacity: isLandingPage && !scrolled ? 0.5 : 0.5, filter: isLandingPage && !scrolled ? 'brightness(0)' : 'brightness(0) invert(1)' }} />
+            <span className="text-[10px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 30%, 0.5)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+            <img 
+              src={welconyLogo} 
+              alt="Welcony" 
+              className="h-3.5" 
+              style={{ 
+                opacity: 0.5,
+                filter: isLandingPage && !scrolled ? 'brightness(0) saturate(0)' : 'brightness(0) invert(1) saturate(0)'
+              }} 
+            />
           </div>
         </div>
 
