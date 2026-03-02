@@ -130,22 +130,22 @@ export const PipelineSection: React.FC = () => {
                 className="relative rounded-xl p-5 cursor-pointer overflow-hidden"
                 style={{
                   background: isActive
-                    ? 'linear-gradient(135deg, hsla(210, 70%, 30%, 0.35) 0%, hsla(220, 60%, 20%, 0.45) 100%)'
+                    ? 'linear-gradient(135deg, hsla(210, 60%, 50%, 0.18) 0%, hsla(220, 50%, 40%, 0.22) 100%)'
                     : isPast
-                    ? 'linear-gradient(135deg, hsla(210, 50%, 25%, 0.2) 0%, hsla(220, 40%, 15%, 0.3) 100%)'
-                    : 'hsla(220, 20%, 12%, 0.5)',
+                    ? 'linear-gradient(135deg, hsla(210, 50%, 45%, 0.12) 0%, hsla(220, 40%, 35%, 0.15) 100%)'
+                    : 'hsla(210, 30%, 50%, 0.08)',
                   border: isActive
-                    ? '1px solid hsla(210, 70%, 55%, 0.35)'
+                    ? '1px solid hsla(210, 70%, 65%, 0.3)'
                     : isPast
-                    ? '1px solid hsla(210, 50%, 50%, 0.15)'
-                    : '1px solid hsla(0, 0%, 100%, 0.08)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
+                    ? '1px solid hsla(210, 50%, 60%, 0.15)'
+                    : '1px solid hsla(210, 40%, 70%, 0.1)',
+                  backdropFilter: 'blur(24px) saturate(140%)',
+                  WebkitBackdropFilter: 'blur(24px) saturate(140%)',
                   boxShadow: isActive
-                    ? '0 8px 32px hsla(210, 70%, 40%, 0.15), inset 0 1px 0 hsla(210, 70%, 80%, 0.12), inset 0 -1px 0 hsla(210, 50%, 30%, 0.1)'
+                    ? '0 8px 32px hsla(210, 70%, 40%, 0.12), inset 0 1px 0 hsla(0, 0%, 100%, 0.15), inset 0 -1px 0 hsla(210, 50%, 30%, 0.08)'
                     : isPast
-                    ? 'inset 0 1px 0 hsla(210, 50%, 70%, 0.06)'
-                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.04)',
+                    ? 'inset 0 1px 0 hsla(0, 0%, 100%, 0.08)'
+                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.06)',
                   transition: 'background 0.6s, border 0.6s, box-shadow 0.6s',
                 }}
               >
@@ -227,9 +227,10 @@ export const PipelineSection: React.FC = () => {
           transition={{ delay: 0.3 }}
           className="rounded-2xl p-5 md:p-6 mb-6"
           style={{
-            background: 'hsla(220, 20%, 8%, 0.6)',
-            border: '1px solid hsla(0, 0%, 100%, 0.06)',
-            backdropFilter: 'blur(16px)',
+            background: 'hsla(210, 30%, 40%, 0.12)',
+            border: '1px solid hsla(210, 40%, 70%, 0.12)',
+            backdropFilter: 'blur(24px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(140%)',
           }}
         >
           {/* Progress track */}
@@ -322,7 +323,7 @@ export const PipelineSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             whileHover={{ scale: 1.02 }}
             className="rounded-xl p-5 cursor-default"
-            style={{ background: 'hsla(220, 20%, 12%, 0.4)', border: '1px solid hsla(0, 0%, 100%, 0.06)', backdropFilter: 'blur(12px)' }}
+            style={{ background: 'hsla(210, 30%, 40%, 0.1)', border: '1px solid hsla(210, 40%, 70%, 0.1)', backdropFilter: 'blur(24px) saturate(140%)' }}
           >
             <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)', marginBottom: '10px' }}>
               Why algorithmic composition
@@ -358,7 +359,7 @@ export const PipelineSection: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.35 }}
             whileHover={{ scale: 1.02 }}
             className="rounded-xl p-5 cursor-default"
-            style={{ background: 'hsla(220, 20%, 12%, 0.4)', border: '1px solid hsla(0, 0%, 100%, 0.06)', backdropFilter: 'blur(12px)' }}
+            style={{ background: 'hsla(210, 30%, 40%, 0.1)', border: '1px solid hsla(210, 40%, 70%, 0.1)', backdropFilter: 'blur(24px) saturate(140%)' }}
           >
             <div className="flex items-center gap-2 mb-3">
               <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)' }}>
