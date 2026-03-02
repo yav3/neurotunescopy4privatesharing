@@ -12,26 +12,22 @@ const stats = [
 export const StatsBar: React.FC = () => {
   return (
     <section
-      className="relative py-16 md:py-20 overflow-hidden"
+      className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'transparent',
+        background: 'hsl(0, 0%, 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      {/* Animated background glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5 }}
-        style={{
-          background: `radial-gradient(ellipse 80% 100% at 50% 50%, 
-            hsla(210, 60%, 20%, 0.15) 0%, 
-            transparent 70%
-          )`
-        }}
+      {/* Subtle top/bottom fade edges */}
+      <div
+        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
+        style={{ background: 'linear-gradient(180deg, hsl(210, 20%, 96%), transparent)' }}
       />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, hsl(210, 20%, 96%), transparent)' }}
+      />
+
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-wrap justify-between gap-8">
           {stats.map((stat, i) => (
@@ -43,7 +39,7 @@ export const StatsBar: React.FC = () => {
               transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 min-w-[140px]"
               style={{
-                borderLeft: i > 0 ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
+                borderLeft: i > 0 ? '1px solid hsla(210, 30%, 80%, 0.6)' : 'none',
                 paddingLeft: i > 0 ? '24px' : '0',
               }}
             >
@@ -52,7 +48,13 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.2, duration: 0.5, type: 'spring' }}
-                style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                style={{
+                  fontSize: 'clamp(28px, 4vw, 44px)',
+                  fontWeight: 300,
+                  background: 'linear-gradient(135deg, #0891b2, #1d4ed8)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
               >
                 {stat.value}
               </motion.p>
@@ -61,7 +63,7 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.35 }}
-                style={{ fontSize: '13px', fontWeight: 300, color: 'rgba(255, 255, 255, 0.4)', marginTop: '4px' }}
+                style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(210, 15%, 45%)', marginTop: '4px' }}
               >
                 {stat.label}
               </motion.p>
