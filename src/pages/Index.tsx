@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 import { Footer } from '@/components/Footer';
 import { HeroSection } from '@/components/landing/HeroSection';
@@ -12,7 +12,7 @@ import { SalesAssistant } from '@/components/sales/SalesAssistant';
 
 const Index = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  
 
   // Hash scroll handling
   useEffect(() => {
@@ -27,7 +27,7 @@ const Index = () => {
   // Auto-dissolve removed — landing page stays visible
 
   return (
-    <AnimatePresence>
+    <div>
       <motion.div
         key="landing"
         className="min-h-screen relative"
@@ -95,7 +95,7 @@ const Index = () => {
         {/* Hidden Sales Assistant (triggered from header) */}
         <SalesAssistant externalOpen={false} />
       </motion.div>
-    </AnimatePresence>
+    </div>
   );
 };
 
