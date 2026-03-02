@@ -185,10 +185,10 @@ export const PipelineSection: React.FC = () => {
                     }}
                   />
                 </motion.div>
-                <h3 style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(0, 0%, 97%)' : isPast ? 'hsl(0, 0%, 80%)' : 'hsl(0, 0%, 65%)', marginBottom: '2px', transition: 'color 0.4s' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, color: isActive ? 'hsl(0, 0%, 100%)' : isPast ? 'hsl(0, 0%, 92%)' : 'hsl(0, 0%, 85%)', marginBottom: '2px', transition: 'color 0.4s' }}>
                   {step.title}
                 </h3>
-                <p style={{ fontSize: '12px', fontWeight: 300, color: isActive ? 'hsl(210, 30%, 70%)' : isPast ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 38%)', transition: 'color 0.4s' }}>
+                <p style={{ fontSize: '12px', fontWeight: 400, color: isActive ? 'hsl(0, 0%, 85%)' : isPast ? 'hsl(0, 0%, 70%)' : 'hsl(0, 0%, 60%)', transition: 'color 0.4s' }}>
                   {step.description}
                 </p>
 
@@ -277,11 +277,11 @@ export const PipelineSection: React.FC = () => {
                       animate={{ opacity: [1, 0.4, 1] }}
                       transition={{ duration: 1, repeat: Infinity }}
                     />
-                    <span style={{ fontSize: '10px', letterSpacing: '0.1em', fontWeight: 400, color: stageOutputs[activeStep].color }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.1em', fontWeight: 500, color: stageOutputs[activeStep].color }}>
                       {stageOutputs[activeStep].label.toUpperCase()}
                     </span>
                   </div>
-                  <p style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(0, 0%, 80%)' }}>
+                  <p style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(0, 0%, 92%)' }}>
                     {stageOutputs[activeStep].detail}
                   </p>
                 </motion.div>
@@ -290,7 +290,7 @@ export const PipelineSection: React.FC = () => {
 
             {/* Step counter */}
             <div className="text-right">
-              <span style={{ fontSize: '22px', fontWeight: 300, color: 'hsl(0, 0%, 85%)' }}>
+              <span style={{ fontSize: '22px', fontWeight: 400, color: 'hsl(0, 0%, 95%)' }}>
                 0{activeStep + 1}
               </span>
               <span style={{ fontSize: '13px', color: 'hsl(0, 0%, 35%)' }}> / 04</span>
@@ -325,7 +325,7 @@ export const PipelineSection: React.FC = () => {
             className="rounded-xl p-5 cursor-default"
             style={{ background: 'hsla(210, 30%, 40%, 0.1)', border: '1px solid hsla(210, 40%, 70%, 0.1)', backdropFilter: 'blur(24px) saturate(140%)' }}
           >
-            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(0, 0%, 95%)', marginBottom: '10px' }}>
               Why algorithmic composition
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -342,7 +342,7 @@ export const PipelineSection: React.FC = () => {
                     fontSize: '11px',
                     background: 'hsla(220, 20%, 14%, 0.5)',
                     border: '1px solid hsla(0, 0%, 100%, 0.06)',
-                    color: 'hsl(0, 0%, 65%)',
+                    color: 'hsl(0, 0%, 88%)',
                     fontWeight: 400,
                   }}
                 >
@@ -362,7 +362,7 @@ export const PipelineSection: React.FC = () => {
             style={{ background: 'hsla(210, 30%, 40%, 0.1)', border: '1px solid hsla(210, 40%, 70%, 0.1)', backdropFilter: 'blur(24px) saturate(140%)' }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(0, 0%, 89%)' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(0, 0%, 95%)' }}>
                 Feature annotation
               </h3>
               <motion.span
@@ -392,12 +392,12 @@ export const PipelineSection: React.FC = () => {
                     fontSize: '11px',
                     background: 'hsla(220, 20%, 14%, 0.5)',
                     border: '1px solid hsla(0, 0%, 100%, 0.06)',
-                    color: 'hsl(0, 0%, 65%)',
+                    color: 'hsl(0, 0%, 88%)',
                     fontWeight: 400,
                   }}
                 >
                   {method.label}
-                  <span style={{ color: 'hsl(210, 80%, 60%)' }}>{method.count}</span>
+                  <span style={{ color: 'hsl(210, 80%, 70%)' }}>{method.count}</span>
                 </motion.span>
               ))}
             </div>
