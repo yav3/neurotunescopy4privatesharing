@@ -169,15 +169,19 @@ export const NavigationHeader = () => {
           </Link>
           <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
             <span className="text-[11px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.5)' }}>Distributed by</span>
-            <img 
-              src={welconyLogo} 
-              alt="Welcony" 
-              className="h-6 transition-opacity duration-500"
-              style={{ 
-                filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.88)',
-                opacity: isLandingPage && !scrolled ? 0.85 : 0.92
-              }}
-            />
+            <div className="h-7 overflow-hidden" style={{ width: '110px' }}>
+              <img 
+                src={welconyLogo} 
+                alt="Welcony" 
+                className="h-7 transition-opacity duration-500"
+                style={{ 
+                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.88)',
+                  opacity: isLandingPage && !scrolled ? 0.85 : 0.92,
+                  objectFit: 'cover',
+                  objectPosition: 'right center',
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -320,15 +324,19 @@ export const NavigationHeader = () => {
           </Link>
           <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
             <span className="text-[8px] tracking-wide" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
-            <img 
-              src={welconyLogo} 
-              alt="Welcony" 
-              className="h-4 transition-opacity duration-500"
-              style={{ 
-                filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.88)',
-                opacity: isLandingPage && !scrolled ? 0.85 : 0.92
-              }}
-            />
+            <div className="h-5 overflow-hidden" style={{ width: '76px' }}>
+              <img 
+                src={welconyLogo} 
+                alt="Welcony" 
+                className="h-5 transition-opacity duration-500"
+                style={{ 
+                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.88)',
+                  opacity: isLandingPage && !scrolled ? 0.85 : 0.92,
+                  objectFit: 'cover',
+                  objectPosition: 'right center',
+                }}
+              />
+            </div>
           </div>
         </div>
 
