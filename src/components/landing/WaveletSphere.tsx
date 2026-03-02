@@ -2,50 +2,64 @@ import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-/* ── Three Brainwave States ── */
+/* ── Three Brainwave States ──
+   Each state maps to a real brainwave frequency band with meaningful visual behavior:
+   - Theta (4-8 Hz): Deep calm, pain distraction → slow drift, wide spread, large gentle waves
+   - Alpha (8-12 Hz): Relaxation → moderate movement, warm color, medium amplitude
+   - Low Beta (12-20 Hz): Focus → tight formation, fast precise pulses, concentrated energy
+*/
 const STATES = [
   {
     name: 'Theta',
     label: 'Calm',
-    hue: 174,        // Teal #2DD4BF
-    saturation: 0.64,
-    lightness: 0.57,
-    speed: 1.5,
-    amplitude: 0.18,  // more pronounced waves
-    pulseRate: 0.012,
-    spread: 0.22,
-    harmonicShift: 0.35,
-    brightness: 0.5,
+    subtitle: 'Pain Distraction',
+    hue: 174,        // Teal #2DD4BF — calming, therapeutic
+    saturation: 0.7,
+    lightness: 0.55,
+    speed: 0.25,      // Very slow drift — meditative
+    amplitude: 0.22,  // Large, deep undulations
+    pulseRate: 0.006,  // Slow breathing rhythm
+    spread: 0.32,     // Wide, expansive cloud
+    harmonicShift: 0.25,
+    brightness: 0.45,
+    particleSpeed: 0.06, // Barely moving particles
+    rotationSpeed: 0.015,
   },
   {
     name: 'Alpha',
     label: 'Relax',
-    hue: 43,
-    saturation: 0.95,
-    lightness: 0.55,
-    speed: 0.8,
-    amplitude: 0.12,
-    pulseRate: 0.018,
-    spread: 0.24,
+    subtitle: 'Restoration',
+    hue: 38,          // Warm amber — soothing
+    saturation: 0.92,
+    lightness: 0.58,
+    speed: 0.55,      // Moderate flow
+    amplitude: 0.14,  // Medium wave height
+    pulseRate: 0.014,  // Steady, rhythmic
+    spread: 0.24,     // Medium radius
     harmonicShift: 0.5,
-    brightness: 0.7,
+    brightness: 0.65,
+    particleSpeed: 0.12,
+    rotationSpeed: 0.03,
   },
   {
     name: 'Low Beta',
     label: 'Focus',
-    hue: 217,
+    subtitle: 'Concentration',
+    hue: 217,         // Electric blue — alert, precise
     saturation: 0.95,
-    lightness: 0.65,
-    speed: 0.4,
-    amplitude: 0.08,
-    pulseRate: 0.025,
-    spread: 0.16,
-    harmonicShift: 0.7,
-    brightness: 0.75,
+    lightness: 0.62,
+    speed: 1.2,       // Fast, energized movement
+    amplitude: 0.07,  // Tight, precise oscillations
+    pulseRate: 0.028,  // Rapid pulsing
+    spread: 0.12,     // Compact, concentrated
+    harmonicShift: 0.8,
+    brightness: 0.8,
+    particleSpeed: 0.28, // Brisk particle motion
+    rotationSpeed: 0.06,
   },
 ];
 
-const CYCLE = 12000; // 12s per state (matches spec)
+const CYCLE = 12000; // 12s per state
 const INTRO_DURATION = 3.0; // seconds for chaotic → smooth
 
 /* ── Particle Cloud ── */
@@ -79,8 +93,9 @@ const ParticleCloud: React.FC<{
 
   const cur = useRef({
     hue: 0, saturation: 0.3, lightness: 0.5,
-    speed: 1.0, amplitude: 0.08, pulseRate: 0.015,
-    spread: 0.2, brightness: 0.45,
+    speed: 0.25, amplitude: 0.08, pulseRate: 0.006,
+    spread: 0.32, brightness: 0.45,
+    particleSpeed: 0.06, rotationSpeed: 0.015,
   });
 
   useFrame(({ clock }) => {
@@ -88,9 +103,9 @@ const ParticleCloud: React.FC<{
     const t = clock.getElapsedTime();
     const st = STATES[stateRef.current];
     const c = cur.current;
-    const intro = introProgress.current; // 0 = chaotic, 1 = smooth
+    const intro = introProgress.current;
 
-    // Faster lerp so visuals match the label within ~2s
+    // Lerp all properties toward current state
     c.hue += (st.hue - c.hue) * 0.04;
     c.saturation += (st.saturation - c.saturation) * 0.05;
     c.lightness += (st.lightness - c.lightness) * 0.05;
@@ -99,8 +114,9 @@ const ParticleCloud: React.FC<{
     c.pulseRate += (st.pulseRate - c.pulseRate) * 0.06;
     c.spread += (st.spread - c.spread) * 0.05;
     c.brightness += (st.brightness - c.brightness) * 0.04;
+    c.particleSpeed += (st.particleSpeed - c.particleSpeed) * 0.05;
+    c.rotationSpeed += (st.rotationSpeed - c.rotationSpeed) * 0.05;
 
-    // During intro: lerp from gray toward state color
     const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
     const introLight = intro < 1 ? THREE.MathUtils.lerp(0.35, c.lightness, intro) : c.lightness;
@@ -109,23 +125,22 @@ const ParticleCloud: React.FC<{
     const breathe = Math.sin(t * c.speed * 0.15) * 0.5 + 0.5;
     const dispersal = 0.6 + c.spread * 1.4;
 
-    // Chaotic multiplier: jittery movement fades to 0 as intro → 1
     const chaosWeight = Math.max(0, 1 - intro);
 
     for (let i = 0; i < count; i++) {
       const p = particles[i];
       const particlePulse = Math.sin(t * c.pulseRate * Math.PI + p.phase) * 0.5 + 0.5;
 
-      // Smooth radius
+      // Radius driven by state amplitude — Theta = wide waves, Beta = tight pulses
       let r = p.restRadius * dispersal
-        + particlePulse * 0.12 * c.amplitude
-        + breathe * 0.03
-        + Math.sin(t * p.speed * 0.1 + p.phase) * 0.04 * c.amplitude;
+        + particlePulse * 0.15 * c.amplitude
+        + breathe * 0.04
+        + Math.sin(t * c.particleSpeed * 2 + p.phase) * 0.05 * c.amplitude;
 
-      // Chaotic jitter overlay
       r += chaosWeight * Math.sin(t * p.chaosFreq + p.phase) * p.chaosAmp;
 
-      const drift = t * p.speed * c.speed * 0.01;
+      // Particle orbital speed driven by state — Beta orbits fast, Theta barely moves
+      const drift = t * p.speed * c.particleSpeed;
       const chaosDrift = chaosWeight * Math.sin(t * p.chaosFreq * 0.7 + p.phase * 2) * 0.06;
 
       const dx = p.dir.x * Math.cos(drift) - p.dir.z * Math.sin(drift);
@@ -137,7 +152,7 @@ const ParticleCloud: React.FC<{
         dz * r,
       );
 
-      const s = p.baseSize * (0.7 + particlePulse * c.amplitude * 1.0 + globalPulse * 0.15);
+      const s = p.baseSize * (0.7 + particlePulse * c.amplitude * 1.2 + globalPulse * 0.15);
       dummy.scale.setScalar(s);
       dummy.updateMatrix();
       meshRef.current!.setMatrixAt(i, dummy.matrix);
@@ -213,8 +228,8 @@ const WaveformRing: React.FC<{
   const groupRef = useRef<THREE.Group>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const cur = useRef({
-    hue: 220, saturation: 0.1, speed: 1.0, amplitude: 0.08,
-    pulseRate: 0.015, spread: 0.2, harmonicShift: 0.5,
+    hue: 220, saturation: 0.1, speed: 0.25, amplitude: 0.08,
+    pulseRate: 0.006, spread: 0.32, harmonicShift: 0.25, rotationSpeed: 0.015,
   });
 
   // Random chaos seeds per segment
@@ -241,10 +256,11 @@ const WaveformRing: React.FC<{
     c.pulseRate += (st.pulseRate - c.pulseRate) * 0.06;
     c.spread += (st.spread - c.spread) * 0.05;
     c.harmonicShift += (st.harmonicShift - c.harmonicShift) * 0.05;
+    c.rotationSpeed += (st.rotationSpeed - c.rotationSpeed) * 0.05;
 
     groupRef.current.rotation.x = tilt;
-    groupRef.current.rotation.z = t * c.speed * 0.04;
-    groupRef.current.rotation.y = t * c.speed * 0.02;
+    groupRef.current.rotation.z = t * c.rotationSpeed;
+    groupRef.current.rotation.y = t * c.rotationSpeed * 0.5;
 
     const dispersal = 0.6 + c.spread * 1.4;
     const baseR = radius * dispersal;
@@ -321,6 +337,7 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
   const stateRef = useRef(0);
   const introProgress = useRef(0);
   const [label, setLabel] = useState(`${STATES[0].name} · ${STATES[0].label}`);
+  const [subtitle, setSubtitle] = useState(STATES[0].subtitle);
   const [stateColor, setStateColor] = useState(STATES[0]);
 
   useEffect(() => {
@@ -328,6 +345,7 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
       stateRef.current = (stateRef.current + 1) % STATES.length;
       const s = STATES[stateRef.current];
       setLabel(`${s.name} · ${s.label}`);
+      setSubtitle(s.subtitle);
       setStateColor(s);
     }, CYCLE);
     return () => clearInterval(interval);
@@ -345,11 +363,11 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
 
       {/* State label */}
       <div
-        className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none"
+        className="absolute bottom-3 left-0 right-0 flex flex-col items-center pointer-events-none gap-0.5"
         style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
       >
         <div
-          className="px-3 py-1 rounded-full"
+          className="px-4 py-1.5 rounded-full flex flex-col items-center"
           style={{
             background: 'hsla(220, 20%, 8%, 0.7)',
             border: '1px solid hsla(0, 0%, 100%, 0.08)',
@@ -364,6 +382,16 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
             transition: 'color 1.5s ease',
           }}>
             {label.toUpperCase()}
+          </span>
+          <span style={{
+            fontSize: '7px',
+            letterSpacing: '0.08em',
+            fontWeight: 400,
+            color: 'hsla(0, 0%, 100%, 0.35)',
+            transition: 'opacity 1.5s ease',
+            marginTop: '1px',
+          }}>
+            {subtitle.toUpperCase()}
           </span>
         </div>
       </div>
