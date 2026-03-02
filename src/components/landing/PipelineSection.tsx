@@ -18,20 +18,22 @@ const stageOutputs = [
 
 /* ── Waveform mini-visualization ── */
 const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
-  <div className="flex items-end gap-[2px] h-6">
-    {Array.from({ length: 16 }).map((_, i) => (
+  <div className="flex items-end gap-[3px] h-10">
+    {Array.from({ length: 24 }).map((_, i) => (
       <motion.div
         key={i}
-        className="w-[2px] rounded-full"
-        style={{ background: 'hsl(210, 60%, 65%)' }}
+        className="w-[3px] rounded-full"
+        style={{ background: 'linear-gradient(to top, #06b6d4, #2563eb)' }}
         animate={{
-          height: active ? [4, 8 + Math.sin(i * 0.8) * 12, 4] : 3,
-          opacity: active ? [0.4, 0.9, 0.4] : 0.2,
+          height: active
+            ? [4, 12 + Math.sin(i * 0.7) * 22, 4]
+            : [3, 6 + Math.sin(i * 0.5) * 8, 3],
+          opacity: active ? [0.5, 1, 0.5] : [0.2, 0.5, 0.2],
         }}
         transition={{
-          duration: 1.2 + (i % 3) * 0.2,
+          duration: active ? 0.8 + (i % 4) * 0.15 : 1.6 + (i % 3) * 0.3,
           repeat: Infinity,
-          delay: i * 0.05,
+          delay: i * 0.04,
           ease: 'easeInOut',
         }}
       />
@@ -273,9 +275,9 @@ export const PipelineSection: React.FC = () => {
           </div>
 
           {/* Stage output content */}
-          <div className="flex items-center gap-6 min-h-[48px]">
-            <div className="hidden sm:block">
-              <MiniWaveform active={activeStep === 0} />
+          <div className="flex items-center gap-6 min-h-[56px]">
+            <div>
+              <MiniWaveform active={true} />
             </div>
 
             <div className="flex-1">
