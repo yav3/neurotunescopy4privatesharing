@@ -27,29 +27,32 @@ export const Footer = () => {
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
-                className="h-7 sm:h-9 opacity-40 hover:opacity-80 transition-opacity duration-300 brightness-0 invert shrink-0"
+                className="h-6 sm:h-8 brightness-0 invert transition-opacity duration-300 shrink-0"
+                style={{ opacity: 0.5 }}
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
-                className="h-5 sm:h-7 opacity-40 hover:opacity-80 transition-opacity duration-300 brightness-0 invert shrink-0"
+                className="h-5 sm:h-6 brightness-0 invert transition-opacity duration-300 shrink-0"
+                style={{ opacity: 0.5 }}
               />
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell Medicine" 
-                className="h-6 sm:h-8 opacity-40 hover:opacity-80 transition-opacity duration-300 brightness-0 invert shrink-0"
+                className="h-6 sm:h-8 brightness-0 invert transition-opacity duration-300 shrink-0"
+                style={{ opacity: 0.5 }}
               />
             </div>
 
-            {/* Right: Copyright + Welcony */}
+            {/* Right: Distributed by + Copyright */}
             <div className="flex items-center gap-4 shrink-0">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[9px] text-white/30 tracking-wide">Distributed by</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-white/40 tracking-wide">Distributed by</span>
                 <img 
                   src={welconyColourWhite} 
                   alt="Welcony" 
                   className="h-5"
-                  style={{ opacity: 0.7 }}
+                  style={{ opacity: 0.6 }}
                 />
               </div>
               <p className="text-[10px] text-white/25 text-center sm:text-right whitespace-nowrap">
