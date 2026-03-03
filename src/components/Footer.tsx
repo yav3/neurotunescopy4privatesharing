@@ -43,13 +43,16 @@ export const Footer = () => {
 
             {/* Right: Copyright + Welcony */}
             <div className="flex items-center gap-4 shrink-0">
-              <div className="h-5 overflow-hidden" style={{ width: '78px' }}>
-                <img 
-                  src={welconyLogo} 
-                  alt="Welcony" 
-                  className="h-5"
-                  style={{ filter: 'brightness(0) invert(0.45)', opacity: 0.5, objectFit: 'cover', objectPosition: 'right center' }}
-                />
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] text-white/30 tracking-wide">Distributed by</span>
+                <div className="h-5 overflow-hidden" style={{ width: '78px' }}>
+                  <img 
+                    src={welconyLogo} 
+                    alt="Welcony" 
+                    className="h-5"
+                    style={{ filter: 'brightness(0) invert(0.6)', opacity: 0.7, objectFit: 'cover', objectPosition: 'right center' }}
+                  />
+                </div>
               </div>
               <p className="text-[10px] text-white/25 text-center sm:text-right whitespace-nowrap">
                 © 2025 Neuralpositive, all rights reserved
