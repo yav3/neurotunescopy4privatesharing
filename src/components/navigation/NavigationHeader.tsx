@@ -167,15 +167,16 @@ export const NavigationHeader = () => {
               NeuroTunes
             </span>
           </Link>
-          <div className="ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.1)' }}>
-            <div className="h-6 overflow-hidden" style={{ width: '95px' }}>
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
+            <span className="text-[11px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.4)' }}>Distributed by</span>
+            <div className="h-7 overflow-hidden" style={{ width: '110px' }}>
               <img 
                 src={welconyLogo} 
                 alt="Welcony" 
-                className="h-6 transition-all duration-500"
+                className="h-7 transition-all duration-500"
                 style={{ 
-                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.75)',
-                  opacity: isLandingPage && !scrolled ? 0.6 : 0.5,
+                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.85)',
+                  opacity: isLandingPage && !scrolled ? 0.8 : 0.7,
                   objectFit: 'cover',
                   objectPosition: 'right center',
                 }}
@@ -321,15 +322,16 @@ export const NavigationHeader = () => {
               NeuroTunes
             </span>
           </Link>
-          <div className="ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.15)' : 'hsla(0, 0%, 100%, 0.08)' }}>
-            <div className="h-4 overflow-hidden" style={{ width: '62px' }}>
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
+            <span className="text-[8px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+            <div className="h-5 overflow-hidden" style={{ width: '76px' }}>
               <img 
                 src={welconyLogo} 
                 alt="Welcony" 
-                className="h-4 transition-all duration-500"
+                className="h-5 transition-all duration-500"
                 style={{ 
-                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.75)',
-                  opacity: isLandingPage && !scrolled ? 0.6 : 0.5,
+                  filter: isLandingPage && !scrolled ? 'none' : 'brightness(0) invert(0.85)',
+                  opacity: isLandingPage && !scrolled ? 0.8 : 0.7,
                   objectFit: 'cover',
                   objectPosition: 'right center',
                 }}
