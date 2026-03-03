@@ -45,18 +45,19 @@ export const Footer = () => {
             </div>
 
             {/* Right: Distributed by + Copyright */}
-            <div className="flex items-center gap-4 shrink-0">
+            <div className="flex items-center gap-3 shrink-0">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-white/40 tracking-wide">Distributed by</span>
+                <span className="text-[11px] text-white/40 tracking-wide">Distributed by</span>
                 <img 
                   src={welconyColourWhite} 
                   alt="Welcony" 
-                  className="h-5"
-                  style={{ opacity: 0.6 }}
+                  className="h-6"
+                  style={{ opacity: 0.7 }}
                 />
               </div>
-              <p className="text-[10px] text-white/25 text-center sm:text-right whitespace-nowrap">
-                © 2025 Neuralpositive, all rights reserved
+              <span className="text-white/15">·</span>
+              <p className="text-[10px] text-white/25 whitespace-nowrap">
+                © 2026 Neuralpositive, all rights reserved
               </p>
             </div>
           </div>
