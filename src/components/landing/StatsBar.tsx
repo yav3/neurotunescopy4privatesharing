@@ -14,19 +14,10 @@ export const StatsBar: React.FC = () => {
     <section
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0, 0%, 100%)',
+        background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      {/* Subtle top/bottom fade edges */}
-      <div
-        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: 'linear-gradient(180deg, hsl(210, 20%, 96%), transparent)' }}
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: 'linear-gradient(0deg, hsl(210, 20%, 96%), transparent)' }}
-      />
 
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-wrap justify-between gap-8">
@@ -39,7 +30,7 @@ export const StatsBar: React.FC = () => {
               transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 min-w-[140px]"
               style={{
-                borderLeft: i > 0 ? '1px solid hsla(210, 30%, 80%, 0.6)' : 'none',
+                borderLeft: i > 0 ? '1px solid hsla(210, 60%, 60%, 0.25)' : 'none',
                 paddingLeft: i > 0 ? '24px' : '0',
               }}
             >
@@ -63,7 +54,7 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.35 }}
-                style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(210, 15%, 45%)', marginTop: '4px' }}
+                style={{ fontSize: '13px', fontWeight: 300, color: 'hsla(210, 30%, 75%, 0.8)', marginTop: '4px' }}
               >
                 {stat.label}
               </motion.p>

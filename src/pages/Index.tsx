@@ -34,16 +34,17 @@ const Index = () => {
         style={{
           background: `
             linear-gradient(180deg, 
-              hsl(210, 20%, 97%) 0%,
-              hsl(210, 30%, 94%) 6%,
-              hsl(212, 45%, 88%) 12%,
-              hsl(214, 60%, 75%) 18%,
-              hsl(216, 70%, 60%) 24%,
-              hsl(218, 75%, 48%) 32%,
-              hsl(220, 70%, 35%) 40%,
-              hsl(222, 55%, 20%) 50%,
-              hsl(222, 40%, 12%) 60%,
-              #050607 72%,
+              hsl(0, 0%, 100%) 0%,
+              hsl(0, 0%, 99%) 8%,
+              hsl(210, 40%, 96%) 15%,
+              hsl(210, 60%, 90%) 22%,
+              hsl(212, 80%, 78%) 30%,
+              hsl(215, 90%, 62%) 38%,
+              hsl(218, 85%, 48%) 46%,
+              hsl(220, 80%, 35%) 54%,
+              hsl(222, 60%, 18%) 64%,
+              hsl(225, 40%, 8%) 76%,
+              #050607 88%,
               #050607 100%
             )
           `,
@@ -55,16 +56,14 @@ const Index = () => {
 
         <HeroSection />
 
-        {/* Electric blue atmospheric wash between hero and pipeline */}
+        {/* Subtle atmospheric wash between hero and pipeline */}
         <div
-          className="relative h-40 md:h-56 -mt-16 pointer-events-none"
+          className="relative h-24 md:h-32 -mt-8 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 140% 100% at 50% 0%, 
-                hsla(210, 100%, 55%, 0.25) 0%, 
-                hsla(212, 90%, 50%, 0.15) 30%,
-                hsla(215, 80%, 45%, 0.08) 60%,
-                transparent 85%
+              radial-gradient(ellipse 100% 100% at 50% 0%, 
+                hsla(210, 90%, 60%, 0.12) 0%, 
+                transparent 70%
               )
             `,
           }}
@@ -72,18 +71,14 @@ const Index = () => {
 
         <PipelineSection />
 
-        {/* Second blue wash — deeper, more vivid */}
+        {/* Second blue wash */}
         <div
-          className="relative h-32 md:h-40 pointer-events-none"
+          className="relative h-20 md:h-28 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 120% 120% at 40% 50%, 
-                hsla(215, 85%, 50%, 0.18) 0%, 
-                transparent 65%
-              ),
-              radial-gradient(ellipse 100% 100% at 65% 50%, 
-                hsla(205, 80%, 45%, 0.14) 0%, 
-                transparent 55%
+              radial-gradient(ellipse 100% 100% at 50% 50%, 
+                hsla(215, 80%, 50%, 0.1) 0%, 
+                transparent 60%
               )
             `,
           }}
