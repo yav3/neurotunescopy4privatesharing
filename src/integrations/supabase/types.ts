@@ -2883,6 +2883,152 @@ export type Database = {
         }
         Relationships: []
       }
+      market_alerts: {
+        Row: {
+          acknowledged: boolean | null
+          change_amount: number | null
+          created_at: string
+          current_value: number | null
+          id: string
+          message: string
+          metric_name: string
+          previous_value: number | null
+          severity: string
+          snapshot_id: string | null
+        }
+        Insert: {
+          acknowledged?: boolean | null
+          change_amount?: number | null
+          created_at?: string
+          current_value?: number | null
+          id?: string
+          message: string
+          metric_name: string
+          previous_value?: number | null
+          severity: string
+          snapshot_id?: string | null
+        }
+        Update: {
+          acknowledged?: boolean | null
+          change_amount?: number | null
+          created_at?: string
+          current_value?: number | null
+          id?: string
+          message?: string
+          metric_name?: string
+          previous_value?: number | null
+          severity?: string
+          snapshot_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "market_alerts_snapshot_id_fkey"
+            columns: ["snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "market_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      market_snapshots: {
+        Row: {
+          anthropic_calls_used: number | null
+          cpi_yoy: number | null
+          created_at: string
+          djia_change_pct: number | null
+          djia_level: number | null
+          dxy_change_pct: number | null
+          dxy_level: number | null
+          fed_funds_rate: number | null
+          fred_calls_used: number | null
+          gdp_growth: number | null
+          gold_price: number | null
+          hy_spread_bps: number | null
+          id: string
+          ig_spread_bps: number | null
+          market_narrative: string | null
+          nasdaq_change_pct: number | null
+          nasdaq_level: number | null
+          oil_wti_price: number | null
+          pce_core: number | null
+          perplexity_calls_used: number | null
+          raw_data: Json | null
+          source: string
+          sp500_change_pct: number | null
+          sp500_level: number | null
+          treasury_10y: number | null
+          treasury_2y: number | null
+          unemployment_rate: number | null
+          vix_change: number | null
+          vix_level: number | null
+          yield_curve_spread: number | null
+        }
+        Insert: {
+          anthropic_calls_used?: number | null
+          cpi_yoy?: number | null
+          created_at?: string
+          djia_change_pct?: number | null
+          djia_level?: number | null
+          dxy_change_pct?: number | null
+          dxy_level?: number | null
+          fed_funds_rate?: number | null
+          fred_calls_used?: number | null
+          gdp_growth?: number | null
+          gold_price?: number | null
+          hy_spread_bps?: number | null
+          id?: string
+          ig_spread_bps?: number | null
+          market_narrative?: string | null
+          nasdaq_change_pct?: number | null
+          nasdaq_level?: number | null
+          oil_wti_price?: number | null
+          pce_core?: number | null
+          perplexity_calls_used?: number | null
+          raw_data?: Json | null
+          source?: string
+          sp500_change_pct?: number | null
+          sp500_level?: number | null
+          treasury_10y?: number | null
+          treasury_2y?: number | null
+          unemployment_rate?: number | null
+          vix_change?: number | null
+          vix_level?: number | null
+          yield_curve_spread?: number | null
+        }
+        Update: {
+          anthropic_calls_used?: number | null
+          cpi_yoy?: number | null
+          created_at?: string
+          djia_change_pct?: number | null
+          djia_level?: number | null
+          dxy_change_pct?: number | null
+          dxy_level?: number | null
+          fed_funds_rate?: number | null
+          fred_calls_used?: number | null
+          gdp_growth?: number | null
+          gold_price?: number | null
+          hy_spread_bps?: number | null
+          id?: string
+          ig_spread_bps?: number | null
+          market_narrative?: string | null
+          nasdaq_change_pct?: number | null
+          nasdaq_level?: number | null
+          oil_wti_price?: number | null
+          pce_core?: number | null
+          perplexity_calls_used?: number | null
+          raw_data?: Json | null
+          source?: string
+          sp500_change_pct?: number | null
+          sp500_level?: number | null
+          treasury_10y?: number | null
+          treasury_2y?: number | null
+          unemployment_rate?: number | null
+          vix_change?: number | null
+          vix_level?: number | null
+          yield_curve_spread?: number | null
+        }
+        Relationships: []
+      }
       medical_ingestion_jobs: {
         Row: {
           created_at: string
