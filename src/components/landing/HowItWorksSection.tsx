@@ -28,16 +28,7 @@ export const HowItWorksSection: React.FC = () => {
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      {/* Ambient glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 70% 50% at 50% 30%, 
-            hsla(190, 80%, 55%, 0.08) 0%, 
-            transparent 70%
-          )`,
-        }}
-      />
+      {/* Clean — no ambient haze */}
 
       <div className="relative z-10 container mx-auto px-6 md:px-12">
         {/* Badge */}
