@@ -10,11 +10,16 @@ import { StatsBar } from '@/components/landing/StatsBar';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
 
+/*
+ * Each section gets its own gradient band so the color evolution
+ * is visible regardless of total page height.
+ * Palette: pure white → ice → cyan → teal-blue → cerulean → azure → vivid blue
+ * NEVER navy, NEVER grey.
+ */
+
 const Index = () => {
   const location = useLocation();
-  
 
-  // Hash scroll handling
   useEffect(() => {
     if (location.hash) {
       const el = document.getElementById(location.hash.slice(1));
@@ -24,52 +29,81 @@ const Index = () => {
     }
   }, [location.hash]);
 
-  // Auto-dissolve removed — landing page stays visible
-
   return (
     <div>
       <motion.div
         key="landing"
         className="min-h-screen relative"
-        style={{
-          background: `
-            linear-gradient(180deg, 
-              hsl(0, 0%, 100%) 0%,
-              hsl(0, 0%, 100%) 22%,
-              hsl(195, 100%, 97%) 32%,
-              hsl(192, 90%, 88%) 42%,
-              hsl(191, 85%, 74%) 52%,
-              hsl(192, 82%, 60%) 62%,
-              hsl(195, 80%, 50%) 72%,
-              hsl(200, 82%, 48%) 82%,
-              hsl(210, 83%, 50%) 92%,
-              hsl(215, 83%, 53%) 100%
-            )
-          `,
-        }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
-        <NavigationHeader />
+        {/* ── Band 1: Pure white → ice blue (Hero) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(0, 0%, 100%) 0%,
+            hsl(0, 0%, 100%) 40%,
+            hsl(195, 100%, 97%) 100%
+          )`,
+        }}>
+          <NavigationHeader />
+          <HeroSection />
+          <div className="h-12 md:h-16" />
+        </div>
 
-        <HeroSection />
+        {/* ── Band 2: Ice blue → light cyan (Pipeline) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(195, 100%, 97%) 0%,
+            hsl(192, 85%, 92%) 40%,
+            hsl(190, 80%, 85%) 100%
+          )`,
+        }}>
+          <PipelineSection />
+        </div>
 
-        {/* Clean spacer */}
-        <div className="h-12 md:h-16" />
+        {/* ── Band 3: Light cyan → vivid cyan (DataFlow) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(190, 80%, 85%) 0%,
+            hsl(190, 82%, 72%) 35%,
+            hsl(192, 80%, 58%) 100%
+          )`,
+        }}>
+          <DataFlowSection />
+        </div>
 
-        <PipelineSection />
+        {/* ── Band 4: Vivid cyan → cerulean (Stats) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(192, 80%, 58%) 0%,
+            hsl(195, 78%, 50%) 50%,
+            hsl(198, 80%, 46%) 100%
+          )`,
+        }}>
+          <StatsBar />
+        </div>
 
-        {/* Clean spacer */}
-        <div className="h-8 md:h-12" />
+        {/* ── Band 5: Cerulean → azure blue (How It Works) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(198, 80%, 46%) 0%,
+            hsl(203, 82%, 45%) 40%,
+            hsl(210, 82%, 48%) 100%
+          )`,
+        }}>
+          <HowItWorksSection />
+        </div>
 
-        <DataFlowSection />
-        <StatsBar />
-        <HowItWorksSection />
-        
-        
-        <Footer />
-        
-        {/* Hidden Sales Assistant (triggered from header) */}
+        {/* ── Band 6: Azure → electric blue (Footer) ── */}
+        <div style={{
+          background: `linear-gradient(180deg,
+            hsl(210, 82%, 48%) 0%,
+            hsl(213, 83%, 52%) 100%
+          )`,
+        }}>
+          <Footer />
+        </div>
+
         <SalesAssistant externalOpen={false} />
       </motion.div>
     </div>
