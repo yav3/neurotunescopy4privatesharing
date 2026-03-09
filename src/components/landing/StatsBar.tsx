@@ -14,19 +14,10 @@ export const StatsBar: React.FC = () => {
     <section
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0, 0%, 100%)',
+        background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      {/* Subtle top/bottom fade edges */}
-      <div
-        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: 'linear-gradient(180deg, hsl(210, 20%, 96%), transparent)' }}
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: 'linear-gradient(0deg, hsl(210, 20%, 96%), transparent)' }}
-      />
 
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-wrap justify-between gap-8">
