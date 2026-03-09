@@ -32,7 +32,7 @@ export const HeroSection: React.FC = () => {
                 fontWeight: 400,
                 letterSpacing: '-0.025em',
                 lineHeight: 1.1,
-                color: 'hsl(200, 80%, 22%)',
+                color: 'hsl(210, 50%, 15%)',
               }}
             >
               Music that moves you.
