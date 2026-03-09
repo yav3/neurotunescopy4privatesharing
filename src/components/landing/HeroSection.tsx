@@ -12,22 +12,7 @@ export const HeroSection: React.FC = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      {/* Atmospheric cyan wash */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 60% 70% at 75% 30%, 
-              hsla(190, 100%, 60%, 0.1) 0%, 
-              transparent 70%
-            ),
-            radial-gradient(ellipse 50% 50% at 20% 70%, 
-              hsla(200, 100%, 60%, 0.06) 0%, 
-              transparent 60%
-            )
-          `,
-        }}
-      />
+      {/* No atmospheric washes — clean white */}
 
       <div className="relative z-10 container mx-auto px-5 sm:px-8 md:px-12 lg:px-20 pt-20 sm:pt-16 md:pt-0">
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 sm:gap-10 lg:gap-16 xl:gap-20 items-center">
