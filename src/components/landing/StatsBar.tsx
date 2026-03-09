@@ -30,7 +30,7 @@ export const StatsBar: React.FC = () => {
               transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 min-w-[140px]"
               style={{
-                borderLeft: i > 0 ? '1px solid hsla(210, 30%, 80%, 0.6)' : 'none',
+                borderLeft: i > 0 ? '1px solid hsla(210, 60%, 60%, 0.25)' : 'none',
                 paddingLeft: i > 0 ? '24px' : '0',
               }}
             >
