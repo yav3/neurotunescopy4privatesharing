@@ -57,13 +57,14 @@ const Index = () => {
 
         {/* Electric blue atmospheric wash between hero and pipeline */}
         <div
-          className="relative h-32 md:h-48 -mt-16 pointer-events-none"
+          className="relative h-40 md:h-56 -mt-16 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 120% 100% at 50% 0%, 
-                hsla(210, 100%, 55%, 0.15) 0%, 
-                hsla(210, 90%, 45%, 0.08) 40%,
-                transparent 80%
+              radial-gradient(ellipse 140% 100% at 50% 0%, 
+                hsla(210, 100%, 55%, 0.25) 0%, 
+                hsla(212, 90%, 50%, 0.15) 30%,
+                hsla(215, 80%, 45%, 0.08) 60%,
+                transparent 85%
               )
             `,
           }}
