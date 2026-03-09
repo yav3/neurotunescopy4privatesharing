@@ -40,21 +40,21 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
   </div>
 );
 
-/* Shared glass base */
+/* Glass tokens — adapt to the mid-gradient background (light cyan/teal zone) */
 const GLASS = {
-  background: 'hsla(0, 0%, 100%, 0.45)',
-  border: '1px solid hsla(0, 0%, 100%, 0.6)',
-  backdropFilter: 'blur(24px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-  boxShadow: '0 2px 16px hsla(200, 60%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
+  background: 'hsla(0, 0%, 100%, 0.25)',
+  border: '1px solid hsla(0, 0%, 100%, 0.4)',
+  backdropFilter: 'blur(20px) saturate(1.4)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
+  boxShadow: '0 2px 12px hsla(200, 60%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(0, 0%, 100%, 0.65)',
-  border: '1px solid hsla(190, 80%, 60%, 0.5)',
-  backdropFilter: 'blur(32px) saturate(1.8)',
-  WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
-  boxShadow: '0 8px 40px hsla(190, 80%, 50%, 0.12), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.8)',
+  background: 'hsla(0, 0%, 100%, 0.4)',
+  border: '1px solid hsla(0, 0%, 100%, 0.6)',
+  backdropFilter: 'blur(28px) saturate(1.6)',
+  WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
+  boxShadow: '0 8px 32px hsla(190, 80%, 50%, 0.15), 0 1px 3px hsla(190, 80%, 50%, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
@@ -70,7 +70,7 @@ export const PipelineSection: React.FC = () => {
   return (
     <section
       id="technology"
-      className="relative py-20 md:py-24 overflow-hidden"
+      className="relative py-20 md:py-28 overflow-hidden"
       style={{
         background: 'transparent',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
@@ -84,7 +84,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-2"
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(192, 75%, 38%)' }}
+          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(205, 50%, 30%)' }}
         >
           COMPOSITION ENGINE
         </motion.p>
@@ -95,12 +95,10 @@ export const PipelineSection: React.FC = () => {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center mb-2"
           style={{
-            fontSize: 'clamp(24px, 4vw, 36px)',
+            fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: 'hsl(205, 45%, 18%)',
           }}
         >
           Algorithmic music pipeline
@@ -111,12 +109,12 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(200, 40%, 32%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(200, 35%, 35%)' }}
         >
           From patented composition to adaptive therapeutic delivery
         </motion.p>
 
-        {/* ── Pipeline step cards ── */}
+        {/* Pipeline step cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {steps.map((step, i) => {
             const Icon = step.icon;
@@ -137,7 +135,7 @@ export const PipelineSection: React.FC = () => {
                   transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
-                {/* Top highlight — liquid glass refraction */}
+                {/* Top highlight */}
                 <div
                   className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
                   style={{
@@ -152,8 +150,8 @@ export const PipelineSection: React.FC = () => {
                   className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.4) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.25) 0%, transparent 100%)',
+                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.35) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.2) 0%, transparent 100%)',
                   }}
                 />
 
@@ -180,7 +178,7 @@ export const PipelineSection: React.FC = () => {
                       className="w-5 h-5"
                       strokeWidth={1.5}
                       style={{
-                        color: isActive ? 'hsl(192, 85%, 40%)' : 'hsl(200, 35%, 55%)',
+                        color: isActive ? 'hsl(192, 85%, 35%)' : 'hsl(200, 30%, 45%)',
                         filter: isActive ? 'drop-shadow(0 0 6px hsla(192, 80%, 50%, 0.4))' : 'none',
                         transition: 'all 0.4s',
                       }}
@@ -190,7 +188,7 @@ export const PipelineSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 400,
-                      color: isActive ? 'hsl(192, 70%, 38%)' : 'hsl(200, 25%, 60%)',
+                      color: isActive ? 'hsl(192, 70%, 30%)' : 'hsl(200, 25%, 50%)',
                       fontVariantNumeric: 'tabular-nums',
                       transition: 'color 0.4s',
                     }}
@@ -208,7 +206,7 @@ export const PipelineSection: React.FC = () => {
                     transition: 'all 0.4s',
                     ...(isActive
                       ? { background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
-                      : { color: 'hsl(205, 30%, 28%)' }),
+                      : { color: 'hsl(205, 35%, 22%)' }),
                   }}
                 >
                   {step.title}
@@ -218,7 +216,7 @@ export const PipelineSection: React.FC = () => {
                   style={{
                     fontSize: '12px',
                     fontWeight: 300,
-                    color: isActive ? 'hsl(200, 40%, 32%)' : 'hsl(200, 20%, 48%)',
+                    color: isActive ? 'hsl(200, 35%, 28%)' : 'hsl(200, 20%, 42%)',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -243,7 +241,7 @@ export const PipelineSection: React.FC = () => {
           })}
         </div>
 
-        {/* ── Progress dots ── */}
+        {/* Progress dots */}
         <div className="hidden lg:flex items-center justify-center gap-1 mb-6">
           {steps.map((_, i) => (
             <React.Fragment key={i}>
@@ -254,7 +252,7 @@ export const PipelineSection: React.FC = () => {
                   height: i === activeStep ? 10 : 6,
                   background: i <= activeStep
                     ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                    : 'hsl(200, 30%, 78%)',
+                    : 'hsla(0, 0%, 100%, 0.4)',
                   boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
                 }}
                 transition={{ duration: 0.4 }}
@@ -265,7 +263,7 @@ export const PipelineSection: React.FC = () => {
                   animate={{
                     background: i < activeStep
                       ? 'linear-gradient(90deg, #06b6d4, #2563eb)'
-                      : 'hsl(200, 30%, 82%)',
+                      : 'hsla(0, 0%, 100%, 0.3)',
                   }}
                   transition={{ duration: 0.4 }}
                 />
@@ -274,7 +272,7 @@ export const PipelineSection: React.FC = () => {
           ))}
         </div>
 
-        {/* ── Live Pipeline Demo — glass panel ── */}
+        {/* Live Pipeline Demo — glass panel */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -283,29 +281,29 @@ export const PipelineSection: React.FC = () => {
           className="relative rounded-2xl p-5 md:p-6 mb-6 overflow-hidden"
           style={{
             ...GLASS,
-            background: 'hsla(0, 0%, 100%, 0.5)',
+            background: 'hsla(0, 0%, 100%, 0.3)',
           }}
         >
-          {/* Top refraction line */}
+          {/* Top refraction */}
           <div
             className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(0, 0%, 100%, 0.8) 50%, transparent 90%)' }}
+            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(0, 0%, 100%, 0.7) 50%, transparent 90%)' }}
           />
 
           {/* Progress track */}
-          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(200, 40%, 80%, 0.4)' }}>
+          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(0, 0%, 100%, 0.3)' }}>
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{
                 background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
-                boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.3)',
+                boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.4)',
               }}
               animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
 
-          {/* Stage output content */}
+          {/* Stage output */}
           <div className="relative flex items-center gap-6 min-h-[56px]">
             <div>
               <MiniWaveform active={true} />
@@ -327,11 +325,11 @@ export const PipelineSection: React.FC = () => {
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.2, repeat: Infinity }}
                     />
-                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', fontWeight: 600, color: 'hsl(160, 60%, 35%)' }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', fontWeight: 600, color: 'hsl(160, 55%, 32%)' }}>
                       {stageOutputs[activeStep].label.toUpperCase()}
                     </span>
                   </div>
-                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(205, 40%, 25%)' }}>
+                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(205, 40%, 20%)' }}>
                     {stageOutputs[activeStep].detail}
                   </p>
                 </motion.div>
@@ -349,12 +347,12 @@ export const PipelineSection: React.FC = () => {
               }}>
                 0{activeStep + 1}
               </span>
-              <span style={{ fontSize: '13px', color: 'hsl(200, 30%, 55%)' }}> / 04</span>
+              <span style={{ fontSize: '13px', color: 'hsl(200, 25%, 45%)' }}> / 04</span>
             </div>
           </div>
         </motion.div>
 
-        {/* ── Two info panels — glass ── */}
+        {/* Two info panels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -368,7 +366,7 @@ export const PipelineSection: React.FC = () => {
               className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
               style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(0, 0%, 100%, 0.6) 50%, transparent 90%)' }}
             />
-            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 35%, 25%)', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)', marginBottom: '12px' }}>
               Why algorithmic composition
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -382,11 +380,11 @@ export const PipelineSection: React.FC = () => {
                   className="px-3 py-1.5 rounded-full"
                   style={{
                     fontSize: '12px',
-                    background: 'hsla(0, 0%, 100%, 0.5)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.6)',
-                    color: 'hsl(200, 40%, 30%)',
+                    background: 'hsla(0, 0%, 100%, 0.4)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.5)',
+                    color: 'hsl(200, 40%, 25%)',
                     fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.06)',
+                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.08)',
                   }}
                 >
                   {tag}
@@ -408,7 +406,7 @@ export const PipelineSection: React.FC = () => {
               style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(0, 0%, 100%, 0.6) 50%, transparent 90%)' }}
             />
             <div className="flex items-center gap-2 mb-3">
-              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 35%, 25%)' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)' }}>
                 Feature annotation
               </h3>
               <motion.span
@@ -439,11 +437,11 @@ export const PipelineSection: React.FC = () => {
                   className="px-3 py-1.5 rounded-full flex items-center gap-1.5"
                   style={{
                     fontSize: '12px',
-                    background: 'hsla(0, 0%, 100%, 0.5)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.6)',
-                    color: 'hsl(200, 40%, 30%)',
+                    background: 'hsla(0, 0%, 100%, 0.4)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.5)',
+                    color: 'hsl(200, 40%, 25%)',
                     fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.06)',
+                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.08)',
                   }}
                 >
                   {method.label}
