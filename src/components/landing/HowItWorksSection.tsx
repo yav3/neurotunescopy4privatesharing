@@ -2,31 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const steps = [
-  {
-    number: '01',
-    title: 'Feature Annotation',
-    description: 'Music composed to spec — tempo, key, harmony, and spectral parameters defined upfront.',
-  },
-  {
-    number: '02',
-    title: 'Therapeutic Mapping',
-    description: 'Clinical classification for anxiety, focus, and pain.',
-  },
-  {
-    number: '03',
-    title: 'Personalization',
-    description: 'Adaptive algorithms matched to symptom profiles.',
-  },
-  {
-    number: '04',
-    title: 'Session Delivery',
-    description: 'Real-time streaming with biomarker feedback.',
-  },
-  {
-    number: '05',
-    title: 'Outcome Reporting',
-    description: 'Structured data for clinical validation.',
-  },
+  { number: '01', title: 'Feature Annotation', description: 'Music composed to spec — tempo, key, harmony, and spectral parameters defined upfront.' },
+  { number: '02', title: 'Therapeutic Mapping', description: 'Clinical classification for anxiety, focus, and pain.' },
+  { number: '03', title: 'Personalization', description: 'Adaptive algorithms matched to symptom profiles.' },
+  { number: '04', title: 'Session Delivery', description: 'Real-time streaming with biomarker feedback.' },
+  { number: '05', title: 'Outcome Reporting', description: 'Structured data for clinical validation.' },
 ];
 
 export const HowItWorksSection: React.FC = () => {
@@ -48,12 +28,12 @@ export const HowItWorksSection: React.FC = () => {
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      {/* Ambient glow — brighter blue wash */}
+      {/* Ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `radial-gradient(ellipse 70% 50% at 50% 30%, 
-            hsla(210, 80%, 55%, 0.08) 0%, 
+            hsla(190, 80%, 55%, 0.08) 0%, 
             transparent 70%
           )`,
         }}
@@ -67,7 +47,7 @@ export const HowItWorksSection: React.FC = () => {
           viewport={{ once: true }}
           className="flex justify-center mb-4"
         >
-          <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(210, 60%, 65%)' }}>
+          <span style={{ fontSize: '10px', fontWeight: 400, letterSpacing: '0.15em', color: 'hsl(190, 80%, 80%)' }}>
             HOW IT WORKS
           </span>
         </motion.div>
@@ -81,9 +61,7 @@ export const HowItWorksSection: React.FC = () => {
             fontSize: 'clamp(26px, 4vw, 40px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: 'hsl(0, 0%, 100%)',
           }}
         >
           Composition to clinical outcomes
@@ -94,30 +72,27 @@ export const HowItWorksSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 65%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsla(195, 70%, 88%, 0.8)' }}
         >
           Five stages from algorithmic composition to validated therapeutic delivery
         </motion.p>
 
-        {/* ── Progress track with sphere ── */}
+        {/* Progress track with sphere */}
         <div className="relative max-w-5xl mx-auto mb-12">
-          {/* Track line */}
           <div
             className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
-            style={{ background: 'hsla(210, 50%, 50%, 0.12)' }}
+            style={{ background: 'hsla(190, 60%, 60%, 0.2)' }}
           />
-          {/* Active fill */}
           <motion.div
             className="absolute top-1/2 left-0 h-[2px] -translate-y-1/2 origin-left rounded-full"
             style={{
               background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
-              boxShadow: '0 0 16px hsla(210, 90%, 55%, 0.35)',
+              boxShadow: '0 0 16px hsla(190, 90%, 55%, 0.35)',
             }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
 
-          {/* Step dots on track */}
           <div className="relative h-24 md:h-28 flex items-center justify-between max-w-5xl mx-auto px-4">
             {steps.map((_, i) => {
               const isActive = i === activeStep;
@@ -134,20 +109,20 @@ export const HowItWorksSection: React.FC = () => {
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     background: isActive
-                      ? 'linear-gradient(135deg, hsla(210, 70%, 50%, 0.3), hsla(200, 60%, 40%, 0.2))'
+                      ? 'hsla(190, 80%, 55%, 0.2)'
                       : isPast
-                        ? 'hsl(210, 60%, 55%)'
-                        : 'hsla(210, 30%, 40%, 0.2)',
+                        ? 'hsl(190, 70%, 50%)'
+                        : 'hsla(195, 50%, 60%, 0.25)',
                     border: isActive
-                      ? '1px solid hsla(210, 70%, 60%, 0.35)'
+                      ? '1px solid hsla(190, 80%, 60%, 0.4)'
                       : isPast
-                        ? '1px solid hsla(210, 70%, 60%, 0.3)'
-                        : '1px solid hsla(210, 30%, 50%, 0.15)',
+                        ? '1px solid hsla(190, 70%, 55%, 0.4)'
+                        : '1px solid hsla(195, 50%, 60%, 0.2)',
                     backdropFilter: isActive ? 'blur(20px)' : 'none',
                     boxShadow: isActive
-                      ? '0 0 30px hsla(210, 80%, 55%, 0.25), inset 0 1px 0 hsla(210, 80%, 80%, 0.15)'
+                      ? '0 0 30px hsla(190, 80%, 55%, 0.3), inset 0 1px 0 hsla(190, 80%, 80%, 0.15)'
                       : isPast
-                        ? '0 0 12px hsla(210, 70%, 55%, 0.2)'
+                        ? '0 0 12px hsla(190, 70%, 50%, 0.3)'
                         : 'none',
                   }}
                 >
@@ -160,7 +135,7 @@ export const HowItWorksSection: React.FC = () => {
                         style={{
                           fontSize: '18px',
                           fontWeight: 300,
-                          color: 'hsl(210, 80%, 75%)',
+                          color: 'hsl(190, 80%, 80%)',
                           position: 'absolute',
                           inset: 0,
                           display: 'flex',
@@ -178,7 +153,7 @@ export const HowItWorksSection: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Step cards ── */}
+        {/* Step cards */}
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {steps.map((step, i) => {
             const isActive = i === activeStep;
@@ -196,16 +171,16 @@ export const HowItWorksSection: React.FC = () => {
                 className="text-left rounded-2xl p-4 md:p-5 cursor-pointer relative overflow-hidden"
                 style={{
                   background: isActive
-                    ? 'linear-gradient(135deg, hsla(210, 60%, 45%, 0.18), hsla(200, 50%, 35%, 0.1))'
-                    : 'hsla(210, 20%, 15%, 0.25)',
+                    ? 'hsla(190, 80%, 95%, 0.15)'
+                    : 'hsla(200, 70%, 98%, 0.06)',
                   border: isActive
-                    ? '1px solid hsla(210, 70%, 55%, 0.3)'
-                    : '1px solid hsla(210, 30%, 50%, 0.1)',
+                    ? '1px solid hsla(190, 80%, 60%, 0.35)'
+                    : '1px solid hsla(195, 50%, 70%, 0.12)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
                   boxShadow: isActive
-                    ? '0 12px 40px -8px hsla(210, 60%, 40%, 0.25), inset 0 1px 0 hsla(210, 60%, 80%, 0.08)'
-                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.03)',
+                    ? '0 12px 40px -8px hsla(190, 70%, 45%, 0.2), inset 0 1px 0 hsla(190, 70%, 85%, 0.1)'
+                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.04)',
                   transition: 'all 0.4s ease',
                 }}
               >
@@ -214,8 +189,8 @@ export const HowItWorksSection: React.FC = () => {
                   className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(180deg, hsla(210, 70%, 70%, 0.08) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.03) 0%, transparent 100%)',
+                      ? 'linear-gradient(180deg, hsla(190, 80%, 80%, 0.1) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.04) 0%, transparent 100%)',
                   }}
                 />
 
@@ -224,7 +199,7 @@ export const HowItWorksSection: React.FC = () => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'linear-gradient(105deg, transparent 40%, hsla(210, 80%, 70%, 0.06) 50%, transparent 60%)',
+                      background: 'linear-gradient(105deg, transparent 40%, hsla(190, 80%, 80%, 0.08) 50%, transparent 60%)',
                     }}
                     initial={{ x: '-100%' }}
                     animate={{ x: '200%' }}
@@ -245,7 +220,7 @@ export const HowItWorksSection: React.FC = () => {
                           WebkitTextFillColor: 'transparent',
                         }
                       : {
-                          color: isPast ? 'hsl(210, 50%, 55%)' : 'hsla(0, 0%, 100%, 0.25)',
+                          color: isPast ? 'hsl(190, 60%, 60%)' : 'hsla(195, 40%, 70%, 0.5)',
                         }),
                   }}
                 >
@@ -259,8 +234,8 @@ export const HowItWorksSection: React.FC = () => {
                     color: isActive
                       ? 'hsl(0, 0%, 100%)'
                       : isPast
-                        ? 'hsl(0, 0%, 80%)'
-                        : 'hsl(0, 0%, 55%)',
+                        ? 'hsla(0, 0%, 100%, 0.85)'
+                        : 'hsla(195, 40%, 80%, 0.6)',
                   }}
                 >
                   {step.title}
@@ -277,7 +252,7 @@ export const HowItWorksSection: React.FC = () => {
                         fontSize: '12px',
                         fontWeight: 300,
                         lineHeight: 1.6,
-                        color: 'hsl(0, 0%, 60%)',
+                        color: 'hsla(195, 60%, 88%, 0.75)',
                       }}
                     >
                       {step.description}

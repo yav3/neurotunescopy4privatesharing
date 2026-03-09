@@ -18,7 +18,6 @@ export const StatsBar: React.FC = () => {
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-wrap justify-between gap-8">
           {stats.map((stat, i) => (
@@ -30,7 +29,7 @@ export const StatsBar: React.FC = () => {
               transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 min-w-[140px]"
               style={{
-                borderLeft: i > 0 ? '1px solid hsla(210, 60%, 60%, 0.25)' : 'none',
+                borderLeft: i > 0 ? '1px solid hsla(190, 70%, 70%, 0.3)' : 'none',
                 paddingLeft: i > 0 ? '24px' : '0',
               }}
             >
@@ -42,9 +41,7 @@ export const StatsBar: React.FC = () => {
                 style={{
                   fontSize: 'clamp(28px, 4vw, 44px)',
                   fontWeight: 300,
-                  background: 'linear-gradient(135deg, #0891b2, #1d4ed8)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: 'hsl(0, 0%, 100%)',
                 }}
               >
                 {stat.value}
@@ -54,7 +51,7 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.35 }}
-                style={{ fontSize: '13px', fontWeight: 300, color: 'hsla(210, 30%, 75%, 0.8)', marginTop: '4px' }}
+                style={{ fontSize: '13px', fontWeight: 300, color: 'hsla(190, 70%, 88%, 0.8)', marginTop: '4px' }}
               >
                 {stat.label}
               </motion.p>

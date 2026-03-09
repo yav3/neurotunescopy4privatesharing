@@ -12,17 +12,17 @@ export const HeroSection: React.FC = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      {/* Atmospheric blue wash — top right */}
+      {/* Atmospheric cyan wash */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
             radial-gradient(ellipse 60% 70% at 75% 30%, 
-              hsla(210, 100%, 60%, 0.12) 0%, 
+              hsla(190, 100%, 60%, 0.1) 0%, 
               transparent 70%
             ),
             radial-gradient(ellipse 50% 50% at 20% 70%, 
-              hsla(200, 80%, 55%, 0.06) 0%, 
+              hsla(200, 100%, 60%, 0.06) 0%, 
               transparent 60%
             )
           `,
@@ -47,7 +47,7 @@ export const HeroSection: React.FC = () => {
                 fontWeight: 400,
                 letterSpacing: '-0.025em',
                 lineHeight: 1.1,
-                color: 'hsl(220, 25%, 15%)',
+                color: 'hsl(200, 80%, 22%)',
               }}
             >
               Music that moves you.
@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
                 { value: '52 Genres', label: '8 LANGUAGES' },
               ].map((stat, i) => (
-                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(215, 30%, 60%, 0.25)' : 'none', paddingLeft: i > 0 ? '20px' : '0' }}>
+                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(190, 80%, 50%, 0.3)' : 'none', paddingLeft: i > 0 ? '20px' : '0' }}>
                   <p style={{
                     fontSize: 'clamp(20px, 3vw, 32px)',
                     fontWeight: 400,
@@ -77,7 +77,7 @@ export const HeroSection: React.FC = () => {
                   }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsla(215, 20%, 40%, 0.7)', marginTop: '3px' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsl(200, 60%, 40%)', marginTop: '3px' }}>
                     {stat.label}
                   </p>
                 </div>
@@ -95,7 +95,7 @@ export const HeroSection: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: 500,
                   letterSpacing: '0.01em',
-                  boxShadow: '0 4px 24px hsla(210, 80%, 50%, 0.3), 0 1px 3px hsla(210, 80%, 50%, 0.15)',
+                  boxShadow: '0 4px 24px hsla(190, 80%, 50%, 0.35), 0 1px 3px hsla(210, 80%, 50%, 0.15)',
                 }}
               >
                 Demo
@@ -120,7 +120,7 @@ export const HeroSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Scroll indicator — hidden on very small screens */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -128,7 +128,7 @@ export const HeroSection: React.FC = () => {
         className="absolute bottom-6 sm:bottom-10 left-0 right-0 text-center hidden sm:block"
       >
         <div className="w-6 h-10 mx-auto rounded-full border-2 flex items-start justify-center pt-2"
-          style={{ borderColor: 'hsla(215, 30%, 50%, 0.2)' }}
+          style={{ borderColor: 'hsla(190, 70%, 50%, 0.3)' }}
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
