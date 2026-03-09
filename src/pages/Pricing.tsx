@@ -22,7 +22,7 @@ export const Pricing = () => {
         "Offline listening",
         "Ad-free experience"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: true,
       priceId: STRIPE_PRICES.INDIVIDUAL
     },
@@ -39,7 +39,7 @@ export const Pricing = () => {
         "Offline listening",
         "Verification required"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: false,
       priceId: STRIPE_PRICES.STUDENT_SERVICE
     },
@@ -56,7 +56,7 @@ export const Pricing = () => {
         "Shared playlists",
         "Best value for groups"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: false,
       priceId: STRIPE_PRICES.FAMILY
     }
