@@ -39,7 +39,7 @@ export const Pricing = () => {
         "Offline listening",
         "Verification required"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: false,
       priceId: STRIPE_PRICES.STUDENT_SERVICE
     },
