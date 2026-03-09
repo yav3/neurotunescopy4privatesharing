@@ -62,7 +62,7 @@ export const HeroSection: React.FC = () => {
                   }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.12em', color: 'hsl(200, 60%, 40%)', marginTop: '3px' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', color: 'hsl(195, 70%, 38%)', marginTop: '3px' }}>
                     {stat.label}
                   </p>
                 </div>
