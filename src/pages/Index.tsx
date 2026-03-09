@@ -35,12 +35,15 @@ const Index = () => {
           background: `
             linear-gradient(180deg, 
               hsl(210, 20%, 97%) 0%,
-              hsl(210, 25%, 94%) 8%,
-              hsl(212, 30%, 85%) 18%,
-              hsl(215, 35%, 55%) 30%,
-              hsl(218, 40%, 25%) 42%,
-              hsl(220, 30%, 10%) 55%,
-              #050607 70%,
+              hsl(210, 30%, 94%) 6%,
+              hsl(212, 45%, 88%) 12%,
+              hsl(214, 60%, 75%) 18%,
+              hsl(216, 70%, 60%) 24%,
+              hsl(218, 75%, 48%) 32%,
+              hsl(220, 70%, 35%) 40%,
+              hsl(222, 55%, 20%) 50%,
+              hsl(222, 40%, 12%) 60%,
+              #050607 72%,
               #050607 100%
             )
           `,
@@ -54,13 +57,14 @@ const Index = () => {
 
         {/* Electric blue atmospheric wash between hero and pipeline */}
         <div
-          className="relative h-32 md:h-48 -mt-16 pointer-events-none"
+          className="relative h-40 md:h-56 -mt-16 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 120% 100% at 50% 0%, 
-                hsla(210, 100%, 55%, 0.15) 0%, 
-                hsla(210, 90%, 45%, 0.08) 40%,
-                transparent 80%
+              radial-gradient(ellipse 140% 100% at 50% 0%, 
+                hsla(210, 100%, 55%, 0.25) 0%, 
+                hsla(212, 90%, 50%, 0.15) 30%,
+                hsla(215, 80%, 45%, 0.08) 60%,
+                transparent 85%
               )
             `,
           }}
@@ -68,18 +72,18 @@ const Index = () => {
 
         <PipelineSection />
 
-        {/* Second blue wash — deeper */}
+        {/* Second blue wash — deeper, more vivid */}
         <div
-          className="relative h-24 md:h-32 pointer-events-none"
+          className="relative h-32 md:h-40 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 100% 120% at 30% 50%, 
-                hsla(215, 80%, 45%, 0.1) 0%, 
-                transparent 70%
+              radial-gradient(ellipse 120% 120% at 40% 50%, 
+                hsla(215, 85%, 50%, 0.18) 0%, 
+                transparent 65%
               ),
-              radial-gradient(ellipse 80% 100% at 70% 50%, 
-                hsla(200, 70%, 40%, 0.08) 0%, 
-                transparent 60%
+              radial-gradient(ellipse 100% 100% at 65% 50%, 
+                hsla(205, 80%, 45%, 0.14) 0%, 
+                transparent 55%
               )
             `,
           }}
