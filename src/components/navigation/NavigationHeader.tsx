@@ -360,7 +360,7 @@ export const NavigationHeader = () => {
               boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)'
             }}
           >
-            Free Trial
+            Request Access
           </Link>
         </div>
       </header>
