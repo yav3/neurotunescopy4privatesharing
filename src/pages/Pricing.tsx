@@ -99,7 +99,7 @@ export const Pricing = () => {
                 description={plan.description}
                 features={plan.features}
                 priceId={plan.priceId}
-                paymentLink={plan.paymentLink}
+                paymentLink={('paymentLink' in plan) ? (plan as any).paymentLink : undefined}
                 isPopular={plan.highlighted}
                 buttonText={plan.cta}
               />
