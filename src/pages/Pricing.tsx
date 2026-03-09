@@ -56,7 +56,7 @@ export const Pricing = () => {
         "Shared playlists",
         "Best value for groups"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: false,
       priceId: STRIPE_PRICES.FAMILY
     }
