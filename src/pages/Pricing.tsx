@@ -10,24 +10,6 @@ export const Pricing = () => {
   
   const plans = [
     {
-      name: "Trial Offer",
-      price: "Free",
-      period: "for 1 month",
-      description: "Experience the full therapeutic music library",
-      features: [
-        "Sample of full music library",
-        "Web app for office/personal use",
-        "One end-user web app experience",
-        "30-day trial period",
-        "10% discount code after trial"
-      ],
-      cta: "Start Free Trial",
-      highlighted: false,
-      isTrial: true,
-      priceId: undefined,
-      paymentLink: "/products/enterprise-wellness" // Link to free trial signup
-    },
-    {
       name: "Individual",
       price: "$59.99",
       period: "per year",
@@ -117,7 +99,7 @@ export const Pricing = () => {
                 description={plan.description}
                 features={plan.features}
                 priceId={plan.priceId}
-                paymentLink={plan.paymentLink}
+                paymentLink={('paymentLink' in plan) ? (plan as any).paymentLink : undefined}
                 isPopular={plan.highlighted}
                 buttonText={plan.cta}
               />
