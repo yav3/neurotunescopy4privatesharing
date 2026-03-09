@@ -16,7 +16,7 @@ export const Footer = () => {
 
   return (
     <>
-      <footer className="relative text-foreground border-t border-white/[0.06] bg-[#050607]">
+      <footer className="relative text-foreground border-t border-white/[0.06]" style={{ background: 'transparent' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           
           {/* Stack on mobile, row on desktop */}
