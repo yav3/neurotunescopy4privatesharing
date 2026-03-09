@@ -54,7 +54,7 @@ export const StatsBar: React.FC = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12 + 0.35 }}
-                style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(210, 15%, 45%)', marginTop: '4px' }}
+                style={{ fontSize: '13px', fontWeight: 300, color: 'hsla(210, 30%, 75%, 0.8)', marginTop: '4px' }}
               >
                 {stat.label}
               </motion.p>
