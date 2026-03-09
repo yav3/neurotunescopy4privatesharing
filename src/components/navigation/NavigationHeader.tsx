@@ -212,7 +212,7 @@ export const NavigationHeader = () => {
               boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
             }}
           >
-            Free Trial
+            Request Access
           </Link>
         </div>
       </header>
