@@ -22,7 +22,7 @@ export const Pricing = () => {
         "Offline listening",
         "Ad-free experience"
       ],
-      cta: "Subscribe",
+      cta: "Request Access",
       highlighted: true,
       priceId: STRIPE_PRICES.INDIVIDUAL
     },
