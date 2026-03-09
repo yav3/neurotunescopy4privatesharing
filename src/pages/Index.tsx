@@ -59,18 +59,8 @@ const Index = () => {
 
         <PipelineSection />
 
-        {/* Second blue wash */}
-        <div
-          className="relative h-20 md:h-28 pointer-events-none"
-          style={{
-            background: `
-              radial-gradient(ellipse 100% 100% at 50% 50%, 
-                hsla(215, 80%, 50%, 0.1) 0%, 
-                transparent 60%
-              )
-            `,
-          }}
-        />
+        {/* Clean spacer */}
+        <div className="h-8 md:h-12" />
 
         <DataFlowSection />
         <StatsBar />
