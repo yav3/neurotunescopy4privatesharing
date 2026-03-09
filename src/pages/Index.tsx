@@ -54,18 +54,8 @@ const Index = () => {
 
         <HeroSection />
 
-        {/* Subtle atmospheric wash between hero and pipeline */}
-        <div
-          className="relative h-24 md:h-32 -mt-8 pointer-events-none"
-          style={{
-            background: `
-              radial-gradient(ellipse 100% 100% at 50% 0%, 
-                hsla(210, 90%, 60%, 0.12) 0%, 
-                transparent 70%
-              )
-            `,
-          }}
-        />
+        {/* Clean spacer */}
+        <div className="h-12 md:h-16" />
 
         <PipelineSection />
 
