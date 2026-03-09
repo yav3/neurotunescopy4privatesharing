@@ -72,18 +72,18 @@ const Index = () => {
 
         <PipelineSection />
 
-        {/* Second blue wash — deeper */}
+        {/* Second blue wash — deeper, more vivid */}
         <div
-          className="relative h-24 md:h-32 pointer-events-none"
+          className="relative h-32 md:h-40 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse 100% 120% at 30% 50%, 
-                hsla(215, 80%, 45%, 0.1) 0%, 
-                transparent 70%
+              radial-gradient(ellipse 120% 120% at 40% 50%, 
+                hsla(215, 85%, 50%, 0.18) 0%, 
+                transparent 65%
               ),
-              radial-gradient(ellipse 80% 100% at 70% 50%, 
-                hsla(200, 70%, 40%, 0.08) 0%, 
-                transparent 60%
+              radial-gradient(ellipse 100% 100% at 65% 50%, 
+                hsla(205, 80%, 45%, 0.14) 0%, 
+                transparent 55%
               )
             `,
           }}
