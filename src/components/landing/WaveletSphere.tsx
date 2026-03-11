@@ -179,7 +179,7 @@ const GlowCore: React.FC<{
   introProgress: React.MutableRefObject<number>;
 }> = ({ stateRef, introProgress }) => {
   const ref = useRef<THREE.Mesh>(null);
-  const cur = useRef({ hue: 220, saturation: 0.1, amplitude: 0.08, pulseRate: 0.015, brightness: 0.35 });
+  const cur = useRef({ hue: 217, saturation: 0.8, amplitude: 0.08, pulseRate: 0.015, brightness: 0.7 });
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
