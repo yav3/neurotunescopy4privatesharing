@@ -117,9 +117,9 @@ const ParticleCloud: React.FC<{
     c.particleSpeed += (st.particleSpeed - c.particleSpeed) * 0.05;
     c.rotationSpeed += (st.rotationSpeed - c.rotationSpeed) * 0.05;
 
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
-    const introLight = intro < 1 ? THREE.MathUtils.lerp(0.35, c.lightness, intro) : c.lightness;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    const introLight = intro < 1 ? THREE.MathUtils.lerp(0.55, c.lightness, intro) : c.lightness;
 
     const globalPulse = Math.sin(t * c.pulseRate * Math.PI) * 0.5 + 0.5;
     const breathe = Math.sin(t * c.speed * 0.15) * 0.5 + 0.5;
