@@ -209,7 +209,7 @@ const GlowCore: React.FC<{
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[1, 24, 24]} />
-      <meshBasicMaterial color="#888" transparent opacity={0.15} depthWrite={false} />
+      <meshBasicMaterial color="#06b6d4" transparent opacity={0.3} depthWrite={false} />
     </mesh>
   );
 };
