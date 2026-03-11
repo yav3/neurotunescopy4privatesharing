@@ -298,7 +298,7 @@ const WaveformRing: React.FC<{
     <group ref={groupRef}>
       <instancedMesh ref={meshRef} args={[undefined, undefined, segments]}>
         <sphereGeometry args={[1, 4, 4]} />
-        <meshBasicMaterial color="#888" transparent opacity={0.5} depthWrite={false} />
+        <meshBasicMaterial color="#2563eb" transparent opacity={0.65} depthWrite={false} />
       </instancedMesh>
     </group>
   );
