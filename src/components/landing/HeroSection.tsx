@@ -95,8 +95,8 @@ export const HeroSection: React.FC = () => {
                 Experience Demo
                 <span style={{ fontSize: '16px' }}>→</span>
               </Link>
-              <Link
-                to="/free-trial"
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
                 className="inline-flex items-center gap-1.5 px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
                 style={{
                   fontSize: '14px',
@@ -108,7 +108,7 @@ export const HeroSection: React.FC = () => {
                 }}
               >
                 Request Access
-              </Link>
+              </button>
             </div>
           </motion.div>
 
