@@ -317,7 +317,7 @@ const Scene: React.FC<{
 
   return (
     <>
-      <ambientLight intensity={0.2} color="#c0d8ee" />
+      <ambientLight intensity={0.3} color="#60a5fa" />
       <GlowCore stateRef={stateRef} introProgress={introProgress} />
       <ParticleCloud stateRef={stateRef} introProgress={introProgress} />
       <WaveformRing stateRef={stateRef} introProgress={introProgress} tilt={0.4} radius={0.55} harmonics={5} phaseOffset={0} />
