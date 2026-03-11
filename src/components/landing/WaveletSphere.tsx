@@ -92,9 +92,9 @@ const ParticleCloud: React.FC<{
   []);
 
   const cur = useRef({
-    hue: 0, saturation: 0.3, lightness: 0.5,
+    hue: 217, saturation: 0.8, lightness: 0.6,
     speed: 0.25, amplitude: 0.08, pulseRate: 0.006,
-    spread: 0.32, brightness: 0.45,
+    spread: 0.32, brightness: 0.7,
     particleSpeed: 0.06, rotationSpeed: 0.015,
   });
 
