@@ -288,10 +288,10 @@ const WaveformRing: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.1, c.saturation, intro) : c.saturation;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.75), 0.07);
-    mat.opacity = 0.55 + c.amplitude * 0.4;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.7), 0.07);
+    mat.opacity = 0.65 + c.amplitude * 0.35;
   });
 
   return (
