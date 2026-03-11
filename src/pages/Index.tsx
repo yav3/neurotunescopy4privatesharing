@@ -40,21 +40,8 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
-        {/* Single continuous gradient background */}
-        <div style={{
-          background: `linear-gradient(180deg,
-            hsl(0, 0%, 100%) 0%,
-            hsl(195, 100%, 97%) 12%,
-            hsl(192, 85%, 90%) 22%,
-            hsl(190, 80%, 82%) 32%,
-            hsl(190, 82%, 68%) 44%,
-            hsl(192, 80%, 56%) 55%,
-            hsl(198, 80%, 48%) 66%,
-            hsl(205, 82%, 46%) 76%,
-            hsl(210, 82%, 46%) 86%,
-            hsl(215, 84%, 44%) 100%
-          )`,
-        }}>
+        {/* Clean white background */}
+        <div className="bg-background">
           <NavigationHeader />
           <HeroSection />
           <div className="h-12 md:h-20" />
