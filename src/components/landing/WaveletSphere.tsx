@@ -92,9 +92,9 @@ const ParticleCloud: React.FC<{
   []);
 
   const cur = useRef({
-    hue: 0, saturation: 0.3, lightness: 0.5,
+    hue: 217, saturation: 0.8, lightness: 0.6,
     speed: 0.25, amplitude: 0.08, pulseRate: 0.006,
-    spread: 0.32, brightness: 0.45,
+    spread: 0.32, brightness: 0.7,
     particleSpeed: 0.06, rotationSpeed: 0.015,
   });
 
@@ -117,9 +117,9 @@ const ParticleCloud: React.FC<{
     c.particleSpeed += (st.particleSpeed - c.particleSpeed) * 0.05;
     c.rotationSpeed += (st.rotationSpeed - c.rotationSpeed) * 0.05;
 
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
-    const introLight = intro < 1 ? THREE.MathUtils.lerp(0.35, c.lightness, intro) : c.lightness;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    const introLight = intro < 1 ? THREE.MathUtils.lerp(0.55, c.lightness, intro) : c.lightness;
 
     const globalPulse = Math.sin(t * c.pulseRate * Math.PI) * 0.5 + 0.5;
     const breathe = Math.sin(t * c.speed * 0.15) * 0.5 + 0.5;
@@ -160,15 +160,15 @@ const ParticleCloud: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const lightness = 0.45 + introLight * 0.35 + globalPulse * 0.06 * c.amplitude;
+    const lightness = 0.5 + introLight * 0.3 + globalPulse * 0.06 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.07);
-    mat.opacity = 0.75 + c.brightness * 0.2 + globalPulse * 0.1 * c.amplitude;
+    mat.opacity = 0.85 + c.brightness * 0.15 + globalPulse * 0.1 * c.amplitude;
   });
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial color="#888" transparent opacity={0.7} depthWrite={false} />
+      <meshBasicMaterial color="#3B82F6" transparent opacity={0.85} depthWrite={false} />
     </instancedMesh>
   );
 };
@@ -179,7 +179,7 @@ const GlowCore: React.FC<{
   introProgress: React.MutableRefObject<number>;
 }> = ({ stateRef, introProgress }) => {
   const ref = useRef<THREE.Mesh>(null);
-  const cur = useRef({ hue: 220, saturation: 0.1, amplitude: 0.08, pulseRate: 0.015, brightness: 0.35 });
+  const cur = useRef({ hue: 217, saturation: 0.8, amplitude: 0.08, pulseRate: 0.015, brightness: 0.7 });
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
@@ -199,17 +199,17 @@ const GlowCore: React.FC<{
     ref.current.scale.setScalar(scale);
 
     const mat = ref.current.material as THREE.MeshBasicMaterial;
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
-    const coreLightness = 0.4 + c.brightness * 0.4 + pulse * 0.12 * c.amplitude;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    const coreLightness = 0.5 + c.brightness * 0.35 + pulse * 0.12 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.07);
-    mat.opacity = 0.2 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
+    mat.opacity = 0.3 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
   });
 
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[1, 24, 24]} />
-      <meshBasicMaterial color="#888" transparent opacity={0.15} depthWrite={false} />
+      <meshBasicMaterial color="#06b6d4" transparent opacity={0.3} depthWrite={false} />
     </mesh>
   );
 };
@@ -288,17 +288,17 @@ const WaveformRing: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.1, c.saturation, intro) : c.saturation;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.75), 0.07);
-    mat.opacity = 0.55 + c.amplitude * 0.4;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.7), 0.07);
+    mat.opacity = 0.65 + c.amplitude * 0.35;
   });
 
   return (
     <group ref={groupRef}>
       <instancedMesh ref={meshRef} args={[undefined, undefined, segments]}>
         <sphereGeometry args={[1, 4, 4]} />
-        <meshBasicMaterial color="#888" transparent opacity={0.5} depthWrite={false} />
+        <meshBasicMaterial color="#2563eb" transparent opacity={0.65} depthWrite={false} />
       </instancedMesh>
     </group>
   );
@@ -317,7 +317,7 @@ const Scene: React.FC<{
 
   return (
     <>
-      <ambientLight intensity={0.2} color="#c0d8ee" />
+      <ambientLight intensity={0.3} color="#60a5fa" />
       <GlowCore stateRef={stateRef} introProgress={introProgress} />
       <ParticleCloud stateRef={stateRef} introProgress={introProgress} />
       <WaveformRing stateRef={stateRef} introProgress={introProgress} tilt={0.4} radius={0.55} harmonics={5} phaseOffset={0} />
