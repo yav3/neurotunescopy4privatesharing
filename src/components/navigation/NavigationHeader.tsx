@@ -352,8 +352,8 @@ export const NavigationHeader = () => {
           >
             Login
           </Link>
-          <Link 
-            to="/free-trial"
+          <button 
+            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
             className="px-3 py-1.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[10px] font-normal"
             style={{
               background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
@@ -361,7 +361,7 @@ export const NavigationHeader = () => {
             }}
           >
             Request Access
-          </Link>
+          </button>
         </div>
       </header>
 

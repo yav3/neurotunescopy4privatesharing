@@ -43,6 +43,18 @@ export const Footer = () => {
               />
             </div>
 
+            {/* Center: Contact Sales CTA */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+              className="px-6 py-2 rounded-full text-white hover:opacity-90 transition-all duration-200 text-xs font-normal shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                boxShadow: '0 0 16px rgba(6, 182, 212, 0.25)'
+              }}
+            >
+              Contact Sales
+            </button>
+
             {/* Right: Distributed by + Copyright */}
             <div className="flex items-center gap-3 shrink-0">
               <div className="flex items-center gap-2">
