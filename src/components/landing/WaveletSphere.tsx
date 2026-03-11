@@ -199,11 +199,11 @@ const GlowCore: React.FC<{
     ref.current.scale.setScalar(scale);
 
     const mat = ref.current.material as THREE.MeshBasicMaterial;
-    const introHue = intro < 1 ? THREE.MathUtils.lerp(220, c.hue, intro) : c.hue;
-    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.05, c.saturation, intro) : c.saturation;
-    const coreLightness = 0.4 + c.brightness * 0.4 + pulse * 0.12 * c.amplitude;
+    const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
+    const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
+    const coreLightness = 0.5 + c.brightness * 0.35 + pulse * 0.12 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.07);
-    mat.opacity = 0.2 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
+    mat.opacity = 0.3 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
   });
 
   return (
