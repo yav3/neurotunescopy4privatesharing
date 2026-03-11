@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { NavigationHeader } from '@/components/navigation/NavigationHeader';
@@ -9,14 +9,11 @@ import { DataFlowSection } from '@/components/landing/DataFlowSection';
 import { StatsBar } from '@/components/landing/StatsBar';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-
-/*
- * Seamless gradient bands — white → ice → cyan → cerulean → azure → electric blue
- * NEVER navy, NEVER grey. Each band blends into the next.
- */
+import { FooterContactHandler } from '@/components/FooterContactHandler';
 
 const Index = () => {
   const location = useLocation();
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -26,6 +23,13 @@ const Index = () => {
       }
     }
   }, [location.hash]);
+
+  // Listen for global contact open events
+  useEffect(() => {
+    const handler = () => setContactOpen(true);
+    window.addEventListener('openContactForm', handler);
+    return () => window.removeEventListener('openContactForm', handler);
+  }, []);
 
   return (
     <div className="overflow-x-hidden">
@@ -62,6 +66,11 @@ const Index = () => {
         </div>
 
         <SalesAssistant externalOpen={false} />
+        <FooterContactHandler
+          isOpen={contactOpen}
+          onClose={() => setContactOpen(false)}
+          interestType="Request Access"
+        />
       </motion.div>
     </div>
   );
