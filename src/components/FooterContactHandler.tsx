@@ -106,14 +106,21 @@ export function FooterContactHandler({
   };
 
   const submitContact = async (data: ContactData) => {
-    try {
-      console.log("Contact submission:", data);
-      toast.success("Your inquiry has been submitted!");
-    } catch (error) {
+    const { error } = await supabase.from('contact_submissions').insert({
+      email: data.email ?? '',
+      name: data.name ?? null,
+      company: data.company ?? null,
+      interest_type: data.interest ?? interestType,
+      source: 'landing_page',
+    });
+
+    if (error) {
       console.error("Error submitting contact:", error);
       toast.error("Failed to submit inquiry. Please try again.");
       throw error;
     }
+
+    toast.success("Your inquiry has been submitted!");
   };
 
   if (!isOpen) return null;

@@ -481,6 +481,39 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          interest_type: string
+          name: string | null
+          source: string | null
+          status: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          interest_type?: string
+          name?: string | null
+          source?: string | null
+          status?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          interest_type?: string
+          name?: string | null
+          source?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       convertible_notes: {
         Row: {
           accrued_interest: number | null
