@@ -74,8 +74,8 @@ export const NavigationHeader = () => {
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
-            <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
-              <Menu className="h-5 w-5" style={{ color: isLandingPage && !scrolled ? 'hsl(220, 20%, 30%)' : undefined }} />
+            <DropdownMenuTrigger className="transition-colors p-2 hover:bg-black/5 rounded">
+              <Menu className="h-5 w-5" style={{ color: 'hsl(220, 15%, 25%)' }} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
