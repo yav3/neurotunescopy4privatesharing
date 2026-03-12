@@ -72,7 +72,7 @@ export const PipelineSection: React.FC = () => {
       id="technology"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0 0% 100%)',
+        background: 'hsl(var(--landing-bg))',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
