@@ -301,18 +301,18 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-1.5">
-            <LissajousLogo size={20} animated color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
+            <LissajousLogo size={20} animated color="hsl(220, 15%, 25%)" />
             <span className="text-sm tracking-normal whitespace-nowrap font-sf font-normal" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
-          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
-            <span className="text-[8px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: 'hsla(210, 15%, 70%, 0.3)' }}>
+            <span className="text-[8px] tracking-wide" style={{ color: 'hsla(220, 10%, 35%, 0.6)' }}>Distributed by</span>
             <img 
-              src={isLandingPage && !scrolled ? welconyFullColour : welconyColourWhite} 
+              src={welconyFullColour} 
               alt="Welcony" 
-              className="h-5 transition-opacity duration-500"
-              style={{ opacity: isLandingPage && !scrolled ? 0.8 : 0.7 }}
+              className="h-5"
+              style={{ opacity: 0.85 }}
             />
           </div>
         </div>
