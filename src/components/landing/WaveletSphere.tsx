@@ -369,15 +369,16 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
         <div
           className="px-4 py-1.5 rounded-full flex flex-col items-center"
           style={{
-            background: 'hsla(220, 20%, 8%, 0.7)',
-            border: '1px solid hsla(0, 0%, 100%, 0.08)',
+            background: 'hsla(210, 50%, 96%, 0.85)',
+            border: '1px solid hsla(210, 50%, 85%, 0.6)',
             backdropFilter: 'blur(12px)',
+            boxShadow: '0 2px 12px hsla(210, 50%, 50%, 0.1)',
           }}
         >
           <span style={{
             fontSize: '9px',
             letterSpacing: '0.14em',
-            fontWeight: 400,
+            fontWeight: 500,
             color: `hsl(${stateColor.hue}, ${Math.round(stateColor.saturation * 100)}%, ${Math.round(stateColor.lightness * 100)}%)`,
             transition: 'color 1.5s ease',
           }}>
@@ -387,7 +388,7 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
             fontSize: '7px',
             letterSpacing: '0.08em',
             fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.35)',
+            color: 'hsla(210, 30%, 35%, 0.6)',
             transition: 'opacity 1.5s ease',
             marginTop: '1px',
           }}>
