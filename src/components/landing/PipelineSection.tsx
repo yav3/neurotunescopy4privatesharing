@@ -295,7 +295,7 @@ export const PipelineSection: React.FC = () => {
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{
-                background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
+                background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                 boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.4)',
               }}
               animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
