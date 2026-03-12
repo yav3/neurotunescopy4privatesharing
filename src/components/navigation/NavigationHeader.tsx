@@ -24,13 +24,18 @@ export const NavigationHeader = () => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
 
-  // Track scroll for nav background transition on landing page
-  useEffect(() => {
-    if (!isLandingPage) return;
-    const onScroll = () => setScrolled(window.scrollY > 200);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [isLandingPage]);
+    // Track scroll for nav background transition on landing page
+    // Only transition to blue when scrolled into the dark gradient zone
+    useEffect(() => {
+      if (!isLandingPage) return;
+      const onScroll = () => {
+        // Approximate start of dark gradient zone (after Hero + Pipeline)
+        const darkZoneStart = window.innerHeight * 1.8;
+        setScrolled(window.scrollY > darkZoneStart);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => window.removeEventListener('scroll', onScroll);
+    }, [isLandingPage]);
 
   // Listen for mute state changes from player
   useEffect(() => {
