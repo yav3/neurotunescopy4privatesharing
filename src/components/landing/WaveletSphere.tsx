@@ -160,9 +160,9 @@ const ParticleCloud: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const lightness = 0.5 + introLight * 0.3 + globalPulse * 0.06 * c.amplitude;
+    const lightness = 0.3 + introLight * 0.2 + globalPulse * 0.04 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.07);
-    mat.opacity = 0.85 + c.brightness * 0.15 + globalPulse * 0.1 * c.amplitude;
+    mat.opacity = 0.92 + c.brightness * 0.08;
   });
 
   return (
