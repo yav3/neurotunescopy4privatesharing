@@ -32,7 +32,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden" style={{ backgroundColor: '#ffffff' }}>
       <motion.div
         key="landing"
         className="min-h-screen relative"
@@ -40,22 +40,14 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
-        {/* Clean white background - override global obsidian theme for landing */}
-        {/* White zone: Hero + Pipeline */}
-        <div style={{ backgroundColor: '#ffffff' }}>
-          <NavigationHeader />
-          <HeroSection />
-          <div className="h-12 md:h-20" />
-          <PipelineSection />
-        </div>
-
-        {/* Remaining sections — all on white */}
-        <div>
-          <DataFlowSection />
-          <StatsBar />
-          <HowItWorksSection />
-          <Footer />
-        </div>
+        <NavigationHeader />
+        <HeroSection />
+        <div className="h-12 md:h-20" />
+        <PipelineSection />
+        <DataFlowSection />
+        <StatsBar />
+        <HowItWorksSection />
+        <Footer />
 
         <SalesAssistant externalOpen={false} />
         <FooterContactHandler
