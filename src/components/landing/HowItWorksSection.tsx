@@ -188,7 +188,7 @@ export const HowItWorksSection: React.FC = () => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'linear-gradient(105deg, transparent 40%, hsla(190, 80%, 60%, 0.06) 50%, transparent 60%)',
+                      background: 'linear-gradient(105deg, transparent 40%, hsl(var(--landing-electric-1) / 0.14) 50%, transparent 60%)',
                     }}
                     initial={{ x: '-100%' }}
                     animate={{ x: '200%' }}
