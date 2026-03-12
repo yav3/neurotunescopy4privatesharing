@@ -209,8 +209,8 @@ export const NavigationHeader = () => {
             <DropdownMenuTrigger className="p-2 -ml-1 rounded-lg transition-colors" style={{ color: theme.iconColor }}>
               <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-[hsl(240,8%,4%)] border border-white/10 shadow-2xl z-[9999]">
-              <MenuItems onSupportChat={handleSupportChat} />
+            <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
+              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
