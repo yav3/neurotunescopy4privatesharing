@@ -241,7 +241,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0, filter: phase === 'matched' ? 'blur(0px)' : 'blur(2px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.genre}
                 </motion.p>
