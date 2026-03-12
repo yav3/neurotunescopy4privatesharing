@@ -49,10 +49,8 @@ const Index = () => {
           <PipelineSection />
         </div>
 
-        {/* Deep gradient zone: DataFlow, Stats, HowItWorks, Footer */}
-        <div style={{
-          background: 'linear-gradient(180deg, hsl(200, 80%, 14%) 0%, hsl(205, 75%, 10%) 30%, hsl(210, 70%, 7%) 70%, hsl(210, 65%, 5%) 100%)',
-        }}>
+        {/* Remaining sections — all on white */}
+        <div>
           <DataFlowSection />
           <StatsBar />
           <HowItWorksSection />
