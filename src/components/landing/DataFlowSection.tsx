@@ -64,7 +64,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-3"
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(200, 60%, 45%)' }}
+          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}
         >
           CLINICAL MATCHING
         </motion.p>
