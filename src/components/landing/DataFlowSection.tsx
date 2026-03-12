@@ -250,8 +250,8 @@ export const DataFlowSection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Pairing cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {/* Pairing cards — connected vertical list on mobile, horizontal row on lg */}
+        <div className="hidden lg:grid lg:grid-cols-5 gap-3">
           {pairings.map((p, i) => {
             const isActive = i === activeRow;
             return (
@@ -269,100 +269,109 @@ export const DataFlowSection: React.FC = () => {
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
-                {/* Top refraction */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.95), transparent)'
-                      : 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.6), transparent)',
-                  }}
-                />
-
-                {/* Interior sheen */}
-                <div
-                  className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.6) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.3) 0%, transparent 100%)',
-                  }}
-                />
-
-                {/* Match score ring */}
+                <div className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
+                  style={{ background: isActive ? 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.95), transparent)' : 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.6), transparent)' }} />
+                <div className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
+                  style={{ background: isActive ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.6) 0%, transparent 100%)' : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.3) 0%, transparent 100%)' }} />
                 <div className="relative flex justify-center mb-3">
                   <svg width="44" height="44" viewBox="0 0 44 44">
                     <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(210, 30%, 80%, 0.5)" strokeWidth="2" />
-                    <motion.circle
-                      cx="22" cy="22" r="18"
-                      fill="none"
-                      stroke="url(#matchGradWhite)"
-                      strokeWidth="2"
-                      strokeLinecap="round"
+                    <motion.circle cx="22" cy="22" r="18" fill="none" stroke="url(#matchGradWhite)" strokeWidth="2" strokeLinecap="round"
                       strokeDasharray={`${2 * Math.PI * 18}`}
                       initial={{ strokeDashoffset: 2 * Math.PI * 18 }}
                       whileInView={{ strokeDashoffset: 2 * Math.PI * 18 * (1 - p.match / 100) }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 + 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                      transform="rotate(-90 22 22)"
-                    />
-                    <defs>
-                      <linearGradient id="matchGradWhite" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="hsl(190, 80%, 45%)" />
-                        <stop offset="100%" stopColor="hsl(220, 80%, 55%)" />
-                      </linearGradient>
-                    </defs>
+                      transform="rotate(-90 22 22)" />
+                    <defs><linearGradient id="matchGradWhite" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="hsl(190, 80%, 45%)" /><stop offset="100%" stopColor="hsl(220, 80%, 55%)" /></linearGradient></defs>
                   </svg>
-                  <span
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{
-                      fontSize: '11px',
-                      fontWeight: 500,
-                      color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))',
-                      transition: 'color 0.4s',
-                    }}
-                  >
+                  <span className="absolute inset-0 flex items-center justify-center"
+                    style={{ fontSize: '11px', fontWeight: 500, color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))', transition: 'color 0.4s' }}>
                     {p.match}%
                   </span>
                 </div>
-
-                <p
-                  className="relative text-center mb-1"
-                  style={{
-                    fontSize: '13px',
-                    fontWeight: 400,
-                    color: 'hsl(var(--landing-ink))',
-                    transition: 'color 0.4s',
-                  }}
-                >
-                  {p.genre}
-                </p>
-                <p
-                  className="relative text-center"
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 300,
-                    color: 'hsl(var(--landing-ink-soft))',
-                    transition: 'color 0.4s',
-                  }}
-                >
-                  {p.goal}
-                </p>
-
-                {/* Bottom accent */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-[2px]"
-                  style={{
-                    background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                    transformOrigin: 'left',
-                  }}
-                  animate={{
-                    scaleX: isActive ? 1 : 0,
-                    opacity: isActive ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                />
+                <p className="relative text-center mb-1" style={{ fontSize: '13px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}>{p.genre}</p>
+                <p className="relative text-center" style={{ fontSize: '11px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}>{p.goal}</p>
+                <motion.div className="absolute bottom-0 left-0 right-0 h-[2px]"
+                  style={{ background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', transformOrigin: 'left' }}
+                  animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} />
               </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Mobile: connected vertical flow */}
+        <div className="lg:hidden flex flex-col items-center">
+          {pairings.map((p, i) => {
+            const isActive = i === activeRow;
+            return (
+              <React.Fragment key={p.genre}>
+                {/* Connector line between cards */}
+                {i > 0 && (
+                  <motion.div
+                    className="w-[2px] rounded-full"
+                    style={{
+                      height: 24,
+                      background: i <= activeRow
+                        ? 'linear-gradient(180deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                        : 'hsla(210, 30%, 80%, 0.35)',
+                      transition: 'background 0.5s',
+                    }}
+                  />
+                )}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                  onClick={() => { setActiveRow(i); setPhase('scanning'); }}
+                  className="relative rounded-2xl p-4 cursor-pointer overflow-hidden w-full"
+                  style={{
+                    ...(isActive ? GLASS_ACTIVE : GLASS),
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Match ring */}
+                    <div className="relative shrink-0">
+                      <svg width="44" height="44" viewBox="0 0 44 44">
+                        <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(210, 30%, 80%, 0.5)" strokeWidth="2" />
+                        <motion.circle cx="22" cy="22" r="18" fill="none" stroke="url(#matchGradMobile)" strokeWidth="2" strokeLinecap="round"
+                          strokeDasharray={`${2 * Math.PI * 18}`}
+                          initial={{ strokeDashoffset: 2 * Math.PI * 18 }}
+                          whileInView={{ strokeDashoffset: 2 * Math.PI * 18 * (1 - p.match / 100) }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 + 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                          transform="rotate(-90 22 22)" />
+                        <defs><linearGradient id="matchGradMobile" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="hsl(190, 80%, 45%)" /><stop offset="100%" stopColor="hsl(220, 80%, 55%)" /></linearGradient></defs>
+                      </svg>
+                      <span className="absolute inset-0 flex items-center justify-center"
+                        style={{ fontSize: '11px', fontWeight: 500, color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))' }}>
+                        {p.match}%
+                      </span>
+                    </div>
+                    {/* Text */}
+                    <div className="flex-1 min-w-0">
+                      <p style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}>{p.genre}</p>
+                      <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))', marginTop: 2 }}>{p.goal}</p>
+                    </div>
+                    {/* Active indicator */}
+                    {isActive && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.5)' }}
+                      />
+                    )}
+                  </div>
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-[2px]"
+                    style={{ background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', transformOrigin: 'left' }}
+                    animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} />
+                </motion.div>
+              </React.Fragment>
             );
           })}
         </div>
