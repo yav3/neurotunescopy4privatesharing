@@ -380,8 +380,8 @@ export const PipelineSection: React.FC = () => {
                   className="px-3 py-1.5 rounded-full"
                   style={{
                     fontSize: '12px',
-                    background: 'hsla(0, 0%, 100%, 0.4)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.5)',
+                    background: 'hsla(210, 40%, 94%, 0.6)',
+                    border: '1px solid hsla(210, 50%, 85%, 0.6)',
                     color: 'hsl(200, 40%, 25%)',
                     fontWeight: 400,
                     boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.08)',
