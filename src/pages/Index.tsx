@@ -51,7 +51,7 @@ const Index = () => {
 
         {/* Deep gradient zone: DataFlow, Stats, HowItWorks, Footer */}
         <div style={{
-          background: 'linear-gradient(180deg, hsl(210, 60%, 12%) 0%, hsl(215, 55%, 8%) 30%, hsl(220, 50%, 6%) 70%, hsl(220, 45%, 4%) 100%)',
+          background: 'linear-gradient(180deg, hsl(200, 80%, 14%) 0%, hsl(205, 75%, 10%) 30%, hsl(210, 70%, 7%) 70%, hsl(210, 65%, 5%) 100%)',
         }}>
           <DataFlowSection />
           <StatsBar />
