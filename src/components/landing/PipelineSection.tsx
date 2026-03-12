@@ -98,7 +98,7 @@ export const PipelineSection: React.FC = () => {
             fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(205, 45%, 18%)',
+            color: 'hsl(var(--landing-ink))',
           }}
         >
           Algorithmic music pipeline
