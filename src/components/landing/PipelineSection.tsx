@@ -70,13 +70,13 @@ export const PipelineSection: React.FC = () => {
   return (
     <section
       id="technology"
-      className="relative py-20 md:py-28 overflow-hidden"
+      className="relative py-16 md:py-28 overflow-hidden"
       style={{
         background: 'hsl(var(--landing-bg))',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-5xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 max-w-5xl">
         {/* Title */}
         <motion.p
           initial={{ opacity: 0, y: 8 }}

@@ -54,10 +54,10 @@ export const DataFlowSection: React.FC = () => {
   return (
     <section
       id="science"
-      className="relative py-20 md:py-28 overflow-hidden"
+      className="relative py-16 md:py-28 overflow-hidden"
       style={{ background: 'hsl(var(--landing-bg))', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-5xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 max-w-5xl">
         {/* Header */}
         <motion.p
           initial={{ opacity: 0 }}
