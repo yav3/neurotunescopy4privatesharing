@@ -446,7 +446,7 @@ export const PipelineSection: React.FC = () => {
                 >
                   {method.label}
                   <span style={{
-                    background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                    background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     fontWeight: 500,
