@@ -178,8 +178,8 @@ export const HowItWorksSection: React.FC = () => {
                   className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.5) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.3) 0%, transparent 100%)',
+                      ? 'linear-gradient(180deg, hsl(var(--landing-bg) / 0.55) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsl(var(--landing-bg) / 0.35) 0%, transparent 100%)',
                   }}
                 />
 
