@@ -227,7 +227,7 @@ export const PipelineSection: React.FC = () => {
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
                   style={{
-                    background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
+                    background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                     transformOrigin: 'left',
                   }}
                   animate={{
