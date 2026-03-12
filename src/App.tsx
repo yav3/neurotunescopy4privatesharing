@@ -86,6 +86,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import BlackFriday from "./pages/BlackFriday";
 import FreeTrial from "./pages/FreeTrial";
+import CapabilityBrief from "./pages/CapabilityBrief";
 
 const queryClient = new QueryClient();
 
