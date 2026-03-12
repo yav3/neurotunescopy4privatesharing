@@ -29,109 +29,49 @@ export const HowItWorksSection: React.FC = () => {
       }}
     >
       <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center mb-4"
-        >
-          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}>
-            HOW IT WORKS
-          </span>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex justify-center mb-4">
+          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}>HOW IT WORKS</span>
         </motion.div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-4"
-          style={{
-            fontSize: 'clamp(22px, 4vw, 40px)',
-            fontWeight: 300,
-            letterSpacing: '-0.02em',
-            color: 'hsl(var(--landing-ink))',
-          }}
-        >
+        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-4"
+          style={{ fontSize: 'clamp(22px, 4vw, 40px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(var(--landing-ink))' }}>
           Composition to clinical outcomes
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-10 md:mb-14"
-          style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
-        >
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10 md:mb-14"
+          style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}>
           Five stages from algorithmic composition to validated therapeutic delivery
         </motion.p>
 
-        {/* Progress track - hidden on small mobile, shown on sm+ */}
-        <div className="relative max-w-5xl mx-auto mb-8 md:mb-12 hidden sm:block">
-          <div
-            className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
-            style={{ background: 'hsl(var(--landing-track))' }}
-          />
+        {/* Progress track - desktop */}
+        <div className="relative max-w-5xl mx-auto mb-8 md:mb-12 hidden lg:block">
+          <div className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2" style={{ background: 'hsl(var(--landing-track))' }} />
           <motion.div
             className="absolute top-1/2 left-0 h-[2px] -translate-y-1/2 origin-left rounded-full"
-            style={{
-              background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-              boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)',
-            }}
+            style={{ background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)' }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
-
           <div className="relative h-20 md:h-28 flex items-center justify-between max-w-5xl mx-auto px-4">
             {steps.map((_, i) => {
               const isActive = i === activeStep;
               const isPast = i < activeStep;
               return (
-                <motion.button
-                  key={i}
-                  onClick={() => setActiveStep(i)}
-                  className="relative z-10 rounded-full cursor-pointer"
-                  animate={{
-                    width: isActive ? 48 : 10,
-                    height: isActive ? 48 : 10,
-                  }}
+                <motion.button key={i} onClick={() => setActiveStep(i)} className="relative z-10 rounded-full cursor-pointer"
+                  animate={{ width: isActive ? 48 : 10, height: isActive ? 48 : 10 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     background: isActive
-                      ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.28) 0%, hsl(var(--landing-electric-2) / 0.28) 100%)'
-                      : isPast
-                        ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
-                        : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.18) 0%, hsl(var(--landing-electric-2) / 0.18) 100%)',
-                    border: isActive
-                      ? '1px solid hsl(var(--landing-border))'
-                      : isPast
-                        ? '1px solid hsl(var(--landing-electric-1) / 0.6)'
-                        : '1px solid hsl(var(--landing-border-soft))',
+                      ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.28), hsl(var(--landing-electric-2) / 0.28))'
+                      : isPast ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))' : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.18), hsl(var(--landing-electric-2) / 0.18))',
+                    border: isActive ? '1px solid hsl(var(--landing-border))' : isPast ? '1px solid hsl(var(--landing-electric-1) / 0.6)' : '1px solid hsl(var(--landing-border-soft))',
                     backdropFilter: isActive ? 'blur(20px)' : 'none',
-                    boxShadow: isActive
-                      ? '0 0 30px hsl(var(--landing-electric-1) / 0.22), inset 0 1px 0 hsl(var(--landing-bg) / 0.65)'
-                      : isPast
-                        ? '0 0 12px hsl(var(--landing-electric-1) / 0.28)'
-                        : 'none',
-                  }}
-                >
+                    boxShadow: isActive ? '0 0 30px hsl(var(--landing-electric-1) / 0.22)' : isPast ? '0 0 12px hsl(var(--landing-electric-1) / 0.28)' : 'none',
+                  }}>
                   <AnimatePresence mode="wait">
                     {isActive && (
-                      <motion.span
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        style={{
-                          fontSize: '16px',
-                          fontWeight: 300,
-                          color: 'hsl(var(--landing-ink))',
-                          position: 'absolute',
-                          inset: 0,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
+                      <motion.span initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
+                        style={{ fontSize: '16px', fontWeight: 300, color: 'hsl(var(--landing-ink))', position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {steps[activeStep].number}
                       </motion.span>
                     )}
@@ -142,146 +82,109 @@ export const HowItWorksSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile progress indicator - shown only on small screens */}
-        <div className="flex sm:hidden items-center justify-center gap-2 mb-8">
-          {steps.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveStep(i)}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width: i === activeStep ? 28 : 8,
-                height: 8,
-                background: i <= activeStep
-                  ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
-                  : 'hsl(var(--landing-border-soft) / 0.5)',
-                boxShadow: i === activeStep ? '0 0 8px hsl(var(--landing-electric-1) / 0.4)' : 'none',
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Step cards - single column on mobile, 2-col on sm, full row on lg */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {/* Desktop: horizontal row */}
+        <div className="max-w-5xl mx-auto hidden lg:grid lg:grid-cols-5 gap-3">
           {steps.map((step, i) => {
             const isActive = i === activeStep;
             const isPast = i <= activeStep;
-
             return (
-              <motion.button
-                key={step.number}
-                onClick={() => setActiveStep(i)}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="text-left rounded-2xl p-4 md:p-5 cursor-pointer relative overflow-hidden"
+              <motion.button key={step.number} onClick={() => setActiveStep(i)}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }} whileHover={{ y: -4 }}
+                className="text-left rounded-2xl p-5 cursor-pointer relative overflow-hidden"
                 style={{
                   background: isActive
-                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.3) 0%, hsl(var(--landing-electric-2) / 0.3) 100%)'
-                    : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.2) 0%, hsl(var(--landing-electric-2) / 0.2) 100%)',
-                  border: isActive
-                    ? '1px solid hsl(var(--landing-border))'
-                    : '1px solid hsl(var(--landing-border-soft))',
+                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.3), hsl(var(--landing-electric-2) / 0.3))'
+                    : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.2), hsl(var(--landing-electric-2) / 0.2))',
+                  border: isActive ? '1px solid hsl(var(--landing-border))' : '1px solid hsl(var(--landing-border-soft))',
                   backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  boxShadow: isActive
-                    ? '0 12px 40px -8px hsl(var(--landing-electric-2) / 0.18), inset 0 1px 0 hsl(var(--landing-bg) / 0.75)'
-                    : 'inset 0 1px 0 hsl(var(--landing-bg) / 0.45)',
+                  boxShadow: isActive ? '0 12px 40px -8px hsl(var(--landing-electric-2) / 0.18)' : 'none',
                   transition: 'all 0.4s ease',
-                }}
-              >
-                {/* Glass sheen */}
-                <div
-                  className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(180deg, hsl(var(--landing-bg) / 0.55) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsl(var(--landing-bg) / 0.35) 0%, transparent 100%)',
-                  }}
-                />
-
-                {/* Sweep sheen on active */}
+                }}>
                 {isActive && (
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(105deg, transparent 40%, hsl(var(--landing-electric-1) / 0.14) 50%, transparent 60%)',
-                    }}
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '200%' }}
-                    transition={{ duration: 2, ease: 'easeInOut' }}
-                  />
+                  <motion.div className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'linear-gradient(105deg, transparent 40%, hsl(var(--landing-electric-1) / 0.14) 50%, transparent 60%)' }}
+                    initial={{ x: '-100%' }} animate={{ x: '200%' }} transition={{ duration: 2, ease: 'easeInOut' }} />
                 )}
-
-                <p
-                  className="relative transition-colors duration-300 mb-2"
-                  style={{
-                    fontSize: '13px',
-                    fontWeight: 400,
-                    letterSpacing: '0.05em',
-                    ...(isActive
-                      ? {
-                          background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                        }
-                      : {
-                          color: isPast ? 'hsl(var(--landing-ink-soft))' : 'hsl(var(--landing-ink-muted))',
-                        }),
-                  }}
-                >
-                  {step.number}
-                </p>
-                <h3
-                  className="relative transition-colors duration-300"
-                  style={{
-                    fontSize: 'clamp(13px, 1.3vw, 15px)',
-                    fontWeight: 400,
-                    color: isActive
-                      ? 'hsl(var(--landing-ink))'
-                      : isPast
-                        ? 'hsl(var(--landing-ink-soft))'
-                        : 'hsl(var(--landing-ink-muted))',
-                  }}
-                >
+                <p className="relative mb-2" style={{
+                  fontSize: '13px', fontWeight: 400, letterSpacing: '0.05em',
+                  ...(isActive
+                    ? { background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+                    : { color: isPast ? 'hsl(var(--landing-ink-soft))' : 'hsl(var(--landing-ink-muted))' }),
+                }}>{step.number}</p>
+                <h3 className="relative" style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(var(--landing-ink))' : isPast ? 'hsl(var(--landing-ink-soft))' : 'hsl(var(--landing-ink-muted))' }}>
                   {step.title}
                 </h3>
                 <AnimatePresence>
                   {isActive && (
-                    <motion.p
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative mt-2 overflow-hidden"
-                      style={{
-                        fontSize: '12px',
-                        fontWeight: 300,
-                        lineHeight: 1.6,
-                        color: 'hsl(var(--landing-ink-soft))',
-                      }}
-                    >
+                    <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}
+                      className="relative mt-2 overflow-hidden" style={{ fontSize: '12px', fontWeight: 300, lineHeight: 1.6, color: 'hsl(var(--landing-ink-soft))' }}>
                       {step.description}
                     </motion.p>
                   )}
                 </AnimatePresence>
-
-                {/* Bottom accent */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-[2px]"
-                  style={{
-                    background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                    transformOrigin: 'left',
-                  }}
-                  animate={{
-                    scaleX: isActive ? 1 : 0,
-                    opacity: isActive ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                />
+                <motion.div className="absolute bottom-0 left-0 right-0 h-[2px]"
+                  style={{ background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', transformOrigin: 'left' }}
+                  animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} />
               </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Mobile: connected vertical timeline */}
+        <div className="lg:hidden max-w-lg mx-auto">
+          {steps.map((step, i) => {
+            const isActive = i === activeStep;
+            const isPast = i <= activeStep;
+            return (
+              <motion.div key={step.number} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }} className="flex gap-4">
+                {/* Timeline rail */}
+                <div className="flex flex-col items-center shrink-0">
+                  <motion.div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-normal"
+                    animate={{
+                      background: isActive ? 'linear-gradient(135deg, hsl(192, 85%, 50%), hsl(220, 80%, 55%))' : isPast ? 'hsla(200, 70%, 92%, 0.8)' : 'hsla(210, 20%, 94%, 0.6)',
+                      color: isActive ? '#fff' : 'hsl(200, 30%, 40%)',
+                      boxShadow: isActive ? '0 0 16px hsla(192, 80%, 50%, 0.4)' : '0 0 0 transparent',
+                    }}
+                    transition={{ duration: 0.4 }}>
+                    {step.number}
+                  </motion.div>
+                  {i < steps.length - 1 && (
+                    <motion.div className="w-[2px] flex-1 min-h-[16px] rounded-full"
+                      animate={{ background: isPast ? 'linear-gradient(180deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))' : 'hsla(210, 20%, 85%, 0.4)' }}
+                      transition={{ duration: 0.5 }} />
+                  )}
+                </div>
+                {/* Content card */}
+                <motion.button onClick={() => setActiveStep(i)}
+                  className="text-left rounded-2xl p-4 mb-3 flex-1 relative overflow-hidden cursor-pointer"
+                  style={{
+                    background: isActive
+                      ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.3), hsl(var(--landing-electric-2) / 0.3))'
+                      : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.15), hsl(var(--landing-electric-2) / 0.15))',
+                    border: isActive ? '1px solid hsl(var(--landing-border))' : '1px solid hsl(var(--landing-border-soft))',
+                    backdropFilter: 'blur(20px)',
+                    transition: 'all 0.4s ease',
+                  }}>
+                  <h3 style={{ fontSize: '15px', fontWeight: 400, color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))' }}>
+                    {step.title}
+                  </h3>
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}
+                        className="overflow-hidden mt-1.5" style={{ fontSize: '13px', fontWeight: 300, lineHeight: 1.6, color: 'hsl(var(--landing-ink-soft))' }}>
+                        {step.description}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-[2px]"
+                    style={{ background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', transformOrigin: 'left' }}
+                    animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} />
+                </motion.button>
+              </motion.div>
             );
           })}
         </div>
