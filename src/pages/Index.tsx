@@ -41,11 +41,18 @@ const Index = () => {
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
         {/* Clean white background - override global obsidian theme for landing */}
+        {/* White zone: Hero + Pipeline */}
         <div style={{ backgroundColor: '#ffffff' }}>
           <NavigationHeader />
           <HeroSection />
           <div className="h-12 md:h-20" />
           <PipelineSection />
+        </div>
+
+        {/* Deep gradient zone: DataFlow, Stats, HowItWorks, Footer */}
+        <div style={{
+          background: 'linear-gradient(180deg, hsl(210, 60%, 12%) 0%, hsl(215, 55%, 8%) 30%, hsl(220, 50%, 6%) 70%, hsl(220, 45%, 4%) 100%)',
+        }}>
           <DataFlowSection />
           <StatsBar />
           <HowItWorksSection />
