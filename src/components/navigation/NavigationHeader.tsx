@@ -318,26 +318,12 @@ export const NavigationHeader = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-1.5 rounded-full transition-all duration-200"
-              style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 45%)' : undefined }}
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" style={{ color: 'inherit' }} />
-              ) : (
-                <Volume2 className="w-4 h-4" style={{ color: 'inherit' }} />
-              )}
-            </button>
-          )}
           <Link 
             to="/auth" 
-            className="px-3 py-1 rounded-full transition-all duration-500 text-[10px] font-normal"
+            className="px-3 py-1 rounded-full transition-all duration-300 text-[10px] font-normal hover:bg-black/5"
             style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+              border: '1px solid hsla(210, 15%, 70%, 0.4)',
+              color: 'hsl(220, 15%, 25%)',
             }}
           >
             Login
