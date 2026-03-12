@@ -129,7 +129,7 @@ export const NavigationHeader = () => {
       {/* Backdrop overlay when menu is open */}
       {(desktopMenuOpen || mobileMenuOpen) && (
         <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 transition-opacity duration-200"
+          className={`fixed inset-0 backdrop-blur-sm z-40 transition-opacity duration-200 ${isLightPage ? 'bg-black/20' : 'bg-black/60'}`}
           onClick={() => { setDesktopMenuOpen(false); setMobileMenuOpen(false); }}
         />
       )}
