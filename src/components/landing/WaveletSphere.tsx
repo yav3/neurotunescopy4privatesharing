@@ -168,7 +168,7 @@ const ParticleCloud: React.FC<{
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial color="#3B82F6" transparent opacity={0.85} depthWrite={false} />
+      <meshBasicMaterial color="#0e7490" transparent opacity={0.92} depthWrite={false} />
     </instancedMesh>
   );
 };
