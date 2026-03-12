@@ -22,7 +22,7 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
       <motion.div
         key={i}
         className="w-[3px] rounded-full"
-        style={{ background: 'linear-gradient(to top, #06b6d4, #2563eb)' }}
+        style={{ background: 'linear-gradient(to top, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))' }}
         animate={{
           height: active
             ? [4, 12 + Math.sin(i * 0.7) * 22, 4]
