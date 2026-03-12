@@ -10,21 +10,21 @@ const pairings = [
   { genre: 'Electronic', goal: 'HIIT & Cardio', match: 92 },
 ];
 
-/* Glass tokens tuned for the mid-blue gradient zone */
+/* Glass tokens for white background */
 const GLASS = {
-  background: 'hsla(0, 0%, 100%, 0.12)',
-  border: '1px solid hsla(0, 0%, 100%, 0.22)',
+  background: 'hsla(210, 40%, 96%, 0.7)',
+  border: '1px solid hsla(210, 50%, 88%, 0.8)',
   backdropFilter: 'blur(20px) saturate(1.4)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-  boxShadow: '0 2px 16px hsla(200, 60%, 30%, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.2)',
+  boxShadow: '0 2px 16px hsla(210, 50%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.8)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(0, 0%, 100%, 0.2)',
-  border: '1px solid hsla(0, 0%, 100%, 0.4)',
+  background: 'hsla(210, 50%, 94%, 0.85)',
+  border: '1px solid hsla(200, 60%, 80%, 0.7)',
   backdropFilter: 'blur(28px) saturate(1.6)',
   WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
-  boxShadow: '0 8px 32px hsla(200, 60%, 30%, 0.15), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.35)',
+  boxShadow: '0 8px 32px hsla(200, 60%, 50%, 0.08), 0 1px 3px hsla(190, 80%, 50%, 0.05), inset 0 1px 0 hsla(0, 0%, 100%, 0.9)',
 } as const;
 
 export const DataFlowSection: React.FC = () => {
@@ -64,7 +64,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-3"
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsla(0, 0%, 100%, 0.75)' }}
+          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(200, 60%, 45%)' }}
         >
           CLINICAL MATCHING
         </motion.p>
@@ -77,7 +77,7 @@ export const DataFlowSection: React.FC = () => {
             fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(0, 0%, 100%)',
+            color: 'hsl(215, 25%, 15%)',
           }}
         >
           Genre–goal pairings
@@ -87,7 +87,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsla(0, 0%, 100%, 0.75)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(215, 15%, 45%)' }}
         >
           Each genre matched to therapeutic outcomes via clinical mapping
         </motion.p>
@@ -103,13 +103,13 @@ export const DataFlowSection: React.FC = () => {
           {/* Top refraction */}
           <div
             className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent 5%, hsla(0, 0%, 100%, 0.5) 50%, transparent 95%)' }}
+            style={{ background: 'linear-gradient(90deg, transparent 5%, hsla(0, 0%, 100%, 0.9) 50%, transparent 95%)' }}
           />
 
           {/* Interior sheen */}
           <div
             className="absolute top-0 left-0 w-full h-1/2 rounded-t-3xl pointer-events-none"
-            style={{ background: 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.1) 0%, transparent 100%)' }}
+            style={{ background: 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.5) 0%, transparent 100%)' }}
           />
 
           {/* Animated glow orb */}
@@ -118,7 +118,7 @@ export const DataFlowSection: React.FC = () => {
             style={{
               width: 200,
               height: 200,
-              background: 'radial-gradient(circle, hsla(0, 0%, 100%, 0.08), transparent 70%)',
+              background: 'radial-gradient(circle, hsla(190, 80%, 60%, 0.08), transparent 70%)',
               filter: 'blur(40px)',
             }}
             animate={{
@@ -134,20 +134,20 @@ export const DataFlowSection: React.FC = () => {
               className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
               style={{
                 background: phase === 'scanning'
-                  ? 'hsla(0, 0%, 100%, 0.15)'
-                  : 'hsla(0, 0%, 100%, 0.08)',
+                  ? 'hsla(0, 0%, 100%, 0.85)'
+                  : 'hsla(0, 0%, 100%, 0.6)',
                 border: phase === 'scanning'
-                  ? '1px solid hsla(0, 0%, 100%, 0.35)'
-                  : '1px solid hsla(0, 0%, 100%, 0.18)',
+                  ? '1px solid hsla(200, 60%, 80%, 0.8)'
+                  : '1px solid hsla(210, 40%, 88%, 0.6)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
             >
               <div
                 className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-                style={{ background: 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.3), transparent)' }}
+                style={{ background: 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.8), transparent)' }}
               />
-              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsla(0, 0%, 100%, 0.65)', marginBottom: 8, fontWeight: 500 }}>
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(200, 50%, 45%)', marginBottom: 8, fontWeight: 500 }}>
                 THERAPEUTIC GOAL
               </p>
               <AnimatePresence mode="wait">
@@ -157,7 +157,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 100%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
                 >
                   {active.goal}
                 </motion.p>
@@ -170,9 +170,9 @@ export const DataFlowSection: React.FC = () => {
                 className="w-12 h-12 rounded-full flex items-center justify-center relative"
                 style={{
                   background: phase === 'matched'
-                    ? 'hsla(0, 0%, 100%, 0.15)'
-                    : 'hsla(0, 0%, 100%, 0.08)',
-                  border: '1px solid hsla(0, 0%, 100%, 0.3)',
+                    ? 'hsla(0, 0%, 100%, 0.9)'
+                    : 'hsla(210, 40%, 96%, 0.8)',
+                  border: '1px solid hsla(200, 50%, 80%, 0.6)',
                   backdropFilter: 'blur(12px)',
                   transition: 'all 0.5s',
                 }}
@@ -180,7 +180,7 @@ export const DataFlowSection: React.FC = () => {
                 {phase === 'scanning' ? (
                   <motion.div
                     className="w-5 h-5 rounded-full border-2 border-t-transparent"
-                    style={{ borderColor: 'hsla(0, 0%, 100%, 0.5)', borderTopColor: 'transparent' }}
+                    style={{ borderColor: 'hsl(200, 60%, 55%)', borderTopColor: 'transparent' }}
                     animate={{ rotate: 360 }}
                     transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
                   />
@@ -190,13 +190,13 @@ export const DataFlowSection: React.FC = () => {
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    <Sparkles className="w-5 h-5" style={{ color: 'hsla(0, 0%, 100%, 0.9)' }} />
+                    <Sparkles className="w-5 h-5" style={{ color: 'hsl(200, 70%, 50%)' }} />
                   </motion.div>
                 )}
               </motion.div>
               <motion.span
                 style={{ fontSize: '9px', letterSpacing: '0.1em', fontWeight: 600 }}
-                animate={{ color: phase === 'scanning' ? 'hsla(0, 0%, 100%, 0.6)' : 'hsl(160, 65%, 60%)' }}
+                animate={{ color: phase === 'scanning' ? 'hsl(215, 15%, 55%)' : 'hsl(160, 65%, 40%)' }}
               >
                 {phase === 'scanning' ? 'MATCHING' : `${active.match}% MATCH`}
               </motion.span>
@@ -207,31 +207,31 @@ export const DataFlowSection: React.FC = () => {
               className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
               style={{
                 background: phase === 'matched'
-                  ? 'hsla(0, 0%, 100%, 0.15)'
-                  : 'hsla(0, 0%, 100%, 0.08)',
+                  ? 'hsla(0, 0%, 100%, 0.85)'
+                  : 'hsla(0, 0%, 100%, 0.6)',
                 border: phase === 'matched'
-                  ? '1px solid hsla(0, 0%, 100%, 0.35)'
-                  : '1px solid hsla(0, 0%, 100%, 0.18)',
+                  ? '1px solid hsla(200, 60%, 80%, 0.8)'
+                  : '1px solid hsla(210, 40%, 88%, 0.6)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
             >
               <div
                 className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-                style={{ background: 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.3), transparent)' }}
+                style={{ background: 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.8), transparent)' }}
               />
               {phase === 'matched' && (
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: 'linear-gradient(105deg, transparent 35%, hsla(0, 0%, 100%, 0.1) 50%, transparent 65%)',
+                    background: 'linear-gradient(105deg, transparent 35%, hsla(190, 80%, 60%, 0.06) 50%, transparent 65%)',
                   }}
                   initial={{ x: '-100%' }}
                   animate={{ x: '200%' }}
                   transition={{ duration: 1.8, ease: 'easeInOut' }}
                 />
               )}
-              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsla(0, 0%, 100%, 0.65)', marginBottom: 8, fontWeight: 500 }}>
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(200, 50%, 45%)', marginBottom: 8, fontWeight: 500 }}>
                 MATCHED GENRE
               </p>
               <AnimatePresence mode="wait">
@@ -241,7 +241,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0, filter: phase === 'matched' ? 'blur(0px)' : 'blur(2px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(0, 0%, 100%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
                 >
                   {active.genre}
                 </motion.p>
@@ -274,8 +274,8 @@ export const DataFlowSection: React.FC = () => {
                   className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.6), transparent)'
-                      : 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.25), transparent)',
+                      ? 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.95), transparent)'
+                      : 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.6), transparent)',
                   }}
                 />
 
@@ -284,19 +284,19 @@ export const DataFlowSection: React.FC = () => {
                   className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.15) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.06) 0%, transparent 100%)',
+                      ? 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.6) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsla(0, 0%, 100%, 0.3) 0%, transparent 100%)',
                   }}
                 />
 
                 {/* Match score ring */}
                 <div className="relative flex justify-center mb-3">
                   <svg width="44" height="44" viewBox="0 0 44 44">
-                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(0, 0%, 100%, 0.15)" strokeWidth="2" />
+                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsla(210, 30%, 80%, 0.5)" strokeWidth="2" />
                     <motion.circle
                       cx="22" cy="22" r="18"
                       fill="none"
-                      stroke="url(#matchGradClean)"
+                      stroke="url(#matchGradWhite)"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeDasharray={`${2 * Math.PI * 18}`}
@@ -307,9 +307,9 @@ export const DataFlowSection: React.FC = () => {
                       transform="rotate(-90 22 22)"
                     />
                     <defs>
-                      <linearGradient id="matchGradClean" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="hsla(0, 0%, 100%, 0.95)" />
-                        <stop offset="100%" stopColor="hsla(190, 80%, 80%, 0.95)" />
+                      <linearGradient id="matchGradWhite" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="hsl(190, 80%, 45%)" />
+                        <stop offset="100%" stopColor="hsl(220, 80%, 55%)" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -318,7 +318,7 @@ export const DataFlowSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 500,
-                      color: isActive ? 'hsl(0, 0%, 100%)' : 'hsla(0, 0%, 100%, 0.85)',
+                      color: isActive ? 'hsl(215, 25%, 15%)' : 'hsl(215, 20%, 35%)',
                       transition: 'color 0.4s',
                     }}
                   >
@@ -331,7 +331,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: 'hsl(0, 0%, 100%)',
+                    color: 'hsl(215, 25%, 15%)',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -342,7 +342,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '11px',
                     fontWeight: 300,
-                    color: 'hsla(0, 0%, 100%, 0.7)',
+                    color: 'hsl(215, 15%, 45%)',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -353,7 +353,7 @@ export const DataFlowSection: React.FC = () => {
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[2px]"
                   style={{
-                    background: 'linear-gradient(90deg, hsla(0, 0%, 100%, 0.8), hsla(190, 80%, 80%, 0.8))',
+                    background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
                     transformOrigin: 'left',
                   }}
                   animate={{
