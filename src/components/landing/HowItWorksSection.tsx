@@ -124,7 +124,7 @@ export const HowItWorksSection: React.FC = () => {
                         style={{
                           fontSize: '18px',
                           fontWeight: 300,
-                          color: 'hsl(215, 25%, 25%)',
+                          color: 'hsl(var(--landing-ink))',
                           position: 'absolute',
                           inset: 0,
                           display: 'flex',
