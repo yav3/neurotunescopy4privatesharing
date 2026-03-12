@@ -40,8 +40,8 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
       >
-        {/* Clean white background */}
-        <div className="bg-background">
+        {/* Clean white background - override global obsidian theme for landing */}
+        <div style={{ backgroundColor: '#ffffff' }}>
           <NavigationHeader />
           <HeroSection />
           <div className="h-12 md:h-20" />
