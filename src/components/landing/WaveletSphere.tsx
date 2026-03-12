@@ -29,9 +29,9 @@ const STATES = [
     name: 'Alpha',
     label: 'Relax',
     subtitle: 'Restoration',
-    hue: 38,          // Warm amber — soothing
-    saturation: 0.95,
-    lightness: 0.45,
+    hue: 260,          // Soft violet — calming, soothing
+    saturation: 0.75,
+    lightness: 0.55,
     speed: 0.55,      // Moderate flow
     amplitude: 0.14,  // Medium wave height
     pulseRate: 0.014,  // Steady, rhythmic
