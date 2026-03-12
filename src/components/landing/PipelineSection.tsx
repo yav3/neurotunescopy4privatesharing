@@ -40,21 +40,21 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
   </div>
 );
 
-/* Glass tokens — adapt to the mid-gradient background (light cyan/teal zone) */
+/* Liquid glass tokens — translucent white with cyan/blue tints */
 const GLASS = {
-  background: 'hsla(210, 40%, 92%, 0.55)',
-  border: '1px solid hsla(210, 50%, 85%, 0.6)',
-  backdropFilter: 'blur(20px) saturate(1.4)',
-  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-  boxShadow: '0 2px 12px hsla(200, 60%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
+  background: 'hsla(200, 60%, 97%, 0.65)',
+  border: '1px solid hsla(200, 70%, 85%, 0.5)',
+  backdropFilter: 'blur(24px) saturate(1.6)',
+  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
+  boxShadow: '0 2px 16px hsla(200, 80%, 55%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7), inset 0 -1px 0 hsla(200, 60%, 80%, 0.15)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(210, 40%, 95%, 0.7)',
-  border: '1px solid hsla(210, 60%, 80%, 0.7)',
-  backdropFilter: 'blur(28px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
-  boxShadow: '0 8px 32px hsla(190, 80%, 50%, 0.12), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
+  background: 'hsla(200, 70%, 97%, 0.8)',
+  border: '1px solid hsla(195, 80%, 75%, 0.6)',
+  backdropFilter: 'blur(32px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
+  boxShadow: '0 8px 32px hsla(195, 90%, 50%, 0.1), 0 1px 3px hsla(195, 80%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.85), inset 0 -1px 0 hsla(200, 60%, 80%, 0.2)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
