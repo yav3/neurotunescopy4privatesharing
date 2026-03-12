@@ -622,6 +622,60 @@ export type Database = {
         }
         Relationships: []
       }
+      custom_report_templates: {
+        Row: {
+          companies: string[]
+          created_at: string
+          created_by: string | null
+          data_sources: string[]
+          description: string | null
+          icon: string
+          id: string
+          is_preset: boolean
+          md_attribution: string | null
+          metadata: Json
+          name: string
+          priority: string | null
+          project_links: string[] | null
+          sections: string[]
+          updated_at: string
+        }
+        Insert: {
+          companies?: string[]
+          created_at?: string
+          created_by?: string | null
+          data_sources?: string[]
+          description?: string | null
+          icon?: string
+          id?: string
+          is_preset?: boolean
+          md_attribution?: string | null
+          metadata?: Json
+          name: string
+          priority?: string | null
+          project_links?: string[] | null
+          sections?: string[]
+          updated_at?: string
+        }
+        Update: {
+          companies?: string[]
+          created_at?: string
+          created_by?: string | null
+          data_sources?: string[]
+          description?: string | null
+          icon?: string
+          id?: string
+          is_preset?: boolean
+          md_attribution?: string | null
+          metadata?: Json
+          name?: string
+          priority?: string | null
+          project_links?: string[] | null
+          sections?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       data_sync_jobs: {
         Row: {
           created_at: string | null
@@ -3836,6 +3890,48 @@ export type Database = {
           track_count?: number | null
           updated_at?: string | null
           usage_recommendations?: string[] | null
+        }
+        Relationships: []
+      }
+      portal_projects: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          portal: string
+          project_type: string
+          status: string
+          tags: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          portal: string
+          project_type: string
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          portal?: string
+          project_type?: string
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
         }
         Relationships: []
       }
