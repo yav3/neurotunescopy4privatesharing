@@ -14,14 +14,14 @@ const STATES = [
     label: 'Calm',
     subtitle: 'Pain Distraction',
     hue: 174,        // Teal #2DD4BF — calming, therapeutic
-    saturation: 0.7,
-    lightness: 0.55,
+    saturation: 0.85,
+    lightness: 0.38,
     speed: 0.25,      // Very slow drift — meditative
     amplitude: 0.22,  // Large, deep undulations
     pulseRate: 0.006,  // Slow breathing rhythm
     spread: 0.32,     // Wide, expansive cloud
     harmonicShift: 0.25,
-    brightness: 0.45,
+    brightness: 0.55,
     particleSpeed: 0.06, // Barely moving particles
     rotationSpeed: 0.015,
   },
@@ -30,14 +30,14 @@ const STATES = [
     label: 'Relax',
     subtitle: 'Restoration',
     hue: 38,          // Warm amber — soothing
-    saturation: 0.92,
-    lightness: 0.58,
+    saturation: 0.95,
+    lightness: 0.45,
     speed: 0.55,      // Moderate flow
     amplitude: 0.14,  // Medium wave height
     pulseRate: 0.014,  // Steady, rhythmic
     spread: 0.24,     // Medium radius
     harmonicShift: 0.5,
-    brightness: 0.65,
+    brightness: 0.7,
     particleSpeed: 0.12,
     rotationSpeed: 0.03,
   },
@@ -47,13 +47,13 @@ const STATES = [
     subtitle: 'Concentration',
     hue: 217,         // Electric blue — alert, precise
     saturation: 0.95,
-    lightness: 0.62,
+    lightness: 0.45,
     speed: 1.2,       // Fast, energized movement
     amplitude: 0.07,  // Tight, precise oscillations
     pulseRate: 0.028,  // Rapid pulsing
     spread: 0.12,     // Compact, concentrated
     harmonicShift: 0.8,
-    brightness: 0.8,
+    brightness: 0.85,
     particleSpeed: 0.28, // Brisk particle motion
     rotationSpeed: 0.06,
   },
