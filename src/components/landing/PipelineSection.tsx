@@ -287,7 +287,7 @@ export const PipelineSection: React.FC = () => {
           {/* Top refraction */}
           <div
             className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(0, 0%, 100%, 0.7) 50%, transparent 90%)' }}
+            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(210, 50%, 85%, 0.6) 50%, transparent 90%)' }}
           />
 
           {/* Progress track */}
