@@ -342,7 +342,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '11px',
                     fontWeight: 300,
-                    color: 'hsl(215, 15%, 45%)',
+                    color: 'hsl(var(--landing-ink-soft))',
                     transition: 'color 0.4s',
                   }}
                 >
