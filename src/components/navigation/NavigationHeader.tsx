@@ -211,7 +211,7 @@ export const NavigationHeader = () => {
       <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: 'hsla(0, 0%, 100%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: '1px solid hsla(210, 20%, 80%, 0.3)', boxShadow: '0 1px 12px hsla(210, 20%, 50%, 0.06)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 35%)' : 'hsla(0,0%,100%,0.7)' }}>
+            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: 'hsl(220, 15%, 30%)' }}>
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
