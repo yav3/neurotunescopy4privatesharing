@@ -106,7 +106,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
 
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
+            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
               setMessages(prev => {
@@ -133,7 +133,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
           if (jsonStr === '[DONE]') continue;
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
+            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
               setMessages(prev => {

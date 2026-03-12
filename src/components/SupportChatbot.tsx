@@ -91,7 +91,7 @@ export function SupportChatbot() {
       console.error('Chat error:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again or contact support at support@example.com'
+        content: 'Sorry, I encountered an error. Please try again or visit our Support page for direct assistance.'
       }]);
     } finally {
       setIsLoading(false);
