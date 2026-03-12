@@ -281,7 +281,7 @@ export const PipelineSection: React.FC = () => {
           className="relative rounded-2xl p-5 md:p-6 mb-6 overflow-hidden"
           style={{
             ...GLASS,
-            background: 'hsla(0, 0%, 100%, 0.3)',
+            background: 'hsla(210, 40%, 94%, 0.6)',
           }}
         >
           {/* Top refraction */}
