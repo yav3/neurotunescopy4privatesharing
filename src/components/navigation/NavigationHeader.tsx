@@ -47,22 +47,24 @@ const DARK_HEADER = {
 const MENU_LABEL = "text-[10px] uppercase tracking-[0.15em] px-3 py-2 font-medium";
 const MENU_ITEM = "text-sm cursor-pointer transition-colors rounded-md";
 
-const LIGHT_MENU = {
+type MenuTheme = { content: string; label: string; item: string; separator: string };
+
+const LIGHT_MENU: MenuTheme = {
   content: 'bg-white/95 backdrop-blur-xl border border-black/[0.06] shadow-[0_12px_48px_-4px_hsla(210,30%,50%,0.15)]',
   label: `${MENU_LABEL} text-black/35`,
   item: `${MENU_ITEM} text-black/65 hover:text-black hover:bg-black/[0.04]`,
   separator: 'bg-black/[0.06] my-1',
-} as const;
+};
 
-const DARK_MENU = {
+const DARK_MENU: MenuTheme = {
   content: 'bg-[hsl(240,8%,6%)]/95 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_48px_-4px_hsla(0,0%,0%,0.5)]',
   label: `${MENU_LABEL} text-white/40`,
   item: `${MENU_ITEM} text-white/65 hover:text-white hover:bg-white/[0.06]`,
   separator: 'bg-white/[0.08] my-1',
-} as const;
+};
 
 /* ─── Shared dropdown menu items ─── */
-const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: typeof LIGHT_MENU }) => (
+const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: MenuTheme }) => (
   <>
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Explore</DropdownMenuLabel>
