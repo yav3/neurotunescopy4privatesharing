@@ -98,20 +98,20 @@ export const HowItWorksSection: React.FC = () => {
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     background: isActive
-                      ? 'linear-gradient(135deg, hsla(190, 95%, 92%, 0.9) 0%, hsla(215, 90%, 90%, 0.9) 100%)'
+                      ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.28) 0%, hsl(var(--landing-electric-2) / 0.28) 100%)'
                       : isPast
-                        ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                        : 'linear-gradient(135deg, hsla(192, 90%, 94%, 0.85) 0%, hsla(210, 85%, 92%, 0.85) 100%)',
+                        ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                        : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.18) 0%, hsl(var(--landing-electric-2) / 0.18) 100%)',
                     border: isActive
-                      ? '1px solid hsla(200, 60%, 80%, 0.7)'
+                      ? '1px solid hsl(var(--landing-border))'
                       : isPast
-                        ? '1px solid hsla(190, 70%, 55%, 0.4)'
-                        : '1px solid hsla(210, 30%, 82%, 0.6)',
+                        ? '1px solid hsl(var(--landing-electric-1) / 0.6)'
+                        : '1px solid hsl(var(--landing-border-soft))',
                     backdropFilter: isActive ? 'blur(20px)' : 'none',
                     boxShadow: isActive
-                      ? '0 0 30px hsla(190, 80%, 55%, 0.15), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)'
+                      ? '0 0 30px hsl(var(--landing-electric-1) / 0.22), inset 0 1px 0 hsl(var(--landing-bg) / 0.65)'
                       : isPast
-                        ? '0 0 12px hsla(190, 70%, 50%, 0.2)'
+                        ? '0 0 12px hsl(var(--landing-electric-1) / 0.28)'
                         : 'none',
                   }}
                 >
