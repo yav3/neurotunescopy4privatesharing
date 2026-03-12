@@ -22,7 +22,7 @@ export const NavigationHeader = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = location.pathname === '/' || location.pathname === '/index';
 
     // Track scroll for nav background transition on landing page
     // Landing page is all-white so header stays frosted white glass throughout
