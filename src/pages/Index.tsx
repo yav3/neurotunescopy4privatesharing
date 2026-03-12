@@ -9,7 +9,6 @@ import { DataFlowSection } from '@/components/landing/DataFlowSection';
 import { StatsBar } from '@/components/landing/StatsBar';
 import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 import { SalesAssistant } from '@/components/sales/SalesAssistant';
-import { SupportChat } from '@/components/SupportChat';
 
 const Index = () => {
   const location = useLocation();
@@ -41,7 +40,6 @@ const Index = () => {
         <HowItWorksSection />
         <Footer />
 
-        <SupportChat nextToPlayer={false} />
         <SalesAssistant externalOpen={false} />
       </motion.div>
     </div>
