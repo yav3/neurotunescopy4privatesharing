@@ -262,8 +262,8 @@ export const PipelineSection: React.FC = () => {
                   className="h-[2px] flex-1 max-w-[60px] rounded-full"
                   animate={{
                     background: i < activeStep
-                      ? 'linear-gradient(90deg, #06b6d4, #2563eb)'
-                      : 'hsla(200, 50%, 82%, 0.3)',
+                      ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                      : 'hsl(var(--landing-border-soft) / 0.45)',
                   }}
                   transition={{ duration: 0.4 }}
                 />
