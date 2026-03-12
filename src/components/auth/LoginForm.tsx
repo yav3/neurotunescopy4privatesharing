@@ -50,21 +50,10 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
       });
       
       if (error) throw error;
-
-      // Send password reset email
-      await supabase.functions.invoke('send-auth-email', {
-        body: {
-          type: 'password-reset',
-          to: email,
-          data: {
-            resetLink: resetUrl,
-          }
-        }
-      });
       
       toast({
         title: "Password Reset Email Sent",
-        description: "Check your email for password reset instructions",
+        description: "Check your email for password reset instructions. It may take a minute to arrive.",
       });
     } catch (error: any) {
       toast({

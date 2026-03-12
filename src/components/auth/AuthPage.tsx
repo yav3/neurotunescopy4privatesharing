@@ -16,9 +16,9 @@ function AuthPageContent({ onBack }: AuthPageProps) {
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
 
-  // Redirect signup attempts to subscribe page
+  // Show signup form instead of redirecting to discontinued /subscribe
   const handleToggleToSignup = () => {
-    navigate('/subscribe');
+    setIsLoginMode(false);
   };
 
   // Redirect authenticated users to goals page
