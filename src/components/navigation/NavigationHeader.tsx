@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Volume2, VolumeX } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LissajousLogo } from '@/components/brand/LissajousLogo';
 import welconyFullColour from '@/assets/welcony-full-colour.png';
-import welconyColourWhite from '@/assets/welcony-colour-white.png';
+
 
 
 
@@ -70,12 +70,12 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(215, 75%, 32%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(200, 60%, 70%, 0.15)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(200, 60%, 70%, 0.08), 0 4px 24px hsla(215, 80%, 20%, 0.5)' }}>
+      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(0, 0%, 100%, 0.85)' : 'hsla(0, 0%, 100%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: '1px solid hsla(210, 20%, 80%, 0.3)', boxShadow: '0 1px 12px hsla(210, 20%, 50%, 0.06)' }}>
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
-            <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
-              <Menu className="h-5 w-5" style={{ color: isLandingPage && !scrolled ? 'hsl(220, 20%, 30%)' : undefined }} />
+            <DropdownMenuTrigger className="transition-colors p-2 hover:bg-black/5 rounded">
+              <Menu className="h-5 w-5" style={{ color: 'hsl(220, 15%, 25%)' }} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
               <DropdownMenuGroup>
@@ -166,43 +166,30 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-2">
-            <LissajousLogo size={26} animated color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
+            <LissajousLogo size={26} animated color="hsl(220, 15%, 25%)" />
             <span className="text-[22px] tracking-tight whitespace-nowrap font-sf font-normal" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
-          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
-            <span className="text-[11px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.4)' }}>Distributed by</span>
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: 'hsla(210, 15%, 70%, 0.3)' }}>
+            <span className="text-[11px] tracking-wide" style={{ color: 'hsla(220, 10%, 35%, 0.6)' }}>Distributed by</span>
             <img 
-              src={isLandingPage && !scrolled ? welconyFullColour : welconyColourWhite} 
+              src={welconyFullColour} 
               alt="Welcony" 
-              className="h-7 transition-opacity duration-500"
-              style={{ opacity: isLandingPage && !scrolled ? 0.8 : 0.7 }}
+              className="h-7"
+              style={{ opacity: 0.85 }}
             />
           </div>
         </div>
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-4">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-2 rounded-full hover:bg-white/10 transition-all duration-200"
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5 text-[#e4e4e4]/70" />
-              ) : (
-                <Volume2 className="w-5 h-5 text-[#e4e4e4]" />
-              )}
-            </button>
-          )}
           <Link 
             to="/auth" 
-            className="px-6 py-2 rounded-full transition-all duration-500 text-sm font-normal"
+            className="px-6 py-2 rounded-full transition-all duration-300 text-sm font-normal hover:bg-black/5"
             style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+              border: '1px solid hsla(210, 15%, 70%, 0.4)',
+              color: 'hsl(220, 15%, 25%)',
             }}
           >
             Login
@@ -221,10 +208,10 @@ export const NavigationHeader = () => {
       </header>
 
       {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(215, 75%, 32%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(200, 60%, 70%, 0.15)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(200, 60%, 70%, 0.08), 0 4px 24px hsla(215, 80%, 20%, 0.5)' }}>
+      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: 'hsla(0, 0%, 100%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: '1px solid hsla(210, 20%, 80%, 0.3)', boxShadow: '0 1px 12px hsla(210, 20%, 50%, 0.06)' }}>
         <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 35%)' : 'hsla(0,0%,100%,0.7)' }}>
+            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: 'hsl(220, 15%, 30%)' }}>
               <Menu className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
@@ -314,43 +301,29 @@ export const NavigationHeader = () => {
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-1.5">
-            <LissajousLogo size={20} animated color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
+            <LissajousLogo size={20} animated color="hsl(220, 15%, 25%)" />
             <span className="text-sm tracking-normal whitespace-nowrap font-sf font-normal" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               NeuroTunes
             </span>
           </Link>
-          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
-            <span className="text-[8px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
+          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: 'hsla(210, 15%, 70%, 0.3)' }}>
+            <span className="text-[8px] tracking-wide" style={{ color: 'hsla(220, 10%, 35%, 0.6)' }}>Distributed by</span>
             <img 
-              src={isLandingPage && !scrolled ? welconyFullColour : welconyColourWhite} 
+              src={welconyFullColour} 
               alt="Welcony" 
-              className="h-5 transition-opacity duration-500"
-              style={{ opacity: isLandingPage && !scrolled ? 0.8 : 0.7 }}
+              className="h-5"
+              style={{ opacity: 0.85 }}
             />
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-1.5 rounded-full transition-all duration-200"
-              style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 45%)' : undefined }}
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" style={{ color: 'inherit' }} />
-              ) : (
-                <Volume2 className="w-4 h-4" style={{ color: 'inherit' }} />
-              )}
-            </button>
-          )}
           <Link 
             to="/auth" 
-            className="px-3 py-1 rounded-full transition-all duration-500 text-[10px] font-normal"
+            className="px-3 py-1 rounded-full transition-all duration-300 text-[10px] font-normal hover:bg-black/5"
             style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+              border: '1px solid hsla(210, 15%, 70%, 0.4)',
+              color: 'hsl(220, 15%, 25%)',
             }}
           >
             Login
