@@ -175,7 +175,7 @@ export const NavigationHeader = () => {
 
       {/* ━━━ Mobile ━━━ */}
       <header
-        className="md:hidden flex items-center justify-between px-4 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="md:hidden flex items-center justify-between px-4 py-3 fixed top-0 left-0 right-0 z-50"
         style={{
           background: theme.bg,
           backdropFilter: 'blur(28px) saturate(1.4)',
@@ -184,53 +184,39 @@ export const NavigationHeader = () => {
           boxShadow: theme.shadow,
         }}
       >
-        {/* Left: menu · logo · welcony */}
-        <div className="flex items-center gap-2.5">
+        {/* Left: menu + logo only */}
+        <div className="flex items-center gap-3">
           <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <DropdownMenuTrigger className="p-1.5 rounded-lg transition-colors" style={{ color: theme.iconColor }}>
-              <Menu className="h-4 w-4" />
+            <DropdownMenuTrigger className="p-2 -ml-1 rounded-lg transition-colors" style={{ color: theme.iconColor }}>
+              <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-64 bg-[hsl(240,8%,4%)] border border-white/10 shadow-2xl z-[9999]">
               <MenuItems onSupportChat={handleSupportChat} />
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/" className="flex items-center gap-1.5">
-            <LissajousLogo size={18} animated color={theme.logoColor} />
+          <Link to="/" className="flex items-center gap-2">
+            <LissajousLogo size={20} animated color={theme.logoColor} />
             <span
-              className="text-[14px] tracking-tight whitespace-nowrap font-sf font-normal"
+              className="text-[16px] tracking-tight whitespace-nowrap font-sf font-normal"
               style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
             >
               NeuroTunes
             </span>
           </Link>
-
-          <div className="flex items-center gap-1 ml-1.5 pl-2 border-l" style={{ borderColor: theme.divider }}>
-            <span className="text-[7px] tracking-wider whitespace-nowrap" style={{ color: theme.mutedText }}>Distributed by</span>
-            <img src={theme.welconyLogo} alt="Welcony" className="h-4" style={{ opacity: 0.8 }} />
-          </div>
         </div>
 
-        {/* Right: login · CTA */}
-        <div className="flex items-center gap-1.5">
-          <Link
-            to="/auth"
-            className={`px-3 py-1.5 rounded-full transition-all duration-300 text-[10px] font-normal ${theme.loginHover}`}
-            style={{ border: theme.loginBorder, color: theme.textColor }}
-          >
-            Login
-          </Link>
-          <button
-            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-            className="px-3 py-1.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[10px] font-normal"
-            style={{
-              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-              boxShadow: '0 0 12px hsla(190, 80%, 45%, 0.3)',
-            }}
-          >
-            Request Access
-          </button>
-        </div>
+        {/* Right: single CTA */}
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+          className="px-4 py-2 rounded-full text-white text-[12px] font-normal"
+          style={{
+            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+            boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
+          }}
+        >
+          Request Access
+        </button>
       </header>
     </>
   );
