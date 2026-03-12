@@ -140,8 +140,8 @@ export const PipelineSection: React.FC = () => {
                   className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.9), transparent)'
-                      : 'linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.5), transparent)',
+                      ? 'linear-gradient(90deg, transparent, hsla(210, 50%, 90%, 0.8), transparent)'
+                      : 'linear-gradient(90deg, transparent, hsla(210, 40%, 85%, 0.5), transparent)',
                   }}
                 />
 
