@@ -22,7 +22,7 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
       <motion.div
         key={i}
         className="w-[3px] rounded-full"
-        style={{ background: 'linear-gradient(to top, #06b6d4, #2563eb)' }}
+        style={{ background: 'linear-gradient(to top, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))' }}
         animate={{
           height: active
             ? [4, 12 + Math.sin(i * 0.7) * 22, 4]
@@ -72,7 +72,7 @@ export const PipelineSection: React.FC = () => {
       id="technology"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0 0% 100%)',
+        background: 'hsl(var(--landing-bg))',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
@@ -84,7 +84,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-2"
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(205, 50%, 30%)' }}
+          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}
         >
           COMPOSITION ENGINE
         </motion.p>
@@ -98,7 +98,7 @@ export const PipelineSection: React.FC = () => {
             fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(205, 45%, 18%)',
+            color: 'hsl(var(--landing-ink))',
           }}
         >
           Algorithmic music pipeline
@@ -109,7 +109,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(200, 35%, 35%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
         >
           From patented composition to adaptive therapeutic delivery
         </motion.p>
@@ -205,8 +205,8 @@ export const PipelineSection: React.FC = () => {
                     marginBottom: '4px',
                     transition: 'all 0.4s',
                     ...(isActive
-                      ? { background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
-                      : { color: 'hsl(205, 35%, 22%)' }),
+                      ? { background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+                      : { color: 'hsl(var(--landing-ink))' }),
                   }}
                 >
                   {step.title}
@@ -227,7 +227,7 @@ export const PipelineSection: React.FC = () => {
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
                   style={{
-                    background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
+                    background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                     transformOrigin: 'left',
                   }}
                   animate={{
@@ -251,8 +251,8 @@ export const PipelineSection: React.FC = () => {
                   width: i === activeStep ? 10 : 6,
                   height: i === activeStep ? 10 : 6,
                   background: i <= activeStep
-                    ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                    : 'hsla(200, 50%, 82%, 0.4)',
+                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                    : 'hsl(var(--landing-border-soft) / 0.6)',
                   boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
                 }}
                 transition={{ duration: 0.4 }}
@@ -262,8 +262,8 @@ export const PipelineSection: React.FC = () => {
                   className="h-[2px] flex-1 max-w-[60px] rounded-full"
                   animate={{
                     background: i < activeStep
-                      ? 'linear-gradient(90deg, #06b6d4, #2563eb)'
-                      : 'hsla(200, 50%, 82%, 0.3)',
+                      ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                      : 'hsl(var(--landing-border-soft) / 0.45)',
                   }}
                   transition={{ duration: 0.4 }}
                 />
@@ -295,7 +295,7 @@ export const PipelineSection: React.FC = () => {
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{
-                background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
+                background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                 boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.4)',
               }}
               animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
@@ -341,7 +341,7 @@ export const PipelineSection: React.FC = () => {
                 fontSize: '28px',
                 fontWeight: 300,
                 fontVariantNumeric: 'tabular-nums',
-                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
@@ -446,7 +446,7 @@ export const PipelineSection: React.FC = () => {
                 >
                   {method.label}
                   <span style={{
-                    background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                    background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     fontWeight: 500,

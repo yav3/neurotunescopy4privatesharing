@@ -16,40 +16,41 @@ export const Footer = () => {
 
   return (
     <>
-       <footer className="relative border-t" style={{ background: 'hsl(0 0% 100%)', borderColor: 'hsl(210, 30%, 90%)' }}>
+       <footer className="relative border-t" style={{ background: 'hsl(var(--landing-bg))', borderColor: 'hsl(var(--landing-border-soft))' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between sm:gap-6">
             {/* Left: Supported By + Logos */}
             <div className="flex items-center gap-3 sm:gap-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <span className="text-[10px] uppercase tracking-[0.15em] whitespace-nowrap shrink-0" style={{ color: 'hsl(215, 15%, 45%)' }}>Supported by</span>
+              <span className="text-[10px] uppercase tracking-[0.15em] whitespace-nowrap shrink-0" style={{ color: 'hsl(var(--landing-ink-soft))' }}>Supported by</span>
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
                 className="h-4 sm:h-5 shrink-0"
-                style={{ opacity: 0.5, filter: 'grayscale(100%)' }}
+                style={{ opacity: 0.9 }}
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
                 className="h-4 sm:h-5 shrink-0"
-                style={{ opacity: 0.5, filter: 'grayscale(100%)' }}
+                style={{ opacity: 0.9 }}
               />
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell Medicine" 
                 className="h-4 sm:h-5 shrink-0"
-                style={{ opacity: 0.5, filter: 'grayscale(100%)' }}
+                style={{ opacity: 0.9 }}
               />
             </div>
 
             {/* Center: Contact Sales CTA */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-              className="px-6 py-2 rounded-full text-white hover:opacity-90 transition-all duration-200 text-xs font-normal shrink-0"
+              className="px-6 py-2 rounded-full hover:opacity-90 transition-all duration-200 text-xs font-normal shrink-0"
               style={{
-                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-                boxShadow: '0 0 16px rgba(6, 182, 212, 0.25)'
+                background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
+                color: 'hsl(var(--landing-bg))',
+                boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)'
               }}
             >
               Contact Sales
@@ -58,16 +59,16 @@ export const Footer = () => {
             {/* Right: Distributed by + Copyright */}
             <div className="flex items-center gap-3 shrink-0">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] tracking-wide" style={{ color: 'hsl(215, 15%, 45%)' }}>Distributed by</span>
+                <span className="text-[11px] tracking-wide" style={{ color: 'hsl(var(--landing-ink-soft))' }}>Distributed by</span>
                 <img 
                   src={welconyFullColour} 
                   alt="Welcony" 
                   className="h-6"
-                  style={{ opacity: 0.85 }}
+                  style={{ opacity: 0.95 }}
                 />
               </div>
-              <span style={{ color: 'hsl(210, 20%, 80%)' }}>·</span>
-              <p className="text-[10px] whitespace-nowrap" style={{ color: 'hsl(215, 15%, 55%)' }}>
+              <span style={{ color: 'hsl(var(--landing-ink-muted))' }}>·</span>
+              <p className="text-[10px] whitespace-nowrap" style={{ color: 'hsl(var(--landing-ink-muted))' }}>
                 © 2026 Neuralpositive, all rights reserved
               </p>
             </div>

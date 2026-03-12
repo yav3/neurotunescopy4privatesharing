@@ -55,7 +55,7 @@ export const DataFlowSection: React.FC = () => {
     <section
       id="science"
       className="relative py-20 md:py-28 overflow-hidden"
-      style={{ background: 'hsl(0 0% 100%)', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
+      style={{ background: 'hsl(var(--landing-bg))', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
     >
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         {/* Header */}
@@ -64,7 +64,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-3"
-          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(200, 60%, 45%)' }}
+          style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}
         >
           CLINICAL MATCHING
         </motion.p>
@@ -77,7 +77,7 @@ export const DataFlowSection: React.FC = () => {
             fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(215, 25%, 15%)',
+            color: 'hsl(var(--landing-ink))',
           }}
         >
           Genre–goal pairings
@@ -87,7 +87,7 @@ export const DataFlowSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(215, 15%, 45%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
         >
           Each genre matched to therapeutic outcomes via clinical mapping
         </motion.p>
@@ -157,7 +157,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.goal}
                 </motion.p>
@@ -196,7 +196,7 @@ export const DataFlowSection: React.FC = () => {
               </motion.div>
               <motion.span
                 style={{ fontSize: '9px', letterSpacing: '0.1em', fontWeight: 600 }}
-                animate={{ color: phase === 'scanning' ? 'hsl(215, 15%, 55%)' : 'hsl(160, 65%, 40%)' }}
+                animate={{ color: phase === 'scanning' ? 'hsl(var(--landing-ink-muted))' : 'hsl(var(--landing-electric-1))' }}
               >
                 {phase === 'scanning' ? 'MATCHING' : `${active.match}% MATCH`}
               </motion.span>
@@ -241,7 +241,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0, filter: phase === 'matched' ? 'blur(0px)' : 'blur(2px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.genre}
                 </motion.p>
@@ -318,7 +318,7 @@ export const DataFlowSection: React.FC = () => {
                     style={{
                       fontSize: '11px',
                       fontWeight: 500,
-                      color: isActive ? 'hsl(215, 25%, 15%)' : 'hsl(215, 20%, 35%)',
+                      color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))',
                       transition: 'color 0.4s',
                     }}
                   >
@@ -331,7 +331,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: 'hsl(215, 25%, 15%)',
+                    color: 'hsl(var(--landing-ink))',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -342,7 +342,7 @@ export const DataFlowSection: React.FC = () => {
                   style={{
                     fontSize: '11px',
                     fontWeight: 300,
-                    color: 'hsl(215, 15%, 45%)',
+                    color: 'hsl(var(--landing-ink-soft))',
                     transition: 'color 0.4s',
                   }}
                 >
@@ -353,7 +353,7 @@ export const DataFlowSection: React.FC = () => {
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[2px]"
                   style={{
-                    background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
+                    background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                     transformOrigin: 'left',
                   }}
                   animate={{
