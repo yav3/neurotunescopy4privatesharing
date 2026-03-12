@@ -160,8 +160,8 @@ export const HowItWorksSection: React.FC = () => {
                 className="text-left rounded-2xl p-4 md:p-5 cursor-pointer relative overflow-hidden"
                 style={{
                   background: isActive
-                    ? 'hsla(210, 50%, 94%, 0.85)'
-                    : 'hsla(210, 40%, 96%, 0.7)',
+                    ? 'linear-gradient(135deg, hsla(190, 95%, 92%, 0.9) 0%, hsla(215, 90%, 90%, 0.9) 100%)'
+                    : 'linear-gradient(135deg, hsla(192, 90%, 95%, 0.8) 0%, hsla(212, 88%, 93%, 0.8) 100%)',
                   border: isActive
                     ? '1px solid hsla(200, 60%, 80%, 0.7)'
                     : '1px solid hsla(210, 40%, 88%, 0.6)',
