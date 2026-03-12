@@ -241,7 +241,7 @@ export const HowItWorksSection: React.FC = () => {
                         fontSize: '12px',
                         fontWeight: 300,
                         lineHeight: 1.6,
-                        color: 'hsl(215, 15%, 40%)',
+                        color: 'hsl(var(--landing-ink-soft))',
                       }}
                     >
                       {step.description}
