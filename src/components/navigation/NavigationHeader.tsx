@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Volume2, VolumeX } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,
