@@ -205,8 +205,8 @@ export const PipelineSection: React.FC = () => {
                     marginBottom: '4px',
                     transition: 'all 0.4s',
                     ...(isActive
-                      ? { background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
-                      : { color: 'hsl(205, 35%, 22%)' }),
+                      ? { background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+                      : { color: 'hsl(var(--landing-ink))' }),
                   }}
                 >
                   {step.title}
