@@ -341,7 +341,7 @@ export const PipelineSection: React.FC = () => {
                 fontSize: '28px',
                 fontWeight: 300,
                 fontVariantNumeric: 'tabular-nums',
-                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
