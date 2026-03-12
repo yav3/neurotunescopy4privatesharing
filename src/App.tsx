@@ -162,6 +162,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/index" element={<Index />} />
         
         
         <Route path="/products" element={<ProductsOverview />} />
