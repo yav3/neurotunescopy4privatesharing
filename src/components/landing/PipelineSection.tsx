@@ -42,8 +42,8 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
 
 /* Glass tokens — adapt to the mid-gradient background (light cyan/teal zone) */
 const GLASS = {
-  background: 'hsla(0, 0%, 100%, 0.25)',
-  border: '1px solid hsla(0, 0%, 100%, 0.4)',
+  background: 'hsla(210, 40%, 92%, 0.55)',
+  border: '1px solid hsla(210, 50%, 85%, 0.6)',
   backdropFilter: 'blur(20px) saturate(1.4)',
   WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
   boxShadow: '0 2px 12px hsla(200, 60%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
