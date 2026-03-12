@@ -196,7 +196,7 @@ export const DataFlowSection: React.FC = () => {
               </motion.div>
               <motion.span
                 style={{ fontSize: '9px', letterSpacing: '0.1em', fontWeight: 600 }}
-                animate={{ color: phase === 'scanning' ? 'hsl(215, 15%, 55%)' : 'hsl(160, 65%, 40%)' }}
+                animate={{ color: phase === 'scanning' ? 'hsl(var(--landing-ink-muted))' : 'hsl(var(--landing-electric-1))' }}
               >
                 {phase === 'scanning' ? 'MATCHING' : `${active.match}% MATCH`}
               </motion.span>
