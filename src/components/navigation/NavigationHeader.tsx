@@ -43,48 +43,66 @@ const DARK_HEADER = {
   logoColor: 'hsla(0, 0%, 89%, 0.8)',
 } as const;
 
+/* ─── Menu style tokens ─── */
+const MENU_LABEL = "text-[10px] uppercase tracking-[0.15em] px-3 py-2 font-medium";
+const MENU_ITEM = "text-sm cursor-pointer transition-colors rounded-md";
+
+const LIGHT_MENU = {
+  content: 'bg-white/95 backdrop-blur-xl border border-black/[0.06] shadow-[0_12px_48px_-4px_hsla(210,30%,50%,0.15)]',
+  label: `${MENU_LABEL} text-black/35`,
+  item: `${MENU_ITEM} text-black/65 hover:text-black hover:bg-black/[0.04]`,
+  separator: 'bg-black/[0.06] my-1',
+} as const;
+
+const DARK_MENU = {
+  content: 'bg-[hsl(240,8%,6%)]/95 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_48px_-4px_hsla(0,0%,0%,0.5)]',
+  label: `${MENU_LABEL} text-white/40`,
+  item: `${MENU_ITEM} text-white/65 hover:text-white hover:bg-white/[0.06]`,
+  separator: 'bg-white/[0.08] my-1',
+} as const;
+
 /* ─── Shared dropdown menu items ─── */
-const MenuItems = ({ onSupportChat }: { onSupportChat: () => void }) => (
+const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: typeof LIGHT_MENU }) => (
   <>
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Explore</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/demo" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Demo</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#technology" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Technology</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#science" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Science</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#how-it-works" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">How It Works</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/research" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Research</Link></DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Explore</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/demo" className={menu.item}>Demo</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#technology" className={menu.item}>Technology</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#science" className={menu.item}>Science</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#how-it-works" className={menu.item}>How It Works</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/research" className={menu.item}>Research</Link></DropdownMenuItem>
     </DropdownMenuGroup>
-    <DropdownMenuSeparator className="bg-white/10 my-1" />
+    <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Population Health</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Employee Benefits</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/partnerships" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Partnerships & APIs</Link></DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Product</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/products/environmental" className={menu.item}>Environmental & Background</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/population-health" className={menu.item}>Population Health</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/enterprise-wellness" className={menu.item}>Employee Benefits</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/partnerships" className={menu.item}>Partnerships & APIs</Link></DropdownMenuItem>
     </DropdownMenuGroup>
-    <DropdownMenuSeparator className="bg-white/10 my-1" />
+    <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Sales</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/contact" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Contact Sales</Link></DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Sales</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/contact" className={menu.item}>Contact Sales</Link></DropdownMenuItem>
     </DropdownMenuGroup>
-    <DropdownMenuSeparator className="bg-white/10 my-1" />
+    <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Company</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/story" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Our Story</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/team" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Leadership</Link></DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Company</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/story" className={menu.item}>Our Story</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/team" className={menu.item}>Leadership</Link></DropdownMenuItem>
     </DropdownMenuGroup>
-    <DropdownMenuSeparator className="bg-white/10 my-1" />
+    <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Legal</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/privacy" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Privacy</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/legal" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Terms</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/cookies" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Cookies</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/hipaa" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">HIPAA</Link></DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Legal</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/privacy" className={menu.item}>Privacy</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/legal" className={menu.item}>Terms</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/cookies" className={menu.item}>Cookies</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/hipaa" className={menu.item}>HIPAA</Link></DropdownMenuItem>
     </DropdownMenuGroup>
-    <DropdownMenuSeparator className="bg-white/10 my-1" />
+    <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
-      <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
-      <DropdownMenuItem onClick={onSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Chat Support</DropdownMenuItem>
+      <DropdownMenuLabel className={menu.label}>Support</DropdownMenuLabel>
+      <DropdownMenuItem onClick={onSupportChat} className={menu.item}>Chat Support</DropdownMenuItem>
     </DropdownMenuGroup>
   </>
 );
