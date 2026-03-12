@@ -216,6 +216,7 @@ const AppContent = () => {
         <Route path="/payment/cancelled" element={<PaymentCancelled />} />
         <Route path="/black-friday" element={<BlackFriday />} />
         <Route path="/free-trial" element={<FreeTrial />} />
+        <Route path="/capability-brief" element={<CapabilityBrief />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />

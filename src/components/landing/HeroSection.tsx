@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { WaveletSphere } from './WaveletSphere';
 
-const GRADIENT = 'linear-gradient(135deg, #06b6d4, #2563eb)';
+const GRADIENT = 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))';
 
 export const HeroSection: React.FC = () => {
   return (
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'transparent' }}
+      style={{ background: 'transparent', fontFamily: 'var(--font-sf)' }}
     >
       <div className="relative z-10 container mx-auto px-5 sm:px-8 md:px-12 lg:px-20 pt-24 sm:pt-20 md:pt-0">
         <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 sm:gap-12 lg:gap-16 xl:gap-20 items-center">
@@ -20,17 +20,14 @@ export const HeroSection: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-xl"
-            style={{
-              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-            }}
           >
             <h1
               style={{
-                fontSize: 'clamp(30px, 5.5vw, 58px)',
+                fontSize: 'clamp(30px, 5.5vw, 56px)',
                 fontWeight: 400,
                 letterSpacing: '-0.03em',
                 lineHeight: 1.08,
-                color: 'hsl(210, 50%, 15%)',
+                color: 'hsl(var(--landing-ink))',
               }}
             >
               Music that moves you.
@@ -50,7 +47,7 @@ export const HeroSection: React.FC = () => {
                 { value: '8,000+', label: 'PURPOSE-COMPOSED TRACKS' },
                 { value: '52 Genres', label: '8 LANGUAGES' },
               ].map((stat, i) => (
-                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsla(190, 80%, 50%, 0.3)' : 'none', paddingLeft: i > 0 ? '20px' : '0' }}>
+                <div key={stat.label} className="flex flex-col" style={{ borderLeft: i > 0 ? '1px solid hsl(var(--landing-border-soft))' : 'none', paddingLeft: i > 0 ? '20px' : '0' }}>
                   <p style={{
                     fontSize: 'clamp(22px, 3vw, 34px)',
                     fontWeight: 400,
@@ -60,7 +57,7 @@ export const HeroSection: React.FC = () => {
                   }}>
                     {stat.value}
                   </p>
-                  <p style={{ fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', color: 'hsl(195, 70%, 38%)', marginTop: '4px' }}>
+                  <p style={{ fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', color: 'hsl(var(--landing-ink-muted))', marginTop: '4px' }}>
                     {stat.label}
                   </p>
                 </div>
@@ -73,7 +70,7 @@ export const HeroSection: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
               className="mt-5"
-              style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(200, 30%, 45%)', lineHeight: 1.6 }}
+              style={{ fontSize: '12px', fontWeight: 400, color: 'hsl(var(--landing-ink-soft))', lineHeight: 1.6 }}
             >
               15,000+ study meta-analysis · R&D at Columbia, Cornell Tech & Stanford
             </motion.p>
@@ -89,7 +86,7 @@ export const HeroSection: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: 500,
                   letterSpacing: '0.01em',
-                  boxShadow: '0 4px 24px hsla(190, 80%, 50%, 0.35), 0 1px 3px hsla(210, 80%, 50%, 0.15)',
+                  boxShadow: '0 4px 24px hsl(var(--landing-electric-1) / 0.35), 0 1px 3px hsl(var(--landing-electric-2) / 0.15)',
                 }}
               >
                 Experience Demo
@@ -101,8 +98,8 @@ export const HeroSection: React.FC = () => {
                 style={{
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: 'hsl(210, 50%, 20%)',
-                  border: '1px solid hsla(200, 50%, 50%, 0.3)',
+                  color: 'hsl(var(--landing-ink))',
+                  border: '1px solid hsl(var(--landing-border-soft))',
                   background: 'hsla(0, 0%, 100%, 0.5)',
                   backdropFilter: 'blur(12px)',
                 }}
@@ -136,7 +133,7 @@ export const HeroSection: React.FC = () => {
         className="absolute bottom-6 sm:bottom-10 left-0 right-0 text-center hidden sm:block"
       >
         <div className="w-6 h-10 mx-auto rounded-full border-2 flex items-start justify-center pt-2"
-          style={{ borderColor: 'hsla(190, 70%, 50%, 0.3)' }}
+          style={{ borderColor: 'hsl(var(--landing-border-soft))' }}
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
