@@ -364,7 +364,7 @@ export const PipelineSection: React.FC = () => {
           >
             <div
               className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(210, 50%, 88%, 0.5) 50%, transparent 90%)' }}
+              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 70%, 88%, 0.4) 50%, transparent 90%)' }}
             />
             <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)', marginBottom: '12px' }}>
               Why algorithmic composition
