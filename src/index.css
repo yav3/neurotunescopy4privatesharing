@@ -87,6 +87,19 @@ All colors MUST be HSL.
     --border: 0 0% 89% / 0.12; /* Platinum at 12% opacity */
     --input: 240 8% 4%; /* Obsidian black */
     --ring: 0 0% 89% / 0.3; /* Platinum glow */
+
+    /* Landing override tokens: pure white + electric blue only */
+    --landing-bg: 0 0% 100%;
+    --landing-electric-1: 190 90% 45%;
+    --landing-electric-2: 220 82% 53%;
+    --landing-ink: 214 84% 24%;
+    --landing-ink-soft: 208 78% 36%;
+    --landing-ink-muted: 205 74% 46%;
+    --landing-border: 202 88% 72%;
+    --landing-border-soft: 204 92% 84%;
+    --landing-track: 205 100% 90%;
+    --landing-glass-a: 192 100% 95%;
+    --landing-glass-b: 214 100% 92%;
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
