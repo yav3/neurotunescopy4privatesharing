@@ -291,7 +291,7 @@ export const PipelineSection: React.FC = () => {
           />
 
           {/* Progress track */}
-          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(210, 40%, 80%, 0.4)' }}>
+          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(200, 60%, 85%, 0.4)' }}>
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{
