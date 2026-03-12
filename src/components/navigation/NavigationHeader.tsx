@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LissajousLogo } from '@/components/brand/LissajousLogo';
 import welconyFullColour from '@/assets/welcony-full-colour.png';
-import welconyColourWhite from '@/assets/welcony-colour-white.png';
+
 
 
 
