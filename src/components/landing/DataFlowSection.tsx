@@ -157,7 +157,7 @@ export const DataFlowSection: React.FC = () => {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                   transition={{ duration: 0.4 }}
-                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(215, 25%, 15%)' }}
+                  style={{ fontSize: '18px', fontWeight: 300, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.goal}
                 </motion.p>
