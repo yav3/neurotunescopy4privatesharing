@@ -24,6 +24,7 @@ export const HowItWorksSection: React.FC = () => {
       id="how-it-works"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
+        background: 'hsl(0 0% 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >

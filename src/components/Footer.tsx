@@ -16,7 +16,7 @@ export const Footer = () => {
 
   return (
     <>
-       <footer className="relative border-t" style={{ background: 'transparent', borderColor: 'hsl(210, 30%, 90%)' }}>
+       <footer className="relative border-t" style={{ background: 'hsl(0 0% 100%)', borderColor: 'hsl(210, 30%, 90%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between sm:gap-6">

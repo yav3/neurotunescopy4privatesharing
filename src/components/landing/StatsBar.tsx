@@ -27,10 +27,10 @@ export const StatsBar: React.FC = () => {
           transition={{ duration: 0.7 }}
           className="relative rounded-3xl p-8 md:p-10 overflow-hidden"
           style={{
-            background: 'hsla(0, 0%, 100%, 0.1)',
-            border: '1px solid hsla(0, 0%, 100%, 0.2)',
+            background: 'linear-gradient(135deg, hsl(192, 90%, 45%) 0%, hsl(210, 85%, 50%) 50%, hsl(220, 80%, 48%) 100%)',
+            border: '1px solid hsla(200, 80%, 55%, 0.3)',
             backdropFilter: 'blur(24px) saturate(1.4)',
-            boxShadow: '0 4px 24px hsla(200, 60%, 30%, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+            boxShadow: '0 8px 28px hsla(200, 75%, 45%, 0.2), inset 0 1px 0 hsla(0, 0%, 100%, 0.25)',
           }}
         >
           {/* Top refraction */}
