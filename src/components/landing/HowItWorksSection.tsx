@@ -204,12 +204,12 @@ export const HowItWorksSection: React.FC = () => {
                     letterSpacing: '0.05em',
                     ...(isActive
                       ? {
-                          background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                          background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                         }
                       : {
-                          color: isPast ? 'hsl(215, 20%, 35%)' : 'hsl(215, 15%, 55%)',
+                          color: isPast ? 'hsl(var(--landing-ink-soft))' : 'hsl(var(--landing-ink-muted))',
                         }),
                   }}
                 >
