@@ -221,10 +221,10 @@ export const HowItWorksSection: React.FC = () => {
                     fontSize: 'clamp(13px, 1.3vw, 15px)',
                     fontWeight: 400,
                     color: isActive
-                      ? 'hsl(215, 25%, 15%)'
+                      ? 'hsl(var(--landing-ink))'
                       : isPast
-                        ? 'hsl(215, 20%, 25%)'
-                        : 'hsl(215, 15%, 50%)',
+                        ? 'hsl(var(--landing-ink-soft))'
+                        : 'hsl(var(--landing-ink-muted))',
                   }}
                 >
                   {step.title}
