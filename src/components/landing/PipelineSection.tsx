@@ -50,11 +50,11 @@ const GLASS = {
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(0, 0%, 100%, 0.4)',
-  border: '1px solid hsla(0, 0%, 100%, 0.6)',
+  background: 'hsla(210, 40%, 95%, 0.7)',
+  border: '1px solid hsla(210, 60%, 80%, 0.7)',
   backdropFilter: 'blur(28px) saturate(1.6)',
   WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
-  boxShadow: '0 8px 32px hsla(190, 80%, 50%, 0.15), 0 1px 3px hsla(190, 80%, 50%, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
+  boxShadow: '0 8px 32px hsla(190, 80%, 50%, 0.12), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
