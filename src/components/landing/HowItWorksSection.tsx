@@ -160,16 +160,16 @@ export const HowItWorksSection: React.FC = () => {
                 className="text-left rounded-2xl p-4 md:p-5 cursor-pointer relative overflow-hidden"
                 style={{
                   background: isActive
-                    ? 'linear-gradient(135deg, hsla(190, 95%, 92%, 0.9) 0%, hsla(215, 90%, 90%, 0.9) 100%)'
-                    : 'linear-gradient(135deg, hsla(192, 90%, 95%, 0.8) 0%, hsla(212, 88%, 93%, 0.8) 100%)',
+                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.3) 0%, hsl(var(--landing-electric-2) / 0.3) 100%)'
+                    : 'linear-gradient(135deg, hsl(var(--landing-electric-1) / 0.2) 0%, hsl(var(--landing-electric-2) / 0.2) 100%)',
                   border: isActive
-                    ? '1px solid hsla(200, 60%, 80%, 0.7)'
-                    : '1px solid hsla(210, 40%, 88%, 0.6)',
+                    ? '1px solid hsl(var(--landing-border))'
+                    : '1px solid hsl(var(--landing-border-soft))',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
                   boxShadow: isActive
-                    ? '0 12px 40px -8px hsla(200, 60%, 50%, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.6)'
-                    : 'inset 0 1px 0 hsla(0, 0%, 100%, 0.4)',
+                    ? '0 12px 40px -8px hsl(var(--landing-electric-2) / 0.18), inset 0 1px 0 hsl(var(--landing-bg) / 0.75)'
+                    : 'inset 0 1px 0 hsl(var(--landing-bg) / 0.45)',
                   transition: 'all 0.4s ease',
                 }}
               >
