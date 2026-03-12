@@ -160,7 +160,7 @@ export const PipelineSection: React.FC = () => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'linear-gradient(105deg, transparent 35%, hsla(210, 50%, 95%, 0.35) 50%, transparent 65%)',
+                      background: 'linear-gradient(105deg, transparent 35%, hsla(195, 90%, 90%, 0.35) 50%, transparent 65%)',
                     }}
                     initial={{ x: '-100%' }}
                     animate={{ x: '200%' }}
