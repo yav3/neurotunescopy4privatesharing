@@ -77,7 +77,7 @@ export const DataFlowSection: React.FC = () => {
             fontSize: 'clamp(24px, 4vw, 38px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(215, 25%, 15%)',
+            color: 'hsl(var(--landing-ink))',
           }}
         >
           Genre–goal pairings
