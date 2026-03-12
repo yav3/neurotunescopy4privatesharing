@@ -114,6 +114,7 @@ export const NavigationHeader = () => {
   const isLightPage = location.pathname === '/' || location.pathname === '/index';
 
   const theme = isLightPage ? LIGHT_HEADER : DARK_HEADER;
+  const menu = isLightPage ? LIGHT_MENU : DARK_MENU;
 
   const handleSupportChat = () => {
     window.dispatchEvent(new CustomEvent('openSupportChat'));
