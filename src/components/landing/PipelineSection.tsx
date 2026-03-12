@@ -251,8 +251,8 @@ export const PipelineSection: React.FC = () => {
                   width: i === activeStep ? 10 : 6,
                   height: i === activeStep ? 10 : 6,
                   background: i <= activeStep
-                    ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                    : 'hsla(200, 50%, 82%, 0.4)',
+                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                    : 'hsl(var(--landing-border-soft) / 0.6)',
                   boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
                 }}
                 transition={{ duration: 0.4 }}
