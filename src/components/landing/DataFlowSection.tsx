@@ -134,11 +134,11 @@ export const DataFlowSection: React.FC = () => {
               className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
               style={{
                 background: phase === 'scanning'
-                  ? 'hsla(0, 0%, 100%, 0.85)'
-                  : 'hsla(0, 0%, 100%, 0.6)',
+                  ? 'linear-gradient(135deg, hsla(190, 95%, 93%, 0.92) 0%, hsla(210, 90%, 91%, 0.92) 100%)'
+                  : 'linear-gradient(135deg, hsla(192, 90%, 95%, 0.82) 0%, hsla(212, 85%, 93%, 0.82) 100%)',
                 border: phase === 'scanning'
-                  ? '1px solid hsla(200, 60%, 80%, 0.8)'
-                  : '1px solid hsla(210, 40%, 88%, 0.6)',
+                  ? '1px solid hsla(200, 85%, 72%, 0.8)'
+                  : '1px solid hsla(200, 75%, 80%, 0.65)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
