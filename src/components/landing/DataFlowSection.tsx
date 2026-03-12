@@ -10,21 +10,21 @@ const pairings = [
   { genre: 'Electronic', goal: 'HIIT & Cardio', match: 92 },
 ];
 
-/* Glass tokens for white background */
+/* Electric-blue liquid glass tokens */
 const GLASS = {
-  background: 'hsla(210, 40%, 96%, 0.7)',
-  border: '1px solid hsla(210, 50%, 88%, 0.8)',
-  backdropFilter: 'blur(20px) saturate(1.4)',
-  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-  boxShadow: '0 2px 16px hsla(210, 50%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.8)',
+  background: 'linear-gradient(135deg, hsla(192, 90%, 94%, 0.75) 0%, hsla(210, 88%, 92%, 0.75) 100%)',
+  border: '1px solid hsla(200, 80%, 78%, 0.65)',
+  backdropFilter: 'blur(20px) saturate(1.5)',
+  WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
+  boxShadow: '0 2px 16px hsla(200, 70%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.85)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(210, 50%, 94%, 0.85)',
-  border: '1px solid hsla(200, 60%, 80%, 0.7)',
-  backdropFilter: 'blur(28px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
-  boxShadow: '0 8px 32px hsla(200, 60%, 50%, 0.08), 0 1px 3px hsla(190, 80%, 50%, 0.05), inset 0 1px 0 hsla(0, 0%, 100%, 0.9)',
+  background: 'linear-gradient(135deg, hsla(190, 95%, 92%, 0.88) 0%, hsla(215, 90%, 90%, 0.88) 100%)',
+  border: '1px solid hsla(200, 85%, 72%, 0.8)',
+  backdropFilter: 'blur(28px) saturate(1.7)',
+  WebkitBackdropFilter: 'blur(28px) saturate(1.7)',
+  boxShadow: '0 8px 32px hsla(200, 70%, 50%, 0.12), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.95)',
 } as const;
 
 export const DataFlowSection: React.FC = () => {
@@ -55,7 +55,7 @@ export const DataFlowSection: React.FC = () => {
     <section
       id="science"
       className="relative py-20 md:py-28 overflow-hidden"
-      style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
+      style={{ background: 'hsl(0 0% 100%)', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif' }}
     >
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         {/* Header */}
@@ -134,11 +134,11 @@ export const DataFlowSection: React.FC = () => {
               className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
               style={{
                 background: phase === 'scanning'
-                  ? 'hsla(0, 0%, 100%, 0.85)'
-                  : 'hsla(0, 0%, 100%, 0.6)',
+                  ? 'linear-gradient(135deg, hsla(190, 95%, 93%, 0.92) 0%, hsla(210, 90%, 91%, 0.92) 100%)'
+                  : 'linear-gradient(135deg, hsla(192, 90%, 95%, 0.82) 0%, hsla(212, 85%, 93%, 0.82) 100%)',
                 border: phase === 'scanning'
-                  ? '1px solid hsla(200, 60%, 80%, 0.8)'
-                  : '1px solid hsla(210, 40%, 88%, 0.6)',
+                  ? '1px solid hsla(200, 85%, 72%, 0.8)'
+                  : '1px solid hsla(200, 75%, 80%, 0.65)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
@@ -207,11 +207,11 @@ export const DataFlowSection: React.FC = () => {
               className="flex-1 w-full rounded-2xl p-5 relative overflow-hidden"
               style={{
                 background: phase === 'matched'
-                  ? 'hsla(0, 0%, 100%, 0.85)'
-                  : 'hsla(0, 0%, 100%, 0.6)',
+                  ? 'linear-gradient(135deg, hsla(190, 95%, 93%, 0.92) 0%, hsla(210, 90%, 91%, 0.92) 100%)'
+                  : 'linear-gradient(135deg, hsla(192, 90%, 95%, 0.82) 0%, hsla(212, 85%, 93%, 0.82) 100%)',
                 border: phase === 'matched'
-                  ? '1px solid hsla(200, 60%, 80%, 0.8)'
-                  : '1px solid hsla(210, 40%, 88%, 0.6)',
+                  ? '1px solid hsla(200, 85%, 72%, 0.8)'
+                  : '1px solid hsla(200, 75%, 80%, 0.65)',
                 backdropFilter: 'blur(16px)',
                 transition: 'all 0.6s ease',
               }}
