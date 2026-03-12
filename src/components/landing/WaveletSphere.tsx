@@ -14,14 +14,14 @@ const STATES = [
     label: 'Calm',
     subtitle: 'Pain Distraction',
     hue: 174,        // Teal #2DD4BF — calming, therapeutic
-    saturation: 0.7,
-    lightness: 0.55,
+    saturation: 0.85,
+    lightness: 0.38,
     speed: 0.25,      // Very slow drift — meditative
     amplitude: 0.22,  // Large, deep undulations
     pulseRate: 0.006,  // Slow breathing rhythm
     spread: 0.32,     // Wide, expansive cloud
     harmonicShift: 0.25,
-    brightness: 0.45,
+    brightness: 0.55,
     particleSpeed: 0.06, // Barely moving particles
     rotationSpeed: 0.015,
   },
@@ -30,14 +30,14 @@ const STATES = [
     label: 'Relax',
     subtitle: 'Restoration',
     hue: 38,          // Warm amber — soothing
-    saturation: 0.92,
-    lightness: 0.58,
+    saturation: 0.95,
+    lightness: 0.45,
     speed: 0.55,      // Moderate flow
     amplitude: 0.14,  // Medium wave height
     pulseRate: 0.014,  // Steady, rhythmic
     spread: 0.24,     // Medium radius
     harmonicShift: 0.5,
-    brightness: 0.65,
+    brightness: 0.7,
     particleSpeed: 0.12,
     rotationSpeed: 0.03,
   },
@@ -47,13 +47,13 @@ const STATES = [
     subtitle: 'Concentration',
     hue: 217,         // Electric blue — alert, precise
     saturation: 0.95,
-    lightness: 0.62,
+    lightness: 0.45,
     speed: 1.2,       // Fast, energized movement
     amplitude: 0.07,  // Tight, precise oscillations
     pulseRate: 0.028,  // Rapid pulsing
     spread: 0.12,     // Compact, concentrated
     harmonicShift: 0.8,
-    brightness: 0.8,
+    brightness: 0.85,
     particleSpeed: 0.28, // Brisk particle motion
     rotationSpeed: 0.06,
   },
@@ -160,15 +160,15 @@ const ParticleCloud: React.FC<{
     meshRef.current.instanceMatrix.needsUpdate = true;
 
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-    const lightness = 0.5 + introLight * 0.3 + globalPulse * 0.06 * c.amplitude;
+    const lightness = 0.3 + introLight * 0.2 + globalPulse * 0.04 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, lightness), 0.07);
-    mat.opacity = 0.85 + c.brightness * 0.15 + globalPulse * 0.1 * c.amplitude;
+    mat.opacity = 0.92 + c.brightness * 0.08;
   });
 
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial color="#3B82F6" transparent opacity={0.85} depthWrite={false} />
+      <meshBasicMaterial color="#0e7490" transparent opacity={0.92} depthWrite={false} />
     </instancedMesh>
   );
 };
@@ -201,15 +201,15 @@ const GlowCore: React.FC<{
     const mat = ref.current.material as THREE.MeshBasicMaterial;
     const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
-    const coreLightness = 0.5 + c.brightness * 0.35 + pulse * 0.12 * c.amplitude;
+    const coreLightness = 0.35 + c.brightness * 0.2 + pulse * 0.08 * c.amplitude;
     mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, coreLightness), 0.07);
-    mat.opacity = 0.3 + c.brightness * 0.4 + pulse * 0.3 * c.amplitude;
+    mat.opacity = 0.4 + c.brightness * 0.45 + pulse * 0.3 * c.amplitude;
   });
 
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[1, 24, 24]} />
-      <meshBasicMaterial color="#06b6d4" transparent opacity={0.3} depthWrite={false} />
+      <meshBasicMaterial color="#0891b2" transparent opacity={0.45} depthWrite={false} />
     </mesh>
   );
 };
@@ -290,15 +290,15 @@ const WaveformRing: React.FC<{
     const mat = meshRef.current.material as THREE.MeshBasicMaterial;
     const introHue = intro < 1 ? THREE.MathUtils.lerp(200, c.hue, intro) : c.hue;
     const introSat = intro < 1 ? THREE.MathUtils.lerp(0.6, c.saturation, intro) : c.saturation;
-    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.7), 0.07);
-    mat.opacity = 0.65 + c.amplitude * 0.35;
+    mat.color.lerp(new THREE.Color().setHSL(introHue / 360, introSat, 0.45), 0.07);
+    mat.opacity = 0.8 + c.amplitude * 0.2;
   });
 
   return (
     <group ref={groupRef}>
       <instancedMesh ref={meshRef} args={[undefined, undefined, segments]}>
         <sphereGeometry args={[1, 4, 4]} />
-        <meshBasicMaterial color="#2563eb" transparent opacity={0.65} depthWrite={false} />
+        <meshBasicMaterial color="#1d4ed8" transparent opacity={0.8} depthWrite={false} />
       </instancedMesh>
     </group>
   );
@@ -369,15 +369,16 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
         <div
           className="px-4 py-1.5 rounded-full flex flex-col items-center"
           style={{
-            background: 'hsla(220, 20%, 8%, 0.7)',
-            border: '1px solid hsla(0, 0%, 100%, 0.08)',
+            background: 'hsla(210, 50%, 96%, 0.85)',
+            border: '1px solid hsla(210, 50%, 85%, 0.6)',
             backdropFilter: 'blur(12px)',
+            boxShadow: '0 2px 12px hsla(210, 50%, 50%, 0.1)',
           }}
         >
           <span style={{
             fontSize: '9px',
             letterSpacing: '0.14em',
-            fontWeight: 400,
+            fontWeight: 500,
             color: `hsl(${stateColor.hue}, ${Math.round(stateColor.saturation * 100)}%, ${Math.round(stateColor.lightness * 100)}%)`,
             transition: 'color 1.5s ease',
           }}>
@@ -387,7 +388,7 @@ export const WaveletSphere: React.FC<WaveletSphereProps> = ({ className = '' }) 
             fontSize: '7px',
             letterSpacing: '0.08em',
             fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.35)',
+            color: 'hsla(210, 30%, 35%, 0.6)',
             transition: 'opacity 1.5s ease',
             marginTop: '1px',
           }}>
