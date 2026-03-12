@@ -252,7 +252,7 @@ export const PipelineSection: React.FC = () => {
                   height: i === activeStep ? 10 : 6,
                   background: i <= activeStep
                     ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                    : 'hsla(0, 0%, 100%, 0.4)',
+                    : 'hsla(210, 30%, 75%, 0.5)',
                   boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
                 }}
                 transition={{ duration: 0.4 }}
@@ -263,7 +263,7 @@ export const PipelineSection: React.FC = () => {
                   animate={{
                     background: i < activeStep
                       ? 'linear-gradient(90deg, #06b6d4, #2563eb)'
-                      : 'hsla(0, 0%, 100%, 0.3)',
+                      : 'hsla(210, 30%, 75%, 0.4)',
                   }}
                   transition={{ duration: 0.4 }}
                 />
