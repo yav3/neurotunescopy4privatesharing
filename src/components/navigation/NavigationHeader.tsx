@@ -25,13 +25,11 @@ export const NavigationHeader = () => {
   const isLandingPage = location.pathname === '/';
 
     // Track scroll for nav background transition on landing page
-    // Only transition to blue when scrolled into the dark gradient zone
+    // Landing page is all-white so header stays frosted white glass throughout
     useEffect(() => {
       if (!isLandingPage) return;
       const onScroll = () => {
-        // Approximate start of dark gradient zone (after Hero + Pipeline)
-        const darkZoneStart = window.innerHeight * 1.8;
-        setScrolled(window.scrollY > darkZoneStart);
+        setScrolled(false); // No dark transition on all-white landing
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       return () => window.removeEventListener('scroll', onScroll);
