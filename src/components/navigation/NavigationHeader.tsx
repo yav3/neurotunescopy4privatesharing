@@ -70,7 +70,7 @@ export const NavigationHeader = () => {
       )}
 
       {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(0, 0%, 100%, 0.85)' : 'hsla(0, 0%, 100%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: '1px solid hsla(210, 20%, 80%, 0.3)', boxShadow: '0 1px 12px hsla(210, 20%, 50%, 0.06)' }}>
+      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: 'hsla(0, 0%, 100%, 0.88)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: '1px solid hsla(210, 20%, 80%, 0.3)', boxShadow: '0 1px 12px hsla(210, 20%, 50%, 0.06)' }}>
         {/* Left: Logo + Menu */}
         <div className="flex items-center gap-4">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>

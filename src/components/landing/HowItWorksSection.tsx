@@ -22,13 +22,13 @@ export const HowItWorksSection: React.FC = () => {
   return (
     <section
       id="how-it-works"
-      className="relative py-20 md:py-28 overflow-hidden"
+      className="relative py-16 md:py-28 overflow-hidden"
       style={{
         background: 'hsl(var(--landing-bg))',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
-      <div className="relative z-10 container mx-auto px-6 md:px-12">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-12">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ export const HowItWorksSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-4"
           style={{
-            fontSize: 'clamp(26px, 4vw, 40px)',
+            fontSize: 'clamp(22px, 4vw, 40px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
             color: 'hsl(var(--landing-ink))',
@@ -60,14 +60,14 @@ export const HowItWorksSection: React.FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
+          className="text-center mb-10 md:mb-14"
+          style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
         >
           Five stages from algorithmic composition to validated therapeutic delivery
         </motion.p>
 
-        {/* Progress track */}
-        <div className="relative max-w-5xl mx-auto mb-12">
+        {/* Progress track - hidden on small mobile, shown on sm+ */}
+        <div className="relative max-w-5xl mx-auto mb-8 md:mb-12 hidden sm:block">
           <div
             className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
             style={{ background: 'hsl(var(--landing-track))' }}
@@ -82,7 +82,7 @@ export const HowItWorksSection: React.FC = () => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           />
 
-          <div className="relative h-24 md:h-28 flex items-center justify-between max-w-5xl mx-auto px-4">
+          <div className="relative h-20 md:h-28 flex items-center justify-between max-w-5xl mx-auto px-4">
             {steps.map((_, i) => {
               const isActive = i === activeStep;
               const isPast = i < activeStep;
@@ -92,8 +92,8 @@ export const HowItWorksSection: React.FC = () => {
                   onClick={() => setActiveStep(i)}
                   className="relative z-10 rounded-full cursor-pointer"
                   animate={{
-                    width: isActive ? 56 : 12,
-                    height: isActive ? 56 : 12,
+                    width: isActive ? 48 : 10,
+                    height: isActive ? 48 : 10,
                   }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
@@ -122,7 +122,7 @@ export const HowItWorksSection: React.FC = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.5 }}
                         style={{
-                          fontSize: '18px',
+                          fontSize: '16px',
                           fontWeight: 300,
                           color: 'hsl(var(--landing-ink))',
                           position: 'absolute',
@@ -142,8 +142,27 @@ export const HowItWorksSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Step cards */}
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        {/* Mobile progress indicator - shown only on small screens */}
+        <div className="flex sm:hidden items-center justify-center gap-2 mb-8">
+          {steps.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveStep(i)}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: i === activeStep ? 28 : 8,
+                height: 8,
+                background: i <= activeStep
+                  ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
+                  : 'hsl(var(--landing-border-soft) / 0.5)',
+                boxShadow: i === activeStep ? '0 0 8px hsl(var(--landing-electric-1) / 0.4)' : 'none',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Step cards - single column on mobile, 2-col on sm, full row on lg */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {steps.map((step, i) => {
             const isActive = i === activeStep;
             const isPast = i <= activeStep;
