@@ -184,25 +184,12 @@ export const NavigationHeader = () => {
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-4">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-2 rounded-full hover:bg-white/10 transition-all duration-200"
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5 text-[#e4e4e4]/70" />
-              ) : (
-                <Volume2 className="w-5 h-5 text-[#e4e4e4]" />
-              )}
-            </button>
-          )}
           <Link 
             to="/auth" 
-            className="px-6 py-2 rounded-full transition-all duration-500 text-sm font-normal"
+            className="px-6 py-2 rounded-full transition-all duration-300 text-sm font-normal hover:bg-black/5"
             style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
+              border: '1px solid hsla(210, 15%, 70%, 0.4)',
+              color: 'hsl(220, 15%, 25%)',
             }}
           >
             Login
