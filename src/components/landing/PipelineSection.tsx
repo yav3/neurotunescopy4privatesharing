@@ -40,21 +40,21 @@ const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
   </div>
 );
 
-/* Glass tokens — adapt to the mid-gradient background (light cyan/teal zone) */
+/* Liquid glass tokens — translucent white with cyan/blue tints */
 const GLASS = {
-  background: 'hsla(210, 40%, 92%, 0.55)',
-  border: '1px solid hsla(210, 50%, 85%, 0.6)',
-  backdropFilter: 'blur(20px) saturate(1.4)',
-  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-  boxShadow: '0 2px 12px hsla(200, 60%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
+  background: 'hsla(200, 60%, 97%, 0.65)',
+  border: '1px solid hsla(200, 70%, 85%, 0.5)',
+  backdropFilter: 'blur(24px) saturate(1.6)',
+  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
+  boxShadow: '0 2px 16px hsla(200, 80%, 55%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7), inset 0 -1px 0 hsla(200, 60%, 80%, 0.15)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(210, 40%, 95%, 0.7)',
-  border: '1px solid hsla(210, 60%, 80%, 0.7)',
-  backdropFilter: 'blur(28px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
-  boxShadow: '0 8px 32px hsla(190, 80%, 50%, 0.12), 0 1px 3px hsla(190, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
+  background: 'hsla(200, 70%, 97%, 0.8)',
+  border: '1px solid hsla(195, 80%, 75%, 0.6)',
+  backdropFilter: 'blur(32px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
+  boxShadow: '0 8px 32px hsla(195, 90%, 50%, 0.1), 0 1px 3px hsla(195, 80%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.85), inset 0 -1px 0 hsla(200, 60%, 80%, 0.2)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
@@ -140,8 +140,8 @@ export const PipelineSection: React.FC = () => {
                   className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(90deg, transparent, hsla(210, 50%, 90%, 0.8), transparent)'
-                      : 'linear-gradient(90deg, transparent, hsla(210, 40%, 85%, 0.5), transparent)',
+                      ? 'linear-gradient(90deg, transparent, hsla(195, 80%, 85%, 0.6), transparent)'
+                      : 'linear-gradient(90deg, transparent, hsla(200, 60%, 90%, 0.4), transparent)',
                   }}
                 />
 
@@ -150,8 +150,8 @@ export const PipelineSection: React.FC = () => {
                   className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
                   style={{
                     background: isActive
-                      ? 'linear-gradient(180deg, hsla(210, 50%, 96%, 0.4) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(210, 40%, 94%, 0.25) 0%, transparent 100%)',
+                      ? 'linear-gradient(180deg, hsla(195, 80%, 98%, 0.5) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, hsla(200, 60%, 97%, 0.3) 0%, transparent 100%)',
                   }}
                 />
 
@@ -160,7 +160,7 @@ export const PipelineSection: React.FC = () => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'linear-gradient(105deg, transparent 35%, hsla(210, 50%, 95%, 0.35) 50%, transparent 65%)',
+                      background: 'linear-gradient(105deg, transparent 35%, hsla(195, 90%, 90%, 0.35) 50%, transparent 65%)',
                     }}
                     initial={{ x: '-100%' }}
                     animate={{ x: '200%' }}
@@ -252,7 +252,7 @@ export const PipelineSection: React.FC = () => {
                   height: i === activeStep ? 10 : 6,
                   background: i <= activeStep
                     ? 'linear-gradient(135deg, #06b6d4, #2563eb)'
-                    : 'hsla(210, 30%, 75%, 0.5)',
+                    : 'hsla(200, 50%, 82%, 0.4)',
                   boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
                 }}
                 transition={{ duration: 0.4 }}
@@ -263,7 +263,7 @@ export const PipelineSection: React.FC = () => {
                   animate={{
                     background: i < activeStep
                       ? 'linear-gradient(90deg, #06b6d4, #2563eb)'
-                      : 'hsla(210, 30%, 75%, 0.4)',
+                      : 'hsla(200, 50%, 82%, 0.3)',
                   }}
                   transition={{ duration: 0.4 }}
                 />
@@ -281,17 +281,17 @@ export const PipelineSection: React.FC = () => {
           className="relative rounded-2xl p-5 md:p-6 mb-6 overflow-hidden"
           style={{
             ...GLASS,
-            background: 'hsla(210, 40%, 94%, 0.6)',
+            background: 'hsla(200, 70%, 97%, 0.7)',
           }}
         >
           {/* Top refraction */}
           <div
             className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(210, 50%, 85%, 0.6) 50%, transparent 90%)' }}
+            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 80%, 88%, 0.5) 50%, transparent 90%)' }}
           />
 
           {/* Progress track */}
-          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(210, 40%, 80%, 0.4)' }}>
+          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(200, 60%, 85%, 0.4)' }}>
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{
@@ -364,7 +364,7 @@ export const PipelineSection: React.FC = () => {
           >
             <div
               className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(210, 50%, 88%, 0.5) 50%, transparent 90%)' }}
+              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 70%, 88%, 0.4) 50%, transparent 90%)' }}
             />
             <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)', marginBottom: '12px' }}>
               Why algorithmic composition
@@ -380,11 +380,11 @@ export const PipelineSection: React.FC = () => {
                   className="px-3 py-1.5 rounded-full"
                   style={{
                     fontSize: '12px',
-                    background: 'hsla(210, 40%, 94%, 0.6)',
-                    border: '1px solid hsla(210, 50%, 85%, 0.6)',
+                    background: 'hsla(200, 70%, 97%, 0.7)',
+                    border: '1px solid hsla(195, 70%, 85%, 0.5)',
                     color: 'hsl(200, 40%, 25%)',
                     fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.08)',
+                    boxShadow: '0 1px 4px hsla(195, 60%, 55%, 0.06)',
                   }}
                 >
                   {tag}
@@ -403,7 +403,7 @@ export const PipelineSection: React.FC = () => {
           >
             <div
               className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(210, 50%, 88%, 0.5) 50%, transparent 90%)' }}
+              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 70%, 88%, 0.4) 50%, transparent 90%)' }}
             />
             <div className="flex items-center gap-2 mb-3">
               <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)' }}>
@@ -437,11 +437,11 @@ export const PipelineSection: React.FC = () => {
                   className="px-3 py-1.5 rounded-full flex items-center gap-1.5"
                   style={{
                     fontSize: '12px',
-                    background: 'hsla(210, 40%, 94%, 0.6)',
-                    border: '1px solid hsla(210, 50%, 85%, 0.6)',
+                    background: 'hsla(200, 70%, 97%, 0.7)',
+                    border: '1px solid hsla(195, 70%, 85%, 0.5)',
                     color: 'hsl(200, 40%, 25%)',
                     fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(200, 40%, 50%, 0.08)',
+                    boxShadow: '0 1px 4px hsla(195, 60%, 55%, 0.06)',
                   }}
                 >
                   {method.label}
