@@ -24,7 +24,7 @@ export const HowItWorksSection: React.FC = () => {
       id="how-it-works"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0 0% 100%)',
+        background: 'hsl(var(--landing-bg))',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
@@ -36,7 +36,7 @@ export const HowItWorksSection: React.FC = () => {
           viewport={{ once: true }}
           className="flex justify-center mb-4"
         >
-          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(200, 60%, 45%)' }}>
+          <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}>
             HOW IT WORKS
           </span>
         </motion.div>
@@ -50,7 +50,7 @@ export const HowItWorksSection: React.FC = () => {
             fontSize: 'clamp(26px, 4vw, 40px)',
             fontWeight: 300,
             letterSpacing: '-0.02em',
-            color: 'hsl(215, 25%, 15%)',
+            color: 'hsl(var(--landing-ink))',
           }}
         >
           Composition to clinical outcomes
@@ -61,7 +61,7 @@ export const HowItWorksSection: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(215, 15%, 45%)' }}
+          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
         >
           Five stages from algorithmic composition to validated therapeutic delivery
         </motion.p>
@@ -70,13 +70,13 @@ export const HowItWorksSection: React.FC = () => {
         <div className="relative max-w-5xl mx-auto mb-12">
           <div
             className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2"
-            style={{ background: 'hsl(210, 30%, 88%)' }}
+            style={{ background: 'hsl(var(--landing-track))' }}
           />
           <motion.div
             className="absolute top-1/2 left-0 h-[2px] -translate-y-1/2 origin-left rounded-full"
             style={{
-              background: 'linear-gradient(90deg, #06b6d4, #2563eb)',
-              boxShadow: '0 0 16px hsla(190, 90%, 55%, 0.25)',
+              background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
+              boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)',
             }}
             animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
