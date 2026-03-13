@@ -45,18 +45,6 @@ export const Footer = () => {
               />
             </div>
 
-            {/* Contact Sales CTA */}
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-              className="px-6 py-2 rounded-full hover:opacity-90 transition-all duration-200 text-xs font-normal shrink-0"
-              style={{
-                background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                color: 'hsl(var(--landing-bg))',
-                boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)'
-              }}
-            >
-              Contact Sales
-            </button>
 
             {/* Distributed by + Copyright */}
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-3 shrink-0">
