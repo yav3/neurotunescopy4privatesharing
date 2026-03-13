@@ -83,10 +83,10 @@ export const AnnouncementOverlay: React.FC = () => {
                 color: 'hsl(var(--landing-ink-muted))',
               }}
             >
-              Find us on LOT Airlines long-haul flights
+              In-flight on April 1st on long-haul flights
               <br />
               <span style={{ fontWeight: 500, color: 'hsl(var(--landing-ink))' }}>
-                beginning April 2026.
+                provided by LOT Polish Airlines.
               </span>
             </p>
 
