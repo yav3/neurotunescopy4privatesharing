@@ -353,8 +353,8 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                 disabled={!input.trim() || isLoading}
                 className="w-10 h-10 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 style={{
-                  background: 'rgba(228, 228, 228, 0.12)',
-                  border: '1px solid rgba(228, 228, 228, 0.18)',
+                  background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                  border: 'none',
                 }}
                 onMouseEnter={(e) => {
                   if (!isLoading && input.trim()) {
