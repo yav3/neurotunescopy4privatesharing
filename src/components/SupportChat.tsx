@@ -265,8 +265,8 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                   style={
                     message.role === 'user'
                       ? {
-                          background: 'rgba(19, 20, 22, 0.90)',
-                          border: '1px solid rgba(228, 228, 228, 0.20)',
+                          background: 'rgba(6, 182, 212, 0.12)',
+                          border: '1px solid rgba(6, 182, 212, 0.25)',
                           color: 'rgba(228, 228, 228, 0.92)',
                         }
                       : {
@@ -353,21 +353,21 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                 disabled={!input.trim() || isLoading}
                 className="w-10 h-10 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 style={{
-                  background: 'rgba(228, 228, 228, 0.12)',
-                  border: '1px solid rgba(228, 228, 228, 0.18)',
+                  background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                  border: 'none',
                 }}
                 onMouseEnter={(e) => {
                   if (!isLoading && input.trim()) {
-                    e.currentTarget.style.background = 'rgba(228, 228, 228, 0.20)';
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(228, 228, 228, 0.12)';
+                    e.currentTarget.style.opacity = '0.85';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.25)';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.12)';
+                  e.currentTarget.style.opacity = '1';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <Send className="w-4 h-4" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
+                <Send className="w-4 h-4" style={{ color: 'hsl(0, 0%, 100%)' }} />
               </button>
             </div>
           </div>

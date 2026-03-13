@@ -420,8 +420,8 @@ export default function Support() {
                         className="max-w-[85%] rounded-[20px] p-5 backdrop-blur-sm shadow-lg"
                         style={
                           msg.role === 'user'
-                            ? { background: 'rgba(19, 20, 22, 0.90)', border: '1px solid rgba(255, 255, 255, 0.20)', color: 'rgba(255, 255, 255, 0.92)' }
-                            : { background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.12)', color: 'rgba(255, 255, 255, 0.88)' }
+                            ? { background: 'rgba(6, 182, 212, 0.12)', border: '1px solid rgba(6, 182, 212, 0.25)', color: 'rgba(228, 228, 228, 0.92)' }
+                            : { background: 'rgba(228, 228, 228, 0.06)', border: '1px solid rgba(228, 228, 228, 0.12)', color: 'rgba(228, 228, 228, 0.88)' }
                         }
                       >
                         <div className="text-[15px] leading-relaxed whitespace-pre-wrap font-light" style={{ fontFamily: SF }}>
@@ -483,9 +483,9 @@ export default function Support() {
                     onClick={() => handleSend()}
                     disabled={isLoading || !input.trim()}
                     className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-105 transition-all disabled:opacity-50 group"
-                    style={{ background: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.18)' }}
+                    style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', border: 'none' }}
                   >
-                    <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" style={{ color: 'rgba(255, 255, 255, 0.90)' }} />
+                    <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" style={{ color: 'hsl(0, 0%, 100%)' }} />
                   </button>
                 </div>
               </div>
