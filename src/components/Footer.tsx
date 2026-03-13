@@ -28,19 +28,19 @@ export const Footer = () => {
               <img 
                 src={jacobsTechnionLogo} 
                 alt="Jacobs Technion-Cornell" 
-                className="h-4 sm:h-5 shrink-0"
+                className="h-5 sm:h-7 shrink-0"
                 style={{ opacity: 0.9 }}
               />
               <img 
                 src={stanfordLogo} 
                 alt="Stanford Medicine" 
-                className="h-4 sm:h-5 shrink-0"
+                className="h-7 sm:h-9 shrink-0"
                 style={{ opacity: 0.9 }}
               />
               <img 
                 src={weillCornellLogo} 
                 alt="Weill Cornell Medicine" 
-                className="h-4 sm:h-5 shrink-0"
+                className="h-5 sm:h-7 shrink-0"
                 style={{ opacity: 0.9 }}
               />
             </div>
