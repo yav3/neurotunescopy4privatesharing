@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { X, Send, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,20 +35,6 @@ export function FooterContactHandler({
   const [isLoading, setIsLoading] = useState(false);
   const [contactData, setContactData] = useState<ContactData>({ interest: interestType });
   const [currentStep, setCurrentStep] = useState<"email" | "name" | "company" | "done">("email");
-
-  // Reset state when reopened
-  useEffect(() => {
-    if (isOpen) {
-      setMessages([{
-        role: "assistant",
-        content: `Hi! I'd love to help you with ${interestType}. Let's start with your email address.`,
-      }]);
-      setInput("");
-      setIsLoading(false);
-      setContactData({ interest: interestType });
-      setCurrentStep("email");
-    }
-  }, [isOpen, interestType]);
 
   // Determine background image based on interest type
   const backgroundImage = useMemo(() => {

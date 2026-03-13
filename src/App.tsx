@@ -86,7 +86,6 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import BlackFriday from "./pages/BlackFriday";
 import FreeTrial from "./pages/FreeTrial";
-import { SupportChat } from "./components/SupportChat";
 import CapabilityBrief from "./pages/CapabilityBrief";
 
 const queryClient = new QueryClient();
@@ -234,9 +233,6 @@ const AppContent = () => {
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
       
-      {/* Global Support Chat - available on all pages via nav "Chat Support" */}
-      <SupportChat nextToPlayer={false} />
-
       {/* Global Music Players - COMPLETELY HIDE on landing page to prevent conflicts with LandingPagePlayer */}
       {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
         playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />

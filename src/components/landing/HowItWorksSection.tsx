@@ -61,7 +61,7 @@ export const HowItWorksSection: React.FC = () => {
   return (
     <section
       id="how-it-works"
-      className="relative py-12 md:py-16 overflow-hidden"
+      className="relative py-10 md:py-14 overflow-hidden"
       style={{ background: 'hsl(var(--landing-bg))', fontFamily: 'var(--font-sf)' }}
     >
       <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-10 max-w-5xl">
@@ -89,77 +89,78 @@ export const HowItWorksSection: React.FC = () => {
           Composition to clinical outcomes
         </motion.h2>
 
-        {/* Tempo header */}
+        {/* Score layout */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-center gap-3 mb-5"
         >
-          <LissajousLogo size={12} color="hsl(var(--landing-ink-muted))" />
-          <span style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.06em', color: 'hsl(var(--landing-ink-muted))', opacity: 0.5 }}>
-            ♩= 72 · 4/4
-          </span>
-        </motion.div>
-
-        {/* Score — horizontal grid */}
-        <div className="relative">
-          {/* Staff lines spanning full width */}
-          <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.05 }}>
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="absolute w-full"
-                style={{ top: `${30 + i * 20}%`, height: '1px', background: 'hsl(var(--landing-electric-1))' }}
-              />
-            ))}
+          {/* Tempo header */}
+          <div className="flex items-center gap-2 mb-4">
+            <LissajousLogo size={10} color="hsl(var(--landing-ink-muted))" />
+            <span style={{ fontSize: '9px', fontWeight: 400, letterSpacing: '0.06em', color: 'hsl(var(--landing-ink-muted))', opacity: 0.4 }}>
+              ♩= 72 · 4/4
+            </span>
           </div>
 
-          {/* Horizontal steps grid */}
-          <div className="grid grid-cols-5 gap-px relative">
+          {/* Horizontal step rail */}
+          <div className="relative flex items-start justify-between">
+            {/* Connecting line behind noteheads */}
+            <div
+              className="absolute left-0 right-0 pointer-events-none"
+              style={{ top: 38, height: '1px', background: 'hsl(var(--landing-ink-muted) / 0.1)' }}
+            />
+            {/* Progress line */}
+            <motion.div
+              className="absolute left-0 pointer-events-none"
+              style={{ top: 38, height: '1px', background: GRADIENT }}
+              animate={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            />
+
             {steps.map((step, i) => {
               const isActive = i === activeStep;
               const isPast = i < activeStep;
 
               return (
-                <motion.button
+                <button
                   key={step.number}
                   onClick={() => setActiveStep(i)}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
-                  className="relative cursor-pointer flex flex-col items-center text-center group"
-                  style={{ padding: '0 4px' }}
+                  className="relative flex flex-col items-center cursor-pointer group"
+                  style={{ width: `${100 / steps.length}%`, padding: '0 2px' }}
                 >
-                  {/* Marking above */}
+                  {/* Marking */}
                   <span
                     style={{
                       fontSize: '9px',
                       fontStyle: 'italic',
                       fontWeight: 400,
                       color: isActive ? 'hsl(var(--landing-electric-1))' : 'hsl(var(--landing-ink-muted))',
-                      opacity: isActive ? 0.9 : 0.3,
+                      opacity: isActive ? 0.9 : 0.25,
                       transition: 'all 0.3s',
-                      marginBottom: '6px',
+                      marginBottom: 4,
                     }}
                   >
                     {step.marking}
                   </span>
 
-                  {/* Lissajous notehead */}
+                  {/* Notehead */}
                   <div
-                    className="relative flex items-center justify-center rounded-full"
+                    className="relative flex items-center justify-center"
                     style={{
-                      width: 44,
-                      height: 44,
-                      background: isActive ? 'hsl(var(--landing-electric-1) / 0.06)' : 'transparent',
-                      border: isActive ? '1px solid hsl(var(--landing-electric-1) / 0.15)' : '1px solid hsl(var(--landing-ink-muted) / 0.08)',
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      background: isActive
+                        ? 'hsl(var(--landing-electric-1) / 0.08)'
+                        : isPast
+                        ? 'hsl(var(--landing-electric-1) / 0.03)'
+                        : 'transparent',
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
                     <step.Icon
-                      size={22}
+                      size={18}
                       color={
                         isActive
                           ? 'hsl(var(--landing-electric-1))'
@@ -169,42 +170,26 @@ export const HowItWorksSection: React.FC = () => {
                       }
                       animated={isActive}
                     />
-                    {/* Pulse ring */}
                     {isActive && (
                       <motion.div
                         className="absolute inset-0 rounded-full"
-                        style={{ border: '1px solid hsl(var(--landing-electric-1))' }}
-                        animate={{ scale: [1, 1.3], opacity: [0.3, 0] }}
+                        style={{ border: '1px solid hsl(var(--landing-electric-1) / 0.3)' }}
+                        animate={{ scale: [1, 1.4], opacity: [0.4, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       />
                     )}
                   </div>
 
-                  {/* Connector line between noteheads */}
-                  {i < steps.length - 1 && (
-                    <div
-                      className="absolute right-0 top-1/2 -translate-y-1/2 h-px"
-                      style={{
-                        width: 'calc(100% - 52px)',
-                        left: 'calc(50% + 26px)',
-                        background: i < activeStep
-                          ? 'hsl(var(--landing-electric-1) / 0.2)'
-                          : 'hsl(var(--landing-ink-muted) / 0.08)',
-                        transition: 'background 0.3s',
-                      }}
-                    />
-                  )}
-
                   {/* Number */}
                   <span
-                    className="mt-2"
+                    className="mt-1.5"
                     style={{
                       fontSize: '10px',
                       fontWeight: 400,
                       fontVariantNumeric: 'tabular-nums',
-                      ...(isActive
+                      ...(isActive || isPast
                         ? { background: GRADIENT, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
-                        : { color: 'hsl(var(--landing-ink-muted))', opacity: isPast ? 0.35 : 0.5 }),
+                        : { color: 'hsl(var(--landing-ink-muted))', opacity: 0.4 }),
                       transition: 'opacity 0.3s',
                     }}
                   >
@@ -213,9 +198,9 @@ export const HowItWorksSection: React.FC = () => {
 
                   {/* Title */}
                   <h3
-                    className="mt-1"
+                    className="mt-0.5"
                     style={{
-                      fontSize: '12px',
+                      fontSize: '11px',
                       fontWeight: isActive ? 500 : 400,
                       color: isActive ? 'hsl(var(--landing-ink))' : 'hsl(var(--landing-ink-soft))',
                       transition: 'all 0.3s',
@@ -233,45 +218,33 @@ export const HowItWorksSection: React.FC = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden mt-1.5"
+                        className="overflow-hidden mt-1"
                         style={{
                           fontSize: '10px',
                           fontWeight: 400,
-                          lineHeight: 1.45,
+                          lineHeight: 1.4,
                           color: 'hsl(var(--landing-ink-soft))',
-                          maxWidth: '140px',
+                          maxWidth: '130px',
                         }}
                       >
                         {step.description}
                       </motion.p>
                     )}
                   </AnimatePresence>
-
-                  {/* Progress bar at bottom */}
-                  {isActive && (
-                    <motion.div
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px rounded-full"
-                      style={{ background: GRADIENT }}
-                      initial={{ width: '0%' }}
-                      animate={{ width: '80%' }}
-                      transition={{ duration: 3.5, ease: 'linear' }}
-                      key={`p-${activeStep}`}
-                    />
-                  )}
-                </motion.button>
+                </button>
               );
             })}
           </div>
 
           {/* Double barline */}
-          <div className="flex items-center justify-end gap-0.5 mt-4 pr-2">
-            <div style={{ width: '1px', height: '12px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
-            <div style={{ width: '2px', height: '12px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
-            <span className="ml-1.5" style={{ fontSize: '8px', fontStyle: 'italic', color: 'hsl(var(--landing-ink-muted))', opacity: 0.25 }}>
+          <div className="flex items-center justify-end gap-0.5 mt-3 pr-2">
+            <div style={{ width: '1px', height: '10px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
+            <div style={{ width: '2px', height: '10px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
+            <span className="ml-1" style={{ fontSize: '8px', fontStyle: 'italic', color: 'hsl(var(--landing-ink-muted))', opacity: 0.2 }}>
               Fine
             </span>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
