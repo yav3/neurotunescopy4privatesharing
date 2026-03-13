@@ -87,6 +87,7 @@ import PaymentCancelled from "./pages/PaymentCancelled";
 import BlackFriday from "./pages/BlackFriday";
 import FreeTrial from "./pages/FreeTrial";
 import { SupportChat } from "./components/SupportChat";
+import CapabilityBrief from "./pages/CapabilityBrief";
 
 const queryClient = new QueryClient();
 
@@ -162,6 +163,7 @@ const AppContent = () => {
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />
+        <Route path="/index" element={<Index />} />
         
         
         <Route path="/products" element={<ProductsOverview />} />
@@ -216,6 +218,7 @@ const AppContent = () => {
         <Route path="/payment/cancelled" element={<PaymentCancelled />} />
         <Route path="/black-friday" element={<BlackFriday />} />
         <Route path="/free-trial" element={<FreeTrial />} />
+        <Route path="/capability-brief" element={<CapabilityBrief />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<Users />} />

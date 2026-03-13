@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Volume2, VolumeX } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,
@@ -14,360 +14,236 @@ import { LissajousLogo } from '@/components/brand/LissajousLogo';
 import welconyFullColour from '@/assets/welcony-full-colour.png';
 import welconyColourWhite from '@/assets/welcony-colour-white.png';
 
+/* ─── Theme tokens for header modes ─── */
+const LIGHT_HEADER = {
+  bg: 'hsla(0, 0%, 100%, 0.88)',
+  border: '1px solid hsla(210, 20%, 85%, 0.4)',
+  shadow: '0 1px 8px hsla(210, 15%, 50%, 0.06)',
+  iconColor: 'hsl(220, 12%, 28%)',
+  textColor: 'hsl(220, 12%, 28%)',
+  mutedText: 'hsla(220, 10%, 40%, 0.6)',
+  divider: 'hsla(210, 12%, 75%, 0.35)',
+  loginBorder: '1px solid hsla(210, 12%, 75%, 0.45)',
+  loginHover: 'hover:bg-black/5',
+  welconyLogo: welconyFullColour,
+  logoColor: 'hsl(220, 12%, 28%)',
+} as const;
 
+const DARK_HEADER = {
+  bg: 'hsla(240, 8%, 4%, 0.92)',
+  border: '1px solid hsla(0, 0%, 100%, 0.08)',
+  shadow: '0 1px 12px hsla(0, 0%, 0%, 0.3)',
+  iconColor: 'hsla(0, 0%, 89%, 0.7)',
+  textColor: 'hsl(0, 0%, 89%)',
+  mutedText: 'hsla(0, 0%, 89%, 0.4)',
+  divider: 'hsla(0, 0%, 100%, 0.1)',
+  loginBorder: '1px solid hsla(0, 0%, 100%, 0.2)',
+  loginHover: 'hover:bg-white/5',
+  welconyLogo: welconyColourWhite,
+  logoColor: 'hsla(0, 0%, 89%, 0.8)',
+} as const;
+
+/* ─── Menu style tokens ─── */
+const MENU_LABEL = "text-[10px] uppercase tracking-[0.15em] px-3 py-2 font-medium";
+const MENU_ITEM = "text-sm cursor-pointer transition-colors rounded-md";
+
+type MenuTheme = { content: string; label: string; item: string; separator: string };
+
+const LIGHT_MENU: MenuTheme = {
+  content: 'bg-white/95 backdrop-blur-xl border border-black/[0.06] shadow-[0_12px_48px_-4px_hsla(210,30%,50%,0.15)]',
+  label: `${MENU_LABEL} text-black/35`,
+  item: `${MENU_ITEM} text-black/65 hover:text-black hover:bg-black/[0.04]`,
+  separator: 'bg-black/[0.06] my-1',
+};
+
+const DARK_MENU: MenuTheme = {
+  content: 'bg-[hsl(240,8%,6%)]/95 backdrop-blur-xl border border-white/[0.08] shadow-[0_12px_48px_-4px_hsla(0,0%,0%,0.5)]',
+  label: `${MENU_LABEL} text-white/40`,
+  item: `${MENU_ITEM} text-white/65 hover:text-white hover:bg-white/[0.06]`,
+  separator: 'bg-white/[0.08] my-1',
+};
+
+/* ─── Shared dropdown menu items ─── */
+const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: MenuTheme }) => (
+  <>
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Explore</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/demo" className={menu.item}>Demo</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#technology" className={menu.item}>Technology</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#science" className={menu.item}>Science</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/#how-it-works" className={menu.item}>How It Works</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/research" className={menu.item}>Research</Link></DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator className={menu.separator} />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Product</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/products/environmental" className={menu.item}>Environmental & Background</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/population-health" className={menu.item}>Population Health</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/enterprise-wellness" className={menu.item}>Employee Benefits</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/products/partnerships" className={menu.item}>Partnerships & APIs</Link></DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator className={menu.separator} />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Sales</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/contact" className={menu.item}>Contact Sales</Link></DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator className={menu.separator} />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Company</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/story" className={menu.item}>Our Story</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/team" className={menu.item}>Leadership</Link></DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator className={menu.separator} />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Legal</DropdownMenuLabel>
+      <DropdownMenuItem asChild><Link to="/privacy" className={menu.item}>Privacy</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/legal" className={menu.item}>Terms</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/cookies" className={menu.item}>Cookies</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/hipaa" className={menu.item}>HIPAA</Link></DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator className={menu.separator} />
+    <DropdownMenuGroup>
+      <DropdownMenuLabel className={menu.label}>Support</DropdownMenuLabel>
+      <DropdownMenuItem onClick={onSupportChat} className={menu.item}>Chat Support</DropdownMenuItem>
+    </DropdownMenuGroup>
+  </>
+);
 
 export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const isLightPage = location.pathname === '/' || location.pathname === '/index';
 
-    // Track scroll for nav background transition on landing page
-    // Landing page is all-white so header stays frosted white glass throughout
-    useEffect(() => {
-      if (!isLandingPage) return;
-      const onScroll = () => {
-        setScrolled(false); // No dark transition on all-white landing
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      return () => window.removeEventListener('scroll', onScroll);
-    }, [isLandingPage]);
-
-  // Listen for mute state changes from player
-  useEffect(() => {
-    const handleMuteChange = (e: CustomEvent) => {
-      setIsMuted(e.detail.muted);
-    };
-    window.addEventListener('landingPlayerMuteChange' as any, handleMuteChange);
-    return () => window.removeEventListener('landingPlayerMuteChange' as any, handleMuteChange);
-  }, []);
-
-  const handleSoundToggle = () => {
-    const newMuted = !isMuted;
-    setIsMuted(newMuted);
-    window.dispatchEvent(new CustomEvent('headerMuteToggle', { detail: { muted: newMuted } }));
-  };
+  const theme = isLightPage ? LIGHT_HEADER : DARK_HEADER;
+  const menu = isLightPage ? LIGHT_MENU : DARK_MENU;
 
   const handleSupportChat = () => {
-    const event = new CustomEvent('openSupportChat');
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent('openSupportChat'));
     setDesktopMenuOpen(false);
     setMobileMenuOpen(false);
   };
+
   return (
     <>
-      {/* Backdrop Overlay - dims background when menu is open */}
+      {/* Backdrop overlay when menu is open */}
       {(desktopMenuOpen || mobileMenuOpen) && (
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 transition-opacity duration-200"
-          onClick={() => {
-            setDesktopMenuOpen(false);
-            setMobileMenuOpen(false);
-          }}
+        <div
+          className={`fixed inset-0 backdrop-blur-sm z-40 transition-opacity duration-200 ${isLightPage ? 'bg-black/20' : 'bg-black/60'}`}
+          onClick={() => { setDesktopMenuOpen(false); setMobileMenuOpen(false); }}
         />
       )}
 
-      {/* Desktop Navigation - Ultra Minimal Cinematic */}
-      <header className="hidden md:flex items-center justify-between px-8 py-2.5 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(215, 75%, 32%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(200, 60%, 70%, 0.15)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(200, 60%, 70%, 0.08), 0 4px 24px hsla(215, 80%, 20%, 0.5)' }}>
-        {/* Left: Logo + Menu */}
-        <div className="flex items-center gap-4">
+      {/* ━━━ Desktop ━━━ */}
+      <header
+        className="hidden md:flex items-center justify-between px-10 py-3 fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        style={{
+          background: theme.bg,
+          backdropFilter: 'blur(28px) saturate(1.4)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.4)',
+          borderBottom: theme.border,
+          boxShadow: theme.shadow,
+        }}
+      >
+        {/* Left cluster: menu · logo · welcony */}
+        <div className="flex items-center gap-5">
           <DropdownMenu open={desktopMenuOpen} onOpenChange={setDesktopMenuOpen}>
-            <DropdownMenuTrigger className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/5 rounded">
-              <Menu className="h-5 w-5" style={{ color: isLandingPage && !scrolled ? 'hsl(220, 20%, 30%)' : undefined }} />
+            <DropdownMenuTrigger className="p-2 rounded-lg transition-colors" style={{ color: theme.iconColor }}>
+              <Menu className="h-[18px] w-[18px]" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Explore</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/demo" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Demo</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#technology" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Technology</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#science" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Science</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#how-it-works" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">How It Works</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/research" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Research</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+            <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
+              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
+          <Link to="/" className="flex items-center gap-2.5">
+            <LissajousLogo size={24} animated color={theme.logoColor} />
+            <span
+              className="text-[20px] tracking-tight whitespace-nowrap font-sf font-normal"
+              style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              NeuroTunes
+            </span>
+          </Link>
 
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Population Health</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Employee Benefits</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/partnerships" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Partnerships & APIs</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+          <div className="flex items-center gap-2.5 ml-3 pl-4 border-l" style={{ borderColor: theme.divider }}>
+            <span className="text-[10px] tracking-wider" style={{ color: theme.mutedText }}>Distributed by</span>
+            <img src={theme.welconyLogo} alt="Welcony" className="h-6" style={{ opacity: 0.85 }} />
+          </div>
+        </div>
 
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
+        {/* Right cluster: login · CTA */}
+        <div className="flex items-center gap-4">
+          <Link
+            to="/auth"
+            className={`px-5 py-2 rounded-full transition-all duration-300 text-[13px] font-normal ${theme.loginHover}`}
+            style={{ border: theme.loginBorder, color: theme.textColor }}
+          >
+            Login
+          </Link>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+            className="px-6 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[13px] font-normal"
+            style={{
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+              boxShadow: '0 0 20px hsla(190, 80%, 45%, 0.3)',
+            }}
+          >
+            Request Access
+          </button>
+        </div>
+      </header>
 
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Sales</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/contact" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Contact Sales</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Company</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/story" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Our Story</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/team" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Leadership</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Legal</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/privacy" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Privacy</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/legal" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Terms</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/cookies" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Cookies</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/hipaa" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">HIPAA</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
-                <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
-                  Chat Support
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+      {/* ━━━ Mobile ━━━ */}
+      <header
+        className="md:hidden flex items-center justify-between px-4 py-3 fixed top-0 left-0 right-0 z-50"
+        style={{
+          background: theme.bg,
+          backdropFilter: 'blur(28px) saturate(1.4)',
+          WebkitBackdropFilter: 'blur(28px) saturate(1.4)',
+          borderBottom: theme.border,
+          boxShadow: theme.shadow,
+        }}
+      >
+        {/* Left: menu + logo only */}
+        <div className="flex items-center gap-3">
+          <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <DropdownMenuTrigger className="p-2 -ml-1 rounded-lg transition-colors" style={{ color: theme.iconColor }}>
+              <Menu className="h-5 w-5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
+              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
           <Link to="/" className="flex items-center gap-2">
-            <LissajousLogo size={26} animated color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
-            <span className="text-[22px] tracking-tight whitespace-nowrap font-sf font-normal" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <LissajousLogo size={20} animated color={theme.logoColor} />
+            <span
+              className="text-[16px] tracking-tight whitespace-nowrap font-sf font-normal"
+              style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
               NeuroTunes
             </span>
           </Link>
-          <div className="flex items-center gap-2 ml-4 pl-4 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.25)' : 'hsla(0, 0%, 100%, 0.15)' }}>
-            <span className="text-[11px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 25%, 0.5)' : 'hsla(0, 0%, 100%, 0.4)' }}>Distributed by</span>
-            <img 
-              src={isLandingPage && !scrolled ? welconyFullColour : welconyColourWhite} 
-              alt="Welcony" 
-              className="h-7 transition-opacity duration-500"
-              style={{ opacity: isLandingPage && !scrolled ? 0.8 : 0.7 }}
-            />
+
+          <div className="flex items-center gap-1.5 ml-2 pl-3 border-l" style={{ borderColor: theme.divider }}>
+            <span className="text-[8px] tracking-wider" style={{ color: theme.mutedText }}>Distributed by</span>
+            <img src={theme.welconyLogo} alt="Welcony" className="h-4" style={{ opacity: 0.85 }} />
           </div>
         </div>
 
-        {/* Right: CTAs */}
-        <div className="flex items-center gap-4">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-2 rounded-full hover:bg-white/10 transition-all duration-200"
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5 text-[#e4e4e4]/70" />
-              ) : (
-                <Volume2 className="w-5 h-5 text-[#e4e4e4]" />
-              )}
-            </button>
-          )}
-          <Link 
-            to="/auth" 
-            className="px-6 py-2 rounded-full transition-all duration-500 text-sm font-normal"
-            style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
-            }}
-          >
-            Login
-          </Link>
-          <button 
-            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-            className="px-7 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-sm font-normal"
-            style={{
-              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-              boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
-            }}
-          >
-            Request Access
-          </button>
-        </div>
+        {/* Right: single CTA */}
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+          className="px-4 py-2 rounded-full text-white text-[12px] font-normal"
+          style={{
+            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+            boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
+          }}
+        >
+          Request Access
+        </button>
       </header>
-
-      {/* Mobile Navigation - Ultra Minimal Cinematic */}
-      <header className="md:hidden flex items-center justify-between px-5 py-2 fixed top-0 left-0 right-0 z-50 transition-all duration-500" style={{ background: isLandingPage && !scrolled ? 'hsla(210, 20%, 95%, 0.7)' : 'hsla(215, 75%, 32%, 0.85)', backdropFilter: 'blur(24px) saturate(1.4)', borderBottom: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 70%, 0.2)' : '1px solid hsla(200, 60%, 70%, 0.15)', boxShadow: isLandingPage && !scrolled ? '0 1px 12px hsla(210, 30%, 50%, 0.08)' : '0 1px 0 0 hsla(200, 60%, 70%, 0.08), 0 4px 24px hsla(215, 80%, 20%, 0.5)' }}>
-        <div className="flex items-center gap-3">
-          <DropdownMenu open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <DropdownMenuTrigger className="transition-colors p-1.5 rounded" style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 35%)' : 'hsla(0,0%,100%,0.7)' }}>
-              <Menu className="h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-[#000000] border border-white/20 shadow-2xl z-[9999]">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Explore</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/demo" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Demo</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#technology" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Technology</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#science" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Science</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/#how-it-works" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">How It Works</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/research" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Research</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Product</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/environmental" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Environmental & Background</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/population-health" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Population Health</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/enterprise-wellness" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Employee Benefits</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/products/partnerships" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Partnerships & APIs</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Sales</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/contact" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Contact Sales</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Company</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/story" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Our Story</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/team" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Leadership</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Legal</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link to="/privacy" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Privacy</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/legal" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Terms</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/cookies" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">Cookies</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/hipaa" className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">HIPAA</Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator className="bg-white/20 my-1" />
-
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-white/50 text-[10px] uppercase tracking-widest px-3 py-2">Support</DropdownMenuLabel>
-                <DropdownMenuItem onClick={handleSupportChat} className="text-white/70 hover:text-white hover:bg-white/5 text-sm cursor-pointer transition-colors">
-                  Chat Support
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Link to="/" className="flex items-center gap-1.5">
-            <LissajousLogo size={20} animated color={isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : 'hsla(0, 0%, 100%, 0.8)'} />
-            <span className="text-sm tracking-normal whitespace-nowrap font-sf font-normal" style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              NeuroTunes
-            </span>
-          </Link>
-          <div className="flex items-center gap-1 ml-2 pl-2 border-l" style={{ borderColor: isLandingPage && !scrolled ? 'hsla(215, 30%, 50%, 0.2)' : 'hsla(0, 0%, 100%, 0.12)' }}>
-            <span className="text-[8px] tracking-wide transition-colors duration-500" style={{ color: isLandingPage && !scrolled ? 'hsla(220, 15%, 40%, 0.6)' : 'hsla(0, 0%, 100%, 0.35)' }}>Distributed by</span>
-            <img 
-              src={isLandingPage && !scrolled ? welconyFullColour : welconyColourWhite} 
-              alt="Welcony" 
-              className="h-5 transition-opacity duration-500"
-              style={{ opacity: isLandingPage && !scrolled ? 0.8 : 0.7 }}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {isLandingPage && (
-            <button
-              onClick={handleSoundToggle}
-              className="p-1.5 rounded-full transition-all duration-200"
-              style={{ color: isLandingPage && !scrolled ? 'hsl(215, 20%, 45%)' : undefined }}
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" style={{ color: 'inherit' }} />
-              ) : (
-                <Volume2 className="w-4 h-4" style={{ color: 'inherit' }} />
-              )}
-            </button>
-          )}
-          <Link 
-            to="/auth" 
-            className="px-3 py-1 rounded-full transition-all duration-500 text-[10px] font-normal"
-            style={{
-              border: isLandingPage && !scrolled ? '1px solid hsla(215, 30%, 50%, 0.3)' : '1px solid hsla(0, 0%, 100%, 0.3)',
-              color: isLandingPage && !scrolled ? 'hsl(220, 20%, 25%)' : '#e4e4e4',
-            }}
-          >
-            Login
-          </Link>
-          <button 
-            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-            className="px-3 py-1.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-[10px] font-normal"
-            style={{
-              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-              boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)'
-            }}
-          >
-            Request Access
-          </button>
-        </div>
-      </header>
-
     </>
   );
 };

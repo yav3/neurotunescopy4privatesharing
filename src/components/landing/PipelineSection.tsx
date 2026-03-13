@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, Zap, Target, BarChart3 } from 'lucide-react';
+import { LissajousCompose, LissajousAnnotate, LissajousClassify, LissajousDeliver } from '@/components/brand/LissajousVariants';
 
 const steps = [
-  { number: 1, icon: Music, title: 'Compose', description: 'Algorithmic composition' },
-  { number: 2, icon: Zap, title: 'Annotate', description: 'Feature extraction' },
-  { number: 3, icon: Target, title: 'Classify', description: 'Therapeutic mapping' },
-  { number: 4, icon: BarChart3, title: 'Deliver', description: 'Adaptive playback' },
+  { number: 1, Logo: LissajousCompose, title: 'Compose', description: 'Algorithmic composition' },
+  { number: 2, Logo: LissajousAnnotate, title: 'Annotate', description: 'Feature extraction' },
+  { number: 3, Logo: LissajousClassify, title: 'Classify', description: 'Therapeutic mapping' },
+  { number: 4, Logo: LissajousDeliver, title: 'Deliver', description: 'Adaptive playback' },
 ];
 
 const stageOutputs = [
@@ -16,37 +16,39 @@ const stageOutputs = [
   { label: 'Delivering', detail: 'Adaptive session · 25 min' },
 ];
 
-const MiniWaveform: React.FC<{ active: boolean }> = ({ active }) => (
-  <div className="flex items-end gap-[3px] h-10">
-    {Array.from({ length: 24 }).map((_, i) => (
-      <motion.div
-        key={i}
-        className="w-[3px] rounded-full"
-        style={{ background: 'linear-gradient(to top, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))' }}
-        animate={{
-          height: active
-            ? [4, 12 + Math.sin(i * 0.7) * 22, 4]
-            : [3, 6 + Math.sin(i * 0.5) * 8, 3],
-          opacity: active ? [0.6, 1, 0.6] : [0.25, 0.5, 0.25],
-        }}
-        transition={{
-          duration: active ? 0.8 + (i % 4) * 0.15 : 1.6 + (i % 3) * 0.3,
-          repeat: Infinity,
-          delay: i * 0.04,
-          ease: 'easeInOut',
-        }}
+const SineWave: React.FC = () => (
+  <div className="relative w-full h-12 overflow-hidden">
+    <svg viewBox="0 0 400 48" preserveAspectRatio="none" className="w-full h-full" style={{ display: 'block' }}>
+      <defs>
+        <linearGradient id="sineGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="hsl(192, 85%, 45%)" stopOpacity="0.1" />
+          <stop offset="30%" stopColor="hsl(192, 85%, 45%)" stopOpacity="0.8" />
+          <stop offset="70%" stopColor="hsl(210, 80%, 50%)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="hsl(210, 80%, 50%)" stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+      <motion.path
+        d="M0,24 C25,8 50,8 75,24 C100,40 125,40 150,24 C175,8 200,8 225,24 C250,40 275,40 300,24 C325,8 350,8 375,24 C400,40 400,40 400,24"
+        fill="none" stroke="url(#sineGrad)" strokeWidth="2" strokeLinecap="round"
+        animate={{ x: [0, -75] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
       />
-    ))}
+      <motion.path
+        d="M0,24 C12,16 25,16 37,24 C50,32 62,32 75,24 C87,16 100,16 112,24 C125,32 137,32 150,24 C162,16 175,16 187,24 C200,32 212,32 225,24 C237,16 250,16 262,24 C275,32 287,32 300,24 C312,16 325,16 337,24 C350,32 362,32 375,24 C387,16 400,16 400,24"
+        fill="none" stroke="hsl(192, 85%, 45%)" strokeWidth="1" strokeLinecap="round" opacity="0.2"
+        animate={{ x: [0, -37] }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+      />
+    </svg>
   </div>
 );
 
-/* Liquid glass tokens — translucent white with cyan/blue tints */
 const GLASS = {
   background: 'hsla(200, 60%, 97%, 0.65)',
   border: '1px solid hsla(200, 70%, 85%, 0.5)',
   backdropFilter: 'blur(24px) saturate(1.6)',
   WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-  boxShadow: '0 2px 16px hsla(200, 80%, 55%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7), inset 0 -1px 0 hsla(200, 60%, 80%, 0.15)',
+  boxShadow: '0 2px 16px hsla(200, 80%, 55%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
 } as const;
 
 const GLASS_ACTIVE = {
@@ -54,7 +56,7 @@ const GLASS_ACTIVE = {
   border: '1px solid hsla(195, 80%, 75%, 0.6)',
   backdropFilter: 'blur(32px) saturate(1.8)',
   WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
-  boxShadow: '0 8px 32px hsla(195, 90%, 50%, 0.1), 0 1px 3px hsla(195, 80%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.85), inset 0 -1px 0 hsla(200, 60%, 80%, 0.2)',
+  boxShadow: '0 8px 32px hsla(195, 90%, 50%, 0.1), 0 1px 3px hsla(195, 80%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.85)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
@@ -70,20 +72,15 @@ export const PipelineSection: React.FC = () => {
   return (
     <section
       id="technology"
-      className="relative py-20 md:py-28 overflow-hidden"
-      style={{
-        background: 'hsl(var(--landing-bg))',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
-      }}
+      className="relative py-14 md:py-20 overflow-hidden"
+      style={{ background: 'hsl(var(--landing-bg))', fontFamily: 'var(--font-sf)' }}
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-5xl">
-        {/* Title */}
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 max-w-5xl">
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-2"
+          className="text-center mb-1.5"
           style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}
         >
           COMPOSITION ENGINE
@@ -92,138 +89,69 @@ export const PipelineSection: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center mb-2"
-          style={{
-            fontSize: 'clamp(24px, 4vw, 38px)',
-            fontWeight: 300,
-            letterSpacing: '-0.02em',
-            color: 'hsl(var(--landing-ink))',
-          }}
+          className="text-center mb-10"
+          style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(var(--landing-ink))' }}
         >
           Algorithmic music pipeline
         </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center mb-14"
-          style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(var(--landing-ink-soft))' }}
-        >
-          From patented composition to adaptive therapeutic delivery
-        </motion.p>
 
-        {/* Pipeline step cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
           {steps.map((step, i) => {
-            const Icon = step.icon;
+            const Logo = step.Logo;
             const isActive = i === activeStep;
             const isPast = i < activeStep;
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ y: -4, scale: 1.02 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                whileHover={{ y: -3 }}
                 onHoverStart={() => setActiveStep(i)}
-                className="relative rounded-2xl p-5 cursor-pointer overflow-hidden"
+                className="relative rounded-2xl p-4 cursor-pointer overflow-hidden"
                 style={{
                   ...(isActive ? GLASS_ACTIVE : GLASS),
                   transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
-                {/* Top highlight */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(90deg, transparent, hsla(195, 80%, 85%, 0.6), transparent)'
-                      : 'linear-gradient(90deg, transparent, hsla(200, 60%, 90%, 0.4), transparent)',
-                  }}
-                />
-
-                {/* Interior glass sheen */}
-                <div
-                  className="absolute top-0 left-0 w-full h-1/2 rounded-t-2xl pointer-events-none"
-                  style={{
-                    background: isActive
-                      ? 'linear-gradient(180deg, hsla(195, 80%, 98%, 0.5) 0%, transparent 100%)'
-                      : 'linear-gradient(180deg, hsla(200, 60%, 97%, 0.3) 0%, transparent 100%)',
-                  }}
-                />
-
-                {/* Sweep shimmer on active */}
-                {isActive && (
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(105deg, transparent 35%, hsla(195, 90%, 90%, 0.35) 50%, transparent 65%)',
-                    }}
-                    initial={{ x: '-100%' }}
-                    animate={{ x: '200%' }}
-                    transition={{ duration: 1.8, ease: 'easeInOut' }}
+                <div className="flex items-center justify-between mb-3">
+                  <Logo
+                    size={22}
+                    animated={isActive}
+                    color={isActive ? 'hsl(192, 85%, 35%)' : 'hsl(200, 30%, 55%)'}
                   />
-                )}
-
-                {/* Step header */}
-                <div className="relative flex items-center justify-between mb-4">
-                  <motion.div
-                    animate={isActive ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={isActive ? { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } : {}}
-                  >
-                    <Icon
-                      className="w-5 h-5"
-                      strokeWidth={1.5}
-                      style={{
-                        color: isActive ? 'hsl(192, 85%, 35%)' : 'hsl(200, 30%, 45%)',
-                        filter: isActive ? 'drop-shadow(0 0 6px hsla(192, 80%, 50%, 0.4))' : 'none',
-                        transition: 'all 0.4s',
-                      }}
-                    />
-                  </motion.div>
-                  <span
-                    style={{
-                      fontSize: '11px',
-                      fontWeight: 400,
-                      color: isActive ? 'hsl(192, 70%, 30%)' : 'hsl(200, 25%, 50%)',
-                      fontVariantNumeric: 'tabular-nums',
-                      transition: 'color 0.4s',
-                    }}
-                  >
+                  <span style={{
+                    fontSize: '11px',
+                    fontWeight: 400,
+                    fontVariantNumeric: 'tabular-nums',
+                    color: isActive ? 'hsl(192, 70%, 30%)' : 'hsl(200, 25%, 55%)',
+                    transition: 'color 0.4s',
+                  }}>
                     0{step.number}
                   </span>
                 </div>
 
-                <h3
-                  className="relative"
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    marginBottom: '4px',
-                    transition: 'all 0.4s',
-                    ...(isActive
-                      ? { background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
-                      : { color: 'hsl(var(--landing-ink))' }),
-                  }}
-                >
+                <h3 style={{
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  marginBottom: '3px',
+                  transition: 'all 0.4s',
+                  ...(isActive
+                    ? { background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }
+                    : { color: 'hsl(var(--landing-ink))' }),
+                }}>
                   {step.title}
                 </h3>
-                <p
-                  className="relative"
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 300,
-                    color: isActive ? 'hsl(200, 35%, 28%)' : 'hsl(200, 20%, 42%)',
-                    transition: 'color 0.4s',
-                  }}
-                >
+                <p style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: isActive ? 'hsl(200, 35%, 28%)' : 'hsl(200, 20%, 45%)',
+                  transition: 'color 0.4s',
+                }}>
                   {step.description}
                 </p>
 
-                {/* Bottom accent line */}
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
                   style={{
@@ -241,91 +169,34 @@ export const PipelineSection: React.FC = () => {
           })}
         </div>
 
-        {/* Progress dots */}
-        <div className="hidden lg:flex items-center justify-center gap-1 mb-6">
-          {steps.map((_, i) => (
-            <React.Fragment key={i}>
-              <motion.div
-                className="rounded-full"
-                animate={{
-                  width: i === activeStep ? 10 : 6,
-                  height: i === activeStep ? 10 : 6,
-                  background: i <= activeStep
-                    ? 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
-                    : 'hsl(var(--landing-border-soft) / 0.6)',
-                  boxShadow: i === activeStep ? '0 0 12px hsla(192, 80%, 50%, 0.5)' : '0 0 0 transparent',
-                }}
-                transition={{ duration: 0.4 }}
-              />
-              {i < steps.length - 1 && (
-                <motion.div
-                  className="h-[2px] flex-1 max-w-[60px] rounded-full"
-                  animate={{
-                    background: i < activeStep
-                      ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
-                      : 'hsl(var(--landing-border-soft) / 0.45)',
-                  }}
-                  transition={{ duration: 0.4 }}
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* Live Pipeline Demo — glass panel */}
+        {/* Live output panel */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="relative rounded-2xl p-5 md:p-6 mb-6 overflow-hidden"
-          style={{
-            ...GLASS,
-            background: 'hsla(200, 70%, 97%, 0.7)',
-          }}
+          className="relative rounded-2xl p-4 md:p-5 overflow-hidden"
+          style={{ ...GLASS, background: 'hsla(200, 70%, 97%, 0.7)' }}
         >
-          {/* Top refraction */}
-          <div
-            className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 80%, 88%, 0.5) 50%, transparent 90%)' }}
-          />
-
-          {/* Progress track */}
-          <div className="relative h-[3px] rounded-full mb-6 overflow-hidden" style={{ background: 'hsla(200, 60%, 85%, 0.4)' }}>
-            <motion.div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{
-                background: 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                boxShadow: '0 0 8px hsla(192, 80%, 50%, 0.4)',
-              }}
-              animate={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </div>
-
-          {/* Stage output */}
-          <div className="relative flex items-center gap-6 min-h-[56px]">
-            <div>
-              <MiniWaveform active={true} />
-            </div>
-
+          <SineWave />
+          <div className="relative flex items-center gap-6 mt-2">
             <div className="flex-1">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeStep}
-                  initial={{ opacity: 0, x: 16 }}
+                  initial={{ opacity: 0, x: 12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -16 }}
-                  transition={{ duration: 0.35 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-0.5">
                     <motion.div
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ background: 'hsl(160, 70%, 42%)' }}
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.2, repeat: Infinity }}
                     />
-                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', fontWeight: 600, color: 'hsl(160, 55%, 32%)' }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.1em', fontWeight: 600, color: 'hsl(160, 55%, 32%)' }}>
                       {stageOutputs[activeStep].label.toUpperCase()}
                     </span>
                   </div>
@@ -335,10 +206,9 @@ export const PipelineSection: React.FC = () => {
                 </motion.div>
               </AnimatePresence>
             </div>
-
             <div className="text-right">
               <span style={{
-                fontSize: '28px',
+                fontSize: '26px',
                 fontWeight: 300,
                 fontVariantNumeric: 'tabular-nums',
                 background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
@@ -351,111 +221,6 @@ export const PipelineSection: React.FC = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* Two info panels */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="relative rounded-2xl p-5 cursor-default overflow-hidden"
-            style={GLASS}
-          >
-            <div
-              className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 70%, 88%, 0.4) 50%, transparent 90%)' }}
-            />
-            <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)', marginBottom: '12px' }}>
-              Why algorithmic composition
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {['Precision dosing', 'Reproducible', 'Scalable', 'Evidence-based'].map((tag, i) => (
-                <motion.span
-                  key={tag}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + i * 0.06 }}
-                  className="px-3 py-1.5 rounded-full"
-                  style={{
-                    fontSize: '12px',
-                    background: 'hsla(200, 70%, 97%, 0.7)',
-                    border: '1px solid hsla(195, 70%, 85%, 0.5)',
-                    color: 'hsl(200, 40%, 25%)',
-                    fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(195, 60%, 55%, 0.06)',
-                  }}
-                >
-                  {tag}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="relative rounded-2xl p-5 cursor-default overflow-hidden"
-            style={GLASS}
-          >
-            <div
-              className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent 10%, hsla(195, 70%, 88%, 0.4) 50%, transparent 90%)' }}
-            />
-            <div className="flex items-center gap-2 mb-3">
-              <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(205, 40%, 20%)' }}>
-                Feature annotation
-              </h3>
-              <motion.span
-                className="px-2.5 py-0.5 rounded-full text-[9px] font-medium tracking-wider"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(160, 70%, 42%), hsl(170, 65%, 38%))',
-                  color: 'hsl(0, 0%, 100%)',
-                  boxShadow: '0 0 8px hsla(160, 70%, 42%, 0.3)',
-                }}
-                animate={{ opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                LIVE
-              </motion.span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: 'Signal Processing', count: 24 },
-                { label: 'Neural Networks', count: 18 },
-                { label: 'Statistical Models', count: 15 },
-              ].map((method, i) => (
-                <motion.span
-                  key={method.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.45 + i * 0.06 }}
-                  className="px-3 py-1.5 rounded-full flex items-center gap-1.5"
-                  style={{
-                    fontSize: '12px',
-                    background: 'hsla(200, 70%, 97%, 0.7)',
-                    border: '1px solid hsla(195, 70%, 85%, 0.5)',
-                    color: 'hsl(200, 40%, 25%)',
-                    fontWeight: 400,
-                    boxShadow: '0 1px 4px hsla(195, 60%, 55%, 0.06)',
-                  }}
-                >
-                  {method.label}
-                  <span style={{
-                    background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    fontWeight: 500,
-                  }}>{method.count}</span>
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );
