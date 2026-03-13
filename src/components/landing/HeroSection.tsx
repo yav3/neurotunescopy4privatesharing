@@ -117,8 +117,8 @@ export const HeroSection: React.FC = () => {
             className="flex items-center justify-center -mt-4 sm:mt-0"
           >
             <Link to="/demo" className="group relative cursor-pointer">
-              <div className="w-56 h-56 sm:w-68 sm:h-68 md:w-80 md:h-80 lg:w-[360px] lg:h-[360px] xl:w-[420px] xl:h-[420px] relative group-hover:scale-105 transition-transform duration-700">
-                <WaveletSphere />
+              <div className="w-64 h-32 sm:w-80 sm:h-40 md:w-96 md:h-48 lg:w-[420px] lg:h-[200px] xl:w-[480px] xl:h-[220px] relative group-hover:scale-105 transition-transform duration-700">
+                <HeroWaveform />
               </div>
             </Link>
           </motion.div>
