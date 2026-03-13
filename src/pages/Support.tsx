@@ -420,8 +420,8 @@ export default function Support() {
                         className="max-w-[85%] rounded-[20px] p-5 backdrop-blur-sm shadow-lg"
                         style={
                           msg.role === 'user'
-                            ? { background: 'rgba(19, 20, 22, 0.90)', border: '1px solid rgba(255, 255, 255, 0.20)', color: 'rgba(255, 255, 255, 0.92)' }
-                            : { background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(255, 255, 255, 0.12)', color: 'rgba(255, 255, 255, 0.88)' }
+                            ? { background: 'rgba(6, 182, 212, 0.12)', border: '1px solid rgba(6, 182, 212, 0.25)', color: 'rgba(228, 228, 228, 0.92)' }
+                            : { background: 'rgba(228, 228, 228, 0.06)', border: '1px solid rgba(228, 228, 228, 0.12)', color: 'rgba(228, 228, 228, 0.88)' }
                         }
                       >
                         <div className="text-[15px] leading-relaxed whitespace-pre-wrap font-light" style={{ fontFamily: SF }}>

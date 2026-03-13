@@ -367,7 +367,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                <Send className="w-4 h-4" style={{ color: 'rgba(228, 228, 228, 0.90)' }} />
+                <Send className="w-4 h-4" style={{ color: 'hsl(0, 0%, 100%)' }} />
               </button>
             </div>
           </div>

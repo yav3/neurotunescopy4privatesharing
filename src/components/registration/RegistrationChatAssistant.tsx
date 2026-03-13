@@ -131,48 +131,48 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(8px)' }}>
       <div 
         className="relative w-full max-w-lg h-[600px] rounded-2xl flex flex-col overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, rgba(5, 5, 7, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%)',
           backdropFilter: 'blur(40px)',
-          border: '1px solid rgba(192, 192, 192, 0.15)',
+          border: '1px solid rgba(228, 228, 228, 0.12)',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
         }}
       >
         {/* Background Plus Logo Watermark */}
         <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-          <Plus className="w-96 h-96 text-white" />
+          <Plus className="w-96 h-96" style={{ color: 'rgba(228, 228, 228, 0.8)' }} />
         </div>
         
         {/* Subtle glow effects */}
-        <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-white/5 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute top-[-20%] left-[10%] w-[80%] h-[40%] blur-[80px] rounded-full pointer-events-none" style={{ background: 'rgba(228, 228, 228, 0.03)' }} />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] blur-[80px] rounded-full pointer-events-none" style={{ background: 'rgba(228, 228, 228, 0.03)' }} />
 
         <div 
           className="relative flex items-center justify-between p-4"
           style={{
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            borderBottom: '1px solid rgba(228, 228, 228, 0.10)',
           }}
         >
           <div className="flex items-center gap-2">
             <div 
               className="w-10 h-10 rounded-lg flex items-center justify-center"
               style={{
-                background: 'rgba(192, 192, 192, 0.1)',
-                border: '1px solid rgba(192, 192, 192, 0.2)',
+                background: 'rgba(228, 228, 228, 0.08)',
+                border: '1px solid rgba(228, 228, 228, 0.14)',
               }}
             >
-              <Plus className="w-5 h-5 text-[#c0c0c0]" />
+              <Plus className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.88)' }} />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">Site Assessment Request</h2>
-              <p className="text-xs text-white/60">Let's get started</p>
+              <h2 className="text-lg font-normal" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>Site Assessment Request</h2>
+              <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.50)' }}>Let's get started</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-white/10">
-            <X className="w-5 h-5 text-white/60" />
+          <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-[rgba(228,228,228,0.06)]">
+            <X className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.60)' }} />
           </Button>
         </div>
 
@@ -183,11 +183,21 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
               className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                className="max-w-[80%] rounded-2xl px-4 py-3 text-sm"
+                style={
                   message.role === "user"
-                    ? "bg-gradient-to-br from-primary/25 to-primary/15 border border-primary/30 text-white shadow-lg"
-                    : "bg-white/[0.07] border border-white/[0.15] text-white/90 backdrop-blur-md"
-                }`}
+                    ? {
+                        background: 'rgba(6, 182, 212, 0.12)',
+                        border: '1px solid rgba(6, 182, 212, 0.25)',
+                        color: 'rgba(228, 228, 228, 0.92)',
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+                      }
+                    : {
+                        background: 'rgba(228, 228, 228, 0.06)',
+                        border: '1px solid rgba(228, 228, 228, 0.12)',
+                        color: 'rgba(228, 228, 228, 0.88)',
+                      }
+                }
               >
                 {message.content}
               </div>
@@ -195,11 +205,17 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-white/[0.07] rounded-2xl px-4 py-3 border border-white/[0.15]">
+              <div
+                className="rounded-2xl px-4 py-3"
+                style={{
+                  background: 'rgba(228, 228, 228, 0.06)',
+                  border: '1px solid rgba(228, 228, 228, 0.12)',
+                }}
+              >
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce delay-100" />
-                  <div className="w-2 h-2 bg-[#c0c0c0] rounded-full animate-bounce delay-200" />
+                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: 'rgba(228, 228, 228, 0.80)', animationDelay: '300ms' }} />
                 </div>
               </div>
             </div>
@@ -210,7 +226,7 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
         <div 
           className="relative p-4"
           style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            borderTop: '1px solid rgba(228, 228, 228, 0.10)',
           }}
         >
           <form
@@ -225,13 +241,23 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your answer..."
               disabled={isLoading || currentStep === "done"}
-              className="flex-1 bg-white/[0.06] border-white/[0.12] text-white placeholder-white/40 focus:border-white/30 focus:ring-white/10"
+              className="flex-1 text-sm focus:ring-1"
+              style={{
+                background: 'rgba(228, 228, 228, 0.05)',
+                border: '1px solid rgba(228, 228, 228, 0.12)',
+                color: 'rgba(228, 228, 228, 0.92)',
+              }}
             />
             <Button 
               type="submit" 
               size="icon" 
               disabled={isLoading || currentStep === "done"}
-              className="bg-[#c0c0c0] hover:bg-[#e4e4e4] text-black"
+              className="shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                color: 'hsl(0, 0%, 100%)',
+                border: 'none',
+              }}
             >
               <Send className="w-4 h-4" />
             </Button>
