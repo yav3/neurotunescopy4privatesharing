@@ -64,33 +64,21 @@ export const DataFlowSection: React.FC = () => {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative rounded-2xl overflow-hidden"
-          style={{
-            background: 'hsl(var(--landing-glass-a))',
-            border: '1px solid hsl(var(--landing-electric-1) / 0.12)',
-            padding: '20px',
-          }}
         >
-          <div className="flex flex-col md:flex-row items-center gap-4">
+          <div className="flex items-center gap-0">
             {/* Goal */}
-            <div
-              className="flex-1 w-full rounded-xl px-4 py-3.5"
-              style={{
-                background: 'hsl(var(--landing-electric-1) / 0.04)',
-                border: '1px solid hsl(var(--landing-electric-1) / 0.1)',
-              }}
-            >
-              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-ink-muted))', marginBottom: 4, fontWeight: 500 }}>
+            <div className="flex-1 py-3 px-5 rounded-l-xl" style={{ background: 'hsl(var(--landing-electric-1) / 0.04)' }}>
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-electric-1))', marginBottom: 3, fontWeight: 600 }}>
                 THERAPEUTIC GOAL
               </p>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={active.goal}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ fontSize: '16px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ fontSize: '15px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.goal}
                 </motion.p>
@@ -98,20 +86,20 @@ export const DataFlowSection: React.FC = () => {
             </div>
 
             {/* Logo connector */}
-            <div className="flex flex-col items-center gap-0.5 shrink-0">
+            <div className="flex flex-col items-center gap-0.5 px-4 shrink-0">
               <motion.div
                 animate={phase === 'scanning' ? { rotate: 360 } : { rotate: 0 }}
                 transition={phase === 'scanning' ? { duration: 1, repeat: Infinity, ease: 'linear' } : { duration: 0.3 }}
               >
                 <LissajousLogo
-                  size={22}
+                  size={20}
                   animated={phase === 'scanning'}
                   color={phase === 'matched' ? 'hsl(var(--landing-electric-1))' : 'hsl(var(--landing-ink-muted))'}
                 />
               </motion.div>
               <span style={{
                 fontSize: '9px',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.06em',
                 fontWeight: 500,
                 color: phase === 'matched' ? 'hsl(var(--landing-electric-1))' : 'hsl(var(--landing-ink-muted))',
                 transition: 'color 0.3s',
@@ -121,24 +109,18 @@ export const DataFlowSection: React.FC = () => {
             </div>
 
             {/* Genre */}
-            <div
-              className="flex-1 w-full rounded-xl px-4 py-3.5"
-              style={{
-                background: 'hsl(var(--landing-electric-1) / 0.04)',
-                border: '1px solid hsl(var(--landing-electric-1) / 0.1)',
-              }}
-            >
-              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-ink-muted))', marginBottom: 4, fontWeight: 500 }}>
+            <div className="flex-1 py-3 px-5 rounded-r-xl" style={{ background: 'hsl(var(--landing-electric-1) / 0.04)' }}>
+              <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-electric-1))', marginBottom: 3, fontWeight: 600 }}>
                 MATCHED GENRE
               </p>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={active.genre}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: phase === 'matched' ? 1 : 0.3, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ fontSize: '16px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.25 }}
+                  style={{ fontSize: '15px', fontWeight: 400, color: 'hsl(var(--landing-ink))' }}
                 >
                   {active.genre}
                 </motion.p>
@@ -147,7 +129,7 @@ export const DataFlowSection: React.FC = () => {
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center gap-1.5 mt-4">
+          <div className="flex justify-center gap-1.5 mt-3">
             {pairings.map((_, i) => (
               <button
                 key={i}
