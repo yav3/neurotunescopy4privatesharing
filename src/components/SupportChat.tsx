@@ -358,12 +358,12 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                 }}
                 onMouseEnter={(e) => {
                   if (!isLoading && input.trim()) {
-                    e.currentTarget.style.background = 'rgba(228, 228, 228, 0.20)';
-                    e.currentTarget.style.boxShadow = '0 0 20px rgba(228, 228, 228, 0.12)';
+                    e.currentTarget.style.opacity = '0.85';
+                    e.currentTarget.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.25)';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(228, 228, 228, 0.12)';
+                  e.currentTarget.style.opacity = '1';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
