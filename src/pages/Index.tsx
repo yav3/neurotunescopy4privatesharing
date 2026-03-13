@@ -34,6 +34,7 @@ const Index = () => {
 
   return (
     <div className="overflow-x-hidden" style={{ backgroundColor: 'hsl(0 0% 100%)' }}>
+      <AnnouncementOverlay />
       <motion.div
         key="landing"
         className="min-h-screen relative"
