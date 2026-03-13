@@ -265,8 +265,8 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
                   style={
                     message.role === 'user'
                       ? {
-                          background: 'rgba(19, 20, 22, 0.90)',
-                          border: '1px solid rgba(228, 228, 228, 0.20)',
+                          background: 'rgba(6, 182, 212, 0.12)',
+                          border: '1px solid rgba(6, 182, 212, 0.25)',
                           color: 'rgba(228, 228, 228, 0.92)',
                         }
                       : {
