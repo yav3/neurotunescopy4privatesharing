@@ -44,11 +44,12 @@ export default function FreeTrial() {
 
     try {
       const response = await fetch(
-        `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/consumer-trial-chat`,
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/consumer-trial-chat`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           },
           body: JSON.stringify({ messages: [...messages, userMessage] })
         }

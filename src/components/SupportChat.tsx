@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -7,9 +7,39 @@ interface Message {
   content: string;
 }
 
+interface LeadData {
+  email: string;
+  name?: string;
+  accountType?: string;
+  location?: string;
+  company?: string;
+  teamSize?: string;
+  query?: string;
+}
+
 interface SupportChatProps {
   buttonText?: string;
   nextToPlayer?: boolean;
+}
+
+// Extract and strip lead_data JSON block from assistant messages
+function extractLeadData(text: string): { cleanText: string; leadData: LeadData | null } {
+  const leadBlockRegex = /```lead_data\s*\n?([\s\S]*?)```/g;
+  let leadData: LeadData | null = null;
+
+  const cleanText = text.replace(leadBlockRegex, (_match, jsonStr) => {
+    try {
+      const parsed = JSON.parse(jsonStr.trim());
+      if (parsed.email) {
+        leadData = parsed;
+      }
+    } catch {
+      // Not valid JSON, leave it
+    }
+    return '';
+  }).trim();
+
+  return { cleanText, leadData };
 }
 
 export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false }: SupportChatProps) => {
@@ -22,8 +52,33 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [capturedEmails, setCapturedEmails] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Send lead data to capture endpoint
+  const captureLead = useCallback(async (data: LeadData) => {
+    // Don't re-capture the same email
+    if (capturedEmails.has(data.email)) return;
+    setCapturedEmails(prev => new Set(prev).add(data.email));
+
+    try {
+      await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/capture-lead`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      console.log('Lead captured:', data.email);
+    } catch (err) {
+      console.error('Failed to capture lead:', err);
+    }
+  }, [capturedEmails]);
 
   // Listen for global event to open support chat
   useEffect(() => {
@@ -106,14 +161,19 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
 
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
+            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
+              // Strip any partial or complete lead_data blocks from display
+              const displayText = assistantContent
+                .replace(/```lead_data[\s\S]*?```/g, '')
+                .replace(/```lead_data[\s\S]*$/g, '')
+                .trim();
               setMessages(prev => {
                 const newMessages = [...prev];
                 const lastMessage = newMessages[newMessages.length - 1];
                 if (lastMessage.role === 'assistant') {
-                  lastMessage.content = assistantContent;
+                  lastMessage.content = displayText;
                 }
                 return newMessages;
               });
@@ -133,21 +193,29 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
           if (jsonStr === '[DONE]') continue;
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
+            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
-              setMessages(prev => {
-                const newMessages = [...prev];
-                const lastMessage = newMessages[newMessages.length - 1];
-                if (lastMessage.role === 'assistant') {
-                  lastMessage.content = assistantContent;
-                }
-                return newMessages;
-              });
             }
           } catch { /* ignore */ }
         }
       }
+
+      // Extract lead data from the complete assistant message
+      const { cleanText, leadData } = extractLeadData(assistantContent);
+      if (leadData) {
+        captureLead(leadData);
+      }
+
+      // Update final message with clean text (lead_data block stripped)
+      setMessages(prev => {
+        const newMessages = [...prev];
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage.role === 'assistant') {
+          lastMessage.content = cleanText;
+        }
+        return newMessages;
+      });
     } catch (error) {
       console.error('Chat error:', error);
       toast({
