@@ -483,9 +483,9 @@ export default function Support() {
                     onClick={() => handleSend()}
                     disabled={isLoading || !input.trim()}
                     className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-105 transition-all disabled:opacity-50 group"
-                    style={{ background: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.18)' }}
+                    style={{ background: 'linear-gradient(135deg, #06b6d4, #2563eb)', border: 'none' }}
                   >
-                    <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" style={{ color: 'rgba(255, 255, 255, 0.90)' }} />
+                    <Send className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" style={{ color: 'hsl(0, 0%, 100%)' }} />
                   </button>
                 </div>
               </div>
