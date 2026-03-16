@@ -161,7 +161,7 @@ When you have collected at least their email AND one other piece of information 
 Rules for the lead_data block:
 - Only include fields you have actually collected — omit unknown fields
 - "email" is required — do NOT emit the block without an email
-- "nextSteps" should summarize what the user should do next AND what NeuroTunes will do. Be specific and actionable. Include things like: "Our team will reach out within 24 hours", "Check your email for trial setup instructions", "Visit Settings > Subscription to update your plan", etc.
+- "nextSteps" should summarize what the user should do next AND what NeuroTunes will do. Be specific and actionable. Include things like: "Our team will reach out within 24 hours", "Visit Settings > Subscription to update your plan", "A specialist will contact you to discuss enterprise options", etc.
 - Output this block EVERY time you have new info, appending it to the end of your normal reply
 - The user will NOT see this block — it is stripped by the frontend
 - Continue the conversation normally — the block is invisible metadata

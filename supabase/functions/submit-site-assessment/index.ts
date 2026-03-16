@@ -44,9 +44,9 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "NeuroTunes <onboarding@resend.dev>",
       to: ["clong@neuralpositive.com"],
-      subject: `[${priority}] Site Assessment Request - ${leadData.companyName}`,
+      subject: `[${priority}] Customer Review Request - ${leadData.companyName}`,
       html: `
-        <h2>New Site Assessment Request</h2>
+        <h2>New Customer Review Request</h2>
         <p><strong>Priority:</strong> ${priority}</p>
         <hr />
         <p><strong>Name:</strong> ${leadData.name}</p>
