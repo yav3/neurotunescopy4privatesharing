@@ -15,6 +15,7 @@ interface LeadData {
   company?: string;
   teamSize?: string;
   query?: string;
+  nextSteps?: string;
 }
 
 interface SupportChatProps {
@@ -56,14 +57,14 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Send lead data to capture endpoint
-  const captureLead = useCallback(async (data: LeadData) => {
+  // Send lead data to capture endpoint, create ticket, show ticket number
+  const captureLead = useCallback(async (data: LeadData, conversationLog: Message[]) => {
     // Don't re-capture the same email
     if (capturedEmails.has(data.email)) return;
     setCapturedEmails(prev => new Set(prev).add(data.email));
 
     try {
-      await fetch(
+      const resp = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/capture-lead`,
         {
           method: 'POST',
@@ -71,10 +72,29 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
             'Content-Type': 'application/json',
             Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            ...data,
+            conversationLog: conversationLog.map(m => ({
+              role: m.role,
+              content: m.content,
+              timestamp: new Date().toISOString(),
+            })),
+          }),
         }
       );
-      console.log('Lead captured:', data.email);
+
+      const result = await resp.json();
+      if (result.ticketNumber) {
+        // Show ticket confirmation as a system message in the chat
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `Your support ticket **${result.ticketNumber}** has been created. A confirmation email with your ticket details and next steps has been sent to **${data.email}**.`
+          }
+        ]);
+        console.log('Ticket created:', result.ticketNumber);
+      }
     } catch (err) {
       console.error('Failed to capture lead:', err);
     }
@@ -204,7 +224,8 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
       // Extract lead data from the complete assistant message
       const { cleanText, leadData } = extractLeadData(assistantContent);
       if (leadData) {
-        captureLead(leadData);
+        // Pass current messages + the clean assistant reply as conversation log
+        captureLead(leadData, [...userMessages, { role: 'assistant', content: cleanText }]);
       }
 
       // Update final message with clean text (lead_data block stripped)
