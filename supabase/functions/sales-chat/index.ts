@@ -28,6 +28,28 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+// Sanitize messages for Anthropic Messages API compliance:
+// - First message must be 'user' role
+// - Messages must alternate between 'user' and 'assistant'
+function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
+  let startIdx = 0;
+  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
+    startIdx++;
+  }
+  const trimmed = messages.slice(startIdx);
+  if (trimmed.length === 0) return [];
+
+  const merged: Array<{ role: string; content: string }> = [];
+  for (const msg of trimmed) {
+    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
+      merged[merged.length - 1].content += '\n' + msg.content;
+    } else {
+      merged.push({ role: msg.role, content: msg.content });
+    }
+  }
+  return merged;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -53,22 +75,23 @@ serve(async (req) => {
   try {
     const { messages } = await req.json();
     
-    // Limit message history to prevent token abuse
-    const limitedMessages = messages.slice(-10);
-    
+    // Limit message history and sanitize for Anthropic API compliance
+    const anthropicMessages = sanitizeMessages(messages.slice(-10));
+
+    if (anthropicMessages.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No valid messages to process' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
 
     if (!anthropicApiKey) {
       throw new Error('ANTHROPIC_API_KEY not configured');
     }
 
-    console.log(`Sales chat request from IP: ${clientIP}, messages: ${limitedMessages.length}`);
-
-    // Transform messages to Anthropic format
-    const anthropicMessages = limitedMessages.map((msg: { role: string; content: string }) => ({
-      role: msg.role,
-      content: msg.content
-    }));
+    console.log(`Sales chat request from IP: ${clientIP}, messages: ${anthropicMessages.length}`);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

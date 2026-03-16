@@ -43,6 +43,26 @@ function extractEmail(text: string): string | null {
   return match ? match[0].toLowerCase() : null;
 }
 
+// Sanitize messages for Anthropic Messages API compliance
+function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
+  let startIdx = 0;
+  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
+    startIdx++;
+  }
+  const trimmed = messages.slice(startIdx);
+  if (trimmed.length === 0) return [];
+
+  const merged: Array<{ role: string; content: string }> = [];
+  for (const msg of trimmed) {
+    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
+      merged[merged.length - 1].content += '\n' + msg.content;
+    } else {
+      merged.push({ role: msg.role, content: msg.content });
+    }
+  }
+  return merged;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -163,8 +183,15 @@ serve(async (req) => {
       }
     }
 
-    // Normal chat flow - continue conversation
-    const limitedMessages = messages.slice(-8);
+    // Normal chat flow - sanitize for Anthropic API compliance
+    const limitedMessages = sanitizeMessages(messages.slice(-8));
+
+    if (limitedMessages.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No valid messages to process' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     
     const systemPrompt = `You are a friendly, concise assistant helping users sign up for a free 30-day NeuroTunes trial.
 
