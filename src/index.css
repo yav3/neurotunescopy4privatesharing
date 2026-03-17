@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force dark background on html/body to prevent white flash */
+html, body {
+  background-color: hsl(220, 15%, 3%);
+  color: hsl(0, 0%, 85%);
+}
+
 @keyframes slowChrome {
   0% {
     opacity: 1;
@@ -100,6 +106,15 @@ All colors MUST be HSL.
     --landing-track: 0 0% 12%;
     --landing-glass-a: 200 20% 8%;
     --landing-glass-b: 220 15% 10%;
+
+    /* Brand teal variations */
+    --teal-50: 173 75% 95%;
+    --teal-100: 176 75% 86%;
+    --teal-500: 182 63% 32%;
+    --teal-600: 182 61% 26%;
+    --teal-700: 182 63% 20%;
+
+    --radius: 0.75rem;
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
@@ -108,16 +123,6 @@ All colors MUST be HSL.
     word-break: normal !important;
     overflow-wrap: break-word;
     line-height: 1.4;
-  }
-
-    /* Brand teal variations using hex values */
-    --teal-50: 173 75% 95%;
-    --teal-100: 176 75% 86%;
-    --teal-500: 182 63% 32%;
-    --teal-600: 182 61% 26%;
-    --teal-700: 182 63% 20%;
-
-    --radius: 0.75rem;
   }
 
   .dark {

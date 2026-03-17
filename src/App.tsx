@@ -158,7 +158,7 @@ const AppContent = () => {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-background">
       <Routes>
         {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
         <Route path="/" element={<Index />} />

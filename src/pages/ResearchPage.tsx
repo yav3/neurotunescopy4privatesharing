@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Brain, FileText, Award, Users, ExternalLink, Download } from 'lucide-react';
+import { Brain, FileText, Award, Users, ExternalLink, Download } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { NavigationHeader } from '@/components/navigation/NavigationHeader';
 
 export function ResearchPage() {
   const navigate = useNavigate();
@@ -90,26 +91,8 @@ export function ResearchPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/landing')}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <Brain className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="text-lg font-semibold">NeuralPositive Research</span>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen" style={{ backgroundColor: '#050607' }}>
+      <NavigationHeader />
 
       {/* Hero Section */}
       <section className="relative py-20 px-6">
