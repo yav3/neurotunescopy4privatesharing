@@ -92,11 +92,11 @@ All colors MUST be HSL.
     --landing-bg: 220 15% 3%;
     --landing-electric-1: 190 90% 45%;
     --landing-electric-2: 220 82% 53%;
-    --landing-ink: 0 0% 88%;
-    --landing-ink-soft: 0 0% 60%;
-    --landing-ink-muted: 0 0% 45%;
-    --landing-border: 200 40% 25%;
-    --landing-border-soft: 200 30% 18%;
+    --landing-ink: 0 0% 92%;
+    --landing-ink-soft: 200 30% 65%;
+    --landing-ink-muted: 195 40% 50%;
+    --landing-border: 200 50% 30%;
+    --landing-border-soft: 200 40% 20%;
     --landing-track: 200 40% 12%;
     --landing-glass-a: 200 30% 10%;
     --landing-glass-b: 220 25% 8%;
