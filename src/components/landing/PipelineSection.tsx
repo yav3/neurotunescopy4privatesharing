@@ -44,19 +44,19 @@ const SineWave: React.FC = () => (
 );
 
 const GLASS = {
-  background: 'hsla(200, 60%, 97%, 0.65)',
-  border: '1px solid hsla(200, 70%, 85%, 0.5)',
-  backdropFilter: 'blur(24px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-  boxShadow: '0 2px 16px hsla(200, 80%, 55%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.7)',
+  background: 'hsla(200, 20%, 12%, 0.6)',
+  border: '1px solid hsla(200, 40%, 30%, 0.25)',
+  backdropFilter: 'blur(24px) saturate(1.4)',
+  WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+  boxShadow: '0 2px 16px hsla(200, 80%, 10%, 0.3), inset 0 1px 0 hsla(0, 0%, 100%, 0.05)',
 } as const;
 
 const GLASS_ACTIVE = {
-  background: 'hsla(200, 70%, 97%, 0.8)',
-  border: '1px solid hsla(195, 80%, 75%, 0.6)',
-  backdropFilter: 'blur(32px) saturate(1.8)',
-  WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
-  boxShadow: '0 8px 32px hsla(195, 90%, 50%, 0.1), 0 1px 3px hsla(195, 80%, 50%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.85)',
+  background: 'hsla(200, 30%, 14%, 0.75)',
+  border: '1px solid hsla(195, 80%, 45%, 0.3)',
+  backdropFilter: 'blur(32px) saturate(1.6)',
+  WebkitBackdropFilter: 'blur(32px) saturate(1.6)',
+  boxShadow: '0 8px 32px hsla(195, 90%, 30%, 0.15), 0 1px 3px hsla(195, 80%, 50%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.08)',
 } as const;
 
 export const PipelineSection: React.FC = () => {
@@ -119,13 +119,13 @@ export const PipelineSection: React.FC = () => {
                   <Logo
                     size={22}
                     animated={isActive}
-                    color={isActive ? 'hsl(192, 85%, 35%)' : 'hsl(200, 30%, 55%)'}
+                    color={isActive ? 'hsl(192, 85%, 50%)' : 'hsl(200, 20%, 45%)'}
                   />
                   <span style={{
                     fontSize: '11px',
                     fontWeight: 400,
                     fontVariantNumeric: 'tabular-nums',
-                    color: isActive ? 'hsl(192, 70%, 30%)' : 'hsl(200, 25%, 55%)',
+                    color: isActive ? 'hsl(192, 70%, 55%)' : 'hsl(200, 15%, 40%)',
                     transition: 'color 0.4s',
                   }}>
                     0{step.number}
@@ -146,7 +146,7 @@ export const PipelineSection: React.FC = () => {
                 <p style={{
                   fontSize: '12px',
                   fontWeight: 300,
-                  color: isActive ? 'hsl(200, 35%, 28%)' : 'hsl(200, 20%, 45%)',
+                  color: isActive ? 'hsl(200, 20%, 60%)' : 'hsl(200, 10%, 40%)',
                   transition: 'color 0.4s',
                 }}>
                   {step.description}
@@ -176,7 +176,7 @@ export const PipelineSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
           className="relative rounded-2xl p-4 md:p-5 overflow-hidden"
-          style={{ ...GLASS, background: 'hsla(200, 70%, 97%, 0.7)' }}
+          style={{ ...GLASS, background: 'hsla(200, 25%, 10%, 0.7)' }}
         >
           <SineWave />
           <div className="relative flex items-center gap-6 mt-2">
@@ -196,11 +196,11 @@ export const PipelineSection: React.FC = () => {
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1.2, repeat: Infinity }}
                     />
-                    <span style={{ fontSize: '10px', letterSpacing: '0.1em', fontWeight: 600, color: 'hsl(160, 55%, 32%)' }}>
+                    <span style={{ fontSize: '10px', letterSpacing: '0.1em', fontWeight: 600, color: 'hsl(160, 55%, 45%)' }}>
                       {stageOutputs[activeStep].label.toUpperCase()}
                     </span>
                   </div>
-                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(205, 40%, 20%)' }}>
+                  <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(0, 0%, 75%)' }}>
                     {stageOutputs[activeStep].detail}
                   </p>
                 </motion.div>
@@ -217,7 +217,7 @@ export const PipelineSection: React.FC = () => {
               }}>
                 0{activeStep + 1}
               </span>
-              <span style={{ fontSize: '13px', color: 'hsl(200, 25%, 45%)' }}> / 04</span>
+              <span style={{ fontSize: '13px', color: 'hsl(0, 0%, 40%)' }}> / 04</span>
             </div>
           </div>
         </motion.div>

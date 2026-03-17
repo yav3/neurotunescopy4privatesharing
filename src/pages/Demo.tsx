@@ -7,6 +7,10 @@ import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
 import { fadeOutIntroSong } from '@/components/CinematicTextOverlay';
 import { PremiumHero } from '@/components/landing/PremiumHero';
+import { PipelineSection } from '@/components/landing/PipelineSection';
+import { DataFlowSection } from '@/components/landing/DataFlowSection';
+import { StatsBar } from '@/components/landing/StatsBar';
+import { HowItWorksSection } from '@/components/landing/HowItWorksSection';
 
 const Demo = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -56,54 +60,63 @@ const Demo = () => {
     setIsMuted(!isMuted);
   };
 
-    return (
+  return (
     <div
-      className="min-h-screen min-h-[100dvh] relative overflow-hidden flex flex-col"
+      className="relative overflow-x-hidden"
       style={{
         background: `linear-gradient(145deg, 
           hsl(200, 15%, 4%) 0%, 
           hsl(210, 12%, 6%) 40%,
           hsl(200, 10%, 5%) 100%
-        )`
+        )`,
       }}
     >
-      <BackgroundVideoCarousel
-        playbackRate={videoPlaybackRate}
-        currentVideoIndex={currentVideoIndex}
-        isPlaying={!showIntro && isPlaying}
-      />
-
-      {!showIntro && (
-        <LandingPagePlayer
-          onPlaybackStateChange={setIsPlaying}
-          onCurrentTrackChange={(track) => setCurrentTrack(track)}
-          onVideoPlaybackRateChange={setVideoPlaybackRate}
-          onVideoChange={setCurrentVideoIndex}
-          isPlaying={isPlaying}
-          isMuted={isMuted}
+      {/* Immersive music experience — full viewport */}
+      <div className="min-h-screen min-h-[100dvh] relative overflow-hidden flex flex-col">
+        <BackgroundVideoCarousel
+          playbackRate={videoPlaybackRate}
+          currentVideoIndex={currentVideoIndex}
+          isPlaying={!showIntro && isPlaying}
         />
-      )}
 
-      <NavigationHeader />
+        {!showIntro && (
+          <LandingPagePlayer
+            onPlaybackStateChange={setIsPlaying}
+            onCurrentTrackChange={(track) => setCurrentTrack(track)}
+            onVideoPlaybackRateChange={setVideoPlaybackRate}
+            onVideoChange={setCurrentVideoIndex}
+            isPlaying={isPlaying}
+            isMuted={isMuted}
+          />
+        )}
 
-      {showIntro && <PremiumHero onComplete={handleIntroComplete} />}
+        <NavigationHeader />
 
-      <div className="flex-1" />
+        {showIntro && <PremiumHero onComplete={handleIntroComplete} />}
 
-      {!showIntro && (
-        <LandingPageControls
-          isPlaying={isPlaying}
-          isMuted={isMuted}
-          isSpatialAudio={isSpatialAudio}
-          currentTrack={currentTrack}
-          onPlayPause={() => setIsPlaying(!isPlaying)}
-          onSkip={handleSkip}
-          onToggleMute={handleMuteToggle}
-          onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
-        />
-      )}
+        <div className="flex-1" />
 
-      <div className="hidden"><Footer /></div>
+        {!showIntro && (
+          <LandingPageControls
+            isPlaying={isPlaying}
+            isMuted={isMuted}
+            isSpatialAudio={isSpatialAudio}
+            currentTrack={currentTrack}
+            onPlayPause={() => setIsPlaying(!isPlaying)}
+            onSkip={handleSkip}
+            onToggleMute={handleMuteToggle}
+            onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
+          />
+        )}
+      </div>
+
+      {/* Informational sections — liquid obsidian */}
+      <PipelineSection />
+      <DataFlowSection />
+      <StatsBar />
+      <HowItWorksSection />
+      <Footer />
+
       <SalesAssistant externalOpen={false} />
     </div>
   );
