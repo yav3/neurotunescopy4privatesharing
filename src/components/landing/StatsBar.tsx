@@ -14,7 +14,7 @@ export const StatsBar: React.FC = () => {
     <section
       className="relative py-16 md:py-28 overflow-hidden"
       style={{
-        background: 'hsl(0 0% 100%)',
+        background: 'hsl(220 15% 4%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif',
       }}
     >
