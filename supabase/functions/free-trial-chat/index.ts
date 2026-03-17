@@ -6,6 +6,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// Sanitize messages for Anthropic Messages API compliance
+function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
+  let startIdx = 0;
+  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
+    startIdx++;
+  }
+  const trimmed = messages.slice(startIdx);
+  if (trimmed.length === 0) return [];
+
+  const merged: Array<{ role: string; content: string }> = [];
+  for (const msg of trimmed) {
+    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
+      merged[merged.length - 1].content += '\n' + msg.content;
+    } else {
+      merged.push({ role: msg.role, content: msg.content });
+    }
+  }
+  return merged;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -57,7 +77,7 @@ Current collected data: ${JSON.stringify(collectedData || {})}`
         model: 'claude-sonnet-4-5',
         max_tokens: 1024,
         system: systemPrompt,
-        messages: messages,
+        messages: sanitizeMessages(messages),
         stream: true,
       }),
     })

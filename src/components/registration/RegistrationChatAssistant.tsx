@@ -22,7 +22,7 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hello! I'd love to help you with a site assessment. Let's start with your email address.",
+      content: "Hello! I'd love to help you with a customer review. Let's start with your email address.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -93,7 +93,7 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
             // Submit the lead
             await submitLead(updatedData);
             assistantResponse =
-              "Thank you for your interest! We've received your information and will contact you shortly to discuss your site assessment.";
+              "Thank you for your interest! We've received your information and will contact you shortly to discuss your customer review.";
           }
           break;
 
@@ -120,7 +120,7 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
 
       if (functionError) throw functionError;
 
-      toast.success("Your site assessment request has been submitted!");
+      toast.success("Your customer review request has been submitted!");
     } catch (error) {
       console.error("Error submitting lead:", error);
       toast.error("Failed to submit request. Please try again.");
@@ -167,7 +167,7 @@ export function RegistrationChatAssistant({ isOpen, onClose }: { isOpen: boolean
               <Plus className="w-5 h-5" style={{ color: 'rgba(228, 228, 228, 0.88)' }} />
             </div>
             <div>
-              <h2 className="text-lg font-normal" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>Site Assessment Request</h2>
+              <h2 className="text-lg font-normal" style={{ color: 'rgba(228, 228, 228, 0.92)' }}>Customer Review</h2>
               <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.50)' }}>Let's get started</p>
             </div>
           </div>

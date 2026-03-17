@@ -13,7 +13,7 @@ import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
-import { LandingPage } from "@/components/LandingPage";
+
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { AdvancedAuthGuard } from "@/components/security/AdvancedAuthGuard";
 import { useAudioStore } from "@/stores";
@@ -85,7 +85,7 @@ import HIPAA from "./pages/HIPAA";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import BlackFriday from "./pages/BlackFriday";
-import FreeTrial from "./pages/FreeTrial";
+import { SupportChat } from "./components/SupportChat";
 import CapabilityBrief from "./pages/CapabilityBrief";
 
 const queryClient = new QueryClient();
@@ -158,7 +158,7 @@ const AppContent = () => {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-background">
       <Routes>
         {/* Root path - land directly on the immersive music experience */}
         <Route path="/" element={<Demo />} />
@@ -217,7 +217,6 @@ const AppContent = () => {
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancelled" element={<PaymentCancelled />} />
         <Route path="/black-friday" element={<BlackFriday />} />
-        <Route path="/free-trial" element={<FreeTrial />} />
         <Route path="/capability-brief" element={<CapabilityBrief />} />
         <Route path="/admin" element={<AdvancedAuthGuard adminOnly><AdminLayout /></AdvancedAuthGuard>}>
           <Route index element={<AdminDashboard />} />
@@ -234,6 +233,11 @@ const AppContent = () => {
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
       
+      {/* Global Support Chat - hidden on landing/demo where it's embedded with nextToPlayer */}
+      {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
+        <SupportChat nextToPlayer={false} />
+      )}
+
       {/* Global Music Players - COMPLETELY HIDE on landing page to prevent conflicts with LandingPagePlayer */}
       {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
         playerMode === 'full' ? <FullPagePlayer /> : <MinimizedPlayer />

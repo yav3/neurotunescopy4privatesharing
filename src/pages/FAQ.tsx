@@ -236,13 +236,13 @@ const FAQ = () => {
             <HelpCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Still have questions?</h3>
             <p className="text-muted-foreground mb-4">
-              Can't find what you're looking for? Try exploring the app's features hands-on, or check your profile settings for more options.
+              Can't find what you're looking for? Chat with our support team.
             </p>
-            <Button onClick={() => navigate('/')} className="mr-2">
-              Explore the App
+            <Button onClick={() => window.dispatchEvent(new CustomEvent('openSupportChat'))} className="mr-2">
+              Chat Support
             </Button>
-            <Button variant="outline" onClick={() => navigate('/profile')}>
-              View Profile Settings
+            <Button variant="outline" onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}>
+              Contact Sales
             </Button>
           </CardContent>
         </Card>

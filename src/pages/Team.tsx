@@ -135,6 +135,20 @@ export const Team = () => {
               forefront of neuroscience and music therapy research.
             </p>
           </div>
+
+          {/* CTA */}
+          <div className="mt-20 text-center">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+              className="px-8 py-3 rounded-full text-white text-sm font-normal transition-all hover:opacity-90"
+              style={{
+                background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+                boxShadow: '0 0 20px rgba(6, 182, 212, 0.25)',
+              }}
+            >
+              Get in Touch
+            </button>
+          </div>
         </div>
       </main>
 

@@ -1,10 +1,41 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+}
+
+interface LeadData {
+  email: string;
+  name?: string;
+  accountType?: string;
+  location?: string;
+  company?: string;
+  teamSize?: string;
+  query?: string;
+  nextSteps?: string;
+}
+
+// Extract and strip lead_data JSON block from assistant messages
+function extractLeadData(text: string): { cleanText: string; leadData: LeadData | null } {
+  const leadBlockRegex = /```lead_data\s*\n?([\s\S]*?)```/g;
+  let leadData: LeadData | null = null;
+
+  const cleanText = text.replace(leadBlockRegex, (_match, jsonStr) => {
+    try {
+      const parsed = JSON.parse(jsonStr.trim());
+      if (parsed.email) {
+        leadData = parsed;
+      }
+    } catch {
+      // Not valid JSON, leave it
+    }
+    return '';
+  }).trim();
+
+  return { cleanText, leadData };
 }
 
 interface SupportChatProps {
@@ -22,8 +53,53 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [capturedEmails, setCapturedEmails] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Send lead data to capture endpoint, create ticket, show ticket number
+  const captureLead = useCallback(async (data: LeadData, conversationLog: Message[]) => {
+    // Don't re-capture the same email
+    if (capturedEmails.has(data.email)) return;
+    setCapturedEmails(prev => new Set(prev).add(data.email));
+
+    try {
+      const resp = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/capture-lead`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            ...data,
+            conversationLog: conversationLog.map(m => ({
+              role: m.role,
+              content: m.content,
+              timestamp: new Date().toISOString(),
+            })),
+          }),
+        }
+      );
+
+      const result = await resp.json();
+      if (result.ticketNumber) {
+        // Show ticket confirmation as a system message in the chat
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `Your support ticket **${result.ticketNumber}** has been created. A confirmation email with your ticket details and next steps has been sent to **${data.email}**.`
+          }
+        ]);
+        console.log('Ticket created:', result.ticketNumber);
+      }
+    } catch (err) {
+      console.error('Failed to capture lead:', err);
+    }
+  }, [capturedEmails]);
+
 
   // Listen for global event to open support chat
   useEffect(() => {
@@ -148,6 +224,24 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
           } catch { /* ignore */ }
         }
       }
+
+      // Extract lead data from the complete assistant message
+      const { cleanText, leadData } = extractLeadData(assistantContent);
+      if (leadData) {
+        // Pass current messages + the clean assistant reply as conversation log
+        captureLead(leadData, [...userMessages, { role: 'assistant', content: cleanText }]);
+      }
+
+      // Update final message with clean text (lead_data block stripped)
+      setMessages(prev => {
+        const newMessages = [...prev];
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage.role === 'assistant') {
+          lastMessage.content = cleanText;
+        }
+        return newMessages;
+      });
+
     } catch (error) {
       console.error('Chat error:', error);
       toast({

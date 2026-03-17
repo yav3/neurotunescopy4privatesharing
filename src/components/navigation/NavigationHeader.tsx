@@ -113,10 +113,9 @@ export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const isLightPage = location.pathname === '/' || location.pathname === '/index';
-
-  const theme = isLightPage ? LIGHT_HEADER : DARK_HEADER;
-  const menu = isLightPage ? LIGHT_MENU : DARK_MENU;
+  // Dark obsidian theme everywhere — no light pages
+  const theme = DARK_HEADER;
+  const menu = DARK_MENU;
 
   const handleSupportChat = () => {
     window.dispatchEvent(new CustomEvent('openSupportChat'));

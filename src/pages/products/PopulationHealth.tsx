@@ -159,10 +159,16 @@ export default function PopulationHealth() {
               <div className="p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Clinically Validated</h3>
                 <p className="leading-relaxed text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
-                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, informed by a meta-analysis of 
-                  thousands of journal articles examining the therapeutic use of music and music therapy. 
+                  Built on 8+ years of R&amp;D at Columbia and Cornell Tech, informed by a meta-analysis of
+                  thousands of journal articles examining the therapeutic use of music and music therapy.
                   Pilot studies demonstrate statistically significant anxiety reductions (p&lt;.05).
                 </p>
+                <div className="mt-4 space-y-1">
+                  <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'rgba(6, 182, 212, 0.7)' }}>Key references</p>
+                  <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Jiao et al. — Frontiers in Digital Health, 2025 · AI-driven personalized music therapy with brainwave entrainment</p>
+                  <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Stanford Neuroscience, 2025 · Musical rhythm synchronization amplifies neural stimulation</p>
+                  <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Frontiers in Neuroscience, 2025 · Music-based neurofeedback for real-time therapeutic adaptation</p>
+                </div>
               </div>
             </div>
           </div>

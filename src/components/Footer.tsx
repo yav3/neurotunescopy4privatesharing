@@ -3,7 +3,7 @@ import { FooterContactHandler } from "./FooterContactHandler";
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
 import weillCornellLogo from '@/assets/weill-cornell.png';
-import welconyFullColour from '@/assets/welcony-full-colour.png';
+import welconyColourWhite from '@/assets/welcony-colour-white.png';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
@@ -25,25 +25,38 @@ export const Footer = () => {
             {/* Supported By + Logos */}
             <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <span className="text-[10px] uppercase tracking-[0.15em] whitespace-nowrap shrink-0" style={{ color: 'hsl(var(--landing-ink-soft))' }}>Supported by</span>
-              <img 
-                src={jacobsTechnionLogo} 
-                alt="Jacobs Technion-Cornell" 
-                className="h-5 sm:h-7 shrink-0"
-                style={{ opacity: 0.9 }}
+              <img
+                src={jacobsTechnionLogo}
+                alt="Jacobs Technion-Cornell"
+                className="h-4 sm:h-5 shrink-0"
+                style={{ opacity: 0.8, filter: 'brightness(0) invert(1)' }}
               />
-              <img 
-                src={stanfordLogo} 
-                alt="Stanford Medicine" 
-                className="h-7 sm:h-9 shrink-0"
-                style={{ opacity: 0.9 }}
+              <img
+                src={stanfordLogo}
+                alt="Stanford Medicine"
+                className="h-4 sm:h-5 shrink-0"
+                style={{ opacity: 0.8, filter: 'brightness(0) invert(1)' }}
               />
-              <img 
-                src={weillCornellLogo} 
-                alt="Weill Cornell Medicine" 
-                className="h-5 sm:h-7 shrink-0"
-                style={{ opacity: 0.9 }}
+              <img
+                src={weillCornellLogo}
+                alt="Weill Cornell Medicine"
+                className="h-4 sm:h-5 shrink-0"
+                style={{ opacity: 0.8, filter: 'brightness(0) invert(1)' }}
               />
             </div>
+
+            {/* Contact Sales CTA */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+              className="px-6 py-2 rounded-full hover:opacity-90 transition-all duration-200 text-xs font-normal shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))',
+                color: 'hsl(0, 0%, 100%)',
+                boxShadow: '0 0 16px hsl(var(--landing-electric-1) / 0.3)'
+              }}
+            >
+              Contact Sales
+            </button>
 
 
             {/* Distributed by + Copyright */}
@@ -51,7 +64,7 @@ export const Footer = () => {
               <div className="flex items-center gap-2">
                 <span className="text-[11px] tracking-wide" style={{ color: 'hsl(var(--landing-ink-soft))' }}>Distributed by</span>
                 <img 
-                  src={welconyFullColour} 
+                  src={welconyColourWhite} 
                   alt="Welcony" 
                   className="h-6"
                   style={{ opacity: 0.95 }}

@@ -357,7 +357,7 @@ export default function EnvironmentalBackground() {
                 }}
               >
                 <span className="flex items-center gap-2 justify-center">
-                  Request Site Assessment
+                  Request Customer Review
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </button>
@@ -379,7 +379,7 @@ export default function EnvironmentalBackground() {
       <FooterContactHandler
         isOpen={contactOpen}
         onClose={() => setContactOpen(false)}
-        interestType="Environmental & Background Music - Site Assessment"
+        interestType="Environmental & Background Music - Customer Review"
       />
 
       <style>{`

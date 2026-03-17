@@ -28,6 +28,31 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+// Sanitize messages for Anthropic Messages API compliance:
+// - First message must be 'user' role
+// - Messages must alternate between 'user' and 'assistant'
+// - Merge consecutive same-role messages
+function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
+  // Drop leading assistant messages (frontend greetings)
+  let startIdx = 0;
+  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
+    startIdx++;
+  }
+  const trimmed = messages.slice(startIdx);
+  if (trimmed.length === 0) return [];
+
+  // Merge consecutive same-role messages
+  const merged: Array<{ role: string; content: string }> = [];
+  for (const msg of trimmed) {
+    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
+      merged[merged.length - 1].content += '\n' + msg.content;
+    } else {
+      merged.push({ role: msg.role, content: msg.content });
+    }
+  }
+  return merged;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -53,9 +78,16 @@ serve(async (req) => {
   try {
     const { messages } = await req.json();
     
-    // Limit message history to prevent token abuse
-    const limitedMessages = messages.slice(-15);
-    
+    // Limit message history and sanitize for Anthropic API compliance
+    const limitedMessages = sanitizeMessages(messages.slice(-15));
+
+    if (limitedMessages.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No valid messages to process' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
 
     if (!anthropicApiKey) {
@@ -102,6 +134,39 @@ SUPPORT EXCELLENCE GUIDELINES:
 • Always validate user concerns before offering solutions ("That must be frustrating")
 • Offer to escalate complex issues to human support when appropriate
 • End responses with a follow-up question to ensure resolution
+
+LEAD QUALIFICATION - CRITICAL:
+As you help users, naturally gather the following information through conversation. Do NOT ask all at once — weave these questions in naturally:
+1. Their email address — ask early so you can follow up or send resources
+2. Whether they are interested in an Enterprise or B2B account, or a consumer/individual plan
+3. Their location (city and country) — frame it as "so we can connect you with the right regional team" or similar. If they give a vague location, ask for the specific city and country so it can be verified.
+4. Their name and company/organization name if applicable
+5. The size of their team or organization if it's a business inquiry
+
+When you have collected at least their email AND one other piece of information (account type interest, location, name, or company), output a JSON block at the END of your message in this exact format:
+
+\`\`\`lead_data
+{
+  "email": "their@email.com",
+  "name": "Their Name",
+  "accountType": "enterprise|b2b|consumer|unknown",
+  "location": "City, Country",
+  "company": "Company Name",
+  "teamSize": "number or range",
+  "query": "brief summary of what they asked about",
+  "nextSteps": "1. Specific next step\\n2. Another step\\n3. Follow-up action"
+}
+\`\`\`
+
+Rules for the lead_data block:
+- Only include fields you have actually collected — omit unknown fields
+- "email" is required — do NOT emit the block without an email
+- "nextSteps" should summarize what the user should do next AND what NeuroTunes will do. Be specific and actionable. Include things like: "Our team will reach out within 24 hours", "Visit Settings > Subscription to update your plan", "A specialist will contact you to discuss enterprise options", etc.
+- Output this block EVERY time you have new info, appending it to the end of your normal reply
+- The user will NOT see this block — it is stripped by the frontend
+- Continue the conversation normally — the block is invisible metadata
+- When emitting the block, also tell the user in your visible message that a support ticket will be created and they'll receive a confirmation email with their ticket number and next steps
+
 
 TONE: Professional yet conversational, solution-oriented, patient, and genuinely invested in optimal user experience.
 

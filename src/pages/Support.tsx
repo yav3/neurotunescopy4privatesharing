@@ -31,7 +31,6 @@ const quickActions = [
 
 const categories = [
   { value: 'login', label: 'Login / Account Access' },
-  { value: 'trial', label: 'Free Trial Issue' },
   { value: 'payment', label: 'Payment / Billing' },
   { value: 'technical', label: 'Technical Problem' },
   { value: 'subscription', label: 'Subscription' },

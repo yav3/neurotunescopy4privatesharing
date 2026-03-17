@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force dark background on html/body to prevent white flash */
+html, body {
+  background-color: hsl(220, 15%, 3%);
+  color: hsl(0, 0%, 85%);
+}
+
 @keyframes slowChrome {
   0% {
     opacity: 1;
@@ -88,18 +94,28 @@ All colors MUST be HSL.
     --input: 240 8% 4%; /* Obsidian black */
     --ring: 0 0% 89% / 0.3; /* Platinum glow */
 
-    /* Landing tokens: liquid obsidian + electric blue */
-    --landing-bg: 220 15% 3%;
+    /* Landing tokens: dark obsidian + electric accents */
+    --landing-bg: 220 15% 4%;
     --landing-electric-1: 190 90% 45%;
     --landing-electric-2: 220 82% 53%;
-    --landing-ink: 0 0% 92%;
-    --landing-ink-soft: 200 30% 65%;
-    --landing-ink-muted: 195 40% 50%;
-    --landing-border: 200 50% 30%;
-    --landing-border-soft: 200 40% 20%;
-    --landing-track: 200 40% 12%;
-    --landing-glass-a: 200 30% 10%;
-    --landing-glass-b: 220 25% 8%;
+    --landing-ink: 0 0% 90%;
+    --landing-ink-soft: 0 0% 65%;
+    --landing-ink-muted: 0 0% 50%;
+    --landing-border: 0 0% 20%;
+    --landing-border-soft: 0 0% 14%;
+    --landing-track: 0 0% 12%;
+    --landing-glass-a: 200 20% 8%;
+    --landing-glass-b: 220 15% 10%;
+
+    /* Brand teal variations */
+    --teal-50: 173 75% 95%;
+    --teal-100: 176 75% 86%;
+    --teal-500: 182 63% 32%;
+    --teal-600: 182 61% 26%;
+    --teal-700: 182 63% 20%;
+
+    --radius: 0.75rem;
+
   }
 
   /* Card title styling - override global h3 styles for better mobile text */
@@ -108,16 +124,6 @@ All colors MUST be HSL.
     word-break: normal !important;
     overflow-wrap: break-word;
     line-height: 1.4;
-  }
-
-    /* Brand teal variations using hex values */
-    --teal-50: 173 75% 95%;
-    --teal-100: 176 75% 86%;
-    --teal-500: 182 63% 32%;
-    --teal-600: 182 61% 26%;
-    --teal-700: 182 63% 20%;
-
-    --radius: 0.75rem;
   }
 
   .dark {
