@@ -23,6 +23,7 @@ const Index = () => {
     setIsPlaying(true);
   }, []);
 
+
   useEffect(() => {
     const handleHeaderMuteToggle = (e: CustomEvent) => {
       setIsMuted(e.detail.muted);
@@ -83,6 +84,7 @@ const Index = () => {
       <SupportChat buttonText="Chat Support" nextToPlayer />
 
       <div className="hidden"><Footer /></div>
+
     </div>
   );
 };

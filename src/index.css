@@ -115,6 +115,7 @@ All colors MUST be HSL.
     --teal-700: 182 63% 20%;
 
     --radius: 0.75rem;
+
   }
 
   /* Card title styling - override global h3 styles for better mobile text */

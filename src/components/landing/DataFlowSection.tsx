@@ -67,7 +67,7 @@ export const DataFlowSection: React.FC = () => {
         >
           <div className="flex items-center gap-0">
             {/* Goal */}
-            <div className="flex-1 py-3 px-5 rounded-l-xl" style={{ background: 'hsl(var(--landing-electric-1) / 0.04)' }}>
+            <div className="flex-1 py-3 px-5 rounded-l-xl" style={{ background: 'hsla(190, 90%, 45%, 0.08)' }}>
               <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-electric-1))', marginBottom: 3, fontWeight: 600 }}>
                 THERAPEUTIC GOAL
               </p>
@@ -109,7 +109,7 @@ export const DataFlowSection: React.FC = () => {
             </div>
 
             {/* Genre */}
-            <div className="flex-1 py-3 px-5 rounded-r-xl" style={{ background: 'hsl(var(--landing-electric-1) / 0.04)' }}>
+            <div className="flex-1 py-3 px-5 rounded-r-xl" style={{ background: 'hsla(190, 90%, 45%, 0.08)' }}>
               <p style={{ fontSize: '9px', letterSpacing: '0.12em', color: 'hsl(var(--landing-electric-1))', marginBottom: 3, fontWeight: 600 }}>
                 MATCHED GENRE
               </p>
@@ -140,7 +140,7 @@ export const DataFlowSection: React.FC = () => {
                   height: 5,
                   background: i === activeRow
                     ? 'linear-gradient(90deg, hsl(var(--landing-electric-1)), hsl(var(--landing-electric-2)))'
-                    : 'hsl(var(--landing-ink-muted) / 0.25)',
+                    : 'hsla(0, 0%, 100%, 0.15)',
                 }}
               />
             ))}

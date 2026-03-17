@@ -34,12 +34,12 @@ export function SupportChatbot() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/support-chat`,
+        `https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/support-chat`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
           },
           body: JSON.stringify({ messages: [...messages, userMessage] })
         }
@@ -91,7 +91,7 @@ export function SupportChatbot() {
       console.error('Chat error:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again or visit our Support page for direct assistance.'
+        content: 'Sorry, I encountered an error. Please try again or contact support at support@example.com'
       }]);
     } finally {
       setIsLoading(false);

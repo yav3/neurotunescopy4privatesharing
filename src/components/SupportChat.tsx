@@ -18,11 +18,6 @@ interface LeadData {
   nextSteps?: string;
 }
 
-interface SupportChatProps {
-  buttonText?: string;
-  nextToPlayer?: boolean;
-}
-
 // Extract and strip lead_data JSON block from assistant messages
 function extractLeadData(text: string): { cleanText: string; leadData: LeadData | null } {
   const leadBlockRegex = /```lead_data\s*\n?([\s\S]*?)```/g;
@@ -41,6 +36,11 @@ function extractLeadData(text: string): { cleanText: string; leadData: LeadData 
   }).trim();
 
   return { cleanText, leadData };
+}
+
+interface SupportChatProps {
+  buttonText?: string;
+  nextToPlayer?: boolean;
 }
 
 export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false }: SupportChatProps) => {
@@ -99,6 +99,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
       console.error('Failed to capture lead:', err);
     }
   }, [capturedEmails]);
+
 
   // Listen for global event to open support chat
   useEffect(() => {
@@ -181,19 +182,14 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
 
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
+            const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
-              // Strip any partial or complete lead_data blocks from display
-              const displayText = assistantContent
-                .replace(/```lead_data[\s\S]*?```/g, '')
-                .replace(/```lead_data[\s\S]*$/g, '')
-                .trim();
               setMessages(prev => {
                 const newMessages = [...prev];
                 const lastMessage = newMessages[newMessages.length - 1];
                 if (lastMessage.role === 'assistant') {
-                  lastMessage.content = displayText;
+                  lastMessage.content = assistantContent;
                 }
                 return newMessages;
               });
@@ -213,9 +209,17 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
           if (jsonStr === '[DONE]') continue;
           try {
             const parsed = JSON.parse(jsonStr);
-            const content = parsed.delta?.text || parsed.choices?.[0]?.delta?.content;
+            const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               assistantContent += content;
+              setMessages(prev => {
+                const newMessages = [...prev];
+                const lastMessage = newMessages[newMessages.length - 1];
+                if (lastMessage.role === 'assistant') {
+                  lastMessage.content = assistantContent;
+                }
+                return newMessages;
+              });
             }
           } catch { /* ignore */ }
         }
@@ -237,6 +241,7 @@ export const SupportChat = ({ buttonText = 'Chat Support', nextToPlayer = false 
         }
         return newMessages;
       });
+
     } catch (error) {
       console.error('Chat error:', error);
       toast({

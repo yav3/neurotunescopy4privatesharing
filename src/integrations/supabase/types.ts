@@ -676,6 +676,33 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_progress_reports: {
+        Row: {
+          created_at: string
+          id: string
+          report_data: Json
+          report_date: string
+          user_email: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          report_data?: Json
+          report_date?: string
+          user_email: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          report_data?: Json
+          report_date?: string
+          user_email?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       data_sync_jobs: {
         Row: {
           created_at: string | null

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FooterContactHandler } from "./FooterContactHandler";
 import jacobsTechnionLogo from '@/assets/jacobs-technion.png';
 import stanfordLogo from '@/assets/stanford-medicine.png';
@@ -7,17 +7,12 @@ import welconyColourWhite from '@/assets/welcony-colour-white.png';
 
 export const Footer = () => {
   const [contactOpen, setContactOpen] = useState(false);
-  const [interestType, setInterestType] = useState("Contact Sales");
+  const [interestType, setInterestType] = useState("");
 
-  // Listen for global openContactForm events so "Contact Sales" works on every page
-  useEffect(() => {
-    const handler = () => {
-      setInterestType("Contact Sales");
-      setContactOpen(true);
-    };
-    window.addEventListener('openContactForm', handler);
-    return () => window.removeEventListener('openContactForm', handler);
-  }, []);
+  const openContact = (type: string) => {
+    setInterestType(type);
+    setContactOpen(true);
+  };
 
   return (
     <>
@@ -62,6 +57,7 @@ export const Footer = () => {
             >
               Contact Sales
             </button>
+
 
             {/* Distributed by + Copyright */}
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-3 shrink-0">

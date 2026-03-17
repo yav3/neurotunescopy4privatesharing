@@ -9,7 +9,8 @@ interface LissajousLogoProps {
 
 /**
  * Double-infinity Lissajous mark — two ∞ shapes stacked vertically and intersecting.
- * When animated, the curves gently oscillate with phase shifts for an organic, living feel.
+ * When animated, the curves oscillate with phase shifts, amplitude breathing, and
+ * counter-rotating motion for a rich, living feel.
  */
 export const LissajousLogo: React.FC<LissajousLogoProps> = ({
   className = '',
@@ -25,35 +26,46 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
   const halfW = (vw - 2 * padX) / 2;
   const offsetY = 12;
 
-  const buildPath = (yCenter: number, phaseShift = 0) => {
+  const buildPath = (yCenter: number, phaseShift = 0, ampScale = 1, widthScale = 1) => {
     const pts: string[] = [];
-    const halfH = 14;
+    const halfH = 14 * ampScale;
+    const w = halfW * widthScale;
     for (let i = 0; i <= steps; i++) {
       const t = (i / steps) * 2 * Math.PI + phaseShift;
-      const x = cx + Math.cos(t) * halfW;
+      const x = cx + Math.cos(t) * w;
       const y = yCenter + Math.sin(2 * t) * halfH;
       pts.push(`${x.toFixed(2)},${y.toFixed(2)}`);
     }
     return `M ${pts[0]} ` + pts.slice(1).map(p => `L ${p}`).join(' ') + ' Z';
   };
 
-  // Generate keyframe paths for animation (subtle phase oscillation)
   const animFrames = useMemo(() => {
     if (!animated) return null;
-    const frameCount = 5;
-    const maxPhase = 0.15; // subtle shift
+    const frameCount = 8;
     const topFrames: string[] = [];
     const bottomFrames: string[] = [];
     for (let f = 0; f <= frameCount; f++) {
-      const phase = Math.sin((f / frameCount) * 2 * Math.PI) * maxPhase;
-      topFrames.push(buildPath(vh / 2 - offsetY, phase));
-      bottomFrames.push(buildPath(vh / 2 + offsetY, -phase));
+      const norm = (f / frameCount) * 2 * Math.PI;
+      // Phase oscillation
+      const topPhase = Math.sin(norm) * 0.25;
+      const bottomPhase = Math.sin(norm + Math.PI) * 0.25;
+      // Amplitude breathing
+      const topAmp = 1 + Math.sin(norm * 1.5) * 0.12;
+      const bottomAmp = 1 + Math.cos(norm * 1.5) * 0.12;
+      // Width breathing (counter to amplitude)
+      const topWidth = 1 + Math.cos(norm * 0.7) * 0.06;
+      const bottomWidth = 1 - Math.cos(norm * 0.7) * 0.06;
+
+      topFrames.push(buildPath(vh / 2 - offsetY, topPhase, topAmp, topWidth));
+      bottomFrames.push(buildPath(vh / 2 + offsetY, bottomPhase, bottomAmp, bottomWidth));
     }
     return { top: topFrames.join(';'), bottom: bottomFrames.join(';') };
   }, [animated]);
 
   const topPath = buildPath(vh / 2 - offsetY);
   const bottomPath = buildPath(vh / 2 + offsetY);
+
+  const splines = Array(8).fill('0.4 0 0.6 1').join(';');
 
   return (
     <svg
@@ -77,10 +89,10 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
           <animate
             attributeName="d"
             values={animFrames.top}
-            dur="4s"
+            dur="6s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"
+            keySplines={splines}
           />
         )}
       </path>
@@ -97,10 +109,10 @@ export const LissajousLogo: React.FC<LissajousLogoProps> = ({
           <animate
             attributeName="d"
             values={animFrames.bottom}
-            dur="4s"
+            dur="6s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"
+            keySplines={splines}
           />
         )}
       </path>
