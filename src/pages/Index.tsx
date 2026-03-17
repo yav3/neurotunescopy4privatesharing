@@ -33,7 +33,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="overflow-x-hidden" style={{ backgroundColor: 'hsl(0 0% 100%)' }}>
+    <div className="overflow-x-hidden" style={{ backgroundColor: 'hsl(220, 15%, 3%)' }}>
       <AnnouncementOverlay />
       <motion.div
         key="landing"
