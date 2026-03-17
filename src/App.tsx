@@ -160,8 +160,9 @@ const AppContent = () => {
   return (
     <div className="relative min-h-screen">
       <Routes>
-        {/* Root path - show Index page to all users, they can click Sign-In to go to /auth */}
-        <Route path="/" element={<Index />} />
+        {/* Root path - land directly on the immersive music experience */}
+        <Route path="/" element={<Demo />} />
+        <Route path="/landing" element={<Index />} />
         <Route path="/index" element={<Index />} />
         
         
