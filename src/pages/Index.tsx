@@ -4,8 +4,6 @@ import { Footer } from '@/components/Footer';
 import { BackgroundVideoCarousel } from '@/components/BackgroundVideoCarousel';
 import { LandingPagePlayer } from '@/components/LandingPagePlayer';
 import { LandingPageControls } from '@/components/LandingPageControls';
-import { fadeOutIntroSong } from '@/components/CinematicTextOverlay';
-import { PremiumHero } from '@/components/landing/PremiumHero';
 import { SupportChat } from '@/components/SupportChat';
 
 const Index = () => {
@@ -15,20 +13,19 @@ const Index = () => {
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string; artworkUrl?: string } | null>(null);
   const [videoPlaybackRate, setVideoPlaybackRate] = useState(1.0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [showIntro, setShowIntro] = useState(true);
 
+  // Start music immediately on landing — no intro, no delay
   useEffect(() => {
     document.querySelectorAll('audio').forEach(audio => {
       audio.pause();
       audio.src = '';
     });
+    setIsPlaying(true);
   }, []);
 
   useEffect(() => {
     const handleHeaderMuteToggle = (e: CustomEvent) => {
       setIsMuted(e.detail.muted);
-      const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
-      if (introAudio) introAudio.muted = e.detail.muted;
     };
     window.addEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
     return () => window.removeEventListener('headerMuteToggle' as any, handleHeaderMuteToggle);
@@ -40,20 +37,6 @@ const Index = () => {
 
   const handleSkip = () => {
     if ((window as any).__skipLandingTrack) (window as any).__skipLandingTrack();
-  };
-
-  const handleIntroComplete = () => {
-    fadeOutIntroSong(200);
-    const introVideo = (window as any).__introVideo as HTMLVideoElement | null;
-    if (introVideo) introVideo.pause();
-    setShowIntro(false);
-    setIsPlaying(true);
-  };
-
-  const handleMuteToggle = () => {
-    const introAudio = (window as any).__introAudio as HTMLAudioElement | null;
-    if (introAudio) introAudio.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   return (
@@ -70,42 +53,34 @@ const Index = () => {
       <BackgroundVideoCarousel
         playbackRate={videoPlaybackRate}
         currentVideoIndex={currentVideoIndex}
-        isPlaying={!showIntro && isPlaying}
+        isPlaying={isPlaying}
       />
 
-      {!showIntro && (
-        <LandingPagePlayer
-          onPlaybackStateChange={setIsPlaying}
-          onCurrentTrackChange={(track) => setCurrentTrack(track)}
-          onVideoPlaybackRateChange={setVideoPlaybackRate}
-          onVideoChange={setCurrentVideoIndex}
-          isPlaying={isPlaying}
-          isMuted={isMuted}
-        />
-      )}
+      <LandingPagePlayer
+        onPlaybackStateChange={setIsPlaying}
+        onCurrentTrackChange={(track) => setCurrentTrack(track)}
+        onVideoPlaybackRateChange={setVideoPlaybackRate}
+        onVideoChange={setCurrentVideoIndex}
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+      />
 
       <NavigationHeader />
 
-      {showIntro && <PremiumHero onComplete={handleIntroComplete} />}
-
       <div className="flex-1" />
 
-      {!showIntro && (
-        <LandingPageControls
-          isPlaying={isPlaying}
-          isMuted={isMuted}
-          isSpatialAudio={isSpatialAudio}
-          currentTrack={currentTrack}
-          onPlayPause={() => setIsPlaying(!isPlaying)}
-          onSkip={handleSkip}
-          onToggleMute={handleMuteToggle}
-          onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
-        />
-      )}
+      <LandingPageControls
+        isPlaying={isPlaying}
+        isMuted={isMuted}
+        isSpatialAudio={isSpatialAudio}
+        currentTrack={currentTrack}
+        onPlayPause={() => setIsPlaying(!isPlaying)}
+        onSkip={handleSkip}
+        onToggleMute={() => setIsMuted(!isMuted)}
+        onToggleSpatial={() => setIsSpatialAudio(!isSpatialAudio)}
+      />
 
-      {!showIntro && (
-        <SupportChat buttonText="Chat Support" nextToPlayer />
-      )}
+      <SupportChat buttonText="Chat Support" nextToPlayer />
 
       <div className="hidden"><Footer /></div>
     </div>

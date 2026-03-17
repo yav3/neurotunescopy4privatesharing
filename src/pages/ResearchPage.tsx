@@ -29,6 +29,41 @@ export function ResearchPage() {
       year: '2024',
       impact: '87% improvement in treatment efficacy',
     },
+    {
+      title: 'Advancing Personalized Digital Therapeutics: Integrating Music Therapy, Brainwave Entrainment, and AI Biofeedback',
+      authors: 'Jiao, Y., et al.',
+      journal: 'Frontiers in Digital Health',
+      year: '2025',
+      impact: 'Framework for AI-driven personalized music interventions with gamma entrainment',
+    },
+    {
+      title: 'Music Supercharges Brain Stimulation: Syncing TMS Pulses to Musical Rhythms Amplifies Motor Activity',
+      authors: 'Stanford University Research Team',
+      journal: 'Stanford Neuroscience',
+      year: '2025',
+      impact: 'Musical rhythm synchronization significantly amplifies neural stimulation effects',
+    },
+    {
+      title: 'Music-Based Neurofeedback: Real-Time Brain-Computer Interface for Therapeutic Applications',
+      authors: 'Various authors',
+      journal: 'Frontiers in Neuroscience',
+      year: '2025',
+      impact: 'Real-time neural entrainment through adaptive music feedback loops',
+    },
+    {
+      title: 'The Transformative Power of Music on Brain Function and Mental Health',
+      authors: 'Multiple contributors',
+      journal: 'PMC / National Library of Medicine',
+      year: '2024',
+      impact: 'Music activates the entire brain — one of few stimuli to do so',
+    },
+    {
+      title: 'Speaker-Listener Neural Coupling Underlies Successful Communication',
+      authors: 'Hasson, U., et al.',
+      journal: 'Proceedings of the National Academy of Sciences (PNAS)',
+      year: '2010',
+      impact: 'Foundational research on how narrative and sound synchronize brain activity',
+    },
   ];
 
   const partners = [
