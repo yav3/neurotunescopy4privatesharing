@@ -13,7 +13,7 @@ import ConnectivityPanel from "@/components/ConnectivityPanel";
 import { initializeDebugging } from "@/utils/debugInit";
 import { useAuthContext } from "@/components/auth/AuthProvider";
 import { AuthPage } from "@/components/auth/AuthPage";
-import { LandingPage } from "@/components/LandingPage";
+
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 import { AdvancedAuthGuard } from "@/components/security/AdvancedAuthGuard";
 import { useAudioStore } from "@/stores";
@@ -232,8 +232,10 @@ const AppContent = () => {
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
       
-      {/* Global Support Chat - available on all pages via nav "Chat Support" */}
-      <SupportChat nextToPlayer={false} />
+      {/* Global Support Chat - hidden on landing/demo where it's embedded with nextToPlayer */}
+      {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
+        <SupportChat nextToPlayer={false} />
+      )}
 
       {/* Global Music Players - COMPLETELY HIDE on landing page to prevent conflicts with LandingPagePlayer */}
       {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (
