@@ -9,13 +9,13 @@ import { fadeOutIntroSong } from '@/components/CinematicTextOverlay';
 import { PremiumHero } from '@/components/landing/PremiumHero';
 
 const Demo = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isSpatialAudio, setIsSpatialAudio] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string; artworkUrl?: string } | null>(null);
   const [videoPlaybackRate, setVideoPlaybackRate] = useState(1.0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [showIntro, setShowIntro] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
     document.querySelectorAll('audio').forEach(audio => {
