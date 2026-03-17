@@ -108,7 +108,7 @@ export const HowItWorksSection: React.FC = () => {
             {/* Connecting line behind noteheads */}
             <div
               className="absolute left-0 right-0 pointer-events-none"
-              style={{ top: 38, height: '1px', background: 'hsl(var(--landing-ink-muted) / 0.1)' }}
+              style={{ top: 38, height: '1px', background: 'hsla(0, 0%, 100%, 0.06)' }}
             />
             {/* Progress line */}
             <motion.div
@@ -152,9 +152,9 @@ export const HowItWorksSection: React.FC = () => {
                       height: 36,
                       borderRadius: '50%',
                       background: isActive
-                        ? 'hsl(var(--landing-electric-1) / 0.08)'
+                        ? 'hsla(190, 90%, 45%, 0.12)'
                         : isPast
-                        ? 'hsl(var(--landing-electric-1) / 0.03)'
+                        ? 'hsla(190, 90%, 45%, 0.05)'
                         : 'transparent',
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
@@ -173,7 +173,7 @@ export const HowItWorksSection: React.FC = () => {
                     {isActive && (
                       <motion.div
                         className="absolute inset-0 rounded-full"
-                        style={{ border: '1px solid hsl(var(--landing-electric-1) / 0.3)' }}
+                        style={{ border: '1px solid hsla(190, 90%, 45%, 0.3)' }}
                         animate={{ scale: [1, 1.4], opacity: [0.4, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       />
@@ -238,8 +238,8 @@ export const HowItWorksSection: React.FC = () => {
 
           {/* Double barline */}
           <div className="flex items-center justify-end gap-0.5 mt-3 pr-2">
-            <div style={{ width: '1px', height: '10px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
-            <div style={{ width: '2px', height: '10px', background: 'hsl(var(--landing-ink-muted))', opacity: 0.1 }} />
+            <div style={{ width: '1px', height: '10px', background: 'hsla(0, 0%, 100%, 0.08)' }} />
+            <div style={{ width: '2px', height: '10px', background: 'hsla(0, 0%, 100%, 0.08)' }} />
             <span className="ml-1" style={{ fontSize: '8px', fontStyle: 'italic', color: 'hsl(var(--landing-ink-muted))', opacity: 0.2 }}>
               Fine
             </span>
