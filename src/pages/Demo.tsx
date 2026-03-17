@@ -9,7 +9,7 @@ import { fadeOutIntroSong } from '@/components/CinematicTextOverlay';
 import { PremiumHero } from '@/components/landing/PremiumHero';
 
 const Demo = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [isSpatialAudio, setIsSpatialAudio] = useState(false);
   const [currentTrack, setCurrentTrack] = useState<{ name: string; genre: string; artist?: string; therapeuticGoal?: string; artworkUrl?: string } | null>(null);
