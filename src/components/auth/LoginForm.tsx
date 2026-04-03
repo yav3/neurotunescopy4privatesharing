@@ -1,30 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, Mail, Lock, LogIn, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Eye, EyeOff, Mail, Lock, LogIn, AlertTriangle, Send, ShieldCheck } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 interface LoginFormProps {
   onToggleMode: () => void;
 }
 
 export function LoginForm({ onToggleMode }: LoginFormProps) {
-  const { signIn, loading, error, clearError, user } = useAuthContext();
+  const { signIn, sendOtp, verifyOtp, loading, error, clearError, user } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [cooldown, setCooldown] = useState(0);
   const navigate = useNavigate();
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Redirect to music player page when user is authenticated
   useEffect(() => {
     if (user) {
-      console.log('✅ User authenticated, redirecting to music player');
+      console.log('User authenticated, redirecting to music player');
       navigate('/goals');
     }
   }, [user, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+    };
+  }, []);
+
+  const startCooldown = () => {
+    setCooldown(60);
+    cooldownRef.current = setInterval(() => {
+      setCooldown(prev => {
+        if (prev <= 1) {
+          if (cooldownRef.current) clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    clearError();
+    const result = await sendOtp(email);
+    if (result.success) {
+      setOtpSent(true);
+      startCooldown();
+      toast({
+        title: "Code Sent",
+        description: "Check your email for a 6-digit verification code.",
+      });
+    }
+  };
+
+  const handleVerifyOtp = async (code: string) => {
+    if (code.length !== 6) return;
+    clearError();
+    await verifyOtp(email, code);
+  };
+
+  const handleResendOtp = async () => {
+    if (cooldown > 0) return;
+    clearError();
+    const result = await sendOtp(email);
+    if (result.success) {
+      startCooldown();
+      toast({
+        title: "Code Resent",
+        description: "A new verification code has been sent to your email.",
+      });
+    }
+  };
+
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
       clearError();
@@ -41,52 +99,48 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
       });
       return;
     }
-    
+
     try {
       const resetUrl = `${window.location.origin}/reset-password`;
-      
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: resetUrl,
       });
-      
       if (error) throw error;
-      
       toast({
         title: "Password Reset Email Sent",
         description: "Check your email for password reset instructions. It may take a minute to arrive.",
       });
     } catch (error: any) {
       toast({
-        title: "Error", 
+        title: "Error",
         description: error.message || "Failed to send reset email",
         variant: "destructive",
       });
     }
   };
 
-  const handleAppleSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
-        options: {
-          redirectTo: `${window.location.origin}/goals`,
-        }
-      });
-      
-      if (error) {
-        toast({
-          title: "Sign In Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign in with Apple",
-        variant: "destructive",
-      });
-    }
+  const handleTabChange = () => {
+    clearError();
+  };
+
+  const inputStyle = {
+    background: 'rgba(0, 0, 0, 0.6)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    color: '#C0C0C8',
+  };
+
+  const buttonStyle = {
+    background: 'rgba(0, 0, 0, 0.8)',
+    backdropFilter: 'blur(20px)',
+    border: 'none',
+    boxShadow: `
+      0 0 0 1px rgba(255, 255, 255, 0.3),
+      inset 0 2px 8px rgba(255, 255, 255, 0.1),
+      inset 0 -2px 8px rgba(0, 0, 0, 0.5),
+      0 8px 32px rgba(0, 0, 0, 0.6)
+    `,
+    color: '#C0C0C8',
   };
 
   return (
@@ -97,7 +151,7 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
       </div>
 
       {error && (
-        <div 
+        <div
           className="rounded-lg p-4"
           style={{
             background: 'rgba(220, 38, 38, 0.15)',
@@ -112,92 +166,203 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#C0C0C8' }}>
-            Email Address
-          </label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#C0C0C8' }} />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{
-                background: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#C0C0C8',
-              }}
-              className="w-full pl-10 pr-4 py-3 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#C0C0C8' }}>
-            Password
-          </label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#C0C0C8' }} />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                background: 'rgba(0, 0, 0, 0.6)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#C0C0C8',
-              }}
-              className="w-full pl-10 pr-12 py-3 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
-              placeholder="Enter your password"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors"
-              style={{ color: '#C0C0C8' }}
-            >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading || !email || !password}
-          className="w-full py-3 px-4 rounded-lg font-medium focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+      <Tabs defaultValue="email-code" onValueChange={handleTabChange} className="w-full">
+        <TabsList
+          className="grid w-full grid-cols-2"
           style={{
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(20px)',
-            border: 'none',
-            boxShadow: `
-              0 0 0 1px rgba(255, 255, 255, 0.3),
-              inset 0 2px 8px rgba(255, 255, 255, 0.1),
-              inset 0 -2px 8px rgba(0, 0, 0, 0.5),
-              0 8px 32px rgba(0, 0, 0, 0.6)
-            `,
-            color: '#C0C0C8',
+            background: 'rgba(0, 0, 0, 0.4)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
           }}
         >
-          {loading ? 'Signing in...' : 'Sign In'}
-        </button>
-      </form>
+          <TabsTrigger
+            value="email-code"
+            className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400"
+          >
+            <Mail className="w-4 h-4 mr-2" />
+            Email Code
+          </TabsTrigger>
+          <TabsTrigger
+            value="password"
+            className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400"
+          >
+            <Lock className="w-4 h-4 mr-2" />
+            Password
+          </TabsTrigger>
+        </TabsList>
 
+        {/* Email OTP Tab */}
+        <TabsContent value="email-code" className="space-y-4 mt-4">
+          {!otpSent ? (
+            <form onSubmit={handleSendOtp} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#C0C0C8' }}>
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#C0C0C8' }} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={inputStyle}
+                    className="w-full pl-10 pr-4 py-3 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+              </div>
 
-      <div className="text-center space-y-3">
-        <button
-          type="button"
-          onClick={handleForgotPassword}
-          className="text-sm font-medium block w-full transition-colors"
-          style={{ color: '#C0C0C8' }}
-        >
-          Forgot your password?
-        </button>
+              <button
+                type="submit"
+                disabled={loading || !email}
+                className="w-full py-3 px-4 rounded-lg font-medium focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                style={buttonStyle}
+              >
+                <Send className="w-4 h-4" />
+                {loading ? 'Sending...' : 'Send Verification Code'}
+              </button>
+            </form>
+          ) : (
+            <div className="space-y-4">
+              <div className="text-center">
+                <ShieldCheck className="w-10 h-10 mx-auto mb-2" style={{ color: '#C0C0C8' }} />
+                <p className="text-sm" style={{ color: '#C0C0C8' }}>
+                  Enter the 6-digit code sent to
+                </p>
+                <p className="text-sm font-medium" style={{ color: '#ffffff' }}>
+                  {email}
+                </p>
+              </div>
+
+              <div className="flex justify-center">
+                <InputOTP
+                  maxLength={6}
+                  value={otpCode}
+                  onChange={(value) => {
+                    setOtpCode(value);
+                    if (value.length === 6) {
+                      handleVerifyOtp(value);
+                    }
+                  }}
+                  disabled={loading}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                    <InputOTPSlot index={1} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                    <InputOTPSlot index={2} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                  </InputOTPGroup>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                    <InputOTPSlot index={4} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                    <InputOTPSlot index={5} className="w-11 h-12 text-lg bg-black/60 border-white/20 text-white" />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+
+              {loading && (
+                <p className="text-center text-sm" style={{ color: '#C0C0C8' }}>
+                  Verifying...
+                </p>
+              )}
+
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtpCode('');
+                    clearError();
+                  }}
+                  className="text-sm transition-colors"
+                  style={{ color: '#C0C0C8' }}
+                >
+                  Change email
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={cooldown > 0 || loading}
+                  className="text-sm font-medium transition-colors disabled:opacity-50"
+                  style={{ color: '#C0C0C8' }}
+                >
+                  {cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}
+                </button>
+              </div>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* Password Tab */}
+        <TabsContent value="password" className="space-y-4 mt-4">
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#C0C0C8' }}>
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#C0C0C8' }} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={inputStyle}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2" style={{ color: '#C0C0C8' }}>
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" style={{ color: '#C0C0C8' }} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={inputStyle}
+                  className="w-full pl-10 pr-12 py-3 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors"
+                  style={{ color: '#C0C0C8' }}
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading || !email || !password}
+              className="w-full py-3 px-4 rounded-lg font-medium focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              style={buttonStyle}
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-sm font-medium transition-colors"
+              style={{ color: '#C0C0C8' }}
+            >
+              Forgot your password?
+            </button>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <div className="text-center">
         <p className="text-sm" style={{ color: '#C0C0C8' }}>
           Don't have an account?{' '}
           <button
