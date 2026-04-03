@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Eye, EyeOff, Mail, Lock, LogIn, AlertTriangle, Send, ShieldCheck } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, AlertTriangle, Send, ShieldCheck } from 'lucide-react';
 import { useAuthContext } from './AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -66,7 +66,10 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
   const handleVerifyOtp = async (code: string) => {
     if (code.length !== 6) return;
     clearError();
-    await verifyOtp(email, code);
+    const result = await verifyOtp(email, code);
+    if (!result.success) {
+      setOtpCode('');
+    }
   };
 
   const handleResendOtp = async () => {
