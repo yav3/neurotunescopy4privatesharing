@@ -27,7 +27,7 @@ export class Analytics {
     })
   }
   
-  static trackAuthAttempt(method: 'login' | 'signup', email?: string) {
+  static trackAuthAttempt(method: string, email?: string) {
     this.track('auth_attempt', {
       method,
       email,
@@ -35,7 +35,7 @@ export class Analytics {
     })
   }
   
-  static trackAuthSuccess(method: 'login' | 'signup', userId: string, userRole?: string) {
+  static trackAuthSuccess(method: string, userId: string, userRole?: string) {
     this.track('auth_success', {
       method,
       user_id: userId,
@@ -44,7 +44,7 @@ export class Analytics {
     })
   }
   
-  static trackAuthFailure(method: 'login' | 'signup', error: string, email?: string) {
+  static trackAuthFailure(method: string, error: string, email?: string) {
     this.track('auth_failure', {
       method,
       error_message: error,
