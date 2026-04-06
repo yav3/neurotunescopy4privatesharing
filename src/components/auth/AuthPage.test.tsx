@@ -1,5 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthPage } from './AuthPage';
@@ -52,7 +51,6 @@ describe('AuthPage OTP flow', () => {
   });
 
   it('keeps the auth form mounted during OTP send and advances to code entry', async () => {
-    const user = userEvent.setup();
     let resolveSendOtp: ((value: { success: boolean }) => void) | undefined;
 
     const sendOtp = vi.fn(
@@ -66,8 +64,10 @@ describe('AuthPage OTP flow', () => {
 
     const view = renderAuthPage();
 
-    await user.type(screen.getByLabelText(/email address/i), 'admin@vieclinic.com');
-    await user.click(screen.getByRole('button', { name: /send sign-in code/i }));
+    fireEvent.change(screen.getByPlaceholderText(/enter your email/i), {
+      target: { value: 'admin@vieclinic.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /send sign-in code/i }));
 
     await waitFor(() => expect(sendOtp).toHaveBeenCalledWith('admin@vieclinic.com'));
 
@@ -78,7 +78,7 @@ describe('AuthPage OTP flow', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/enter your email/i)).toBeInTheDocument();
 
     await act(async () => {
       resolveSendOtp?.({ success: true });
