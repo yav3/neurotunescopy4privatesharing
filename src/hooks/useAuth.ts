@@ -175,7 +175,6 @@ export function useAuth() {
       setLoading(true);
       setError(null);
       
-      // Track login attempt
       Analytics.trackAuthAttempt('login', email);
 
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
@@ -189,7 +188,6 @@ export function useAuth() {
       }
       
       if (data.user) {
-        // Get user with profile to track role
         const userWithProfile = await getUserWithProfile(data.user);
         Analytics.trackAuthSuccess('login', data.user.id, userWithProfile?.role);
       }
@@ -199,6 +197,101 @@ export function useAuth() {
       const errorMessage = err.message || 'Sign in failed';
       setError(errorMessage);
       Analytics.trackAuthFailure('login', errorMessage, email);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Send OTP code to email
+  const sendOtp = async (email: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      Analytics.trackAuthAttempt('otp_send', email);
+
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: false,
+        }
+      });
+
+      if (otpError) {
+        Analytics.trackAuthFailure('otp_send', otpError.message, email);
+        throw otpError;
+      }
+
+      return { success: true };
+    } catch (err: any) {
+      const errorMessage = err.message || 'Failed to send verification code';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Verify OTP code
+  const verifyOtp = async (email: string, token: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      Analytics.trackAuthAttempt('otp_verify', email);
+
+      const { data, error: verifyError } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email'
+      });
+
+      if (verifyError) {
+        Analytics.trackAuthFailure('otp_verify', verifyError.message, email);
+        throw verifyError;
+      }
+      
+      if (data.user) {
+        const userWithProfile = await getUserWithProfile(data.user);
+        Analytics.trackAuthSuccess('otp_verify', data.user.id, userWithProfile?.role);
+      }
+
+      return { success: true, user: data.user };
+    } catch (err: any) {
+      const errorMessage = err.message || 'Invalid verification code';
+      setError(errorMessage);
+      Analytics.trackAuthFailure('otp_verify', errorMessage, email);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Send OTP for signup (creates user if not exists)
+  const sendSignupOtp = async (email: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      Analytics.trackAuthAttempt('signup_otp_send', email);
+
+      const { error: otpError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: true,
+        }
+      });
+
+      if (otpError) {
+        Analytics.trackAuthFailure('signup_otp_send', otpError.message, email);
+        throw otpError;
+      }
+
+      return { success: true };
+    } catch (err: any) {
+      const errorMessage = err.message || 'Failed to send verification code';
+      setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
@@ -400,6 +493,9 @@ export function useAuth() {
     isAdmin,
     canManageUsers,
     clearError,
-    sessionManager
+    sessionManager,
+    sendOtp,
+    verifyOtp,
+    sendSignupOtp
   };
 }
