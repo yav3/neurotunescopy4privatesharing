@@ -215,6 +215,8 @@ export function useAuth() {
         email,
         options: {
           shouldCreateUser: false,
+          emailRedirectTo: undefined,
+          data: { otp_delivery: 'code' },
         }
       });
 
@@ -280,6 +282,8 @@ export function useAuth() {
         email,
         options: {
           shouldCreateUser: true,
+          emailRedirectTo: undefined,
+          data: { otp_delivery: 'code' },
         }
       });
 
