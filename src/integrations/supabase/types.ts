@@ -2914,6 +2914,329 @@ export type Database = {
           },
         ]
       }
+      l0_constraint_violations: {
+        Row: {
+          boundary_value: Json | null
+          constraint_id: string
+          created_at: string
+          id: string
+          proposed_value: Json | null
+          severity: string
+          transition_id: string
+          violation_detail: Json
+        }
+        Insert: {
+          boundary_value?: Json | null
+          constraint_id: string
+          created_at?: string
+          id?: string
+          proposed_value?: Json | null
+          severity: string
+          transition_id: string
+          violation_detail: Json
+        }
+        Update: {
+          boundary_value?: Json | null
+          constraint_id?: string
+          created_at?: string
+          id?: string
+          proposed_value?: Json | null
+          severity?: string
+          transition_id?: string
+          violation_detail?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "l0_constraint_violations_constraint_id_fkey"
+            columns: ["constraint_id"]
+            isOneToOne: false
+            referencedRelation: "l0_constraints"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "l0_constraint_violations_transition_id_fkey"
+            columns: ["transition_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_transitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      l0_constraints: {
+        Row: {
+          constraint_name: string
+          constraint_type: string
+          created_at: string
+          description: string | null
+          domain: string
+          id: string
+          is_active: boolean
+          rule_expression: Json
+          severity: string
+        }
+        Insert: {
+          constraint_name: string
+          constraint_type: string
+          created_at?: string
+          description?: string | null
+          domain: string
+          id?: string
+          is_active?: boolean
+          rule_expression: Json
+          severity?: string
+        }
+        Update: {
+          constraint_name?: string
+          constraint_type?: string
+          created_at?: string
+          description?: string | null
+          domain?: string
+          id?: string
+          is_active?: boolean
+          rule_expression?: Json
+          severity?: string
+        }
+        Relationships: []
+      }
+      l0_provenance_log: {
+        Row: {
+          commit_hash: string
+          committed_state: Json
+          created_at: string
+          created_by: string | null
+          evidence_sources: string[] | null
+          id: string
+          method_chain: string[] | null
+          node_id: string | null
+          parent_hash: string | null
+          transition_id: string
+        }
+        Insert: {
+          commit_hash: string
+          committed_state: Json
+          created_at?: string
+          created_by?: string | null
+          evidence_sources?: string[] | null
+          id?: string
+          method_chain?: string[] | null
+          node_id?: string | null
+          parent_hash?: string | null
+          transition_id: string
+        }
+        Update: {
+          commit_hash?: string
+          committed_state?: Json
+          created_at?: string
+          created_by?: string | null
+          evidence_sources?: string[] | null
+          id?: string
+          method_chain?: string[] | null
+          node_id?: string | null
+          parent_hash?: string | null
+          transition_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "l0_provenance_log_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "l0_provenance_log_transition_id_fkey"
+            columns: ["transition_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_transitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      l0_state_edges: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          edge_type: string
+          id: string
+          metadata: Json | null
+          source_node_id: string
+          target_node_id: string
+          weight: number
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          edge_type: string
+          id?: string
+          metadata?: Json | null
+          source_node_id: string
+          target_node_id: string
+          weight?: number
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          edge_type?: string
+          id?: string
+          metadata?: Json | null
+          source_node_id?: string
+          target_node_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "l0_state_edges_source_node_id_fkey"
+            columns: ["source_node_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "l0_state_edges_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      l0_state_nodes: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          node_key: string
+          node_type: string
+          state_data: Json
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          node_key: string
+          node_type: string
+          state_data?: Json
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          node_key?: string
+          node_type?: string
+          state_data?: Json
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      l0_state_transitions: {
+        Row: {
+          committed_at: string | null
+          constraints_checked: string[] | null
+          constraints_violated: string[] | null
+          created_at: string
+          id: string
+          is_fast_path: boolean
+          previous_state: Json | null
+          proposal_id: string
+          proposed_state: Json
+          proposer_id: string | null
+          proposer_layer: string
+          rejected_at: string | null
+          rolled_back_at: string | null
+          target_node_id: string | null
+          transition_type: string
+          validation_result: Json | null
+          validation_status: string
+        }
+        Insert: {
+          committed_at?: string | null
+          constraints_checked?: string[] | null
+          constraints_violated?: string[] | null
+          created_at?: string
+          id?: string
+          is_fast_path?: boolean
+          previous_state?: Json | null
+          proposal_id: string
+          proposed_state: Json
+          proposer_id?: string | null
+          proposer_layer: string
+          rejected_at?: string | null
+          rolled_back_at?: string | null
+          target_node_id?: string | null
+          transition_type: string
+          validation_result?: Json | null
+          validation_status?: string
+        }
+        Update: {
+          committed_at?: string | null
+          constraints_checked?: string[] | null
+          constraints_violated?: string[] | null
+          created_at?: string
+          id?: string
+          is_fast_path?: boolean
+          previous_state?: Json | null
+          proposal_id?: string
+          proposed_state?: Json
+          proposer_id?: string | null
+          proposer_layer?: string
+          rejected_at?: string | null
+          rolled_back_at?: string | null
+          target_node_id?: string | null
+          transition_type?: string
+          validation_result?: Json | null
+          validation_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "l0_state_transitions_target_node_id_fkey"
+            columns: ["target_node_id"]
+            isOneToOne: false
+            referencedRelation: "l0_state_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      l4_evidence_packs: {
+        Row: {
+          assembled_output: Json
+          created_at: string
+          id: string
+          is_regulatory_ready: boolean
+          metadata: Json | null
+          pack_type: string
+          provenance_ids: string[]
+          signature_hash: string
+          title: string
+        }
+        Insert: {
+          assembled_output: Json
+          created_at?: string
+          id?: string
+          is_regulatory_ready?: boolean
+          metadata?: Json | null
+          pack_type: string
+          provenance_ids: string[]
+          signature_hash: string
+          title: string
+        }
+        Update: {
+          assembled_output?: Json
+          created_at?: string
+          id?: string
+          is_regulatory_ready?: boolean
+          metadata?: Json | null
+          pack_type?: string
+          provenance_ids?: string[]
+          signature_hash?: string
+          title?: string
+        }
+        Relationships: []
+      }
       listening_sessions: {
         Row: {
           average_complexity_score: number | null

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAutomaticSessionTracking } from '@/hooks/useAutomaticSessionTracking';
-import { useAuthContext } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
 
 /**
@@ -8,7 +8,7 @@ import { toast } from '@/hooks/use-toast';
  * Add this to your main App component to track all user listening activity
  */
 export const GlobalSessionTracker: React.FC = () => {
-  const { user } = useAuthContext();
+  const { user } = useAuth();
   const { manualSave, getCurrentSession } = useAutomaticSessionTracking();
 
   // Show session info to user occasionally

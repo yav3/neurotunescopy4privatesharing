@@ -13,6 +13,7 @@ interface AuthPageProps {
 
 function AuthPageContent({ onBack }: AuthPageProps) {
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [hasInitializedAuth, setHasInitializedAuth] = useState(false);
   const { user, loading } = useAuthContext();
   const navigate = useNavigate();
 
@@ -29,8 +30,15 @@ function AuthPageContent({ onBack }: AuthPageProps) {
     }
   }, [user, loading, navigate]);
 
-  // Show loading state while checking auth
-  if (loading) {
+  useEffect(() => {
+    if (!loading) {
+      setHasInitializedAuth(true);
+    }
+  }, [loading]);
+
+  // Only block the page during the very first auth bootstrap.
+  // Keep the form mounted for OTP/password actions so local step state is preserved.
+  if (loading && !hasInitializedAuth) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white">Loading...</div>
