@@ -2679,6 +2679,143 @@ export type Database = {
         }
         Relationships: []
       }
+      grn_ingestion_log: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          job_type: string
+          next_scheduled_at: string | null
+          records_failed: number | null
+          records_processed: number | null
+          source: string
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_type?: string
+          next_scheduled_at?: string | null
+          records_failed?: number | null
+          records_processed?: number | null
+          source: string
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_type?: string
+          next_scheduled_at?: string | null
+          records_failed?: number | null
+          records_processed?: number | null
+          source?: string
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      grn_pipeline_runs: {
+        Row: {
+          all_passed: boolean
+          constraints_loaded: number
+          created_at: string
+          duration_ms: number | null
+          engine_count: number
+          finished_at: string | null
+          id: string
+          prompt_fingerprint: string | null
+          run_id: string
+          started_at: string
+          status: string
+          system_version: string
+          total_violations: number
+        }
+        Insert: {
+          all_passed?: boolean
+          constraints_loaded?: number
+          created_at?: string
+          duration_ms?: number | null
+          engine_count?: number
+          finished_at?: string | null
+          id?: string
+          prompt_fingerprint?: string | null
+          run_id: string
+          started_at?: string
+          status?: string
+          system_version: string
+          total_violations?: number
+        }
+        Update: {
+          all_passed?: boolean
+          constraints_loaded?: number
+          created_at?: string
+          duration_ms?: number | null
+          engine_count?: number
+          finished_at?: string | null
+          id?: string
+          prompt_fingerprint?: string | null
+          run_id?: string
+          started_at?: string
+          status?: string
+          system_version?: string
+          total_violations?: number
+        }
+        Relationships: []
+      }
+      grn_pipeline_steps: {
+        Row: {
+          committed: boolean
+          confidence: number | null
+          created_at: string
+          derivation: string | null
+          engine: string
+          id: string
+          output_summary: string | null
+          run_id: string
+          status: string
+          violations: number
+        }
+        Insert: {
+          committed?: boolean
+          confidence?: number | null
+          created_at?: string
+          derivation?: string | null
+          engine: string
+          id?: string
+          output_summary?: string | null
+          run_id: string
+          status?: string
+          violations?: number
+        }
+        Update: {
+          committed?: boolean
+          confidence?: number | null
+          created_at?: string
+          derivation?: string | null
+          engine?: string
+          id?: string
+          output_summary?: string | null
+          run_id?: string
+          status?: string
+          violations?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grn_pipeline_steps_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "grn_pipeline_runs"
+            referencedColumns: ["run_id"]
+          },
+        ]
+      }
       hit_prediction_models: {
         Row: {
           created_at: string

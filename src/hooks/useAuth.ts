@@ -169,71 +169,6 @@ export function useAuth() {
     }
   };
 
-  // Send OTP code to email
-  const sendOtp = async (email: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      Analytics.trackAuthAttempt('otp_send', email);
-
-      const { error: otpError } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: false,
-        }
-      });
-
-      if (otpError) {
-        Analytics.trackAuthFailure('otp_send', otpError.message, email);
-        throw otpError;
-      }
-
-      return { success: true };
-    } catch (err: any) {
-      const errorMessage = err.message || 'Failed to send verification code';
-      setError(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Verify OTP code
-  const verifyOtp = async (email: string, token: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      Analytics.trackAuthAttempt('otp_verify', email);
-
-      const { data, error: verifyError } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: 'email',
-      });
-
-      if (verifyError) {
-        Analytics.trackAuthFailure('otp_verify', verifyError.message, email);
-        throw verifyError;
-      }
-
-      if (data.user) {
-        const userWithProfile = await getUserWithProfile(data.user);
-        Analytics.trackAuthSuccess('otp_verify', data.user.id, userWithProfile?.role);
-      }
-
-      return { success: true, user: data.user };
-    } catch (err: any) {
-      const errorMessage = err.message || 'Invalid verification code';
-      setError(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Sign in
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
@@ -564,8 +499,6 @@ export function useAuth() {
     canManageUsers,
     clearError,
     sessionManager,
-    sendOtp,
-    verifyOtp,
     sendSignupOtp
   };
 }
