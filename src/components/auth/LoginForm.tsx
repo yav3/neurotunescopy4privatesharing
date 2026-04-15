@@ -482,5 +482,6 @@ export function LoginForm({ onToggleMode }: LoginFormProps) {
           </button>
         </p>
       </div>
+    </div>
   );
 }
