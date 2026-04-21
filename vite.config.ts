@@ -11,20 +11,21 @@ export default defineConfig(({ mode }) => ({
     componentTagger(),
   ].filter(Boolean),
   server: {
+    // Bind to localhost only in local dev; Lovable cloud preview overrides via its own runner
+    host: mode === 'development' ? "localhost" : "::",
     allowedHosts: [
       "localhost",
       "127.0.0.1",
-      "0.0.0.0",
       "*.lovable.dev"
     ],
-    host: "::",
     port: 8080,
     strictPort: true,
     proxy: {
       "/api": {
         target: process.env.VITE_API_BASE_URL,
         changeOrigin: true,
-        secure: false,
+        // Only skip TLS verification in explicit dev mode, never in production builds
+        secure: mode !== 'development',
       },
     },
   },

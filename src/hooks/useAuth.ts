@@ -25,8 +25,9 @@ interface ExtendedUser extends User {
   role?: UserRole;
 }
 
-// Dev mode bypass - set to true to skip authentication
-const DEV_MODE_BYPASS = false;
+// Dev mode bypass — only active when explicitly running a local dev build AND the flag is set.
+// This can never activate in a production bundle because import.meta.env.DEV is false-folded at build time.
+const DEV_MODE_BYPASS = import.meta.env.DEV && import.meta.env.VITE_DEV_AUTH_BYPASS === 'true';
 
 export function useAuth() {
   const [user, setUser] = useState<ExtendedUser | null>(null);

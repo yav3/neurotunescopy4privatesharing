@@ -3,6 +3,10 @@
 .env.*
 !.env.example
 
+# Debug artifacts
+debug-screenshot.png
+debug-*.png
+
 # Logs
 logs
 *.log

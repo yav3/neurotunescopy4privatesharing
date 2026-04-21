@@ -38,7 +38,7 @@ async function handleList(req: Request): Promise<Response> {
 
     if (error) {
       console.error('Storage list error:', error);
-      return json({ ok: false, error: error.message });
+      return json({ ok: false, error: 'Storage list failed' });
     }
 
     if (!files) {
