@@ -3,6 +3,16 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
+function esc(value: string | number | null | undefined): string {
+  if (value === null || value === undefined) return ''
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -36,30 +46,26 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const leadData: LeadData = await req.json();
-    
-    console.log("Received lead data:", leadData);
 
     const priority = calculatePriority(leadData.squareFootage, leadData.numberOfSites);
 
     const emailResponse = await resend.emails.send({
       from: "NeuroTunes <onboarding@resend.dev>",
       to: ["clong@neuralpositive.com"],
-      subject: `[${priority}] Customer Review Request - ${leadData.companyName}`,
+      subject: `[${esc(priority)}] Customer Review Request - ${esc(leadData.companyName)}`,
       html: `
         <h2>New Customer Review Request</h2>
-        <p><strong>Priority:</strong> ${priority}</p>
+        <p><strong>Priority:</strong> ${esc(priority)}</p>
         <hr />
-        <p><strong>Name:</strong> ${leadData.name}</p>
-        <p><strong>Email:</strong> ${leadData.email}</p>
-        <p><strong>Company:</strong> ${leadData.companyName}</p>
-        <p><strong>Number of Sites:</strong> ${leadData.numberOfSites}</p>
-        <p><strong>Square Footage:</strong> ${leadData.squareFootage.toLocaleString()} sq ft</p>
+        <p><strong>Name:</strong> ${esc(leadData.name)}</p>
+        <p><strong>Email:</strong> ${esc(leadData.email)}</p>
+        <p><strong>Company:</strong> ${esc(leadData.companyName)}</p>
+        <p><strong>Number of Sites:</strong> ${esc(leadData.numberOfSites)}</p>
+        <p><strong>Square Footage:</strong> ${esc(leadData.squareFootage.toLocaleString())} sq ft</p>
         <hr />
         <p><em>Submitted via NeuroTunes website</em></p>
       `,
     });
-
-    console.log("Email sent successfully:", emailResponse);
 
     return new Response(
       JSON.stringify({ success: true, priority }),
@@ -68,10 +74,9 @@ const handler = async (req: Request): Promise<Response> => {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
-  } catch (error: any) {
-    console.error("Error in submit-site-assessment function:", error);
+  } catch (_error) {
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'Internal server error' }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },

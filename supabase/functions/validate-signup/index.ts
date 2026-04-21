@@ -35,27 +35,27 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { email, fullName, displayName, clientIp } = await req.json() as ValidationRequest
+    const { email, fullName, displayName } = await req.json() as ValidationRequest
     const errors: string[] = []
-    
+
     // Use either fullName or displayName (displayName is what the frontend sends)
     const nameToValidate = fullName || displayName || ''
 
-    console.log('Validating signup:', { email, fullName, displayName, clientIp })
+    // Read client IP from trusted edge headers — never trust body-supplied IP
+    const clientIp = req.headers.get('cf-connecting-ip') ||
+                     req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     null
 
     // Validate full name (First + Last minimum)
     if (!nameToValidate || nameToValidate.trim().length === 0) {
-      console.log('❌ No name provided')
       errors.push('Please provide your full legal name (first and last name required, no fake names)')
     } else {
       const { data: nameValid, error: nameError } = await supabase
         .rpc('validate_user_name', { full_name: nameToValidate })
 
       if (nameError) {
-        console.error('❌ Name validation RPC error:', nameError)
-        errors.push('Error validating name: ' + nameError.message)
+        errors.push('Error validating name')
       } else {
-        console.log('✅ Name validation result:', nameValid)
         if (!nameValid) {
           errors.push('Please provide your full legal name (first and last name required, no fake names)')
         }
@@ -67,19 +67,21 @@ serve(async (req) => {
       .rpc('is_blocked_company_email', { email })
 
     if (companyError) {
-      console.error('Company check error:', companyError)
+      console.error('Company check error')
     } else if (companyBlocked) {
       errors.push('Registration from this organization is not permitted')
     }
 
-    // Geolocation check using IP
-    if (clientIp && clientIp !== '127.0.0.1' && !clientIp.startsWith('192.168.')) {
-      try {
-        // Using ip-api.com for geolocation (free tier, no API key needed)
-        const geoResponse = await fetch(`http://ip-api.com/json/${clientIp}?fields=status,country,countryCode,proxy`)
-        const geoData = await geoResponse.json()
+    // Validate IP format before using in URL (basic IPv4/IPv6 sanity check)
+    const isValidIp = (ip: string) =>
+      /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) || /^[0-9a-fA-F:]+$/.test(ip)
 
-        console.log('Geolocation data:', geoData)
+    // Geolocation check using IP
+    if (clientIp && clientIp !== '127.0.0.1' && !clientIp.startsWith('192.168.') && isValidIp(clientIp)) {
+      try {
+        // Use HTTPS to prevent MITM on geolocation lookups
+        const geoResponse = await fetch(`https://ip-api.com/json/${encodeURIComponent(clientIp)}?fields=status,country,countryCode,proxy`)
+        const geoData = await geoResponse.json()
 
         if (geoData.status === 'success') {
           // Check if country is blocked
@@ -135,9 +137,7 @@ serve(async (req) => {
         })
 
         if (emailError) {
-          console.error('❌ Failed to send confirmation email:', emailError)
-        } else {
-          console.log('✅ Confirmation email sent successfully to', email)
+          console.error('Failed to send confirmation email')
         }
 
         // Store trial request in database
@@ -151,9 +151,7 @@ serve(async (req) => {
           })
 
         if (insertError) {
-          console.error('Failed to create trial record:', insertError)
-        } else {
-          console.log('✅ Trial request record created for', email)
+          console.error('Failed to create trial record')
         }
 
       } catch (emailError) {
