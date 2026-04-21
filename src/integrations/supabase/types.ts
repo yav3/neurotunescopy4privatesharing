@@ -3431,7 +3431,7 @@ export type Database = {
           expires_at: string
           id: string
           metadata: Json | null
-          token: string
+          token_hash: string
           used_at: string | null
           user_id: string
         }
@@ -3441,7 +3441,7 @@ export type Database = {
           expires_at: string
           id?: string
           metadata?: Json | null
-          token: string
+          token_hash: string
           used_at?: string | null
           user_id: string
         }
@@ -3451,7 +3451,7 @@ export type Database = {
           expires_at?: string
           id?: string
           metadata?: Json | null
-          token?: string
+          token_hash?: string
           used_at?: string | null
           user_id?: string
         }
