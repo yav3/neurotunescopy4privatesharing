@@ -65,69 +65,38 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
-    console.log('Magic link validated successfully for user:', validation.user_id);
-
-    // Generate a session for the user using admin API
-    const { data: sessionData, error: sessionError } = await supabase.auth.admin.generateLink({
-      type: 'magiclink',
-      email: '', // We'll get the email from user data
-      options: {
-        redirectTo: req.headers.get('origin') || 'https://neurotunes.app'
-      }
-    });
-
-    if (sessionError) {
-      console.error('Error generating session:', sessionError);
-      
-      // Fallback: create a custom JWT token for the user
-      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(validation.user_id);
-      
-      if (userError || !userData.user) {
-        throw new Error('Failed to get user data');
-      }
-
-      // For now, return success with user data - client will handle session creation
-      return new Response(JSON.stringify({
-        success: true,
-        user_id: validation.user_id,
-        email: userData.user.email,
-        message: 'Magic link validated successfully'
-      }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders,
-        },
-      });
+    // Resolve user email from ID so we can generate a valid magic link
+    const { data: userData, error: userError } = await supabase.auth.admin.getUserById(validation.user_id);
+    if (userError || !userData.user?.email) {
+      throw new Error('Failed to resolve user');
     }
 
-    console.log('Session created successfully');
+    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+      type: 'magiclink',
+      email: userData.user.email,
+      options: { redirectTo: 'https://neurotunes.app' },
+    });
+
+    if (linkError || !linkData?.properties?.action_link) {
+      console.error('Error generating magic link');
+      throw new Error('Failed to generate session');
+    }
 
     return new Response(JSON.stringify({
       success: true,
       user_id: validation.user_id,
-      session_url: sessionData.properties?.action_link,
-      message: 'Magic link authenticated successfully'
+      session_url: linkData.properties.action_link,
+      message: 'Magic link authenticated successfully',
     }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in magic-auth function:', error);
-    
-    return new Response(JSON.stringify({
-      success: false,
-      error: error.message
-    }), {
+    return new Response(JSON.stringify({ success: false, error: 'Internal server error' }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
   }
 };

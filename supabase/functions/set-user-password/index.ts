@@ -80,11 +80,14 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Fetch user list once and build a lookup map — avoids N+1 admin API calls
+    const { data: { users: allUsers } } = await serviceClient.auth.admin.listUsers();
+    const emailToUser = new Map(allUsers?.map((u: any) => [u.email?.toLowerCase(), u]) ?? []);
+
     const results = [];
     for (const email of emails) {
       const normalizedEmail = email.toLowerCase().trim();
-      const { data: { users } } = await serviceClient.auth.admin.listUsers();
-      const target = users?.find((u: any) => u.email === normalizedEmail);
+      const target = emailToUser.get(normalizedEmail);
 
       if (!target) {
         results.push({ email: normalizedEmail, success: false, error: "User not found" });

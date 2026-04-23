@@ -94,22 +94,22 @@ serve(async (req) => {
   } catch (error) {
     console.error('❌ Brainwave stream error:', error);
     return new Response(
-      JSON.stringify({ error: 'Stream generation failed', details: error instanceof Error ? error.message : String(error) }), 
+      JSON.stringify({ error: 'Stream generation failed' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
 
 function generateBrainwaveStream(freqConfig: any, bandConfig: any, duration: number) {
+  let timer: ReturnType<typeof setInterval> | undefined;
+
   const stream = new ReadableStream({
     start(controller) {
-      console.log(`🌊 Starting brainwave stream: ${freqConfig.baseFreq}Hz for ${duration}s`);
-      
       let elapsed = 0;
-      const interval = 1000; // 1 second intervals
+      const interval = 1000;
       const startTime = Date.now();
 
-      const timer = setInterval(() => {
+      timer = setInterval(() => {
         elapsed = Math.floor((Date.now() - startTime) / 1000);
         
         if (elapsed >= duration) {
@@ -169,7 +169,10 @@ function generateBrainwaveStream(freqConfig: any, bandConfig: any, duration: num
       };
       
       controller.enqueue(`data: ${JSON.stringify(initData)}\n\n`);
-    }
+    },
+    cancel() {
+      if (timer !== undefined) clearInterval(timer);
+    },
   });
 
   return stream;
