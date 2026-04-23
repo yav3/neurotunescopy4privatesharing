@@ -2,30 +2,35 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from 'npm:resend@4.0.0';
 import { renderAsync } from 'npm:@react-email/components@0.0.22';
 import React from 'npm:react@18.3.1';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.2';
 import { WelcomeEmail } from './_templates/welcome.tsx';
 import { PasswordResetEmail } from './_templates/password-reset.tsx';
 import { MagicLinkEmail } from './_templates/magic-link.tsx';
 import { TrialConfirmationEmail } from './_templates/trial-confirmation.tsx';
 
+const PRODUCTION_URL = 'https://neurotunes.app';
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': PRODUCTION_URL,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 const resend = new Resend(Deno.env.get('RESEND_API_KEY') as string);
 
+type SafeEmailType = 'welcome' | 'password-reset' | 'magic-link' | 'trial-confirmation';
+
 interface EmailRequest {
-  type: 'welcome' | 'password-reset' | 'magic-link' | 'trial-confirmation';
+  type: SafeEmailType;
   to: string;
   data: {
     displayName?: string;
     email?: string;
-    resetLink?: string;
-    magicLink?: string;
     recipientName?: string;
+    userId?: string;
   };
 }
+
+const ALLOWED_EMAIL_TYPES: SafeEmailType[] = ['welcome', 'password-reset', 'magic-link', 'trial-confirmation'];
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') {
@@ -35,7 +40,13 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { type, to, data }: EmailRequest = await req.json();
 
-    // Validate email format
+    if (!ALLOWED_EMAIL_TYPES.includes(type)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid email type' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!to || !emailRegex.test(to)) {
       return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
@@ -44,18 +55,46 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
-    // Rate limiting check using Supabase service role
+    if (type === 'magic-link') {
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader) {
+        return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+      const callerClient = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_ANON_KEY')!,
+        { global: { headers: { Authorization: authHeader } }, auth: { persistSession: false } }
+      );
+      const { data: { user }, error: uErr } = await callerClient.auth.getUser();
+      if (uErr || !user) {
+        return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+      const { data: isAdmin } = await callerClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
+      if (!isAdmin) {
+        return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false } });
 
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                     req.headers.get('cf-connecting-ip') || 'unknown';
+    const clientIp = req.headers.get('cf-connecting-ip') ||
+                     req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     'unknown';
 
-    // Check rate limit
     const { data: allowed, error: rlError } = await supabase
-      .rpc('check_email_rate_limit', { 
-        p_email: to, 
+      .rpc('check_email_rate_limit', {
+        p_email: to,
         p_ip: clientIp,
         p_max_per_recipient: 3,
         p_max_per_ip: 5,
@@ -63,11 +102,10 @@ const handler = async (req: Request): Promise<Response> => {
       });
 
     if (rlError) {
-      console.error('Rate limit check error:', rlError);
+      console.error('Rate limit check error');
     }
 
     if (allowed === false) {
-      console.warn(`Rate limited email request: ${type} to ${to} from ${clientIp}`);
       return new Response(JSON.stringify({ success: false, error: 'Too many requests. Please try again later.' }), {
         status: 429,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -88,30 +126,48 @@ const handler = async (req: Request): Promise<Response> => {
         subject = 'Welcome to NeuroTunes!';
         break;
 
-      case 'password-reset':
-        if (!data.resetLink) {
-          throw new Error('Reset link is required for password reset emails');
+      case 'password-reset': {
+        const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+          type: 'recovery',
+          email: to,
+          options: { redirectTo: `${PRODUCTION_URL}/auth/reset-password` },
+        });
+        if (linkError || !linkData?.properties?.action_link) {
+          throw new Error('Failed to generate password reset link');
         }
         html = await renderAsync(
-          React.createElement(PasswordResetEmail, {
-            resetLink: data.resetLink,
-          })
+          React.createElement(PasswordResetEmail, { resetLink: linkData.properties.action_link })
         );
         subject = 'Reset Your NeuroTunes Password';
         break;
+      }
 
-      case 'magic-link':
-        if (!data.magicLink) {
-          throw new Error('Magic link is required for magic link emails');
+      case 'magic-link': {
+        const targetUserId = data.userId;
+        if (!targetUserId) {
+          return new Response(JSON.stringify({ success: false, error: 'userId is required for magic-link emails' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          });
         }
+        const { data: vipLinkData, error: vipLinkError } = await supabase.rpc('create_magic_link_for_vip', {
+          target_user_id: targetUserId,
+          expires_in_hours: 24,
+          link_metadata: {},
+        });
+        if (vipLinkError || !vipLinkData?.length) {
+          throw new Error('Failed to generate magic link');
+        }
+        const generatedLink = `${PRODUCTION_URL}/admin/magic-auth?token=${vipLinkData[0].token}`;
         html = await renderAsync(
           React.createElement(MagicLinkEmail, {
-            magicLink: data.magicLink,
+            magicLink: generatedLink,
             recipientName: data.recipientName || 'VIP User',
           })
         );
         subject = 'Your VIP Access to NeuroTunes';
         break;
+      }
 
       case 'trial-confirmation':
         html = await renderAsync(
@@ -124,7 +180,10 @@ const handler = async (req: Request): Promise<Response> => {
         break;
 
       default:
-        throw new Error('Invalid email type');
+        return new Response(JSON.stringify({ success: false, error: 'Invalid email type' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
     }
 
     const { error } = await resend.emails.send({
@@ -134,28 +193,17 @@ const handler = async (req: Request): Promise<Response> => {
       html,
     });
 
-    if (error) {
-      console.error('Error sending email:', error);
-      throw error;
-    }
+    if (error) throw error;
 
-    // Record the send for rate limiting
     await supabase.rpc('record_email_send', { p_email: to, p_type: type, p_ip: clientIp });
-
-    console.log(`Successfully sent ${type} email to ${to}`);
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });
 
-  } catch (error: any) {
-    console.error('Error in send-auth-email function:', error);
-    
-    return new Response(JSON.stringify({
-      success: false,
-      error: error.message
-    }), {
+  } catch (_error) {
+    return new Response(JSON.stringify({ success: false, error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
     });

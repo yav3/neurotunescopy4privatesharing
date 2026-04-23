@@ -113,7 +113,7 @@ serve(async (req) => {
     if (ticketError) {
       console.error('Failed to create ticket:', ticketError)
     } else {
-      console.log(`Ticket created: ${ticketNumber} for ${email}`)
+      console.log(`Ticket created: ${ticketNumber}`)
     }
 
     // --- 3. Send emails via Resend ---
@@ -169,7 +169,7 @@ serve(async (req) => {
           </div>
         `,
       })
-      console.log(`Ticket confirmation sent to ${email}: ${ticketNumber}`)
+      console.log(`Ticket confirmation sent: ${ticketNumber}`)
 
       // 3b. Send lead notification to Chris
       const detailRows = [

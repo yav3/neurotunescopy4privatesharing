@@ -858,7 +858,7 @@ async function handleTrending(req: Request): Promise<Response> {
       .or(`last_verified_at.gte.${sinceISO},created_at.gte.${sinceISO}`)
       .order('last_verified_at', { ascending:false })
       .limit(2000);
-    if (error) return json({ ok:false, error:error.message, tracks:[] }, 200);
+    if (error) return json({ ok:false, error:'Failed to fetch tracks', tracks:[] }, 200);
     rows = data || [];
   }
 

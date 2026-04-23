@@ -93,7 +93,7 @@ serve(async (req) => {
     
     // If we have a valid email, process the signup
     if (extractedEmail && isValidEmail(extractedEmail)) {
-      console.log(`Processing trial signup for: ${extractedEmail}`);
+      console.log('Processing trial signup');
       
       try {
         const supabase = createClient(
@@ -165,7 +165,7 @@ serve(async (req) => {
               </div>
             `,
           });
-          console.log('✅ Trial confirmation email sent to', extractedEmail);
+          console.log('✅ Trial confirmation email sent');
         }
         
         // Return success response

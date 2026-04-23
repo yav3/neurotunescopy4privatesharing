@@ -1,9 +1,11 @@
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://neurotunes.app",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+const MAX_EMAILS_PER_REQUEST = 10;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -11,99 +13,93 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // 1. Require Authorization header
+    // Verify caller is an authenticated super_admin
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized: missing bearer token" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const callerClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } }, auth: { persistSession: false } }
+    );
 
-    // 2. Verify the JWT and resolve the caller
-    const userClient = createClient(supabaseUrl, anonKey, {
-      global: { headers: { Authorization: authHeader } },
-      auth: { persistSession: false },
+    const { data: { user }, error: userError } = await callerClient.auth.getUser();
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Verify caller has super_admin role
+    const { data: isAdmin, error: roleError } = await callerClient.rpc("has_role", {
+      _user_id: user.id,
+      _role: "super_admin",
     });
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } = await userClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims?.sub) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized: invalid token" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (roleError || !isAdmin) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const callerId = claimsData.claims.sub as string;
+    const serviceClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { auth: { persistSession: false } }
+    );
 
-    // 3. Service-role client for privileged operations + admin check
-    const supabase = createClient(supabaseUrl, serviceKey, {
-      auth: { persistSession: false },
-    });
+    const body = await req.json();
+    const emails: string[] = body.emails;
+    const password: string = body.password;
 
-    // 4. Verify caller has admin or super_admin role via has_role()
-    const [{ data: isAdmin }, { data: isSuperAdmin }] = await Promise.all([
-      supabase.rpc("has_role", { _user_id: callerId, _role: "admin" }),
-      supabase.rpc("has_role", { _user_id: callerId, _role: "super_admin" }),
-    ]);
-
-    if (!isAdmin && !isSuperAdmin) {
-      console.warn("🚨 Non-admin attempted set-user-password", { callerId });
-      return new Response(
-        JSON.stringify({ error: "Forbidden: admin role required" }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (!Array.isArray(emails) || emails.length === 0) {
+      return new Response(JSON.stringify({ error: "emails array is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // 5. Validate input
-    const body = await req.json().catch(() => null);
-    const emails = body?.emails;
-    const password = body?.password;
-
-    if (!Array.isArray(emails) || emails.length === 0 || emails.some((e) => typeof e !== "string")) {
-      return new Response(
-        JSON.stringify({ error: "Invalid input: 'emails' must be a non-empty string array" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-    if (typeof password !== "string" || password.length < 8) {
-      return new Response(
-        JSON.stringify({ error: "Invalid input: 'password' must be a string of at least 8 characters" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (emails.length > MAX_EMAILS_PER_REQUEST) {
+      return new Response(JSON.stringify({ error: `Maximum ${MAX_EMAILS_PER_REQUEST} emails per request` }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // 6. Perform password updates
+    if (!password || password.length < 12) {
+      return new Response(JSON.stringify({ error: "Password must be at least 12 characters" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const results = [];
     for (const email of emails) {
-      const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
-      if (listError) {
-        results.push({ email, success: false, error: listError.message });
-        continue;
-      }
-      const user = users?.find((u: any) => u.email === email.toLowerCase());
+      const normalizedEmail = email.toLowerCase().trim();
+      const { data: { users } } = await serviceClient.auth.admin.listUsers();
+      const target = users?.find((u: any) => u.email === normalizedEmail);
 
-      if (!user) {
-        results.push({ email, success: false, error: "User not found" });
+      if (!target) {
+        results.push({ email: normalizedEmail, success: false, error: "User not found" });
         continue;
       }
 
-      const { error } = await supabase.auth.admin.updateUserById(user.id, { password });
-      results.push({ email, success: !error, error: error?.message || null });
+      const { error } = await serviceClient.auth.admin.updateUserById(target.id, { password });
+      results.push({ email: normalizedEmail, success: !error, error: error ? "Update failed" : null });
     }
-
-    console.log("✅ set-user-password executed by admin", { callerId, count: emails.length });
 
     return new Response(JSON.stringify({ results }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: (err as Error).message }), {
+  } catch (_err) {
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
