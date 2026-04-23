@@ -1,62 +1,21 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createRateLimiter, getClientIp } from "../_shared/rateLimiter.ts";
+import { sanitizeMessages } from "../_shared/sanitizeMessages.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Simple in-memory rate limiting
-const rateLimits = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 20; // requests per window
-const RATE_WINDOW = 60000; // 1 minute in ms
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimits.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimits.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
-
-// Sanitize messages for Anthropic Messages API compliance
-function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
-  let startIdx = 0;
-  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
-    startIdx++;
-  }
-  const trimmed = messages.slice(startIdx);
-  if (trimmed.length === 0) return [];
-
-  const merged: Array<{ role: string; content: string }> = [];
-  for (const msg of trimmed) {
-    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
-      merged[merged.length - 1].content += '\n' + msg.content;
-    } else {
-      merged.push({ role: msg.role, content: msg.content });
-    }
-  }
-  return merged;
-}
+const checkRateLimit = createRateLimiter(20, 60_000);
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Get client IP for rate limiting
-  const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                   req.headers.get('cf-connecting-ip') || 
-                   'unknown';
+  const clientIP = getClientIp(req);
 
   // Check rate limit
   if (!checkRateLimit(clientIP)) {
@@ -124,7 +83,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in registration-chat:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

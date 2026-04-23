@@ -2,33 +2,15 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { Resend } from 'npm:resend@4.0.0'
+import { createRateLimiter, getClientIp } from '../_shared/rateLimiter.ts';
+import { sanitizeMessages } from '../_shared/sanitizeMessages.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Simple in-memory rate limiting
-const rateLimits = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 15;
-const RATE_WINDOW = 60000;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimits.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimits.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
+const checkRateLimit = createRateLimiter(15, 60_000);
 
 // Email validation
 function isValidEmail(email: string): boolean {
@@ -43,34 +25,12 @@ function extractEmail(text: string): string | null {
   return match ? match[0].toLowerCase() : null;
 }
 
-// Sanitize messages for Anthropic Messages API compliance
-function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
-  let startIdx = 0;
-  while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
-    startIdx++;
-  }
-  const trimmed = messages.slice(startIdx);
-  if (trimmed.length === 0) return [];
-
-  const merged: Array<{ role: string; content: string }> = [];
-  for (const msg of trimmed) {
-    if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
-      merged[merged.length - 1].content += '\n' + msg.content;
-    } else {
-      merged.push({ role: msg.role, content: msg.content });
-    }
-  }
-  return merged;
-}
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
-  const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                   req.headers.get('cf-connecting-ip') || 
-                   'unknown';
+  const clientIP = getClientIp(req);
 
   if (!checkRateLimit(clientIP)) {
     return new Response(
@@ -106,7 +66,7 @@ serve(async (req) => {
           .from('trial_requests')
           .select('email')
           .eq('email', extractedEmail)
-          .single();
+          .maybeSingle();
         
         if (existing) {
           // Return special response for already registered
