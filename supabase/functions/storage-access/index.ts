@@ -119,14 +119,15 @@ Deno.serve(async (req) => {
     const limit = parseInt(String(body?.limit ?? url.searchParams.get("limit") ?? "100"), 10);
     const mode = (body?.mode ?? url.searchParams.get("mode") ?? "audio") as "audio" | "artwork" | "all";
     const recursive = String(body?.recursive ?? url.searchParams.get("recursive") ?? "false") === "true";
+    const prefix = (body?.prefix ?? url.searchParams.get("prefix") ?? "") as string;
 
-    console.log(`📂 storage-access: bucket=${bucket} mode=${mode} recursive=${recursive} limit=${limit}`);
+    console.log(`📂 storage-access: bucket=${bucket} prefix=${prefix} mode=${mode} recursive=${recursive} limit=${limit}`);
 
     const maxDepth = 3;
     const names = recursive
-      ? await listRecursive({ supabase, bucket, prefix: "", limit, maxDepth })
-      : (await supabase.storage.from(bucket).list("", { limit, sortBy: { column: "name", order: "asc" } }))
-          .data?.map((f) => f.name) ?? [];
+      ? await listRecursive({ supabase, bucket, prefix, limit, maxDepth })
+      : ((await supabase.storage.from(bucket).list(prefix, { limit, sortBy: { column: "name", order: "asc" } }))
+          .data?.map((f) => (prefix ? `${prefix}/${f.name}` : f.name)) ?? []);
 
     if (names.length === 0) {
       return new Response(JSON.stringify({ files: [], bucket, mode, recursive }), {

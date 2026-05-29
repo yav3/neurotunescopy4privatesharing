@@ -78,12 +78,15 @@ class StorageRequestManager {
           const result = await response.json();
           const files = result.tracks || [];
           
-          // Convert edge function response back to storage list format
+          // Convert edge function response back to storage list format,
+          // preserving the signed stream_url so consumers don't have to
+          // call getPublicUrl (which fails for now-private audio buckets).
           const storageFiles = files.map((track: any) => ({
             name: track.storage_key,
             metadata: { size: track.file_size },
             updated_at: track.last_modified,
-            created_at: track.last_modified
+            created_at: track.last_modified,
+            stream_url: track.stream_url,
           }));
 
           // Cache the result

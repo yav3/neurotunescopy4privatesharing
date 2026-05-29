@@ -42,52 +42,41 @@ export async function getTracksFromStorageOptimized(
       console.log(`📂 Bucket: ${bucket}, Folder: ${folder || 'root'}`);
       
       try {
-        // Use regular client for all operations since buckets are public
-        const { data: files, error: listError } = await supabase.storage
-          .from(bucket)
-          .list(folder, {
-            limit: 1000,
-            sortBy: { column: 'name', order: 'asc' }
-          });
-
-        if (listError) {
-          console.error(`❌ Error listing files in bucket ${bucket}/${folder}:`, listError);
-          return [];
-        }
-
-        if (!files || files.length === 0) {
-          console.log(`📂 No files found in bucket ${bucket}/${folder}`);
-          return [];
-        }
-
-        console.log(`📁 Found ${files.length} files in bucket: ${bucket}/${folder}`);
-        
-        // Filter for audio files
-        const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'];
-        const audioFiles = files.filter(file => 
-          audioExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+        // Route through storage-access edge function so private audio
+        // buckets work (it uses the service role to list + sign URLs).
+        const { data: edgeData, error: edgeError } = await supabase.functions.invoke(
+          'storage-access',
+          {
+            body: {
+              bucket,
+              prefix: folder,
+              mode: 'audio',
+              recursive: false,
+              limit: 1000,
+            },
+          }
         );
-        
-        console.log(`🎵 Found ${audioFiles.length} audio files in bucket: ${bucket}/${folder}`);
 
-        // Create track objects without additional API calls
-        const tracks: StorageTrack[] = audioFiles.map(file => {
-          // Build the full storage path
-          const fullPath = folder ? `${folder}/${file.name}` : file.name;
-          
-          // Generate public URL with full path
-          const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(fullPath);
-          
-          return {
-            id: `${bucketPath}-${file.name}`,
-            title: cleanTitle(file.name),
-            storage_bucket: bucket,
-            storage_key: fullPath,
-            stream_url: urlData.publicUrl,
-            file_size: file.metadata?.size,
-            last_modified: file.updated_at || file.created_at
-          };
-        });
+        if (edgeError) {
+          console.error(`❌ storage-access edge error for ${bucket}/${folder}:`, edgeError);
+          return [];
+        }
+
+        const edgeTracks: any[] = edgeData?.tracks ?? [];
+        if (edgeTracks.length === 0) {
+          console.log(`📂 No audio in ${bucket}/${folder || 'root'}`);
+          return [];
+        }
+
+        console.log(`🎵 Found ${edgeTracks.length} audio files in bucket: ${bucket}/${folder || 'root'}`);
+
+        const tracks: StorageTrack[] = edgeTracks.map((t) => ({
+          id: `${bucketPath}-${t.storage_key}`,
+          title: cleanTitle((t.storage_key as string).split('/').pop() || t.storage_key),
+          storage_bucket: bucket,
+          storage_key: t.storage_key,
+          stream_url: t.stream_url,
+        }));
 
         return tracks;
       } catch (error) {

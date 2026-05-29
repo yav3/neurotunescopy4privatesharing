@@ -133,9 +133,12 @@ export class SimpleStorageService {
 
         // Convert to Track objects - ALL from bucket root
         for (const file of audioFiles) {
-          // Use service client for elevated permissions to access all buckets
-          const { data } = supabase.storage.from(bucketName).getPublicUrl(file.name);
-          const publicUrl = data.publicUrl;
+          // Prefer signed URL returned by the storage-access edge function
+          // (audio buckets are private). Fall back to getPublicUrl only for
+          // buckets that are still public.
+          const signed = (file as any).stream_url as string | undefined;
+          const publicUrl = signed
+            || supabase.storage.from(bucketName).getPublicUrl(file.name).data.publicUrl;
 
           // Generate deterministic ID to prevent duplicates and race conditions
           const sequence = ++this.requestSequence;
