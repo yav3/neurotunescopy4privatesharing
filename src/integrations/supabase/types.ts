@@ -7461,6 +7461,19 @@ export type Database = {
         Args: { file_path: string }
         Returns: string
       }
+      get_table_policies: {
+        Args: { table_names?: string[] }
+        Returns: {
+          check_expr: string
+          command: string
+          permissive: boolean
+          policy_name: string
+          roles: string[]
+          schema_name: string
+          table_name: string
+          using_expr: string
+        }[]
+      }
       get_therapeutic_recommendations: {
         Args: { min_evidence_score?: number; target_condition: string }
         Returns: {
