@@ -1,10 +1,12 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+import {
+  corsHeaders,
+  getClientIP,
+  isOriginAllowed,
+  checkRateLimit,
+  validateMessages,
+} from "../_shared/chatGuards.ts";
 
 // Sanitize messages for Anthropic Messages API compliance
 function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
@@ -31,10 +33,31 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders })
   }
 
+  if (!isOriginAllowed(req)) {
+    return new Response(JSON.stringify({ error: 'Origin not allowed' }),
+      { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+  }
+
+  const clientIP = getClientIP(req);
+  const limit = await checkRateLimit(clientIP, 'free-trial-chat');
+  if (!limit.ok) {
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+      { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': String(limit.retryAfterSeconds) } }
+    );
+  }
+
   try {
-    const { messages, collectedData } = await req.json()
+    const body = await req.json();
+    const { collectedData } = body;
+    const validated = validateMessages(body?.messages);
+    if (!validated.ok) {
+      return new Response(JSON.stringify({ error: validated.error }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+    const messages = validated.messages;
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')
-    
+
     if (!anthropicApiKey) {
       throw new Error('ANTHROPIC_API_KEY is not configured')
     }
