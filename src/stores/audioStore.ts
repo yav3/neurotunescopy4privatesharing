@@ -1011,37 +1011,37 @@ export const useAudioStore = create<AudioState>((set, get) => {
         });
         console.log('📝 Attempted URLs:', resolution.attempts);
         
-        // Try alternative bucket fallback for problematic tracks
-        console.log('🔄 Attempting alternative bucket fallbacks...');
-        const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
-        let fallbackUrl = null;
-        
-        // Determine alternative bucket based on track content
-        // More precise genre detection to prevent cross-contamination
+        // Try alternative bucket fallback for problematic tracks via signed URL.
+        console.log('🔄 Attempting alternative bucket fallbacks (signed)...');
+        let fallbackBucket: string | null = null;
         const titleLower = track.title.toLowerCase();
-        
+
         if (titleLower.includes('sonata') || titleLower.includes('baroque')) {
-          const bucket = titleLower.includes('stress') ? 'sonatasforstress' : 'Chopin';
-          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
-          fallbackUrl = `${baseUrl}/${bucket}/${encodeURIComponent(simpleTitle + '.mp3')}`;
-          console.log(`🎯 Sonata fallback: ${fallbackUrl}`);
+          fallbackBucket = titleLower.includes('stress') ? 'sonatasforstress' : 'Chopin';
         } else if (titleLower.includes('bluegrass') || titleLower.includes('country') || titleLower.includes('americana')) {
-          // Route bluegrass/country tracks to the correct bucket
-          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
-          fallbackUrl = `${baseUrl}/countryandamericana/${encodeURIComponent(simpleTitle + '.mp3')}`;
-          console.log(`🎯 Bluegrass/Country fallback: ${fallbackUrl}`);
-        } else if (titleLower.includes('new age') && !titleLower.includes('bluegrass') && !titleLower.includes('country')) {
-          // Only route to New Age if it doesn't contain bluegrass/country
-          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
-          fallbackUrl = `${baseUrl}/newageworldstressanxietyreduction/${encodeURIComponent(simpleTitle + '.mp3')}`;
-          console.log(`🎯 New Age fallback: ${fallbackUrl}`);
-        } else if (titleLower.includes('meditation') && !titleLower.includes('bluegrass') && !titleLower.includes('country')) {
-          // Only route meditation if it's not bluegrass/country
-          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
-          fallbackUrl = `${baseUrl}/meditation/${encodeURIComponent(simpleTitle + '.mp3')}`;
-          console.log(`🎯 Meditation fallback: ${fallbackUrl}`);
+          fallbackBucket = 'countryandamericana';
+        } else if (titleLower.includes('new age')) {
+          fallbackBucket = 'newageworldstressanxietyreduction';
+        } else if (titleLower.includes('meditation')) {
+          fallbackBucket = 'meditation';
         }
-        
+
+        let fallbackUrl: string | null = null;
+        if (fallbackBucket) {
+          const simpleTitle = titleLower.replace(/[^a-z0-9]/g, '').substring(0, 30);
+          const fallbackPath = `${simpleTitle}.mp3`;
+          try {
+            const { getStorageUrl } = await import('@/lib/storageUrl');
+            const signed = await getStorageUrl(fallbackBucket, fallbackPath);
+            if (signed) {
+              fallbackUrl = signed;
+              console.log(`🎯 Signed fallback (${fallbackBucket}): ${fallbackUrl}`);
+            }
+          } catch (e) {
+            console.warn('Fallback signed URL failed:', e);
+          }
+        }
+
         if (fallbackUrl) {
           console.log(`🔄 Using fallback URL: ${fallbackUrl}`);
           resolution = { success: true, url: fallbackUrl, method: 'fallback_bucket', attempts: [] };

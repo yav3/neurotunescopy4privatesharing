@@ -64,7 +64,7 @@ class StorageRequestManager {
           // Use storage-access edge function for proper authentication
           const response = await fetch(`https://pbtgvcjniayedqlajjzz.supabase.co/functions/v1/storage-access?bucket=${bucket}&limit=1000`, {
             headers: {
-              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidGd2Y2puaWF5ZWRxbGFqanp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MzM2ODksImV4cCI6MjA2NTUwOTY4OX0.HyVXhnCpXGAj6pX2_11-vbUppI4deicp2OM6Wf976gE`,
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
               'Content-Type': 'application/json'
             }
           });
