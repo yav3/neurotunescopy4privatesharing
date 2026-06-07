@@ -1,32 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
-
-// Simple in-memory rate limiting
-const rateLimits = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 20; // requests per window
-const RATE_WINDOW = 60000; // 1 minute in ms
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimits.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimits.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
+import { corsHeaders, preflightChat } from "../_shared/chatGuards.ts";
 
 // Sanitize messages for Anthropic Messages API compliance:
 // - First message must be 'user' role
@@ -55,28 +29,12 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Get client IP for rate limiting
-  const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                   req.headers.get('cf-connecting-ip') || 
-                   'unknown';
-
-  // Check rate limit
-  if (!checkRateLimit(clientIP)) {
-    console.warn(`Rate limit exceeded for IP: ${clientIP}`);
-    return new Response(
-      JSON.stringify({ error: 'Too many requests. Please wait a moment.' }),
-      {
-        status: 429,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    );
-  }
+  const pre = await preflightChat(req, "sales-chat");
+  if (!pre.ok) return pre.response;
+  const { ip: clientIP, messages } = pre;
 
   try {
-    const { messages } = await req.json();
-    
-    // Limit message history and sanitize for Anthropic API compliance
-    const anthropicMessages = sanitizeMessages(messages.slice(-10));
+    const anthropicMessages = sanitizeMessages(messages);
 
     if (anthropicMessages.length === 0) {
       return new Response(
