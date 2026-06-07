@@ -1,9 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getStorageUrl, getPublicStorageUrl, isPublicBucket } from '@/lib/storageUrl';
 
 interface UseSupabaseStorageReturn {
   uploadFile: (file: File, path: string, bucket?: string) => Promise<string | null>;
   deleteFile: (path: string, bucket?: string) => Promise<boolean>;
+  /**
+   * Resolve an object URL. For private buckets this returns a 1-hour signed
+   * URL via the storage-access edge function. For public buckets it returns
+   * the direct CDN URL synchronously-fast.
+   */
+  getUrl: (path: string, bucket?: string) => Promise<string>;
+  /**
+   * Synchronous public URL. Logs a warning and may return a broken URL if the
+   * bucket is private. Prefer `getUrl()`.
+   */
   getPublicUrl: (path: string, bucket?: string) => string;
   uploading: boolean;
   error: string | null;
@@ -14,8 +25,8 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
   const [error, setError] = useState<string | null>(null);
 
   const uploadFile = useCallback(async (
-    file: File, 
-    path: string, 
+    file: File,
+    path: string,
     bucket: string = 'audio'
   ): Promise<string | null> => {
     setUploading(true);
@@ -24,7 +35,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
     try {
       const { data, error: uploadError } = await supabase.storage
         .from(bucket)
-        .upload(path, file, { 
+        .upload(path, file, {
           upsert: true,
           cacheControl: '3600'
         });
@@ -44,7 +55,7 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
   }, []);
 
   const deleteFile = useCallback(async (
-    path: string, 
+    path: string,
     bucket: string = 'audio'
   ): Promise<boolean> => {
     setError(null);
@@ -66,17 +77,20 @@ export function useSupabaseStorage(): UseSupabaseStorageReturn {
     }
   }, []);
 
-  const getPublicUrl = useCallback((
-    path: string, 
-    bucket: string = 'audio'  // Reverted: let components specify the correct bucket
-  ): string => {
-    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-    return data.publicUrl;
-  }, []);
+  const getUrl = useCallback(
+    (path: string, bucket: string = 'audio') => getStorageUrl(bucket, path),
+    []
+  );
+
+  const getPublicUrl = useCallback(
+    (path: string, bucket: string = 'audio') => getPublicStorageUrl(bucket, path),
+    []
+  );
 
   return {
     uploadFile,
     deleteFile,
+    getUrl,
     getPublicUrl,
     uploading,
     error
