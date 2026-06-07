@@ -651,8 +651,13 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
 
 // Storage debug endpoint - shows sample storage info
 async function handleStorageDebugRequest(req: Request): Promise<Response> {
+  const denied = requireAdminKey(req);
+  if (denied) return denied;
+
   const url = new URL(req.url);
   const limit = parseInt(url.searchParams.get('limit') || '10');
+
+
   
   try {
     const supabase = sb();
