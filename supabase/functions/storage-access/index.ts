@@ -90,6 +90,20 @@ async function listRecursive(params: {
   return [...files, ...nested.flat()];
 }
 
+// Buckets the player and landing-page demo are allowed to read anonymously.
+// Anything outside this allowlist is rejected before we touch the service role.
+const ALLOWED_BUCKETS = new Set<string>([
+  // Landing-page demo assets
+  "landingpage",
+  "landingpagemusicexcerpts",
+  "albumart",
+  // Production audio buckets
+  "audio",
+  "neuralpositivemusic",
+  "classicalfocus",
+  "sambajazznocturnes",
+]);
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -126,7 +140,18 @@ Deno.serve(async (req) => {
       10,
     );
 
+    // Bucket allowlist — anonymous callers can only enumerate/sign URLs for
+    // buckets we have explicitly opted in. Prevents arbitrary bucket probing.
+    if (!ALLOWED_BUCKETS.has(bucket)) {
+      console.warn(`🚫 storage-access: bucket not allowlisted: ${bucket}`);
+      return new Response(JSON.stringify({ error: "Bucket not allowed" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     console.log(`📂 storage-access: bucket=${bucket} prefix=${prefix} path=${path} mode=${mode} recursive=${recursive} limit=${limit}`);
+
 
     // Single-object signing mode — used by the frontend storageUrl helper.
     if (mode === "sign") {
