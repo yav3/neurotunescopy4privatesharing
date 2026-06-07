@@ -38,26 +38,25 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { type, to, data }: EmailRequest = await req.json();
+    // --- AUTH GATE (runs for ALL email types) -----------------------------
+    // Callers must present either:
+    //   1. A valid user JWT (Authorization: Bearer <user-token>), OR
+    //   2. The INTERNAL_FUNCTION_SECRET header for server-to-server use.
+    //
+    // This prevents anonymous callers from triggering password-reset,
+    // welcome, or magic-link emails to arbitrary addresses.
+    const authHeader = req.headers.get('Authorization');
+    const internalSecret = req.headers.get('x-internal-secret');
+    const expectedInternal = Deno.env.get('INTERNAL_FUNCTION_SECRET');
 
-    if (!ALLOWED_EMAIL_TYPES.includes(type)) {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid email type' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      });
-    }
+    const isInternalCall =
+      !!expectedInternal && !!internalSecret && internalSecret === expectedInternal;
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!to || !emailRegex.test(to)) {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      });
-    }
+    let callerUserId: string | null = null;
+    let callerIsAdmin = false;
 
-    if (type === 'magic-link') {
-      const authHeader = req.headers.get('Authorization');
-      if (!authHeader) {
+    if (!isInternalCall) {
+      if (!authHeader?.startsWith('Bearer ')) {
         return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -75,14 +74,36 @@ const handler = async (req: Request): Promise<Response> => {
           headers: { 'Content-Type': 'application/json', ...corsHeaders },
         });
       }
+      callerUserId = user.id;
       const { data: isAdmin } = await callerClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
-      if (!isAdmin) {
-        return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
-          status: 403,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        });
-      }
+      callerIsAdmin = !!isAdmin;
     }
+
+    const { type, to, data }: EmailRequest = await req.json();
+
+    if (!ALLOWED_EMAIL_TYPES.includes(type)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid email type' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!to || !emailRegex.test(to)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid email address' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
+    // magic-link requires admin role (or internal call).
+    if (type === 'magic-link' && !isInternalCall && !callerIsAdmin) {
+      return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+    void callerUserId; // reserved for future per-user policy checks
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

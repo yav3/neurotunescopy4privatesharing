@@ -1,11 +1,12 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { Resend } from 'https://esm.sh/resend@2.0.0'
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+import {
+  corsHeaders,
+  isOriginAllowed,
+  getClientIP,
+  checkRateLimit,
+} from '../_shared/chatGuards.ts'
 
 // Generate a human-readable ticket number: NT-YYMMDD-XXXX
 function generateTicketNumber(): string {
@@ -17,16 +18,68 @@ function generateTicketNumber(): string {
   return `NT-${yy}${mm}${dd}-${rand}`
 }
 
+// HTML-escape a value before interpolating into an email template.
+const esc = (s: unknown): string =>
+  String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+
+// Cap an input field to a safe length before storage/display.
+const cap = (v: unknown, max: number): string | null => {
+  if (v === undefined || v === null) return null
+  const s = String(v).trim()
+  if (!s) return null
+  return s.slice(0, max)
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
+  // 1. Origin allowlist — blocks scripted abuse from arbitrary hosts.
+  if (!isOriginAllowed(req)) {
+    return new Response(JSON.stringify({ error: 'Origin not allowed' }), {
+      status: 403,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+
+  // 2. DB-backed per-IP rate limit (10/hr, 20/day).
+  const ip = getClientIP(req)
+  const limit = await checkRateLimit(ip, 'capture-lead')
+  if (!limit.ok) {
+    return new Response(
+      JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+      {
+        status: 429,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json',
+          'Retry-After': String(limit.retryAfterSeconds),
+        },
+      },
+    )
+  }
+
   try {
-    const {
-      email, name, accountType, location, company,
-      teamSize, query, nextSteps, conversationLog
-    } = await req.json()
+    const raw = await req.json()
+
+    // 3. Validate + cap every user-supplied field.
+    const email = cap(raw.email, 254)
+    const name = cap(raw.name, 120)
+    const accountType = cap(raw.accountType, 60)
+    const location = cap(raw.location, 120)
+    const company = cap(raw.company, 200)
+    const teamSize = cap(raw.teamSize, 40)
+    const query = cap(raw.query, 2000)
+    const nextSteps = cap(raw.nextSteps, 2000)
+    const conversationLog = Array.isArray(raw.conversationLog)
+      ? raw.conversationLog.slice(0, 50)
+      : []
 
     if (!email) {
       return new Response(
@@ -105,7 +158,7 @@ serve(async (req) => {
         team_size: teamSize || null,
         query_summary: query || null,
         next_steps: nextSteps || null,
-        conversation_log: conversationLog || [],
+        conversation_log: conversationLog,
         source: 'support_chat',
         status: 'open',
       })
@@ -116,16 +169,15 @@ serve(async (req) => {
       console.log(`Ticket created: ${ticketNumber}`)
     }
 
-    // --- 3. Send emails via Resend ---
+    // --- 3. Send emails via Resend (all user fields HTML-escaped) ---
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
     if (resendApiKey) {
       const resend = new Resend(resendApiKey)
 
-      // 3a. Send ticket confirmation to the user
       const nextStepsHtml = nextSteps
         ? `<div style="background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.20);border-radius:12px;padding:20px;margin:24px 0;">
             <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:1px;color:rgba(6,182,212,0.9);margin:0 0 12px 0;">Next Steps</h3>
-            <p style="font-size:15px;line-height:1.6;color:#ccc;margin:0;white-space:pre-wrap;">${nextSteps}</p>
+            <p style="font-size:15px;line-height:1.6;color:#ccc;margin:0;white-space:pre-wrap;">${esc(nextSteps)}</p>
           </div>`
         : ''
 
@@ -144,7 +196,7 @@ serve(async (req) => {
                   <td style="padding:8px 0;color:#888;font-size:14px;">Ticket Number</td>
                   <td style="padding:8px 0;color:#fff;font-size:16px;font-weight:500;font-family:monospace;">${ticketNumber}</td>
                 </tr>
-                ${query ? `<tr><td style="padding:8px 0;color:#888;font-size:14px;">Regarding</td><td style="padding:8px 0;color:#ccc;font-size:14px;">${query}</td></tr>` : ''}
+                ${query ? `<tr><td style="padding:8px 0;color:#888;font-size:14px;">Regarding</td><td style="padding:8px 0;color:#ccc;font-size:14px;">${esc(query)}</td></tr>` : ''}
                 <tr>
                   <td style="padding:8px 0;color:#888;font-size:14px;">Status</td>
                   <td style="padding:8px 0;color:rgba(6,182,212,0.9);font-size:14px;">Open</td>
@@ -171,23 +223,23 @@ serve(async (req) => {
       })
       console.log(`Ticket confirmation sent: ${ticketNumber}`)
 
-      // 3b. Send lead notification to Chris
+      // 3b. Send lead notification to Chris (all dynamic fields escaped)
       const detailRows = [
         `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Ticket</td><td style="padding:8px 16px;color:#fff;font-family:monospace;">${ticketNumber}</td></tr>`,
-        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Email</td><td style="padding:8px 16px;color:#fff;"><a href="mailto:${email}" style="color:#6cb4ee;">${email}</a></td></tr>`,
-        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Name</td><td style="padding:8px 16px;color:#fff;">${name || 'Not provided'}</td></tr>`,
-        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Account Interest</td><td style="padding:8px 16px;color:#fff;text-transform:capitalize;">${accountType || 'Not specified'}</td></tr>`,
-        location ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Location</td><td style="padding:8px 16px;color:#fff;">${location}</td></tr>` : '',
-        company ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Company</td><td style="padding:8px 16px;color:#fff;">${company}</td></tr>` : '',
-        teamSize ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Team Size</td><td style="padding:8px 16px;color:#fff;">${teamSize}</td></tr>` : '',
-        query ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Query</td><td style="padding:8px 16px;color:#fff;">${query}</td></tr>` : '',
-        nextSteps ? `<tr><td style="padding:8px 16px;color:#888;">Next Steps</td><td style="padding:8px 16px;color:#fff;">${nextSteps}</td></tr>` : '',
+        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Email</td><td style="padding:8px 16px;color:#fff;"><a href="mailto:${esc(email)}" style="color:#6cb4ee;">${esc(email)}</a></td></tr>`,
+        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Name</td><td style="padding:8px 16px;color:#fff;">${esc(name || 'Not provided')}</td></tr>`,
+        `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Account Interest</td><td style="padding:8px 16px;color:#fff;text-transform:capitalize;">${esc(accountType || 'Not specified')}</td></tr>`,
+        location ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Location</td><td style="padding:8px 16px;color:#fff;">${esc(location)}</td></tr>` : '',
+        company ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Company</td><td style="padding:8px 16px;color:#fff;">${esc(company)}</td></tr>` : '',
+        teamSize ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Team Size</td><td style="padding:8px 16px;color:#fff;">${esc(teamSize)}</td></tr>` : '',
+        query ? `<tr style="border-bottom:1px solid rgba(255,255,255,0.08);"><td style="padding:8px 16px;color:#888;">Query</td><td style="padding:8px 16px;color:#fff;">${esc(query)}</td></tr>` : '',
+        nextSteps ? `<tr><td style="padding:8px 16px;color:#888;">Next Steps</td><td style="padding:8px 16px;color:#fff;">${esc(nextSteps)}</td></tr>` : '',
       ].filter(Boolean).join('\n')
 
       await resend.emails.send({
         from: 'NeuroTunes <updates@updates.neurotunes.app>',
         to: ['Chris@neuralpositive.com'],
-        subject: `[${ticketNumber}] New Lead: ${name || email} (${accountType || 'unknown'})`,
+        subject: `[${ticketNumber}] New Lead: ${esc(name || email).slice(0, 80)} (${esc(accountType || 'unknown').slice(0, 40)})`,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;max-width:600px;margin:0 auto;background:#0a0a0c;color:#fff;padding:40px;border-radius:16px;">
             <h1 style="font-size:24px;font-weight:300;margin-bottom:8px;">New Support Chat Lead</h1>
