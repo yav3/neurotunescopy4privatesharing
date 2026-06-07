@@ -495,7 +495,20 @@ async function handleStreamRequest(req: Request): Promise<Response> {
 }
 
 // ---------- DIAG (same checks, returns JSON instead of audio) ----------
+function requireAdminKey(req: Request): Response | null {
+  const adminKey = Deno.env.get('ADMIN_KEY');
+  const provided = req.headers.get('x-admin-key') ||
+    req.headers.get('Authorization')?.replace('Bearer ', '');
+  if (!adminKey || !provided || provided !== adminKey) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+  return null;
+}
+
 async function handleStreamDiag(req: Request): Promise<Response> {
+  const denied = requireAdminKey(req);
+  if (denied) return denied;
+
   const id = rid();
   const supabase = sb();
   const url = new URL(req.url);
