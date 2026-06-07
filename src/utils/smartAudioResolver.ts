@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { getStorageUrl } from '@/lib/storageUrl';
 
 export interface AudioResolutionResult {
   success: boolean;
@@ -9,15 +10,17 @@ export interface AudioResolutionResult {
     status: number;
     method: string;
   }>;
+  fallbackBuckets?: string[];
 }
 
 /**
- * OPTIMISTIC Smart audio URL resolver 
- * Uses optimistic URL generation instead of pre-validation to prevent CORS/HEAD request issues
+ * OPTIMISTIC Smart audio URL resolver.
+ * Now routes through getStorageUrl so private buckets receive signed URLs
+ * rather than direct /object/public/ URLs that would 400 on private buckets.
  */
 export class SmartAudioResolver {
   private static cache = new Map<string, AudioResolutionResult>();
-  
+
   static async resolveAudioUrl(track: {
     id: string;
     title: string;
@@ -26,60 +29,48 @@ export class SmartAudioResolver {
     category?: string;
     genre?: string;
   }): Promise<AudioResolutionResult> {
-    
+
     const cacheKey = `${track.id}-${track.storage_bucket}-${track.storage_key}`;
-    
-    // Check cache first
+
     if (this.cache.has(cacheKey)) {
       console.log(`🔄 Cache hit for ${track.title}`);
       return this.cache.get(cacheKey)!;
     }
 
-    console.log(`🚀 SmartAudioResolver: Starting resolution for: "${track.title}"`);
-    console.log(`📋 Track details:`, {
-      title: track.title,
-      storage_bucket: track.storage_bucket,
-      storage_key: track.storage_key,
-      category: track.category,
-      genre: track.genre
-    });
+    console.log(`🚀 SmartAudioResolver: Resolving "${track.title}"`);
 
-    const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
-    
-    // Priority 1: Use database URL if available (most reliable)
+    // Priority 1: Use stored bucket + key with signed/public URL resolver
     if (track.storage_bucket && track.storage_key) {
-      const encodedKey = encodeURIComponent(track.storage_key);
-      const dbUrl = `${baseUrl}/${track.storage_bucket}/${encodedKey}`;
-      console.log(`✅ Trying database URL: ${dbUrl}`);
-      
-      const optimisticResult = { 
-        success: true, 
-        url: dbUrl, 
-        method: 'database_direct', 
-        attempts: [{ url: dbUrl, status: 200, method: 'database_direct' }] 
-      };
-      this.cache.set(cacheKey, optimisticResult);
-      return optimisticResult;
+      const dbUrl = await getStorageUrl(track.storage_bucket, track.storage_key);
+      if (dbUrl) {
+        const result: AudioResolutionResult = {
+          success: true,
+          url: dbUrl,
+          method: 'database_signed',
+          attempts: [{ url: dbUrl, status: 200, method: 'database_signed' }],
+        };
+        this.cache.set(cacheKey, result);
+        return result;
+      }
     }
-    
-    // Priority 2: Smart bucket detection and URL generation
+
+    // Priority 2: Bucket guessing with signed URL on the primary candidate
     const targetBuckets = this.getBucketsForTrack(track);
     const cleanedTitle = this.cleanTrackTitle(track.title);
-    
-    console.log(`🔍 Cleaned title: "${track.title}" -> "${cleanedTitle}"`);
-    console.log(`🎯 Target buckets: [${targetBuckets.join(', ')}]`);
-    
-    // Try the most likely bucket first
     const primaryBucket = targetBuckets[0];
-    const primaryUrl = `${baseUrl}/${primaryBucket}/${encodeURIComponent(cleanedTitle + '.mp3')}`;
-    console.log(`✅ Trying primary URL: ${primaryUrl}`);
-    
-    const result = { 
-      success: true, 
-      url: primaryUrl, 
-      method: `bucket_${primaryBucket}`, 
-      attempts: [{ url: primaryUrl, status: 200, method: `bucket_${primaryBucket}` }],
-      fallbackBuckets: targetBuckets.slice(1)
+    const primaryKey = `${cleanedTitle}.mp3`;
+    const primaryUrl = await getStorageUrl(primaryBucket, primaryKey);
+
+    const result: AudioResolutionResult = {
+      success: !!primaryUrl,
+      url: primaryUrl || undefined,
+      method: `bucket_${primaryBucket}_signed`,
+      attempts: [{
+        url: primaryUrl || '',
+        status: primaryUrl ? 200 : 0,
+        method: `bucket_${primaryBucket}_signed`,
+      }],
+      fallbackBuckets: targetBuckets.slice(1),
     };
     this.cache.set(cacheKey, result);
     return result;
@@ -206,23 +197,20 @@ export class SmartAudioResolver {
     console.log('🗑️ SmartAudioResolver cache cleared');
   }
 
-  // Fallback method for problematic tracks - try multiple strategies
+  // Fallback method for problematic tracks - returns signed URLs for each strategy
   static async resolveFallbackUrl(track: {
     id: string;
     title: string;
     storage_bucket?: string;
     storage_key?: string;
   }): Promise<string[]> {
-    const baseUrl = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public';
     const urls: string[] = [];
-    
-    // Strategy 1: Database URL variations
+
     if (track.storage_bucket && track.storage_key) {
-      urls.push(`${baseUrl}/${track.storage_bucket}/${encodeURIComponent(track.storage_key)}`);
-      urls.push(`${baseUrl}/${track.storage_bucket}/${track.storage_key}`);
+      const u = await getStorageUrl(track.storage_bucket, track.storage_key);
+      if (u) urls.push(u);
     }
-    
-    // Strategy 2: Common buckets with cleaned title
+
     const cleanTitle = track.title
       .replace(/[;&,]/g, '')
       .replace(/\s+/g, '-')
@@ -230,15 +218,17 @@ export class SmartAudioResolver {
       .replace(/[^a-z0-9-]/g, '')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
-    
-    urls.push(`${baseUrl}/neuralpositivemusic/${encodeURIComponent(cleanTitle + '.mp3')}`);
-    urls.push(`${baseUrl}/energyboost/${encodeURIComponent(cleanTitle + '.mp3')}`);
-    
-    // Strategy 3: UUID-based if available
-    if (track.id) {
-      urls.push(`${baseUrl}/audio/tracks/${track.id}.mp3`);
+
+    for (const bucket of ['neuralpositivemusic', 'ENERGYBOOST']) {
+      const u = await getStorageUrl(bucket, `${cleanTitle}.mp3`);
+      if (u) urls.push(u);
     }
-    
+
+    if (track.id) {
+      const u = await getStorageUrl('audio', `tracks/${track.id}.mp3`);
+      if (u) urls.push(u);
+    }
+
     console.log(`🎯 Generated ${urls.length} fallback URLs for: "${track.title}"`);
     return urls;
   }

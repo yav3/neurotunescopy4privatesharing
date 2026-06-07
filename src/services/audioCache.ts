@@ -193,25 +193,29 @@ export class AudioCacheService {
         // Test each audio file (limit to prevent overwhelming)
         const filesToTest = audioFiles.slice(0, this.MAX_TRACKS_PER_GENRE);
         
+        const { getStorageUrl } = await import('@/lib/storageUrl');
+
         for (const file of filesToTest) {
           totalScanned++;
-          
+
           try {
-            const { data } = supabase.storage
-              .from(bucket)
-              .getPublicUrl(file.name);
-            
-            const url = data.publicUrl;
-            
+            // Route through helper: private buckets get a signed URL,
+            // public buckets get a direct CDN URL.
+            const url = await getStorageUrl(bucket, file.name);
+            if (!url) {
+              console.log(`❌ No URL resolved for: ${file.name}`);
+              continue;
+            }
+
             // Test if URL is accessible and get metadata
             const isWorking = await headOk(url, 3000);
-            
+
             if (isWorking) {
               totalValidated++;
-              
+
               // Get enhanced metadata
               const audioFingerprint = await this.generateAudioFingerprint(url);
-              
+
               const track: CachedAudioTrack = {
                 id: file.id || `${bucket}-${file.name}`,
                 title: this.cleanTitle(file.name),
@@ -226,7 +230,7 @@ export class AudioCacheService {
                 etag: file.metadata?.eTag,
                 audioFingerprint
               };
-              
+
               bucketTracks.push(track);
               console.log(`✅ Validated: ${track.title}`);
             } else {

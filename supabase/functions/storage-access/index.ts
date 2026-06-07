@@ -120,8 +120,37 @@ Deno.serve(async (req) => {
     const mode = (body?.mode ?? url.searchParams.get("mode") ?? "audio") as "audio" | "artwork" | "all";
     const recursive = String(body?.recursive ?? url.searchParams.get("recursive") ?? "false") === "true";
     const prefix = (body?.prefix ?? url.searchParams.get("prefix") ?? "") as string;
+    const path = (body?.path ?? url.searchParams.get("path") ?? "") as string;
+    const expiresIn = parseInt(
+      String(body?.expiresIn ?? url.searchParams.get("expiresIn") ?? "3600"),
+      10,
+    );
 
-    console.log(`📂 storage-access: bucket=${bucket} prefix=${prefix} mode=${mode} recursive=${recursive} limit=${limit}`);
+    console.log(`📂 storage-access: bucket=${bucket} prefix=${prefix} path=${path} mode=${mode} recursive=${recursive} limit=${limit}`);
+
+    // Single-object signing mode — used by the frontend storageUrl helper.
+    if (mode === "sign") {
+      if (!path) {
+        return new Response(JSON.stringify({ error: "path is required for mode=sign" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: signed, error: signErr } = await supabase.storage
+        .from(bucket)
+        .createSignedUrl(path, Math.min(Math.max(expiresIn, 60), 3600));
+      if (signErr || !signed?.signedUrl) {
+        console.error(`❌ sign failed for ${bucket}/${path}:`, signErr);
+        return new Response(JSON.stringify({ error: "Failed to sign URL" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(
+        JSON.stringify({ stream_url: signed.signedUrl, bucket, path, expiresIn }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     const maxDepth = 3;
     const names = recursive

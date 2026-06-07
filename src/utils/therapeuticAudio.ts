@@ -94,12 +94,10 @@ export async function getPreviewTrackForBucket(bucketName: string): Promise<stri
 
     // Pick a random track for variety
     const randomTrack = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-    
-    const { data: urlData } = supabase.storage
-      .from(bucketName)
-      .getPublicUrl(randomTrack.name);
 
-    return urlData.publicUrl;
+    const { getStorageUrl } = await import('@/lib/storageUrl');
+    const url = await getStorageUrl(bucketName, randomTrack.name);
+    return url || null;
   } catch (error) {
     console.error('Failed to fetch preview track:', error);
     return null;

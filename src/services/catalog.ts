@@ -50,20 +50,18 @@ export async function searchTracks(criteria: SearchCriteria): Promise<MusicTrack
   return filtered;
 }
 
-/** Build the proxied stream URL your player must use */
-export function toStreamUrl(trackId: string | any): string {
+/**
+ * Build the stream URL the player should use.
+ * Routes through getStorageUrl so private audio buckets return short-lived
+ * signed URLs while public buckets keep direct CDN URLs.
+ */
+export async function toStreamUrl(trackId: string | any): Promise<string> {
+  const { getStorageUrl } = await import('@/lib/storageUrl');
+
   if (typeof trackId === 'object' && trackId.storage_bucket && trackId.storage_key) {
-    const { data } = supabase.storage
-      .from(trackId.storage_bucket)
-      .getPublicUrl(trackId.storage_key);
-    return data.publicUrl;
+    return getStorageUrl(trackId.storage_bucket, trackId.storage_key);
   }
-  
+
   const id = typeof trackId === 'string' ? trackId : trackId?.id || trackId;
-  
-  // Fallback to default bucket structure
-  const { data } = supabase.storage
-    .from('audio')
-    .getPublicUrl(`tracks/${id}.mp3`);
-  return data.publicUrl;
+  return getStorageUrl('audio', `tracks/${id}.mp3`);
 }
