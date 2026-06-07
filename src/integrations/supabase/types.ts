@@ -375,6 +375,27 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_rate_limits: {
+        Row: {
+          created_at: string
+          function_name: string
+          id: number
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string
+          function_name: string
+          id?: number
+          ip_address: string
+        }
+        Update: {
+          created_at?: string
+          function_name?: string
+          id?: number
+          ip_address?: string
+        }
+        Relationships: []
+      }
       checklist_items: {
         Row: {
           assigned_to: string | null
@@ -7711,6 +7732,7 @@ export type Database = {
           total_unsafe_keys: number
         }[]
       }
+      prune_chat_rate_limits: { Args: never; Returns: undefined }
       range: { Args: never; Returns: string[] }
       record_email_send: {
         Args: { p_email: string; p_ip?: string; p_type: string }

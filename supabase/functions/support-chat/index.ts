@@ -1,39 +1,12 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-// Simple in-memory rate limiting
-const rateLimits = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 30; // requests per window
-const RATE_WINDOW = 60000; // 1 minute in ms
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const record = rateLimits.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimits.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
-    return true;
-  }
-  
-  if (record.count >= RATE_LIMIT) {
-    return false;
-  }
-  
-  record.count++;
-  return true;
-}
+import { corsHeaders, preflightChat } from "../_shared/chatGuards.ts";
 
 // Sanitize messages for Anthropic Messages API compliance:
 // - First message must be 'user' role
 // - Messages must alternate between 'user' and 'assistant'
 // - Merge consecutive same-role messages
 function sanitizeMessages(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
-  // Drop leading assistant messages (frontend greetings)
   let startIdx = 0;
   while (startIdx < messages.length && messages[startIdx].role === 'assistant') {
     startIdx++;
@@ -41,7 +14,6 @@ function sanitizeMessages(messages: Array<{ role: string; content: string }>): A
   const trimmed = messages.slice(startIdx);
   if (trimmed.length === 0) return [];
 
-  // Merge consecutive same-role messages
   const merged: Array<{ role: string; content: string }> = [];
   for (const msg of trimmed) {
     if (merged.length > 0 && merged[merged.length - 1].role === msg.role) {
@@ -58,28 +30,12 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Get client IP for rate limiting
-  const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                   req.headers.get('cf-connecting-ip') || 
-                   'unknown';
-
-  // Check rate limit
-  if (!checkRateLimit(clientIP)) {
-    console.warn(`Rate limit exceeded for IP: ${clientIP}`);
-    return new Response(
-      JSON.stringify({ error: 'Too many requests. Please wait a moment.' }),
-      {
-        status: 429,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    );
-  }
+  const pre = await preflightChat(req, "support-chat");
+  if (!pre.ok) return pre.response;
+  const { ip: clientIP, messages } = pre;
 
   try {
-    const { messages } = await req.json();
-    
-    // Limit message history and sanitize for Anthropic API compliance
-    const limitedMessages = sanitizeMessages(messages.slice(-15));
+    const limitedMessages = sanitizeMessages(messages);
 
     if (limitedMessages.length === 0) {
       return new Response(
@@ -87,6 +43,7 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
 
     const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
 
