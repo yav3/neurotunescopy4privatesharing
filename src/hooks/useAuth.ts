@@ -392,36 +392,41 @@ export function useAuth() {
 
         // Only synchronous state updates here
         setSession(session);
-        
-        // Don't reset user to null if we already have a user and session is still valid
-        // This prevents the "kicking out" issue during profile reloads
+
         if (!session?.user) {
           setUser(null);
+        } else {
+          // CRITICAL: Seed user synchronously from session so guards never see
+          // a (loading=false, user=null) window that would redirect to /auth.
+          // Profile + role enrich the user shortly after via the deferred fetch.
+          setUser(prev => {
+            if (prev && prev.id === session.user.id) return prev;
+            return { ...session.user, role: 'user' } as ExtendedUser;
+          });
         }
-        
+
         // Track session start for new logins
         if (event === 'SIGNED_IN') {
           Analytics.trackSessionStart(session.user.id);
         }
-        
-          // Defer profile fetching to avoid deadlock
-          if (session?.user) {
-            setTimeout(() => {
-              if (mounted) {
-                getUserWithProfile(session.user).then(userWithProfile => {
-                  if (mounted && session?.user) { // Double check session is still valid
-                    console.log('✅ Profile loaded via timeout:', !!userWithProfile);
-                    setUser(userWithProfile);
-                    // Update admin logging with user role
-                    import('@/utils/adminLogging').then(({ updateUserRole }) => {
-                      updateUserRole(userWithProfile?.role || 'user');
-                    });
-                  }
-                });
-              }
-            }, 0);
-          }
-        
+
+        // Defer profile fetching to avoid deadlock
+        if (session?.user) {
+          setTimeout(() => {
+            if (mounted) {
+              getUserWithProfile(session.user).then(userWithProfile => {
+                if (mounted && session?.user) {
+                  console.log('✅ Profile loaded via timeout:', !!userWithProfile);
+                  setUser(userWithProfile);
+                  import('@/utils/adminLogging').then(({ updateUserRole }) => {
+                    updateUserRole(userWithProfile?.role || 'user');
+                  });
+                }
+              });
+            }
+          }, 0);
+        }
+
         console.log('⏰ Setting loading to false from auth state change');
         setLoading(false);
       }
