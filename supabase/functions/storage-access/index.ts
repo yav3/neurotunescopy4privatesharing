@@ -93,15 +93,45 @@ async function listRecursive(params: {
 // Buckets the player and landing-page demo are allowed to read anonymously.
 // Anything outside this allowlist is rejected before we touch the service role.
 const ALLOWED_BUCKETS = new Set<string>([
-  // Landing-page demo assets
+  // Landing-page / branding assets
   "landingpage",
   "landingpagemusicexcerpts",
   "albumart",
+  "playlistcards",
+  "therapeutic-goal-and-genre-card-images",
+  "stravamusicappimages",
+  "commercials",
+  "sheet-music",
   // Production audio buckets
   "audio",
   "neuralpositivemusic",
   "classicalfocus",
   "sambajazznocturnes",
+  "Chopin",
+  "Nocturnes",
+  "gentleclassicalforpain",
+  "sonatasforstress",
+  "NewAgeandWorldFocus",
+  "newageworldstressanxietyreduction",
+  "painreducingworld",
+  "moodboostremixesworlddance",
+  "energyboostfocus",
+  "ENERGYBOOST",
+  "HIIT",
+  "djmodeedm",
+  "tropicalhouse",
+  "WorldHouseFocus",
+  "jamband",
+  "countryandamericana",
+  "samba",
+  "reggaeton",
+  "pop",
+  "opera",
+  "meditation",
+  "focus-music",
+  "curated-music-collection",
+  "all music",
+  "neurotunescopy",
 ]);
 
 Deno.serve(async (req) => {
