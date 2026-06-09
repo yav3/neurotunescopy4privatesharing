@@ -231,17 +231,26 @@ export const NavigationHeader = () => {
           </div>
         </div>
 
-        {/* Right: single CTA */}
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-          className="px-4 py-2 rounded-full text-white text-[12px] font-normal"
-          style={{
-            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-            boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
-          }}
-        >
-          Request Access
-        </button>
+        {/* Right: Login + CTA */}
+        <div className="flex items-center gap-2">
+          <Link
+            to="/auth"
+            className={`px-3 py-1.5 rounded-full text-[12px] font-normal ${theme.loginHover}`}
+            style={{ border: theme.loginBorder, color: theme.textColor }}
+          >
+            Login
+          </Link>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+            className="px-3 py-1.5 rounded-full text-white text-[12px] font-normal whitespace-nowrap"
+            style={{
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+              boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
+            }}
+          >
+            Request Access
+          </button>
+        </div>
       </header>
     </>
   );
