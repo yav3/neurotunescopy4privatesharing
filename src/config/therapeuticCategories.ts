@@ -27,7 +27,7 @@ export const THERAPEUTIC_CATEGORIES: TherapeuticCategory[] = [
     id: 'focus-enhancement',
     name: 'Focus & Concentration',
     description: 'Music to enhance focus and concentration',
-    buckets: ['focus-music', 'classicalfocus', 'NewAgeandWorldFocus'],
+    buckets: ['Chopin', 'classicalfocus', 'NewAgeandWorldFocus'],
     image: focusCard
   },
   {
