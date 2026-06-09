@@ -225,23 +225,32 @@ export const NavigationHeader = () => {
             </span>
           </Link>
 
-          <div className="flex items-center gap-1.5 ml-2 pl-3 border-l" style={{ borderColor: theme.divider }}>
+          <div className="hidden items-center gap-1.5 ml-2 pl-3 border-l" style={{ borderColor: theme.divider }}>
             <span className="text-[8px] tracking-wider" style={{ color: theme.mutedText }}>Distributed by</span>
             <img src={theme.welconyLogo} alt="Welcony" className="h-4" style={{ opacity: 0.85 }} />
           </div>
         </div>
 
-        {/* Right: single CTA */}
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
-          className="px-4 py-2 rounded-full text-white text-[12px] font-normal"
-          style={{
-            background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
-            boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
-          }}
-        >
-          Request Access
-        </button>
+        {/* Right: Login + CTA */}
+        <div className="flex items-center gap-2">
+          <Link
+            to="/auth"
+            className={`px-3 py-1.5 rounded-full text-[12px] font-normal ${theme.loginHover}`}
+            style={{ border: theme.loginBorder, color: theme.textColor }}
+          >
+            Login
+          </Link>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openContactForm'))}
+            className="px-3 py-1.5 rounded-full text-white text-[12px] font-normal whitespace-nowrap"
+            style={{
+              background: 'linear-gradient(135deg, #06b6d4, #2563eb)',
+              boxShadow: '0 0 14px hsla(190, 80%, 45%, 0.25)',
+            }}
+          >
+            Request Access
+          </button>
+        </div>
       </header>
     </>
   );
