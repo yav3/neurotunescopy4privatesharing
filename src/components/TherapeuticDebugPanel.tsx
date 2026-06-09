@@ -20,8 +20,7 @@ export const TherapeuticDebugPanel: React.FC = () => {
 
   useEffect(() => {
     // Only show in development or when debug mode is enabled
-    const showDebugPanel = process.env.NODE_ENV === 'development' || 
-                          localStorage.getItem('debug-mode') === 'true';
+    const showDebugPanel = import.meta.env.DEV;
     setIsVisible(showDebugPanel);
 
     if (showDebugPanel) {
