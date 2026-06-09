@@ -225,7 +225,7 @@ export const NavigationHeader = () => {
             </span>
           </Link>
 
-          <div className="flex items-center gap-1.5 ml-2 pl-3 border-l" style={{ borderColor: theme.divider }}>
+          <div className="hidden xs:flex items-center gap-1.5 ml-2 pl-3 border-l" style={{ borderColor: theme.divider }}>
             <span className="text-[8px] tracking-wider" style={{ color: theme.mutedText }}>Distributed by</span>
             <img src={theme.welconyLogo} alt="Welcony" className="h-4" style={{ opacity: 0.85 }} />
           </div>
