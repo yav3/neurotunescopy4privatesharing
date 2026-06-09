@@ -72,7 +72,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-blue-500 to-cyan-500',
     bpmRange: { min: 78, max: 100, optimal: 85 },
     vadProfile: { valence: 0.6, arousal: 0.7, dominance: 0.6 },
-    musicBuckets: ['audio', 'neuralpositivemusic', 'Chopin', 'opera'],
+    musicBuckets: ['neuralpositivemusic', 'Chopin'],
     synonyms: ['focus', 'concentration', 'study', 'focus_up', 'focus_enhancement', 'classical']
   },
   {
@@ -104,7 +104,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-indigo-500 to-blue-500',
     bpmRange: { min: 30, max: 60, optimal: 45 },
     vadProfile: { valence: 0.5, arousal: -0.5, dominance: 0.2 },
-    musicBuckets: ['Nocturnes', 'newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus', 'gentleclassicalforpain'],
+    musicBuckets: ['Nocturnes', 'newageworldstressanxietyreduction', 'painreducingworld', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus', 'gentleclassicalforpain'],
     synonyms: ['sleep', 'rest', 'bedtime', 'wind-down', 'nsdr', 'non-sleep-deep-rest', 'deep-rest', 'relaxation']
   },
   {
@@ -120,7 +120,7 @@ export const THERAPEUTIC_GOALS: TherapeuticGoal[] = [
     gradient: 'from-indigo-500 to-purple-500',
     bpmRange: { min: 30, max: 80, optimal: 50 },
     vadProfile: { valence: 0.6, arousal: 0.1, dominance: 0.4 },
-    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'audio', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus'],
+    musicBuckets: ['newageworldstressanxietyreduction', 'painreducingworld', 'neuralpositivemusic', 'Chopin', 'samba', 'countryandamericana', 'jamband', 'NewAgeandWorldFocus'],
     synonyms: ['depression', 'mood', 'emotional-support', 'wellbeing', 'uplifting', 'healing', 'stress', 'calm', 'relax', 'stress_reduction', 'chill', 'mood_boost', 'nsdr', 'deep-rest', 'recovery', 'restoration', 'non-sleep']
   },
   {
