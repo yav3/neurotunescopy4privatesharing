@@ -367,7 +367,7 @@ const TherapeuticGoalsPage = () => {
                   { goalId: 'focus-enhancement', genreId: 'tropical-house-focus', name: 'Tropical House Focus', image: tropicalHouseFocusCream, icon: Waves },
                   { goalId: 'mood-boost', genreId: 'samba', name: 'Chill Samba', image: genreChillSamba, icon: WaveIcon },
                   { goalId: 'mood-boost', genreId: 'house-music', name: 'Tropical House Party', image: tropicalHousePartyTeal, icon: Palmtree },
-                  { goalId: 'energy-boost', genreId: 'hiit-training', name: 'HIIT Energy', image: genreHiitEnergy, icon: Drum },
+                  { goalId: 'energy-boost', genreId: 'hiit-energy', name: 'HIIT Energy', image: genreHiitEnergy, icon: Drum },
                   { goalId: 'anxiety-support', genreId: 'classical-acoustic', name: 'Classical Calm', image: genreClassicalCalm, icon: Guitar },
                 ].map((genre) => {
                   const genreKey = `${genre.goalId}-${genre.genreId}`;
