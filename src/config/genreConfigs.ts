@@ -202,7 +202,7 @@ export const getGenreOptions = (goalId: string): GenreConfig[] => {
         id: 'hiit-energy',
         name: 'High Intensity EDM',
         description: 'High-intensity interval training music for peak performance',
-        buckets: ['ENERGYBOOST'],
+        buckets: ['HIIT', 'ENERGYBOOST'],
         image: genreCardLight1
       },
       {
