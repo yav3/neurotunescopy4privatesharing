@@ -31,9 +31,7 @@ const alias: Record<string, string[]> = {
 // Goal normalization: convert hyphens to underscores for backend compatibility
 const normalizeGoal = (goal: string): string => {
   const normalized = goal.toLowerCase().trim().replace(/[-\s]+/g, '_');
-  const hyphenated = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
   
-  // Return the normalized version if it's a known therapeutic goal
   const therapeuticGoals = [
     'anxiety_relief', 'focus_enhancement', 'sleep_preparation', 
     'mood_boost', 'stress_reduction', 'meditation_support'
@@ -51,7 +49,7 @@ const SERVICE_KEY   = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const ANON_KEY      = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 const DEFAULT_BUCKET = Deno.env.get('BUCKET') ?? 'audio';
 
-console.log('🔧 Environment check:', {
+console.log('Environment check:', {
   hasUrl: !!SUPABASE_URL,
   hasServiceKey: !!SERVICE_KEY,
   hasAnonKey: !!ANON_KEY,
@@ -61,22 +59,16 @@ console.log('🔧 Environment check:', {
 function wordsFor(goal: string): string[] {
   const g = goal.toLowerCase().trim().replace(/[_\s]+/g, '-');
   const normalized = normalizeGoal(goal);
-  
-  // Get words from both the original goal and the normalized version
-  const words = [g, normalized, ...(alias[g] ?? [])];
-  
-  return words;
+  return [g, normalized, ...(alias[g] ?? [])];
 }
 
 function sb(req?: Request, forceServiceRole = false) {
   if (!SUPABASE_URL || !SERVICE_KEY) throw new Error('Missing SUPABASE_URL or SERVICE_ROLE key');
   
-  // For read-only operations or when forced, use service role
   if (forceServiceRole) {
     return createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false }});
   }
   
-  // For client requests, respect the Authorization header if present
   const authHeader = req?.headers.get('Authorization');
   const anonKey = ANON_KEY || SERVICE_KEY;
   
@@ -92,7 +84,7 @@ Deno.serve(async (req) => {
   const { method } = req;
   const url = new URL(req.url);
   const path = url.pathname.replace(/\/{2,}/g, '/'); // normalize
-  console.log(`📝 ${method} ${path}`);
+  console.log(`${method} ${path}`);
 
   // CORS preflight
   if (method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
@@ -160,7 +152,6 @@ function json(body: Record<string, unknown>, status = 200) {
 
 // ---------- Handlers ----------
 async function handlePlaylistRequest(req: Request): Promise<Response> {
-  // Use service role for read-only playlist requests to avoid auth issues
   const supabase = sb(req, true);
   const url = new URL(req.url);
   const rid = Math.random().toString(36).substring(2, 18);
@@ -169,13 +160,11 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
   const limit = Math.max(1, Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 200));
   const offset = Math.max(0, parseInt(url.searchParams.get("offset") || "0", 10));
   
-  console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:start\",\"rawGoal\":\"${rawGoal}\",\"limit\":${limit},\"offset\":${offset},\"userAgent\":\"${req.headers.get('user-agent') || 'unknown'}\",\"origin\":\"${req.headers.get('origin') || 'unknown'}\"}`);
+  console.log(JSON.stringify({rid, msg: 'playlist:start', rawGoal, limit, offset}));
 
-  // VAD-only therapeutic system with fallback support
   const getTherapeuticTracksVAD = async (goal: string, offset: number, limit: number) => {
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_start\",\"goal\":\"${goal}\",\"system\":\"VAD+Fallback\"}`);
+    console.log(JSON.stringify({rid, msg: 'vad_start', goal}));
 
-    // Pull candidate tracks with fallback for missing columns
     let rows: any[] | null = null;
     try {
       const { data, error } = await supabase
@@ -186,9 +175,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
         .limit(2000);
       if (error) throw error;
       rows = data || [];
-      console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_data_full\",\"count\":${rows.length}}`);
     } catch {
-      // Fallback if VAD columns don't exist
       const { data } = await supabase
         .from('tracks')
         .select('id,title,artist,storage_key,energy_level,bpm,audio_status')
@@ -196,34 +183,26 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
         .not('storage_key', 'is', null).neq('storage_key', '')
         .limit(2000);
       rows = data || [];
-      console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_data_fallback\",\"count\":${rows.length}}`);
     }
 
-    // VAD scoring function
     const vadScore = (track: any, profile: any, goalType: string) => {
       const v = track.valence ?? (track.energy_level ? (track.energy_level - 1) / 9 * 0.8 + 0.1 : 0.5);
       const a = track.arousal ?? track.energy ?? (track.energy_level ? (track.energy_level - 1) / 9 : 0.5);
       const d = track.dominance ?? 0.5;
       const bpm = track.bpm ?? track.bpm_est ?? 60;
 
-      // BPM filtering first
       if (bpm < profile.bpm_min || bpm > profile.bpm_max) return { score: -1, v, a, d };
 
-      // VAD distance scoring
       const vDist = Math.abs(v - profile.valence);
       const aDist = Math.abs(a - profile.arousal);
       const dDist = Math.abs(d - profile.dominance);
       const baseScore = 1 - (vDist + aDist + dDist) / 3;
       
-      // Special validation for focus tracks - relax requirements for broader selection
       if (goalType === 'focus-enhancement') {
         const title = (track.title || '').toLowerCase();
         const focusTerms = ['focus', 'concentration', 'study', 'attention', 'productivity', 'clarity'];
         const hasFocusTerm = focusTerms.some(term => title.includes(term));
-        
-        // Boost score for tracks with focus terms, but don't reject others entirely
         if (!hasFocusTerm) {
-          // Apply a penalty rather than complete rejection to increase variety
           return { score: Math.max(0, baseScore * 0.6), v, a, d };
         }
       }
@@ -231,7 +210,6 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       return { score: Math.max(0, baseScore), v, a, d };
     };
 
-    // Therapeutic profiles
     const profiles: Record<string, any> = {
       'focus-enhancement': { valence: 0.6, arousal: 0.7, dominance: 0.6, bpm_min: 78, bpm_max: 100, seq: 'accelerate' },
       'anxiety-relief': { valence: 0.6, arousal: 0.2, dominance: 0.4, bpm_min: 40, bpm_max: 80, seq: 'decelerate' },
@@ -243,20 +221,16 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
 
     const profile = profiles[goal] || profiles['mood-boost'];
 
-    // Score and filter tracks
     const scored = rows.map(r => ({ r, s: vadScore(r, profile, goal) }))
       .filter(x => x.s.score >= 0)
       .sort((a, b) => b.s.score - a.s.score);
 
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"vad_scored\",\"candidates\":${scored.length},\"goal\":\"${goal}\"}`);
-
     const top = scored.slice(0, Math.max(limit * 3, 60));
     
-    // Sequence: accelerate (focus/mood) or decelerate (anxiety/sleep)
     if (profile.seq === 'accelerate') {
-      top.sort((a, b) => (a.s.a - b.s.a));  // Low to high arousal
+      top.sort((a, b) => (a.s.a - b.s.a));
     } else {
-      top.sort((a, b) => (b.s.a - a.s.a));  // High to low arousal  
+      top.sort((a, b) => (b.s.a - a.s.a));
     }
 
     const final = top.slice(offset, offset + limit).map(t => ({
@@ -269,7 +243,6 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       valence: t.s.v,
       arousal: t.s.a,
       dominance: t.s.d,
-      // Add stream URL pointing to our signed URL endpoint
       stream_url: `${SUPABASE_URL.replace('/rest/v1', '')}/functions/v1/api/stream/${t.r.id}`
     }));
 
@@ -281,8 +254,7 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
     const result = await getTherapeuticTracksVAD(rawGoal, offset, limit);
     const processingTime = Date.now() - startTime;
     
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:vad_success\",\"ms\":${processingTime},\"resultCount\":${result.tracks.length},\"goal\":\"${rawGoal}\",\"system\":\"VAD\"}`);
-    console.log(`{\"rid\":\"${rid}\",\"msg\":\"playlist:success\",\"tracksReturned\":${result.tracks.length},\"total\":${result.total},\"nextOffset\":${offset + result.tracks.length},\"rawGoal\":\"${rawGoal}\",\"processingTime\":${processingTime}}`);
+    console.log(JSON.stringify({rid, msg: 'playlist:success', tracksReturned: result.tracks.length, total: result.total, processingTime}));
 
     return new Response(
       JSON.stringify({ 
@@ -295,9 +267,9 @@ async function handlePlaylistRequest(req: Request): Promise<Response> {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (e: any) {
-    console.error(`{\"rid\":\"${rid}\",\"msg\":\"playlist:failed\",\"error\":\"${e?.message || e}\"}`);
+    console.error(JSON.stringify({rid, msg: 'playlist:failed', error: e?.message || String(e)}));
     return new Response(
-      JSON.stringify({ ok: false, error: "TherapeuticQueryFailed", detail: e?.message || e }),
+      JSON.stringify({ ok: false, error: "TherapeuticQueryFailed" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
@@ -308,7 +280,6 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   const supabase = sb();
   const url = new URL(req.url);
   
-  // Extract track ID from query param or URL path
   let trackId = url.searchParams.get('id') || '';
   if (!trackId && url.pathname.includes('/stream/')) {
     const pathParts = url.pathname.split('/');
@@ -322,7 +293,6 @@ async function handleStreamRequest(req: Request): Promise<Response> {
     return json({ ok: false, error: 'MissingId' }, 400);
   }
 
-  // DB lookup
   const t0 = Date.now();
   const { data: row, error } = await supabase
     .from('tracks')
@@ -342,50 +312,32 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   }
   
   if (!row.storage_key) {
-    // Self-heal: Mark as missing
     await supabase.from('tracks').update({
       audio_status: 'missing',
       last_verified_at: new Date().toISOString(),
       last_error: 'MissingStorageKey'
     }).eq('id', trackId);
-    
     return json({ ok: false, error: 'MissingStorageKey', id: trackId }, 404);
   }
 
   const bucket = row.storage_bucket || (Deno.env.get('BUCKET') ?? 'audio');
-
-  // Multi-bucket file existence check and sign
   const buckets = [bucket, bucket === 'audio' ? 'neuralpositivemusic' : 'audio'];
   let signed: any = null;
   let workingBucket = bucket;
   
   const t1 = Date.now();
   for (const tryBucket of buckets) {
-    // First check if file exists
     const { data: fileInfo, error: listError } = await supabase.storage
       .from(tryBucket)
-      .list('', { 
-        limit: 1,
-        search: row.storage_key 
-      });
+      .list('', { limit: 1, search: row.storage_key });
 
     if (listError || !fileInfo || fileInfo.length === 0) {
-      log(id, 'stream:file_check', {
-        bucket: tryBucket,
-        key: row.storage_key,
-        exists: false,
-        error: listError?.message ?? 'File not found'
-      });
+      log(id, 'stream:file_check', { bucket: tryBucket, key: row.storage_key, exists: false });
       continue;
     }
     
-    // File exists, try to create signed URL
     const attempt = await supabase.storage.from(tryBucket).createSignedUrl(row.storage_key, 1800);
-    log(id, 'stream:sign_attempt', {
-      bucket: tryBucket,
-      ok: !!attempt.data?.signedUrl,
-      error: attempt.error?.message ?? null,
-    });
+    log(id, 'stream:sign_attempt', { bucket: tryBucket, ok: !!attempt.data?.signedUrl, error: attempt.error?.message ?? null });
     
     if (attempt.data?.signedUrl && !attempt.error) {
       signed = attempt;
@@ -404,27 +356,16 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   });
 
   if (!signed?.data?.signedUrl) {
-    // Self-heal: Mark as missing with specific error
     await supabase.from('tracks').update({
       audio_status: 'missing',
       last_verified_at: new Date().toISOString(),
       last_error: `ObjectNotFound:tried_buckets:[${buckets.join(',')}]:${row.storage_key}`
     }).eq('id', trackId);
-    
-    return json(
-      { ok: false, error: 'ObjectNotFound', buckets_tried: buckets, key: row.storage_key, id: trackId },
-      404
-    );
+    return json({ ok: false, error: 'ObjectNotFound', buckets_tried: buckets, key: row.storage_key, id: trackId }, 404);
   }
 
-  // Self-heal: Update bucket if we found it in a different location
   if (workingBucket !== bucket) {
-    log(id, 'stream:bucket_correction', {
-      originalBucket: bucket,
-      correctedBucket: workingBucket,
-      trackId,
-    });
-    
+    log(id, 'stream:bucket_correction', { originalBucket: bucket, correctedBucket: workingBucket, trackId });
     await supabase.from('tracks').update({
       storage_bucket: workingBucket,
       audio_status: 'working',
@@ -433,7 +374,6 @@ async function handleStreamRequest(req: Request): Promise<Response> {
     }).eq('id', trackId);
   }
 
-  // HEAD to validate object before proxying (super cheap, super useful)
   const t2 = Date.now();
   const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
   log(id, 'stream:head', {
@@ -445,44 +385,32 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   });
 
   if (head.status >= 400) {
-    // Self-heal: Mark as missing with HEAD failure status
     await supabase.from('tracks').update({
       audio_status: 'missing',
       last_verified_at: new Date().toISOString(),
       last_error: `SignedUrlHeadFailed:${head.status}`
     }).eq('id', trackId);
-    
-    return json(
-      {
-        ok: false,
-        error: 'SignedUrlHeadFailed',
-        status: head.status,
-        bucket,
-        key: row.storage_key,
-        id: trackId,
-      },
-      404
-    );
+    return json({ ok: false, error: 'SignedUrlHeadFailed', status: head.status, bucket, key: row.storage_key, id: trackId }, 404);
   }
 
-  // Success: Mark as working
   await supabase.from('tracks').update({
     audio_status: 'working',
     last_verified_at: new Date().toISOString(),
     last_error: null
   }).eq('id', trackId);
 
-  // Proxy with Range support
+  // Proxy with Range support — 28s timeout keeps cache age safely under the 30min signed URL TTL
   const range = req.headers.get('range');
   const upstream = await fetch(signed.data.signedUrl, {
     method: req.method,
     headers: range ? { Range: range } : {},
+    signal: AbortSignal.timeout(28_000),
   });
 
   const h = new Headers(upstream.headers);
   h.set('Access-Control-Allow-Origin', '*');
   h.set('Accept-Ranges', 'bytes');
-  h.set('Cache-Control', 'public, max-age=3600');
+  h.set('Cache-Control', 'public, max-age=1500, stale-while-revalidate=120');
   if (!h.get('Content-Type') && row.storage_key.toLowerCase().endsWith('.mp3')) {
     h.set('Content-Type', 'audio/mpeg');
   }
@@ -494,7 +422,6 @@ async function handleStreamRequest(req: Request): Promise<Response> {
   });
 }
 
-// ---------- DIAG (same checks, returns JSON instead of audio) ----------
 async function handleStreamDiag(req: Request): Promise<Response> {
   const id = rid();
   const supabase = sb();
@@ -504,7 +431,6 @@ async function handleStreamDiag(req: Request): Promise<Response> {
   const out: Record<string, unknown> = { rid: id, id: trackId, path: url.pathname };
   if (!trackId) return json({ ok: false, error: 'MissingId', ...out }, 400);
 
-  // DB
   const t0 = Date.now();
   const { data: row, error } = await supabase
     .from('tracks')
@@ -520,7 +446,6 @@ async function handleStreamDiag(req: Request): Promise<Response> {
   if (error || !row) return json({ ok: false, error: 'TrackNotFound', ...out }, 404);
   if (!row.storage_key) return json({ ok: false, error: 'MissingStorageKey', ...out }, 404);
 
-  // SIGN
   const bucket = out.bucket as string;
   const t1 = Date.now();
   const signed = await supabase.storage.from(bucket).createSignedUrl(row.storage_key, 120);
@@ -532,7 +457,6 @@ async function handleStreamDiag(req: Request): Promise<Response> {
     return json({ ok: false, error: 'ObjectNotFound', ...out }, 404);
   }
 
-  // HEAD
   const t2 = Date.now();
   const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
   out.head_ms = Date.now() - t2;
@@ -544,9 +468,7 @@ async function handleStreamDiag(req: Request): Promise<Response> {
   return json({ ok: head.status < 400, ...out });
 }
 
-// ---------- ADMIN BATCH AUDIT ----------
 async function handleAdminAuditRequest(req: Request): Promise<Response> {
-  // Check admin authorization
   const adminKey = Deno.env.get('ADMIN_KEY');
   const authHeader = req.headers.get('x-admin-key') || req.headers.get('Authorization')?.replace('Bearer ', '');
   
@@ -564,7 +486,6 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
   log(id, 'audit:start', { limit, offset, dry });
 
   try {
-    // Get batch of tracks to audit
     const { data: tracks, error } = await supabase
       .from('tracks')
       .select('id, storage_bucket, storage_key, audio_status')
@@ -582,19 +503,15 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
     let missing = 0;
     const updates: Array<{ id: string; status: string }> = [];
 
-    // Check each track
     for (const track of tracks || []) {
       const bucket = track.storage_bucket || DEFAULT_BUCKET;
-      
       try {
-        // Sign and HEAD check
         const signed = await supabase.storage.from(bucket).createSignedUrl(track.storage_key, 120);
         if (!signed.data?.signedUrl) {
           missing++;
           updates.push({ id: track.id, status: 'missing' });
           continue;
         }
-
         const head = await fetch(signed.data.signedUrl, { method: 'HEAD' });
         if (head.status < 400) {
           working++;
@@ -609,13 +526,9 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
       }
     }
 
-    // Apply updates if not dry run
     if (!dry && updates.length > 0) {
       for (const update of updates) {
-        await supabase
-          .from('tracks')
-          .update({ audio_status: update.status })
-          .eq('id', update.id);
+        await supabase.from('tracks').update({ audio_status: update.status }).eq('id', update.id);
       }
     }
 
@@ -629,22 +542,18 @@ async function handleAdminAuditRequest(req: Request): Promise<Response> {
       dry,
       processed: updates.length
     });
-
   } catch (error) {
     log(id, 'audit:error', { error: error instanceof Error ? error.message : String(error) });
     return json({ error: 'Audit failed' }, 500);
   }
 }
 
-// Storage debug endpoint - shows sample storage info
 async function handleStorageDebugRequest(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const limit = parseInt(url.searchParams.get('limit') || '10');
   
   try {
     const supabase = sb();
-    
-    // Get sample tracks with storage info
     const { data: tracks, error } = await supabase
       .from('tracks')
       .select('id, title, storage_bucket, storage_key, audio_status')
@@ -652,7 +561,6 @@ async function handleStorageDebugRequest(req: Request): Promise<Response> {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.log('❌ Debug query error:', error);
       return json({ error: 'Database query failed' }, 500);
     }
 
@@ -662,14 +570,11 @@ async function handleStorageDebugRequest(req: Request): Promise<Response> {
       storage_buckets: ['audio', 'neuralpositivemusic'],
       timestamp: new Date().toISOString()
     });
-    
   } catch (error) {
-    console.log('❌ Storage debug error:', error);
     return json({ error: 'Debug request failed' }, 500);
   }
 }
 
-// Session build endpoint - creates therapeutic sessions
 async function handleSessionBuild(req: Request): Promise<Response> {
   const id = rid();
   const url = new URL(req.url);
@@ -687,38 +592,25 @@ async function handleSessionBuild(req: Request): Promise<Response> {
 
     log(id, 'session:params', { goal, duration, intensity, trackCount });
 
-    // Get playlist tracks by calling our own playlist endpoint
     const baseUrl = new URL(req.url).origin;
     const playlistUrl = `${baseUrl}/api/playlist?goal=${encodeURIComponent(goal)}&limit=${trackCount}`;
     
-    log(id, 'session:fetching_playlist', { playlistUrl });
-
     const playlistResponse = await fetch(playlistUrl, {
-      headers: {
-        'User-Agent': 'session-builder/1.0'
-      }
+      headers: { 'User-Agent': 'session-builder/1.0' }
     });
 
     if (!playlistResponse.ok) {
-      log(id, 'session:playlist_error', { 
-        status: playlistResponse.status, 
-        statusText: playlistResponse.statusText 
-      });
-      return json({ 
-        error: `Failed to fetch playlist: ${playlistResponse.status}` 
-      }, playlistResponse.status);
+      log(id, 'session:playlist_error', { status: playlistResponse.status });
+      return json({ error: `Failed to fetch playlist: ${playlistResponse.status}` }, playlistResponse.status);
     }
 
     const playlistData = await playlistResponse.json();
 
     if (!playlistData.tracks || playlistData.tracks.length === 0) {
       log(id, 'session:no_tracks', { goal });
-      return json({ 
-        error: `No tracks available for goal: ${goal}` 
-      }, 404);
+      return json({ error: `No tracks available for goal: ${goal}` }, 404);
     }
 
-    // Create session object
     const session = {
       id: `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       goal,
@@ -730,29 +622,17 @@ async function handleSessionBuild(req: Request): Promise<Response> {
       createdAt: new Date().toISOString()
     };
 
-    log(id, 'session:build_success', { 
-      sessionId: session.id, 
-      goal, 
-      trackCount: session.trackCount 
-    });
+    log(id, 'session:build_success', { sessionId: session.id, goal, trackCount: session.trackCount });
 
-    return json({ 
-      success: true, 
-      session 
-    });
-
+    return json({ success: true, session });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     log(id, 'session:build_error', { error: errorMessage });
-    return json({ 
-      error: errorMessage || 'Session build failed' 
-    }, 500);
+    return json({ error: 'Session build failed' }, 500);
   }
 }
 
-// Admin-only audit endpoint - verifies storage integrity
 async function handleAuditVerifyRequest(req: Request): Promise<Response> {
-  // Check admin authorization
   const adminKey = Deno.env.get('ADMIN_KEY');
   const authHeader = req.headers.get('Authorization');
   
@@ -763,26 +643,18 @@ async function handleAuditVerifyRequest(req: Request): Promise<Response> {
   try {
     const supabase = sb();
     
-    // Get tracks with missing or invalid storage
-    const { data: brokenTracks, error } = await supabase
-      .rpc('find_broken_tracks');
+    const { data: brokenTracks, error } = await supabase.rpc('find_broken_tracks');
 
     if (error) {
-      console.log('❌ Audit query error:', error);
       return json({ error: 'Audit query failed' }, 500);
     }
 
-    // Get tracks marked as working but might be broken
-    const { data: suspiciousTracks, error: suspiciousError } = await supabase
+    const { data: suspiciousTracks } = await supabase
       .from('tracks')
       .select('id, title, storage_bucket, storage_key, audio_status')
       .eq('audio_status', 'working')
       .or('storage_key.is.null,storage_key.eq.,storage_bucket.is.null')
       .limit(50);
-
-    if (suspiciousError) {
-      console.log('❌ Suspicious tracks query error:', suspiciousError);
-    }
 
     return json({
       audit_timestamp: new Date().toISOString(),
@@ -794,9 +666,7 @@ async function handleAuditVerifyRequest(req: Request): Promise<Response> {
         'Check for orphaned storage files'
       ]
     });
-    
   } catch (error) {
-    console.log('❌ Audit verify error:', error);
     return json({ error: 'Audit verification failed' }, 500);
   }
 }
@@ -838,7 +708,6 @@ async function handleTrending(req: Request): Promise<Response> {
 
   const sinceISO = new Date(Date.now() - minutes*60*1000).toISOString();
 
-  // Try rich select; fall back to minimal if schema differs
   let rows: any[] = [];
   try {
     const { data, error } = await s.from('tracks')
@@ -862,15 +731,13 @@ async function handleTrending(req: Request): Promise<Response> {
     rows = data || [];
   }
 
-  // Apply exclude and uniqueness
   const filtered = rows.filter(r => r?.id && !exclude.has(r.id));
   const seen = new Set<string>();
-  const uniq   = filtered.filter(r => (seen.has(r.id) ? false : (seen.add(r.id), true)));
+  const uniq = filtered.filter(r => (seen.has(r.id) ? false : (seen.add(r.id), true)));
 
-  // Add a simple recency score, then seed-shuffle for variety
   const scored = uniq.map(r => {
     const t = new Date(r.last_verified_at || r.last_analyzed_at || r.created_at || Date.now()).getTime();
-    const recency = Math.max(0, 1 - (Date.now() - t) / (minutes*60*1000)); // 0..1
+    const recency = Math.max(0, 1 - (Date.now() - t) / (minutes*60*1000));
     return { r, recency };
   }).sort((a,b)=> b.recency - a.recency);
 
@@ -880,7 +747,6 @@ async function handleTrending(req: Request): Promise<Response> {
 
   const picked = pool.slice(0, limit).map(x => x.r);
 
-  // If empty, widen the window automatically to 6h, then 24h
   if (!picked.length) {
     const widen = async (mins: number) => {
       const { data } = await s.from('tracks')
@@ -894,7 +760,7 @@ async function handleTrending(req: Request): Promise<Response> {
     };
     let alt = await widen(360);
     if (!alt.length) alt = await widen(1440);
-    return json({ ok:true, mode:'trending', minutes, widened: alt.length ? (alt===undefined?0: (alt.length && alt.length<=limit ? (alt.length===0?0:(alt.length)) : 0)) : 0, seed:seedQS, exclude_count: exclude.size, count: alt.length, tracks: alt });
+    return json({ ok:true, mode:'trending', minutes, seed:seedQS, exclude_count: exclude.size, count: alt.length, tracks: alt });
   }
 
   return json({ ok:true, mode:'trending', minutes, seed: seedQS, exclude_count: exclude.size, count: picked.length, tracks: picked });
