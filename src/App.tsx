@@ -27,66 +27,66 @@ import "@/utils/fixApiConfig";
 import { ArtworkService } from "@/services/artworkService";
 ArtworkService.preloadArtwork();
 
+// Critical path — eagerly loaded (on the main navigation flow)
 import Index from "./pages/Index";
 import TherapeuticGoalsPage from "./pages/TherapeuticGoalsPage";
 import Profile from "./pages/Profile";
 import GenreView from "./pages/GenreView";
+import Demo from "./pages/Demo";
+import Experience from "./pages/Experience";
 import { MagicAuth } from "./pages/MagicAuth";
 import { AdminLayout } from "./components/admin/AdminLayout";
-import AdminDashboard from "./pages/admin/Dashboard";
-import ContentManagement from "./pages/admin/ContentManagement";
-import AdminAnalytics from "./pages/admin/Analytics";
-import SystemSettings from "./pages/admin/SystemSettings";
-import DataMonitoring from "./pages/admin/DataMonitoring";
-import UserEngagement from "./pages/admin/UserEngagement";
-import Storage from "./pages/Storage";
-import Monitoring from "./pages/Monitoring";
-import Settings from "./pages/Settings";
-import UserAnalytics from "./pages/Analytics";
-import { MagicLinksPage } from "./pages/admin/MagicLinks";
-import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
-import StorageManager from "./pages/StorageManager";
-import Users from "./pages/admin/Users";
-import FAQ from "./pages/FAQ";
-import { AboutNeuralPositive } from "./pages/AboutNeuralPositive";
-import { CompanyStory } from "./pages/CompanyStory";
-import { ResearchPage } from "./pages/ResearchPage";
-import Support from "./pages/Support";
-import Demo from "./pages/Demo";
-
-import { ProductsOverview } from "./pages/ProductsOverview";
-import { ProductDetail } from "./pages/ProductDetail";
-import Legal from "./pages/Legal";
-import Privacy from "./pages/Privacy";
-import Cookies from "./pages/Cookies";
-import Payments from "./pages/Payments";
-import Experience from "./pages/Experience";
-import EnvironmentalBackground from "./pages/products/EnvironmentalBackground";
-import PopulationHealth from "./pages/products/PopulationHealth";
-import Partnerships from "./pages/products/Partnerships";
-import EnterpriseWellness from "./pages/products/EnterpriseWellness";
-import EnterpriseWellnessTrial from "./pages/products/EnterpriseWellnessTrial";
-import Story from "./pages/Story";
-import Team from "./pages/Team";
-import WhitePapers from "./pages/WhitePapers";
-import Evidence from "./pages/Evidence";
-import Press from "./pages/Press";
-import Careers from "./pages/Careers";
-import Library from "./pages/Library";
-import Download from "./pages/Download";
-import Pricing from "./pages/Pricing";
-import Help from "./pages/Help";
-import ConsumerPricing from "./pages/ConsumerPricing";
-import Checkout from "./pages/Checkout";
-
-import ClinicalPricing from "./pages/ClinicalPricing";
-import HIPAA from "./pages/HIPAA";
-
-import PaymentSuccess from "./pages/PaymentSuccess";
-import PaymentCancelled from "./pages/PaymentCancelled";
-import BlackFriday from "./pages/BlackFriday";
 import { SupportChat } from "./components/SupportChat";
-import CapabilityBrief from "./pages/CapabilityBrief";
+
+// Non-critical — lazily loaded to split the initial JS bundle
+const AdminDashboard = React.lazy(() => import("./pages/admin/Dashboard"));
+const ContentManagement = React.lazy(() => import("./pages/admin/ContentManagement"));
+const AdminAnalytics = React.lazy(() => import("./pages/admin/Analytics"));
+const SystemSettings = React.lazy(() => import("./pages/admin/SystemSettings"));
+const DataMonitoring = React.lazy(() => import("./pages/admin/DataMonitoring"));
+const UserEngagement = React.lazy(() => import("./pages/admin/UserEngagement"));
+const Users = React.lazy(() => import("./pages/admin/Users"));
+const MagicLinksPage = React.lazy(() => import("./pages/admin/MagicLinks").then(m => ({ default: m.MagicLinksPage })));
+const StorageManager = React.lazy(() => import("./pages/StorageManager"));
+const Storage = React.lazy(() => import("./pages/Storage"));
+const Monitoring = React.lazy(() => import("./pages/Monitoring"));
+const Settings = React.lazy(() => import("./pages/Settings"));
+const UserAnalytics = React.lazy(() => import("./pages/Analytics"));
+const ConnectionDiagnostics = React.lazy(() => import("./components/ConnectionDiagnostics").then(m => ({ default: m.ConnectionDiagnostics })));
+const FAQ = React.lazy(() => import("./pages/FAQ"));
+const AboutNeuralPositive = React.lazy(() => import("./pages/AboutNeuralPositive").then(m => ({ default: m.AboutNeuralPositive })));
+const CompanyStory = React.lazy(() => import("./pages/CompanyStory").then(m => ({ default: m.CompanyStory })));
+const ResearchPage = React.lazy(() => import("./pages/ResearchPage").then(m => ({ default: m.ResearchPage })));
+const Support = React.lazy(() => import("./pages/Support"));
+const ProductsOverview = React.lazy(() => import("./pages/ProductsOverview").then(m => ({ default: m.ProductsOverview })));
+const ProductDetail = React.lazy(() => import("./pages/ProductDetail").then(m => ({ default: m.ProductDetail })));
+const Legal = React.lazy(() => import("./pages/Legal"));
+const Privacy = React.lazy(() => import("./pages/Privacy"));
+const Cookies = React.lazy(() => import("./pages/Cookies"));
+const Payments = React.lazy(() => import("./pages/Payments"));
+const EnvironmentalBackground = React.lazy(() => import("./pages/products/EnvironmentalBackground"));
+const PopulationHealth = React.lazy(() => import("./pages/products/PopulationHealth"));
+const Partnerships = React.lazy(() => import("./pages/products/Partnerships"));
+const EnterpriseWellness = React.lazy(() => import("./pages/products/EnterpriseWellness"));
+const EnterpriseWellnessTrial = React.lazy(() => import("./pages/products/EnterpriseWellnessTrial"));
+const Story = React.lazy(() => import("./pages/Story"));
+const Team = React.lazy(() => import("./pages/Team"));
+const WhitePapers = React.lazy(() => import("./pages/WhitePapers"));
+const Evidence = React.lazy(() => import("./pages/Evidence"));
+const Press = React.lazy(() => import("./pages/Press"));
+const Careers = React.lazy(() => import("./pages/Careers"));
+const Library = React.lazy(() => import("./pages/Library"));
+const Download = React.lazy(() => import("./pages/Download"));
+const Pricing = React.lazy(() => import("./pages/Pricing"));
+const Help = React.lazy(() => import("./pages/Help"));
+const ConsumerPricing = React.lazy(() => import("./pages/ConsumerPricing"));
+const Checkout = React.lazy(() => import("./pages/Checkout"));
+const ClinicalPricing = React.lazy(() => import("./pages/ClinicalPricing"));
+const HIPAA = React.lazy(() => import("./pages/HIPAA"));
+const PaymentSuccess = React.lazy(() => import("./pages/PaymentSuccess"));
+const PaymentCancelled = React.lazy(() => import("./pages/PaymentCancelled"));
+const BlackFriday = React.lazy(() => import("./pages/BlackFriday"));
+const CapabilityBrief = React.lazy(() => import("./pages/CapabilityBrief"));
 
 const queryClient = new QueryClient();
 
@@ -108,9 +108,6 @@ const App = () => {
         const isPlaying = !oldAudio.paused && !oldAudio.ended && oldAudio.currentTime > 0;
         if (!isPlaying) {
           oldAudio.remove();
-          console.log('🧹 Cleaned up old np-audio element');
-        } else {
-          console.log('🎵 Preserving playing np-audio element');
         }
       }
     };
@@ -159,6 +156,7 @@ const AppContent = () => {
 
   return (
     <div className="relative min-h-screen bg-background">
+      <React.Suspense fallback={<div className="min-h-screen bg-background" />}>
       <Routes>
         {/* Root path - land directly on the immersive music experience */}
         <Route path="/" element={<Demo />} />
@@ -179,7 +177,6 @@ const AppContent = () => {
         <Route path="/debug" element={<AdvancedAuthGuard><ConnectionDiagnostics /></AdvancedAuthGuard>} />
         <Route path="/genre/:goalId/:genreId" element={<AdvancedAuthGuard><GenreView /></AdvancedAuthGuard>} />
         <Route path="/profile" element={<AdvancedAuthGuard><Profile /></AdvancedAuthGuard>} />
-        <Route path="/landing" element={<Index />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/reset-password" element={<ResetPasswordForm />} />
         <Route path="/verify" element={<ResetPasswordForm />} />
@@ -232,6 +229,7 @@ const AppContent = () => {
         </Route>
         <Route path="*" element={<AdvancedAuthGuard><TherapeuticGoalsPage /></AdvancedAuthGuard>} />
       </Routes>
+      </React.Suspense>
       
       {/* Global Support Chat - hidden on landing/demo where it's embedded with nextToPlayer */}
       {location.pathname !== '/' && location.pathname !== '/landing' && location.pathname !== '/demo' && (

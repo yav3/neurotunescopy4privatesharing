@@ -28,8 +28,8 @@ export const blockTrack = async (trackId: string, trackTitle?: string): Promise<
       .from('blocked_tracks')
       .select('id')
       .eq('user_id', user.id)
-        .eq('track_id', trackIdHash)
-      .single();
+      .eq('track_id', trackIdHash)
+      .maybeSingle();
 
     if (existing) {
       toast.info('Track is already blocked');
@@ -143,7 +143,7 @@ export const isTrackBlocked = async (trackId: string): Promise<boolean> => {
       .select('id')
       .eq('user_id', user.id)
       .eq('track_id', trackIdHash)
-      .single();
+      .maybeSingle();
 
     return !error && !!data;
   } catch (error) {

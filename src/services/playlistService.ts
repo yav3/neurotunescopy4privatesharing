@@ -189,17 +189,17 @@ export class PlaylistService {
 
       if (deleteError) throw deleteError
 
-      // Get updated track count
-      const { data: trackCount } = await supabase
+      // Get updated track count — use head:true to avoid fetching all rows
+      const { count: trackCount } = await supabase
         .from('playlist_tracks')
-        .select('id', { count: 'exact' })
+        .select('id', { count: 'exact', head: true })
         .eq('playlist_id', playlistId)
 
       // Update track count
       const { error: updateError } = await supabase
         .from('playlists')
-        .update({ 
-          track_count: trackCount?.length || 0
+        .update({
+          track_count: trackCount ?? 0
         })
         .eq('id', playlistId)
 

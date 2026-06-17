@@ -158,7 +158,7 @@ export function usePinnedFavorites() {
         .select('id')
         .eq('user_id', user.id)
         .eq('goal_id', goalId)
-        .single();
+        .maybeSingle();
 
       if (existingPin) {
         // Unpin

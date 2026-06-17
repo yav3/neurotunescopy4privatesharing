@@ -14,11 +14,11 @@ export class SupabaseService {
         // Valid track ID - use stream function directly
         const { buildStreamUrl } = await import('@/lib/stream')
         const streamUrl = buildStreamUrl(trackIdOrPath)
-        logger.info('Generated stream URL for track ID', { streamUrl, trackIdOrPath })
+        logger.info('Generated stream URL for track ID', { trackId: trackIdOrPath })
         return streamUrl
       } else {
         // File path or goal name - need to resolve to track ID first
-        logger.warn('⚠️ Non-UUID passed to getTrackUrl, attempting to resolve', { trackIdOrPath })
+        logger.warn('Non-UUID passed to getTrackUrl, attempting to resolve', { trackIdOrPath })
         
         // Try to find track by file_path or storage_key
         const { data: track } = await supabase
@@ -33,11 +33,7 @@ export class SupabaseService {
         if (track) {
           const { buildStreamUrl } = await import('@/lib/stream')
           const streamUrl = buildStreamUrl(track.id)
-          logger.info('Resolved file path to track ID and generated stream URL', { 
-            originalPath: trackIdOrPath, 
-            trackId: track.id,
-            streamUrl 
-          })
+          logger.info('Resolved file path to track ID', { originalPath: trackIdOrPath, trackId: track.id })
           return streamUrl
         } else {
           throw new Error(`Could not resolve "${trackIdOrPath}" to a valid track ID`)
@@ -73,7 +69,7 @@ export class SupabaseService {
     genre?: string
     limit?: number
     offset?: number
-    buckets?: string[]  // Add support for multiple buckets
+    buckets?: string[]
   } = {}): Promise<any[]> {
     try {
     let query = supabase
@@ -91,9 +87,7 @@ export class SupabaseService {
         query = query.in('storage_bucket', targetBuckets);
       }
 
-      if (options?.limit) {
-        query = query.limit(options.limit)
-      }
+      query = query.limit(options?.limit ?? 200)
 
       if (options?.offset) {
         query = query.range(options.offset, options.offset + (options.limit || 10) - 1)
@@ -107,17 +101,13 @@ export class SupabaseService {
 
       if (error) throw error
 
-      // Transform data to match Track interface
       const tracks = (data || []).map(track => ({
         ...track,
-        therapeutic_applications: [], // Empty array for now
-        spectral_analysis: [] // Empty array for now
+        therapeutic_applications: [],
+        spectral_analysis: []
       })) as any[]
 
-      logger.info('Tracks fetched successfully', { 
-        count: tracks.length, 
-        filters: options 
-      })
+      logger.info('Tracks fetched successfully', { count: tracks.length, filters: options })
 
       return tracks
     } catch (error) {
@@ -146,11 +136,10 @@ export class SupabaseService {
         return null
       }
 
-      // Transform data to match Track interface
       const track = {
         ...data,
-        therapeutic_applications: [], // Empty array for now
-        spectral_analysis: [] // Empty array for now
+        therapeutic_applications: [],
+        spectral_analysis: []
       } as any
 
       logger.info('Track fetched successfully', { trackId, title: track.title })
@@ -163,12 +152,6 @@ export class SupabaseService {
 
   static async getMusicTracksByCategory(category: string): Promise<any[]> {
     try {
-      console.log('Fetching tracks for category:', category);
-      
-      // If no specific genre mapping found, return some tracks anyway for testing
-      let filterOptions = {};
-      
-      // Map category names to genres - updated to match actual database genres
       const categoryMap: { [key: string]: any } = {
         'focus': { genre: 'classical' },
         'mood boost': { genre: 'jazz' }, 
@@ -176,33 +159,23 @@ export class SupabaseService {
         'acoustic': { genre: 'jazz' }
       }
 
-      filterOptions = categoryMap[category] || {}
-      console.log('Using filter options:', filterOptions);
+      let fetchOptions = { ...categoryMap[category] || {}, limit: 10 };
       
-      // Pass buckets to fetchTracks if available from genre config  
-      let fetchOptions = { ...filterOptions, limit: 10 };
-      
-      // Try to get buckets for this category
       try {
         const { getBucketsForGoal } = await import('@/config/therapeuticGoals');
         const buckets = getBucketsForGoal(category);
         if (buckets && buckets.length > 0) {
           fetchOptions = { ...fetchOptions, buckets } as any;
-          console.log('Using buckets for category:', buckets);
         }
       } catch (error) {
-        console.log('Could not get buckets for category, using default');
+        // use default bucket
       }
       
       let tracks = await this.fetchTracks(fetchOptions)
       
-      // If no tracks found with specific genre, get any tracks for testing
       if (tracks.length === 0) {
-        console.log('No tracks found for specific genre, fetching any available tracks');
         tracks = await this.fetchTracks({ limit: 10 })
       }
-      
-      console.log('Retrieved tracks:', tracks);
       
       return tracks
     } catch (error) {
@@ -224,15 +197,6 @@ export class SupabaseService {
     }
   ) {
     try {
-      console.log('🔄 Starting trackTherapeuticSession with:', {
-        trackId,
-        duration,
-        frequencyBand,
-        userId,
-        sessionData
-      });
-
-      // Get current user if not provided
       let currentUserId = userId;
       if (!currentUserId) {
         const { data: { user } } = await supabase.auth.getUser();
@@ -240,32 +204,40 @@ export class SupabaseService {
       }
 
       if (!currentUserId) {
-        console.warn('❌ No user ID available for session tracking');
+        console.warn('No user ID available for session tracking');
         return;
       }
-
-      console.log('👤 Using user ID:', currentUserId);
 
       const sessionDurationMinutes = Math.floor(duration / 60);
       const skipRate = sessionData ? (sessionData.tracksPlayed.length > 0 ? sessionData.skipCount / sessionData.tracksPlayed.length : 0) : 0;
 
-      console.log('📈 Session metrics:', {
-        sessionDurationMinutes,
-        skipRate,
-        tracksPlayedCount: sessionData?.tracksPlayed?.length || 0
-      });
-
-      // Get or create patient record for this user
-      console.log('🏥 Getting/creating patient record...');
       const { data: patientId, error: patientError } = await supabase
         .rpc('get_or_create_patient_for_user', { user_id: currentUserId });
       
       if (patientError) {
-        console.error('❌ Error getting/creating patient record:', patientError);
-        // Fallback: store with user_id only
-        const insertData = {
+        logger.error('Error getting/creating patient record', { error: patientError });
+        const { error } = await supabase
+          .from('listening_sessions')
+          .insert({
+            user_id: currentUserId,
+            patient_id: null,
+            session_date: new Date().toISOString(),
+            session_duration_minutes: sessionDurationMinutes,
+            tracks_played: sessionData?.tracksPlayed?.length || 1,
+            skip_rate: skipRate,
+            dominant_genres: sessionData?.dominantGenres || [frequencyBand],
+            mood_progression: null,
+            average_complexity_score: null
+          });
+        if (error) throw error;
+        return;
+      }
+
+      const { error } = await supabase
+        .from('listening_sessions')
+        .insert({
           user_id: currentUserId,
-          patient_id: null,
+          patient_id: patientId,
           session_date: new Date().toISOString(),
           session_duration_minutes: sessionDurationMinutes,
           tracks_played: sessionData?.tracksPlayed?.length || 1,
@@ -273,61 +245,19 @@ export class SupabaseService {
           dominant_genres: sessionData?.dominantGenres || [frequencyBand],
           mood_progression: null,
           average_complexity_score: null
-        };
+        });
 
-        console.log('💾 Inserting session with user_id fallback:', insertData);
-
-        const { error } = await supabase
-          .from('listening_sessions')
-          .insert(insertData);
-
-        if (error) {
-          console.error('❌ Failed to insert session (fallback):', error);
-          throw error;
-        }
-        
-        console.log('✅ Session saved successfully (fallback mode)');
-        return;
-      }
-
-      console.log('🏥 Patient ID obtained:', patientId);
-
-      // Store with both patient_id and user_id for compatibility
-      const insertData = {
-        user_id: currentUserId,
-        patient_id: patientId,
-        session_date: new Date().toISOString(),
-        session_duration_minutes: sessionDurationMinutes,
-        tracks_played: sessionData?.tracksPlayed?.length || 1,
-        skip_rate: skipRate,
-        dominant_genres: sessionData?.dominantGenres || [frequencyBand],
-        mood_progression: null,
-        average_complexity_score: null
-      };
-
-      console.log('💾 Inserting session data:', insertData);
-
-      const { error } = await supabase
-        .from('listening_sessions')
-        .insert(insertData);
-
-      if (error) {
-        console.error('❌ Failed to insert session:', error);
-        throw error;
-      }
-
-      console.log('✅ Session tracked successfully!');
+      if (error) throw error;
 
       logger.info('Therapeutic session tracked', { 
         trackId, 
         duration, 
         frequencyBand,
         patientId,
-        tracksPlayed: insertData.tracks_played,
+        tracksPlayed: sessionData?.tracksPlayed?.length || 1,
         skipRate: Math.round(skipRate * 100)
       });
     } catch (error) {
-      console.error('❌ Failed to track therapeutic session:', error);
       logger.error('Failed to track therapeutic session', { trackId, error });
     }
   }
