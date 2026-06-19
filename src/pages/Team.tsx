@@ -88,6 +88,8 @@ const foundingTeam: TeamMember[] = [
   {
     name: "Hans Lindroth",
     role: "Strategic Advisor",
+    photo: hansHeadshot,
+    objectPosition: "center 20%",
   },
 ];
 
