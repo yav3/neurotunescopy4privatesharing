@@ -19,7 +19,7 @@ interface TeamMember {
 }
 
 const foundingTeam: TeamMember[] = [
-  // Top row - as requested: Yasmine, Mike, Chris, Brian
+  // Top row: Yasmine, Mike, Jim, Josh
   {
     name: "Yasmine Wilt, PhD",
     role: "Co-Founder",
@@ -35,20 +35,11 @@ const foundingTeam: TeamMember[] = [
     objectPosition: "center 30%",
   },
   {
-    name: "Christopher Long",
-    credentials: "MBA",
-    role: "CFO, COO",
-    photo: chrisHeadshot,
+    name: "Jim Anderson",
+    role: "Co-Founder",
+    photo: jimHeadshot,
     objectPosition: "center 30%",
   },
-  {
-    name: "Brian E. Wallace",
-    credentials: "MD, PhD, MBA",
-    role: "CMedO, President",
-    photo: brianHeadshot,
-    objectPosition: "center 30%",
-  },
-  // Second row - Josh, Peter, Jim, Marcin
   {
     name: "Joshua Langenthal",
     credentials: "MCRP, MLA",
@@ -56,17 +47,26 @@ const foundingTeam: TeamMember[] = [
     photo: joshHeadshot,
     objectPosition: "center 30%",
   },
+  // Second row: Brian, Christopher, Peter, Marcin
+  {
+    name: "Brian E. Wallace",
+    credentials: "MD, PhD, MBA",
+    role: "Chief Research Officer",
+    photo: brianHeadshot,
+    objectPosition: "center 30%",
+  },
+  {
+    name: "Christopher Long",
+    credentials: "MBA",
+    role: "CFO, COO",
+    photo: chrisHeadshot,
+    objectPosition: "center 30%",
+  },
   {
     name: "Peter Blumen",
     credentials: "ScM, MBA",
     role: "Co-Founder",
     photo: peterHeadshot,
-    objectPosition: "center 30%",
-  },
-  {
-    name: "Jim Anderson",
-    role: "Co-Founder",
-    photo: jimHeadshot,
     objectPosition: "center 30%",
   },
   {
