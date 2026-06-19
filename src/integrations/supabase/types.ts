@@ -7240,6 +7240,7 @@ export type Database = {
             Args: { p_track_identifier: string; p_user_id: string }
             Returns: string
           }
+      admin_overview_stats: { Args: never; Returns: Json }
       analyze_session_coverage: {
         Args: never
         Returns: {
