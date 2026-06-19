@@ -198,7 +198,7 @@ export const TherapeuticSessionBuilder: React.FC<TherapeuticSessionBuilderProps>
           Build Your Therapeutic Session
         </h2>
         <p className="text-muted-foreground">
-          Personalized music therapy based on scientific research and harmonic progression
+          Personalized AI, music, and medicine based on scientific research and harmonic progression
         </p>
       </div>
 

@@ -50,7 +50,7 @@ export const Evidence = () => {
 
   const journalReferences = [
     {
-      title: "Advancing Personalized Digital Therapeutics: Music Therapy, Brainwave Entrainment, and AI Biofeedback",
+      title: "Advancing Personalized Digital Therapeutics: AI, Music, and Medicine, Brainwave Entrainment, and AI Biofeedback",
       journal: "Frontiers in Digital Health, 2025",
       finding: "Framework for AI-driven personalized music interventions with gamma frequency entrainment"
     },

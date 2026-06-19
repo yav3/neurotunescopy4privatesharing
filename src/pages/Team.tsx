@@ -146,7 +146,7 @@ export const Team = () => {
             <p className="text-neutral-400 max-w-3xl mx-auto leading-relaxed">
               Our advisory board includes leading researchers from Stanford Medicine, Weill Cornell Medicine, 
               and the Jacobs Technion-Cornell Institute, ensuring our platform remains at the 
-              forefront of neuroscience and music therapy research.
+              forefront of neuroscience and AI, music, and medicine research.
             </p>
           </div>
 

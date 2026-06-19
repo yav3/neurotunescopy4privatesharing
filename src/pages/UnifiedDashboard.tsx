@@ -116,7 +116,7 @@ export function UnifiedDashboard() {
   ];
 
   const achievements = [
-    { id: 1, title: '7-Day Streak', description: 'Consistent daily music therapy', icon: Target, earned: true },
+    { id: 1, title: '7-Day Streak', description: 'Consistent daily AI, music, and medicine', icon: Target, earned: true },
     { id: 2, title: 'Mood Booster', description: 'Improved mood score by 20%', icon: TrendingUp, earned: true },
     { id: 3, title: 'Focus Master', description: '50+ focus sessions completed', icon: Brain, earned: false },
     { id: 4, title: 'Sleep Champion', description: 'Improved sleep quality metrics', icon: Moon, earned: true }

@@ -10,9 +10,9 @@ export function ResearchPage() {
 
   const publications = [
     {
-      title: 'AI-Driven Music Therapy for Generalized Anxiety Disorder: A Randomized Controlled Trial',
+      title: 'AI, Music, and Medicine for Generalized Anxiety Disorder: A Randomized Controlled Trial',
       authors: 'Chen, S., Rodriguez, M., et al.',
-      journal: 'Journal of Music Therapy',
+      journal: 'Journal of AI, Music, and Medicine',
       year: '2023',
       impact: '92% showed significant anxiety reduction',
     },
@@ -31,7 +31,7 @@ export function ResearchPage() {
       impact: '87% improvement in treatment efficacy',
     },
     {
-      title: 'Advancing Personalized Digital Therapeutics: Integrating Music Therapy, Brainwave Entrainment, and AI Biofeedback',
+      title: 'Advancing Personalized Digital Therapeutics: Integrating AI, Music, and Medicine, Brainwave Entrainment, and AI Biofeedback',
       authors: 'Jiao, Y., et al.',
       journal: 'Frontiers in Digital Health',
       year: '2025',

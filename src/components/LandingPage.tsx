@@ -247,7 +247,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
           
           <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
             Evidence-based AI platform that creates personalized therapeutic 
-            interventions using neuroscience and music therapy principles
+            interventions using neuroscience and AI, music, and medicine principles
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -400,7 +400,7 @@ const analyzeUserState = async (biometrics) => {
   
   return selectOptimalIntervention(neuralPattern);
 };`,
-              `// Adaptive music therapy protocol
+              `// Adaptive AI, music, and medicine protocol
 const generateTherapeuticPlaylist = (userProfile) => {
   const therapeuticGoal = userProfile.currentGoal;
   const preferences = userProfile.musicPreferences;
@@ -480,7 +480,7 @@ const trackTherapeuticOutcome = async (session) => {
             Transform Your <span className="font-light text-white">Wellness</span>
           </h2>
           <p className="text-2xl text-white/90 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
-            Join the future of personalized mental health through evidence-based music therapy
+            Join the future of personalized mental health through evidence-based AI, music, and medicine
           </p>
           
           <div className="flex flex-col sm:flex-row gap-8 justify-center">
@@ -520,7 +520,7 @@ const trackTherapeuticOutcome = async (session) => {
                 </div>
               </div>
               <p className="text-sm text-gray-600">
-                Evidence-based AI music therapy for mental wellness.
+                Evidence-based AI, music, and medicine for mental wellness.
               </p>
             </div>
 

@@ -19,7 +19,7 @@ const credentials = [
     icon: Brain,
     title: "AI-Powered Analysis",
     subtitle: "15K+ Studies",
-    description: "Crafted from comprehensive music therapy research"
+    description: "Crafted from comprehensive AI, music, and medicine research"
   },
   {
     icon: Users,
@@ -79,7 +79,7 @@ export function CredentialsBadges() {
             Built on <span className="font-normal bg-gradient-to-r from-cyan-300 to-teal-300 bg-clip-text text-transparent">Science & Excellence</span>
           </h2>
           <p className="text-xl sm:text-2xl font-body text-white/70 max-w-3xl mx-auto leading-relaxed">
-            Our platform combines cutting-edge AI with decades of music therapy research
+            Our platform combines cutting-edge AI with decades of AI, music, and medicine research
           </p>
         </motion.div>
 

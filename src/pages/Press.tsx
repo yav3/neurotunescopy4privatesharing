@@ -12,7 +12,7 @@ export const Press = () => {
     },
     {
       outlet: "JAMA Psychiatry",
-      title: "Non-Pharmacological Interventions: The Role of Music Therapy",
+      title: "Non-Pharmacological Interventions: The Role of AI, Music, and Medicine",
       date: "February 2024",
       url: "#"
     },
@@ -24,7 +24,7 @@ export const Press = () => {
     },
     {
       outlet: "Healthcare IT News",
-      title: "200+ Hospitals Now Using AI-Driven Music Therapy",
+      title: "200+ Hospitals Now Using AI, Music, and Medicine",
       date: "December 2023",
       url: "#"
     }

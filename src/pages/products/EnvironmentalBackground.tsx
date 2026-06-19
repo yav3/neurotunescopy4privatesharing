@@ -184,7 +184,7 @@ export default function EnvironmentalBackground() {
               <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>The Science Behind It</h3>
               <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
                 Our streaming SaaS is a patented, evidence-based, and clinically-validated system that uses core principles from 
-                music therapy, music cognition, and neuropsychiatry. All music has been purpose-composed using specific musical 
+                AI, music, and medicine, music cognition, and neuropsychiatry. All music has been purpose-composed using specific musical 
                 patterns, frequencies, audio settings, and beats to support anxiety reduction and cognitive clarity.
               </p>
             </div>
@@ -204,11 +204,11 @@ export default function EnvironmentalBackground() {
             <ul className="space-y-3 text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
               <li className="flex items-start gap-3">
                 <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                <span>Protocol design informed by thousands of publications across music therapy, music cognition, AI, machine learning, neuropsychiatry, neurology, and neuroscience</span>
+                <span>Protocol design informed by thousands of publications across AI, music, and medicine, music cognition, AI, machine learning, neuropsychiatry, neurology, and neuroscience</span>
               </li>
               <li className="flex items-start gap-3">
                 <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>
-                <span>Informed by the principles of music therapy—a field with decades of documented best practices—made scalable and on-demand through our streaming service</span>
+                <span>Informed by the principles of AI, music, and medicine—a field with decades of documented best practices—made scalable and on-demand through our streaming service</span>
               </li>
               <li className="flex items-start gap-3">
                 <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>•</span>

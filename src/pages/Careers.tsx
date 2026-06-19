@@ -45,7 +45,7 @@ export const Careers = () => {
     },
     {
       title: "Continuous Innovation",
-      description: "Pushing boundaries in neuroscience, music therapy, and technology"
+      description: "Pushing boundaries in neuroscience, AI, music, and medicine, and technology"
     }
   ];
 
