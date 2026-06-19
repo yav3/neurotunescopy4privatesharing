@@ -33,7 +33,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "55% 15%",
+    objectPosition: "center center",
   },
   {
     name: "Jim Anderson",
@@ -46,8 +46,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MCRP, MLA",
     role: "",
     photo: joshHeadshot,
-    objectPosition: "50% 25%",
-    scale: 1.15,
+    objectPosition: "center center",
   },
   // Second row: Mike, Brian, Peter, Marcin
   {
