@@ -9,6 +9,7 @@ import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
 import marcinHeadshot from "@/assets/team/marcin-waryszak-centered.png";
 import paulHeadshot from "@/assets/team/paul-korner.jpeg";
+import hansHeadshot from "@/assets/team/hans-lindroth.jpeg";
 
 interface TeamMember {
   name: string;
