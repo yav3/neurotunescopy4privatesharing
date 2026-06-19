@@ -532,10 +532,9 @@ export const useAudioStore = create<AudioState>((set, get) => {
             console.log('🎵 Track ended naturally, advancing to next track');
             get().next();
           } else {
-            // No more tracks and no goal to fetch more - loop current track
-            console.log('🎵 Track ended - no more tracks available, looping current track');
-            audio.currentTime = 0;
-            audio.play().catch(console.error);
+            // No more tracks and no goal to fetch more - stop playback
+            console.log('🎵 Track ended - no more tracks available, stopping playback');
+            set({ isPlaying: false });
           }
         }
       });
