@@ -101,12 +101,12 @@ export const Team = () => {
             {foundingTeam.map((member, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {member.photo ? (
-                  <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50">
+                  <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50 bg-neutral-900">
                     <img 
                       src={member.photo} 
                       alt={member.name}
-                      className="w-full h-full object-cover scale-150"
-                      style={{ objectPosition: member.objectPosition || 'center' }}
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: member.objectPosition || 'center 30%' }}
                     />
                   </div>
                 ) : (
