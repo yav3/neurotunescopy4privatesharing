@@ -88,7 +88,7 @@ const createWelcomeMessage = (data: WelcomeData): { title: string; description: 
   if (!data.isReturningUser) {
     return {
       title: "Welcome to NeuroTunes! 🎵",
-      description: "Discover personalized music therapy designed to enhance your wellbeing. Start your first session when you're ready."
+      description: "Discover personalized AI, music, and medicine designed to enhance your wellbeing. Start your first session when you're ready."
     };
   }
 

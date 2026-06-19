@@ -104,7 +104,7 @@ export const THERAPEUTIC_USE_CASES: TherapeuticUseCase[] = [
   {
     id: 'anxiety-reduction-protocol',
     name: 'Anxiety Reduction Protocol',
-    description: 'Evidence-based music therapy for acute and chronic anxiety management',
+    description: 'Evidence-based AI, music, and medicine for acute and chronic anxiety management',
     category: 'clinical',
     targetConditions: ['generalized anxiety', 'panic disorder', 'social anxiety', 'performance anxiety'],
     contraindications: ['severe depression without treatment', 'active psychosis'],
@@ -308,7 +308,7 @@ export const THERAPEUTIC_USE_CASES: TherapeuticUseCase[] = [
   {
     id: 'pain-management-protocol',
     name: 'Neurological Pain Management',
-    description: 'Evidence-based music therapy for chronic pain and acute pain episodes',
+    description: 'Evidence-based AI, music, and medicine for chronic pain and acute pain episodes',
     category: 'clinical',
     targetConditions: ['chronic pain', 'fibromyalgia', 'arthritis', 'neuropathic pain', 'post-surgical pain'],
     contraindications: ['acute psychiatric crisis', 'severe hearing impairment'],

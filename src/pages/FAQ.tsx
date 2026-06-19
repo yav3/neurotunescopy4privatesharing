@@ -83,7 +83,7 @@ const FAQ = () => {
         },
         {
           question: "Can I see my listening history and progress?",
-          answer: "Yes! In your profile, you can view your session history, favorite tracks, most-used therapeutic goals, and insights about your listening patterns to understand how music therapy is benefiting you."
+          answer: "Yes! In your profile, you can view your session history, favorite tracks, most-used therapeutic goals, and insights about your listening patterns to understand how AI, music, and medicine is benefiting you."
         },
         {
           question: "Will my blocked tracks ever play again?",

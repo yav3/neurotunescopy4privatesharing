@@ -154,7 +154,7 @@ export const BenefitsCarousel = () => {
               Built on Science & Excellence
             </h2>
             <p className="text-xl lg:text-2xl font-body text-white/70">
-              Our platform combines cutting-edge AI with decades of music therapy research
+              Our platform combines cutting-edge AI with decades of AI, music, and medicine research
             </p>
           </div>
 

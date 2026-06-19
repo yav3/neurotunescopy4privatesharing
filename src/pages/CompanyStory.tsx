@@ -12,7 +12,7 @@ export function CompanyStory() {
     {
       year: '2019',
       title: 'The Beginning',
-      description: 'Founded by neuroscientists and AI researchers who recognized the potential of combining music therapy with machine learning.',
+      description: 'Founded by neuroscientists and AI researchers who recognized the potential of combining AI, music, and medicine with machine learning.',
       icon: Lightbulb,
     },
     {
@@ -24,7 +24,7 @@ export function CompanyStory() {
     {
       year: '2021',
       title: 'Platform Launch',
-      description: 'Released NeuroTunes v1.0, making personalized music therapy accessible through AI-powered recommendations.',
+      description: 'Released NeuroTunes v1.0, making personalized AI, music, and medicine accessible through AI-powered recommendations.',
       icon: Rocket,
     },
     {
@@ -166,7 +166,7 @@ export function CompanyStory() {
               {
                 name: 'Dr. Michael Rodriguez',
                 role: 'Chief Science Officer',
-                expertise: 'Music Therapy & Clinical Psychology',
+                expertise: 'AI, Music, and Medicine & Clinical Psychology',
               },
               {
                 name: 'Alex Patel',

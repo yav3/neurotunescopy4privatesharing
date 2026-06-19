@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 export const WhitePapers = () => {
   const papers = [
     {
-      title: "Biomarker-Driven Therapeutic Audio: A Framework for Evidence-Based Music Therapy",
+      title: "Biomarker-Driven Therapeutic Audio: A Framework for Evidence-Based AI, Music, and Medicine",
       authors: "Chen, S., Torres, M., Park, J.",
       date: "2024",
       category: "Clinical Research",

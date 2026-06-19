@@ -437,7 +437,7 @@ const Profile = () => {
                   Your Listening Journey
                 </CardTitle>
                 <CardDescription>
-                  Detailed insights into your music therapy patterns and progress
+                  Detailed insights into your AI, music, and medicine patterns and progress
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-8">
@@ -656,7 +656,7 @@ const Profile = () => {
           <Card className="p-8 text-center border-2 border-dashed mt-6">
             <Music className="h-16 w-16 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-3">
-              Ready to start your music therapy journey?
+              Ready to start your AI, music, and medicine journey?
             </h3>
             <p className="text-muted-foreground mb-6 text-base">
               Explore our therapeutic music collections designed to help you relax, focus, and feel better.

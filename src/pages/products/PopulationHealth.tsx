@@ -56,7 +56,7 @@ export default function PopulationHealth() {
     {
       title: "Improve HCAHPS Satisfaction",
       icon: BarChart3,
-      description: "Enhanced patient experience scores through evidence-based music therapy",
+      description: "Enhanced patient experience scores through evidence-based AI, music, and medicine",
     },
     {
       title: "EMR/EHR Integration",
@@ -160,12 +160,12 @@ export default function PopulationHealth() {
                 <h3 className="text-lg font-light mb-4" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>Clinically Validated</h3>
                 <p className="leading-relaxed text-sm" style={{ color: 'rgba(255, 255, 255, 0.65)' }}>
                   Built on 8+ years of R&amp;D at Columbia and Cornell Tech, informed by a meta-analysis of
-                  thousands of journal articles examining the therapeutic use of music and music therapy.
+                  thousands of journal articles examining the therapeutic use of music and AI, music, and medicine.
                   Pilot studies demonstrate statistically significant anxiety reductions (p&lt;.05).
                 </p>
                 <div className="mt-4 space-y-1">
                   <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'rgba(6, 182, 212, 0.7)' }}>Key references</p>
-                  <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Jiao et al. — Frontiers in Digital Health, 2025 · AI-driven personalized music therapy with brainwave entrainment</p>
+                  <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Jiao et al. — Frontiers in Digital Health, 2025 · AI, music, and medicine with brainwave entrainment</p>
                   <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Stanford Neuroscience, 2025 · Musical rhythm synchronization amplifies neural stimulation</p>
                   <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>Frontiers in Neuroscience, 2025 · Music-based neurofeedback for real-time therapeutic adaptation</p>
                 </div>

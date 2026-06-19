@@ -27,7 +27,7 @@ export function AboutNeuralPositive() {
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
             NeuralPositive is a healthcare technology company dedicated to democratizing 
             access to evidence-based mental health interventions through the intersection 
-            of artificial intelligence, neuroscience, and music therapy.
+            of artificial intelligence, neuroscience, and AI, music, and medicine.
           </p>
         </div>
       </section>

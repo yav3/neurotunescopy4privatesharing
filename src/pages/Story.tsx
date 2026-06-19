@@ -124,7 +124,7 @@ export const Story = () => {
           <section className="mb-16">
             <div className="grid md:grid-cols-3 gap-4">
               {[
-                { title: "Evidence-informed", desc: "Decades of neuroscience and music therapy research" },
+                { title: "Evidence-informed", desc: "Decades of neuroscience and AI, music, and medicine research" },
                 { title: "Purpose-composed", desc: "8,500+ original tracks with therapeutic intention" },
                 { title: "Enterprise deployed", desc: "Infrastructure designed for organizations at scale" }
               ].map((pillar, i) => (
