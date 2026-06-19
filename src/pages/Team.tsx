@@ -76,7 +76,7 @@ const foundingTeam: TeamMember[] = [
     name: "Marcin Waryszak",
     role: "SVP Operations",
     photo: marcinHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "55% 25%",
   },
 ];
 
