@@ -2,12 +2,12 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import yasmineHeadshot from "@/assets/team/yasmine-wilt-new.jpg";
 import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
-import chrisHeadshot from "@/assets/team/christopher-long.png";
+import chrisHeadshot from "@/assets/team/christopher-long-crop.png";
 import brianHeadshot from "@/assets/team/brian-wallace-new.png";
 import joshHeadshot from "@/assets/team/joshua-langenthal-new.png";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
-import marcinHeadshot from "@/assets/team/marcin-waryszak.png";
+import marcinHeadshot from "@/assets/team/marcin-waryszak-crop.png";
 
 interface TeamMember {
   name: string;
@@ -25,28 +25,28 @@ const foundingTeam: TeamMember[] = [
     role: "Co-Founder",
     title: "CEO, CTO",
     photo: yasmineHeadshot,
-    objectPosition: "center 20%",
+    objectPosition: "center 30%",
   },
   {
     name: "Mike Larson",
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
-    objectPosition: "center 25%",
+    objectPosition: "center 30%",
   },
   {
     name: "Christopher Long",
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "left center",
+    objectPosition: "center 30%",
   },
   {
     name: "Brian E. Wallace",
     credentials: "MD, PhD, MBA",
     role: "CMedO, President",
     photo: brianHeadshot,
-    objectPosition: "center 35%",
+    objectPosition: "center 30%",
   },
   // Second row - Josh, Peter, Jim, Marcin
   {
@@ -61,19 +61,19 @@ const foundingTeam: TeamMember[] = [
     credentials: "ScM, MBA",
     role: "Co-Founder",
     photo: peterHeadshot,
-    objectPosition: "center 20%",
+    objectPosition: "center 30%",
   },
   {
     name: "Jim Anderson",
     role: "Co-Founder",
     photo: jimHeadshot,
-    objectPosition: "center 35%",
+    objectPosition: "center 30%",
   },
   {
     name: "Marcin Waryszak",
     role: "SVP Operations",
     photo: marcinHeadshot,
-    objectPosition: "left center",
+    objectPosition: "center 30%",
   },
 ];
 
@@ -101,12 +101,12 @@ export const Team = () => {
             {foundingTeam.map((member, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {member.photo ? (
-                  <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50">
+                  <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50 bg-neutral-900">
                     <img 
                       src={member.photo} 
                       alt={member.name}
-                      className="w-full h-full object-cover scale-150"
-                      style={{ objectPosition: member.objectPosition || 'center' }}
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: member.objectPosition || 'center 30%' }}
                     />
                   </div>
                 ) : (
