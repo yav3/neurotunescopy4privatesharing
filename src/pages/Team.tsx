@@ -25,28 +25,28 @@ const foundingTeam: TeamMember[] = [
     role: "Co-Founder",
     title: "CEO, CTO",
     photo: yasmineHeadshot,
-    objectPosition: "center 20%",
+    objectPosition: "center 30%",
   },
   {
     name: "Mike Larson",
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
-    objectPosition: "center 25%",
+    objectPosition: "center 30%",
   },
   {
     name: "Christopher Long",
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "left center",
+    objectPosition: "center 30%",
   },
   {
     name: "Brian E. Wallace",
     credentials: "MD, PhD, MBA",
     role: "CMedO, President",
     photo: brianHeadshot,
-    objectPosition: "center 35%",
+    objectPosition: "center 30%",
   },
   // Second row - Josh, Peter, Jim, Marcin
   {
@@ -61,19 +61,19 @@ const foundingTeam: TeamMember[] = [
     credentials: "ScM, MBA",
     role: "Co-Founder",
     photo: peterHeadshot,
-    objectPosition: "center 20%",
+    objectPosition: "center 30%",
   },
   {
     name: "Jim Anderson",
     role: "Co-Founder",
     photo: jimHeadshot,
-    objectPosition: "center 35%",
+    objectPosition: "center 30%",
   },
   {
     name: "Marcin Waryszak",
     role: "SVP Operations",
     photo: marcinHeadshot,
-    objectPosition: "left center",
+    objectPosition: "center 30%",
   },
 ];
 
