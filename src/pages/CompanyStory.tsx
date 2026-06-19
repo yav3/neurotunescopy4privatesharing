@@ -150,7 +150,7 @@ export function CompanyStory() {
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Leadership Team</h2>
+            <h2 className="text-4xl font-bold mb-4">Team</h2>
             <p className="text-xl text-muted-foreground">
               Experts dedicated to advancing mental health through technology
             </p>
