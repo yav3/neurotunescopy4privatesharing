@@ -47,19 +47,19 @@ const foundingTeam: TeamMember[] = [
     photo: joshHeadshot,
     objectPosition: "center 30%",
   },
-  // Second row: Brian, Mike, Peter, Marcin
-  {
-    name: "Brian E. Wallace",
-    credentials: "MD, PhD, MBA",
-    role: "Chief Research Officer",
-    photo: brianHeadshot,
-    objectPosition: "center 30%",
-  },
+  // Second row: Mike, Brian, Peter, Marcin
   {
     name: "Mike Larson",
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
+    objectPosition: "center 30%",
+  },
+  {
+    name: "Brian E. Wallace",
+    credentials: "MD, PhD, MBA",
+    role: "Chief Research Officer",
+    photo: brianHeadshot,
     objectPosition: "center 30%",
   },
   {
