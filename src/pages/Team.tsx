@@ -2,12 +2,12 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import yasmineHeadshot from "@/assets/team/yasmine-wilt-2026.jpeg";
 import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
-import chrisHeadshot from "@/assets/team/christopher-long-crop.png";
+import chrisHeadshot from "@/assets/team/christopher-long-centered.png";
 import brianHeadshot from "@/assets/team/brian-wallace-2026.png";
-import joshHeadshot from "@/assets/team/joshua-langenthal-2026.jpeg";
+import joshHeadshot from "@/assets/team/joshua-langenthal-centered.jpeg";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
-import marcinHeadshot from "@/assets/team/marcin-waryszak-crop.png";
+import marcinHeadshot from "@/assets/team/marcin-waryszak-centered.png";
 
 interface TeamMember {
   name: string;
