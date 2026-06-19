@@ -2,7 +2,7 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import yasmineHeadshot from "@/assets/team/yasmine-wilt-2026.jpeg";
 import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
-import chrisHeadshot from "@/assets/team/christopher-long-centered.png";
+import chrisHeadshot from "@/assets/team/christopher-long-centered-v2.png";
 import brianHeadshot from "@/assets/team/brian-wallace-2026.png";
 import joshHeadshot from "@/assets/team/joshua-langenthal-centered.jpeg";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
