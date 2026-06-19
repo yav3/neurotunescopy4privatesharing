@@ -107,7 +107,11 @@ export const Team = () => {
                       src={member.photo} 
                       alt={member.name}
                       className="w-full h-full object-cover"
-                      style={{ objectPosition: member.objectPosition || 'center 30%' }}
+                      style={{ 
+                        objectPosition: member.objectPosition || 'center 30%',
+                        transform: member.scale ? `scale(${member.scale})` : undefined,
+                        transformOrigin: 'center',
+                      }}
                     />
                   </div>
                 ) : (
