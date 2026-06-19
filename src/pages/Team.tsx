@@ -108,7 +108,7 @@ export const Team = () => {
           {/* Hero */}
           <div className="text-center mb-16">
             <h1 className="text-6xl font-light tracking-tight text-neutral-200 mb-6">
-              Leadership Team
+              Team
             </h1>
           </div>
 
