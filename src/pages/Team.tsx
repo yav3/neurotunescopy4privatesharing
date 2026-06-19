@@ -33,7 +33,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "55% 28%",
   },
   {
     name: "Jim Anderson",
@@ -46,7 +46,8 @@ const foundingTeam: TeamMember[] = [
     credentials: "MCRP, MLA",
     role: "",
     photo: joshHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "50% 25%",
+    scale: 1.15,
   },
   // Second row: Mike, Brian, Peter, Marcin
   {
@@ -54,7 +55,8 @@ const foundingTeam: TeamMember[] = [
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "center 25%",
+    scale: 1.5,
   },
   {
     name: "Brian E. Wallace",
