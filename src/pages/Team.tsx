@@ -8,6 +8,7 @@ import joshHeadshot from "@/assets/team/joshua-langenthal-centered.jpeg";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
 import marcinHeadshot from "@/assets/team/marcin-waryszak-centered.png";
+import paulHeadshot from "@/assets/team/paul-korner.jpeg";
 
 interface TeamMember {
   name: string;
@@ -80,6 +81,8 @@ const foundingTeam: TeamMember[] = [
   {
     name: "Paul Korner",
     role: "Chief Medical Officer, President",
+    photo: paulHeadshot,
+    objectPosition: "center 25%",
   },
   {
     name: "Hans Lindroth",
