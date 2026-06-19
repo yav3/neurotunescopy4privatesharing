@@ -16,6 +16,7 @@ interface TeamMember {
   title?: string;
   photo?: string;
   objectPosition?: string;
+  scale?: number;
 }
 
 const foundingTeam: TeamMember[] = [
