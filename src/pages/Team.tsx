@@ -2,12 +2,12 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
 import yasmineHeadshot from "@/assets/team/yasmine-wilt-2026.jpeg";
 import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
-import chrisHeadshot from "@/assets/team/christopher-long-crop.png";
+import chrisHeadshot from "@/assets/team/christopher-long-centered.png";
 import brianHeadshot from "@/assets/team/brian-wallace-2026.png";
-import joshHeadshot from "@/assets/team/joshua-langenthal-2026.jpeg";
+import joshHeadshot from "@/assets/team/joshua-langenthal-centered.jpeg";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
-import marcinHeadshot from "@/assets/team/marcin-waryszak-crop.png";
+import marcinHeadshot from "@/assets/team/marcin-waryszak-centered.png";
 
 interface TeamMember {
   name: string;
@@ -16,6 +16,7 @@ interface TeamMember {
   title?: string;
   photo?: string;
   objectPosition?: string;
+  scale?: number;
 }
 
 const foundingTeam: TeamMember[] = [
@@ -32,7 +33,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "center center",
   },
   {
     name: "Jim Anderson",
@@ -45,7 +46,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MCRP, MLA",
     role: "",
     photo: joshHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "center center",
   },
   // Second row: Mike, Brian, Peter, Marcin
   {
@@ -53,7 +54,8 @@ const foundingTeam: TeamMember[] = [
     role: "Chief Sound Officer",
     title: '"The Minister of Sound"',
     photo: mikeHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "center 25%",
+    scale: 1.5,
   },
   {
     name: "Brian E. Wallace",
@@ -73,7 +75,7 @@ const foundingTeam: TeamMember[] = [
     name: "Marcin Waryszak",
     role: "SVP Operations",
     photo: marcinHeadshot,
-    objectPosition: "center 30%",
+    objectPosition: "center center",
   },
 ];
 
@@ -106,7 +108,11 @@ export const Team = () => {
                       src={member.photo} 
                       alt={member.name}
                       className="w-full h-full object-cover"
-                      style={{ objectPosition: member.objectPosition || 'center 30%' }}
+                      style={{ 
+                        objectPosition: member.objectPosition || 'center 30%',
+                        transform: member.scale ? `scale(${member.scale})` : undefined,
+                        transformOrigin: 'center',
+                      }}
                     />
                   </div>
                 ) : (
