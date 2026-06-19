@@ -1,10 +1,10 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import yasmineHeadshot from "@/assets/team/yasmine-wilt-new.jpg";
+import yasmineHeadshot from "@/assets/team/yasmine-wilt-2026.jpeg";
 import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
 import chrisHeadshot from "@/assets/team/christopher-long-crop.png";
 import brianHeadshot from "@/assets/team/brian-wallace-new.png";
-import joshHeadshot from "@/assets/team/joshua-langenthal-new.png";
+import joshHeadshot from "@/assets/team/joshua-langenthal-2026.jpeg";
 import peterHeadshot from "@/assets/team/peter-blumen-new.png";
 import jimHeadshot from "@/assets/team/jim-anderson-new.png";
 import marcinHeadshot from "@/assets/team/marcin-waryszak-crop.png";
