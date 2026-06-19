@@ -77,6 +77,14 @@ const foundingTeam: TeamMember[] = [
     photo: marcinHeadshot,
     objectPosition: "center center",
   },
+  {
+    name: "Paul Korner",
+    role: "Chief Medical Officer, President",
+  },
+  {
+    name: "Hans Lindroth",
+    role: "Strategic Advisor",
+  },
 ];
 
 export const Team = () => {
