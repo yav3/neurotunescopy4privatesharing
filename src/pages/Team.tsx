@@ -33,7 +33,7 @@ const foundingTeam: TeamMember[] = [
     credentials: "MBA",
     role: "CFO, COO",
     photo: chrisHeadshot,
-    objectPosition: "55% 28%",
+    objectPosition: "55% 15%",
   },
   {
     name: "Jim Anderson",
