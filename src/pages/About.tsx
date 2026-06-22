@@ -1,38 +1,7 @@
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { Footer } from "@/components/Footer";
-import yasmineHeadshot from "@/assets/team/yasmine-wilt-2026.jpeg";
-import mikeHeadshot from "@/assets/team/mike-larson-clean.jpg";
-import chrisHeadshot from "@/assets/team/christopher-long-centered-v4.png";
-import brianHeadshot from "@/assets/team/brian-wallace-2026.png";
-import joshHeadshot from "@/assets/team/joshua-langenthal-centered.jpeg";
-import peterHeadshot from "@/assets/team/peter-blumen-new.png";
-import jimHeadshot from "@/assets/team/jim-anderson-new.png";
-import marcinHeadshot from "@/assets/team/marcin-waryszak-centered.png";
-import paulHeadshot from "@/assets/team/paul-korner.jpeg";
-import hansHeadshot from "@/assets/team/hans-lindroth.jpeg";
+import { TEAM } from "@/data/team";
 
-interface TeamMember {
-  name: string;
-  credentials?: string;
-  role: string;
-  title?: string;
-  photo?: string;
-  objectPosition?: string;
-  scale?: number;
-}
-
-const team: TeamMember[] = [
-  { name: "Yasmine Wilt, PhD", role: "Co-Founder", title: "CEO, CTO", photo: yasmineHeadshot, objectPosition: "center 30%" },
-  { name: "Christopher Long", credentials: "MBA", role: "CFO, COO", photo: chrisHeadshot, objectPosition: "center center" },
-  { name: "Jim Anderson", role: "Co-Founder", photo: jimHeadshot, objectPosition: "center 30%" },
-  { name: "Joshua Langenthal", credentials: "MCRP, MLA", role: "", photo: joshHeadshot, objectPosition: "center center" },
-  { name: "Mike Larson", role: "Chief Sound Officer", title: '"The Minister of Sound"', photo: mikeHeadshot, objectPosition: "center 25%", scale: 1.5 },
-  { name: "Brian E. Wallace", credentials: "MD, PhD, MBA", role: "Chief Research Officer", photo: brianHeadshot, objectPosition: "center 30%" },
-  { name: "Peter Blumen", credentials: "ScM, MBA", role: "Co-Founder", photo: peterHeadshot, objectPosition: "center 30%" },
-  { name: "Marcin Waryszak", role: "SVP Operations", photo: marcinHeadshot, objectPosition: "center center" },
-  { name: "Paul Korner", credentials: "MD, MBA", role: "Chief Medical Officer, President", photo: paulHeadshot, objectPosition: "center 25%" },
-  { name: "Hans Lindroth", role: "Strategic Advisor", photo: hansHeadshot, objectPosition: "center 20%" },
-];
 
 const TEXT = "#e4e4e4";
 const MUTED = "rgba(228, 228, 228, 0.65)";
