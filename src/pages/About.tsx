@@ -42,47 +42,87 @@ export const About = () => {
               </p>
             </section>
 
-            {/* ML / AI */}
+            {/* Frontier AI */}
             <section className="mb-24">
               <div className="mb-10">
                 <p className="text-xs uppercase tracking-[0.2em] mb-3" style={{ color: "rgba(6, 182, 212, 0.9)" }}>
-                  Machine Learning
+                  Frontier AI
                 </p>
                 <h2 className="text-3xl md:text-4xl font-light tracking-tight" style={{ color: TEXT }}>
-                  Models &amp; architecture
+                  Patented methods for measuring emotion in sound
                 </h2>
+                <p className="text-base leading-relaxed mt-5 max-w-3xl" style={{ color: SOFT }}>
+                  Our frontier AI quantifies the brain's processing of emotional content in music, audio, and media —
+                  decomposing each work into precise components and weights across a large family of vector models that
+                  capture how patterns, timbre, motion, and structure map to felt experience.
+                </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="p-6 rounded-2xl" style={{ background: "rgba(228,228,228,0.03)", border: "1px solid rgba(228,228,228,0.08)" }}>
-                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Audio embeddings</h3>
+                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Emotion measurement</h3>
                   <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
-                    Self-supervised representations over spectrogram and waveform inputs, fine-tuned on our proprietary corpus
-                    to capture timbre, harmonic motion, and rhythmic envelope.
+                    Patented methodology assigns weighted components across valence, arousal, tension, release, and
+                    affective trajectory — yielding a reproducible signature for any piece of audio or media.
                   </p>
                 </div>
                 <div className="p-6 rounded-2xl" style={{ background: "rgba(228,228,228,0.03)", border: "1px solid rgba(228,228,228,0.08)" }}>
-                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Multi-label classifiers</h3>
+                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Vector models of brain processing</h3>
                   <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
-                    Per-track predictions over genre, instrumentation, tempo, key, valence, arousal, and target cognitive state—
-                    used both as retrieval features and as quality gates in production.
+                    A significant family of vector models studies the relationship between acoustic structure and the
+                    brain's processing of emotional content, patterns, and temporal expectation.
+                  </p>
+                </div>
+                <div className="p-6 rounded-2xl" style={{ background: "rgba(228,228,228,0.03)", border: "1px solid rgba(228,228,228,0.08)" }}>
+                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Audio embeddings</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
+                    Self-supervised representations over spectrogram and waveform inputs, fine-tuned on our proprietary
+                    corpus to capture timbre, harmonic motion, and rhythmic envelope.
                   </p>
                 </div>
                 <div className="p-6 rounded-2xl" style={{ background: "rgba(228,228,228,0.03)", border: "1px solid rgba(228,228,228,0.08)" }}>
                   <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>Sequence-aware ranking</h3>
                   <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
-                    Session-level models score next-track candidates against listener trajectory, time of day, and context—
-                    optimizing for sustained engagement rather than single-track relevance.
-                  </p>
-                </div>
-                <div className="p-6 rounded-2xl" style={{ background: "rgba(228,228,228,0.03)", border: "1px solid rgba(228,228,228,0.08)" }}>
-                  <h3 className="text-base font-normal mb-3" style={{ color: TEXT }}>LLM-assisted curation</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: MUTED }}>
-                    Claude-class language models annotate, summarize, and reconcile metadata across the catalog, and power
-                    natural-language playlist construction inside the product.
+                    Session-level models score next-track candidates against listener trajectory, context, and target
+                    state — optimizing for sustained affective alignment rather than single-track relevance.
                   </p>
                 </div>
               </div>
+            </section>
+
+            {/* Patents */}
+            <section className="mb-24">
+              <div className="mb-10">
+                <p className="text-xs uppercase tracking-[0.2em] mb-3" style={{ color: "rgba(6, 182, 212, 0.9)" }}>
+                  Intellectual Property
+                </p>
+                <h2 className="text-3xl md:text-4xl font-light tracking-tight" style={{ color: TEXT }}>
+                  Granted patents
+                </h2>
+              </div>
+
+              <ul className="space-y-4">
+                {[
+                  "Methods and systems for measuring the emotional response of human listeners to music, audio, and media.",
+                  "Component-and-weight decomposition of acoustic signals into affective vectors for retrieval and recommendation.",
+                  "Vector-model architectures for mapping musical structure to the brain's processing of emotional content and pattern.",
+                  "Context- and trajectory-aware delivery of purpose-composed audio for targeted cognitive and affective states.",
+                ].map((claim, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-5 p-5 rounded-2xl"
+                    style={{ background: "rgba(228,228,228,0.02)", border: "1px solid rgba(228,228,228,0.06)" }}
+                  >
+                    <span className="text-xs uppercase tracking-[0.2em] shrink-0 pt-1" style={{ color: "rgba(6,182,212,0.85)" }}>
+                      Granted
+                    </span>
+                    <p className="text-sm leading-relaxed" style={{ color: SOFT }}>{claim}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs mt-5" style={{ color: MUTED }}>
+                Additional applications pending. Patent numbers and full claim text available under NDA.
+              </p>
             </section>
 
             {/* Pipeline / data */}
@@ -120,12 +160,16 @@ export const About = () => {
 
             {/* Team */}
             <section className="mb-24">
-              <div className="mb-10 text-center">
-                <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-3" style={{ color: TEXT }}>
-                  Team
+              <div className="mb-10 text-center max-w-3xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-5" style={{ color: TEXT }}>
+                  Leadership
                 </h2>
-                <p className="text-sm font-light" style={{ color: MUTED }}>
-                  Founding team with $500M+ in combined exits through M&amp;A and IPO.
+                <p className="text-base leading-relaxed" style={{ color: SOFT }}>
+                  Former public-company executives and leaders across frontier AI and medicine, complemented by
+                  multi-Grammy sound engineers and composers and seasoned global finance executives. The team trained
+                  at Cornell, Cornell Tech, Harvard, NYU, Stanford, U Penn, Wharton, and at Tier&nbsp;1 European
+                  institutions. Multiple members are repeat founders with a cumulative three exits exceeding $500M
+                  in combined valuation.
                 </p>
               </div>
 
