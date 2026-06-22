@@ -97,8 +97,13 @@ export const About = () => {
                   Intellectual Property
                 </p>
                 <h2 className="text-3xl md:text-4xl font-light tracking-tight" style={{ color: TEXT }}>
-                  Granted patents
+                  Three granted U.S. patents
                 </h2>
+                <p className="text-sm md:text-base leading-relaxed mt-4 max-w-2xl" style={{ color: SOFT }}>
+                  Three granted U.S. patents protect the core reasoning infrastructure. NeuralPositive holds an
+                  exclusive, global, and perpetual license to these patents, assigned via Cornell University and the
+                  Jacobs Technion-Cornell Institute.
+                </p>
               </div>
 
               <ul className="space-y-4">
@@ -106,7 +111,6 @@ export const About = () => {
                   "Methods and systems for measuring the emotional response of human listeners to music, audio, and media.",
                   "Component-and-weight decomposition of acoustic signals into affective vectors for retrieval and recommendation.",
                   "Vector-model architectures for mapping musical structure to the brain's processing of emotional content and pattern.",
-                  "Context- and trajectory-aware delivery of purpose-composed audio for targeted cognitive and affective states.",
                 ].map((claim, i) => (
                   <li
                     key={i}
@@ -121,7 +125,8 @@ export const About = () => {
                 ))}
               </ul>
               <p className="text-xs mt-5" style={{ color: MUTED }}>
-                Additional applications pending. Patent numbers and full claim text available under NDA.
+                Exclusively licensed from Cornell University and the Jacobs Technion-Cornell Institute. Additional
+                applications pending; full claim text available under NDA.
               </p>
             </section>
 
