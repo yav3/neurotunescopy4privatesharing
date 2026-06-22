@@ -2,65 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { TEAM } from '@/data/team';
 
-interface TeamMember {
-  name: string;
-  credentials: string;
-  role: string;
-  title: string;
-  image?: string;
-}
+const teamMembers = TEAM;
 
-const teamMembers: TeamMember[] = [
-  {
-    name: "Yasmine Van Wilt",
-    credentials: "PhD, FRSA",
-    role: "Co-Founder",
-    title: "CEO, CTO",
-  },
-  {
-    name: "Peter Blumen",
-    credentials: "ScM, MBA",
-    role: "Co-Founder",
-    title: "CIO",
-  },
-  {
-    name: "Jim Anderson",
-    credentials: "",
-    role: "Co-Founder",
-    title: "Chief Architect",
-  },
-  {
-    name: "Brian E. Wallace",
-    credentials: "MD, PhD, MBA",
-    role: "CMedO, President",
-    title: "",
-  },
-  {
-    name: "Christopher Long",
-    credentials: "MBA",
-    role: "CFO, COO",
-    title: "",
-  },
-  {
-    name: "Joshua Langenthal",
-    credentials: "MCRP, MLA",
-    role: "",
-    title: "",
-  },
-  {
-    name: "Mike Larson",
-    credentials: "",
-    role: "Chief Sound Officer",
-    title: '"The Minister of Sound"',
-  },
-  {
-    name: "Marcin Waryszak",
-    credentials: "",
-    role: "SVP Operations",
-    title: "",
-  },
-];
 
 export const TeamCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -115,7 +60,7 @@ export const TeamCarousel = () => {
                   <div className="flex flex-col items-center text-center space-y-6">
                     {/* Avatar */}
                     <Avatar className="w-48 h-48 border-4 border-cyan-400/30 shadow-2xl shadow-cyan-500/30">
-                      <AvatarImage src={teamMembers[currentIndex].image} />
+                      <AvatarImage src={teamMembers[currentIndex].photo} />
                       <AvatarFallback className="bg-gradient-to-br from-cyan-600 to-blue-600 text-white text-4xl font-semibold">
                         {getInitials(teamMembers[currentIndex].name)}
                       </AvatarFallback>
