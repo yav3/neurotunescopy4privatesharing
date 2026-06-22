@@ -166,7 +166,7 @@ export const About = () => {
                 </h2>
                 <p className="text-base leading-relaxed" style={{ color: SOFT }}>
                   Former public-company executives and leaders across frontier AI and medicine, complemented by
-                  multi-Grammy sound engineers and composers and seasoned global finance executives. The team trained
+                  a multi-Grammy engineer and composer and seasoned global finance executives. The team trained
                   at Cornell, Cornell Tech, Harvard, NYU, Stanford, U Penn, Wharton, and at Tier&nbsp;1 European
                   institutions. Multiple members are repeat founders with a cumulative three exits exceeding $500M
                   in combined valuation.
