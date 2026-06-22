@@ -60,7 +60,7 @@ export const TeamCarousel = () => {
                   <div className="flex flex-col items-center text-center space-y-6">
                     {/* Avatar */}
                     <Avatar className="w-48 h-48 border-4 border-cyan-400/30 shadow-2xl shadow-cyan-500/30">
-                      <AvatarImage src={teamMembers[currentIndex].image} />
+                      <AvatarImage src={teamMembers[currentIndex].photo} />
                       <AvatarFallback className="bg-gradient-to-br from-cyan-600 to-blue-600 text-white text-4xl font-semibold">
                         {getInitials(teamMembers[currentIndex].name)}
                       </AvatarFallback>
