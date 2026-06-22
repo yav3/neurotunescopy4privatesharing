@@ -6,24 +6,12 @@ export const pageBackgrounds: Record<string, { video?: string; gif?: string; ove
     video: '/videos/landing-01.mp4',
     overlayOpacity: 0.6,
   },
-  '/team': {
-    video: '/videos/landing-02.mp4',
-    overlayOpacity: 0.6,
-  },
   '/hipaa': {
     video: '/videos/landing-03.mp4',
     overlayOpacity: 0.6,
   },
   '/demo': {
     video: '/videos/landing-04.mp4',
-    overlayOpacity: 0.6,
-  },
-  '/about': {
-    video: '/videos/landing-05.mp4',
-    overlayOpacity: 0.6,
-  },
-  '/story': {
-    video: '/videos/landing-06.mp4',
     overlayOpacity: 0.6,
   },
   '/research': {

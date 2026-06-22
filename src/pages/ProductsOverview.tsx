@@ -74,11 +74,9 @@ export const ProductsOverview = () => {
           </div>
 
           {/* Product Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1700px] mx-auto items-stretch">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-[1100px] mx-auto items-stretch">
             {[
-              NEUROTUNES_PRODUCTS.enterpriseWellness,
               NEUROTUNES_PRODUCTS.environmental,
-              NEUROTUNES_PRODUCTS.populationHealth,
               NEUROTUNES_PRODUCTS.partnerships
             ].map((product, index) => (
               <ProductCard 
