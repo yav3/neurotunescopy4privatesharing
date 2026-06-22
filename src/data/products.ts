@@ -53,67 +53,6 @@ export const NEUROTUNES_PRODUCTS: Record<string, Product> = {
     path: "/products/environmental"
   },
 
-  populationHealth: {
-    id: "population-health",
-    icon: Heart,
-    title: "Enterprise Population Health",
-    tagline: "Clinical-grade therapeutic music at scale",
-    description: "Closed loop insights powered by HIPAA-compliant biomarker collection & integration with RTM, RPM systems for no disruption to clinical workflow and patient CCM",
-    targetMarkets: [
-      "Hospital systems (5,000+ patients)",
-      "Health insurance networks",
-      "Government health programs (VA, Military)",
-      "National wellness initiatives",
-      "Pharmacy benefit managers",
-      "Accountable care organizations (ACOs)"
-    ],
-    pricing: {
-      model: "Per patient/member population",
-      starting: "$250K-$1.5M per year",
-      minimum: "5,000+ covered lives"
-    },
-    keyBenefits: [
-      "Reduce patient anxiety 30-45%",
-      "Lower perceived pain scores",
-      "Improve HCAHPS satisfaction",
-      "EMR/EHR integration",
-      "Clinical outcomes tracking",
-      "Population-scale analytics"
-    ],
-    cta: "Learn More",
-    path: "/products/population-health"
-  },
-
-  enterpriseWellness: {
-    id: "enterprise-wellness",
-    icon: Briefcase,
-    title: "Enterprise Wellness",
-    tagline: "Help your employees focus and improve their wellness",
-    description: "Corporate wellness programs for employee mental health, focus, and resilience",
-    targetMarkets: [
-      "Corporate offices (1,000+ employees)",
-      "Call centers & customer service",
-      "Creative agencies & studios",
-      "Universities & academic institutions",
-      "Government offices",
-      "Tech companies & startups"
-    ],
-    pricing: {
-      model: "Per employee or site-based",
-      starting: "Custom pricing for organizations",
-      minimum: "1,000+ employees typical"
-    },
-    keyBenefits: [
-      "Boost productivity 15-25%",
-      "Reduce stress-related absence",
-      "Improve focus & cognitive performance",
-      "Enhance employee retention",
-      "Mental wellness support",
-      "Integration with HR systems"
-    ],
-    cta: "Learn More",
-    path: "/products/enterprise-wellness"
-  },
 
   partnerships: {
     id: "partnerships",

@@ -58,10 +58,6 @@ export const pageBackgrounds: Record<string, { video?: string; gif?: string; ove
     video: '/videos/landing-14.mp4',
     overlayOpacity: 0.6,
   },
-  '/products/enterprise-wellness': {
-    video: '/videos/landing-15.mp4',
-    overlayOpacity: 0.6,
-  },
   '/privacy': {
     video: '/videos/landing-16.mp4',
     overlayOpacity: 0.6,

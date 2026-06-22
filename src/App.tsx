@@ -48,8 +48,6 @@ import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
 import Users from "./pages/admin/Users";
 import FAQ from "./pages/FAQ";
-import { AboutNeuralPositive } from "./pages/AboutNeuralPositive";
-import { CompanyStory } from "./pages/CompanyStory";
 import { ResearchPage } from "./pages/ResearchPage";
 import Support from "./pages/Support";
 import Demo from "./pages/Demo";
@@ -62,12 +60,8 @@ import Cookies from "./pages/Cookies";
 import Payments from "./pages/Payments";
 import Experience from "./pages/Experience";
 import EnvironmentalBackground from "./pages/products/EnvironmentalBackground";
-import PopulationHealth from "./pages/products/PopulationHealth";
 import Partnerships from "./pages/products/Partnerships";
-import EnterpriseWellness from "./pages/products/EnterpriseWellness";
-import EnterpriseWellnessTrial from "./pages/products/EnterpriseWellnessTrial";
-import Story from "./pages/Story";
-import Team from "./pages/Team";
+import About from "./pages/About";
 import WhitePapers from "./pages/WhitePapers";
 import Evidence from "./pages/Evidence";
 import Press from "./pages/Press";
@@ -168,10 +162,10 @@ const AppContent = () => {
         
         <Route path="/products" element={<ProductsOverview />} />
         <Route path="/products/environmental" element={<EnvironmentalBackground />} />
-        <Route path="/products/enterprise-wellness" element={<EnterpriseWellness />} />
-        <Route path="/products/enterprise-wellness/trial" element={<EnterpriseWellnessTrial />} />
-        <Route path="/products/population-health" element={<PopulationHealth />} />
         <Route path="/products/partnerships" element={<Partnerships />} />
+        <Route path="/products/enterprise-wellness" element={<Navigate to="/products/partnerships" replace />} />
+        <Route path="/products/enterprise-wellness/trial" element={<Navigate to="/products/partnerships" replace />} />
+        <Route path="/products/population-health" element={<Navigate to="/products/partnerships" replace />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/experience" element={<Experience />} />
@@ -189,16 +183,17 @@ const AppContent = () => {
         <Route path="/analytics" element={<AdvancedAuthGuard><UserAnalytics /></AdvancedAuthGuard>} />
         <Route path="/faq" element={<AdvancedAuthGuard><FAQ /></AdvancedAuthGuard>} />
         <Route path="/support" element={<Support />} />
-        <Route path="/neuralpositive/about" element={<AboutNeuralPositive />} />
-        <Route path="/neuralpositive/story" element={<CompanyStory />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/story" element={<Navigate to="/about" replace />} />
+        <Route path="/team" element={<Navigate to="/about" replace />} />
+        <Route path="/neuralpositive/about" element={<Navigate to="/about" replace />} />
+        <Route path="/neuralpositive/story" element={<Navigate to="/about" replace />} />
         <Route path="/neuralpositive/research" element={<ResearchPage />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/cookies" element={<Cookies />} />
         <Route path="/hipaa" element={<HIPAA />} />
         <Route path="/payments" element={<Payments />} />
-        <Route path="/story" element={<Story />} />
-        <Route path="/team" element={<Team />} />
         <Route path="/whitepapers" element={<WhitePapers />} />
         <Route path="/evidence" element={<Evidence />} />
         <Route path="/press" element={<Press />} />
