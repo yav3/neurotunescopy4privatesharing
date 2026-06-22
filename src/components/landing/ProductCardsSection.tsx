@@ -1,25 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Building2, Heart, Users } from 'lucide-react';
+import { ArrowRight, Code, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const products = [
-  {
-    icon: Heart,
-    title: 'Clinical',
-    tag: 'Anxiety & pain distraction',
-    description: 'Validated protocols for oncology, ED, and post-op care.',
-    badges: ['Oncology', 'ED triage', 'Pain'],
-    link: '/products/population-health',
-  },
-  {
-    icon: Building2,
-    title: 'Enterprise',
-    tag: 'Focus & productivity',
-    description: 'Adaptive music with population analytics and ROI dashboards.',
-    badges: ['Focus', 'Stress', 'Analytics'],
-    link: '/products/enterprise-wellness',
-  },
   {
     icon: Users,
     title: 'Environmental',
@@ -27,6 +11,14 @@ const products = [
     description: 'Royalty-free, continuously refreshed catalog for any venue.',
     badges: ['Zero royalties', 'Multi-venue'],
     link: '/products/environmental',
+  },
+  {
+    icon: Code,
+    title: 'Partnerships & APIs',
+    tag: 'White-label, OEM, API',
+    description: 'Content licensing, platform integration, and co-development.',
+    badges: ['White-label', 'OEM', 'API'],
+    link: '/products/partnerships',
   },
 ];
 
@@ -66,7 +58,7 @@ export const ProductCardsSection: React.FC = () => {
           The complete stack for evidence-based music delivery.
         </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {products.map((product, i) => {
             const Icon = product.icon;
             return (

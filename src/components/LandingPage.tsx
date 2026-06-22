@@ -159,7 +159,7 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
                 About
               </button>
               <button
-                onClick={() => navigate('/neuralpositive/story')}
+                onClick={() => navigate('/about')}
                 className="text-gray-700 hover:text-teal-600 transition-colors"
               >
                 Our Story
@@ -538,7 +538,7 @@ const trackTherapeuticOutcome = async (session) => {
                 </li>
                 <li>
                   <button
-                    onClick={() => navigate('/neuralpositive/story')}
+                    onClick={() => navigate('/about')}
                     className="text-gray-600 hover:text-teal-600 transition-colors"
                   >
                     Our Story

@@ -78,8 +78,6 @@ const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: M
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Product</DropdownMenuLabel>
       <DropdownMenuItem asChild><Link to="/products/environmental" className={menu.item}>Environmental & Background</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/population-health" className={menu.item}>Population Health</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/enterprise-wellness" className={menu.item}>Employee Benefits</Link></DropdownMenuItem>
       <DropdownMenuItem asChild><Link to="/products/partnerships" className={menu.item}>Partnerships & APIs</Link></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
@@ -90,8 +88,7 @@ const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: M
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Company</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/story" className={menu.item}>Our Story</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/team" className={menu.item}>Leadership</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><Link to="/about" className={menu.item}>About</Link></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
