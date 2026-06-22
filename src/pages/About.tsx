@@ -131,7 +131,7 @@ export const About = () => {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 max-w-4xl mx-auto">
                 {TEAM.map((member) => (
-                  <div key={index} className="flex flex-col items-center text-center">
+                  <div key={member.id} className="flex flex-col items-center text-center">
                     {member.photo ? (
                       <div className="w-28 h-28 mb-3 rounded-full overflow-hidden border border-neutral-700/50 bg-neutral-900">
                         <img
