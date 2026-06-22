@@ -160,12 +160,16 @@ export const About = () => {
 
             {/* Team */}
             <section className="mb-24">
-              <div className="mb-10 text-center">
-                <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-3" style={{ color: TEXT }}>
-                  Team
+              <div className="mb-10 text-center max-w-3xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-5" style={{ color: TEXT }}>
+                  Leadership
                 </h2>
-                <p className="text-sm font-light" style={{ color: MUTED }}>
-                  Founding team with $500M+ in combined exits through M&amp;A and IPO.
+                <p className="text-base leading-relaxed" style={{ color: SOFT }}>
+                  Former public-company executives and leaders across frontier AI and medicine, complemented by
+                  multi-Grammy sound engineers and composers and seasoned global finance executives. The team trained
+                  at Cornell, Cornell Tech, Harvard, NYU, Stanford, U Penn, Wharton, and at Tier&nbsp;1 European
+                  institutions. Multiple members are repeat founders with a cumulative three exits exceeding $500M
+                  in combined valuation.
                 </p>
               </div>
 
