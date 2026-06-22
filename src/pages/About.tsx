@@ -94,7 +94,7 @@ export const About = () => {
             <section className="mb-24">
               <div className="mb-10">
                 <p className="text-xs uppercase tracking-[0.2em] mb-3" style={{ color: "rgba(6, 182, 212, 0.9)" }}>
-                  Intellectual Property
+                  Patent Portfolio
                 </p>
                 <h2 className="text-3xl md:text-4xl font-light tracking-tight" style={{ color: TEXT }}>
                   Three granted U.S. patents
@@ -108,19 +108,57 @@ export const About = () => {
 
               <ul className="space-y-4">
                 {[
-                  "Methods and systems for measuring the emotional response of human listeners to music, audio, and media.",
-                  "Component-and-weight decomposition of acoustic signals into affective vectors for retrieval and recommendation.",
-                  "Vector-model architectures for mapping musical structure to the brain's processing of emotional content and pattern.",
-                ].map((claim, i) => (
+                  {
+                    number: "US 12,361,263",
+                    title: "Ubiquitous computing system and ontological ML method for modeling affective value (GRN)",
+                    granted: "Granted July 15, 2025",
+                    assignee: "NeuralPositive Technologies, Inc.",
+                    summary:
+                      "A ubiquitous computing system and ontological machine-learning method that constructs a Generative Relational Network (GRN) to model affective value across heterogeneous biosignals — providing a relational substrate for causal reasoning over multimodal physiological and behavioral data.",
+                  },
+                  {
+                    number: "US 11,694,786",
+                    title: "Affective computing model for precise measurement of emotion in audio and media",
+                    granted: "Granted July 4, 2023",
+                    assignee: "NeuralPositive Technologies, Inc.",
+                    summary:
+                      "An affective computing model that produces precise measures of emotion in audio and media through signal processing, automated feature extraction, and automated feature engineering.",
+                  },
+                  {
+                    number: "US 18/923,075",
+                    title: "Techniques for Training a Generative Relational Network",
+                    granted: "Granted 2025",
+                    assignee: "NeuralPositive Technologies, Inc.",
+                    summary:
+                      "Training methodology for the Generative Relational Network covering dominance-factor computation, evolution nodes, and simulation-based refinement — enabling reproducible, auditable propagation across biological ontologies.",
+                  },
+                ].map((p) => (
                   <li
-                    key={i}
-                    className="flex gap-5 p-5 rounded-2xl"
+                    key={p.number}
+                    className="p-6 rounded-2xl"
                     style={{ background: "rgba(228,228,228,0.02)", border: "1px solid rgba(228,228,228,0.06)" }}
                   >
-                    <span className="text-xs uppercase tracking-[0.2em] shrink-0 pt-1" style={{ color: "rgba(6,182,212,0.85)" }}>
-                      Granted
-                    </span>
-                    <p className="text-sm leading-relaxed" style={{ color: SOFT }}>{claim}</p>
+                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                      <span className="text-sm tracking-tight" style={{ color: TEXT }}>{p.number}</span>
+                      <span
+                        className="text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-full"
+                        style={{
+                          color: "rgba(6,182,212,0.95)",
+                          border: "1px solid rgba(6,182,212,0.35)",
+                          background: "rgba(6,182,212,0.06)",
+                        }}
+                      >
+                        Granted
+                      </span>
+                    </div>
+                    <h3 className="text-base md:text-lg font-light leading-snug mb-3" style={{ color: TEXT }}>
+                      {p.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs mb-3" style={{ color: MUTED }}>
+                      <span>{p.granted}</span>
+                      <span>Assignee · {p.assignee}</span>
+                    </div>
+                    <p className="text-sm leading-relaxed" style={{ color: SOFT }}>{p.summary}</p>
                   </li>
                 ))}
               </ul>
