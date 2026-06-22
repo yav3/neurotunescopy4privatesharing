@@ -30,7 +30,7 @@ const team: TeamMember[] = [
   { name: "Brian E. Wallace", credentials: "MD, PhD, MBA", role: "Chief Research Officer", photo: brianHeadshot, objectPosition: "center 30%" },
   { name: "Peter Blumen", credentials: "ScM, MBA", role: "Co-Founder", photo: peterHeadshot, objectPosition: "center 30%" },
   { name: "Marcin Waryszak", role: "SVP Operations", photo: marcinHeadshot, objectPosition: "center center" },
-  { name: "Paul Korner", role: "President", photo: paulHeadshot, objectPosition: "center 25%" },
+  { name: "Paul Korner", credentials: "MD, MBA", role: "Chief Medical Officer, President", photo: paulHeadshot, objectPosition: "center 25%" },
   { name: "Hans Lindroth", role: "Strategic Advisor", photo: hansHeadshot, objectPosition: "center 20%" },
 ];
 
