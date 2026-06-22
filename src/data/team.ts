@@ -31,7 +31,7 @@ export interface TeamMember {
  * Edit here only — never duplicate this list in a component.
  */
 export const TEAM: TeamMember[] = [
-  { id: "yasmine-wilt",       name: "Yasmine Wilt, PhD",  role: "Co-Founder",                         title: "CEO, CTO",                  photo: yasmineHeadshot, objectPosition: "center 30%" },
+  { id: "yasmine-wilt",       name: "Yasmine Wilt",       credentials: "PhD",          role: "Co-Founder",                         title: "CEO, CTO",                  photo: yasmineHeadshot, objectPosition: "center 30%" },
   { id: "christopher-long",   name: "Christopher Long",   credentials: "MBA",          role: "CFO, COO",                                                       photo: chrisHeadshot,   objectPosition: "center center" },
   { id: "jim-anderson",       name: "Jim Anderson",                                    role: "Co-Founder",                                                     photo: jimHeadshot,     objectPosition: "center 30%" },
   { id: "joshua-langenthal",  name: "Joshua Langenthal",  credentials: "MCRP, MLA",    role: "",                                                               photo: joshHeadshot,    objectPosition: "center center" },
