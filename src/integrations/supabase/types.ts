@@ -7087,82 +7087,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pg_stat_monitor: {
-        Row: {
-          application_name: string | null
-          bucket: number | null
-          bucket_done: boolean | null
-          bucket_start_time: string | null
-          calls: number | null
-          client_ip: unknown
-          cmd_type: number | null
-          cmd_type_text: string | null
-          comments: string | null
-          cpu_sys_time: number | null
-          cpu_user_time: number | null
-          datname: string | null
-          dbid: unknown
-          elevel: number | null
-          jit_deform_count: number | null
-          jit_deform_time: number | null
-          jit_emission_count: number | null
-          jit_emission_time: number | null
-          jit_functions: number | null
-          jit_generation_time: number | null
-          jit_inlining_count: number | null
-          jit_inlining_time: number | null
-          jit_optimization_count: number | null
-          jit_optimization_time: number | null
-          local_blk_read_time: number | null
-          local_blk_write_time: number | null
-          local_blks_dirtied: number | null
-          local_blks_hit: number | null
-          local_blks_read: number | null
-          local_blks_written: number | null
-          max_exec_time: number | null
-          max_plan_time: number | null
-          mean_exec_time: number | null
-          mean_plan_time: number | null
-          message: string | null
-          min_exec_time: number | null
-          min_plan_time: number | null
-          minmax_stats_since: string | null
-          pgsm_query_id: number | null
-          planid: number | null
-          plans: number | null
-          query: string | null
-          query_plan: string | null
-          queryid: number | null
-          relations: string[] | null
-          resp_calls: string[] | null
-          rows: number | null
-          shared_blk_read_time: number | null
-          shared_blk_write_time: number | null
-          shared_blks_dirtied: number | null
-          shared_blks_hit: number | null
-          shared_blks_read: number | null
-          shared_blks_written: number | null
-          sqlcode: string | null
-          stats_since: string | null
-          stddev_exec_time: number | null
-          stddev_plan_time: number | null
-          temp_blk_read_time: number | null
-          temp_blk_write_time: number | null
-          temp_blks_read: number | null
-          temp_blks_written: number | null
-          top_query: string | null
-          top_queryid: number | null
-          toplevel: boolean | null
-          total_exec_time: number | null
-          total_plan_time: number | null
-          userid: unknown
-          username: string | null
-          wal_bytes: number | null
-          wal_fpi: number | null
-          wal_records: number | null
-        }
-        Relationships: []
-      }
       user_favorites_view: {
         Row: {
           added_at: string | null
@@ -7321,7 +7245,6 @@ export type Database = {
           token: string
         }[]
       }
-      decode_error_level: { Args: { elevel: number }; Returns: string }
       find_broken_tracks: {
         Args: never
         Returns: {
@@ -7395,7 +7318,6 @@ export type Database = {
         Args: { input_camelot: string }
         Returns: string[]
       }
-      get_cmd_type: { Args: { cmd_type: number }; Returns: string }
       get_curated_tracks_safe: {
         Args: { track_ids?: string[] }
         Returns: {
@@ -7443,7 +7365,6 @@ export type Database = {
           therapeutic_category: string
         }[]
       }
-      get_histogram_timings: { Args: never; Returns: string }
       get_hit_potential_tracks: {
         Args: { limit_count?: number; min_score?: number }
         Returns: {
@@ -7665,10 +7586,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      histogram: {
-        Args: { _bucket: number; _quryid: number }
-        Returns: Record<string, unknown>[]
-      }
       increment_api_key_requests: {
         Args: { key_id: string }
         Returns: undefined
@@ -7707,18 +7624,6 @@ export type Database = {
         Args: { error_message?: string; track_uuid: string }
         Returns: undefined
       }
-      pg_stat_monitor_internal: {
-        Args: { showtext: boolean }
-        Returns: Record<string, unknown>[]
-      }
-      pg_stat_monitor_reset: { Args: never; Returns: undefined }
-      pg_stat_monitor_version: { Args: never; Returns: string }
-      pgsm_create_11_view: { Args: never; Returns: number }
-      pgsm_create_13_view: { Args: never; Returns: number }
-      pgsm_create_14_view: { Args: never; Returns: number }
-      pgsm_create_15_view: { Args: never; Returns: number }
-      pgsm_create_17_view: { Args: never; Returns: number }
-      pgsm_create_view: { Args: never; Returns: number }
       populate_bucket_repair_map: {
         Args: { _bucket_name: string }
         Returns: {
@@ -7734,7 +7639,6 @@ export type Database = {
         }[]
       }
       prune_chat_rate_limits: { Args: never; Returns: undefined }
-      range: { Args: never; Returns: string[] }
       record_email_send: {
         Args: { p_email: string; p_ip?: string; p_type: string }
         Returns: undefined
@@ -7791,8 +7695,6 @@ export type Database = {
           total_sessions: number
         }[]
       }
-      show_limit: { Args: never; Returns: number }
-      show_trgm: { Args: { "": string }; Returns: string[] }
       suggest_commercial_titles: {
         Args: { p_bucket_name?: string; p_genre?: string }
         Returns: {
