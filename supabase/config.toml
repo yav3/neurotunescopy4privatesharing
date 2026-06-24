@@ -1,5 +1,20 @@
 project_id = "pbtgvcjniayedqlajjzz"
 
+[auth]
+# Shorten OTP lifetime to recommended threshold (<= 1 hour)
+otp_expiry = 3600
+
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[auth.mfa.phone]
+enroll_enabled = true
+verify_enabled = true
+
 [functions.normalize-storage-files]
 verify_jwt = false
 
