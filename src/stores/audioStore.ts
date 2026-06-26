@@ -309,8 +309,7 @@ const ensureAudioElement = (): HTMLAudioElement => {
 
 // Set initial default player mode to 'mini' to ensure player always shows
 export const useAudioStore = create<AudioState>((set, get) => {
-  let eventListenersAdded = false;
-  
+
   // Initialize therapeutic audio environment on store creation
   if (typeof window !== 'undefined') {
     initTherapeuticAudio();
@@ -503,12 +502,17 @@ export const useAudioStore = create<AudioState>((set, get) => {
       });
     }
     
-    // Critical fix: Only add event listeners once per audio element
-    if (!eventListenersAdded) {
-      console.log('🎵 Adding event listeners to audio element (one time only)');
-      
+    // Critical fix: Only add event listeners once PER audio element.
+    // The marker lives on the element itself (not a module-level flag) so that
+    // when the active audio element is swapped — e.g. the user-specific element
+    // id changes after auth hydrates, or the element is recreated after a DOM
+    // cleanup — the new element always gets its own 'ended' listener. Otherwise
+    // playback works but auto-advance silently dies on the replacement element.
+    if (!audio.dataset.listenersAttached) {
+      console.log('🎵 Adding event listeners to audio element (one time per element)');
+
       // Mark as added immediately to prevent race conditions
-      eventListenersAdded = true;
+      audio.dataset.listenersAttached = 'true';
       // Auto-next on track end
       audio.addEventListener('ended', async () => {
         console.log('🎵 Audio ended - scheduling auto-next');
@@ -818,7 +822,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
         set({ duration: audio.duration || 0 });
       });
       
-      eventListenersAdded = true;
+      audio.dataset.listenersAttached = 'true';
       console.log('🎵 Bullet-proof event listeners added to audio element');
     }
     

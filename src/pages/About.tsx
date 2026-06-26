@@ -109,28 +109,28 @@ export const About = () => {
               <ul className="space-y-4">
                 {[
                   {
-                    number: "US 12,361,263",
-                    title: "Ubiquitous computing system and ontological ML method for modeling affective value (GRN)",
-                    granted: "Granted July 15, 2025",
-                    assignee: "NeuralPositive Technologies, Inc.",
+                    number: "US 12,651,165",
+                    title: "Techniques for training a generative relational network",
+                    granted: "Granted June 9, 2026",
+                    attribution: "Assignee · The Joan and Irwin Jacobs Technion-Cornell Institute",
                     summary:
-                      "A ubiquitous computing system and ontological machine-learning method that constructs a Generative Relational Network (GRN) to model affective value across heterogeneous biosignals — providing a relational substrate for causal reasoning over multimodal physiological and behavioral data.",
+                      "Training methodology for the Generative Relational Network (GRN): a self-organizing map reduces the dimensionality of training data into a visualization, and the GRN's machine-learning models — including dominance-factor nodes defined by change intensity and frequency, and evolution-of-internal-component nodes — are trained against it.",
+                  },
+                  {
+                    number: "US 12,361,263",
+                    title: "Artificial intelligence techniques utilizing a generative relational network",
+                    granted: "Granted July 15, 2025",
+                    attribution: "Assignee · The Joan and Irwin Jacobs Technion-Cornell Institute",
+                    summary:
+                      "Applies a Generative Relational Network to model relationships between entities, then simulates those relationships to eliminate and test candidate interactions — identifying a target interaction. Built on dominance-factor and evolution-of-internal-component nodes.",
                   },
                   {
                     number: "US 11,694,786",
-                    title: "Affective computing model for precise measurement of emotion in audio and media",
+                    title: "Recommendation methods, systems and devices",
                     granted: "Granted July 4, 2023",
-                    assignee: "NeuralPositive Technologies, Inc.",
+                    attribution: "Inventors · Yasmine Van Wilt, Kenneth Bahk",
                     summary:
-                      "An affective computing model that produces precise measures of emotion in audio and media through signal processing, automated feature extraction, and automated feature engineering.",
-                  },
-                  {
-                    number: "US 18/923,075",
-                    title: "Techniques for Training a Generative Relational Network",
-                    granted: "Granted 2025",
-                    assignee: "NeuralPositive Technologies, Inc.",
-                    summary:
-                      "Training methodology for the Generative Relational Network covering dominance-factor computation, evolution nodes, and simulation-based refinement — enabling reproducible, auditable propagation across biological ontologies.",
+                      "Systems, devices, and methods that recommend goods, services, and media based on their emotional impact on the user — and that determine and deliver “optimal medical media” for treating brain functions and associated neurological conditions.",
                   },
                 ].map((p) => (
                   <li
@@ -156,15 +156,15 @@ export const About = () => {
                     </h3>
                     <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs mb-3" style={{ color: MUTED }}>
                       <span>{p.granted}</span>
-                      <span>Assignee · {p.assignee}</span>
+                      <span>{p.attribution}</span>
                     </div>
                     <p className="text-sm leading-relaxed" style={{ color: SOFT }}>{p.summary}</p>
                   </li>
                 ))}
               </ul>
               <p className="text-xs mt-5" style={{ color: MUTED }}>
-                Exclusively licensed from Cornell University and the Jacobs Technion-Cornell Institute. Additional
-                applications pending; full claim text available under NDA.
+                Exclusively licensed from Cornell University and the Jacobs Technion-Cornell Institute. Three
+                additional applications pending; full claim text available under NDA.
               </p>
             </section>
 
