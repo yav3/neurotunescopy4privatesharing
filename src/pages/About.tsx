@@ -163,8 +163,8 @@ export const About = () => {
                 ))}
               </ul>
               <p className="text-xs mt-5" style={{ color: MUTED }}>
-                Exclusively licensed from Cornell University and the Jacobs Technion-Cornell Institute. Additional
-                applications pending; full claim text available under NDA.
+                Exclusively licensed from Cornell University and the Jacobs Technion-Cornell Institute. Three
+                additional applications pending; full claim text available under NDA.
               </p>
             </section>
 
