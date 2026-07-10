@@ -178,6 +178,78 @@ export type Database = {
         }
         Relationships: []
       }
+      audio_analysis_jobs: {
+        Row: {
+          channels: number | null
+          completed_at: string | null
+          created_at: string
+          duration_sec: number | null
+          error_message: string | null
+          file_name: string
+          file_size: number | null
+          id: string
+          mime_type: string | null
+          progress: number
+          sample_rate: number | null
+          started_at: string | null
+          status: string
+          storage_path: string
+          track_id: string | null
+          windows_total: number | null
+        }
+        Insert: {
+          channels?: number | null
+          completed_at?: string | null
+          created_at?: string
+          duration_sec?: number | null
+          error_message?: string | null
+          file_name: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          progress?: number
+          sample_rate?: number | null
+          started_at?: string | null
+          status?: string
+          storage_path: string
+          track_id?: string | null
+          windows_total?: number | null
+        }
+        Update: {
+          channels?: number | null
+          completed_at?: string | null
+          created_at?: string
+          duration_sec?: number | null
+          error_message?: string | null
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          progress?: number
+          sample_rate?: number | null
+          started_at?: string | null
+          status?: string
+          storage_path?: string
+          track_id?: string | null
+          windows_total?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audio_analysis_jobs_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audio_analysis_jobs_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       biomarker_discoveries: {
         Row: {
           authors: string[] | null
@@ -1961,6 +2033,76 @@ export type Database = {
           },
         ]
       }
+      drive_ingestion_log: {
+        Row: {
+          audio_fingerprint: number | null
+          clean_title: string | null
+          content_hash: string | null
+          drive_file_id: string
+          drive_file_name: string | null
+          drive_file_size: number | null
+          drive_mime_type: string | null
+          id: string
+          ingested_at: string
+          job_id: string | null
+          raw_title: string | null
+          status: string
+          track_id: string | null
+        }
+        Insert: {
+          audio_fingerprint?: number | null
+          clean_title?: string | null
+          content_hash?: string | null
+          drive_file_id: string
+          drive_file_name?: string | null
+          drive_file_size?: number | null
+          drive_mime_type?: string | null
+          id?: string
+          ingested_at?: string
+          job_id?: string | null
+          raw_title?: string | null
+          status?: string
+          track_id?: string | null
+        }
+        Update: {
+          audio_fingerprint?: number | null
+          clean_title?: string | null
+          content_hash?: string | null
+          drive_file_id?: string
+          drive_file_name?: string | null
+          drive_file_size?: number | null
+          drive_mime_type?: string | null
+          id?: string
+          ingested_at?: string
+          job_id?: string | null
+          raw_title?: string | null
+          status?: string
+          track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drive_ingestion_log_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "audio_analysis_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drive_ingestion_log_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drive_ingestion_log_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       drug_disease_mapping: {
         Row: {
           approval_date: string | null
@@ -2458,6 +2600,7 @@ export type Database = {
           id: string
           original_prompt: string
           prompt_pattern_id: string | null
+          user_id: string | null
           user_rating: number | null
         }
         Insert: {
@@ -2468,6 +2611,7 @@ export type Database = {
           id?: string
           original_prompt: string
           prompt_pattern_id?: string | null
+          user_id?: string | null
           user_rating?: number | null
         }
         Update: {
@@ -2478,6 +2622,7 @@ export type Database = {
           id?: string
           original_prompt?: string
           prompt_pattern_id?: string | null
+          user_id?: string | null
           user_rating?: number | null
         }
         Relationships: [
@@ -5116,6 +5261,7 @@ export type Database = {
           streamed_at: string | null
           track_id: string
           user_agent: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -5126,6 +5272,7 @@ export type Database = {
           streamed_at?: string | null
           track_id: string
           user_agent?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -5136,6 +5283,7 @@ export type Database = {
           streamed_at?: string | null
           track_id?: string
           user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -5530,6 +5678,13 @@ export type Database = {
             referencedRelation: "tracks"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "track_genre_success_scores_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       track_hit_predictions: {
@@ -5591,6 +5746,13 @@ export type Database = {
             columns: ["track_id"]
             isOneToOne: false
             referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_hit_predictions_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
             referencedColumns: ["id"]
           },
         ]
@@ -5664,6 +5826,101 @@ export type Database = {
             referencedRelation: "tracks"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "track_patterns_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      track_temporal_arcs: {
+        Row: {
+          arousal_raw: number | null
+          brightness: number | null
+          eif_arousal: number | null
+          eif_total: number | null
+          eif_valence: number | null
+          end_sec: number
+          id: number
+          is_major: boolean | null
+          job_id: string
+          mood_tier: string | null
+          rms_energy: number | null
+          spectral_centroid: number | null
+          spectral_flatness: number | null
+          start_sec: number
+          therapeutic_mode: string | null
+          track_id: string | null
+          valence_raw: number | null
+          window_index: number
+          zero_crossing_rate: number | null
+        }
+        Insert: {
+          arousal_raw?: number | null
+          brightness?: number | null
+          eif_arousal?: number | null
+          eif_total?: number | null
+          eif_valence?: number | null
+          end_sec: number
+          id?: number
+          is_major?: boolean | null
+          job_id: string
+          mood_tier?: string | null
+          rms_energy?: number | null
+          spectral_centroid?: number | null
+          spectral_flatness?: number | null
+          start_sec: number
+          therapeutic_mode?: string | null
+          track_id?: string | null
+          valence_raw?: number | null
+          window_index: number
+          zero_crossing_rate?: number | null
+        }
+        Update: {
+          arousal_raw?: number | null
+          brightness?: number | null
+          eif_arousal?: number | null
+          eif_total?: number | null
+          eif_valence?: number | null
+          end_sec?: number
+          id?: number
+          is_major?: boolean | null
+          job_id?: string
+          mood_tier?: string | null
+          rms_energy?: number | null
+          spectral_centroid?: number | null
+          spectral_flatness?: number | null
+          start_sec?: number
+          therapeutic_mode?: string | null
+          track_id?: string | null
+          valence_raw?: number | null
+          window_index?: number
+          zero_crossing_rate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_temporal_arcs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "audio_analysis_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_temporal_arcs_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "track_temporal_arcs_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       track_title_changes: {
@@ -5727,12 +5984,15 @@ export type Database = {
           analysis_version: string | null
           arousal: number | null
           artist: string | null
+          audio_fingerprint: number | null
           audio_status: string | null
           bpm: number | null
           camelot: string | null
           canonical_title: string | null
+          clean_title: string | null
           cognitive_load: number | null
           comprehensive_analysis: Json | null
+          content_hash: string | null
           created_at: string | null
           created_date: string | null
           crest_factor: number | null
@@ -5744,6 +6004,11 @@ export type Database = {
           dynamic_complexity: number | null
           dynamic_features: Json | null
           dynamic_range: number | null
+          eif_arousal: number | null
+          eif_patient: number | null
+          eif_scored_at: string | null
+          eif_total: number | null
+          eif_valence: number | null
           emotion_tags: string[] | null
           emotional_stability: number | null
           extracted_year: number | null
@@ -5753,6 +6018,7 @@ export type Database = {
           harmonic_features: Json | null
           has_lyrics: boolean | null
           id: string
+          in_bpm_ceiling: boolean | null
           inharmonicity: number | null
           investigation_notes: string | null
           key_confidence: number | null
@@ -5761,14 +6027,23 @@ export type Database = {
           last_error: string | null
           last_title_normalized_at: string | null
           last_verified_at: string | null
+          liveness: number | null
+          loudness: number | null
           loudness_lufs: number | null
           lyrics: string | null
+          lyrics_author: string | null
+          lyrics_confidence: number | null
+          lyrics_extracted_at: string | null
           lyrics_language: string | null
+          lyrics_rights_cleared: boolean
+          lyrics_source: string | null
           mode: string | null
           mood_scores: Json | null
+          mood_tier: string | null
           musicxml_url: string | null
           neural_entrainment_potential: number | null
           normalization_notes: Json | null
+          normalized_title: string | null
           notation_data: Json | null
           onset_rate: number | null
           original_filename: string | null
@@ -5776,17 +6051,21 @@ export type Database = {
           play_count: number | null
           playlist_id: string | null
           psychoacoustic_features: Json | null
+          raw_title: string | null
           rhythmic_complexity: number | null
           rhythmic_features: Json | null
           rms_energy: number | null
           roughness: number | null
           scale: string | null
           skip_count: number | null
+          song_code: number | null
           spectral_bandwidth: number | null
           spectral_centroid: number | null
           spectral_complexity: number | null
           spectral_features: Json | null
           spectral_rolloff: number | null
+          spectral_signature: Json | null
+          speechiness: number | null
           storage_bucket: string | null
           storage_key: string | null
           storage_path: string | null
@@ -5795,6 +6074,7 @@ export type Database = {
           tempo_stability: number | null
           therapeutic_category: string | null
           therapeutic_effectiveness: number | null
+          therapeutic_mode: string | null
           therapeutic_use: string[] | null
           title: string
           title_health_score: number | null
@@ -5802,6 +6082,7 @@ export type Database = {
           track_number: number | null
           track_uuid: string
           tuning_frequency: number | null
+          use_case_dots: string | null
           valence: number | null
           version_label: string | null
           zero_crossing_rate: number | null
@@ -5815,12 +6096,15 @@ export type Database = {
           analysis_version?: string | null
           arousal?: number | null
           artist?: string | null
+          audio_fingerprint?: number | null
           audio_status?: string | null
           bpm?: number | null
           camelot?: string | null
           canonical_title?: string | null
+          clean_title?: string | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
+          content_hash?: string | null
           created_at?: string | null
           created_date?: string | null
           crest_factor?: number | null
@@ -5832,6 +6116,11 @@ export type Database = {
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
+          eif_arousal?: number | null
+          eif_patient?: number | null
+          eif_scored_at?: string | null
+          eif_total?: number | null
+          eif_valence?: number | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
           extracted_year?: number | null
@@ -5841,6 +6130,7 @@ export type Database = {
           harmonic_features?: Json | null
           has_lyrics?: boolean | null
           id?: string
+          in_bpm_ceiling?: boolean | null
           inharmonicity?: number | null
           investigation_notes?: string | null
           key_confidence?: number | null
@@ -5849,14 +6139,23 @@ export type Database = {
           last_error?: string | null
           last_title_normalized_at?: string | null
           last_verified_at?: string | null
+          liveness?: number | null
+          loudness?: number | null
           loudness_lufs?: number | null
           lyrics?: string | null
+          lyrics_author?: string | null
+          lyrics_confidence?: number | null
+          lyrics_extracted_at?: string | null
           lyrics_language?: string | null
+          lyrics_rights_cleared?: boolean
+          lyrics_source?: string | null
           mode?: string | null
           mood_scores?: Json | null
+          mood_tier?: string | null
           musicxml_url?: string | null
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
+          normalized_title?: string | null
           notation_data?: Json | null
           onset_rate?: number | null
           original_filename?: string | null
@@ -5864,17 +6163,21 @@ export type Database = {
           play_count?: number | null
           playlist_id?: string | null
           psychoacoustic_features?: Json | null
+          raw_title?: string | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
           scale?: string | null
           skip_count?: number | null
+          song_code?: number | null
           spectral_bandwidth?: number | null
           spectral_centroid?: number | null
           spectral_complexity?: number | null
           spectral_features?: Json | null
           spectral_rolloff?: number | null
+          spectral_signature?: Json | null
+          speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
           storage_path?: string | null
@@ -5883,6 +6186,7 @@ export type Database = {
           tempo_stability?: number | null
           therapeutic_category?: string | null
           therapeutic_effectiveness?: number | null
+          therapeutic_mode?: string | null
           therapeutic_use?: string[] | null
           title: string
           title_health_score?: number | null
@@ -5890,6 +6194,7 @@ export type Database = {
           track_number?: number | null
           track_uuid: string
           tuning_frequency?: number | null
+          use_case_dots?: string | null
           valence?: number | null
           version_label?: string | null
           zero_crossing_rate?: number | null
@@ -5903,12 +6208,15 @@ export type Database = {
           analysis_version?: string | null
           arousal?: number | null
           artist?: string | null
+          audio_fingerprint?: number | null
           audio_status?: string | null
           bpm?: number | null
           camelot?: string | null
           canonical_title?: string | null
+          clean_title?: string | null
           cognitive_load?: number | null
           comprehensive_analysis?: Json | null
+          content_hash?: string | null
           created_at?: string | null
           created_date?: string | null
           crest_factor?: number | null
@@ -5920,6 +6228,11 @@ export type Database = {
           dynamic_complexity?: number | null
           dynamic_features?: Json | null
           dynamic_range?: number | null
+          eif_arousal?: number | null
+          eif_patient?: number | null
+          eif_scored_at?: string | null
+          eif_total?: number | null
+          eif_valence?: number | null
           emotion_tags?: string[] | null
           emotional_stability?: number | null
           extracted_year?: number | null
@@ -5929,6 +6242,7 @@ export type Database = {
           harmonic_features?: Json | null
           has_lyrics?: boolean | null
           id?: string
+          in_bpm_ceiling?: boolean | null
           inharmonicity?: number | null
           investigation_notes?: string | null
           key_confidence?: number | null
@@ -5937,14 +6251,23 @@ export type Database = {
           last_error?: string | null
           last_title_normalized_at?: string | null
           last_verified_at?: string | null
+          liveness?: number | null
+          loudness?: number | null
           loudness_lufs?: number | null
           lyrics?: string | null
+          lyrics_author?: string | null
+          lyrics_confidence?: number | null
+          lyrics_extracted_at?: string | null
           lyrics_language?: string | null
+          lyrics_rights_cleared?: boolean
+          lyrics_source?: string | null
           mode?: string | null
           mood_scores?: Json | null
+          mood_tier?: string | null
           musicxml_url?: string | null
           neural_entrainment_potential?: number | null
           normalization_notes?: Json | null
+          normalized_title?: string | null
           notation_data?: Json | null
           onset_rate?: number | null
           original_filename?: string | null
@@ -5952,17 +6275,21 @@ export type Database = {
           play_count?: number | null
           playlist_id?: string | null
           psychoacoustic_features?: Json | null
+          raw_title?: string | null
           rhythmic_complexity?: number | null
           rhythmic_features?: Json | null
           rms_energy?: number | null
           roughness?: number | null
           scale?: string | null
           skip_count?: number | null
+          song_code?: number | null
           spectral_bandwidth?: number | null
           spectral_centroid?: number | null
           spectral_complexity?: number | null
           spectral_features?: Json | null
           spectral_rolloff?: number | null
+          spectral_signature?: Json | null
+          speechiness?: number | null
           storage_bucket?: string | null
           storage_key?: string | null
           storage_path?: string | null
@@ -5971,6 +6298,7 @@ export type Database = {
           tempo_stability?: number | null
           therapeutic_category?: string | null
           therapeutic_effectiveness?: number | null
+          therapeutic_mode?: string | null
           therapeutic_use?: string[] | null
           title?: string
           title_health_score?: number | null
@@ -5978,9 +6306,40 @@ export type Database = {
           track_number?: number | null
           track_uuid?: string
           tuning_frequency?: number | null
+          use_case_dots?: string | null
           valence?: number | null
           version_label?: string | null
           zero_crossing_rate?: number | null
+        }
+        Relationships: []
+      }
+      tracks_audit_log: {
+        Row: {
+          app_name: string | null
+          at: string
+          client_addr: unknown
+          db_user: string | null
+          id: number
+          op: string | null
+          row_count: number | null
+        }
+        Insert: {
+          app_name?: string | null
+          at?: string
+          client_addr?: unknown
+          db_user?: string | null
+          id?: number
+          op?: string | null
+          row_count?: number | null
+        }
+        Update: {
+          app_name?: string | null
+          at?: string
+          client_addr?: unknown
+          db_user?: string | null
+          id?: number
+          op?: string | null
+          row_count?: number | null
         }
         Relationships: []
       }
@@ -6377,6 +6736,345 @@ export type Database = {
           created_at?: string | null
           new_id?: string
           old_id?: number
+        }
+        Relationships: []
+      }
+      tracks_safety_snapshot: {
+        Row: {
+          ai_score: number | null
+          album: string | null
+          album_id: string | null
+          analysis_status: string | null
+          analysis_timestamp: string | null
+          analysis_version: string | null
+          arousal: number | null
+          artist: string | null
+          audio_fingerprint: number | null
+          audio_status: string | null
+          bpm: number | null
+          camelot: string | null
+          canonical_title: string | null
+          clean_title: string | null
+          cognitive_load: number | null
+          comprehensive_analysis: Json | null
+          content_hash: string | null
+          created_at: string | null
+          created_date: string | null
+          crest_factor: number | null
+          danceability_score: number | null
+          display_title: string | null
+          dominance: number | null
+          duration: number | null
+          duration_seconds: number | null
+          dynamic_complexity: number | null
+          dynamic_features: Json | null
+          dynamic_range: number | null
+          eif_arousal: number | null
+          eif_patient: number | null
+          eif_scored_at: string | null
+          eif_total: number | null
+          eif_valence: number | null
+          emotion_tags: string[] | null
+          emotional_stability: number | null
+          extracted_year: number | null
+          file_path: string | null
+          genre: string | null
+          harmonic_complexity: number | null
+          harmonic_features: Json | null
+          has_lyrics: boolean | null
+          id: string | null
+          in_bpm_ceiling: boolean | null
+          inharmonicity: number | null
+          investigation_notes: string | null
+          key_confidence: number | null
+          key_strength: number | null
+          last_analyzed_at: string | null
+          last_error: string | null
+          last_title_normalized_at: string | null
+          last_verified_at: string | null
+          liveness: number | null
+          loudness: number | null
+          loudness_lufs: number | null
+          lyrics: string | null
+          lyrics_author: string | null
+          lyrics_confidence: number | null
+          lyrics_extracted_at: string | null
+          lyrics_language: string | null
+          lyrics_rights_cleared: boolean | null
+          lyrics_source: string | null
+          mode: string | null
+          mood_scores: Json | null
+          mood_tier: string | null
+          musicxml_url: string | null
+          neural_entrainment_potential: number | null
+          normalization_notes: Json | null
+          normalized_title: string | null
+          notation_data: Json | null
+          onset_rate: number | null
+          original_filename: string | null
+          pitch_mean: number | null
+          play_count: number | null
+          playlist_id: string | null
+          psychoacoustic_features: Json | null
+          raw_title: string | null
+          rhythmic_complexity: number | null
+          rhythmic_features: Json | null
+          rms_energy: number | null
+          roughness: number | null
+          scale: string | null
+          skip_count: number | null
+          song_code: number | null
+          spectral_bandwidth: number | null
+          spectral_centroid: number | null
+          spectral_complexity: number | null
+          spectral_features: Json | null
+          spectral_rolloff: number | null
+          spectral_signature: Json | null
+          speechiness: number | null
+          storage_bucket: string | null
+          storage_key: string | null
+          storage_path: string | null
+          structural_features: Json | null
+          subtitle: string | null
+          tempo_stability: number | null
+          therapeutic_category: string | null
+          therapeutic_effectiveness: number | null
+          therapeutic_mode: string | null
+          therapeutic_use: string[] | null
+          title: string | null
+          title_health_score: number | null
+          tonal_features: Json | null
+          track_number: number | null
+          track_uuid: string | null
+          tuning_frequency: number | null
+          use_case_dots: string | null
+          valence: number | null
+          version_label: string | null
+          zero_crossing_rate: number | null
+        }
+        Insert: {
+          ai_score?: number | null
+          album?: string | null
+          album_id?: string | null
+          analysis_status?: string | null
+          analysis_timestamp?: string | null
+          analysis_version?: string | null
+          arousal?: number | null
+          artist?: string | null
+          audio_fingerprint?: number | null
+          audio_status?: string | null
+          bpm?: number | null
+          camelot?: string | null
+          canonical_title?: string | null
+          clean_title?: string | null
+          cognitive_load?: number | null
+          comprehensive_analysis?: Json | null
+          content_hash?: string | null
+          created_at?: string | null
+          created_date?: string | null
+          crest_factor?: number | null
+          danceability_score?: number | null
+          display_title?: string | null
+          dominance?: number | null
+          duration?: number | null
+          duration_seconds?: number | null
+          dynamic_complexity?: number | null
+          dynamic_features?: Json | null
+          dynamic_range?: number | null
+          eif_arousal?: number | null
+          eif_patient?: number | null
+          eif_scored_at?: string | null
+          eif_total?: number | null
+          eif_valence?: number | null
+          emotion_tags?: string[] | null
+          emotional_stability?: number | null
+          extracted_year?: number | null
+          file_path?: string | null
+          genre?: string | null
+          harmonic_complexity?: number | null
+          harmonic_features?: Json | null
+          has_lyrics?: boolean | null
+          id?: string | null
+          in_bpm_ceiling?: boolean | null
+          inharmonicity?: number | null
+          investigation_notes?: string | null
+          key_confidence?: number | null
+          key_strength?: number | null
+          last_analyzed_at?: string | null
+          last_error?: string | null
+          last_title_normalized_at?: string | null
+          last_verified_at?: string | null
+          liveness?: number | null
+          loudness?: number | null
+          loudness_lufs?: number | null
+          lyrics?: string | null
+          lyrics_author?: string | null
+          lyrics_confidence?: number | null
+          lyrics_extracted_at?: string | null
+          lyrics_language?: string | null
+          lyrics_rights_cleared?: boolean | null
+          lyrics_source?: string | null
+          mode?: string | null
+          mood_scores?: Json | null
+          mood_tier?: string | null
+          musicxml_url?: string | null
+          neural_entrainment_potential?: number | null
+          normalization_notes?: Json | null
+          normalized_title?: string | null
+          notation_data?: Json | null
+          onset_rate?: number | null
+          original_filename?: string | null
+          pitch_mean?: number | null
+          play_count?: number | null
+          playlist_id?: string | null
+          psychoacoustic_features?: Json | null
+          raw_title?: string | null
+          rhythmic_complexity?: number | null
+          rhythmic_features?: Json | null
+          rms_energy?: number | null
+          roughness?: number | null
+          scale?: string | null
+          skip_count?: number | null
+          song_code?: number | null
+          spectral_bandwidth?: number | null
+          spectral_centroid?: number | null
+          spectral_complexity?: number | null
+          spectral_features?: Json | null
+          spectral_rolloff?: number | null
+          spectral_signature?: Json | null
+          speechiness?: number | null
+          storage_bucket?: string | null
+          storage_key?: string | null
+          storage_path?: string | null
+          structural_features?: Json | null
+          subtitle?: string | null
+          tempo_stability?: number | null
+          therapeutic_category?: string | null
+          therapeutic_effectiveness?: number | null
+          therapeutic_mode?: string | null
+          therapeutic_use?: string[] | null
+          title?: string | null
+          title_health_score?: number | null
+          tonal_features?: Json | null
+          track_number?: number | null
+          track_uuid?: string | null
+          tuning_frequency?: number | null
+          use_case_dots?: string | null
+          valence?: number | null
+          version_label?: string | null
+          zero_crossing_rate?: number | null
+        }
+        Update: {
+          ai_score?: number | null
+          album?: string | null
+          album_id?: string | null
+          analysis_status?: string | null
+          analysis_timestamp?: string | null
+          analysis_version?: string | null
+          arousal?: number | null
+          artist?: string | null
+          audio_fingerprint?: number | null
+          audio_status?: string | null
+          bpm?: number | null
+          camelot?: string | null
+          canonical_title?: string | null
+          clean_title?: string | null
+          cognitive_load?: number | null
+          comprehensive_analysis?: Json | null
+          content_hash?: string | null
+          created_at?: string | null
+          created_date?: string | null
+          crest_factor?: number | null
+          danceability_score?: number | null
+          display_title?: string | null
+          dominance?: number | null
+          duration?: number | null
+          duration_seconds?: number | null
+          dynamic_complexity?: number | null
+          dynamic_features?: Json | null
+          dynamic_range?: number | null
+          eif_arousal?: number | null
+          eif_patient?: number | null
+          eif_scored_at?: string | null
+          eif_total?: number | null
+          eif_valence?: number | null
+          emotion_tags?: string[] | null
+          emotional_stability?: number | null
+          extracted_year?: number | null
+          file_path?: string | null
+          genre?: string | null
+          harmonic_complexity?: number | null
+          harmonic_features?: Json | null
+          has_lyrics?: boolean | null
+          id?: string | null
+          in_bpm_ceiling?: boolean | null
+          inharmonicity?: number | null
+          investigation_notes?: string | null
+          key_confidence?: number | null
+          key_strength?: number | null
+          last_analyzed_at?: string | null
+          last_error?: string | null
+          last_title_normalized_at?: string | null
+          last_verified_at?: string | null
+          liveness?: number | null
+          loudness?: number | null
+          loudness_lufs?: number | null
+          lyrics?: string | null
+          lyrics_author?: string | null
+          lyrics_confidence?: number | null
+          lyrics_extracted_at?: string | null
+          lyrics_language?: string | null
+          lyrics_rights_cleared?: boolean | null
+          lyrics_source?: string | null
+          mode?: string | null
+          mood_scores?: Json | null
+          mood_tier?: string | null
+          musicxml_url?: string | null
+          neural_entrainment_potential?: number | null
+          normalization_notes?: Json | null
+          normalized_title?: string | null
+          notation_data?: Json | null
+          onset_rate?: number | null
+          original_filename?: string | null
+          pitch_mean?: number | null
+          play_count?: number | null
+          playlist_id?: string | null
+          psychoacoustic_features?: Json | null
+          raw_title?: string | null
+          rhythmic_complexity?: number | null
+          rhythmic_features?: Json | null
+          rms_energy?: number | null
+          roughness?: number | null
+          scale?: string | null
+          skip_count?: number | null
+          song_code?: number | null
+          spectral_bandwidth?: number | null
+          spectral_centroid?: number | null
+          spectral_complexity?: number | null
+          spectral_features?: Json | null
+          spectral_rolloff?: number | null
+          spectral_signature?: Json | null
+          speechiness?: number | null
+          storage_bucket?: string | null
+          storage_key?: string | null
+          storage_path?: string | null
+          structural_features?: Json | null
+          subtitle?: string | null
+          tempo_stability?: number | null
+          therapeutic_category?: string | null
+          therapeutic_effectiveness?: number | null
+          therapeutic_mode?: string | null
+          therapeutic_use?: string[] | null
+          title?: string | null
+          title_health_score?: number | null
+          tonal_features?: Json | null
+          track_number?: number | null
+          track_uuid?: string | null
+          tuning_frequency?: number | null
+          use_case_dots?: string | null
+          valence?: number | null
+          version_label?: string | null
+          zero_crossing_rate?: number | null
         }
         Relationships: []
       }
@@ -7012,6 +7710,13 @@ export type Database = {
             referencedRelation: "tracks"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "working_edge_collection_track_id_fkey"
+            columns: ["track_id"]
+            isOneToOne: true
+            referencedRelation: "tracks_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
@@ -7084,6 +7789,63 @@ export type Database = {
           id?: string | null
           issue_type?: never
           title?: string | null
+        }
+        Relationships: []
+      }
+      tracks_public: {
+        Row: {
+          album: string | null
+          arousal: number | null
+          artist: string | null
+          bpm: number | null
+          created_at: string | null
+          danceability_score: number | null
+          dominance: number | null
+          duration_seconds: number | null
+          dynamic_features: Json | null
+          genre: string | null
+          harmonic_complexity: number | null
+          id: string | null
+          rms_energy: number | null
+          spectral_centroid: number | null
+          title: string | null
+          valence: number | null
+        }
+        Insert: {
+          album?: string | null
+          arousal?: number | null
+          artist?: string | null
+          bpm?: number | null
+          created_at?: string | null
+          danceability_score?: number | null
+          dominance?: number | null
+          duration_seconds?: number | null
+          dynamic_features?: Json | null
+          genre?: string | null
+          harmonic_complexity?: number | null
+          id?: string | null
+          rms_energy?: number | null
+          spectral_centroid?: number | null
+          title?: string | null
+          valence?: number | null
+        }
+        Update: {
+          album?: string | null
+          arousal?: number | null
+          artist?: string | null
+          bpm?: number | null
+          created_at?: string | null
+          danceability_score?: number | null
+          dominance?: number | null
+          duration_seconds?: number | null
+          dynamic_features?: Json | null
+          genre?: string | null
+          harmonic_complexity?: number | null
+          id?: string | null
+          rms_energy?: number | null
+          spectral_centroid?: number | null
+          title?: string | null
+          valence?: number | null
         }
         Relationships: []
       }
@@ -7192,6 +7954,7 @@ export type Database = {
           table_name: string
         }[]
       }
+      backfill_use_case_dots: { Args: never; Returns: undefined }
       calculate_genre_success_score: {
         Args: {
           _award_nominations?: number
@@ -7245,6 +8008,7 @@ export type Database = {
           token: string
         }[]
       }
+      derive_normalized_title: { Args: { p_title: string }; Returns: string }
       find_broken_tracks: {
         Args: never
         Returns: {
@@ -7436,6 +8200,22 @@ export type Database = {
           total_tracks: number
           unknown_tracks: number
           working_tracks: number
+        }[]
+      }
+      get_track_temporal_arc: {
+        Args: { p_track_id: string }
+        Returns: {
+          arousal_raw: number
+          eif_arousal: number
+          eif_total: number
+          eif_valence: number
+          end_sec: number
+          is_major: boolean
+          mood_tier: string
+          start_sec: number
+          therapeutic_mode: string
+          valence_raw: number
+          window_index: number
         }[]
       }
       get_tracks_by_bpm_range: {

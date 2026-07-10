@@ -34,6 +34,36 @@ const ARTWORK_BASE = 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object
 
 const CURATED_PLAYLIST = [
   {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
+    videoPath: '/videos/landing-16.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Pop',
+    artist: 'Van Wild',
+    name: 'Deja Vu',
+    estimatedBPM: 112,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-rose-1024px.png`
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
+    videoPath: '/videos/landing-03.mp4',
+    therapeuticGoal: 'Mood Boost',
+    genre: 'Country Pop',
+    artist: 'Van Wild',
+    name: 'Just How You Like It',
+    estimatedBPM: 95,
+    artworkUrl: `${ARTWORK_BASE}/abstract-blob-amber-1024px.png`
+  },
+  {
+    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
+    videoPath: '/videos/landing-15.mp4',
+    therapeuticGoal: 'Energy Boost',
+    genre: 'Pop',
+    artist: 'Van Wild',
+    name: 'We Were Born to Come Alive',
+    estimatedBPM: 124,
+    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-lavender-1024px.png`
+  },
+  {
     audioUrl: '/audio/hail-queen-astrid.mp3',
     videoPath: '/videos/landing-01.mp4',
     therapeuticGoal: 'Focus Enhancement',
@@ -62,16 +92,6 @@ const CURATED_PLAYLIST = [
     name: 'The Seventh Wonder',
     estimatedBPM: 72,
     artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-amber-1024px.png`
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/just-how-you-like-it-country-pop-radio-cut.mp3',
-    videoPath: '/videos/landing-03.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Country Pop',
-    artist: 'Van Wild',
-    name: 'Just How You Like It',
-    estimatedBPM: 95,
-    artworkUrl: `${ARTWORK_BASE}/abstract-blob-amber-1024px.png`
   },
   {
     audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/venha-ao-meu-jardim-samba-bossa-nova-2.mp3',
@@ -182,26 +202,6 @@ const CURATED_PLAYLIST = [
     name: 'Hold on Child',
     estimatedBPM: 135,
     artworkUrl: `${ARTWORK_BASE}/abstract-blob-teal-1024px.png`
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/we%20were%20born%20to%20come%20alive%20radio%20cut%20version%20yaz%20based%20vox%20(1).mp3',
-    videoPath: '/videos/landing-15.mp4',
-    therapeuticGoal: 'Energy Boost',
-    genre: 'Pop',
-    artist: 'Van Wild',
-    name: 'We Were Born to Come Alive',
-    estimatedBPM: 124,
-    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-lavender-1024px.png`
-  },
-  {
-    audioUrl: 'https://pbtgvcjniayedqlajjzz.supabase.co/storage/v1/object/public/landingpagemusicexcerpts/deja%20vu%20vanwild%20new%20age%20mix%20(1).mp3',
-    videoPath: '/videos/landing-16.mp4',
-    therapeuticGoal: 'Mood Boost',
-    genre: 'Pop',
-    artist: 'Van Wild',
-    name: 'Deja Vu',
-    estimatedBPM: 112,
-    artworkUrl: `${ARTWORK_BASE}/abstract-ribbon-rose-1024px.png`
   },
   {
     audioUrl: '/audio/nocturnes-chamber-orchestra.mp3',
@@ -433,6 +433,62 @@ const CURATED_PLAYLIST = [
     estimatedBPM: 85,
     artworkUrl: `${ARTWORK_BASE}/abstract-liquid-lavender-1024px.png`
   }
+];
+
+// All 47 landing videos - cycle through these independently of audio tracks
+const ALL_LANDING_VIDEOS = [
+  '/videos/landing-01.mp4', '/videos/landing-02.mp4', '/videos/landing-03.mp4',
+  '/videos/landing-04.mp4', '/videos/landing-05.mp4', '/videos/landing-06.mp4',
+  '/videos/landing-07.mp4', '/videos/landing-08.mp4', '/videos/landing-09.mp4',
+  '/videos/landing-10.mp4', '/videos/landing-11.mp4', '/videos/landing-12.mp4',
+  '/videos/landing-13.mp4', '/videos/landing-14.mp4', '/videos/landing-15.mp4',
+  '/videos/landing-16.mp4', '/videos/landing-17.mp4', '/videos/landing-18.mp4',
+  '/videos/landing-19.mp4', '/videos/landing-20.mp4', '/videos/landing-21.mp4',
+  '/videos/landing-22.mp4', '/videos/landing-23.mp4', '/videos/landing-24.mp4',
+  '/videos/landing-25.mp4', '/videos/landing-26.mp4', '/videos/landing-27.mp4',
+  '/videos/landing-28.mp4', '/videos/landing-29.gif', '/videos/landing-30.gif',
+  '/videos/landing-31.gif', '/videos/landing-32.gif', '/videos/landing-33.gif',
+  '/videos/landing-34.gif', '/videos/landing-35.gif', '/videos/landing-36.gif',
+  '/videos/landing-37.gif', '/videos/landing-38.gif', '/videos/landing-39.gif',
+  '/videos/landing-40.gif', '/videos/landing-41.gif', '/videos/landing-42.gif',
+  '/videos/landing-43.gif', '/videos/landing-44.gif', '/videos/landing-45.gif',
+  '/videos/landing-46.mp4', '/videos/landing-47.mp4'
+];
+
+// Module-level singleton audio element to absolutely prevent duplicates
+let singletonAudio: HTMLAudioElement | null = null;
+let isPlaybackActive = false;
+
+export const LandingPagePlayer = ({
+  onPlaybackStateChange,
+  onCurrentTrackChange,
+  onVideoPlaybackRateChange,
+  onVideoChange,
+  isPlaying,
+  isMuted
+}: LandingPagePlayerProps) => {
+  const [tracks, setTracks] = useState<AudioTrack[]>([]);
+  const [videos, setVideos] = useState<VideoSource[]>([]);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const currentTrackIndexRef = useRef(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const currentVideoIndexRef = useRef(0);
+  const trackTimerRef = useRef<NodeJS.Timeout>();
+
+  // Use singleton audio element
+  useEffect(() => {
+    console.log('🧹 LandingPagePlayer mount');
+    // Create singleton audio if it doesn't exist
+    if (!singletonAudio) {
+      singletonAudio = new Audio();
+      singletonAudio.crossOrigin = 'anonymous';
+      singletonAudio.preload = 'auto';
+    }
+    audioManager.registerMainAudio(singletonAudio);
+    
+    // Expose globally for video sync
+    (window as any).__landingActiveAudio = singletonAudio;
+  },
 ];
 
 // All 47 landing videos - cycle through these independently of audio tracks
