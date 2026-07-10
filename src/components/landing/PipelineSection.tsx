@@ -83,17 +83,26 @@ export const PipelineSection: React.FC = () => {
           className="text-center mb-1.5"
           style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.15em', color: 'hsl(var(--landing-ink-muted))' }}
         >
-          COMPOSITION ENGINE
+          COMPOSITION WORKFLOW
         </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="text-center mb-2"
           style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 300, letterSpacing: '-0.02em', color: 'hsl(var(--landing-ink))' }}
         >
-          Algorithmic music pipeline
+          The Music of NeuroTunes
         </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10 max-w-2xl mx-auto"
+          style={{ fontSize: '13px', fontWeight: 300, color: 'hsl(var(--landing-ink-muted))' }}
+        >
+          How the music is made: an algorithmic pipeline that turns therapeutic intent into composed sound.
+        </motion.p>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
           {steps.map((step, i) => {

@@ -183,9 +183,10 @@ export default function EnvironmentalBackground() {
             <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
               <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>The Science Behind It</h3>
               <p className="leading-relaxed text-sm" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
-                Our streaming SaaS is a patented, evidence-based, and clinically-validated system that uses core principles from 
-                AI, music, and medicine, music cognition, and neuropsychiatry. All music has been purpose-composed using specific musical 
-                patterns, frequencies, audio settings, and beats to support anxiety reduction and cognitive clarity.
+                NeuroTunes is grounded in the quantitative study of emotion and affect. Research across music cognition, affective neuroscience,
+                and computational psychology has produced mathematical frameworks that map feeling into measurable dimensions—valence,
+                arousal, dominance, and beyond. We use these models to understand how acoustic properties translate into emotional states,
+                and to engineer music that reliably evokes targeted affective responses.
               </p>
             </div>
             
@@ -215,6 +216,43 @@ export default function EnvironmentalBackground() {
                 <span>Delivers benefits for members, visitors, patients, staff, and employees—reduced anxiety and improved focus</span>
               </li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* The Music of NeuroTunes */}
+      <section className="relative py-8 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="p-6 rounded-2xl" style={{ background: 'rgba(228, 228, 228, 0.03)', border: '1px solid rgba(228, 228, 228, 0.08)' }}>
+            <h3 className="text-lg font-light mb-4" style={{ color: '#e4e4e4' }}>The Music of NeuroTunes</h3>
+            <p className="leading-relaxed text-sm mb-4" style={{ color: 'rgba(228, 228, 228, 0.65)' }}>
+              Every track is produced through an algorithmic music pipeline that translates therapeutic intent into composed sound.
+              The workflow starts with compositional parameters—tempo, key, harmony, and spectral texture—then extracts features,
+              classifies them against clinical goals, and delivers adaptive playlists in real time. This describes how the music is made;
+              it is not a representation of our patent architecture.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+              <div className="p-3 rounded-xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>01</span>
+                <p className="mt-1" style={{ color: 'rgba(228, 228, 228, 0.85)' }}>Compose</p>
+                <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>Algorithmic composition</p>
+              </div>
+              <div className="p-3 rounded-xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>02</span>
+                <p className="mt-1" style={{ color: 'rgba(228, 228, 228, 0.85)' }}>Annotate</p>
+                <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>Feature extraction</p>
+              </div>
+              <div className="p-3 rounded-xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>03</span>
+                <p className="mt-1" style={{ color: 'rgba(228, 228, 228, 0.85)' }}>Classify</p>
+                <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>Therapeutic mapping</p>
+              </div>
+              <div className="p-3 rounded-xl" style={{ background: 'rgba(6, 182, 212, 0.05)', border: '1px solid rgba(6, 182, 212, 0.15)' }}>
+                <span style={{ color: 'rgba(6, 182, 212, 0.8)' }}>04</span>
+                <p className="mt-1" style={{ color: 'rgba(228, 228, 228, 0.85)' }}>Deliver</p>
+                <p className="text-xs" style={{ color: 'rgba(228, 228, 228, 0.5)' }}>Adaptive playback</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
