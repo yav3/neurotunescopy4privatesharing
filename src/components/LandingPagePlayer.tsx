@@ -488,8 +488,7 @@ export const LandingPagePlayer = ({
     
     // Expose globally for video sync
     (window as any).__landingActiveAudio = singletonAudio;
-  },
-];
+  }, []);
 
 // All 47 landing videos - cycle through these independently of audio tracks
 const ALL_LANDING_VIDEOS = [
