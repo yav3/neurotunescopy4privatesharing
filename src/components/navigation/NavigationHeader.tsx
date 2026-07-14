@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
@@ -64,15 +64,28 @@ const DARK_MENU: MenuTheme = {
 };
 
 /* ─── Shared dropdown menu items ─── */
-const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: MenuTheme }) => (
+const HashLink = ({ to, className, children, onNavigate }: { to: string; className?: string; children: React.ReactNode; onNavigate: (to: string) => void }) => (
+  <a
+    href={to}
+    className={className}
+    onClick={(e) => {
+      e.preventDefault();
+      onNavigate(to);
+    }}
+  >
+    {children}
+  </a>
+);
+
+const MenuItems = ({ onSupportChat, onNavigate, menu }: { onSupportChat: () => void; onNavigate: (to: string) => void; menu: MenuTheme }) => (
   <>
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Explore</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/demo" className={menu.item}>Demo</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#technology" className={menu.item}>Technology</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#science" className={menu.item}>Science</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#how-it-works" className={menu.item}>How It Works</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/research" className={menu.item}>Research</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/demo" className={menu.item} onNavigate={onNavigate}>Demo</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#technology" className={menu.item} onNavigate={onNavigate}>Technology</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#science" className={menu.item} onNavigate={onNavigate}>Science</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#how-it-works" className={menu.item} onNavigate={onNavigate}>How It Works</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/research" className={menu.item} onNavigate={onNavigate}>Research</HashLink></DropdownMenuItem>
       <DropdownMenuItem asChild>
         <a
           href="https://neuroscience.neurotunes.app"
@@ -87,26 +100,26 @@ const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: M
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Product</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/products/environmental" className={menu.item}>Environmental & Background</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/partnerships" className={menu.item}>Partnerships & APIs</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/products/environmental" className={menu.item} onNavigate={onNavigate}>Environmental & Background</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/products/partnerships" className={menu.item} onNavigate={onNavigate}>Partnerships & APIs</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Sales</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/contact" className={menu.item}>Contact Sales</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/contact" className={menu.item} onNavigate={onNavigate}>Contact Sales</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Company</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/about" className={menu.item}>About</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/about" className={menu.item} onNavigate={onNavigate}>About</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Legal</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/privacy" className={menu.item}>Privacy</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/legal" className={menu.item}>Terms</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/cookies" className={menu.item}>Cookies</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/hipaa" className={menu.item}>HIPAA</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/privacy" className={menu.item} onNavigate={onNavigate}>Privacy</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/legal" className={menu.item} onNavigate={onNavigate}>Terms</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/cookies" className={menu.item} onNavigate={onNavigate}>Cookies</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/hipaa" className={menu.item} onNavigate={onNavigate}>HIPAA</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
@@ -120,9 +133,42 @@ export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   // Dark obsidian theme everywhere — no light pages
   const theme = DARK_HEADER;
   const menu = DARK_MENU;
+
+  const scrollToHash = (hash: string) => {
+    const id = hash.replace(/^#/, '');
+    if (!id) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Scroll to hash after route changes
+  useEffect(() => {
+    if (location.hash) {
+      // Wait for target section to mount
+      const t = setTimeout(() => scrollToHash(location.hash), 80);
+      return () => clearTimeout(t);
+    }
+  }, [location.pathname, location.hash]);
+
+  const handleNavigate = (to: string) => {
+    setDesktopMenuOpen(false);
+    setMobileMenuOpen(false);
+    const [path, hash] = to.split('#');
+    const targetPath = path || '/';
+    if (targetPath === location.pathname) {
+      if (hash) scrollToHash(hash);
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate(to);
+    }
+  };
 
   const handleSupportChat = () => {
     window.dispatchEvent(new CustomEvent('openSupportChat'));
@@ -158,7 +204,7 @@ export const NavigationHeader = () => {
               <Menu className="h-[18px] w-[18px]" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
-              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
+              <MenuItems onSupportChat={handleSupportChat} onNavigate={handleNavigate} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -218,7 +264,7 @@ export const NavigationHeader = () => {
               <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
-              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
+              <MenuItems onSupportChat={handleSupportChat} onNavigate={handleNavigate} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
