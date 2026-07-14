@@ -73,6 +73,16 @@ const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: M
       <DropdownMenuItem asChild><Link to="/#science" className={menu.item}>Science</Link></DropdownMenuItem>
       <DropdownMenuItem asChild><Link to="/#how-it-works" className={menu.item}>How It Works</Link></DropdownMenuItem>
       <DropdownMenuItem asChild><Link to="/research" className={menu.item}>Research</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild>
+        <a
+          href="https://neuroscience.neurotunes.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={menu.item}
+        >
+          Neuroscience
+        </a>
+      </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
