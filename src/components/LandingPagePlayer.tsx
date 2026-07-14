@@ -543,7 +543,7 @@ export const LandingPagePlayer = ({
       return;
     }
     
-    if (!isPlaying) {
+    if (!isPlayingRef.current) {
       console.log('❌ Cannot play next track: isPlaying is false');
       return;
     }
