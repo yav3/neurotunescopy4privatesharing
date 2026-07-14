@@ -204,7 +204,7 @@ export const NavigationHeader = () => {
               <Menu className="h-[18px] w-[18px]" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
-              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
+              <MenuItems onSupportChat={handleSupportChat} onNavigate={handleNavigate} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -264,7 +264,7 @@ export const NavigationHeader = () => {
               <Menu className="h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className={`w-64 z-[9999] ${menu.content}`}>
-              <MenuItems onSupportChat={handleSupportChat} menu={menu} />
+              <MenuItems onSupportChat={handleSupportChat} onNavigate={handleNavigate} menu={menu} />
             </DropdownMenuContent>
           </DropdownMenu>
 
