@@ -100,26 +100,26 @@ const MenuItems = ({ onSupportChat, onNavigate, menu }: { onSupportChat: () => v
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Product</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/products/environmental" className={menu.item}>Environmental & Background</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/products/partnerships" className={menu.item}>Partnerships & APIs</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/products/environmental" className={menu.item} onNavigate={onNavigate}>Environmental & Background</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/products/partnerships" className={menu.item} onNavigate={onNavigate}>Partnerships & APIs</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Sales</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/contact" className={menu.item}>Contact Sales</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/contact" className={menu.item} onNavigate={onNavigate}>Contact Sales</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Company</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/about" className={menu.item}>About</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/about" className={menu.item} onNavigate={onNavigate}>About</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Legal</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/privacy" className={menu.item}>Privacy</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/legal" className={menu.item}>Terms</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/cookies" className={menu.item}>Cookies</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/hipaa" className={menu.item}>HIPAA</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/privacy" className={menu.item} onNavigate={onNavigate}>Privacy</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/legal" className={menu.item} onNavigate={onNavigate}>Terms</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/cookies" className={menu.item} onNavigate={onNavigate}>Cookies</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/hipaa" className={menu.item} onNavigate={onNavigate}>HIPAA</HashLink></DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator className={menu.separator} />
     <DropdownMenuGroup>
