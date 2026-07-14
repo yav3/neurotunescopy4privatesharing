@@ -617,6 +617,9 @@ export const LandingPagePlayer = ({
     }, TRACK_DURATION);
   }, [isPlaying, tracks, isMuted, onCurrentTrackChange, onVideoPlaybackRateChange, onVideoChange]);
 
+  // Keep a ref to the latest playNextTrack so event listeners always call the current version
+  useEffect(() => { playNextTrackRef.current = playNextTrack; }, [playNextTrack]);
+
   // Handle play/pause - directly triggered from user interaction
   useEffect(() => {
     // Guard: Don't attempt playback if tracks not loaded yet
