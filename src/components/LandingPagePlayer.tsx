@@ -487,9 +487,26 @@ export const LandingPagePlayer = ({
       singletonAudio.preload = 'auto';
     }
     audioManager.registerMainAudio(singletonAudio);
-    
+
+    // Auto-advance when the current audio finishes (robust fallback beyond the 35s timer)
+    const handleEnded = () => {
+      console.log('🎧 Audio ended event — advancing to next track');
+      if (trackTimerRef.current) {
+        clearTimeout(trackTimerRef.current);
+        trackTimerRef.current = undefined;
+      }
+      if (isPlayingRef.current) {
+        playNextTrackRef.current?.();
+      }
+    };
+    singletonAudio.addEventListener('ended', handleEnded);
+
     // Expose globally for video sync
     (window as any).__landingActiveAudio = singletonAudio;
+
+    return () => {
+      singletonAudio?.removeEventListener('ended', handleEnded);
+    };
   }, []);
 
 
