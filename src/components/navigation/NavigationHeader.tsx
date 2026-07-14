@@ -133,9 +133,42 @@ export const NavigationHeader = () => {
   const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   // Dark obsidian theme everywhere — no light pages
   const theme = DARK_HEADER;
   const menu = DARK_MENU;
+
+  const scrollToHash = (hash: string) => {
+    const id = hash.replace(/^#/, '');
+    if (!id) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Scroll to hash after route changes
+  useEffect(() => {
+    if (location.hash) {
+      // Wait for target section to mount
+      const t = setTimeout(() => scrollToHash(location.hash), 80);
+      return () => clearTimeout(t);
+    }
+  }, [location.pathname, location.hash]);
+
+  const handleNavigate = (to: string) => {
+    setDesktopMenuOpen(false);
+    setMobileMenuOpen(false);
+    const [path, hash] = to.split('#');
+    const targetPath = path || '/';
+    if (targetPath === location.pathname) {
+      if (hash) scrollToHash(hash);
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate(to);
+    }
+  };
 
   const handleSupportChat = () => {
     window.dispatchEvent(new CustomEvent('openSupportChat'));
