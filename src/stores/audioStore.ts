@@ -721,6 +721,25 @@ export const useAudioStore = create<AudioState>((set, get) => {
       audio.addEventListener('timeupdate', () => {
         const currentTime = audio.currentTime;
         const duration = audio.duration || 0;
+
+        // Fallback auto-advance: some browsers/streams fail to fire 'ended'
+        // reliably. If we're within 0.35s of the end and still not advancing,
+        // trigger next() ourselves. Guarded by isNexting / isTransitioning.
+        if (
+          duration > 0 &&
+          isFinite(duration) &&
+          currentTime > 0 &&
+          duration - currentTime <= 0.35 &&
+          !isNexting &&
+          !isTransitioning
+        ) {
+          const { queue, index, lastGoal } = get();
+          const hasMoreTracks = index < queue.length - 1;
+          if (hasMoreTracks || lastGoal) {
+            console.log('🎵 timeupdate fallback: near end, forcing auto-advance');
+            get().next();
+          }
+        }
         
         // Sync playing state with actual audio element state to prevent UI desync
         const actuallyPlaying = !audio.paused && !audio.ended && currentTime > 0;
@@ -1044,6 +1063,7 @@ export const useAudioStore = create<AudioState>((set, get) => {
       audio.crossOrigin = 'anonymous';  // Enable CORS for Supabase public storage
       audio.preload = "auto";           // Preload full audio for faster start
       (audio as any).playsInline = true;
+      audio.loop = false;               // CRITICAL: never loop — must fire 'ended' for auto-advance
       
       // Enhanced logging for debug tracking
       console.log('🎵 Setting audio source without pre-testing to avoid CORS issues');
