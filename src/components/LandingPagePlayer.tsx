@@ -474,6 +474,8 @@ export const LandingPagePlayer = ({
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const currentVideoIndexRef = useRef(0);
   const trackTimerRef = useRef<NodeJS.Timeout>();
+  const isPlayingRef = useRef(false);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
 
   // Use singleton audio element
   useEffect(() => {
