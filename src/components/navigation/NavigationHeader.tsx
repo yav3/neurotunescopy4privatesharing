@@ -64,15 +64,28 @@ const DARK_MENU: MenuTheme = {
 };
 
 /* ─── Shared dropdown menu items ─── */
-const MenuItems = ({ onSupportChat, menu }: { onSupportChat: () => void; menu: MenuTheme }) => (
+const HashLink = ({ to, className, children, onNavigate }: { to: string; className?: string; children: React.ReactNode; onNavigate: (to: string) => void }) => (
+  <a
+    href={to}
+    className={className}
+    onClick={(e) => {
+      e.preventDefault();
+      onNavigate(to);
+    }}
+  >
+    {children}
+  </a>
+);
+
+const MenuItems = ({ onSupportChat, onNavigate, menu }: { onSupportChat: () => void; onNavigate: (to: string) => void; menu: MenuTheme }) => (
   <>
     <DropdownMenuGroup>
       <DropdownMenuLabel className={menu.label}>Explore</DropdownMenuLabel>
-      <DropdownMenuItem asChild><Link to="/demo" className={menu.item}>Demo</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#technology" className={menu.item}>Technology</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#science" className={menu.item}>Science</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/#how-it-works" className={menu.item}>How It Works</Link></DropdownMenuItem>
-      <DropdownMenuItem asChild><Link to="/research" className={menu.item}>Research</Link></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/demo" className={menu.item} onNavigate={onNavigate}>Demo</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#technology" className={menu.item} onNavigate={onNavigate}>Technology</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#science" className={menu.item} onNavigate={onNavigate}>Science</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/#how-it-works" className={menu.item} onNavigate={onNavigate}>How It Works</HashLink></DropdownMenuItem>
+      <DropdownMenuItem asChild><HashLink to="/research" className={menu.item} onNavigate={onNavigate}>Research</HashLink></DropdownMenuItem>
       <DropdownMenuItem asChild>
         <a
           href="https://neuroscience.neurotunes.app"
