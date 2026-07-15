@@ -189,6 +189,7 @@ const AppContent = () => {
         <Route path="/neuralpositive/about" element={<Navigate to="/about" replace />} />
         <Route path="/neuralpositive/story" element={<Navigate to="/about" replace />} />
         <Route path="/neuralpositive/research" element={<ResearchPage />} />
+        <Route path="/research" element={<ResearchPage />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/cookies" element={<Cookies />} />
