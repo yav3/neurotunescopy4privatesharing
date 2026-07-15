@@ -1880,15 +1880,14 @@ export const useAudioStore = create<AudioState>((set, get) => {
 
       // Reduced rate limiting for better responsiveness
       const now = Date.now();
-      if (now - lastNextCall < MIN_NEXT_INTERVAL) {
+      const timeSinceLastCall = now - lastNextCall;
+      if (timeSinceLastCall < MIN_NEXT_INTERVAL) {
         console.log('🎵 Next call rate limited - preventing racing behavior');
         return;
       }
-      lastNextCall = now;
-      
-      // Check for stuck flags and auto-reset them
+
+      // Check for stuck flags and auto-reset them BEFORE updating lastNextCall
       if (isNexting || isTransitioning) {
-        const timeSinceLastCall = now - lastNextCall;
         if (timeSinceLastCall > 3000) { // If stuck for more than 3 seconds
           console.warn('🔧 Auto-resetting stuck flags - skip button was blocked');
           isNexting = false;
@@ -1898,6 +1897,8 @@ export const useAudioStore = create<AudioState>((set, get) => {
           return;
         }
       }
+
+      lastNextCall = now;
       
       isNexting = true;
       isTransitioning = true;
