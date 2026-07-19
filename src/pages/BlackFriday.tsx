@@ -10,7 +10,7 @@ export const BlackFriday = () => {
 
   const deals = [
     {
-      name: "Lovable User Wellness Access",
+      name: "Launch Wellness Access",
       price: "$29",
       period: "per year",
       originalPrice: "$59",

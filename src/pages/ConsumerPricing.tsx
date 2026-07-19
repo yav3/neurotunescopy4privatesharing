@@ -6,7 +6,7 @@ import { STRIPE_PRICES } from "@/config/stripe";
 export const ConsumerPricing = () => {
   const plans = [
     {
-      name: "Lovable User Special",
+      name: "Launch Special",
       priceMonthly: "$2.99",
       priceYearly: null,
       period: "per user per month",
@@ -20,8 +20,8 @@ export const ConsumerPricing = () => {
         "Admin management tools"
       ],
       cta: "Get Started",
-      ctaLink: "/checkout?plan=lovable",
-      badge: "Lovable Users Only",
+      ctaLink: "/checkout?plan=launch",
+      badge: "Limited-Time Offer",
       specialOffer: 'Limited time offer • Valid until December 10th only'
     },
     {
@@ -76,7 +76,7 @@ export const ConsumerPricing = () => {
       ],
       cta: "Contact Sales",
       badge: "🎉 Black Friday Sale",
-      specialOffer: 'Enter code "lovable" • Offer valid only until December 1st'
+      specialOffer: 'Enter code "LAUNCH" • Offer valid only until December 1st'
     }
   ];
 

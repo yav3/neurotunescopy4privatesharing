@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
-import { componentTagger } from "lovable-tagger";
 
 const readLocalEnv = (key: string) => {
   try {
@@ -21,16 +20,13 @@ const supabaseAnonKey = readLocalEnv("VITE_SUPABASE_ANON_KEY") ?? process.env.VI
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+  ],
   server: {
-    // Bind to localhost only in local dev; Lovable cloud preview overrides via its own runner
+    // Bind to localhost only in local dev; the cloud preview runner overrides this.
     host: mode === 'development' ? "localhost" : "::",
     allowedHosts: [
       "localhost",
-      "127.0.0.1",
-      "*.lovable.dev"
+      "127.0.0.1"
     ],
     port: 8080,
     strictPort: true,

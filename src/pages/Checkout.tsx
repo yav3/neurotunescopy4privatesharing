@@ -8,12 +8,12 @@ import { toast } from "sonner";
 
 export const Checkout = () => {
   const [searchParams] = useSearchParams();
-  const plan = searchParams.get('plan') || 'lovable';
+  const plan = searchParams.get('plan') || 'launch';
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const planDetails = {
-    lovable: {
-      name: "Lovable User Special",
+    launch: {
+      name: "Launch Special",
       price: "$2.99",
       period: "per user per month",
       description: "Annual contract • Minimum 40 users"
@@ -26,7 +26,7 @@ export const Checkout = () => {
     }
   };
 
-  const currentPlan = planDetails[plan as keyof typeof planDetails] || planDetails.lovable;
+  const currentPlan = planDetails[plan as keyof typeof planDetails] || planDetails.launch;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -15,24 +15,24 @@ import { ArtworkMedia } from '@/components/ui/ArtworkMedia';
 const getTherapeuticArtwork = (frequencyBand: string, trackId: string) => {
   const artworkMap = {
     alpha: [
-      '/lovable-uploads/alpha-mountain-lake.png',
-      '/lovable-uploads/acoustic-sunset-field.png'
+      '/artwork/alpha-mountain-lake.png',
+      '/artwork/acoustic-sunset-field.png'
     ],
     beta: [
-      '/lovable-uploads/beta-waterfall.png', 
-      '/lovable-uploads/focus-nature-piano.jpg'
+      '/artwork/beta-waterfall.png', 
+      '/artwork/focus-nature-piano.jpg'
     ],
     gamma: [
-      '/lovable-uploads/gamma-sunbeam-forest.png',
-      '/lovable-uploads/energy-nature-electric.jpg'
+      '/artwork/gamma-sunbeam-forest.png',
+      '/artwork/energy-nature-electric.jpg'
     ],
     delta: [
-      '/lovable-uploads/delta-moonlit-lake.png',
-      '/lovable-uploads/sleep-artwork.jpg'
+      '/artwork/delta-moonlit-lake.png',
+      '/artwork/sleep-artwork.jpg'
     ],
     theta: [
-      '/lovable-uploads/theta-misty-path.png',
-      '/lovable-uploads/peaceful-piano-moonlit.jpg'
+      '/artwork/theta-misty-path.png',
+      '/artwork/peaceful-piano-moonlit.jpg'
     ]
   };
 

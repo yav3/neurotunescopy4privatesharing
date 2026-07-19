@@ -16,7 +16,7 @@ export const Help = () => {
               AI Assistant
             </h1>
             <p className="text-2xl font-light text-neutral-300">
-              Your intelligent guide powered by Anthropic
+              Your intelligent guide
             </p>
           </div>
 

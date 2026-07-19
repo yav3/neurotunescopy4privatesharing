@@ -67,7 +67,7 @@ serve(async (req) => {
         system: `You are an exceptional customer support agent for NeuroTunes by Neuralpositive. You are conversational, empathetic, and highly knowledgeable about our products and services.
 
 PRODUCT CATALOG:
-1. Lovable User Wellness Access - $29/year - Individual SAAS downloads with full therapeutic music library access
+1. Launch Wellness Access - $29/year - Individual SAAS downloads with full therapeutic music library access
 2. NeuroTunes Pro - $260/year - Professional tier with advanced features and analytics
 3. Small Business SAAS - $2.99/month per user (minimum 40 seats at $29.99/user/year) - Team collaboration and management tools
 4. First Responder Access - $49/month - Specialized tier for first responders with priority support
