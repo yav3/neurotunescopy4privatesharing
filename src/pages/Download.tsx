@@ -67,7 +67,7 @@ export const Download = () => {
                   $25.99/year or $6.99 for 3 months
                 </p>
                 <p className="text-cyan-400 text-xs font-medium">
-                  Use code "Lovable"
+                  Use code "LAUNCH"
                 </p>
               </div>
               
