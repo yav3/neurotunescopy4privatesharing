@@ -48,7 +48,7 @@ import { ConnectionDiagnostics } from "./components/ConnectionDiagnostics";
 import StorageManager from "./pages/StorageManager";
 import Users from "./pages/admin/Users";
 import FAQ from "./pages/FAQ";
-import { ResearchPage } from "./pages/ResearchPage";
+
 import Support from "./pages/Support";
 import Demo from "./pages/Demo";
 
@@ -188,8 +188,8 @@ const AppContent = () => {
         <Route path="/team" element={<Navigate to="/about" replace />} />
         <Route path="/neuralpositive/about" element={<Navigate to="/about" replace />} />
         <Route path="/neuralpositive/story" element={<Navigate to="/about" replace />} />
-        <Route path="/neuralpositive/research" element={<ResearchPage />} />
-        <Route path="/research" element={<ResearchPage />} />
+        <Route path="/neuralpositive/research" element={<Navigate to="/about" replace />} />
+        <Route path="/research" element={<Navigate to="/about" replace />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/cookies" element={<Cookies />} />

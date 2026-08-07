@@ -14,10 +14,6 @@ export const pageBackgrounds: Record<string, { video?: string; gif?: string; ove
     video: '/videos/landing-04.mp4',
     overlayOpacity: 0.6,
   },
-  '/research': {
-    video: '/videos/landing-07.mp4',
-    overlayOpacity: 0.6,
-  },
   '/evidence': {
     video: '/videos/landing-08.mp4',
     overlayOpacity: 0.6,
