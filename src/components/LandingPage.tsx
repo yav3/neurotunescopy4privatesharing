@@ -164,12 +164,6 @@ export function LandingPage({ onLogin, onSignup }: LandingPageProps) {
               >
                 Our Story
               </button>
-              <button
-                onClick={() => navigate('/neuralpositive/research')}
-                className="text-gray-700 hover:text-teal-600 transition-colors"
-              >
-                Research
-              </button>
             </nav>
             <div className="flex items-center gap-2 text-gray-600">
               <span className="text-lg">🌐</span>
@@ -542,14 +536,6 @@ const trackTherapeuticOutcome = async (session) => {
                     className="text-gray-600 hover:text-teal-600 transition-colors"
                   >
                     Our Story
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => navigate('/neuralpositive/research')}
-                    className="text-gray-600 hover:text-teal-600 transition-colors"
-                  >
-                    Research
                   </button>
                 </li>
               </ul>

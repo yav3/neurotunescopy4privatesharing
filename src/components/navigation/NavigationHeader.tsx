@@ -85,7 +85,7 @@ const MenuItems = ({ onSupportChat, onNavigate, menu }: { onSupportChat: () => v
       <DropdownMenuItem asChild><HashLink to="/#technology" className={menu.item} onNavigate={onNavigate}>Technology</HashLink></DropdownMenuItem>
       <DropdownMenuItem asChild><HashLink to="/#science" className={menu.item} onNavigate={onNavigate}>Science</HashLink></DropdownMenuItem>
       <DropdownMenuItem asChild><HashLink to="/#how-it-works" className={menu.item} onNavigate={onNavigate}>How It Works</HashLink></DropdownMenuItem>
-      <DropdownMenuItem asChild><HashLink to="/research" className={menu.item} onNavigate={onNavigate}>Research</HashLink></DropdownMenuItem>
+      
       <DropdownMenuItem asChild>
         <a
           href="https://neuroscience.neurotunes.app"
