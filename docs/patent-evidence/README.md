@@ -81,8 +81,10 @@ Verdict legend: **●  Reduced to practice here** · **◐ Partially evidenced**
 | **SOM/GRN training** with D/C/E node math ('165) | — | Not present (no SOM/MiniSom or dominance-factor code in this repo) |
 | **4-D VADE Glome** S³ geodesic / Pauli / Fibonacci-dosing math | — | Product uses 3-axis VAD + BPM heuristics, not the S³ formalism |
 
-See [`claim-charts.md`](./claim-charts.md) for element-by-element mappings and
-[`schema-evidence.md`](./schema-evidence.md) for the evidentiary data model.
+See [`claim-charts.md`](./claim-charts.md) for element-by-element mappings,
+[`schema-evidence.md`](./schema-evidence.md) for the evidentiary data model,
+[`stateflows.md`](./stateflows.md) for runtime state-flow / sequence proofs, and
+[`traceability.md`](./traceability.md) for the claim-element → runtime-observable ledger.
 
 ---
 
