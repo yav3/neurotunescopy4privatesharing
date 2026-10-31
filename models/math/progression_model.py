@@ -102,9 +102,10 @@ class DiseaseTrajectory(nn.Module):
         if treatment_effect is not None:
             trend = trend + treatment_effect
         if stochastic and self.training:
-            if t.dim() == 1:
+            if trend.dim() == 2:
                 eps = self.noise(y0.shape[0], 1, y0.device).squeeze(1)
             else:
-                eps = self.noise(y0.shape[0], t.shape[1], y0.device)
+                n_tp = trend.shape[1]
+                eps = self.noise(y0.shape[0], n_tp, y0.device)
             trend = trend + eps
         return trend
