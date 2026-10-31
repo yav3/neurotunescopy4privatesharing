@@ -18,6 +18,10 @@ from models.math_core.progression_solver import (
 )
 from models.math_core.vade_geometry import VADEGeometry
 from models.math_core.spectral import SpectralSolver
+from models.math_core.audio_solver import AudioSolver
+from models.math_core.therapeutic_solver import (
+    TherapeuticSolver, GOAL_PROFILES, PhaseSpec,
+)
 
 
 SCHEMA_DIR = Path(__file__).resolve().parent.parent.parent / "synthetic_data" / "schemas"
@@ -56,6 +60,13 @@ class UnifiedSolver:
             ProblemType.SPECTRAL_ENTROPY: self._spectral_entropy,
             ProblemType.SPECTRAL_THERAPEUTIC: self._spectral_therapeutic,
             ProblemType.BINAURAL_BEAT: self._binaural_beat,
+            ProblemType.AUDIO_VAD_ESTIMATE: self._audio_vad,
+            ProblemType.AUDIO_MOOD_SCORES: self._audio_mood,
+            ProblemType.AUDIO_CAMELOT_COMPAT: self._audio_camelot,
+            ProblemType.THERAPEUTIC_TRACK_SCORE: self._therapeutic_track_score,
+            ProblemType.THERAPEUTIC_EIF: self._therapeutic_eif,
+            ProblemType.THERAPEUTIC_SESSION_PLAN: self._therapeutic_session_plan,
+            ProblemType.THERAPEUTIC_PHASE_SCORE: self._therapeutic_phase_score,
         }
         fn = dispatch.get(problem.type)
         if fn is None:
@@ -252,3 +263,71 @@ class UnifiedSolver:
             values={"f_left_hz": f_left, "f_right_hz": f_right, "f_beat_hz": f_beat},
             problem_type=p.type,
         )
+
+    # ── Audio ─────────────────────────────────────────────────────────
+
+    def _audio_vad(self, p: Problem) -> Answer:
+        brightness = p.params.get("brightness", 0.5)
+        rms_energy = p.params.get("rms_energy", 0.5)
+        rhythm_strength = p.params.get("rhythm_strength", 0.5)
+        v = AudioSolver.estimate_valence(brightness, rms_energy)
+        a = AudioSolver.estimate_arousal(rhythm_strength, rms_energy)
+        d = AudioSolver.estimate_dominance(rms_energy, brightness)
+        return Answer(values={"valence": v, "arousal": a, "dominance": d}, problem_type=p.type)
+
+    def _audio_mood(self, p: Problem) -> Answer:
+        brightness = p.params.get("brightness", 0.5)
+        rms_energy = p.params.get("rms_energy", 0.5)
+        rhythm_strength = p.params.get("rhythm_strength", 0.5)
+        scores = AudioSolver.mood_scores(brightness, rms_energy, rhythm_strength)
+        return Answer(values=scores, problem_type=p.type)
+
+    def _audio_camelot(self, p: Problem) -> Answer:
+        key1 = p.params.get("key1", "8B")
+        key2 = p.params.get("key2", "8B")
+        score = AudioSolver.camelot_compatibility(key1, key2)
+        return Answer(values={"compatibility": score}, problem_type=p.type)
+
+    # ── Therapeutic ───────────────────────────────────────────────────
+
+    def _therapeutic_track_score(self, p: Problem) -> Answer:
+        track_vad = np.array(p.params.get("track_vad", [0.5, 0.5, 0.5]))
+        track_bpm = p.params.get("track_bpm", 100.0)
+        goal_id = p.query.get("goal_id", "focus-enhancement")
+        goal = GOAL_PROFILES.get(goal_id)
+        if goal is None:
+            return Answer(values={"score": 0.0}, problem_type=p.type)
+        score = TherapeuticSolver.track_goal_score(track_vad, track_bpm, goal)
+        return Answer(values={"score": score}, problem_type=p.type)
+
+    def _therapeutic_eif(self, p: Problem) -> Answer:
+        v = p.params.get("valence", 0.5)
+        a = p.params.get("arousal", 0.5)
+        d = p.params.get("dominance", 0.5)
+        pv = p.params.get("patient_valence", 0.5)
+        eif = TherapeuticSolver.emotional_impact_factor(v, a, d, pv)
+        return Answer(values=eif, problem_type=p.type)
+
+    def _therapeutic_session_plan(self, p: Problem) -> Answer:
+        goal_id = p.params.get("goal_id", "focus-enhancement")
+        duration = p.params.get("duration_minutes", 30.0)
+        n_phases = p.query.get("n_phases", 5)
+        plan = TherapeuticSolver.plan_session(goal_id, duration, n_phases)
+        return Answer(
+            values={
+                "vad_trajectory": plan.vad_trajectory,
+                "total_duration": plan.total_duration_minutes,
+                "n_phases": len(plan.phases),
+                "phase_names": [ph.name for ph in plan.phases],
+            },
+            problem_type=p.type,
+        )
+
+    def _therapeutic_phase_score(self, p: Problem) -> Answer:
+        track_vad = np.array(p.params.get("track_vad", [0.5, 0.5, 0.5]))
+        track_bpm = p.params.get("track_bpm", 100.0)
+        phase_vad = np.array(p.params.get("phase_vad", [0.5, 0.5, 0.5]))
+        phase_bpm = tuple(p.params.get("phase_bpm_range", [60, 100]))
+        phase = PhaseSpec(name="query", duration_minutes=5.0, vad_target=phase_vad, bpm_range=phase_bpm)
+        score = TherapeuticSolver.score_track_for_phase(track_vad, track_bpm, phase)
+        return Answer(values={"score": score}, problem_type=p.type)

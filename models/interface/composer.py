@@ -155,3 +155,52 @@ class PipelineComposer:
             ))
             results[biomarker] = answer
         return results
+
+    def therapeutic_session(
+        self,
+        patient_vad: np.ndarray,
+        goal_id: str,
+        duration_minutes: float = 30.0,
+    ) -> dict[str, Answer]:
+        """Full therapeutic session: plan → EIF → binaural targets per phase."""
+
+        plan = self.solver.solve(Problem(
+            type=ProblemType.THERAPEUTIC_SESSION_PLAN,
+            params={"goal_id": goal_id, "duration_minutes": duration_minutes},
+            query={"n_phases": 5},
+        ))
+
+        eif = self.solver.solve(Problem(
+            type=ProblemType.THERAPEUTIC_EIF,
+            params={
+                "valence": float(patient_vad[0]),
+                "arousal": float(patient_vad[1]),
+                "dominance": float(patient_vad[2]) if len(patient_vad) > 2 else 0.5,
+            },
+        ))
+
+        phase_names = plan.values.get("phase_names", [])
+        binaural_targets = []
+        for name in phase_names:
+            band = "alpha"
+            nl = name.lower()
+            if "sleep" in nl or "delta" in nl:
+                band = "delta"
+            elif "relax" in nl or "wind" in nl:
+                band = "theta"
+            elif "focus" in nl or "deep" in nl:
+                band = "beta"
+            elif "energy" in nl or "lift" in nl:
+                band = "beta"
+
+            beat = self.solver.solve(Problem(
+                type=ProblemType.BINAURAL_BEAT,
+                query={"target_band": band},
+            ))
+            binaural_targets.append(beat)
+
+        return {
+            "plan": plan,
+            "eif": eif,
+            "binaural_targets": binaural_targets,
+        }

@@ -47,6 +47,17 @@ class ProblemType(Enum):
     SPECTRAL_THERAPEUTIC = "spectral_therapeutic_score"
     BINAURAL_BEAT = "binaural_beat"
 
+    # Audio analysis
+    AUDIO_VAD_ESTIMATE = "audio_vad_estimate"
+    AUDIO_MOOD_SCORES = "audio_mood_scores"
+    AUDIO_CAMELOT_COMPAT = "audio_camelot_compatibility"
+
+    # Therapeutic session
+    THERAPEUTIC_TRACK_SCORE = "therapeutic_track_score"
+    THERAPEUTIC_EIF = "therapeutic_eif"
+    THERAPEUTIC_SESSION_PLAN = "therapeutic_session_plan"
+    THERAPEUTIC_PHASE_SCORE = "therapeutic_phase_score"
+
     # Composite
     TREATMENT_PLAN = "treatment_plan"
     DISEASE_FORECAST = "disease_forecast"
