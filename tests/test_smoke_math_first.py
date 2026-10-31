@@ -408,4 +408,6 @@ check("Gradients through GRN", has_grad2)
 print(f"\n{'='*50}")
 print(f"TOTAL: {PASS} passed, {FAIL} failed")
 print(f"{'='*50}")
-sys.exit(FAIL)
+
+if __name__ == "__main__":
+    sys.exit(FAIL)
