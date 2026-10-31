@@ -7,12 +7,17 @@ the bridge provides a unified discovery + regime classification interface.
 Supported modalities:
   - bulk_expression: GEO CSVs (genes × samples), via geo_loader
   - perturbseq: Xaira-format parquet (cells × genes + knockout targets), via perturbseq_loader
+  - ppi_prior: STRING PPI prior networks, via prior_network_loader
+  - benchmark: DREAM5 gold-standard evaluation, via prior_network_loader
+  - disease_ontology: MONDO/HPO disease-phenotype graphs, via disease_ontology_loader
+  - crosscheck: AlphaFold DB structure + STRING PPI validation, via crosscheck_loader
+  - literature_evidence: PubMed/ClinVar/ClinicalTrials.gov digests, via literature_loader
+  - molecule: quantum chemistry archives (QCSchema/XYZ), via molecule_loader
 
 Planned (not yet implemented):
   - methylation: beta-value arrays (CpG × samples)
   - imaging: extracted feature vectors (samples × features)
   - single_cell_atlas: h5ad/AnnData format
-  - disease_ontology: MONDO/HPO disease-phenotype graphs, via disease_ontology_loader
 """
 from __future__ import annotations
 
@@ -31,6 +36,8 @@ class DataModality(str, Enum):
     BENCHMARK = "benchmark"
     DISEASE_ONTOLOGY = "disease_ontology"
     CROSSCHECK = "crosscheck"
+    LITERATURE_EVIDENCE = "literature_evidence"
+    MOLECULE = "molecule"
     METHYLATION = "methylation"
     IMAGING = "imaging"
     SINGLE_CELL_ATLAS = "single_cell_atlas"
@@ -204,6 +211,49 @@ def discover_all_datasets(
             extra={
                 "name": d["name"],
                 "crosscheck_type": d["crosscheck_type"],
+            },
+        ))
+
+    # Literature evidence digests (ClinVar, PubMed, ClinicalTrials.gov)
+    from models.data.literature_loader import discover_literature_digests
+    literature_dir = merlin_root / "backend" / "data" / "literature" / species
+    for d in discover_literature_digests(literature_dir, species=species):
+        entries.append(DatasetEntry(
+            modality=DataModality.LITERATURE_EVIDENCE,
+            path=d["source_path"],
+            species=species,
+            n_features=d["n_clinvar_genes"],
+            n_samples=d["n_pubmed_total"],
+            content_hash=d["content_hash"],
+            regime="not_applicable",
+            in_regime=True,
+            extra={
+                "name": d["name"],
+                "n_pubmed_records": d["n_pubmed_records"],
+                "n_trials_total": d["n_trials_total"],
+                "n_clinical_trials": d["n_clinical_trials"],
+            },
+        ))
+
+    # Molecule datasets (quantum chemistry archives)
+    from models.data.molecule_loader import discover_molecule_datasets
+    molecules_dir = merlin_root / "backend" / "data" / "molecules"
+    for d in discover_molecule_datasets(molecules_dir):
+        entries.append(DatasetEntry(
+            modality=DataModality.MOLECULE,
+            path=d["source_path"],
+            species="not_applicable",
+            n_features=len(d.get("unique_elements", [])),
+            n_samples=d["n_files_in_archive"],
+            content_hash=d["content_hash"],
+            regime="not_applicable",
+            in_regime=True,
+            extra={
+                "name": d["name"],
+                "n_molecules": d["n_molecules"],
+                "unique_elements": d["unique_elements"],
+                "atom_count_range": d["atom_count_range"],
+                "archive_format": d["archive_format"],
             },
         ))
 
