@@ -45,6 +45,7 @@ KNOWN_GENES = {
     "RELN", "FLNA", "DCX", "LIS1", "TSEN54", "EXOSC3", "RARS2",
     "CASK", "FOXG1", "ZEB2", "TCF4", "MEF2C", "MED12", "ANKRD11",
     "EP300", "CREBBP", "EHMT1", "KANSL1", "DEAF1", "SIN3A",
+    "MT-TL1", "16p11.2", "22q11.2",
 }
 
 VALID_PATHOGENICITY = {
@@ -53,6 +54,7 @@ VALID_PATHOGENICITY = {
 }
 VALID_ZYGOSITY = {
     "heterozygous", "homozygous", "hemizygous", "compound_heterozygous",
+    "mosaic", "heteroplasmic",
 }
 VALID_INHERITANCE = {
     "autosomal_dominant", "autosomal_recessive", "x_linked",
