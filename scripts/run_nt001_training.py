@@ -63,7 +63,7 @@ def load_in_regime_data() -> list[GEOExpressionData]:
     geo_list = []
     for meta in in_regime:
         data = load_geo_csv(meta["path"], accession=meta["accession"],
-                            species="human", log1p=False)
+                            species="human", log1p=True)
         geo_list.append(data)
     return geo_list
 
