@@ -66,9 +66,29 @@ The current PerturbationResponseModel is designed for the >5000 tier.
 We need to build the smaller models first and demonstrate they work
 before scaling up.
 
+## NT-003: Multi-series pooling (2026-10-31)
+
+Pooled GSE119262 + GSE107965 on 9 common genes (the intersection between
+a full 17K-gene matrix and a 29-gene subset). 33 perturbation pairs total.
+
+| Arm | MSE (val) | Pearson r (val) | Verdict |
+|-----|-----------|-----------------|---------|
+| Single-series (21 pairs) | 0.108 | 0.954 | NOT_MET (mean r=0.979) |
+| **Pooled (33 pairs)** | **0.227** | **0.903** | **MET (4/4)** |
+
+**Key finding:** pooling helps not by adding genes but by adding diversity.
+Heterogeneous perturbation pairs from two autophagy studies increase
+within-study variance, making the mean a worse predictor and giving the
+VAE's conditional structure room to contribute.
+
+**Data bottleneck confirmed:** the current subset CSVs have too few genes
+(25-56) for meaningful pooling with the full-genome matrix. Need full
+expression matrices for more series.
+
 ## Immediate next steps
 
-1. NT-002: Ridge + Linear VAE on GSE119262 (gene-subsetted)
-2. Download 5 more in-regime autophagy/drug-response series from GEO
-3. NT-003: Pooled multi-series training with data from step 2
-4. LINCS L1000 integration (978 genes, pre-computed perturbation signatures)
+1. ~~NT-002: Ridge + Linear VAE on GSE119262 (gene-subsetted)~~ ✅ DONE
+2. ~~NT-003: Multi-series pooled training~~ ✅ DONE (limited by gene intersection)
+3. Download full expression matrices for in-regime GEO series (745 identified)
+4. NT-004: Re-run pooled trial with full matrices (target: 5+ series, >100 pairs)
+5. LINCS L1000 integration (978 genes, pre-computed perturbation signatures)
