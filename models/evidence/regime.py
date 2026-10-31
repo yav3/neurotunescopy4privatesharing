@@ -26,6 +26,7 @@ class Regime(Enum):
     EXPERIMENTAL = "experimental"
     BENCHMARK = "benchmark"
     SYNTHETIC = "synthetic"
+    VALIDATION = "validation"
 
 
 @dataclass
@@ -37,8 +38,70 @@ class SpeciesDeclaration:
     cross_species: bool = False
 
 
+MIN_DATA_DRIVEN_SAMPLES = 30
+ALLOWED_SPECIES = {"human", "mouse"}
+
+
 class RegimeFirewall:
-    """Enforces species/regime declaration before computation."""
+    """Enforces species/regime declaration before computation.
+
+    Two modes:
+      1. Selection: check_species / select_regime (stateless, sample-count-based)
+      2. Enforcement: declare / check / check_or_raise (stateful, pre-declaration required)
+    """
+
+    def __init__(self):
+        self._declarations: set[tuple[str, str]] = set()
+        self._bridges: list[tuple[str, str, str]] = []
+
+    def declare(self, species: Species, regime: Regime, source: str = "") -> None:
+        """Declare that (species, regime) is in scope for this computation."""
+        self._declarations.add((species.value, regime.value))
+
+    def check(self, species: Species, regime: Regime) -> bool:
+        """Check if (species, regime) was declared."""
+        return (species.value, regime.value) in self._declarations
+
+    def check_or_raise(self, species: Species, regime: Regime) -> None:
+        """Raise ValueError if (species, regime) was not declared."""
+        if not self.check(species, regime):
+            raise ValueError(
+                f"Undeclared (species={species.value}, regime={regime.value}). "
+                "Declare or refuse, never default."
+            )
+
+    def declare_bridge(self, from_species: Species, to_species: Species, justification: str = "") -> None:
+        """Declare that from_species results can bridge to to_species context."""
+        self._bridges.append((from_species.value, to_species.value, justification))
+
+    def can_bridge(self, from_species: Species, to_species: Species) -> bool:
+        """Check if a declared bridge exists."""
+        return any(f == from_species.value and t == to_species.value for f, t, _ in self._bridges)
+
+    def check_species(self, species_list: list[str]) -> bool:
+        """All entries must be a single recognised species (human or mouse).
+
+        Returns False on mixed species, unknown species, or empty list.
+        """
+        if not species_list:
+            return False
+        unique = set(species_list)
+        return len(unique) == 1 and unique <= ALLOWED_SPECIES
+
+    def select_regime(
+        self, n_samples: int, n_conditions: int = 0, has_time_axis: bool = False,
+    ) -> str:
+        """Pick the training regime from sample/condition counts.
+
+        Mirrors merlinaineuralplus2/backend/methods/method_router.py.
+        """
+        if has_time_axis:
+            return "longitudinal"
+        if n_samples >= MIN_DATA_DRIVEN_SAMPLES:
+            return "data-driven"
+        if n_conditions >= 2:
+            return "prior-contrast"
+        return "prior-mean"
 
     @staticmethod
     def validate(decl: SpeciesDeclaration) -> tuple[bool, str]:
