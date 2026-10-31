@@ -179,3 +179,27 @@ class ProductBridge:
             "band_high_hz": hi,
             "duration_sec": params.duration_sec,
         }
+
+    @staticmethod
+    def perturbation_to_product(
+        prediction_result: Any,
+        trial_id: str = "NT-001",
+    ) -> dict[str, Any]:
+        """Convert PerturbationInferenceService output to product-consumable format.
+
+        Maps the cVAE's gene-level predictions into the product surface's
+        PerturbationResult schema for the analysis pipeline.
+        """
+        return {
+            "trialId": trial_id,
+            "perturbationType": prediction_result.record.perturbation_type,
+            "specHash": prediction_result.record.model_spec_hash,
+            "regime": "data-driven",
+            "species": "human",
+            "confidence": 1.0 / (1.0 + prediction_result.latent_variance),
+            "nGenes": len(prediction_result.gene_names),
+            "topUpregulated": prediction_result.top_upregulated[:5],
+            "topDownregulated": prediction_result.top_downregulated[:5],
+            "predictionId": prediction_result.record.prediction_id,
+            "predictionHash": prediction_result.record.prediction_hash,
+        }
