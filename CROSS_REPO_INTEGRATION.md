@@ -128,6 +128,22 @@ First multi-series trial to pass the governed protocol.
 from two autophagy studies), not dimensionality. Data bottleneck confirmed:
 need full expression matrices for more series.
 
+### NT-004 — Scaled Pooled Trial with Full Matrices (2026-10-31)
+
+Downloaded 4 full GEO expression matrices (722 new samples, 178 MB total).
+Cross-platform gene-ID mismatch: 5 series use 4 different ID namespaces.
+Only same-platform pairs (GSE5281+GSE30174, Affymetrix) share probes.
+Variance-based feature selection (54675→2000) stabilises training.
+
+| Arm | Series | Pairs | Features | MSE (val) | r (val) | Verdict |
+|-----|--------|-------|----------|-----------|---------|---------|
+| A (single) | GSE5281 | 81 | 2000 | 0.772 | 0.894 | **MET 4/4** |
+| **B (pooled)** | GSE5281+GSE30174 | **121** | 2000 | **0.648** | **0.947** | **MET 4/4** |
+
+**First trial where BOTH arms meet all 4 criteria.** Pooling improved
+r: 0.894→0.947 (+5.3pp) and MSE: 0.772→0.648 (−16%). Primary blocker
+for true multi-program pooling: probe-to-gene mapping across platforms.
+
 ### Product Integration
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
   defining the governed inference output format for the product pipeline
@@ -137,9 +153,10 @@ need full expression matrices for more series.
 1. **Foundation-grade data layer** — connect Merlin's 14 harvest sources
    to NeuroTunesAI's EntitySeries contract. Priority: more in-regime GEO
    data (745 series with ≥30 samples identified in series catalog).
-2. **Narrow foundation model** — NT-002 Linear VAE is the first passing
-   model; scaling up requires more data (p/n < 5 target). Architecture
-   tiers documented in `TRAINING_ROADMAP.md`.
+2. **Narrow foundation model** — NT-004 demonstrates both single-series
+   and pooled training passing 4/4 criteria at 2000-feature scale. Next:
+   cross-platform probe-to-gene mapping (NT-005) to unlock multi-program
+   pooling → 500+ pairs → p/n < 5. Architecture tiers in `TRAINING_ROADMAP.md`.
    `GovernedInferenceService` wired in `lib/services/governed_inference_service.dart`.
 3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001,
    NT-002). Pre-registration, baselines, hash-chained records all working.
