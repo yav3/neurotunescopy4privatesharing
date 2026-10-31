@@ -176,13 +176,9 @@ class GovernedTrainer:
         self._check_preconditions()
 
         study = self.registry.register(
-            prefix="NF",
+            study_id=self.spec.study_id,
             title=f"Training: {self.spec.model_name}",
             criterion=self.spec.criterion,
-            method="supervised_training",
-            species=self.spec.species,
-            regime=self.spec.regime,
-            data_sources=self.spec.dataset_ids,
         )
 
         torch.manual_seed(self.spec.seed)
@@ -252,7 +248,12 @@ class GovernedTrainer:
         )
 
         verdict = "met" if met else "not_met"
-        self.registry.record_verdict(study.study_id, verdict)
+        self.registry.record_verdict(
+            study_id=study.study_id,
+            measured={"best_val": best_val, "checkpoint": ckpt_hash},
+            summary=f"{self.spec.eval_metric}={best_val:.4f}, degeneracy_flags={degeneracy_flags}",
+            verdict=verdict,
+        )
 
         return TrainingResult(
             spec=self.spec,

@@ -281,5 +281,121 @@ def test_training_record_different_results_different_hash():
     assert r1.record_hash != r2.record_hash
 
 
+# ── RegimeFirewall (stateful + stateless) ─────────────────────────
+
+def test_firewall_check_species_human_only():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.check_species(["human", "human", "human"])
+
+
+def test_firewall_check_species_mouse_only():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.check_species(["mouse", "mouse"])
+
+
+def test_firewall_check_species_mixed_rejected():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert not fw.check_species(["human", "mouse"])
+
+
+def test_firewall_check_species_unknown_rejected():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert not fw.check_species(["rat", "rat"])
+
+
+def test_firewall_check_species_empty_rejected():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert not fw.check_species([])
+
+
+def test_firewall_select_regime_data_driven():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.select_regime(n_samples=50) == "data-driven"
+
+
+def test_firewall_select_regime_prior_contrast():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.select_regime(n_samples=10, n_conditions=3) == "prior-contrast"
+
+
+def test_firewall_select_regime_prior_mean():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.select_regime(n_samples=10) == "prior-mean"
+
+
+def test_firewall_select_regime_longitudinal():
+    from models.evidence.regime import RegimeFirewall
+    fw = RegimeFirewall()
+    assert fw.select_regime(n_samples=100, has_time_axis=True) == "longitudinal"
+
+
+def test_firewall_declare_and_check():
+    from models.evidence.regime import RegimeFirewall, Species, Regime
+    fw = RegimeFirewall()
+    assert not fw.check(Species.HUMAN, Regime.THERAPEUTIC)
+    fw.declare(Species.HUMAN, Regime.THERAPEUTIC)
+    assert fw.check(Species.HUMAN, Regime.THERAPEUTIC)
+
+
+def test_firewall_check_or_raise_undeclared():
+    from models.evidence.regime import RegimeFirewall, Species, Regime
+    fw = RegimeFirewall()
+    with pytest.raises(ValueError, match="Undeclared"):
+        fw.check_or_raise(Species.HUMAN, Regime.THERAPEUTIC)
+
+
+# ── PerturbationDataset ──────────────────────────────────────────
+
+def test_perturbation_dataset_from_geo():
+    from models.foundation.perturbation_response import (
+        GEOExpressionData, PerturbationDataset, PerturbationType,
+    )
+    n_genes = 20
+    expr = np.vstack([
+        np.random.RandomState(0).randn(5, n_genes),   # 5 control
+        np.random.RandomState(1).randn(8, n_genes),   # 8 treated
+    ]).astype(np.float32)
+    conditions = ["control"] * 5 + ["treated"] * 8
+    data = GEOExpressionData(
+        expression=expr,
+        conditions=conditions,
+        gene_names=[f"G{i}" for i in range(n_genes)],
+        species="human",
+        accession="GSE000000",
+    )
+    ds = PerturbationDataset(data, perturbation_type=PerturbationType.DRUG)
+    assert len(ds) == 8
+    item = ds[0]
+    assert item["baseline"].shape == (n_genes,)
+    assert item["target"].shape == (n_genes,)
+    assert item["ptype_ids"].item() == 1  # DRUG = 1
+
+
+def test_perturbation_dataset_empty_when_no_controls():
+    from models.foundation.perturbation_response import (
+        GEOExpressionData, PerturbationDataset, PerturbationType,
+    )
+    n_genes = 10
+    expr = np.random.RandomState(42).randn(6, n_genes).astype(np.float32)
+    conditions = ["treated_A"] * 6
+    data = GEOExpressionData(
+        expression=expr,
+        conditions=conditions,
+        gene_names=[f"G{i}" for i in range(n_genes)],
+        species="human",
+        accession="GSE000001",
+    )
+    ds = PerturbationDataset(data, perturbation_type=PerturbationType.KNOCKOUT)
+    assert len(ds) == 0
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
