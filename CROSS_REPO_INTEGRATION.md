@@ -162,8 +162,11 @@ gene symbols.
 Multi-probe genes collapsed by mean (11,104 Affy, 2,002 Illumina,
 1,283 GI multi-probe genes). Gene retention: 51–75% per platform.
 
-29 tests including real-data format detection and cross-platform
-pooling integration.
+55 tests (29 probe mapper + 26 cross-platform pool) including real-data
+format detection, cross-platform pooling integration, and end-to-end
+Merlin discovery. Training pipeline wired via `cross_platform_pool.py`:
+`load_and_pool_all_merlin()` discovers all qualifying GEO series, applies
+per-platform probe mapping, and pools on common gene intersection.
 
 ### Product Integration
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
