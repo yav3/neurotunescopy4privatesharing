@@ -60,7 +60,7 @@ VALID_INHERITANCE = {
 }
 VALID_CATEGORIES = {"zebra", "comorbidity", "mimic", "genetic_overlap"}
 VALID_SEXES = {"M", "F"}
-ICD10_RE = re.compile(r"^[A-TV-Z]\d{2}(\.\d{1,4})?$")
+ICD10_RE = re.compile(r"^[A-TV-Z]\d{2}(\.[A-Za-z0-9]{1,4})?$")
 RSID_RE = re.compile(r"^rs\d+$")
 
 REQUIRED_FIELDS = [
