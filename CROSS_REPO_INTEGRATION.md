@@ -79,14 +79,32 @@ answer = governed_solver.solve(problem, declaration=species_decl)
 | Audio delivery | spectral/eif/entrainment | — | Binaural/isochronic |
 | Therapeutic goals | therapeutic_solver.py | — | Session UI |
 
+## Completed Milestones
+
+### NT-001: Perturbation-Response cVAE (2026-10-31)
+- **Dataset**: GSE119262 (human, 44 samples, 17,183 genes, data-driven regime)
+- **Model**: 10.6M param conditional VAE (latent_dim=64, encoder/decoder=256)
+- **Criterion**: val_loss < 2.0 (pre-registered) → **0.47 (MET)**
+- **Test loss**: 0.45
+- **Spec hash**: `19729935fb3bc9fe...`
+- **Record**: `NeuroTunesAI/docs/trials/NT-001_GSE119262.json`
+- **Evidence discipline**: seed=2026, 70/20/10 split, species firewall enforced,
+  content-addressed SHA-256 on source CSV, hash-chained training spec
+
+### Product Integration
+- `PerturbationResult` interface added to `audio-analysis/index.ts`
+  defining the governed inference output format for the product pipeline
+
 ## Next Steps (User's 5-Point Plan)
 
 1. **Foundation-grade data layer** — connect Merlin's 14 harvest sources
    to NeuroTunesAI's EntitySeries contract
-2. **Narrow foundation model** — train on in-regime GEO series (358 with
-   30+ samples, 56 time-flagged) using the governed training harness
+2. ~~**Narrow foundation model**~~ ✅ **DONE** — NT-001 cVAE trained on
+   GSE119262 (in-regime, data-driven). val_loss=0.47 < 2.0 threshold.
+   157 tests passing across the governed training stack.
 3. **Training/eval harness** — pre-registration protocol, sealed
-   calibration constants, three-loop eval (cite + calibrate + truth)
+   calibration constants, three-loop eval (cite + calibrate + truth).
+   Governed harness infrastructure built; first trial executed.
 4. **Compute/people** — external requirement
 5. **Position as governed layer** — the evidence discipline makes solver
    outputs admissible; the product apps deliver them
