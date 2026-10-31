@@ -1,0 +1,7 @@
+# Quarantined synthetic data files (large, generated)
+# Regenerate via: python3 -I generators/generate_neuro_bio_dataset.py
+quarantine/*.parquet
+quarantine/SYNTHETIC_manifest.json
+
+# Keep the quarantine directory itself
+!quarantine/.gitkeep
