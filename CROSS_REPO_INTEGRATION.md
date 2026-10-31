@@ -189,18 +189,58 @@ NeuroTunesAI's modality bridge now discovers all Merlin committed data:
 
 62+ integration tests across all loaders. Three planned: methylation, imaging, single_cell_atlas.
 
+### NT-006 — Foundation–Frontier Hybrid Model (2026-10-31)
+
+Two-tower hybrid architecture connecting a gene-level transformer encoder
+(Tower 1) to a structured frontier LLM interface (Tower 2) through a
+governed bridge.
+
+**Tower 1 — GeneFoundationEncoder:**
+- 6-layer transformer, 8 heads, 256 hidden dim
+- Learned gene embeddings + rank-based expression binning (64 bins)
+- [CLS] token aggregation over 10K+ genes
+- MaskedGeneModeling pretraining (mask 15%, predict expression values)
+
+**Tower 2 — GovernedFrontierBridge:**
+- Species firewall (declare or refuse, human only)
+- Hash-chained SHA-256 lineage
+- 6 structured query types (perturbation, gene function, pathway, drug, differential, experimental design)
+- Takes `Callable[[str], str|dict]` — builds query and validates response, holds no network state
+- FoundationToFrontierProjector: CLS → projection + confidence scalar
+
+**HybridFoundationModel (top-level):**
+- `forward()`: encode → predict expression → project to frontier features
+- `training_loss()`: MSE with optional padding mask
+- `predict_and_explain()`: full hybrid inference with optional frontier call
+
+**NeuroHybrid (unified clinical+molecular):**
+- Perceiver-style gene bottleneck: n_genes → K latent tokens (K=8)
+- Conditional VAE perturbation head: [CLS]+perturbation → μ,logvar → z → predicted expression
+- 14-class disease classification head
+- `should_defer_to_frontier()` confidence gate (threshold 0.7)
+
+**HybridTrainingPipeline:**
+- Reads pooled GEO data via `cross_platform_pool.py`
+- Pretraining: MaskedGeneModeling (self-supervised, 100 epochs)
+- Finetuning: perturbation response prediction (supervised, 50 epochs)
+- 4-criterion governed protocol: MSE < baseline, r > baseline, r > 0, MSE finite
+- Hash-chained TrialRecord with content-addressed SHA-256
+
+31 tests passing including real GEO data integration tests.
+
 ## Next Steps (User's 5-Point Plan)
 
 1. **Foundation-grade data layer** — ✅ 9 of 12 modalities bridged. Remaining:
    methylation (CpG arrays), imaging (feature vectors), single_cell_atlas (h5ad).
    745 in-regime GEO series identified for expansion.
-2. **Narrow foundation model** — NT-005 resolves the cross-platform
-   probe-to-gene blocker. All 12 human GEO files now map to gene symbols
-   (10,874 common genes, 642 samples from 3 platforms). Next: run the
-   full multi-program pooled trial → 500+ pairs → p/n < 5.
-   `GovernedInferenceService` wired in `lib/services/governed_inference_service.dart`.
+2. **Narrow foundation model** — ✅ NT-006 delivers the two-tower hybrid.
+   Next: run full governed trial on pooled multi-platform data (10,874 genes,
+   642+ samples). MaskedGeneModeling pretraining → supervised finetuning →
+   4-criterion evaluation.
 3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001
-   through NT-004). Pre-registration, baselines, hash-chained records all working.
+   through NT-005). HybridTrainingPipeline extends the harness with
+   pretrain → finetune → evaluate pipeline.
 4. **Compute/people** — external requirement
 5. **Position as governed layer** — the evidence discipline makes solver
-   outputs admissible; the product apps deliver them
+   outputs admissible; the product apps deliver them. GovernedFrontierBridge
+   enforces species firewall + lineage on every frontier query.
