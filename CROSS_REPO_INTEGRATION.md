@@ -114,6 +114,20 @@ Evidence discipline enforced in both trials: species firewall (human only),
 regime pre-registered before method, seed=2026, content-addressed SHA-256,
 baselines in the same run.
 
+### NT-003 — Multi-Series Pooling (2026-10-31)
+
+Pooled GSE119262 + GSE107965 on 9 common genes — **MET** (4/4).
+First multi-series trial to pass the governed protocol.
+
+| Arm | MSE (val) | Pearson r (val) | Verdict |
+|-----|-----------|-----------------|---------|
+| Single-series (21 pairs) | 0.108 | 0.954 | NOT_MET (mean r=0.979) |
+| **Pooled (33 pairs)** | **0.227** | **0.903** | **MET (4/4)** |
+
+**Lesson:** Pooling helps via diversity (heterogeneous perturbation pairs
+from two autophagy studies), not dimensionality. Data bottleneck confirmed:
+need full expression matrices for more series.
+
 ### Product Integration
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
   defining the governed inference output format for the product pipeline
