@@ -28,7 +28,3 @@ from models.foundation.frontier_bridge import (
     FrontierResponse,
     QueryType,
 )
-from models.foundation.hybrid import (
-    NeuroHybrid,
-    HybridConfig,
-)
