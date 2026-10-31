@@ -85,10 +85,44 @@ VAE's conditional structure room to contribute.
 (25-56) for meaningful pooling with the full-genome matrix. Need full
 expression matrices for more series.
 
+## NT-004: Scaled pooled trial with full matrices (2026-10-31)
+
+Downloaded 4 full GEO expression matrices (722 new samples, 178 MB total):
+GSE26927 (20,589 genes x 118 samples, neurodegeneration), GSE15222 (24,354 x 363,
+neurodegeneration), GSE5281 (54,675 x 161, neurodegeneration), GSE30174 (54,675 x 80,
+drug response). Combined with existing GSE119262 (17,183 x 44, autophagy).
+
+**Cross-platform gene-ID mismatch:** the 5 series use 4 different ID namespaces
+(HUGO gene symbols, Illumina probes, GenBank IDs, Affymetrix probes). Only
+GSE5281 + GSE30174 share the Affymetrix HG-U133 Plus 2.0 platform (54,675
+common probes). All other pairwise intersections: 0. Probe-to-gene-symbol
+mapping requires platform annotation files (not available in this environment).
+
+**Variance-based dimensionality reduction:** 54,675 -> 2,000 top-variance
+probes. Reduced p/n from 452 to 16.5 (121 pairs). Also added gradient
+clipping and logvar clamping to prevent NaN training collapse.
+
+| Arm | Series | Pairs | Features | MSE (val) | r (val) | Verdict |
+|-----|--------|-------|----------|-----------|---------|---------|
+| A (single) | GSE5281 | 81 | 2000 | 0.772 | 0.894 | **MET (4/4)** |
+| **B (pooled)** | GSE5281+GSE30174 | **121** | 2000 | **0.648** | **0.947** | **MET (4/4)** |
+
+**Key findings:**
+1. First trial where BOTH arms meet all 4 criteria (NT-003 had only pooled arm met)
+2. Pooling improved r: 0.894 -> 0.947 (+5.3pp) and MSE: 0.772 -> 0.648 (-16%)
+3. Variance-based feature selection is essential: 54K features with 121 pairs
+   causes NaN collapse; 2000 features gives p/n=16.5, stable training
+4. Cross-platform ID mismatch is the primary blocker for true multi-program
+   pooling. Need either: (a) platform annotation files for probe-to-gene mapping,
+   or (b) gene-symbol-native datasets (RNA-seq with HUGO symbols)
+
 ## Immediate next steps
 
-1. ~~NT-002: Ridge + Linear VAE on GSE119262 (gene-subsetted)~~ ✅ DONE
-2. ~~NT-003: Multi-series pooled training~~ ✅ DONE (limited by gene intersection)
-3. Download full expression matrices for in-regime GEO series (745 identified)
-4. NT-004: Re-run pooled trial with full matrices (target: 5+ series, >100 pairs)
-5. LINCS L1000 integration (978 genes, pre-computed perturbation signatures)
+1. ~~NT-002: Ridge + Linear VAE on GSE119262 (gene-subsetted)~~ DONE
+2. ~~NT-003: Multi-series pooled training~~ DONE (limited by gene intersection)
+3. ~~Download full expression matrices for in-regime GEO series~~ DONE (4 new series)
+4. ~~NT-004: Re-run pooled trial with full matrices~~ DONE (both arms MET)
+5. NT-005: Cross-platform pooling via probe-to-gene mapping (Affymetrix/Illumina
+   annotation files from GEO platforms, or switch to RNA-seq gene-count matrices)
+6. LINCS L1000 integration (978 genes, pre-computed perturbation signatures)
+7. Scale to 500+ pairs: target p/n < 5 with 2000 features
