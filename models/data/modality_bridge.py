@@ -26,6 +26,8 @@ from models.training.governed_harness import select_training_regime
 class DataModality(str, Enum):
     BULK_EXPRESSION = "bulk_expression"
     PERTURBSEQ = "perturbseq"
+    PPI_PRIOR = "ppi_prior"
+    BENCHMARK = "benchmark"
     METHYLATION = "methylation"
     IMAGING = "imaging"
     SINGLE_CELL_ATLAS = "single_cell_atlas"
@@ -119,6 +121,46 @@ def discover_all_datasets(
                 "n_targets": d["n_targets"],
                 "n_control_cells": d["n_control_cells"],
                 "n_batches": d["n_batches"],
+            },
+        ))
+
+    # STRING PPI priors
+    from models.data.prior_network_loader import discover_string_priors
+    priors_dir = merlin_root / "backend" / "data" / "priors" / "string" / species
+    for d in discover_string_priors(priors_dir, species=species):
+        entries.append(DatasetEntry(
+            modality=DataModality.PPI_PRIOR,
+            path=d["source_path"],
+            species=species,
+            n_features=d["n_genes"],
+            n_samples=d["n_edges"],
+            content_hash=d["content_hash"],
+            regime="not_applicable",
+            in_regime=True,
+            extra={
+                "dataset": d["dataset"],
+                "required_score": d["required_score"],
+            },
+        ))
+
+    # Benchmarks (species-agnostic)
+    from models.data.prior_network_loader import discover_benchmarks
+    benchmarks_dir = merlin_root / "backend" / "data" / "benchmarks"
+    for d in discover_benchmarks(benchmarks_dir):
+        entries.append(DatasetEntry(
+            modality=DataModality.BENCHMARK,
+            path=d["source_path"],
+            species=d["species"],
+            n_features=d["n_genes"],
+            n_samples=d["n_samples"],
+            content_hash=d["content_hash"],
+            regime="data-driven",
+            in_regime=True,
+            extra={
+                "benchmark": d["benchmark"],
+                "n_tfs": d["n_tfs"],
+                "n_true_edges": d["n_true_edges"],
+                "n_false_edges": d["n_false_edges"],
             },
         ))
 
