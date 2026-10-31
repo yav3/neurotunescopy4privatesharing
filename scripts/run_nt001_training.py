@@ -48,15 +48,16 @@ MERLIN_HUMAN_DIR = Path("/home/user/merlinaineuralplus2/backend/data/expression/
 RECORDS_DIR = Path(__file__).parent.parent / "docs/records"
 SEED = 2026
 LATENT_DIM = 64
-EPOCHS = 30
+EPOCHS = 50
 BATCH_SIZE = 16
 LR = 1e-3
 MIN_SAMPLES = 30
 HELD_OUT_FRACTION = 0.2
 TEST_FRACTION = 0.1
+MAX_GENES = None  # None = all genes; int = top-k by variance
 
 
-def load_in_regime_data() -> list[GEOExpressionData]:
+def load_in_regime_data(max_genes: int | None = None) -> list[GEOExpressionData]:
     datasets = discover_merlin_datasets(MERLIN_HUMAN_DIR, species="human")
     in_regime = [d for d in datasets if d["n_samples"] >= MIN_SAMPLES
                  and d["n_control"] > 0 and d["n_treated"] > 0]
@@ -64,6 +65,17 @@ def load_in_regime_data() -> list[GEOExpressionData]:
     for meta in in_regime:
         data = load_geo_csv(meta["path"], accession=meta["accession"],
                             species="human", log1p=True)
+        if max_genes is not None and data.expression.shape[1] > max_genes:
+            gene_var = np.var(data.expression, axis=0)
+            top_idx = np.argsort(gene_var)[-max_genes:]
+            top_idx = np.sort(top_idx)
+            data = GEOExpressionData(
+                expression=data.expression[:, top_idx],
+                conditions=data.conditions,
+                gene_names=[data.gene_names[i] for i in top_idx],
+                species=data.species,
+                accession=data.accession,
+            )
         geo_list.append(data)
     return geo_list
 
@@ -214,7 +226,8 @@ def compute_linear_shift(train_ds, test_ds):
     return {"mse": mse, "pearson_r": pearson_r}
 
 
-def run_permutation_control(geo_data, n_genes, train_ds, val_ds, test_ds, device):
+def run_permutation_control(geo_data, n_genes, train_ds, val_ds, test_ds, device,
+                            latent_dim=LATENT_DIM, epochs=EPOCHS):
     rng = np.random.RandomState(SEED + 1)
     shuffled_conditions = list(geo_data.conditions)
     rng.shuffle(shuffled_conditions)
@@ -241,9 +254,9 @@ def run_permutation_control(geo_data, n_genes, train_ds, val_ds, test_ds, device
     perm_val = Subset(shuffled_ds, indices[n_train:n_train + n_val])
     perm_test = Subset(shuffled_ds, indices[n_train + n_val:])
 
-    config = PerturbationModelConfig(n_genes=n_genes, latent_dim=LATENT_DIM, n_drugs=10)
+    config = PerturbationModelConfig(n_genes=n_genes, latent_dim=latent_dim, n_drugs=10)
     perm_model = PerturbationResponseModel(config).to(device)
-    train_model(perm_model, perm_train, perm_val, EPOCHS, LR, BATCH_SIZE, device)
+    train_model(perm_model, perm_train, perm_val, epochs, LR, BATCH_SIZE, device)
     return evaluate_arm(perm_model, perm_test, device)
 
 
@@ -251,12 +264,26 @@ def main():
     t0 = time.time()
     device = torch.device("cpu")
 
+    max_genes = MAX_GENES
+    latent_dim = LATENT_DIM
+    epochs = EPOCHS
+    for arg in sys.argv[1:]:
+        if arg.startswith("--max-genes="):
+            max_genes = int(arg.split("=")[1])
+        elif arg.startswith("--latent-dim="):
+            latent_dim = int(arg.split("=")[1])
+        elif arg.startswith("--epochs="):
+            epochs = int(arg.split("=")[1])
+
     print("=" * 60)
     print("NT-001 GOVERNED TRAINING RUN")
+    if max_genes:
+        print(f"  Gene subset: top {max_genes} by variance")
+    print(f"  Latent dim: {latent_dim}, Epochs: {epochs}")
     print("=" * 60)
 
     print("\n[1/7] Loading in-regime data...")
-    geo_list = load_in_regime_data()
+    geo_list = load_in_regime_data(max_genes=max_genes)
     if not geo_list:
         print("ERROR: No in-regime datasets found")
         sys.exit(1)
@@ -272,9 +299,9 @@ def main():
     n_genes = geo_data.expression.shape[1]
 
     print("\n[3/7] Training model arm...")
-    config = PerturbationModelConfig(n_genes=n_genes, latent_dim=LATENT_DIM, n_drugs=10)
+    config = PerturbationModelConfig(n_genes=n_genes, latent_dim=latent_dim, n_drugs=10)
     model = PerturbationResponseModel(config).to(device)
-    history = train_model(model, train_ds, val_ds, EPOCHS, LR, BATCH_SIZE, device)
+    history = train_model(model, train_ds, val_ds, epochs, LR, BATCH_SIZE, device)
     print(f"  Final train_loss: {history[-1]['train_loss']:.4f}")
     print(f"  Final val_loss: {history[-1]['val_loss']:.4f}")
 
@@ -290,7 +317,8 @@ def main():
     print(f"  Linear-shift MSE: {linear_bl['mse']:.6f}, r: {linear_bl['pearson_r']:.4f}")
 
     print("\n[6/7] Running permutation control...")
-    perm_metrics = run_permutation_control(geo_data, n_genes, train_ds, val_ds, test_ds, device)
+    perm_metrics = run_permutation_control(geo_data, n_genes, train_ds, val_ds, test_ds, device,
+                                           latent_dim=latent_dim, epochs=epochs)
     print(f"  Permutation MSE: {perm_metrics['mse']:.6f}, r: {perm_metrics['pearson_r']:.4f}")
 
     print("\n[7/7] Evaluating pre-registered criteria...")
@@ -329,11 +357,13 @@ def main():
         "date": str(date.today()),
         "parameters": {
             "seed": SEED,
-            "latent_dim": LATENT_DIM,
-            "epochs": EPOCHS,
+            "latent_dim": latent_dim,
+            "epochs": epochs,
             "batch_size": BATCH_SIZE,
             "lr": LR,
             "n_genes": n_genes,
+            "n_genes_total": 17183,
+            "max_genes": max_genes,
             "n_samples": geo_data.expression.shape[0],
             "accession": geo_data.accession,
             "species": "human",
