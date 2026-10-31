@@ -28,3 +28,12 @@ from models.foundation.frontier_bridge import (
     FrontierResponse,
     QueryType,
 )
+from models.foundation.hybrid import (
+    NeuroHybrid,
+    HybridConfig,
+    HybridMode,
+)
+from models.foundation.unified_hybrid import (
+    UnifiedFoundationFrontierModel,
+    UnifiedHybridConfig,
+)
