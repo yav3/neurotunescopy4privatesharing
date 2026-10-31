@@ -81,15 +81,38 @@ answer = governed_solver.solve(problem, declaration=species_decl)
 
 ## Completed Milestones
 
-### NT-001: Perturbation-Response cVAE (2026-10-31)
-- **Dataset**: GSE119262 (human, 44 samples, 17,183 genes, data-driven regime)
-- **Model**: 10.6M param conditional VAE (latent_dim=64, encoder/decoder=256)
-- **Criterion**: val_loss < 2.0 (pre-registered) → **0.47 (MET)**
-- **Test loss**: 0.45
-- **Spec hash**: `19729935fb3bc9fe...`
-- **Record**: `NeuroTunesAI/docs/trials/NT-001_GSE119262.json`
-- **Evidence discipline**: seed=2026, 70/20/10 split, species firewall enforced,
-  content-addressed SHA-256 on source CSV, hash-chained training spec
+### NT-001 — Full 4-Criterion Protocol (2026-10-31)
+
+Full cVAE (10.6M params) on GSE119262 — **NOT_MET** (1/4 criteria).
+The pre-registration framework correctly catches that the model cannot
+beat simple baselines with 21 perturbation pairs.
+
+| Arm | MSE | Pearson r |
+|-----|-----|-----------|
+| cVAE (10.6M params) | 0.948 | 0.136 |
+| Mean baseline | 0.905 | 0.000 |
+| Linear shift | 0.735 | 0.436 |
+| Permutation | 1.455 | -0.150 |
+
+**Lesson:** p/n = 24 (500 genes / 21 pairs) is too high for a deep
+generative model. Architecture must match data scale.
+
+### NT-002 — Right-Sized Models (2026-10-31)
+
+Linear VAE (1266 params, latent_dim=8) on 50-gene panel — **MET** (4/4).
+First model to pass the full governed protocol.
+
+| Arm | MSE (val) | Pearson r (val) | Verdict |
+|-----|-----------|-----------------|---------|
+| Ridge regression | 4.085 | 0.419 | NOT_MET (ties mean) |
+| **Linear VAE** | **3.774** | **0.471** | **MET (4/4)** |
+| Mean baseline | 4.085 | 0.419 | — |
+
+Test set: MSE=2.91, r=0.50. The governed protocol works end-to-end.
+
+Evidence discipline enforced in both trials: species firewall (human only),
+regime pre-registered before method, seed=2026, content-addressed SHA-256,
+baselines in the same run.
 
 ### Product Integration
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
@@ -98,13 +121,14 @@ answer = governed_solver.solve(problem, declaration=species_decl)
 ## Next Steps (User's 5-Point Plan)
 
 1. **Foundation-grade data layer** — connect Merlin's 14 harvest sources
-   to NeuroTunesAI's EntitySeries contract
-2. ~~**Narrow foundation model**~~ ✅ **DONE** — NT-001 cVAE trained on
-   GSE119262 (in-regime, data-driven). val_loss=0.47 < 2.0 threshold.
-   157 tests passing across the governed training stack.
-3. **Training/eval harness** — pre-registration protocol, sealed
-   calibration constants, three-loop eval (cite + calibrate + truth).
-   Governed harness infrastructure built; first trial executed.
+   to NeuroTunesAI's EntitySeries contract. Priority: more in-regime GEO
+   data (745 series with ≥30 samples identified in series catalog).
+2. **Narrow foundation model** — NT-002 Linear VAE is the first passing
+   model; scaling up requires more data (p/n < 5 target). Architecture
+   tiers documented in `TRAINING_ROADMAP.md`.
+   `GovernedInferenceService` wired in `lib/services/governed_inference_service.dart`.
+3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001,
+   NT-002). Pre-registration, baselines, hash-chained records all working.
 4. **Compute/people** — external requirement
 5. **Position as governed layer** — the evidence discipline makes solver
    outputs admissible; the product apps deliver them
