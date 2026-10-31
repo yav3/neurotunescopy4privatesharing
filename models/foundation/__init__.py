@@ -9,3 +9,26 @@ from models.foundation.perturbation_response import (
     PerturbationType,
     load_geo_csv,
 )
+from models.foundation.gene_foundation import (
+    GeneFoundationConfig,
+    GeneFoundationEncoder,
+    MaskedGeneModeling,
+)
+from models.foundation.hybrid_model import (
+    HybridFoundationModel,
+    HybridModelConfig,
+    ExpressionPredictor,
+)
+from models.foundation.frontier_bridge import (
+    GovernedFrontierBridge,
+    FrontierBridgeConfig,
+    FoundationToFrontierProjector,
+    GovernedHybridAnswer,
+    StructuredQuery,
+    FrontierResponse,
+    QueryType,
+)
+from models.foundation.hybrid import (
+    NeuroHybrid,
+    HybridConfig,
+)
