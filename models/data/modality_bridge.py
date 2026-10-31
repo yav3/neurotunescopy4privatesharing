@@ -12,6 +12,7 @@ Planned (not yet implemented):
   - methylation: beta-value arrays (CpG × samples)
   - imaging: extracted feature vectors (samples × features)
   - single_cell_atlas: h5ad/AnnData format
+  - disease_ontology: MONDO/HPO disease-phenotype graphs, via disease_ontology_loader
 """
 from __future__ import annotations
 
@@ -28,6 +29,8 @@ class DataModality(str, Enum):
     PERTURBSEQ = "perturbseq"
     PPI_PRIOR = "ppi_prior"
     BENCHMARK = "benchmark"
+    DISEASE_ONTOLOGY = "disease_ontology"
+    CROSSCHECK = "crosscheck"
     METHYLATION = "methylation"
     IMAGING = "imaging"
     SINGLE_CELL_ATLAS = "single_cell_atlas"
@@ -161,6 +164,46 @@ def discover_all_datasets(
                 "n_tfs": d["n_tfs"],
                 "n_true_edges": d["n_true_edges"],
                 "n_false_edges": d["n_false_edges"],
+            },
+        ))
+
+    # Disease ontologies
+    from models.data.disease_ontology_loader import discover_disease_ontologies
+    ontology_dir = merlin_root / "backend" / "data" / "ontology" / species
+    for d in discover_disease_ontologies(ontology_dir, species=species):
+        entries.append(DatasetEntry(
+            modality=DataModality.DISEASE_ONTOLOGY,
+            path=d["source_path"],
+            species=species,
+            n_features=d["n_unique_hpo"],
+            n_samples=d["n_nodes"],
+            content_hash=d["content_hash"],
+            regime="not_applicable",
+            in_regime=True,
+            extra={
+                "name": d["name"],
+                "n_edges": d["n_edges"],
+                "n_disease_subtypes": d["n_disease_subtypes"],
+                "n_with_hpo": d["n_with_hpo"],
+            },
+        ))
+
+    # Crosschecks (AlphaFold structure, STRING PPI validation)
+    from models.data.crosscheck_loader import discover_crosschecks
+    crosscheck_dir = merlin_root / "backend" / "data" / "crosschecks" / species
+    for d in discover_crosschecks(crosscheck_dir, species=species):
+        entries.append(DatasetEntry(
+            modality=DataModality.CROSSCHECK,
+            path=d["source_path"],
+            species=species,
+            n_features=d["n_genes"],
+            n_samples=d.get("n_interactions", d["n_genes"]),
+            content_hash=d["content_hash"],
+            regime="not_applicable",
+            in_regime=True,
+            extra={
+                "name": d["name"],
+                "crosscheck_type": d["crosscheck_type"],
             },
         ))
 
