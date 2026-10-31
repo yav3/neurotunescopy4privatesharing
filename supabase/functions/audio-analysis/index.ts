@@ -85,6 +85,16 @@ interface AnalysisResult {
   analysis_error?: string;  // Legacy support
 }
 
+interface PerturbationResult {
+  predictedExpression: number[];
+  perturbationType: 'knockout' | 'drug' | 'time_course';
+  specHash: string;
+  regime: string;
+  species: string;
+  confidence: number;
+  trialId: string;
+}
+
 serve(async (req: Request) => {
   const method = req.method;
 
