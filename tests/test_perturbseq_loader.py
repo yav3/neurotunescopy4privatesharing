@@ -199,7 +199,7 @@ class TestModalityBridge:
     def test_species_valid(self):
         from models.data.modality_bridge import discover_all_datasets
         entries = discover_all_datasets(MERLIN_ROOT)
-        valid_species = {"human", "in_silico", "in_vitro", "mouse", "synthetic"}
+        valid_species = {"human", "in_silico", "in_vitro", "mouse", "synthetic", "not_applicable"}
         for e in entries:
             assert e.species in valid_species, f"{e.path}: unexpected species {e.species}"
             if e.modality.value in ("bulk_expression", "perturbseq", "ppi_prior"):
