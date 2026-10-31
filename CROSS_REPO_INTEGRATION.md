@@ -148,18 +148,35 @@ for true multi-program pooling: probe-to-gene mapping across platforms.
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
   defining the governed inference output format for the product pipeline
 
+### Data Layer — 9 Modalities Bridged (2026-10-31)
+
+NeuroTunesAI's modality bridge now discovers all Merlin committed data:
+
+| Modality | Loader | Verified against |
+|----------|--------|------------------|
+| bulk_expression | geo_loader | 15 GEO series (human + mouse) |
+| perturbseq | perturbseq_loader | Xaira panel (109 cells) |
+| ppi_prior | prior_network_loader | STRING priors (12 series) |
+| benchmark | prior_network_loader | DREAM5 gold standard |
+| disease_ontology | disease_ontology_loader | EDS MONDO/HPO (39 nodes, 36 edges) |
+| crosscheck | crosscheck_loader | AlphaFold DB (14 genes) + STRING PPI (56 genes, 402 interactions) |
+| literature_evidence | literature_loader | EDS digest (15 ClinVar genes, 5858 PubMed, 97 trials) |
+| molecule | molecule_loader | MSR-ACC-TAE25 + APB-E0 quantum chemistry |
+
+62+ integration tests across all loaders. Three planned: methylation, imaging, single_cell_atlas.
+
 ## Next Steps (User's 5-Point Plan)
 
-1. **Foundation-grade data layer** — connect Merlin's 14 harvest sources
-   to NeuroTunesAI's EntitySeries contract. Priority: more in-regime GEO
-   data (745 series with ≥30 samples identified in series catalog).
+1. **Foundation-grade data layer** — ✅ 9 of 12 modalities bridged. Remaining:
+   methylation (CpG arrays), imaging (feature vectors), single_cell_atlas (h5ad).
+   745 in-regime GEO series identified for expansion.
 2. **Narrow foundation model** — NT-004 demonstrates both single-series
    and pooled training passing 4/4 criteria at 2000-feature scale. Next:
    cross-platform probe-to-gene mapping (NT-005) to unlock multi-program
    pooling → 500+ pairs → p/n < 5. Architecture tiers in `TRAINING_ROADMAP.md`.
    `GovernedInferenceService` wired in `lib/services/governed_inference_service.dart`.
-3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001,
-   NT-002). Pre-registration, baselines, hash-chained records all working.
+3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001
+   through NT-004). Pre-registration, baselines, hash-chained records all working.
 4. **Compute/people** — external requirement
 5. **Position as governed layer** — the evidence discipline makes solver
    outputs admissible; the product apps deliver them
