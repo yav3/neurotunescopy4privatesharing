@@ -58,6 +58,44 @@ class ProblemType(Enum):
     THERAPEUTIC_SESSION_PLAN = "therapeutic_session_plan"
     THERAPEUTIC_PHASE_SCORE = "therapeutic_phase_score"
 
+    # EIF (Emotional Impact Factor)
+    EIF_FROM_PARAMETERS = "eif_from_parameters"
+    EIF_SPREADSHEET = "eif_spreadsheet"
+    EIF_RECOMMEND = "eif_recommend"
+
+    # Neural entrainment
+    ENTRAINMENT_PLV = "entrainment_plv"
+    ENTRAINMENT_ITC = "entrainment_itc"
+    ENTRAINMENT_FFR = "entrainment_ffr"
+    ENTRAINMENT_BEAT = "entrainment_beat_alignment"
+
+    # CNS pharmacodynamics
+    CNS_RTMS = "cns_rtms_modulation"
+    CNS_SYNC_DISTANCE = "cns_sync_distance"
+    CNS_AFFECT_PURITY = "cns_affect_purity"
+
+    # RTP kernel (patent claims)
+    RTP_DOMINANCE = "rtp_dominance"
+    RTP_EVOLUTION = "rtp_evolution"
+    RTP_SIMULATE = "rtp_simulate"
+    RTP_IDENTIFY = "rtp_identify"
+
+    # VADE Drift Estimator
+    DRIFT_MONITOR = "drift_monitor"
+
+    # GPCR bias
+    GPCR_BIAS = "gpcr_bias"
+
+    # GRN canonical
+    GRN_PROPAGATE = "grn_propagate"
+    GRN_DOMINANCE = "grn_dominance"
+    GRN_SENSITIVITY = "grn_sensitivity"
+    GRN_MOTIFS = "grn_motifs"
+
+    # Structural PK/PD
+    PKPD_STRUCTURAL = "pkpd_structural"
+    PKPD_TOXICITY = "pkpd_toxicity"
+
     # Composite
     TREATMENT_PLAN = "treatment_plan"
     DISEASE_FORECAST = "disease_forecast"

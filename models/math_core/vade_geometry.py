@@ -1,24 +1,21 @@
 """4-D VADE Geometry on S³ (three-sphere).
 
-From the drafted patent:
+Core projection:
+    P_VADE = W_proxy · X + b, then normalize to S³
+    d(p, q) = arccos(p · q)
 
-    P_VADE = W_proxy · X + b     (affine projection to ℝ⁴)
-    P_norm = P_VADE / ‖P_VADE‖   (project onto S³)
+Constraints (golden-ratio mood bounds):
+    V ≥ 1.6·A (high valence), V ≥ 1.6·D (sleep), V ≥ 1.6²·A (deep regeneration)
+    BPM ∈ [46, 186], max 4 BPM per 30 min
 
-VADE dimensions: Valence, Arousal, Dominance, Engagement (or Energy).
-
-Geodesic distance on S³:
-    d(p, q) = arccos(p · q)      (for unit vectors p, q ∈ S³)
-
-Constraints:
-    V ≥ 1.6 · A                   (valence dominates arousal)
-    BPM ∈ [46, 186]
-
-Fibonacci-constrained dosing:
-    Session durations drawn from Fibonacci sequence scaled by base unit.
-    Fib = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...} × base_minutes
+Additional methods from canonical VADE engine:
+    dominance_proxy: D = sin(A²+V²) / √(A²+V²)
+    herrnstein_matching: B = k·Rf / (Rf₀+Rf)
+    lattice_partition: hyperspherical coordinates on S³
 """
 from __future__ import annotations
+
+import math
 
 import numpy as np
 from dataclasses import dataclass
@@ -149,3 +146,78 @@ class VADEGeometry:
             for t in t_values
         ])
         return trajectory
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Canonical VADE methods from the Merlin production engine
+# ═══════════════════════════════════════════════════════════════════════
+
+PHI = 1.618
+BPM_BOUNDS = (46.0, 186.0)
+
+
+def mood_bounds(v: float, a: float, d: float, ratio: float = 1.6) -> dict[str, bool]:
+    return {
+        "high_valence": v >= ratio * a,
+        "sleep": v >= ratio * d and v >= ratio ** 2 * a,
+        "deep_regeneration": v >= ratio ** 2 * a,
+    }
+
+
+def dominance_proxy(a: float, v: float) -> float:
+    r2 = a * a + v * v
+    return float(math.sin(r2) / math.sqrt(r2)) if r2 > 0 else 0.0
+
+
+def bpm_schedule(start_bpm: float, end_bpm: float, minutes: float,
+                 max_step_per_30min: float = 4.0,
+                 bounds: tuple[float, float] = BPM_BOUNDS) -> list[float]:
+    if not bounds[0] <= start_bpm <= bounds[1]:
+        raise ValueError("start_bpm outside bounds")
+    if not bounds[0] <= end_bpm <= bounds[1]:
+        raise ValueError("end_bpm outside bounds")
+    per_min = max_step_per_30min / 30.0
+    path, cur = [start_bpm], start_bpm
+    for _ in range(int(minutes)):
+        step = np.clip(end_bpm - cur, -per_min, per_min)
+        cur = float(cur + step)
+        path.append(cur)
+    return path
+
+
+def fibonacci_dose(total_minutes: float = 30.0, n_segments: int = 5) -> list[float]:
+    if n_segments < 1:
+        raise ValueError("n_segments >= 1")
+    f = [1, 1]
+    while len(f) < n_segments:
+        f.append(f[-1] + f[-2])
+    f = f[:n_segments]
+    s = sum(f)
+    return [total_minutes * x / s for x in f]
+
+
+def herrnstein_matching(k: float, rf: float, rf0: float) -> float:
+    if rf0 + rf <= 0:
+        raise ValueError("Rf0 + Rf must be positive")
+    return k * rf / (rf0 + rf)
+
+
+def lattice_partition(points: np.ndarray,
+                      cells_per_axis: int = 4) -> dict[tuple[int, int, int], dict]:
+    pts = np.asarray(points, dtype=float)
+    norms = np.linalg.norm(pts, axis=-1, keepdims=True)
+    norms = np.maximum(norms, 1e-8)
+    P = pts / norms
+    cells: dict[tuple[int, int, int], dict] = {}
+    for i, (x0, x1, x2, x3) in enumerate(P):
+        psi = math.acos(np.clip(x0, -1, 1))
+        r = math.sqrt(max(1 - x0 * x0, 0))
+        theta = math.acos(np.clip(x1 / r, -1, 1)) if r > 0 else 0.0
+        phi = math.atan2(x3, x2) % (2 * math.pi)
+        idx = (min(int(psi / math.pi * cells_per_axis), cells_per_axis - 1),
+               min(int(theta / math.pi * cells_per_axis), cells_per_axis - 1),
+               min(int(phi / (2 * math.pi) * cells_per_axis), cells_per_axis - 1))
+        cell = cells.setdefault(idx, {"count": 0, "members": []})
+        cell["count"] += 1
+        cell["members"].append(i)
+    return cells
