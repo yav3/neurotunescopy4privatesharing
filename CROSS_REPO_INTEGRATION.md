@@ -144,6 +144,27 @@ Variance-based feature selection (54675→2000) stabilises training.
 r: 0.894→0.947 (+5.3pp) and MSE: 0.772→0.648 (−16%). Primary blocker
 for true multi-program pooling: probe-to-gene mapping across platforms.
 
+### NT-005 — Cross-Platform Probe-to-Gene Mapper (2026-10-31)
+
+Resolved the NT-004 primary blocker: probe-to-gene mapping across 4 ID
+namespaces. All 12 human GEO expression files are now mappable to HGNC
+gene symbols.
+
+| Platform | GEO ID | Format | Probes | Mapped Genes |
+|----------|--------|--------|--------|-------------|
+| GPL570 (Affymetrix HG-U133+2) | GSE5281, GSE30174 | `\d+_at` | 43,697 | 21,250 |
+| GPL6255 (Illumina HumanRef-8) | GSE26927 | `ILMN_\d+` | 19,426 | 17,100 |
+| GPL2700 (Sentrix HumanRef-8) | GSE15222 | `GI_\d+` | 16,450 | 14,588 |
+| Gene symbols | 8 other files | `[A-Z][A-Z0-9-]+` | — | pass-through |
+
+**Cross-platform pooling result:** GSE5281 + GSE26927 + GSE15222 →
+**10,874 common genes across 642 samples** from 3 different platforms.
+Multi-probe genes collapsed by mean (11,104 Affy, 2,002 Illumina,
+1,283 GI multi-probe genes). Gene retention: 51–75% per platform.
+
+29 tests including real-data format detection and cross-platform
+pooling integration.
+
 ### Product Integration
 - `PerturbationResult` interface added to `audio-analysis/index.ts`
   defining the governed inference output format for the product pipeline
@@ -170,10 +191,10 @@ NeuroTunesAI's modality bridge now discovers all Merlin committed data:
 1. **Foundation-grade data layer** — ✅ 9 of 12 modalities bridged. Remaining:
    methylation (CpG arrays), imaging (feature vectors), single_cell_atlas (h5ad).
    745 in-regime GEO series identified for expansion.
-2. **Narrow foundation model** — NT-004 demonstrates both single-series
-   and pooled training passing 4/4 criteria at 2000-feature scale. Next:
-   cross-platform probe-to-gene mapping (NT-005) to unlock multi-program
-   pooling → 500+ pairs → p/n < 5. Architecture tiers in `TRAINING_ROADMAP.md`.
+2. **Narrow foundation model** — NT-005 resolves the cross-platform
+   probe-to-gene blocker. All 12 human GEO files now map to gene symbols
+   (10,874 common genes, 642 samples from 3 platforms). Next: run the
+   full multi-program pooled trial → 500+ pairs → p/n < 5.
    `GovernedInferenceService` wired in `lib/services/governed_inference_service.dart`.
 3. **Training/eval harness** — ✅ 4-criterion protocol operational (NT-001
    through NT-004). Pre-registration, baselines, hash-chained records all working.
