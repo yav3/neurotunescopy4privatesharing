@@ -124,8 +124,8 @@ class SequenceAlignment:
 
     @staticmethod
     def dtw_path(seq_a: np.ndarray, seq_b: np.ndarray) -> list[tuple[int, int]]:
-        a = np.atleast_2d(seq_a) if seq_a.ndim == 1 else seq_a
-        b = np.atleast_2d(seq_b) if seq_b.ndim == 1 else seq_b
+        a = np.asarray(seq_a)
+        b = np.asarray(seq_b)
         if a.ndim == 1:
             a = a.reshape(-1, 1)
         if b.ndim == 1:
