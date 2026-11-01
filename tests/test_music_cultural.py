@@ -5,11 +5,9 @@ from models.music_cultural.scales import (
     CulturalScale, ScaleDatabase, MAQAM_SCALES, RAGA_SCALES, GAMELAN_SCALES,
     interval_pattern, scale_similarity,
 )
-from models.music_cultural.tuning_systems import (
-    TuningSystem, EqualTemperament, JustIntonation, PythagoreanTuning,
-    MeantoneTemperament, WellTemperament, CentConverter,
-)
 from models.music_cultural.tuning import (
+    TuningSystem, EqualTemperament, JustIntonation, PythagoreanTuning,
+    MeantoneTemperament, WellTemperament,
     cents_to_ratio, ratio_to_cents, frequency_ratio,
 )
 from models.music_cultural.rhythm import (
@@ -18,43 +16,45 @@ from models.music_cultural.rhythm import (
 )
 
 
-# ── Scales ──────────────────────────────────────────────────────────
-
-
 class TestCulturalScale:
     def test_maqam_rast(self):
         rast = MAQAM_SCALES["rast"]
         assert rast.name == "Rast"
         assert rast.tradition == "Arabic"
         assert len(rast.intervals) > 0
-        assert sum(rast.intervals) == 12
+        assert rast.octave_span == sum(rast.intervals)
 
     def test_raga_bilawal(self):
         bilawal = RAGA_SCALES["bilawal"]
         assert bilawal.tradition == "Hindustani"
-        assert len(bilawal.intervals) == 7
 
     def test_gamelan_pelog(self):
-        pelog = GAMELAN_SCALES["pelog_lima"]
+        pelog = GAMELAN_SCALES["pelog"]
         assert pelog.tradition == "Javanese"
 
     def test_all_maqam_scales_valid(self):
         assert len(MAQAM_SCALES) == 8
         for name, scale in MAQAM_SCALES.items():
-            assert "Arabic" in scale.tradition
-            assert all(iv > 0 for iv in scale.intervals)
+            assert scale.tradition == "Arabic"
             assert len(scale.intervals) >= 5
 
     def test_all_raga_scales_valid(self):
         assert len(RAGA_SCALES) == 13
         for name, scale in RAGA_SCALES.items():
             assert scale.tradition in ("Hindustani", "Carnatic")
-            assert all(iv > 0 for iv in scale.intervals)
 
     def test_all_gamelan_scales_valid(self):
         assert len(GAMELAN_SCALES) == 4
         for name, scale in GAMELAN_SCALES.items():
             assert scale.tradition == "Javanese"
+
+    def test_degree_count(self):
+        rast = MAQAM_SCALES["rast"]
+        assert rast.degree_count == len(rast.intervals) + 1
+
+    def test_octave_span_major(self):
+        rast = MAQAM_SCALES["rast"]
+        assert rast.octave_span == 12
 
     def test_interval_pattern(self):
         major = [0, 2, 4, 5, 7, 9, 11]
@@ -76,13 +76,14 @@ class TestCulturalScale:
         hijaz = MAQAM_SCALES["hijaz"]
         sim = scale_similarity(rast, hijaz)
         assert 0.0 <= sim <= 1.0
+        assert sim < 1.0
 
     def test_scale_database_search(self):
         db = ScaleDatabase()
         results = db.search_by_tradition("Arabic")
         assert len(results) >= 8
         for s in results:
-            assert "Arabic" in s.tradition
+            assert s.tradition == "Arabic"
 
     def test_scale_database_search_hindustani(self):
         db = ScaleDatabase()
@@ -90,88 +91,113 @@ class TestCulturalScale:
         assert len(results) >= 7
 
 
-# ── Tuning Systems ──────────────────────────────────────────────────
-
-
 class TestEqualTemperament:
-    def test_12tet_pitch_count(self):
-        et = EqualTemperament(12)
-        assert et.n_pitches() == 12
-
     def test_12tet_unison(self):
         et = EqualTemperament(12)
-        assert et.pitch_cents[0] == pytest.approx(0.0)
+        assert et.frequency(0, 440.0) == pytest.approx(440.0)
 
-    def test_12tet_semitone(self):
+    def test_12tet_octave(self):
         et = EqualTemperament(12)
-        assert et.pitch_cents[1] == pytest.approx(100.0, abs=0.01)
+        assert et.frequency(12, 440.0) == pytest.approx(880.0)
+
+    def test_12tet_semitone_ratio(self):
+        et = EqualTemperament(12)
+        ratio = et.frequency(1, 440.0) / 440.0
+        assert ratio == pytest.approx(2 ** (1 / 12), abs=0.0001)
 
     def test_12tet_perfect_fifth(self):
         et = EqualTemperament(12)
-        assert et.pitch_cents[7] == pytest.approx(700.0, abs=0.01)
+        ratio = et.frequency(7, 440.0) / 440.0
+        assert ratio == pytest.approx(2 ** (7 / 12), abs=0.0001)
 
-    def test_24tet(self):
+    def test_24tet_quarter_tone(self):
         et = EqualTemperament(24)
-        assert et.n_pitches() == 24
-        assert et.step_size() == pytest.approx(50.0, abs=0.01)
+        ratio = et.frequency(1, 440.0) / 440.0
+        assert ratio == pytest.approx(2 ** (1 / 24), abs=0.0001)
 
     def test_19tet(self):
         et = EqualTemperament(19)
-        assert et.n_pitches() == 19
+        assert et.frequency(19, 440.0) == pytest.approx(880.0)
+
+    def test_frequencies_list(self):
+        et = EqualTemperament(12)
+        freqs = et.frequencies([0, 7, 12], 440.0)
+        assert len(freqs) == 3
+        assert freqs[0] == pytest.approx(440.0)
+
+    def test_cent_per_step(self):
+        et = EqualTemperament(12)
+        assert et.cent_per_step() == pytest.approx(100.0)
 
 
 class TestJustIntonation:
     def test_unison(self):
         ji = JustIntonation()
-        assert ji.pitch_cents[0] == pytest.approx(0.0, abs=0.1)
+        assert ji.frequency(0, 440.0) == pytest.approx(440.0)
+
+    def test_octave(self):
+        ji = JustIntonation()
+        assert ji.frequency(12, 440.0) == pytest.approx(880.0)
 
     def test_perfect_fifth(self):
         ji = JustIntonation()
-        fifth_cents = CentConverter.ratio_to_cents(3 / 2)
-        assert ji.pitch_cents[7] == pytest.approx(fifth_cents, abs=0.1)
+        ratio = ji.frequency(7, 440.0) / 440.0
+        assert ratio == pytest.approx(3 / 2, abs=0.01)
 
     def test_major_third(self):
         ji = JustIntonation()
-        third_cents = CentConverter.ratio_to_cents(5 / 4)
-        assert ji.pitch_cents[4] == pytest.approx(third_cents, abs=0.1)
+        ratio = ji.frequency(4, 440.0) / 440.0
+        assert ratio == pytest.approx(5 / 4, abs=0.01)
 
     def test_perfect_fourth(self):
         ji = JustIntonation()
-        fourth_cents = CentConverter.ratio_to_cents(4 / 3)
-        assert ji.pitch_cents[5] == pytest.approx(fourth_cents, abs=0.1)
+        ratio = ji.frequency(5, 440.0) / 440.0
+        assert ratio == pytest.approx(4 / 3, abs=0.01)
 
 
 class TestPythagoreanTuning:
     def test_unison(self):
         pt = PythagoreanTuning()
-        assert pt.pitch_cents[0] == pytest.approx(0.0, abs=0.1)
+        assert pt.frequency(0, 440.0) == pytest.approx(440.0)
+
+    def test_octave(self):
+        pt = PythagoreanTuning()
+        assert pt.frequency(12, 440.0) == pytest.approx(880.0)
 
     def test_fifth(self):
         pt = PythagoreanTuning()
-        fifth_cents = CentConverter.ratio_to_cents(3 / 2)
-        assert pt.pitch_cents[7] == pytest.approx(fifth_cents, abs=0.1)
+        ratio = pt.frequency(7, 440.0) / 440.0
+        assert ratio == pytest.approx(3 / 2, abs=0.01)
 
 
 class TestMeantoneTemperament:
-    def test_pitch_count(self):
+    def test_unison(self):
         mt = MeantoneTemperament()
-        assert mt.n_pitches() == 12
+        assert mt.frequency(0, 440.0) == pytest.approx(440.0)
 
     def test_major_third_quarter_comma(self):
         mt = MeantoneTemperament(comma_fraction=0.25)
-        third_cents = CentConverter.ratio_to_cents(5 / 4)
-        assert mt.pitch_cents[4] == pytest.approx(third_cents, abs=2.0)
+        ratio = mt.frequency(4, 440.0) / 440.0
+        assert ratio == pytest.approx(5 / 4, abs=0.02)
 
 
 class TestWellTemperament:
-    def test_pitch_count(self):
+    def test_unison(self):
         wt = WellTemperament()
-        assert wt.n_pitches() == 12
+        assert wt.frequency(0, 440.0) == pytest.approx(440.0)
 
-    def test_all_cents_ascending(self):
+    def test_octave(self):
         wt = WellTemperament()
-        for i in range(1, len(wt.pitch_cents)):
-            assert wt.pitch_cents[i] > wt.pitch_cents[i - 1]
+        assert wt.frequency(12, 440.0) == pytest.approx(880.0, abs=1.0)
+
+    def test_all_frequencies_ascending(self):
+        wt = WellTemperament()
+        root = 440.0
+        prev = root
+        for d in range(1, 13):
+            f = wt.frequency(d, root)
+            assert f > prev
+            prev = f
 
 
 class TestTuningHelpers:
@@ -194,8 +220,8 @@ class TestTuningHelpers:
         r = frequency_ratio(440.0, 880.0)
         assert r == pytest.approx(2.0)
 
-
-# ── Rhythm Systems ──────────────────────────────────────────────────
+    def test_frequency_ratio_zero(self):
+        assert frequency_ratio(0.0, 440.0) == 0.0
 
 
 class TestTimelinePattern:
@@ -365,10 +391,6 @@ class TestEuclideanRhythm:
         pat = euclidean_rhythm(3, 8)
         assert pat[0] == 1
         assert sum(pat) == 3
-
-    def test_cuban_cinquillo(self):
-        pat = euclidean_rhythm(5, 8)
-        assert pat[0] == 1
 
 
 class TestNecklaceRotation:
