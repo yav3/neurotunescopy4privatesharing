@@ -1,4 +1,4 @@
-"""Music composition: counterpoint, form, orchestration."""
+"""Music composition: counterpoint, form, orchestration, voice leading, Markov."""
 from models.music_composition.counterpoint import (
     FirstSpecies, SecondSpecies,
     check_parallel_motion, is_consonant, contrary_motion_score,
@@ -12,6 +12,13 @@ from models.music_composition.orchestration import (
     InstrumentRange, INSTRUMENTS, Orchestrator,
     fits_range, assign_voices,
 )
+from models.music_composition.voice_leading import (
+    VoiceLeading, VoiceLeader, NeoRiemannian,
+    minimal_voice_leading, voice_leading_smoothness,
+)
+from models.music_composition.markov_composer import (
+    PitchMarkov, RhythmMarkov, MarkovComposer,
+)
 
 __all__ = [
     "FirstSpecies", "SecondSpecies",
@@ -21,4 +28,7 @@ __all__ = [
     "transpose", "invert", "retrograde",
     "InstrumentRange", "INSTRUMENTS", "Orchestrator",
     "fits_range", "assign_voices",
+    "VoiceLeading", "VoiceLeader", "NeoRiemannian",
+    "minimal_voice_leading", "voice_leading_smoothness",
+    "PitchMarkov", "RhythmMarkov", "MarkovComposer",
 ]
