@@ -1,113 +1,106 @@
-"""Chord construction, detection, and complexity scoring.
-
-Pure music theory — no ML, no medical code.
-"""
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from models.music_theory.intervals import (
-    CONSONANCE_SCORES,
-    PITCH_CLASSES,
-    normalize_note,
-    note_to_index,
-)
+from models.music_theory.scales import CHROMATIC_NOTES, ENHARMONIC_MAP
 
-# ---------------------------------------------------------------------------
-# Chord type definitions: name → list of semitone offsets from root
-# ---------------------------------------------------------------------------
 
-CHORD_TYPES: dict[str, list[int]] = {
-    "major":     [0, 4, 7],
-    "minor":     [0, 3, 7],
-    "dim":       [0, 3, 6],
-    "aug":       [0, 4, 8],
-    "sus2":      [0, 2, 7],
-    "sus4":      [0, 5, 7],
-    "dom7":      [0, 4, 7, 10],
-    "maj7":      [0, 4, 7, 11],
-    "min7":      [0, 3, 7, 10],
-    "dim7":      [0, 3, 6, 9],
-    "half_dim7": [0, 3, 6, 10],
-    "aug7":      [0, 4, 8, 10],
-    "min_maj7":  [0, 3, 7, 11],
-    "6th":       [0, 4, 7, 9],
-    "min6":      [0, 3, 7, 9],
-    "add9":      [0, 4, 7, 14],
-    "9th":       [0, 4, 7, 10, 14],
-    "11th":      [0, 4, 7, 10, 14, 17],
-    "13th":      [0, 4, 7, 10, 14, 17, 21],
+CHORD_FORMULAS: dict[str, tuple[int, ...]] = {
+    "major":    (0, 4, 7),
+    "minor":    (0, 3, 7),
+    "dim":      (0, 3, 6),
+    "aug":      (0, 4, 8),
+    "sus2":     (0, 2, 7),
+    "sus4":     (0, 5, 7),
+    "dom7":     (0, 4, 7, 10),
+    "maj7":     (0, 4, 7, 11),
+    "min7":     (0, 3, 7, 10),
+    "dim7":     (0, 3, 6, 9),
+    "half_dim7":(0, 3, 6, 10),
+    "aug7":     (0, 4, 8, 10),
+    "min_maj7": (0, 3, 7, 11),
+    "add9":     (0, 4, 7, 14),
+    "dom9":     (0, 4, 7, 10, 14),
+    "maj9":     (0, 4, 7, 11, 14),
+    "min9":     (0, 3, 7, 10, 14),
+    "dom11":    (0, 4, 7, 10, 14, 17),
+    "dom13":    (0, 4, 7, 10, 14, 17, 21),
+    "power":    (0, 7),
 }
 
-ALL_CHORD_TYPES: list[str] = list(CHORD_TYPES.keys())
+
+def _note_index(note: str) -> int:
+    if note in ENHARMONIC_MAP and note not in CHROMATIC_NOTES:
+        note = ENHARMONIC_MAP[note]
+    return CHROMATIC_NOTES.index(note)
 
 
 @dataclass(frozen=True)
 class Chord:
     root: str
-    chord_type: str
-    notes: tuple[str, ...]
+    quality: str
     intervals: tuple[int, ...]
+    notes: tuple[str, ...]
 
 
-def build_chord(root: str, chord_type: str = "major") -> Chord:
-    """Construct a chord from root and type name."""
-    root = normalize_note(root)
-    ct = chord_type.lower().replace(" ", "_").replace("-", "_")
-    if ct not in CHORD_TYPES:
-        raise ValueError(f"Unknown chord type: {chord_type!r}")
-    intervals = CHORD_TYPES[ct]
-    root_idx = note_to_index(root)
-    notes = tuple(PITCH_CLASSES[(root_idx + i) % 12] for i in intervals)
-    return Chord(root=root, chord_type=ct, notes=notes, intervals=tuple(intervals))
+class ChordLibrary:
 
+    @staticmethod
+    def build_chord(root: str, quality: str = "major") -> Chord:
+        if quality not in CHORD_FORMULAS:
+            raise ValueError(f"Unknown chord quality: {quality}")
+        intervals = CHORD_FORMULAS[quality]
+        root_idx = _note_index(root)
+        notes = tuple(CHROMATIC_NOTES[(root_idx + i) % 12] for i in intervals)
+        return Chord(root=root, quality=quality, intervals=intervals, notes=notes)
 
-def detect_chord(notes: list[str]) -> list[tuple[str, str, float]]:
-    """Rank-order (root, chord_type, score) for a bag of notes.
+    @staticmethod
+    def detect_chord(notes: tuple[str, ...] | list[str]) -> list[Chord]:
+        note_set = frozenset(_note_index(n) for n in notes)
+        matches: list[Chord] = []
+        for root in CHROMATIC_NOTES:
+            root_idx = _note_index(root)
+            for quality, formula in CHORD_FORMULAS.items():
+                chord_set = frozenset((root_idx + i) % 12 for i in formula)
+                if chord_set == note_set:
+                    chord_notes = tuple(
+                        CHROMATIC_NOTES[(root_idx + i) % 12] for i in formula
+                    )
+                    matches.append(
+                        Chord(root=root, quality=quality, intervals=formula, notes=chord_notes)
+                    )
+        return matches
 
-    Score = |intersection| / |chord_size| penalized by extra notes.
-    """
-    if not notes:
-        return []
+    @staticmethod
+    def chord_tones(chord: Chord) -> list[str]:
+        return list(chord.notes)
 
-    input_pcs: set[int] = {note_to_index(n) for n in notes}
-    results: list[tuple[str, str, float]] = []
+    @staticmethod
+    def available_tensions(chord: Chord) -> list[int]:
+        base = set(i % 12 for i in chord.intervals)
+        tensions: list[int] = []
+        for t in (9, 11, 13):
+            if t % 12 not in base:
+                tensions.append(t)
+        return tensions
 
-    for root_idx in range(12):
-        root_name = PITCH_CLASSES[root_idx]
-        for ct, intervals in CHORD_TYPES.items():
-            chord_pcs = {(root_idx + i) % 12 for i in intervals}
-            matched = len(input_pcs & chord_pcs)
-            if matched == 0:
-                continue
-            coverage = matched / len(chord_pcs)
-            extra_penalty = max(0, len(input_pcs) - len(chord_pcs)) * 0.1
-            score = max(0.0, coverage - extra_penalty)
-            results.append((root_name, ct, round(score, 4)))
+    @staticmethod
+    def voice_leading_cost(chord1: Chord, chord2: Chord) -> float:
+        idx1 = [_note_index(n) for n in chord1.notes]
+        idx2 = [_note_index(n) for n in chord2.notes]
+        cost = 0.0
+        for i, n1 in enumerate(idx1):
+            if i < len(idx2):
+                diff = abs(n1 - idx2[i])
+                cost += min(diff, 12 - diff)
+            else:
+                cost += 6.0
+        for j in range(len(idx1), len(idx2)):
+            cost += 6.0
+        return cost
 
-    results.sort(key=lambda x: -x[2])
-    return results
-
-
-def chord_complexity(chord: Chord) -> float:
-    """Complexity in [0, 1] based on note count and internal dissonance.
-
-    More notes and more dissonant intervals → higher complexity.
-    """
-    n = len(chord.notes)
-    size_factor = min(n / 7.0, 1.0)
-
-    if n < 2:
-        return size_factor
-
-    total_dissonance = 0.0
-    pairs = 0
-    for i in range(n):
-        for j in range(i + 1, n):
-            semitones = (chord.intervals[j] - chord.intervals[i]) % 12
-            consonance = CONSONANCE_SCORES.get(semitones, 0.5)
-            total_dissonance += 1.0 - consonance
-            pairs += 1
-
-    avg_dissonance = total_dissonance / pairs if pairs else 0.0
-    return round(0.5 * size_factor + 0.5 * avg_dissonance, 4)
+    @staticmethod
+    def common_tones(chord1: Chord, chord2: Chord) -> list[str]:
+        s1 = set(chord1.notes)
+        s2 = set(chord2.notes)
+        return sorted(s1 & s2)
