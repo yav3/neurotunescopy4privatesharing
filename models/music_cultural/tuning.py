@@ -33,6 +33,10 @@ class TuningSystem(ABC):
         fb = self.frequency(degree_b)
         return ratio_to_cents(fb / fa) if fa > 0 else 0.0
 
+    def get_ratios(self, n_degrees: int | None = None) -> list[float]:
+        n = n_degrees if n_degrees is not None else (getattr(self, 'divisions', 12) + 1)
+        return [self.frequency(d, 1.0) for d in range(n)]
+
 
 class EqualTemperament(TuningSystem):
     def __init__(self, divisions: int = 12):
