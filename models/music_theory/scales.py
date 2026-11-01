@@ -1,17 +1,10 @@
+"""Scale construction, detection, and key relationships."""
 from __future__ import annotations
 
 from dataclasses import dataclass
 
+from models.music_theory.intervals import PITCH_CLASSES, ENHARMONIC_MAP, note_to_index
 
-CHROMATIC_NOTES: tuple[str, ...] = (
-    "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
-)
-
-ENHARMONIC_MAP: dict[str, str] = {
-    "Db": "C#", "Eb": "D#", "Fb": "E", "Gb": "F#", "Ab": "G#",
-    "Bb": "A#", "Cb": "B", "E#": "F", "B#": "C",
-    "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab", "A#": "Bb",
-}
 
 SCALE_INTERVALS: dict[str, tuple[int, ...]] = {
     "major":             (0, 2, 4, 5, 7, 9, 11),
@@ -30,7 +23,20 @@ SCALE_INTERVALS: dict[str, tuple[int, ...]] = {
     "whole_tone":        (0, 2, 4, 6, 8, 10),
     "diminished":        (0, 1, 3, 4, 6, 7, 9, 10),
     "chromatic":         tuple(range(12)),
+    "bebop_dominant":    (0, 2, 4, 5, 7, 9, 10, 11),
+    "bebop_major":       (0, 2, 4, 5, 7, 8, 9, 11),
+    "hungarian_minor":   (0, 2, 3, 6, 7, 8, 11),
+    "phrygian_dominant": (0, 1, 4, 5, 7, 8, 10),
+    "double_harmonic":   (0, 1, 4, 5, 7, 8, 11),
+    "enigmatic":         (0, 1, 4, 6, 8, 10, 11),
+    "neapolitan_minor":  (0, 1, 3, 5, 7, 8, 11),
+    "neapolitan_major":  (0, 1, 3, 5, 7, 9, 11),
+    "hirajoshi":         (0, 4, 6, 7, 11),
 }
+
+ALL_SCALE_TYPES: list[str] = list(SCALE_INTERVALS.keys())
+
+CHROMATIC_NOTES = PITCH_CLASSES  # alias for compatibility
 
 KEY_SIGNATURES: dict[str, int] = {
     "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F#": 6,
@@ -51,62 +57,57 @@ class Scale:
     notes: tuple[str, ...]
 
 
-def _note_index(note: str) -> int:
-    if note in ENHARMONIC_MAP and note not in CHROMATIC_NOTES:
-        note = ENHARMONIC_MAP[note]
-    return CHROMATIC_NOTES.index(note)
+def get_scale(root: str, scale_type: str = "major") -> Scale:
+    if scale_type not in SCALE_INTERVALS:
+        raise ValueError(f"Unknown scale type: {scale_type}")
+    intervals = SCALE_INTERVALS[scale_type]
+    root_idx = note_to_index(root)
+    notes = tuple(PITCH_CLASSES[(root_idx + i) % 12] for i in intervals)
+    return Scale(root=root, scale_type=scale_type, intervals=intervals, notes=notes)
 
 
-def _build_notes(root: str, intervals: tuple[int, ...]) -> tuple[str, ...]:
-    root_idx = _note_index(root)
-    return tuple(CHROMATIC_NOTES[(root_idx + i) % 12] for i in intervals)
+def scale_degree_to_note(root: str, scale_type: str, degree: int) -> str:
+    scale = get_scale(root, scale_type)
+    idx = (degree - 1) % len(scale.notes)
+    return scale.notes[idx]
+
+
+def get_relative_minor(major_key: str) -> str:
+    idx = note_to_index(major_key)
+    return PITCH_CLASSES[(idx + 9) % 12]
+
+
+def get_relative_major(minor_key: str) -> str:
+    idx = note_to_index(minor_key)
+    return PITCH_CLASSES[(idx + 3) % 12]
+
+
+def detect_scale_from_notes(notes: list[str]) -> list[tuple[str, str, float]]:
+    if not notes:
+        return []
+    input_pcs: set[int] = {note_to_index(n) for n in notes}
+    results: list[tuple[str, str, float]] = []
+    for root_idx in range(12):
+        root_name = PITCH_CLASSES[root_idx]
+        for st, intervals in SCALE_INTERVALS.items():
+            scale_pcs = {(root_idx + i) % 12 for i in intervals}
+            matched = len(input_pcs & scale_pcs)
+            if matched == 0:
+                continue
+            coverage = matched / max(len(input_pcs), len(scale_pcs))
+            results.append((root_name, st, round(coverage, 4)))
+    results.sort(key=lambda x: -x[2])
+    return results
 
 
 class ScaleLibrary:
-
-    @staticmethod
-    def get_scale(root: str, scale_type: str = "major") -> Scale:
-        if scale_type not in SCALE_INTERVALS:
-            raise ValueError(f"Unknown scale type: {scale_type}")
-        intervals = SCALE_INTERVALS[scale_type]
-        notes = _build_notes(root, intervals)
-        return Scale(root=root, scale_type=scale_type, intervals=intervals, notes=notes)
-
-    @staticmethod
-    def all_scales() -> list[Scale]:
-        result: list[Scale] = []
-        for root in CHROMATIC_NOTES:
-            for st in SCALE_INTERVALS:
-                result.append(ScaleLibrary.get_scale(root, st))
-        return result
-
-    @staticmethod
-    def get_modes(root: str) -> list[Scale]:
-        return [ScaleLibrary.get_scale(root, m) for m in CHURCH_MODES]
-
-    @staticmethod
-    def relative_minor(major_key: str) -> str:
-        idx = _note_index(major_key)
-        return CHROMATIC_NOTES[(idx + 9) % 12]
-
-    @staticmethod
-    def relative_major(minor_key: str) -> str:
-        idx = _note_index(minor_key)
-        return CHROMATIC_NOTES[(idx + 3) % 12]
-
-    @staticmethod
-    def parallel_minor(key: str) -> str:
-        return key
-
-    @staticmethod
-    def parallel_major(key: str) -> str:
-        return key
-
-    @staticmethod
-    def enharmonic_equivalent(note: str) -> str:
-        return ENHARMONIC_MAP.get(note, note)
-
-    @staticmethod
-    def key_signature(key: str) -> int:
-        canonical = ENHARMONIC_MAP.get(key, key)
-        return KEY_SIGNATURES.get(canonical, KEY_SIGNATURES.get(key, 0))
+    get_scale = staticmethod(get_scale)
+    all_scales = staticmethod(lambda: [
+        get_scale(r, st) for r in PITCH_CLASSES for st in SCALE_INTERVALS
+    ])
+    get_modes = staticmethod(lambda root: [get_scale(root, m) for m in CHURCH_MODES])
+    relative_minor = staticmethod(get_relative_minor)
+    relative_major = staticmethod(get_relative_major)
+    enharmonic_equivalent = staticmethod(lambda note: ENHARMONIC_MAP.get(note, note))
+    key_signature = staticmethod(lambda key: KEY_SIGNATURES.get(
+        ENHARMONIC_MAP.get(key, key), KEY_SIGNATURES.get(key, 0)))

@@ -23,9 +23,9 @@ class TestIntervals:
 
     def test_interval_name(self):
         from models.music_theory.intervals import interval_name
-        assert interval_name(0) == "P1"
-        assert interval_name(7) == "P5"
-        assert interval_name(12) == "P1"  # wraps mod 12
+        assert interval_name(0) == "unison"
+        assert interval_name(7) == "perfect 5th"
+        assert interval_name(12) == "unison"  # wraps mod 12
 
 
 class TestScales:
@@ -63,15 +63,15 @@ class TestScales:
 
 class TestChords:
     def test_major_chord(self):
-        from models.music_theory.chords import build_chord
-        c = build_chord("C", "major")
+        from models.music_theory.chords import ChordLibrary
+        c = ChordLibrary.build_chord("C", "major")
         assert "C" in c.notes
         assert "E" in c.notes
         assert "G" in c.notes
 
     def test_minor_chord(self):
-        from models.music_theory.chords import build_chord
-        c = build_chord("A", "minor")
+        from models.music_theory.chords import ChordLibrary
+        c = ChordLibrary.build_chord("A", "minor")
         assert len(c.notes) == 3
 
 
