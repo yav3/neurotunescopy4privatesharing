@@ -1,4 +1,4 @@
-"""Music notation: ABC/MusicXML parsing, score analysis, staff layout, transposition."""
+"""Music notation: ABC/MusicXML parsing, score representation, analysis, staff layout, transposition."""
 from .abc_parser import (
     ABCHeader,
     ABCNote,
@@ -13,6 +13,14 @@ from .musicxml import (
     MXLScore,
     MXLParser,
     MXLWriter,
+)
+from .score import (
+    PITCH_CLASSES,
+    Note,
+    Rest,
+    Measure,
+    Score,
+    transpose_score,
 )
 from .score_analysis import (
     ScoreStatistics,
@@ -37,6 +45,7 @@ from .transposition import (
 __all__ = [
     "ABCHeader", "ABCNote", "ABCTune", "ABCParser", "ABCWriter",
     "MXLNote", "MXLMeasure", "MXLPart", "MXLScore", "MXLParser", "MXLWriter",
+    "PITCH_CLASSES", "Note", "Rest", "Measure", "Score", "transpose_score",
     "ScoreStatistics", "VoiceLeading", "MelodicAnalysis", "HarmonicRhythm",
     "Clef", "StaffLine", "NoteHead", "Beam", "StaffLayout",
     "Transposer", "InstrumentTransposition", "KeySignatureTransposer",
