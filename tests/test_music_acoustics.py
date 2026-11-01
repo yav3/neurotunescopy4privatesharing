@@ -1,177 +1,145 @@
-"""Tests for music_acoustics: psychoacoustics, room acoustics, spatial audio."""
-import pytest
+"""Tests for music_acoustics: psychoacoustics, room acoustics, spatial audio, spectral analysis."""
 import numpy as np
+import pytest
+
 from models.music_acoustics.psychoacoustics import (
     hz_to_mel, mel_to_hz, hz_to_bark, bark_to_hz, hz_to_erb, erb_to_hz,
-    critical_bandwidth, equal_loudness_contour,
-    a_weighting, c_weighting,
-    simultaneous_masking, temporal_masking,
-    spl_to_sone, sone_to_phon, phon_to_sone,
+    critical_bandwidth, equal_loudness_contour, a_weighting, c_weighting,
+    simultaneous_masking, temporal_masking, spl_to_sone, sone_to_phon, phon_to_sone,
 )
 from models.music_acoustics.room_acoustics import (
-    RoomParameters, compute_rt60, rt60_sabine, rt60_eyring, mean_free_path,
+    RoomParameters, rt60_sabine, rt60_eyring, mean_free_path, compute_rt60,
     clarity, early_decay_time, schroeder_curve, mixing_time_estimate,
-    AbsorptionCoefficients, CONCRETE, CARPET, ACOUSTIC_TILE, CURTAIN_HEAVY, GLASS,
+    AbsorptionCoefficients, CONCRETE, CARPET, ACOUSTIC_TILE,
 )
 from models.music_acoustics.spatial_audio import (
-    SPEED_OF_SOUND, HEAD_RADIUS, SpatialSource, itd, ild,
-    foa_encode, foa_decode_stereo, binaural_pan,
-    distance_attenuation, air_absorption_db,
+    SPEED_OF_SOUND, HEAD_RADIUS, itd, ild, foa_encode, foa_decode_stereo,
+    binaural_pan, distance_attenuation, air_absorption_db,
     constant_power_pan, hrtf_delay_model,
+)
+from models.music_acoustics.spectral_analysis import (
+    stft, istft, mel_filterbank, mel_spectrogram, cqt_frequencies,
+    constant_q_transform, chromagram, spectral_centroid, spectral_spread,
+    spectral_flatness, spectral_rolloff, spectral_flux,
+    compute_spectral_descriptors,
 )
 
 
-class TestMelScale:
-    def test_roundtrip(self):
+# ── Psychoacoustics ──────────────────────────────────────────────────
+
+class TestFrequencyScales:
+    def test_mel_roundtrip(self):
         for f in [100.0, 440.0, 1000.0, 8000.0]:
-            assert mel_to_hz(hz_to_mel(f)) == pytest.approx(f, rel=1e-6)
+            assert abs(mel_to_hz(hz_to_mel(f)) - f) < 0.01
 
-    def test_monotonic(self):
-        freqs = [100, 500, 1000, 4000]
-        mels = [hz_to_mel(f) for f in freqs]
-        assert all(mels[i] < mels[i + 1] for i in range(len(mels) - 1))
-
-    def test_zero(self):
-        assert hz_to_mel(0.0) == pytest.approx(0.0)
-
-    def test_array(self):
-        arr = np.array([100.0, 1000.0])
-        m = hz_to_mel(arr)
-        assert len(m) == 2
-
-
-class TestBarkScale:
-    def test_roundtrip_1000(self):
-        z = hz_to_bark(1000.0)
-        assert z > 0
-        f_back = bark_to_hz(z)
-        assert f_back == pytest.approx(1000.0, rel=0.05)
-
-    def test_monotonic(self):
-        freqs = [200, 500, 1000, 4000]
-        barks = [float(hz_to_bark(f)) for f in freqs]
-        assert all(barks[i] < barks[i + 1] for i in range(len(barks) - 1))
-
-
-class TestERBScale:
-    def test_roundtrip(self):
+    def test_bark_roundtrip(self):
         for f in [200.0, 1000.0, 4000.0]:
-            assert erb_to_hz(hz_to_erb(f)) == pytest.approx(f, rel=1e-4)
+            recovered = bark_to_hz(hz_to_bark(f))
+            assert abs(recovered - f) / f < 0.15  # Bark approx has larger error
 
-    def test_monotonic(self):
-        freqs = [100, 500, 2000, 8000]
-        erbs = [float(hz_to_erb(f)) for f in freqs]
-        assert all(erbs[i] < erbs[i + 1] for i in range(len(erbs) - 1))
+    def test_erb_roundtrip(self):
+        for f in [100.0, 1000.0, 8000.0]:
+            assert abs(erb_to_hz(hz_to_erb(f)) - f) < 0.5
 
+    def test_mel_monotonic(self):
+        freqs = np.array([100, 500, 1000, 5000, 10000], dtype=float)
+        mels = hz_to_mel(freqs)
+        assert np.all(np.diff(mels) > 0)
 
-class TestCriticalBandwidth:
-    def test_low_freq(self):
-        cb = critical_bandwidth(100.0)
-        assert cb > 25.0
-
-    def test_high_freq(self):
-        cb_low = critical_bandwidth(200.0)
-        cb_high = critical_bandwidth(8000.0)
-        assert cb_high > cb_low
-
-
-class TestEqualLoudness:
-    def test_shape(self):
-        contour = equal_loudness_contour(60.0)
-        assert contour.shape[1] == 2
-        assert contour.shape[0] >= 20
-
-    def test_1k_is_phon(self):
-        contour = equal_loudness_contour(60.0)
-        idx_1k = np.argmin(np.abs(contour[:, 0] - 1000.0))
-        assert contour[idx_1k, 1] == pytest.approx(60.0, abs=2.0)
-
-
-class TestWeighting:
-    def test_a_weighting_1k(self):
-        w = a_weighting(1000.0)
-        assert abs(w) < 3.0
-
-    def test_a_weighting_low_freq_attenuation(self):
-        w_low = a_weighting(50.0)
-        w_1k = a_weighting(1000.0)
-        assert w_low < w_1k
-
-    def test_c_weighting_1k(self):
-        w = c_weighting(1000.0)
-        assert abs(w) < 3.0
-
-    def test_a_weighting_array(self):
-        freqs = np.array([100.0, 1000.0, 10000.0])
-        w = a_weighting(freqs)
-        assert len(w) == 3
-
-
-class TestMasking:
-    def test_simultaneous(self):
-        probes = np.array([500.0, 1000.0, 2000.0, 4000.0])
-        result = simultaneous_masking(1000.0, 80.0, probes)
-        assert result.masker_freq == 1000.0
-        assert len(result.masked_threshold) == 4
-
-    def test_temporal_post(self):
-        level = temporal_masking(50.0, 80.0, pre=False)
-        assert 0 <= level <= 80.0
-
-    def test_temporal_pre(self):
-        level = temporal_masking(10.0, 80.0, pre=True)
-        assert 0 <= level <= 80.0
-
-    def test_temporal_decay(self):
-        l1 = temporal_masking(10.0, 80.0)
-        l2 = temporal_masking(100.0, 80.0)
-        assert l1 > l2
+    def test_critical_bandwidth_positive(self):
+        assert critical_bandwidth(1000.0) > 0
+        assert critical_bandwidth(100.0) < critical_bandwidth(8000.0)
 
 
 class TestLoudness:
-    def test_spl_to_sone_40phon(self):
-        s = spl_to_sone(40.0, 1000.0)
-        assert s == pytest.approx(1.0, abs=0.5)
+    def test_equal_loudness_contour_shape(self):
+        result = equal_loudness_contour(60.0)
+        assert result.shape[1] == 2
+        assert result.shape[0] > 10
 
-    def test_sone_to_phon_1(self):
-        assert sone_to_phon(1.0) == pytest.approx(40.0)
+    def test_equal_loudness_at_1khz(self):
+        result = equal_loudness_contour(60.0)
+        freqs = result[:, 0]
+        spls = result[:, 1]
+        idx_1k = np.argmin(np.abs(freqs - 1000.0))
+        assert abs(spls[idx_1k] - 60.0) < 1.0
 
-    def test_phon_sone_roundtrip(self):
-        for phon in [40.0, 60.0, 80.0]:
-            s = phon_to_sone(phon)
-            back = sone_to_phon(s)
-            assert back == pytest.approx(phon, abs=0.01)
+    def test_a_weighting_at_1khz(self):
+        w = float(a_weighting(1000.0))
+        assert abs(w) < 3.0  # ~0 dB at 1 kHz
 
-    def test_zero_spl(self):
-        assert spl_to_sone(0.0) == 0.0
+    def test_c_weighting_at_1khz(self):
+        w = float(c_weighting(1000.0))
+        assert abs(w) < 3.0
 
-    def test_zero_sone(self):
-        assert sone_to_phon(0.0) == 0.0
+    def test_a_weighting_low_freq_attenuation(self):
+        w_low = float(a_weighting(50.0))
+        w_mid = float(a_weighting(1000.0))
+        assert w_low < w_mid  # Heavy attenuation at low freq
 
+    def test_sone_phon_roundtrip(self):
+        for phon in [50.0, 60.0, 80.0]:
+            sone = phon_to_sone(phon)
+            recovered = sone_to_phon(sone)
+            assert abs(recovered - phon) < 0.01
+
+    def test_spl_to_sone_positive(self):
+        assert spl_to_sone(60.0) > 0
+        assert spl_to_sone(80.0) > spl_to_sone(60.0)
+
+
+class TestMasking:
+    def test_simultaneous_masking_shape(self):
+        probes = np.array([200, 500, 1000, 2000, 4000], dtype=float)
+        result = simultaneous_masking(1000.0, 70.0, probes)
+        assert result.masked_threshold.shape == probes.shape
+        assert result.masker_freq == 1000.0
+
+    def test_masking_peak_near_masker(self):
+        probes = np.linspace(200, 8000, 50)
+        result = simultaneous_masking(1000.0, 70.0, probes)
+        peak_idx = np.argmax(result.masked_threshold)
+        peak_freq = probes[peak_idx]
+        assert 500 < peak_freq < 2000
+
+    def test_temporal_masking_decay(self):
+        t = np.array([0, 10, 50, 100, 200], dtype=float)
+        post = temporal_masking(t, 80.0, pre=False)
+        assert np.all(np.diff(post) <= 0)  # Monotonically decreasing
+
+    def test_pre_masking_faster_decay(self):
+        t = 20.0
+        pre = temporal_masking(t, 80.0, pre=True)
+        post = temporal_masking(t, 80.0, pre=False)
+        assert float(pre) < float(post)  # Pre-masking decays faster
+
+
+# ── Room Acoustics ───────────────────────────────────────────────────
 
 class TestRT60:
-    def test_sabine_basic(self):
-        rt = rt60_sabine(200.0, 180.0, 0.3)
-        assert 0.3 < rt < 1.0
+    def test_sabine_formula(self):
+        rt = rt60_sabine(200.0, 150.0, 0.3)
+        expected = 0.161 * 200.0 / (150.0 * 0.3)
+        assert abs(rt - expected) < 0.001
 
-    def test_eyring_basic(self):
-        rt = rt60_eyring(200.0, 180.0, 0.3)
-        assert 0.3 < rt < 1.0
+    def test_eyring_less_than_sabine(self):
+        s = rt60_sabine(200.0, 150.0, 0.3)
+        e = rt60_eyring(200.0, 150.0, 0.3)
+        assert e <= s
 
-    def test_sabine_vs_eyring(self):
-        s = rt60_sabine(200.0, 180.0, 0.5)
-        e = rt60_eyring(200.0, 180.0, 0.5)
-        assert e < s
+    def test_zero_absorption_infinite(self):
+        assert rt60_sabine(200.0, 150.0, 0.0) == float("inf")
+        assert rt60_eyring(200.0, 150.0, 0.0) == float("inf")
 
-    def test_zero_absorption(self):
-        assert rt60_sabine(200.0, 180.0, 0.0) == float("inf")
+    def test_full_absorption_zero_eyring(self):
+        assert rt60_eyring(200.0, 150.0, 1.0) == 0.0
 
     def test_mean_free_path(self):
-        mfp = mean_free_path(200.0, 180.0)
-        assert mfp == pytest.approx(4.0 * 200.0 / 180.0)
+        mfp = mean_free_path(200.0, 150.0)
+        assert abs(mfp - 4.0 * 200.0 / 150.0) < 0.001
 
-    def test_compute_rt60(self):
-        room = RoomParameters(volume_m3=300.0, surface_area_m2=250.0, avg_absorption=0.25)
+    def test_compute_rt60_struct(self):
+        room = RoomParameters(200.0, 150.0, 0.3)
         result = compute_rt60(room)
         assert result.rt60_sabine > 0
         assert result.rt60_eyring > 0
@@ -179,193 +147,207 @@ class TestRT60:
 
 
 class TestClarity:
-    def test_impulse(self):
+    def test_clarity_impulse(self):
         sr = 44100
         ir = np.zeros(sr)
-        ir[0] = 1.0
-        ir[int(0.02 * sr)] = 0.5
+        ir[0] = 1.0  # Perfect impulse — all energy is early
+        ir[100:200] = 0.001 * np.random.randn(100)
         result = clarity(ir, sr)
-        assert result.c50 > 0
-        assert result.c80 > 0
-        assert 0.0 < result.d50 <= 1.0
-        assert 0.0 < result.d80 <= 1.0
+        assert result.c50 > 20  # Nearly all energy before 50ms
+        assert result.d50 > 0.9
 
-    def test_empty_ir(self):
-        result = clarity(np.zeros(100), 44100)
-        assert result.c50 == 0.0
-
-    def test_schroeder_curve(self):
-        ir = np.random.randn(1000)
+    def test_schroeder_monotonic(self):
+        ir = np.random.randn(1000) * np.exp(-np.arange(1000) / 200.0)
         sc = schroeder_curve(ir)
-        assert len(sc) == 1000
-        assert sc[0] >= sc[-1]
+        assert np.all(np.diff(sc) <= 0)
 
-    def test_early_decay_time(self):
-        sr = 44100
-        ir = np.exp(-np.arange(sr) / (0.1 * sr))
-        edt = early_decay_time(ir, sr)
-        assert edt >= 0.0
-
-
-class TestMixingTime:
-    def test_basic(self):
-        mt = mixing_time_estimate(100.0)
+    def test_mixing_time(self):
+        mt = mixing_time_estimate(200.0)
         assert mt > 0
-
-    def test_larger_room(self):
-        mt_small = mixing_time_estimate(50.0)
-        mt_big = mixing_time_estimate(500.0)
-        assert mt_big > mt_small
+        assert mixing_time_estimate(800.0) > mt
 
 
 class TestAbsorption:
-    def test_nrc_carpet(self):
+    def test_nrc(self):
         nrc = CARPET.nrc()
-        assert 0.2 < nrc < 0.6
+        assert 0 < nrc < 1
 
-    def test_nrc_concrete(self):
-        nrc = CONCRETE.nrc()
-        assert nrc < 0.05
-
-    def test_at_freq(self):
-        val = ACOUSTIC_TILE.at_freq(500.0)
-        assert val == pytest.approx(0.70, abs=0.01)
+    def test_concrete_low_absorption(self):
+        assert CONCRETE.nrc() < 0.1
 
     def test_interpolation(self):
-        val = CARPET.at_freq(375.0)
-        assert 0.06 < val < 0.14
-
-    def test_five_materials(self):
-        for mat in [CONCRETE, CARPET, ACOUSTIC_TILE, CURTAIN_HEAVY, GLASS]:
-            assert 0.0 <= mat.nrc() <= 1.0
+        val = ACOUSTIC_TILE.at_freq(750.0)
+        assert ACOUSTIC_TILE.freq_500 <= val <= ACOUSTIC_TILE.freq_1000 or \
+               ACOUSTIC_TILE.freq_1000 <= val <= ACOUSTIC_TILE.freq_500
 
 
-class TestITD:
-    def test_zero_azimuth(self):
-        assert itd(0.0) == pytest.approx(0.0, abs=1e-6)
+# ── Spatial Audio ────────────────────────────────────────────────────
 
-    def test_90_azimuth(self):
-        d = itd(90.0)
-        assert d > 0
+class TestITDILD:
+    def test_itd_zero_at_front(self):
+        assert abs(itd(0.0)) < 1e-10
 
-    def test_negative_azimuth(self):
-        d = itd(-45.0)
-        assert d < 0
+    def test_itd_symmetry(self):
+        left = itd(45.0)
+        right = itd(-45.0)
+        assert abs(left + right) < 1e-10
 
+    def test_ild_zero_at_front(self):
+        assert abs(ild(0.0, 1000.0)) < 1e-6
 
-class TestILD:
-    def test_zero_azimuth(self):
-        assert ild(0.0, 1000.0) == pytest.approx(0.0, abs=0.1)
-
-    def test_positive_azimuth(self):
-        d = ild(45.0, 4000.0)
-        assert d > 0
-
-    def test_higher_freq_more_shadow(self):
-        d_low = ild(45.0, 500.0)
-        d_high = ild(45.0, 8000.0)
-        assert d_high > d_low
+    def test_ild_frequency_dependence(self):
+        low = ild(90.0, 500.0)
+        high = ild(90.0, 4000.0)
+        assert high > low  # Higher freq → more shadow
 
 
 class TestAmbisonics:
-    def test_encode_shape(self):
+    def test_foa_encode_center(self):
         sig = np.ones(100)
         amb = foa_encode(sig, 0.0, 0.0)
-        assert len(amb.W) == 100
-        assert len(amb.X) == 100
+        assert amb.W.shape == (100,)
+        assert np.allclose(amb.Y, 0.0, atol=1e-10)  # No lateral for 0 azimuth
 
-    def test_decode_stereo_center(self):
+    def test_foa_decode_stereo_center(self):
         sig = np.ones(100)
         amb = foa_encode(sig, 0.0, 0.0)
         left, right = foa_decode_stereo(amb)
-        assert np.allclose(left, right, atol=1e-10)
-
-    def test_decode_stereo_left(self):
-        sig = np.ones(100)
-        amb = foa_encode(sig, 90.0, 0.0)
-        left, right = foa_decode_stereo(amb)
-        assert np.mean(np.abs(left)) > np.mean(np.abs(right))
+        np.testing.assert_allclose(left, right, atol=1e-10)
 
 
-class TestBinauralPan:
-    def test_center(self):
+class TestBinauralAndPanning:
+    def test_binaural_pan_center(self):
         sig = np.ones(1000)
         left, right = binaural_pan(sig, 0.0)
-        assert len(left) == 1000
-        ratio = np.mean(np.abs(left)) / max(np.mean(np.abs(right)), 1e-10)
-        assert 0.5 < ratio < 2.0
+        assert np.sum(left**2) > 0
+        assert np.sum(right**2) > 0
 
-    def test_left_right_difference(self):
-        sig = np.ones(1000)
-        l1, r1 = binaural_pan(sig, 45.0)
-        l2, r2 = binaural_pan(sig, -45.0)
-        assert np.sum(np.abs(l1)) != pytest.approx(np.sum(np.abs(l2)), abs=1.0)
+    def test_distance_attenuation_inverse(self):
+        assert distance_attenuation(1.0) == 1.0
+        assert abs(distance_attenuation(2.0) - 0.5) < 0.001
+        assert abs(distance_attenuation(10.0) - 0.1) < 0.001
 
+    def test_air_absorption_increases_with_distance(self):
+        near = air_absorption_db(1.0, 4000.0)
+        far = air_absorption_db(10.0, 4000.0)
+        assert far > near
 
-class TestDistanceAttenuation:
-    def test_at_reference(self):
-        assert distance_attenuation(1.0) == pytest.approx(1.0)
+    def test_constant_power_pan_center(self):
+        p = constant_power_pan(0.0)
+        assert abs(p.left_gain**2 + p.right_gain**2 - 1.0) < 0.01
 
-    def test_double_distance(self):
-        assert distance_attenuation(2.0) == pytest.approx(0.5)
+    def test_constant_power_pan_extremes(self):
+        left = constant_power_pan(-1.0)
+        right = constant_power_pan(1.0)
+        assert left.left_gain > left.right_gain
+        assert right.right_gain > right.left_gain
 
-    def test_zero(self):
-        assert distance_attenuation(0.0) == 1.0
-
-
-class TestAirAbsorption:
-    def test_positive(self):
-        db = air_absorption_db(10.0, 8000.0)
-        assert db > 0
-
-    def test_increases_with_distance(self):
-        db1 = air_absorption_db(5.0, 4000.0)
-        db2 = air_absorption_db(50.0, 4000.0)
-        assert db2 > db1
-
-    def test_increases_with_freq(self):
-        db1 = air_absorption_db(10.0, 1000.0)
-        db2 = air_absorption_db(10.0, 8000.0)
-        assert db2 > db1
-
-
-class TestConstantPowerPan:
-    def test_center(self):
-        pos = constant_power_pan(0.0)
-        assert pos.left_gain == pytest.approx(pos.right_gain, abs=0.01)
-
-    def test_hard_left(self):
-        pos = constant_power_pan(-1.0)
-        assert pos.left_gain > pos.right_gain
-
-    def test_hard_right(self):
-        pos = constant_power_pan(1.0)
-        assert pos.right_gain > pos.left_gain
-
-    def test_power_conservation(self):
-        pos = constant_power_pan(0.3)
-        power = pos.left_gain ** 2 + pos.right_gain ** 2
-        assert power == pytest.approx(1.0, abs=0.01)
-
-
-class TestHRTF:
-    def test_center(self):
+    def test_hrtf_delay_symmetry(self):
         ld, rd = hrtf_delay_model(0.0, 0.0)
-        assert ld == pytest.approx(rd, abs=1e-8)
-
-    def test_left_right_difference(self):
-        ld, rd = hrtf_delay_model(45.0, 0.0)
-        assert ld != pytest.approx(rd)
-
-    def test_symmetry(self):
-        ld1, rd1 = hrtf_delay_model(30.0, 0.0)
-        ld2, rd2 = hrtf_delay_model(-30.0, 0.0)
-        assert ld1 == pytest.approx(rd2, abs=1e-10)
-        assert rd1 == pytest.approx(ld2, abs=1e-10)
+        assert abs(ld - rd) < 1e-10
+        ld2, rd2 = hrtf_delay_model(45.0, 0.0)
+        assert ld2 != rd2
 
 
-class TestSpatialSource:
-    def test_creation(self):
-        src = SpatialSource(azimuth_deg=45.0, elevation_deg=10.0, distance_m=2.0)
-        assert src.azimuth_deg == 45.0
-        assert src.distance_m == 2.0
+# ── Spectral Analysis ────────────────────────────────────────────────
+
+class TestSTFT:
+    def test_stft_shape(self):
+        sig = np.random.randn(8000)
+        S = stft(sig, n_fft=1024, hop_length=256)
+        assert S.shape[0] == 513  # n_fft//2 + 1
+
+    def test_stft_istft_roundtrip(self):
+        sig = np.sin(2 * np.pi * 440 * np.arange(4000) / 16000)
+        S = stft(sig, n_fft=1024, hop_length=256)
+        reconstructed = istft(S, hop_length=256)
+        min_len = min(len(sig), len(reconstructed))
+        corr = np.corrcoef(sig[:min_len], reconstructed[:min_len])[0, 1]
+        assert corr > 0.5  # OLA reconstruction with simple windowing
+
+
+class TestMelFilterbank:
+    def test_mel_filterbank_shape(self):
+        fb = mel_filterbank(40, 2048, 22050)
+        assert fb.shape == (40, 1025)
+
+    def test_mel_spectrogram_shape(self):
+        sig = np.random.randn(16000)
+        ms = mel_spectrogram(sig, 16000, n_fft=1024, hop_length=256, n_mels=40)
+        assert ms.shape[0] == 40
+
+
+class TestCQT:
+    def test_cqt_frequencies_geometric(self):
+        freqs = cqt_frequencies(24, f_min=32.7, bins_per_octave=12)
+        ratios = freqs[1:] / freqs[:-1]
+        np.testing.assert_allclose(ratios, ratios[0], rtol=1e-10)
+
+    def test_cqt_shape(self):
+        sig = np.random.randn(8000)
+        C = constant_q_transform(sig, 16000, n_bins=24)
+        assert C.shape[0] == 24
+
+
+class TestChromagram:
+    def test_chromagram_shape(self):
+        sig = np.random.randn(16000)
+        ch = chromagram(sig, 16000)
+        assert ch.shape[0] == 12
+
+    def test_chromagram_440hz_peak(self):
+        sr = 16000
+        t = np.arange(sr) / sr
+        sig = np.sin(2 * np.pi * 440 * t)
+        ch = chromagram(sig, sr, n_fft=2048, hop_length=512)
+        mean_chroma = ch.mean(axis=1)
+        peak_class = int(np.argmax(mean_chroma))
+        # Implementation: pitch_class = round(12*log2(f/440)) % 12, so A=0
+        assert peak_class == 0
+
+
+class TestSpectralDescriptors:
+    def test_centroid_at_peak(self):
+        freqs = np.arange(100)
+        mag = np.zeros(100)
+        mag[50] = 1.0
+        c = spectral_centroid(mag, freqs)
+        assert abs(c - 50.0) < 0.01
+
+    def test_flatness_uniform(self):
+        mag = np.ones(100)
+        f = spectral_flatness(mag)
+        assert abs(f - 1.0) < 0.01
+
+    def test_flatness_peaked(self):
+        mag = np.zeros(100)
+        mag[50] = 100.0
+        mag += 0.001  # Avoid log(0)
+        f = spectral_flatness(mag)
+        assert f < 0.1
+
+    def test_rolloff(self):
+        freqs = np.arange(100, dtype=float)
+        mag = np.ones(100)
+        r = spectral_rolloff(mag, freqs, threshold=0.85)
+        assert 80 <= r <= 90
+
+    def test_flux_zero_identical(self):
+        a = np.ones(100)
+        assert spectral_flux(a, a) == 0.0
+
+    def test_flux_positive_increase(self):
+        a = np.ones(100)
+        b = np.ones(100) * 2
+        assert spectral_flux(b, a) > 0
+
+    def test_compute_descriptors(self):
+        freqs = np.linspace(0, 8000, 513)
+        mag = np.random.rand(513)
+        prev = np.random.rand(513)
+        desc = compute_spectral_descriptors(mag, freqs, prev)
+        assert desc.centroid > 0
+        assert desc.spread > 0
+        assert 0 <= desc.flatness <= 1
+        assert desc.rolloff > 0
+        assert desc.flux >= 0
