@@ -280,3 +280,73 @@ class TestEndToEndPipeline:
 
         assert answer.content_hash
         assert answer.frontier_reasoning is not None
+
+
+class TestLineageIntegration:
+    """Verify that training trials produce hash-chained lineage records."""
+
+    def test_trial_record_chains_into_lineage(self):
+        from models.evidence.lineage import LineageChain
+        from models.evidence.registry import StudyRegistry
+
+        chain = LineageChain()
+        registry = StudyRegistry()
+
+        from models.training.hybrid_trainer import HybridTrainingPipeline, HybridTrainConfig
+        config = HybridTrainConfig(
+            pretrain_epochs=1, finetune_epochs=1,
+            pretrain_batch_size=4, finetune_batch_size=4,
+        )
+        pipeline = HybridTrainingPipeline(
+            config=config, registry=registry, lineage=chain,
+        )
+
+        # Build a minimal synthetic dataset to avoid Merlin dependency
+        from models.training.hybrid_trainer import GEOExpressionDataset
+        rng = np.random.default_rng(2026)
+        n_samples, n_genes = 20, 50
+        expr = rng.standard_normal((n_samples, n_genes)).astype(np.float32)
+        conditions = ["control"] * 10 + ["treated"] * 10
+        gene_names = [f"G{i}" for i in range(n_genes)]
+        dataset = GEOExpressionDataset(expr, conditions, gene_names, "human")
+
+        # Monkey-patch load_pooled_data to return our synthetic dataset
+        pipeline.load_pooled_data = lambda **_kw: dataset
+
+        record = pipeline.run_governed_trial(study_id="NT-TEST-001")
+
+        # Lineage chain should have exactly one record
+        assert len(chain) == 1
+        assert chain.verify_chain()
+        assert record.extra.get("lineage_hash")
+
+        # Registry should have the verdict
+        study = registry.get("NT-TEST-001")
+        assert study is not None
+        assert study.verdict in ("met", "not_met")
+
+        # Second trial chains
+        pipeline2 = HybridTrainingPipeline(
+            config=config, registry=None, lineage=chain,
+        )
+        pipeline2.load_pooled_data = lambda **_kw: dataset
+        record2 = pipeline2.run_governed_trial(study_id="NT-TEST-002")
+
+        assert len(chain) == 2
+        assert chain.verify_chain()
+        assert record2.extra["lineage_hash"] != record.extra["lineage_hash"]
+
+    def test_chain_hash_cross_repo_compatibility(self):
+        """Verify our chain_hash matches the canonical formula."""
+        from models.evidence.lineage import chain_hash
+        import hashlib, json
+
+        # Canonical formula (inline from neurotunes3)
+        payload = json.dumps({
+            "prev_hash": "abc", "record_id": "r1",
+            "problem_spec": {"x": 1}, "answer_values": {"y": 2},
+            "timestamp": 999.0,
+        }, sort_keys=True)
+        expected = hashlib.sha256(payload.encode()).hexdigest()
+        actual = chain_hash("abc", "r1", {"x": 1}, {"y": 2}, 999.0)
+        assert actual == expected

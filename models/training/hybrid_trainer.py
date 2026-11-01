@@ -40,6 +40,8 @@ from models.foundation.hybrid_model import (
     HybridFoundationModel,
     HybridModelConfig,
 )
+from models.evidence.lineage import LineageChain, chain_hash
+from models.evidence.registry import StudyRegistry
 
 
 @dataclass
@@ -159,9 +161,13 @@ class HybridTrainingPipeline:
         self,
         merlin_root: str | Path = "/home/user/merlinaineuralplus2",
         config: HybridTrainConfig | None = None,
+        registry: StudyRegistry | None = None,
+        lineage: LineageChain | None = None,
     ):
         self.merlin_root = Path(merlin_root)
         self.config = config or HybridTrainConfig()
+        self.registry = registry
+        self.lineage = lineage if lineage is not None else LineageChain()
 
     def load_pooled_data(
         self,
@@ -432,4 +438,43 @@ class HybridTrainingPipeline:
             },
         )
         record.compute_hash()
+
+        if self.registry is not None:
+            study = self.registry.register(
+                study_id=study_id,
+                title=f"Hybrid foundation-frontier trial {study_id}",
+                criterion="val_mse < baseline AND val_r > baseline AND val_r > 0 AND val_mse finite",
+                data_kind="geo_expression",
+                synthetic=False,
+            )
+            self.registry.record_verdict(
+                study_id=study_id,
+                measured={
+                    "val_mse": val_mse, "val_r": val_r,
+                    "test_mse": test_mse, "test_r": test_r,
+                    "baseline_mse": mean_baseline["mse"],
+                    "baseline_r": mean_baseline["r"],
+                    "criteria_met": criteria_met,
+                },
+                summary=f"val_mse={val_mse:.4f} val_r={val_r:.4f} ({criteria_met}/4 criteria)",
+                verdict="met" if verdict == "MET" else "not_met",
+            )
+
+        lineage_record = self.lineage.append(
+            record_id=study_id,
+            problem_spec={
+                "model": "hybrid_foundation_frontier",
+                "species": species,
+                "n_genes": n_genes,
+                "criterion": "val_mse < baseline AND val_r > baseline",
+            },
+            answer_values={
+                "verdict": verdict,
+                "val_mse": val_mse,
+                "val_r": val_r,
+                "content_hash": record.content_hash,
+            },
+        )
+        record.extra["lineage_hash"] = lineage_record.record_hash
+
         return record
