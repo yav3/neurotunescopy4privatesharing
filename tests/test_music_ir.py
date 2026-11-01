@@ -388,3 +388,292 @@ class TestCoverSongDetector:
         result = det.compare(np.array([]), np.random.rand(12, 10))
         assert result["dtw_distance"] == float("inf")
         assert result["cover_score"] == 0.0
+
+
+# ---------- Search ----------
+
+from models.music_ir.search import InvertedIndex, TrackIndex, QueryExpander, SearchRanker
+
+
+class TestInvertedIndex:
+    def test_add_and_search(self):
+        idx = InvertedIndex()
+        idx.add("t1", ["rock", "guitar", "drums"])
+        idx.add("t2", ["jazz", "piano", "smooth"])
+        idx.add("t3", ["rock", "piano", "heavy"])
+        results = idx.search(["rock"], top_k=5)
+        ids = [r[0] for r in results]
+        assert "t1" in ids
+        assert "t3" in ids
+        assert "t2" not in ids
+
+    def test_tfidf_ranking(self):
+        idx = InvertedIndex()
+        idx.add("t1", ["rock", "rock", "guitar"])
+        idx.add("t2", ["rock", "jazz"])
+        results = idx.search(["rock"], top_k=2)
+        assert results[0][0] == "t1"
+        assert results[0][1] > results[1][1]
+
+    def test_empty_query(self):
+        idx = InvertedIndex()
+        idx.add("t1", ["rock"])
+        assert idx.search([]) == []
+
+    def test_empty_index(self):
+        idx = InvertedIndex()
+        assert idx.search(["rock"]) == []
+
+    def test_case_insensitive(self):
+        idx = InvertedIndex()
+        idx.add("t1", ["Rock", "GUITAR"])
+        results = idx.search(["rock"])
+        assert len(results) == 1
+        assert results[0][0] == "t1"
+
+    def test_num_docs(self):
+        idx = InvertedIndex()
+        assert idx.num_docs == 0
+        idx.add("t1", ["rock"])
+        assert idx.num_docs == 1
+
+    def test_vocab_size(self):
+        idx = InvertedIndex()
+        idx.add("t1", ["rock", "guitar"])
+        assert idx.vocab_size == 2
+
+
+class TestTrackIndex:
+    def test_text_search(self):
+        ti = TrackIndex()
+        ti.index_track("t1", {"title": "chill vibes", "genre": "ambient"})
+        ti.index_track("t2", {"title": "party dance", "genre": "pop"})
+        results = ti.text_search("chill", top_k=2)
+        assert results[0][0] == "t1"
+
+    def test_feature_search(self):
+        ti = TrackIndex()
+        ti.index_track("t1", {"title": "a", "bpm": 120, "energy": 0.8})
+        ti.index_track("t2", {"title": "b", "bpm": 80, "energy": 0.3})
+        results = ti.feature_search({"bpm": 120, "energy": 0.8}, top_k=2)
+        assert results[0][0] == "t1"
+
+    def test_num_tracks(self):
+        ti = TrackIndex()
+        assert ti.num_tracks == 0
+        ti.index_track("t1", {"title": "test"})
+        assert ti.num_tracks == 1
+
+
+class TestQueryExpander:
+    def test_expand_known_term(self):
+        expanded = QueryExpander.expand(["rock"])
+        assert "rock" in expanded
+        assert len(expanded) > 1
+
+    def test_expand_unknown_term(self):
+        expanded = QueryExpander.expand(["xyzzy_unknown"])
+        assert expanded == ["xyzzy_unknown"]
+
+    def test_expand_empty(self):
+        assert QueryExpander.expand([]) == []
+
+
+class TestSearchRanker:
+    def test_rerank_basic(self):
+        ranker = SearchRanker()
+        text_results = [("t1", 0.8), ("t2", 0.6), ("t3", 0.9)]
+        feat_results = [("t1", 0.1), ("t2", 0.5), ("t3", 0.2)]
+        ranked = ranker.rerank(text_results, feat_results, top_k=2)
+        assert len(ranked) == 2
+
+    def test_rerank_feature_tiebreak(self):
+        ranker = SearchRanker(text_weight=0.5, feature_weight=0.5)
+        text_results = [("t1", 0.5), ("t2", 0.5)]
+        feat_results = [("t1", 0.0), ("t2", 1.0)]
+        ranked = ranker.rerank(text_results, feat_results, top_k=2)
+        assert ranked[0][0] == "t1"
+
+    def test_rerank_empty(self):
+        ranker = SearchRanker()
+        ranked = ranker.rerank([], [])
+        assert ranked == []
+
+
+# ---------- Tagging ----------
+
+from models.music_ir.tagging import AutoTagger, GenreClassifier, MoodTagger, InstrumentDetector
+
+
+class TestAutoTagger:
+    def test_tag_electronic(self):
+        tagger = AutoTagger()
+        tags = tagger.tag({"acousticness": 0.1, "energy": 0.8})
+        assert "electronic" in tags
+
+    def test_tag_acoustic(self):
+        tagger = AutoTagger()
+        tags = tagger.tag({"acousticness": 0.9})
+        assert "acoustic" in tags
+
+    def test_tag_empty_features(self):
+        tagger = AutoTagger()
+        tags = tagger.tag({})
+        assert isinstance(tags, list)
+
+    def test_tag_confidence(self):
+        tagger = AutoTagger()
+        results = tagger.tag_confidence({"acousticness": 0.85})
+        assert len(results) > 0
+        assert all(0 < conf <= 1.0 for _, conf in results)
+        assert results[0][1] >= results[-1][1]
+
+
+class TestGenreClassifier:
+    def test_classify_pop(self):
+        gc = GenreClassifier()
+        results = gc.classify({"bpm": 120, "valence": 0.65, "energy": 0.65,
+                               "danceability": 0.7, "acousticness": 0.3})
+        assert results[0][0] == "Pop"
+
+    def test_classify_metal(self):
+        gc = GenreClassifier()
+        results = gc.classify({"bpm": 140, "valence": 0.35, "energy": 0.95,
+                               "danceability": 0.3, "acousticness": 0.15})
+        assert results[0][0] == "Metal"
+
+    def test_classify_top_k(self):
+        gc = GenreClassifier()
+        results = gc.classify({"bpm": 120, "energy": 0.5}, top_k=5)
+        assert len(results) == 5
+
+    def test_classify_all_similarities_positive(self):
+        gc = GenreClassifier()
+        results = gc.classify({"bpm": 100}, top_k=10)
+        assert all(sim > 0 for _, sim in results)
+
+
+class TestMoodTagger:
+    def test_happy_mood(self):
+        mt = MoodTagger()
+        results = mt.tag(valence=0.8, arousal=0.7, dominance=0.6)
+        assert results[0][0] == "Happy"
+
+    def test_sad_mood(self):
+        mt = MoodTagger()
+        results = mt.tag(valence=0.2, arousal=0.2, dominance=0.3)
+        assert results[0][0] == "Sad"
+
+    def test_top_k(self):
+        mt = MoodTagger()
+        results = mt.tag(valence=0.5, arousal=0.5, top_k=5)
+        assert len(results) == 5
+
+    def test_similarities_positive(self):
+        mt = MoodTagger()
+        results = mt.tag(valence=0.5, arousal=0.5, top_k=15)
+        assert all(sim > 0 for _, sim in results)
+
+
+class TestInstrumentDetector:
+    def test_detect_drums(self):
+        det = InstrumentDetector()
+        results = det.detect({"spectral_centroid": 0.6, "spectral_flatness": 0.7})
+        instruments = [r[0] for r in results]
+        assert "drums" in instruments
+
+    def test_detect_bass(self):
+        det = InstrumentDetector()
+        results = det.detect({"spectral_centroid": 0.08, "spectral_flatness": 0.25})
+        instruments = [r[0] for r in results]
+        assert "bass" in instruments
+
+    def test_detect_threshold(self):
+        det = InstrumentDetector()
+        results_low = det.detect({"spectral_centroid": 0.5, "spectral_flatness": 0.5}, threshold=0.1)
+        results_high = det.detect({"spectral_centroid": 0.5, "spectral_flatness": 0.5}, threshold=0.9)
+        assert len(results_low) >= len(results_high)
+
+
+# ---------- Segmentation ----------
+
+from models.music_ir.segmentation import StructuralSegmenter, ChromaAnalyzer
+
+
+class TestStructuralSegmenter:
+    def test_segment_basic(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(44100).astype(np.float64)
+        seg = StructuralSegmenter()
+        segments = seg.segment(signal, sr=22050, n_segments=3)
+        assert len(segments) >= 1
+        assert all("start" in s and "end" in s and "label" in s for s in segments)
+
+    def test_segment_labels_unique(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(44100).astype(np.float64)
+        seg = StructuralSegmenter()
+        segments = seg.segment(signal, sr=22050, n_segments=4)
+        labels = [s["label"] for s in segments]
+        assert labels[0] == "A"
+
+    def test_segment_short_signal(self):
+        seg = StructuralSegmenter()
+        segments = seg.segment(np.zeros(100), sr=22050)
+        assert len(segments) == 1
+        assert segments[0]["label"] == "A"
+
+    def test_self_similarity_shape(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        seg = StructuralSegmenter()
+        ssm = seg.self_similarity(signal, sr=22050)
+        assert ssm.ndim == 2
+        assert ssm.shape[0] == ssm.shape[1]
+
+    def test_self_similarity_diagonal(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        seg = StructuralSegmenter()
+        ssm = seg.self_similarity(signal, sr=22050)
+        diag = np.diag(ssm)
+        assert np.all(diag >= 0.99)
+
+
+class TestChromaAnalyzer:
+    def test_chromagram_shape(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        ca = ChromaAnalyzer()
+        cg = ca.chromagram(signal, sr=22050)
+        assert cg.shape[0] == 12
+        assert cg.shape[1] > 0
+
+    def test_chromagram_normalized(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        ca = ChromaAnalyzer()
+        cg = ca.chromagram(signal, sr=22050)
+        col_norms = np.linalg.norm(cg, axis=0)
+        assert np.allclose(col_norms, 1.0, atol=1e-4)
+
+    def test_key_profile_sums_to_one(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        ca = ChromaAnalyzer()
+        profile = ca.key_profile(signal, sr=22050)
+        assert len(profile) == 12
+        assert abs(sum(profile.values()) - 1.0) < 1e-6
+
+    def test_estimate_key(self):
+        rng = np.random.default_rng(42)
+        signal = rng.standard_normal(22050).astype(np.float64)
+        ca = ChromaAnalyzer()
+        note, mode = ca.estimate_key(signal, sr=22050)
+        assert note in ChromaAnalyzer.NOTE_NAMES
+        assert mode in ("major", "minor")
+
+    def test_key_profile_silent(self):
+        ca = ChromaAnalyzer()
+        profile = ca.key_profile(np.zeros(4096), sr=22050)
+        assert all(v == 0.0 for v in profile.values())
