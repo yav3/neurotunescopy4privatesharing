@@ -5,20 +5,11 @@ Usage:
     python scripts/run_hybrid.py                  # train + infer (mock frontier)
     python scripts/run_hybrid.py --frontier real   # train + infer (real Claude)
     python scripts/run_hybrid.py --infer-only PATH # load checkpoint, infer
-
-Steps:
-    1. Load pooled GEO expression data from Merlin
-    2. Pretrain via Masked Gene Modeling (self-supervised)
-    3. Finetune on perturbation pairs (supervised)
-    4. Evaluate against mean-baseline (4-criterion protocol)
-    5. Save checkpoint + trial record
-    6. Run governed inference with frontier reasoning
 """
 from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -33,45 +24,20 @@ from models.foundation.hybrid_model import HybridFoundationModel, HybridModelCon
 from models.foundation.frontier_bridge import QueryType
 from models.foundation.frontier_caller import (
     ClaudeFrontierCaller,
-    FrontierCallerConfig,
     MockFrontierCaller,
 )
 from models.training.hybrid_trainer import (
     HybridTrainConfig,
     HybridTrainingPipeline,
-    GEOExpressionDataset,
 )
-from models.training.checkpoint import save_checkpoint, load_checkpoint
+from models.training.checkpoint import load_checkpoint
+from models.inference.hybrid_inference import (
+    HybridInferenceService,
+    InferenceConfig,
+)
 
 
-def train_and_evaluate(
-    max_genes: int = 2000,
-    species: str = "human",
-    study_id: str = "NT-006",
-    pretrain: bool = True,
-    train_config: HybridTrainConfig | None = None,
-) -> tuple[HybridFoundationModel, dict]:
-    """Train the foundation model on real GEO data.
-
-    Returns (trained_model, trial_record_dict).
-    """
-    config = train_config or HybridTrainConfig(
-        pretrain_epochs=50,
-        finetune_epochs=30,
-        pretrain_lr=1e-4,
-        finetune_lr=5e-5,
-        patience=8,
-    )
-
-    pipeline = HybridTrainingPipeline(config=config)
-    print(f"[{study_id}] Loading pooled GEO data (max_genes={max_genes})...")
-    record = pipeline.run_governed_trial(
-        study_id=study_id,
-        max_genes=max_genes,
-        species=species,
-        pretrain_first=pretrain,
-    )
-
+def print_record(record):
     print(f"\n{'='*60}")
     print(f"  GOVERNED TRIAL: {record.study_id}")
     print(f"{'='*60}")
@@ -89,62 +55,14 @@ def train_and_evaluate(
     print(f"{'='*60}")
     print(f"  Criteria:    {record.criteria_met}/{record.criteria_total}")
     print(f"  Verdict:     {record.verdict}")
+    print(f"  Frontier:    {record.extra.get('frontier_used', False)}")
     print(f"  Hash:        {record.content_hash[:16]}...")
+    if "checkpoint_path" in record.extra:
+        print(f"  Checkpoint:  {record.extra['checkpoint_path']}")
     print(f"{'='*60}\n")
 
-    gc = GeneFoundationConfig(max_genes=record.n_genes, hidden_dim=256,
-                              num_layers=6, num_heads=8)
-    hybrid_config = HybridModelConfig(gene_config=gc, use_frontier=True)
-    model = HybridFoundationModel(hybrid_config)
 
-    if pretrain:
-        dataset = pipeline.load_pooled_data(max_genes=max_genes, species=species)
-        encoder, _ = pipeline.run_pretrain(dataset, gc)
-        model.encoder = encoder
-
-    ckpt_path = save_checkpoint(model, record, tag="governed")
-    print(f"  Checkpoint:  {ckpt_path}")
-
-    return model, record
-
-
-def run_governed_inference(
-    model: HybridFoundationModel,
-    dataset: GEOExpressionDataset,
-    frontier_mode: str = "mock",
-    hypothesis: str = "Perturbation alters gene regulatory network topology",
-    study_id: str = "NT-006",
-):
-    """Run governed inference with frontier reasoning."""
-    if frontier_mode == "real":
-        caller = ClaudeFrontierCaller()
-        print("\n  Frontier:    Claude API (real)")
-    else:
-        caller = MockFrontierCaller(confidence=0.75)
-        print("\n  Frontier:    Mock (deterministic)")
-
-    sample_expr = torch.tensor(
-        dataset.pairs[0][0][np.newaxis, :], dtype=torch.float32
-    )
-    gene_ids = torch.arange(sample_expr.shape[1]).unsqueeze(0)
-
-    print("  Running governed inference...")
-    t0 = time.time()
-
-    answer = model.predict_and_explain(
-        expression=sample_expr,
-        gene_indices=gene_ids,
-        gene_names=dataset.gene_names,
-        species=dataset.species,
-        regime="data-driven" if len(dataset.pairs) >= 30 else "prior-contrast",
-        hypothesis=hypothesis,
-        study_id=study_id,
-        frontier_call=caller,
-        query_type=QueryType.PERTURBATION_HYPOTHESIS,
-    )
-
-    elapsed = time.time() - t0
-
+def print_answer(answer, elapsed: float):
     print(f"\n{'='*60}")
     print(f"  GOVERNED HYBRID ANSWER")
     print(f"{'='*60}")
@@ -187,37 +105,6 @@ def run_governed_inference(
     print(f"\n  Inference time: {elapsed:.2f}s")
     print(f"{'='*60}")
 
-    results_dir = Path(__file__).parent.parent / "results"
-    results_dir.mkdir(exist_ok=True)
-    ts = time.strftime("%Y%m%d_%H%M%S")
-    result_path = results_dir / f"governed_answer_{ts}.json"
-
-    result_json = {
-        "species": answer.species,
-        "regime": answer.regime,
-        "study_id": answer.study_id,
-        "is_governed": answer.is_governed,
-        "content_hash": answer.content_hash,
-        "lineage_chain": answer.lineage_chain,
-        "foundation_prediction": {
-            k: v for k, v in pred.items()
-            if k != "predicted_expression"
-        },
-        "frontier_reasoning": {
-            "reasoning": fr.reasoning,
-            "confidence": fr.confidence,
-            "evidence_citations": fr.evidence_citations,
-            "suggested_experiments": fr.suggested_experiments,
-            "caveats": fr.caveats,
-        } if answer.frontier_reasoning else None,
-        "inference_seconds": elapsed,
-    }
-    with open(result_path, "w") as f:
-        json.dump(result_json, f, indent=2, default=str)
-    print(f"  Result:      {result_path}\n")
-
-    return answer
-
 
 def main():
     parser = argparse.ArgumentParser(
@@ -241,12 +128,16 @@ def main():
     )
     parser.add_argument(
         "--infer-only", type=str, default=None,
-        help="Path to checkpoint — skip training, run inference only",
+        help="Path to checkpoint -- skip training, run inference only",
     )
     parser.add_argument(
         "--hypothesis", type=str,
         default="Perturbation alters gene regulatory network topology",
         help="Pre-registered hypothesis for frontier reasoning",
+    )
+    parser.add_argument(
+        "--checkpoint-dir", type=str, default="checkpoints",
+        help="Directory for saved checkpoints (default: checkpoints/)",
     )
     args = parser.parse_args()
 
@@ -258,34 +149,116 @@ def main():
     print(f"  Pretrain:    {not args.no_pretrain}")
     print()
 
-    pipeline = HybridTrainingPipeline()
+    use_real = args.frontier == "real"
+    if use_real:
+        caller = ClaudeFrontierCaller()
+    else:
+        caller = MockFrontierCaller(confidence=0.75)
 
     if args.infer_only:
-        print(f"  Loading checkpoint: {args.infer_only}")
-        dataset = pipeline.load_pooled_data(max_genes=args.max_genes)
-        n_genes = len(dataset.gene_names)
-        gc = GeneFoundationConfig(max_genes=n_genes, hidden_dim=256,
-                                  num_layers=6, num_heads=8)
-        hybrid_config = HybridModelConfig(gene_config=gc, use_frontier=True)
-        model = HybridFoundationModel(hybrid_config)
-        model, meta = load_checkpoint(args.infer_only, model)
-        print(f"  Loaded study {meta['study_id']}, hash {meta['weights_hash'][:16]}...")
-    else:
-        model, record = train_and_evaluate(
-            max_genes=args.max_genes,
-            study_id=args.study_id,
-            pretrain=not args.no_pretrain,
+        ckpt_path = Path(args.infer_only)
+        print(f"  Loading checkpoint: {ckpt_path}")
+
+        payload = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+        cfg = payload.get("config", {})
+        gc_cfg = cfg.get("gene_config", {})
+
+        gc = GeneFoundationConfig(
+            max_genes=gc_cfg.get("max_genes", args.max_genes),
+            hidden_dim=gc_cfg.get("hidden_dim", 256),
+            num_layers=gc_cfg.get("num_layers", 6),
+            num_heads=gc_cfg.get("num_heads", 8),
         )
-        dataset = pipeline.load_pooled_data(max_genes=args.max_genes)
+        model_config = HybridModelConfig(
+            gene_config=gc,
+            use_frontier=True,
+            prediction_hidden=cfg.get("prediction_hidden", 512),
+            prediction_dropout=cfg.get("prediction_dropout", 0.1),
+        )
+        gene_names = [f"GENE{i}" for i in range(gc.max_genes)]
 
-    run_governed_inference(
-        model=model,
-        dataset=dataset,
-        frontier_mode=args.frontier,
-        hypothesis=args.hypothesis,
-        study_id=args.study_id,
-    )
+        inf_config = InferenceConfig(use_real_frontier=use_real)
+        service = HybridInferenceService.from_checkpoint(
+            ckpt_path,
+            gene_names=gene_names,
+            model_config=model_config,
+            inference_config=inf_config,
+        )
 
+        expression = np.random.randn(gc.max_genes).astype(np.float32)
+        t0 = time.time()
+        answer = service.infer(
+            expression,
+            hypothesis=args.hypothesis,
+            study_id=f"{args.study_id}-infer",
+        )
+        print_answer(answer, time.time() - t0)
+
+    else:
+        config = HybridTrainConfig(
+            pretrain_epochs=50,
+            finetune_epochs=30,
+            pretrain_lr=1e-4,
+            finetune_lr=5e-5,
+            patience=8,
+        )
+        pipeline = HybridTrainingPipeline(
+            config=config, frontier_caller=caller,
+        )
+
+        print("  Training via run_and_serve()...")
+        record, service = pipeline.run_and_serve(
+            study_id=args.study_id,
+            max_genes=args.max_genes,
+            species="human",
+            pretrain_first=not args.no_pretrain,
+            checkpoint_dir=args.checkpoint_dir,
+        )
+        print_record(record)
+
+        pipeline2 = HybridTrainingPipeline(config=config)
+        dataset = pipeline2.load_pooled_data(
+            max_genes=args.max_genes, species="human",
+        )
+        sample_expr = np.array(dataset.pairs[0][0], dtype=np.float32)
+
+        t0 = time.time()
+        answer = service.infer(
+            sample_expr,
+            hypothesis=args.hypothesis,
+            study_id=f"{args.study_id}-infer",
+        )
+        print_answer(answer, time.time() - t0)
+
+    results_dir = Path(__file__).parent.parent / "results"
+    results_dir.mkdir(exist_ok=True)
+    ts = time.strftime("%Y%m%d_%H%M%S")
+    result_path = results_dir / f"governed_answer_{ts}.json"
+
+    pred = answer.foundation_prediction
+    fr = answer.frontier_reasoning
+    result_json = {
+        "species": answer.species,
+        "regime": answer.regime,
+        "study_id": answer.study_id,
+        "is_governed": answer.is_governed,
+        "content_hash": answer.content_hash,
+        "lineage_chain": answer.lineage_chain,
+        "foundation_prediction": {
+            k: v for k, v in pred.items()
+            if k != "predicted_expression"
+        },
+        "frontier_reasoning": {
+            "reasoning": fr.reasoning,
+            "confidence": fr.confidence,
+            "evidence_citations": fr.evidence_citations,
+            "suggested_experiments": fr.suggested_experiments,
+            "caveats": fr.caveats,
+        } if fr else None,
+    }
+    with open(result_path, "w") as f:
+        json.dump(result_json, f, indent=2, default=str)
+    print(f"\n  Result saved: {result_path}")
     print("  Done.\n")
 
 
