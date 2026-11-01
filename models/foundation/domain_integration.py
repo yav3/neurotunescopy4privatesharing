@@ -234,7 +234,7 @@ class DomainIntegrator:
             chroma = np.ones(12) / 12.0
 
         ic = IntervalConsonance()
-        consonances = [ic.consonance(i) for i in range(13)]
+        consonances = [ic.rate(i) for i in range(13)]
         c_mean = float(np.mean(consonances))
         c_std = float(np.std(consonances))
 
