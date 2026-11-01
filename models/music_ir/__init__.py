@@ -1,5 +1,6 @@
 """Music Information Retrieval: fingerprinting, chroma, onset, search, tagging, segmentation."""
-from models.music_ir.chromagram import (
+
+from .chromagram import (
     CHORD_TEMPLATES,
     KRUMHANSL_KESSLER_MAJOR,
     KRUMHANSL_KESSLER_MINOR,
@@ -9,37 +10,37 @@ from models.music_ir.chromagram import (
     ChromaExtractor,
     KeyDetector,
 )
-from models.music_ir.fingerprint import (
+from .fingerprint import (
     AudioFingerprinter,
     ConstellationMap,
     FingerprintHash,
     SpectrogramPeaks,
 )
-from models.music_ir.onset import (
+from .onset import (
     BeatTracker,
     OnsetDetector,
     SegmentBoundaryDetector,
     TempoHistogram,
 )
-from models.music_ir.similarity_search import (
+from .similarity_search import (
     CoverSongDetector,
     FeatureIndex,
     LocalitySensitiveHash,
     SequenceAlignment,
 )
-from models.music_ir.search import (
+from .search import (
     InvertedIndex,
     TrackIndex,
     QueryExpander,
     SearchRanker,
 )
-from models.music_ir.tagging import (
+from .tagging import (
     AutoTagger,
     GenreClassifier,
     MoodTagger,
     InstrumentDetector,
 )
-from models.music_ir.segmentation import (
+from .segmentation import (
     StructuralSegmenter,
     ChromaAnalyzer,
 )
