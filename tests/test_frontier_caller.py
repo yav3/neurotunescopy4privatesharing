@@ -205,6 +205,27 @@ class TestEndToEndPipeline:
         assert np.isfinite(record.test_mse)
         assert record.content_hash
 
+    def test_governed_trial_includes_frontier_evaluation(self):
+        """Governed trial exercises the full two-tower pipeline."""
+        caller = MockFrontierCaller(confidence=0.9)
+        config = HybridTrainConfig(
+            pretrain_epochs=2,
+            finetune_epochs=2,
+            patience=2,
+        )
+        pipeline = HybridTrainingPipeline(config=config, frontier_caller=caller)
+        record = pipeline.run_governed_trial(
+            study_id="TEST-FRONTIER-EVAL",
+            max_genes=200,
+            species="human",
+            pretrain_first=False,
+        )
+
+        assert record.extra["frontier_used"] is True
+        assert record.extra["frontier_confidence"] == 0.9
+        assert record.extra["frontier_content_hash"]
+        assert caller.call_count == 1
+
     def test_governed_inference_with_mock_frontier(self):
         """Full inference with mock frontier call."""
         gc = GeneFoundationConfig(max_genes=50, hidden_dim=64,

@@ -40,6 +40,8 @@ from models.foundation.hybrid_model import (
     HybridFoundationModel,
     HybridModelConfig,
 )
+from models.foundation.frontier_bridge import QueryType
+from models.foundation.frontier_caller import MockFrontierCaller
 from models.evidence.lineage import LineageChain, chain_hash
 from models.evidence.registry import StudyRegistry
 
@@ -163,11 +165,13 @@ class HybridTrainingPipeline:
         config: HybridTrainConfig | None = None,
         registry: StudyRegistry | None = None,
         lineage: LineageChain | None = None,
+        frontier_caller: Any | None = None,
     ):
         self.merlin_root = Path(merlin_root)
         self.config = config or HybridTrainConfig()
         self.registry = registry
         self.lineage = lineage if lineage is not None else LineageChain()
+        self.frontier_caller = frontier_caller if frontier_caller is not None else MockFrontierCaller()
 
     def load_pooled_data(
         self,
@@ -402,6 +406,33 @@ class HybridTrainingPipeline:
 
         test_mean_baseline = self._compute_mean_baseline(train_t, test_t)
 
+        # --- Frontier evaluation: exercise the full two-tower pipeline ---
+        frontier_config = HybridModelConfig(
+            gene_config=gc,
+            use_frontier=True,
+            prediction_hidden=hybrid_config.prediction_hidden,
+            prediction_dropout=hybrid_config.prediction_dropout,
+        )
+        frontier_model = HybridFoundationModel(frontier_config)
+        frontier_params = dict(frontier_model.named_parameters())
+        for name, param in model.named_parameters():
+            if name in frontier_params:
+                frontier_params[name].data.copy_(param.data)
+        frontier_model.eval()
+
+        regime = "data-driven" if len(dataset.pairs) >= 30 else "prior-contrast"
+        frontier_answer = frontier_model.predict_and_explain(
+            expression=test_b[:1],
+            gene_indices=test_g[:1],
+            gene_names=dataset.gene_names,
+            species=species,
+            regime=regime,
+            hypothesis=f"Governed trial {study_id}: perturbation response prediction",
+            study_id=study_id,
+            frontier_call=self.frontier_caller,
+            query_type=QueryType.PERTURBATION_HYPOTHESIS,
+        )
+
         criteria = [
             val_mse < mean_baseline["mse"],
             val_r > mean_baseline["r"],
@@ -414,7 +445,7 @@ class HybridTrainingPipeline:
         record = TrialRecord(
             study_id=study_id,
             species=species,
-            regime="data-driven" if len(dataset.pairs) >= 30 else "prior-contrast",
+            regime=regime,
             n_samples=baselines.shape[0],
             n_genes=n_genes,
             n_series=1,
@@ -435,6 +466,12 @@ class HybridTrainingPipeline:
                 "finetune_epochs": epoch + 1,
                 "test_baseline_mse": test_mean_baseline["mse"],
                 "test_baseline_r": test_mean_baseline["r"],
+                "frontier_used": True,
+                "frontier_confidence": (
+                    frontier_answer.frontier_reasoning.confidence
+                    if frontier_answer.frontier_reasoning else None
+                ),
+                "frontier_content_hash": frontier_answer.content_hash,
             },
         )
         record.compute_hash()
