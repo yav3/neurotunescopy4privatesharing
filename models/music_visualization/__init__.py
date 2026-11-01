@@ -33,4 +33,17 @@ __all__ = [
     "NoteLabel", "VelocityColorMap", "PianoRollRenderer", "PianoRollOverlay",
     "RhythmGrid", "OnsetPlot", "TempoGraph", "GrooveMap",
     "LoudnessCurve", "DynamicRangePlot", "FrequencyResponse", "StereoFieldPlot",
+    "WaveformData", "compute_waveform_display",
+    "compute_spectrogram_display", "compute_chromagram_display",
+    "loudness_curve", "stereo_correlation_curve", "phase_correlation_val",
+    "frequency_spectrum_snapshot", "color_map_note",
 ]
+
+from .waveform_display import (
+    WaveformData, compute_waveform_display,
+    compute_spectrogram_display, compute_chromagram_display,
+    loudness_curve,
+    stereo_correlation as stereo_correlation_curve,
+    phase_correlation as phase_correlation_val,
+    frequency_spectrum_snapshot, color_map_note,
+)
