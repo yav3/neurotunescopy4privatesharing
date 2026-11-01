@@ -143,16 +143,20 @@ class SequenceAlignment:
                     dtw_mat[i, j - 1],
                     dtw_mat[i - 1, j - 1],
                 )
-        path: list[tuple[int, int]] = []
+        path: list[tuple[int, int]] = [(n - 1, m - 1)]
         i, j = n, m
-        while i > 0 and j > 0:
-            path.append((i - 1, j - 1))
-            candidates = [
-                (dtw_mat[i - 1, j - 1], i - 1, j - 1),
-                (dtw_mat[i - 1, j], i - 1, j),
-                (dtw_mat[i, j - 1], i, j - 1),
-            ]
+        while i > 1 or j > 1:
+            candidates: list[tuple[float, int, int]] = []
+            if i > 1 and j > 1:
+                candidates.append((dtw_mat[i - 1, j - 1], i - 1, j - 1))
+            if i > 1:
+                candidates.append((dtw_mat[i - 1, j], i - 1, j))
+            if j > 1:
+                candidates.append((dtw_mat[i, j - 1], i, j - 1))
+            if not candidates:
+                break
             _, i, j = min(candidates, key=lambda x: x[0])
+            path.append((i - 1, j - 1))
         path.reverse()
         return path
 
