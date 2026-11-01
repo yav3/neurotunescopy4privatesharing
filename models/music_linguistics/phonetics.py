@@ -174,4 +174,4 @@ def singability_score(inventory: PhonemeInventory) -> float:
     open_vowels = sum(1 for v in inventory.vowels if any(c in v for c in "aɑɒæ"))
     open_ratio = open_vowels / max(len(inventory.vowels), 1)
     tone_penalty = 0.1 * len(inventory.tones)
-    return min(1.0, 0.4 * v_ratio + 0.4 * open_ratio + 0.2 - tone_penalty)
+    return max(0.0, min(1.0, 0.4 * v_ratio + 0.4 * open_ratio + 0.2 - tone_penalty))
