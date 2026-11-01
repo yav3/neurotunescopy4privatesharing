@@ -140,3 +140,6 @@ class StudyRegistry:
 
     def export_all(self) -> dict[str, dict]:
         return {k: v.to_dict() for k, v in self._studies.items()}
+
+
+EvidenceRegistry = StudyRegistry

@@ -1,7 +1,8 @@
 """Hash-chained evidence lineage — every solver run gets a tamper-evident record.
 
-Follows merlinaineuralplus2/backend/app/patents/rtp/lineage.py pattern:
-SHA-256 chain over (prev_hash, problem_spec, answer_values, timestamp).
+Uses the canonical chain_hash formula from neurotunes3/evidence_protocol/hashing.py:
+json.dumps({prev_hash, record_id, problem_spec, answer_values, timestamp}, sort_keys=True)
+→ SHA-256. This ensures cross-repo schema alignment checks pass.
 """
 from __future__ import annotations
 
@@ -14,21 +15,50 @@ from typing import Any
 import numpy as np
 
 
-def _serialize(obj: Any) -> str:
-    """Deterministic JSON serialization with 6-decimal float rounding."""
-    if isinstance(obj, np.ndarray):
-        return json.dumps(np.round(obj, 6).tolist(), sort_keys=True)
-    if isinstance(obj, dict):
-        return json.dumps(
-            {k: round(v, 6) if isinstance(v, float) else v for k, v in sorted(obj.items())},
-            sort_keys=True,
-            default=str,
-        )
-    return json.dumps(obj, sort_keys=True, default=str)
+class _NumpySafeEncoder(json.JSONEncoder):
+    """Handles numpy types so chain_hash works with array-valued specs."""
+
+    def default(self, o):
+        if isinstance(o, np.ndarray):
+            return np.round(o, 6).tolist()
+        if isinstance(o, (np.integer,)):
+            return int(o)
+        if isinstance(o, (np.floating,)):
+            return round(float(o), 6)
+        return super().default(o)
 
 
-def _sha256(data: str) -> str:
-    return hashlib.sha256(data.encode("utf-8")).hexdigest()
+def chain_hash(
+    prev_hash: str,
+    record_id: str,
+    problem_spec: dict,
+    answer_values: dict,
+    timestamp: float,
+) -> str:
+    """Canonical chain hash — matches neurotunes3/evidence_protocol/hashing.chain_hash.
+
+    Same json.dumps({...}, sort_keys=True) → SHA-256 formula. Extended with
+    a numpy-safe encoder so NeuroTunesAI callers can pass array-valued specs
+    without pre-converting. For pure-dict inputs the output is byte-identical
+    to the canonical function.
+    """
+    payload = json.dumps(
+        {
+            "prev_hash": prev_hash,
+            "record_id": record_id,
+            "problem_spec": problem_spec,
+            "answer_values": answer_values,
+            "timestamp": timestamp,
+        },
+        sort_keys=True,
+        cls=_NumpySafeEncoder,
+    )
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def content_hash(data: bytes) -> str:
+    """Content-addressed hash — matches neurotunes3/evidence_protocol/hashing.content_hash."""
+    return hashlib.sha256(data).hexdigest()
 
 
 @dataclass
@@ -46,14 +76,13 @@ class EvidenceRecord:
             self.record_hash = self.compute_hash()
 
     def compute_hash(self) -> str:
-        payload = "|".join([
+        return chain_hash(
             self.prev_hash,
             self.record_id,
-            _serialize(self.problem_spec),
-            _serialize(self.answer_values),
-            f"{self.timestamp:.6f}",
-        ])
-        return _sha256(payload)
+            self.problem_spec,
+            self.answer_values,
+            self.timestamp,
+        )
 
     def verify(self) -> bool:
         return self.record_hash == self.compute_hash()
@@ -80,15 +109,17 @@ class LineageChain:
 
     def append(
         self,
-        record_id: str,
-        problem_spec: dict,
-        answer_values: dict,
+        record_id: str = "",
+        problem_spec: dict | None = None,
+        answer_values: dict | None = None,
+        timestamp: float | None = None,
     ) -> EvidenceRecord:
         prev_hash = self._records[-1].record_hash if self._records else ""
         record = EvidenceRecord(
-            record_id=record_id,
-            problem_spec=problem_spec,
-            answer_values=answer_values,
+            record_id=record_id or f"rec-{len(self._records)}",
+            problem_spec=problem_spec or {},
+            answer_values=answer_values or {},
+            timestamp=timestamp if timestamp is not None else time.time(),
             prev_hash=prev_hash,
         )
         self._records.append(record)

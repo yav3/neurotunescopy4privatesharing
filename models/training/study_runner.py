@@ -152,7 +152,10 @@ class StudyResult:
 
 
 class StudyRunner:
-    """Governed study runner — pre-register, validate, train, record."""
+    """Governed study runner — pre-register, validate, train, record.
+
+    Also exported as GovernedStudyRunner for cross-repo manifest compatibility.
+    """
 
     def __init__(
         self,
@@ -325,3 +328,4 @@ class StudyRunner:
             lineage_hash=record.record_hash,
             study_record=study,
         )
+GovernedStudyRunner = StudyRunner
