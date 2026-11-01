@@ -37,3 +37,8 @@ from models.foundation.unified_hybrid import (
     UnifiedFoundationFrontierModel,
     UnifiedHybridConfig,
 )
+from models.foundation.frontier_caller import (
+    ClaudeFrontierCaller,
+    MockFrontierCaller,
+    FrontierCallerConfig,
+)
