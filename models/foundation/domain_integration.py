@@ -251,7 +251,7 @@ class DomainIntegrator:
 
         onsets = np.zeros(16)
         onsets[::int(60.0 / max(features.rhythm.bpm, 30) * 4)] = 1.0
-        groove = self.groove_analyzer.analyze(onsets, grid_size=4)
+        groove_score = self.groove_analyzer.syncopation_index(onsets)
 
         rep = self.repetition_detector.detect(chroma.reshape(1, -1).repeat(8, axis=0))
         fam = self.familiarity_model.familiarity(
@@ -268,8 +268,8 @@ class DomainIntegrator:
             consonance_mean=c_mean,
             consonance_std=c_std,
             roughness_mean=roughness_mean,
-            groove_syncopation=groove.syncopation,
-            groove_density=groove.density,
+            groove_syncopation=groove_score,
+            groove_density=float(np.sum(onsets > 0) / len(onsets)),
             tension_mean=float(t_arr.mean()),
             tension_max=float(t_arr.max()),
             tension_range=float(t_arr.max() - t_arr.min()),

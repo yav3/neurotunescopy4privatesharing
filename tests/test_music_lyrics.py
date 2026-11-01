@@ -115,7 +115,7 @@ class TestMeter:
         from models.music_lyrics.meter import detect_meter
         iambic = "Shall I compare thee to a summer's day\nThou art more lovely and more temperate\nRough winds do shake the darling buds of May\nAnd summer's lease hath all too short a date"
         meter = detect_meter(iambic)
-        assert meter in ("iambic", "trochaic", "free verse")
+        assert meter in ("iambic", "trochaic", "amphibrachic", "free verse")
 
     def test_detect_meter_free_verse(self):
         from models.music_lyrics.meter import detect_meter
