@@ -24,10 +24,10 @@ from models.music_analysis.loudness import LoudnessAnalyzer, DynamicRangeAnalyze
 from models.music_analysis.tonality import TonalityAnalyzer, HarmonicRhythm
 from models.music_analysis.structure import StructureAnalyzer
 
-from models.music_theory.scales import Scale, SCALE_LIBRARY
-from models.music_theory.chords import Chord, ChordDetector
+from models.music_theory.scales import Scale
+from models.music_theory.chords import Chord
 from models.music_theory.intervals import Interval
-from models.music_theory.progressions import ChordProgression
+from models.music_theory.progressions import Progression
 
 from models.music_cognition.consonance import RoughnessModel, IntervalConsonance
 from models.music_cognition.expectation import MarkovExpectation
@@ -35,22 +35,26 @@ from models.music_cognition.groove import GrooveAnalyzer
 from models.music_cognition.tension import TensionCurve, harmonic_tension
 from models.music_cognition.memory import RepetitionDetector, FamiliarityModel
 
-from models.music_emotion.russell_circumplex import RussellCircumplex, EmotionPoint
-from models.music_emotion.music_emotion_profile import MusicEmotionProfile
+from models.music_emotion.russell_circumplex import RussellCircumplex, RussellEmotion
+from models.music_emotion import EmotionProfile
 
 from models.music_acoustics.psychoacoustics import (
-    roughness_sethares, sensory_dissonance_curve, masking_threshold,
+    simultaneous_masking, critical_bandwidth, hz_to_bark,
 )
-from models.music_acoustics.spectral_analysis import SpectralAnalyzer
-from models.music_acoustics.room_acoustics import RoomAcoustics
+from models.music_acoustics.spectral_analysis import (
+    stft, mel_spectrogram, compute_spectral_descriptors, SpectralDescriptors,
+)
+from models.music_acoustics.room_acoustics import (
+    RoomParameters, compute_rt60, clarity,
+)
 
 from models.music_psychoacoustics.critical_bands import CriticalBandAnalyzer
 from models.music_psychoacoustics.loudness import EqualLoudness, SpecificLoudness
 from models.music_psychoacoustics.pitch_perception import VirtualPitch, PitchSalience
 
 from models.music_semantics.form_analysis import classify_form, form_complexity, FormSection
-from models.music_semantics.genre_ontology import GenreOntology
-from models.music_semantics.instrument_taxonomy import InstrumentTaxonomy
+from models.music_semantics.genre_ontology import GENRE_TREE, features_to_genre
+from models.music_semantics.instrument_taxonomy import INSTRUMENT_CATALOG, ensemble_suggestion
 
 from models.music_features.unified_extractor import UnifiedMusicExtractor, MusicFeatureSet
 
@@ -169,7 +173,7 @@ class DomainIntegrator:
         self.tempo_estimator = TempoEstimator()
         self.critical_band = CriticalBandAnalyzer()
         self.equal_loudness = EqualLoudness()
-        self.spectral_analyzer = SpectralAnalyzer()
+        self._stft_fn = stft  # spectral analysis via functional API
 
     def analyze(self, audio: np.ndarray, sr: int | None = None) -> DomainAnalysis:
         effective_sr = sr or self.sr
@@ -282,8 +286,8 @@ class DomainIntegrator:
         valence = np.clip(0.3 + 0.4 * mode_conf + 0.1 * (dyn_range / 40), 0, 1)
         dominance = np.clip(0.3 + 0.3 * arousal + 0.2 * (dyn_range / 40), 0, 1)
 
-        ep = EmotionPoint(float(valence), float(arousal))
-        label = self.circumplex.classify(ep)
+        nearest = self.circumplex.nearest_emotion(float(valence), float(arousal))
+        label = nearest.name
 
         return EmotionAnalysis(
             valence=float(valence),
