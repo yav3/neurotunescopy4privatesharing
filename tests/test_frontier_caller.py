@@ -371,3 +371,117 @@ class TestLineageIntegration:
         expected = hashlib.sha256(payload.encode()).hexdigest()
         actual = chain_hash("abc", "r1", {"x": 1}, {"y": 2}, 999.0)
         assert actual == expected
+
+
+class TestHybridInferenceService:
+    """Verify the inference service provides clean checkpoint → governed answer."""
+
+    def test_from_checkpoint(self, tmp_path):
+        """Load checkpoint and run governed inference via the service."""
+        from models.inference.hybrid_inference import HybridInferenceService
+
+        gc = GeneFoundationConfig(max_genes=50, hidden_dim=64,
+                                  num_layers=2, num_heads=4)
+        config = HybridModelConfig(gene_config=gc, use_frontier=True,
+                                   prediction_hidden=64)
+        model = HybridFoundationModel(config)
+        record = TrialRecord(
+            study_id="TEST-SVC", species="human", regime="prior-contrast",
+            n_samples=10, n_genes=50, n_series=1, model_params=100,
+            train_mse=0.5, val_mse=0.6, test_mse=0.7,
+            train_r=0.8, val_r=0.7, test_r=0.6,
+            baseline_mse=1.0, baseline_r=0.3,
+            criteria_met=4, verdict="MET",
+        )
+        record.compute_hash()
+
+        ckpt_path = save_checkpoint(model, record, checkpoint_dir=tmp_path)
+        gene_names = [f"GENE{i}" for i in range(50)]
+
+        service = HybridInferenceService.from_checkpoint(
+            ckpt_path, gene_names=gene_names, model_config=config,
+        )
+
+        expression = np.random.randn(50).astype(np.float32)
+        answer = service.infer(expression, hypothesis="Test via service")
+
+        assert answer.species == "human"
+        assert answer.is_governed
+        assert answer.content_hash
+        assert answer.frontier_reasoning is not None
+        assert answer.frontier_reasoning.confidence == 0.7  # MockFrontierCaller default
+
+    def test_batch_infer(self, tmp_path):
+        """Batch inference returns one answer per sample."""
+        from models.inference.hybrid_inference import HybridInferenceService
+
+        gc = GeneFoundationConfig(max_genes=30, hidden_dim=32,
+                                  num_layers=1, num_heads=4)
+        config = HybridModelConfig(gene_config=gc, use_frontier=True,
+                                   prediction_hidden=32)
+        model = HybridFoundationModel(config)
+        record = TrialRecord(
+            study_id="TEST-BATCH", species="human", regime="data-driven",
+            n_samples=5, n_genes=30, n_series=1, model_params=50,
+            train_mse=0.5, val_mse=0.6, test_mse=0.7,
+            train_r=0.8, val_r=0.7, test_r=0.6,
+            baseline_mse=1.0, baseline_r=0.3,
+            criteria_met=4, verdict="MET",
+        )
+        record.compute_hash()
+        ckpt_path = save_checkpoint(model, record, checkpoint_dir=tmp_path)
+
+        service = HybridInferenceService.from_checkpoint(
+            ckpt_path, gene_names=[f"G{i}" for i in range(30)],
+            model_config=config,
+        )
+
+        batch = np.random.randn(3, 30).astype(np.float32)
+        answers = service.batch_infer(batch, study_id="BATCH-001")
+
+        assert len(answers) == 3
+        for i, ans in enumerate(answers):
+            assert ans.is_governed
+            assert ans.content_hash
+            assert ans.study_id == f"BATCH-001_sample_{i}"
+
+    def test_full_train_save_load_service_infer(self, tmp_path):
+        """Complete pipeline: train → save → load via service → infer."""
+        from models.inference.hybrid_inference import HybridInferenceService
+
+        config = HybridTrainConfig(
+            pretrain_epochs=2,
+            finetune_epochs=2,
+            patience=2,
+        )
+        pipeline = HybridTrainingPipeline(config=config)
+        record = pipeline.run_governed_trial(
+            study_id="TEST-FULL-PIPE",
+            max_genes=200,
+            species="human",
+            pretrain_first=False,
+        )
+
+        gc = GeneFoundationConfig(max_genes=record.n_genes, hidden_dim=256,
+                                  num_layers=6, num_heads=8)
+        model_config = HybridModelConfig(gene_config=gc, use_frontier=True)
+        model = HybridFoundationModel(model_config)
+
+        ckpt_path = save_checkpoint(model, record, checkpoint_dir=tmp_path)
+        gene_names = [f"GENE{i}" for i in range(record.n_genes)]
+
+        service = HybridInferenceService.from_checkpoint(
+            ckpt_path, gene_names=gene_names, gene_config=gc,
+        )
+
+        expression = np.random.randn(record.n_genes).astype(np.float32)
+        answer = service.infer(
+            expression,
+            hypothesis="Full pipeline governed inference",
+            study_id="TEST-FULL-PIPE-INF",
+        )
+
+        assert answer.is_governed
+        assert answer.content_hash
+        assert answer.frontier_reasoning is not None
+        assert len(answer.lineage_chain) >= 2
