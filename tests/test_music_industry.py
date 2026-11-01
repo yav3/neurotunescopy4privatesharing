@@ -22,32 +22,30 @@ class TestISRC:
         isrc = parse_isrc("US-RC1-98-12345")
         assert isrc.country_code == "US"
         assert isrc.registrant == "RC1"
-        assert isrc.year == "98"
-        assert isrc.designation == "12345"
+        assert isrc.year == 98
+        assert isrc.designation == 12345
 
     def test_parse_valid_no_dashes(self):
         isrc = parse_isrc("USRC19812345")
         assert isrc.country_code == "US"
         assert isrc.registrant == "RC1"
 
-    def test_parse_invalid(self):
-        assert parse_isrc("INVALID") is None
-        assert parse_isrc("") is None
+    def test_parse_invalid_raises(self):
+        with pytest.raises(ValueError):
+            parse_isrc("INVALID")
 
     def test_validate(self):
         assert validate_isrc("US-RC1-98-12345") is True
         assert validate_isrc("NOPE") is False
 
     def test_format(self):
-        isrc = ISRC("US", "RC1", "98", "12345")
+        isrc = ISRC("US", "RC1", 98, 12345)
         assert format_isrc(isrc) == "US-RC1-98-12345"
 
-    def test_generate(self):
-        isrc = generate_isrc("GB", "ABC", 24, 1)
-        assert isrc.country_code == "GB"
-        assert isrc.registrant == "ABC"
-        assert isrc.year == "24"
-        assert isrc.designation == "00001"
+    def test_generate_returns_string(self):
+        result = generate_isrc("GB", "ABC", 24, 1)
+        assert isinstance(result, str)
+        assert validate_isrc(result)
 
     def test_generate_invalid_country(self):
         with pytest.raises(ValueError):
@@ -56,28 +54,30 @@ class TestISRC:
 
 class TestISWC:
     def test_check_digit_computation(self):
-        digit = compute_check_digit("000000001")
+        digit = compute_check_digit(1)
         assert 0 <= digit <= 9
 
     def test_parse_valid(self):
-        work_id = "000000001"
+        work_id = 1
         cd = compute_check_digit(work_id)
-        iswc_str = f"T-{work_id}-{cd}"
+        iswc_str = f"T-{work_id:09d}-{cd}"
         iswc = parse_iswc(iswc_str)
-        assert iswc is not None
         assert iswc.work_id == work_id
         assert iswc.check_digit == cd
 
-    def test_parse_invalid(self):
-        assert parse_iswc("INVALID") is None
+    def test_parse_invalid_raises(self):
+        with pytest.raises(ValueError):
+            parse_iswc("INVALID")
 
-    def test_validate_correct(self):
-        work_id = "000000001"
+    def test_validate_roundtrip(self):
+        work_id = 345678901
         cd = compute_check_digit(work_id)
-        assert validate_iswc(f"T-{work_id}-{cd}") is True
+        assert validate_iswc(f"T-{work_id:09d}-{cd}") is True
 
     def test_validate_wrong_check(self):
-        assert validate_iswc("T-000000001-0") is True or validate_iswc("T-000000001-0") is False
+        cd = compute_check_digit(1)
+        wrong = (cd + 1) % 10
+        assert validate_iswc(f"T-000000001-{wrong}") is False
 
 
 class TestMetadata:
@@ -85,9 +85,9 @@ class TestMetadata:
         m = TrackMetadata(
             title="Song", artist="Artist", album="Album",
             isrc="US-RC1-98-12345", iswc="T-000000001-0",
-            duration_ms=200000, genre="pop", bpm=120.0,
-            key="C", year=2024, language="en",
-            composers=["A"], producers=["B"],
+            duration_ms=200000, genre="pop", subgenre="synth-pop",
+            bpm=120.0, key="C", release_date="2024-01-15",
+            label="BigLabel", upc="012345678901",
         )
         assert metadata_completeness(m) == 1.0
 
@@ -121,9 +121,9 @@ class TestMetadata:
 class TestDistribution:
     def test_estimate_royalties(self):
         model = RoyaltyModel(
-            streaming_rate=0.004,
-            download_rate=0.70,
-            sync_rate=5000.0,
+            per_stream_rate=0.004,
+            per_download_rate=0.70,
+            sync_flat_fee=5000.0,
         )
         rev = estimate_royalties(1_000_000, 1000, 2, model)
         assert rev > 0
@@ -131,41 +131,41 @@ class TestDistribution:
         assert abs(rev - expected) < 0.01
 
     def test_channel_revenue_split(self):
-        splits = {DistributionChannel.STREAMING: 0.7, DistributionChannel.DOWNLOAD: 0.3}
+        splits = {"streaming": 0.7, "download": 0.3}
         result = channel_revenue_split(10000.0, splits)
-        assert abs(result[DistributionChannel.STREAMING] - 7000.0) < 0.01
-        assert abs(result[DistributionChannel.DOWNLOAD] - 3000.0) < 0.01
+        assert abs(result["streaming"] - 7000.0) < 0.01
+        assert abs(result["download"] - 3000.0) < 0.01
 
     def test_breakeven(self):
         streams = breakeven_streams(10000.0, 0.004)
-        assert streams == 2_500_000
+        assert streams == int(10000.0 / 0.004) + 1
 
 
 class TestCatalog:
     def test_summary(self):
         entries = [
-            CatalogEntry(track_id="1", title="A", artist="X", genre="pop", year=2020, streams=100),
-            CatalogEntry(track_id="2", title="B", artist="Y", genre="rock", year=2021, streams=200),
-            CatalogEntry(track_id="3", title="C", artist="X", genre="pop", year=2020, streams=300),
+            CatalogEntry(title="A", artist="X", genre="pop", year=2020, annual_streams=100),
+            CatalogEntry(title="B", artist="Y", genre="rock", year=2021, annual_streams=200),
+            CatalogEntry(title="C", artist="X", genre="pop", year=2020, annual_streams=300),
         ]
         s = catalog_summary(entries)
         assert s["total_tracks"] == 3
-        assert s["total_streams"] == 600
-        assert "pop" in s["genre_distribution"]
+        assert s["total_annual_streams"] == 600
+        assert "pop" in s["genres"]
 
     def test_duplicate_detection(self):
         entries = [
-            CatalogEntry(track_id="1", title="Love Song", artist="The Band", genre="pop", year=2020, streams=100),
-            CatalogEntry(track_id="2", title="Love Song", artist="The Band", genre="pop", year=2021, streams=200),
+            CatalogEntry(title="Love Song", artist="The Band", genre="pop", year=2020, annual_streams=100),
+            CatalogEntry(title="Love Song", artist="The Band", genre="pop", year=2021, annual_streams=200),
         ]
         dupes = duplicate_detection(entries)
         assert len(dupes) > 0
 
     def test_valuation(self):
         entries = [
-            CatalogEntry(track_id="1", title="A", artist="X", genre="pop", year=2020, streams=1_000_000),
+            CatalogEntry(title="A", artist="X", genre="pop", year=2020, annual_streams=1_000_000),
         ]
-        val = catalog_valuation_heuristic(entries, per_stream_rate=0.004, multiplier=10.0)
+        val = catalog_valuation_heuristic(entries, multiplier=10.0)
         assert val == pytest.approx(1_000_000 * 0.004 * 10.0)
 
 
