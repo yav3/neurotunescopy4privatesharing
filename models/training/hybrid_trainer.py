@@ -301,6 +301,7 @@ class HybridTrainingPipeline:
         max_genes: int = 2000,
         species: str = "human",
         pretrain_first: bool = True,
+        checkpoint_dir: str | Path | None = None,
     ) -> TrialRecord:
         """Run a full governed trial: pretrain → finetune → evaluate.
 
@@ -514,4 +515,75 @@ class HybridTrainingPipeline:
         )
         record.extra["lineage_hash"] = lineage_record.record_hash
 
+        record.extra["gene_names"] = dataset.gene_names[:n_genes]
+        record.extra["gene_config"] = {
+            "max_genes": gc.max_genes,
+            "hidden_dim": gc.hidden_dim,
+            "num_layers": gc.num_layers,
+            "num_heads": gc.num_heads,
+        }
+        record.extra["prediction_hidden"] = hybrid_config.prediction_hidden
+        record.extra["prediction_dropout"] = hybrid_config.prediction_dropout
+
+        if checkpoint_dir is not None:
+            from models.training.checkpoint import save_checkpoint
+            ckpt_path = save_checkpoint(
+                frontier_model, record,
+                config={
+                    "gene_config": record.extra["gene_config"],
+                    "prediction_hidden": hybrid_config.prediction_hidden,
+                    "prediction_dropout": hybrid_config.prediction_dropout,
+                    "use_frontier": True,
+                },
+                checkpoint_dir=Path(checkpoint_dir),
+            )
+            record.extra["checkpoint_path"] = str(ckpt_path)
+
         return record
+
+    def run_and_serve(
+        self,
+        study_id: str = "NT-006",
+        max_genes: int = 2000,
+        species: str = "human",
+        pretrain_first: bool = True,
+        checkpoint_dir: str | Path = "checkpoints",
+    ) -> tuple["TrialRecord", "HybridInferenceService"]:
+        """Train → checkpoint → build inference service in one call.
+
+        Returns (record, service) where service is ready for .infer() calls.
+        """
+        from models.inference.hybrid_inference import HybridInferenceService
+
+        record = self.run_governed_trial(
+            study_id=study_id,
+            max_genes=max_genes,
+            species=species,
+            pretrain_first=pretrain_first,
+            checkpoint_dir=checkpoint_dir,
+        )
+
+        ckpt_path = record.extra["checkpoint_path"]
+        gc_dict = record.extra["gene_config"]
+        gc = GeneFoundationConfig(
+            max_genes=gc_dict["max_genes"],
+            hidden_dim=gc_dict["hidden_dim"],
+            num_layers=gc_dict["num_layers"],
+            num_heads=gc_dict["num_heads"],
+        )
+        model_config = HybridModelConfig(
+            gene_config=gc,
+            use_frontier=True,
+            prediction_hidden=record.extra.get("prediction_hidden", 512),
+            prediction_dropout=record.extra.get("prediction_dropout", 0.1),
+        )
+        gene_names = record.extra.get(
+            "gene_names", [f"GENE{i}" for i in range(record.n_genes)]
+        )
+
+        service = HybridInferenceService.from_checkpoint(
+            ckpt_path,
+            gene_names=gene_names,
+            model_config=model_config,
+        )
+        return record, service

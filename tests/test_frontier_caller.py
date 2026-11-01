@@ -485,3 +485,57 @@ class TestHybridInferenceService:
         assert answer.content_hash
         assert answer.frontier_reasoning is not None
         assert len(answer.lineage_chain) >= 2
+
+    def test_auto_checkpoint(self, tmp_path):
+        """run_governed_trial with checkpoint_dir saves a loadable .pt file."""
+        config = HybridTrainConfig(
+            pretrain_epochs=2,
+            finetune_epochs=2,
+            patience=2,
+        )
+        pipeline = HybridTrainingPipeline(config=config)
+        record = pipeline.run_governed_trial(
+            study_id="TEST-AUTO-CKPT",
+            max_genes=200,
+            species="human",
+            pretrain_first=False,
+            checkpoint_dir=tmp_path,
+        )
+
+        assert "checkpoint_path" in record.extra
+        ckpt_path = Path(record.extra["checkpoint_path"])
+        assert ckpt_path.exists()
+
+        payload = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+        assert "model_state_dict" in payload
+        assert payload.get("config", {}).get("use_frontier") is True
+        assert payload["study_id"] == "TEST-AUTO-CKPT"
+
+    def test_run_and_serve(self, tmp_path):
+        """run_and_serve returns (record, service) with working inference."""
+        config = HybridTrainConfig(
+            pretrain_epochs=2,
+            finetune_epochs=2,
+            patience=2,
+        )
+        pipeline = HybridTrainingPipeline(config=config)
+        record, service = pipeline.run_and_serve(
+            study_id="TEST-RUN-SERVE",
+            max_genes=200,
+            species="human",
+            pretrain_first=False,
+            checkpoint_dir=tmp_path,
+        )
+
+        assert record.verdict in ("MET", "NOT_MET")
+        assert record.extra["frontier_used"] is True
+
+        expression = np.random.randn(record.n_genes).astype(np.float32)
+        answer = service.infer(
+            expression,
+            hypothesis="run_and_serve end-to-end test",
+            study_id="TEST-RUN-SERVE-INF",
+        )
+        assert answer.is_governed
+        assert answer.content_hash
+        assert answer.frontier_reasoning is not None
